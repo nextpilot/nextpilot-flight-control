@@ -1,0 +1,18 @@
+import os
+import rtconfig
+from building import *
+
+objs = []
+cwd = GetCurrentDir()
+
+src = Glob("*.c")
+inc = [cwd]
+
+objs = DefineGroup("bsp/apps", src, depend=[""], CPPPATH=inc)
+
+for d in os.listdir(cwd):
+    path = os.path.join(cwd, d)
+    if os.path.isfile(os.path.join(path, "SConscript")):
+        objs += SConscript(os.path.join(d, "SConscript"))
+
+Return("objs")

@@ -1,0 +1,22 @@
+import os
+import rtconfig
+from building import *
+
+cwd = GetCurrentDir()
+
+# add the general drivers.
+src = Split(
+    """
+board.c
+cubemx/Core/Src/main.c
+cubemx/Core/Src/stm32f7xx_hal_msp.c
+"""
+)
+# cubemx/Core/Src/main.c
+
+inc = [cwd, cwd + "/cubemx/Core/Inc"]
+defs = ["STM32F765xx"]
+
+objs = DefineGroup("bsp/board", src, depend=[""], CPPPATH=inc, CPPDEFINES=defs)
+
+Return("objs")

@@ -1,0 +1,18 @@
+import os
+import sys
+
+# 导入helper模块，并初始化
+helper_path = Dir("#/../../../tools/building").abspath
+sys.path.append(helper_path)
+
+try:
+    import scons_helper as helper
+except:
+    print("import 'scons_helper' module error in " + helper_path)
+    exit(-1)
+
+# 初始化
+helper.init()
+
+# 开始编译
+helper.auto_build()

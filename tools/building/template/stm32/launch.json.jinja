@@ -1,0 +1,61 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Cortex Debug-stlink", // 给新增的调试命名，后续可以在vs code调试工具栏中选择
+            "cwd": "${workspaceFolder}",
+            "executable": "{{ TARGET_FILE }}", // 要调试的固件（根据实际情况选择）
+            "request": "launch",
+            "type": "cortex-debug", // 调试类型为cortex-debug
+            "runToEntryPoint": "main", // 启动调试后，在main函数入口暂停
+            "servertype": "stlink", // gdb-server类型
+            // "servertype": "${env:USERNAME}",
+            "device": "{{ CHIP_NAME }}", // stm32芯片类型
+            "svdFile": "{{ SVD_FILE }}"
+        },
+        {
+            "name": "Cortex Debug-jlink",
+            "cwd": "${workspaceFolder}",
+            "executable": "{{ TARGET_FILE }}",
+            "request": "launch",
+            "type": "cortex-debug",
+            "runToEntryPoint": "main",
+            "servertype": "jlink",
+            "device": "{{ CHIP_NAME }}",
+            "svdFile": "{{ SVD_FILE }}"
+        },
+        {
+            "name": "Debug with OpenOCD-stlink",
+            "cwd": "${workspaceFolder}",
+            "executable": "{{ TARGET_FILE }}",
+            "request": "launch",
+            "type": "cortex-debug",
+            "servertype": "openocd",
+            "searchDir": [],
+            "runToEntryPoint": "main",
+            "showDevDebugOutput": "none",
+            "configFiles": [ // 选择配置文件
+                "openocd_cfg/stlink.cfg", // 根据下载器硬件选择，这里使用stlink
+                "openocd_cfg/stm32f7x.cfg" // 根据芯片选择，这里使用stm32f765II
+            ],
+            "svdPath": "{{ SVD_FILE }}",
+        },
+        {
+            "name": "Debug with OpenOCD-jlink",
+            "cwd": "${workspaceRoot}",
+            "executable": "{{ TARGET_FILE }}",
+            "request": "launch",
+            "type": "cortex-debug",
+            "servertype": "openocd",
+            "searchDir": [],
+            "runToEntryPoint": "main",
+            "showDevDebugOutput": "none",
+            "configFiles": [ // 选择配置文件
+                "openocd_cfg/jlink.cfg", // 根据下载器硬件选择，这里使用stlink
+                "openocd_cfg/stm32f7x.cfg" // 根据芯片选择，这里使用stm32f765II
+            ],
+            "svdPath": "{{ SVD_FILE }}",
+        },
+    ],
+    "enable": true
+}

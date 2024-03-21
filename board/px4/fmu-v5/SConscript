@@ -1,0 +1,18 @@
+# for module compiling
+import os
+import rtconfig
+from building import *
+
+objs = []
+
+if GetDepend(["BSP_CETCS_FCS"]):
+    cwd = GetCurrentDir()
+
+    for d in os.listdir(cwd):
+        path = os.path.join(cwd, d)
+        if os.path.isfile(os.path.join(path, "SConscript")):
+            objs += SConscript(os.path.join(d, "SConscript"), variant_dir="#/build/bsp/" + d, duplicate=0)
+else:
+    objs = []
+
+Return("objs")

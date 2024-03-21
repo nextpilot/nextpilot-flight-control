@@ -1,0 +1,15 @@
+{
+    "RTT_Studio.Build.Parallel_Jobs": "{{ CPU_COUNT }}",
+    "RTT_Studio.RTT_ENV_ROOT": "{{ RTT_ENV_ROOT }}",
+    "RTT_Studio.RTT_ROOT": "../../../rtos/rt-thread",
+    "RTT_Studio.Toolchain_Location": "{{ RTT_ENV_ROOT }}/tools/gnu_gcc/arm_gcc/mingw/bin",
+    "RTT_Studio.SystemInfo.Push.Flag": false,
+    "RTT_Studio.Debuger.Gdb_Path": "{{ RTT_ENV_ROOT }}/tools/gnu_gcc/arm_gcc/mingw/bin/arm-none-eabi-gdb.exe",
+    "RTT_Studio.Debuger.Generate_Configuration_Automatically": false,
+    "RTT_Studio.Debuger.QEMU.Location": "{{ QEMU_ROOT }}",
+    "RTT_Studio.Debuger.Adapter": "QEMU",
+    "RTT_Studio.Debuger.Bin_File": "{{ BIN_FILE }}",
+    "RTT_Studio.Debuger.Executable_File": "{{ TARGET_FILE }}",
+    "RTT_Studio.Debuger.QEMU.Commands": "qemu-system-arm -M vexpress-a9 -kernel {{ TARGET_FILE }} -display none -serial stdio -sd sd.bin",
+    "cmake.configureOnOpen": false
+}

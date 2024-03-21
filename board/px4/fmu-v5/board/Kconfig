@@ -1,0 +1,564 @@
+menu "Nextpilot Hardware Config"
+
+    config BSP_CETCS_FCS
+        bool
+        default y
+
+    config SOC_STM32F765II
+        bool
+        select SOC_SERIES_STM32F7
+        select RT_USING_COMPONENTS_INIT
+        select RT_USING_USER_MAIN
+        default y
+
+menu "Chip Memory Setting"
+    config FLASH_START_ADDRESS
+        hex "flash start address"
+        default 0x08000000
+
+    config FLASH_APP_VTOR_OFFSET
+        int "vector table offset (KB) for app"
+        default 0
+
+    config FLASH_APP_TOTAL_LENGTH
+        int "flash length (KB) for app"
+        default 2048
+
+    config SRAM_START_ADDRESS
+        hex "ram start address"
+        default 0x20000000
+
+    config SRAM_TOTAL_LENGTH
+        int "ram length (KB)"
+        default 512
+endmenu
+
+menu "On-chip Peripheral Drivers"
+
+    config BSP_USING_GPIO
+        bool "Enable GPIO"
+        select RT_USING_PIN
+        default y
+
+    menuconfig BSP_USING_ADC
+        bool "Enable ADC"
+        default y
+        select RT_USING_ADC
+
+    if BSP_USING_ADC
+        config BSP_USING_ADC1
+            bool "Enable ADC1"
+            default y
+
+        config BSP_USING_ADC2
+            bool "Enable ADC2"
+            default n
+
+        config BSP_USING_ADC3
+            bool "Enable ADC3"
+            default n
+    endif
+
+    menuconfig BSP_USING_TIM
+        bool "Enable Timer"
+        default n
+        select RT_USING_HWTIMER
+
+    if BSP_USING_TIM
+        config BSP_USING_TIM15
+            bool "Enable TIM15"
+            default n
+    endif
+
+    menuconfig BSP_USING_PWM
+        bool "Enable PWM"
+        default y
+        select RT_USING_PWM
+
+    if BSP_USING_PWM
+        config BSP_USING_PWM1
+            bool "Enable Timer1 output pwm"
+            default y
+
+        if BSP_USING_PWM1
+            config BSP_USING_PWM1_CH1
+                bool "Enable PWM1 channel1"
+                default n
+
+            config BSP_USING_PWM1_CH2
+                bool "Enable PWM1 channel2"
+                default n
+
+            config BSP_USING_PWM1_CH3
+                bool "Enable PWM1 channel3"
+                default n
+
+            config BSP_USING_PWM1_CH4
+                bool "Enable PWM1 channel4"
+                default n
+        endif
+
+        config BSP_USING_PWM2
+            bool "Enable Timer2 output pwm"
+            default y
+
+        if BSP_USING_PWM2
+            config BSP_USING_PWM2_CH1
+                bool "Enable PWM2 channel1"
+                default n
+
+            config BSP_USING_PWM2_CH2
+                bool "Enable PWM2 channel2"
+                default n
+
+            config BSP_USING_PWM2_CH4
+                bool "Enable PWM2 channel4"
+                default n
+        endif
+
+        config BSP_USING_PWM3
+            bool "Enable Timer3 output pwm"
+            default y
+
+        if BSP_USING_PWM3
+            config BSP_USING_PWM3_CH1
+                bool "Enable PWM3 channel1"
+                default n
+
+            config BSP_USING_PWM3_CH2
+                bool "Enable PWM3 channel2"
+                default n
+
+            config BSP_USING_PWM3_CH4
+                bool "Enable PWM3 channel4"
+                default n
+        endif
+
+        config BSP_USING_PWM4
+            bool "Enable Timer4 output pwm"
+            default y
+
+        if BSP_USING_PWM4
+            config BSP_USING_PWM4_CH2
+                bool "Enable PWM4 channel2"
+                default n
+
+            config BSP_USING_PWM4_CH3
+                bool "Enable PWM4 channel3"
+                default n
+        endif
+
+        config BSP_USING_PWM5
+            bool "Enable Timer5 output pwm"
+            default y
+
+        if BSP_USING_PWM5
+            config BSP_USING_PWM5_CH1
+                bool "Enable PWM5 channel1"
+                default n
+
+            config BSP_USING_PWM5_CH2
+                bool "Enable PWM5 channel2"
+                default n
+
+            config BSP_USING_PWM5_CH3
+                bool "Enable PWM5 channel3"
+                default n
+        endif
+
+        config BSP_USING_PWM8
+            bool "Enable Timer8 output pwm"
+            default y
+
+        if BSP_USING_PWM8
+            config BSP_USING_PWM8_CH1
+            bool "Enable PWM8 channel1"
+            default n
+        endif
+
+        config BSP_USING_PWM9
+            bool "Enable Timer9 output pwm"
+            default y
+
+        if BSP_USING_PWM9
+            config BSP_USING_PWM9_CH1
+            bool "Enable PWM9 channel1"
+            default n
+        endif
+
+         config BSP_USING_PWM12
+             bool "Enable Timer12 output pwm"
+             default y
+
+         if BSP_USING_PWM12
+             config BSP_USING_PWM12_CH1
+                 bool "Enable PWM12 channel1"
+                 default n
+
+            config BSP_USING_PWM12_CH2
+                bool "Enable PWM12 channel2"
+                default n
+        endif
+
+        config BSP_USING_PWM14
+            bool "Enable Timer14 output pwm"
+            default y
+
+        if BSP_USING_PWM14
+            config BSP_USING_PWM14_CH1
+            bool "Enable PWM14 channel1"
+            default n
+        endif
+
+    endif
+
+    menuconfig BSP_USING_UART
+        bool "Enable UART"
+        default y
+        select RT_USING_SERIAL
+
+    if BSP_USING_UART
+        config BSP_USING_UART1
+            bool "Enable UART1"
+            default y
+
+        config BSP_UART1_RX_USING_DMA
+            bool "Enable UART1 RX DMA"
+            select RT_SERIAL_USING_DMA
+            depends on BSP_USING_UART1
+            default y
+
+        config BSP_UART1_TX_USING_DMA
+            bool "Enable UART1 TX DMA"
+            select RT_SERIAL_USING_DMA
+            depends on BSP_USING_UART1
+            default n
+
+        config  BSP_USING_UART2
+            bool "Enable UART2"
+            default y
+
+        config BSP_UART2_RX_USING_DMA
+            bool "Enable UART2 RX DMA"
+            select RT_SERIAL_USING_DMA
+            depends on BSP_USING_UART2
+            default y
+
+        config BSP_UART2_TX_USING_DMA
+            bool "Enable UART2 TX DMA"
+            select RT_SERIAL_USING_DMA
+            depends on BSP_USING_UART2
+            default n
+
+        config BSP_USING_UART3
+            bool "Enable UART3"
+            default y
+
+        config BSP_UART3_RX_USING_DMA
+            bool "Enable UART3 RX DMA"
+            select RT_SERIAL_USING_DMA
+            depends on BSP_USING_UART3
+            default y
+
+        config BSP_UART3_TX_USING_DMA
+            bool "Enable UART3 TX DMA"
+            select RT_SERIAL_USING_DMA
+            depends on BSP_USING_UART3
+            default y
+
+        config BSP_USING_UART4
+            bool "Enable UART4"
+            default y
+
+        config BSP_UART4_RX_USING_DMA
+            bool "Enable UART4 RX DMA"
+            select RT_SERIAL_USING_DMA
+            depends on BSP_USING_UART4
+            default y
+
+        config BSP_UART4_TX_USING_DMA
+            bool "Enable UART4 TX DMA"
+            select RT_SERIAL_USING_DMA
+            depends on BSP_USING_UART4
+            default y
+
+        config BSP_USING_UART5
+            bool "Enable UART5"
+            default y
+
+        config BSP_UART5_RX_USING_DMA
+            bool "Enable UART5 RX DMA"
+            select RT_SERIAL_USING_DMA
+            depends on BSP_USING_UART5
+            default y
+
+        config BSP_UART5_TX_USING_DMA
+            bool "Enable UART5 TX DMA"
+            select RT_SERIAL_USING_DMA
+            depends on BSP_USING_UART5
+            default y
+
+        config BSP_USING_UART6
+            bool "Enable UART6"
+            default y
+
+        config BSP_UART6_RX_USING_DMA
+            bool "Enable UART6 RX DMA"
+            select RT_SERIAL_USING_DMA
+            depends on BSP_USING_UART6
+            default y
+
+        config BSP_UART6_TX_USING_DMA
+            bool "Enable UART6 TX DMA"
+            select RT_SERIAL_USING_DMA
+            depends on BSP_USING_UART6
+            default y
+
+        config BSP_USING_UART7
+            bool "Enable UART7 (Debug)"
+            default y
+
+        config BSP_UART7_RX_USING_DMA
+            bool "Enable UART7 RX DMA"
+            select RT_SERIAL_USING_DMA
+            depends on BSP_USING_UART7
+            default n
+
+        config BSP_UART7_TX_USING_DMA
+            bool "Enable UART7 TX DMA"
+            select RT_SERIAL_USING_DMA
+            depends on BSP_USING_UART7
+            default n
+
+        config BSP_USING_UART8
+            bool "Enable UART8 (FMU-IO)"
+            default y
+
+        config BSP_UART8_RX_USING_DMA
+            bool "Enable UART8 RX DMA"
+            select RT_SERIAL_USING_DMA
+            depends on BSP_USING_UART8
+            default n
+
+        config BSP_UART8_TX_USING_DMA
+            bool "Enable UART8 TX DMA"
+            select RT_SERIAL_USING_DMA
+            depends on BSP_USING_UART8
+            default n
+    endif
+
+    menuconfig BSP_USING_CAN
+        bool "Enable CAN"
+        default n
+        select RT_USING_CAN
+
+    if BSP_USING_CAN
+        config BSP_USING_CAN1
+        bool "Enable CAN1"
+        default n
+
+        config BSP_USING_CAN2
+            bool "Enable CAN2"
+            default n
+    endif
+
+    menuconfig BSP_USING_I2C
+        bool "Enable I2C BUS"
+        default n
+        select RT_USING_I2C
+        select RT_USING_I2C_BITOPS
+        select RT_USING_PIN
+
+    if BSP_USING_I2C
+        config BSP_USING_I2C1
+            bool "Enable I2C1 BUS"
+            default y
+
+        if BSP_USING_I2C1
+            #comment "Notice: PB8 --> 24; PB9 --> 25"
+            config BSP_I2C1_SCL_PIN
+                int "I2C1 SCL pin number"
+                range 1 176
+                default 24
+
+            config BSP_I2C1_SDA_PIN
+                int "I2C1 SDA pin number"
+                range 1 176
+                default 25
+        endif
+
+        config BSP_USING_I2C2
+            bool "Enable I2C2 BUS"
+            default y
+
+        if BSP_USING_I2C2
+            #comment "Notice:  PF1 --> 81; PF0 --> 80"
+            config BSP_I2C2_SCL_PIN
+                int "I2C2 SCL pin number"
+                range 1 176
+                default 81
+
+            config BSP_I2C2_SDA_PIN
+                int "I2C2 SDA pin number"
+                range 1 176
+                default 80
+        endif
+
+        config BSP_USING_I2C3
+            bool "Enable I2C3 BUS (Onboard ist8310)"
+            default y
+
+            if BSP_USING_I2C3
+                #comment "Notice:  PH7 --> 119; PH8 --> 120"
+                config BSP_I2C3_SCL_PIN
+                    int "I2C3 SCL pin number"
+                    range 1 176
+                    default 119
+
+                config BSP_I2C3_SDA_PIN
+                    int "I2C3 SDA pin number"
+                    range 1 176
+                    default 120
+            endif
+
+        config BSP_USING_I2C4
+            bool "Enable I2C4 BUS"
+            default y
+
+        if BSP_USING_I2C4
+            #comment "Notice:  PF14 --> 94; PF15 --> 95"
+            config BSP_I2C4_SCL_PIN
+                int "I2C4 SCL pin number"
+                range 1 176
+                default 94
+
+            config BSP_I2C4_SDA_PIN
+                int "I2C4 SDA pin number"
+                range 1 176
+                default 95
+        endif
+    endif
+
+    menuconfig BSP_USING_SPI
+        bool "Enable SPI BUS"
+        default y
+        select RT_USING_SPI
+
+    if BSP_USING_SPI
+        config BSP_USING_SPI1
+        bool "Enable SPI1 BUS"
+        default y
+
+        config BSP_USING_SPI2
+            bool "Enable SPI2 BUS"
+            default y
+
+        config BSP_USING_SPI3
+            bool "Enable SPI3 BUS"
+            default n
+
+        config BSP_USING_SPI4
+            bool "Enable SPI4 BUS"
+            default y
+
+        config BSP_USING_SPI5
+            bool "Enable SPI5 BUS"
+            default y
+
+        config BSP_USING_SPI6
+            bool "Enable SPI6 BUS"
+            default y
+    endif
+
+    menuconfig BSP_USING_QSPI
+        bool "Enable QSPI BUS"
+        select RT_USING_QSPI
+        select RT_USING_SPI
+        default n
+
+    if BSP_USING_QSPI
+        config BSP_QSPI_USING_DMA
+            bool "Enable QSPI DMA support"
+            default n
+    endif
+
+    config BSP_USING_WDT
+        bool "Enable Watchdog Timer"
+        select RT_USING_WDT
+        default n
+
+    config BSP_USING_USBD
+        bool "Enable OTGFS as USB device"
+        select RT_USING_USB_DEVICE
+        default n
+
+    menuconfig BSP_USING_ONCHIP_RTC
+        bool "Enable RTC"
+        select RT_USING_RTC
+        default y
+
+    if BSP_USING_ONCHIP_RTC
+        choice
+            prompt "Select clock source"
+            default BSP_RTC_USING_LSI
+
+            config BSP_RTC_USING_LSE
+                bool "RTC USING LSE"
+
+            config BSP_RTC_USING_LSI
+                    bool "RTC USING LSI"
+        endchoice
+    endif
+
+    menuconfig BSP_USING_ON_CHIP_FLASH
+        bool "Enable on-chip FLASH"
+        default n
+
+    menuconfig BSP_USING_SDIO
+        bool "Enable SDMMC (SD card)"
+        select RT_USING_SDIO
+        select RT_USING_DFS
+        select RT_USING_DFS_ELMFAT
+        default y
+
+    if BSP_USING_SDIO
+        config BSP_SDIO_RX_USING_DMA
+            bool "Enable SDIO RX DMA"
+            default n
+
+        config BSP_SDIO_TX_USING_DMA
+            bool "Enable SDIO TX DMA"
+            default n
+    endif
+
+   source "$SDK_DIR/Kconfig"
+
+endmenu
+
+menu "Onboard Peripheral Drivers"
+
+    #config BSP_USING_FRAMV02
+    #bool "Has FramV02 Flash (spi)"
+    #select BSP_USING_SPI
+    #default n
+
+    #config BSP_USING_W25Q256
+    #bool "Has W25Q256 Nor-flash (qspi)"
+    #select BSP_USING_QSPI
+    #select RT_USING_SFUD
+    #select RT_SFUD_USING_QSPI
+    #default n
+
+    #config BSP_USING_IST8310
+    #bool "Has Ist8310 mag (i2c)"
+    #select BSP_USING_QSPI
+    #select RT_USING_SFUD
+    #select RT_SFUD_USING_QSPI
+    #default n
+
+endmenu
+
+menu "Board extended module Drivers"
+endmenu
+
+endmenu

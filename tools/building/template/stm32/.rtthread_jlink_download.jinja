@@ -1,0 +1,10 @@
+si 1
+    si 1
+    speed 15000
+    r
+    h
+    loadbin {{ BIN_FILE }} {{ FLASH_START_ADRESS }}
+    setpc {{ FLASH_START_ADRESS }}
+    r
+    g
+    q

@@ -1,0 +1,33 @@
+mainmenu "RT-Thread Configuration"
+
+config BSP_DIR
+    string
+    option env="BSP_ROOT"
+    default "."
+
+config PRJ_DIR
+    string
+    option env="PRJ_DIR"
+    default "../../../"
+
+config RTT_DIR
+    string
+    option env="RTT_ROOT"
+    default "../../../rtos/rt-thread"
+
+config SDK_DIR
+    string
+    option env="SDK_ROOT"
+    default "../../../rtos/platform/stm32"
+
+config PKGS_DIR
+    string
+    option env="PKGS_ROOT"
+    default "../../../apps/package"
+
+
+source "$RTT_DIR/Kconfig"
+source "$PKGS_DIR/Kconfig"
+#source "$SDK_DIR/Kconfig"
+source "board/Kconfig"
+source "../../../apps/Kconfig"

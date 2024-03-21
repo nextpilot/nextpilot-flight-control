@@ -1,0 +1,30 @@
+{
+    /**
+     * RTT-Studio插件设置
+     */
+    "RTT_Studio.Build.Parallel_Jobs": "{{ CPU_COUNT }}",
+    "RTT_Studio.RTT_ROOT": "../../../rtos/rt-thread",
+    "RTT_Studio.Toolchain_Location": "{{ RTT_ENV_ROOT }}/tools/gnu_gcc/arm_gcc/mingw/bin",
+    "RTT_Studio.Debuger.Bin_File": "{{ BIN_FILE }}",
+    "RTT_Studio.Debuger.Executable_File": "{{ TARGET_FILE }}",
+    "RTT_Studio.Debuger.Adapter": "ST-Link",
+    "RTT_Studio.Debuger.Gdb_Path": "{{ RTT_ENV_ROOT }}/tools/gnu_gcc/arm_gcc/mingw/bin/arm-none-eabi-gdb.exe",
+    "RTT_Studio.Debuger.stlinkGdbServerExecutable": "{{ RTT_STD_ROOT }}/repo/Extract/Debugger_Support_Packages/STMicroelectronics/ST-LINK_Debugger/1.6.0/ST-LINK_gdbserver.exe",
+    // "RTT_Studio.Debuger.stlinkGdbServerExecutable": "${workspaceRoot}",
+    // "${env:ST_LINK_DBG_Server}"
+    // "RTT_Studio.Debuger.stlinkGdbServerExecutable": "${env:USERNAME}",
+    "RTT_Studio.Debuger.JLink.Device": "{{ CHIP_NAME }}",
+    // "RTT_Studio.Debuger.jlinkGdbServerExecutable": "{{ RTT_STD_ROOT }}/repo/Extract/Debugger_Support_Packages/SEGGER/J-Link/v7.50a/JLink.exe",
+    "RTT_Studio.Debuger.jlinkGdbServerExecutable": "{{ RTT_STD_ROOT }}/repo/Extract/Debugger_Support_Packages/SEGGER/J-Link/v7.50a/JLinkGDBServerCL.exe",
+    "RTT_Studio.Debuger.QEMU.Location": "{{ RTT_ENV_ROOT }}/tools/qemu",
+    "RTT_Studio.Debuger.SVD_FILE": "{{ SVD_FILE }}",
+    "RTT_Studio.Debuger.Generate_Configuration_Automatically": false,
+    /**
+     * cortex-debug调试设置
+     */
+    "cortex-debug.armToolchainPath": "{{ RTT_ENV_ROOT }}/tools/gnu_gcc/arm_gcc/mingw/bin",
+    "cortex-debug.stlinkPath": "{{ RTT_STD_ROOT }}/repo/Extract/Debugger_Support_Packages/STMicroelectronics/ST-LINK_Debugger/1.6.0/ST-LINK_gdbserver.exe",
+    "cortex-debug.JLinkGDBServerPath": "{{ RTT_STD_ROOT }}/repo/Extract/Debugger_Support_Packages/SEGGER/J-Link/v7.50a/JLinkGDBServerCL.exe",
+    "cortex-debug.openocdPath": "C:/openocd/OpenOCD-20211118-0.11.0/bin/openocd.exe",
+    "cortex-debug.pyocdPath.windows": "{{ RTT_STD_ROOT }}/repo/Extract/Debugger_Support_Packages/RealThread/PyOCD/0.1.3/pyocd.exe",
+}

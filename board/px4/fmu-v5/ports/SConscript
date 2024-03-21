@@ -1,0 +1,26 @@
+import rtconfig
+import os
+from building import *
+
+cwd = GetCurrentDir()
+
+
+src = []
+inc = [cwd]
+
+if GetDepend(["RT_USING_SPI"]):
+    src += ["spi_init.c"]
+
+if GetDepend(["RT_USING_SDIO"]):
+    src += ["sd_mnt.c"]
+
+if GetDepend(["RT_USING_PIN"]):
+    src += ["gpio_init.c"]
+
+if GetDepend(["RT_USING_FAL"]):
+    src += ["fal_cfg.c"]
+
+
+group = DefineGroup("bsp/ports", src, depend=[""], CPPPATH=inc)
+
+Return("group")

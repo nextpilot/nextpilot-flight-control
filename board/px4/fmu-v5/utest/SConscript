@@ -1,0 +1,15 @@
+import os
+from posixpath import relpath
+import rtconfig
+from building import *
+
+Import('SDK_ROOT')
+
+cwd = GetCurrentDir()
+
+src = Glob("*.c") + Glob("*.cpp")
+inc = [cwd]
+
+group = DefineGroup('utest', src, depend = ['RT_USING_UTEST'], CPPPATH = inc)
+
+Return('group')

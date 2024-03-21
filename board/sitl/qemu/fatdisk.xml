@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<fatdisk> 
+   <disk_size>131072</disk_size> 
+   <sector_size>512</sector_size> 
+   <root_dir>sd</root_dir> 
+   <output>sd.bin</output> 
+   <strip>0</strip> 
+</fatdisk> 
