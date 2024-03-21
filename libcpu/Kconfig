@@ -1,0 +1,255 @@
+if ARCH_ARMV8 && ARCH_CPU_64BIT
+    menu "AArch64 Architecture Configuration"
+    config ARCH_TEXT_OFFSET
+        hex "Text offset"
+        default 0x200000
+    config ARCH_RAM_OFFSET
+        hex "RAM offset"
+        default 0
+    config ARCH_SECONDARY_CPU_STACK_SIZE
+        int "Secondary CPU stack size"
+        default 4096
+    config ARCH_HAVE_EFFICIENT_UNALIGNED_ACCESS
+        bool
+        default y
+    endmenu
+endif
+
+config ARCH_CPU_64BIT
+    bool
+
+config RT_USING_CACHE
+    bool
+    default n
+
+config RT_USING_HW_ATOMIC
+    bool
+    default n
+
+config ARCH_CPU_BIG_ENDIAN
+    bool
+
+config ARCH_ARM_BOOTWITH_FLUSH_CACHE
+    bool
+    default n
+
+config ARCH_CPU_STACK_GROWS_UPWARD
+    bool
+    default n
+
+config RT_USING_CPU_FFS
+    bool
+    default n
+
+config ARCH_MM_MMU
+    bool
+
+config ARCH_MM_MPU
+    bool
+
+config ARCH_ARM
+    bool
+
+config ARCH_ARM_CORTEX_M
+    bool
+    select ARCH_ARM
+
+config ARCH_ARM_CORTEX_FPU
+    bool
+
+config ARCH_ARM_CORTEX_SECURE
+    bool
+
+config ARCH_ARM_CORTEX_M0
+    bool
+    select ARCH_ARM_CORTEX_M
+
+config ARCH_ARM_CORTEX_M3
+    bool
+    select ARCH_ARM_CORTEX_M
+    select RT_USING_CPU_FFS
+    select RT_USING_HW_ATOMIC
+
+config ARCH_ARM_MPU
+    bool
+    depends on ARCH_ARM
+    select ARCH_MM_MPU
+
+config ARCH_ARM_CORTEX_M4
+    bool
+    select ARCH_ARM_CORTEX_M
+    select RT_USING_CPU_FFS
+    select RT_USING_HW_ATOMIC
+
+config ARCH_ARM_CORTEX_M7
+    bool
+    select ARCH_ARM_CORTEX_M
+    select RT_USING_CPU_FFS
+    select RT_USING_CACHE
+    select RT_USING_HW_ATOMIC
+
+config ARCH_ARM_CORTEX_M23
+    bool
+    select ARCH_ARM_CORTEX_M
+    select RT_USING_HW_ATOMIC
+
+config ARCH_ARM_CORTEX_M33
+    bool
+    select ARCH_ARM_CORTEX_M
+    select RT_USING_CPU_FFS
+    select RT_USING_HW_ATOMIC
+
+config ARCH_ARM_CORTEX_R
+    bool
+    select ARCH_ARM
+    select RT_USING_HW_ATOMIC
+
+config ARCH_ARM_MMU
+    bool
+    select RT_USING_CACHE
+    select ARCH_MM_MMU
+    depends on ARCH_ARM
+
+if RT_USING_SMART
+    config KERNEL_VADDR_START
+        hex "The virtural address of kernel start"
+        default 0xffff000000000000 if ARCH_ARMV8
+        default 0xc0000000 if ARCH_ARM
+        default 0x80000000 if ARCH_RISCV
+        depends on ARCH_MM_MMU
+
+    config RT_IOREMAP_LATE
+        bool "Support to create IO mapping in the kernel address space after system initlalization."
+        default n
+        depends on ARCH_ARM_CORTEX_A
+        depends on ARCH_MM_MMU
+endif
+
+config ARCH_ARM_ARM9
+    bool
+    select ARCH_ARM
+
+config ARCH_ARM_ARM11
+    bool
+    select ARCH_ARM
+
+config ARCH_ARM_CORTEX_A
+    bool
+    select ARCH_ARM
+    select ARCH_ARM_MMU
+    select RT_USING_CPU_FFS
+    select RT_USING_HW_ATOMIC
+
+    if ARCH_ARM_CORTEX_A
+        config RT_SMP_AUTO_BOOT
+            bool
+            default n
+
+        config RT_USING_GIC_V2
+            bool
+            default n
+
+        config RT_USING_GIC_V3
+            bool
+            default n
+
+        config RT_NO_USING_GIC
+            bool
+            default y if !RT_USING_GIC_V2 && !RT_USING_GIC_V3
+    endif
+
+config ARCH_ARM_CORTEX_A5
+    bool
+    select ARCH_ARM_CORTEX_A
+
+config ARCH_ARM_CORTEX_A7
+    bool
+    select ARCH_ARM_CORTEX_A
+
+config ARCH_ARM_CORTEX_A8
+    bool
+    select ARCH_ARM_CORTEX_A
+
+config ARCH_ARM_CORTEX_A9
+    bool
+    select ARCH_ARM_CORTEX_A
+
+config ARCH_ARM_CORTEX_A55
+    bool
+    select ARCH_ARM_CORTEX_A
+
+config ARCH_ARM_SECURE_MODE
+    bool "Running in secure mode [ARM Cortex-A]"
+    default n
+    depends on ARCH_ARM_CORTEX_A
+
+config RT_BACKTRACE_FUNCTION_NAME
+    bool "To show function name when backtrace."
+    default n
+    depends on ARCH_ARM_CORTEX_A
+
+config ARCH_ARMV8
+    bool
+    select ARCH_ARM
+    select ARCH_ARM_MMU
+
+config ARCH_MIPS
+    bool
+
+config ARCH_MIPS64
+    bool
+    select ARCH_CPU_64BIT
+
+config ARCH_MIPS_XBURST
+    bool
+    select ARCH_MIPS
+
+config ARCH_ANDES
+    bool
+
+config ARCH_CSKY
+    bool
+
+config ARCH_POWERPC
+    bool
+
+config ARCH_RISCV
+    bool
+
+config ARCH_RISCV_FPU
+    bool
+
+config ARCH_RISCV_FPU_S
+    select ARCH_RISCV_FPU
+    bool
+
+config ARCH_RISCV_FPU_D
+    select ARCH_RISCV_FPU
+    bool
+
+config ARCH_RISCV32
+    select ARCH_RISCV
+    bool
+
+config ARCH_RISCV64
+    select ARCH_RISCV
+    select ARCH_CPU_64BIT
+    bool
+
+config ARCH_IA32
+    bool
+
+config ARCH_TIDSP
+    bool
+
+config ARCH_TIDSP_C28X
+    bool
+    select ARCH_TIDSP
+    select ARCH_CPU_STACK_GROWS_UPWARD
+
+config ARCH_HOST_SIMULATOR
+    bool
+
+config ARCH_CPU_STACK_GROWS_UPWARD
+    bool
+    default n

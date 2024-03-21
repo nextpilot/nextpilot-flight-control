@@ -1,0 +1,24 @@
+# RT-Thread building script for bridge
+
+import os
+from building import *
+
+Import('rtconfig')
+
+cwd   = GetCurrentDir()
+group = []
+list  = os.listdir(cwd)
+bsp_path = Dir('#').abspath
+
+if not os.path.exists(bsp_path + "/link.lds"):
+    Env['LINKFLAGS'] = Env['LINKFLAGS'].replace('link.lds', cwd + "/link.lds")
+    Preprocessing("link.lds.S", ".lds", CPPPATH=[bsp_path])
+
+# add common code files
+group = group + SConscript(os.path.join('common', 'SConscript'))
+
+# cpu porting code files
+if rtconfig.CPU != 'common':
+    group = group + SConscript(os.path.join(rtconfig.CPU, 'SConscript'))
+
+Return('group')
