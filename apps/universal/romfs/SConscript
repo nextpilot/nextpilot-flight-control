@@ -1,0 +1,23 @@
+import os
+import sys
+from building import *
+
+
+objs = []
+
+if GetDepend(["SYS_USING_ROMFS"]):
+    cwd = GetCurrentDir()
+    # 生成romfs.c文件
+    mkromfs = os.path.abspath(os.path.join(cwd, r"../../../rtos/rt-thread/tools/mkromfs.py"))
+    rootpath = os.path.abspath(os.path.join(cwd, "root"))
+
+    pycmd = os.path.basename(sys.executable)
+
+    os.system("%s %s %s romfs.c" % (pycmd, mkromfs, rootpath))
+
+    src = ["romfs.c", "romfs_mnt.c"]
+    objs = DefineGroup("rtt/Filesystem", src, depend=[""])
+else:
+    pass
+
+Return("objs")

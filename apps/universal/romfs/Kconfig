@@ -1,0 +1,9 @@
+
+config SYS_USING_ROMFS
+    bool "romfs : enable chip flash file system"
+    select RT_USING_DFS_ROMFS
+    default n
+
+if SYS_USING_ROMFS
+
+endif
