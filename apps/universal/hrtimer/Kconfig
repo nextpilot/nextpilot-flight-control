@@ -1,0 +1,1 @@
+source "$PRJ_DIR/apps/libraries/common/hrtimer/new/Kconfig"

@@ -1,0 +1,7 @@
+import os
+import rtconfig
+from building import *
+
+objs = SConscript("new/SConscript")
+
+Return("objs")

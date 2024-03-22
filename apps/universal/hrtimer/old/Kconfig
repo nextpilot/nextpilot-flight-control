@@ -1,0 +1,10 @@
+config LIB_USING_HRTIMER
+    bool "hrtimer : high-resolution timer with callouts and timekeeping"
+    select LIB_USING_QUEUE
+    default n
+
+if LIB_USING_HRTIMER
+config HRT_USING_CALLOUT
+    bool "Callout function"
+    default n
+endif

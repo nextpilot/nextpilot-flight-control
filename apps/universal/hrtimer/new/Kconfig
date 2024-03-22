@@ -1,0 +1,15 @@
+config LIB_USING_HRTIMER
+    bool "LIB_USING_HRTIMER : high-resolution timer with callouts and timekeeping"
+    select LIB_USING_QUEUE
+    default n
+
+if LIB_USING_HRTIMER
+    config HRT_USING_HARD_SYSTICK
+        bool "using systick to get us"
+        default n
+
+    config HRT_USING_HARD_TIMER
+        bool "using hart timer to get us"
+        default n
+
+endif

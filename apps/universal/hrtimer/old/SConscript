@@ -1,0 +1,20 @@
+import os
+import rtconfig
+from building import *
+
+objs = []
+
+if GetDepend(["LIB_USING_HRTIMER"]):
+    cwd = GetCurrentDir()
+    src = Glob("*.c")
+    inc = [cwd]
+    objs += DefineGroup("lib/common", src, depend=[""], CPPPATH=inc)
+
+    for d in os.listdir(cwd):
+        path = os.path.join(cwd, d)
+        if os.path.isfile(os.path.join(path, "SConscript")):
+            objs += SConscript(os.path.join(d, "SConscript"))
+else:
+    objs = []
+
+Return("objs")
