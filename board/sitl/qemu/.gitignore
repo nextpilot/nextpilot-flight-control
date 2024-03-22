@@ -11,7 +11,6 @@
 *.ilk
 *.old
 build
-sd
 Debug
 documentation/html
 packages/
@@ -33,6 +32,7 @@ Midea-X1
 GPATH
 GRTAGS
 GTAGS
+.vscode
 JLinkLog.txt
 JLinkSettings.ini
 DebugConfig/

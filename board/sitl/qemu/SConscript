@@ -4,7 +4,8 @@ import os
 from building import *
 
 objs = []
-if GetDepend(["BSP_USING_QEMU"]):
+#if GetDepend(["BSP_USING_QEMU"]):
+if True:
     cwd = GetCurrentDir()
 
     for d in os.listdir(cwd):

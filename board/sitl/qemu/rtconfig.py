@@ -1,13 +1,12 @@
-# -*- coding: utf-8 -*-
-
 import os
 import uuid
-from scons_helper import *
 
 
 def get_mac_address():
     mac = uuid.UUID(int=uuid.getnode()).hex[-12:]
-    return "#define AUTOMAC".join([str(int(e / 2) + 1) + "  0x" + mac[e : e + 2] + "\n" for e in range(5, 11, 2)])
+    return "#define AUTOMAC".join(
+        [str(int(e / 2) + 1) + "  0x" + mac[e : e + 2] + "\n" for e in range(5, 11, 2)]
+    )
 
 
 header = """
@@ -30,20 +29,18 @@ automac_h_fn = os.path.join(os.path.dirname(__file__), "drivers", "automac.h")
 with open(automac_h_fn, "w") as f:
     f.write(header + get_mac_address() + end)
 
-
 # toolchains options
 ARCH = "arm"
 CPU = "cortex-a"
+CROSS_TOOL = "gcc"
+PLATFORM = "gcc"
+EXEC_PATH = os.getenv("RTT_EXEC_PATH") or r"/usr/bin"
+BUILD = "debug"
 
-OPTIONS, CROSS_TOOL, EXEC_PATH, PLATFORM = get_build_option()
-
-# 强制覆盖了
-OPTIONS["LINKER_FILE"] = "link.lds"
-
+LINK_SCRIPT = "link.lds"
 
 if PLATFORM == "gcc":
-    # toolchains
-    PREFIX = "arm-none-eabi-"
+    PREFIX = os.getenv("RTT_CC_PREFIX") or "arm-none-eabi-"
     CC = PREFIX + "gcc"
     CXX = PREFIX + "g++"
     AS = PREFIX + "gcc"
@@ -54,47 +51,59 @@ if PLATFORM == "gcc":
     OBJDUMP = PREFIX + "objdump"
     OBJCPY = PREFIX + "objcopy"
     STRIP = PREFIX + "strip"
+    CFPFLAGS = " -msoft-float"
+    AFPFLAGS = " -mfloat-abi=softfp -mfpu=neon"
+    DEVICE = " -march=armv7-a -mtune=cortex-a7 -ftree-vectorize -ffast-math -funwind-tables -fno-strict-aliasing"
 
-    DEVICE = " -march=armv7-a -marm -msoft-float"
+    CXXFLAGS = DEVICE + CFPFLAGS + " -Wall -fdiagnostics-color=always"
     CFLAGS = (
         DEVICE
-        + " -Wall -Wno-address-of-packed-member -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-const-variable"
+        + CFPFLAGS
+        + " -Wall -Wno-cpp -std=gnu99 -D_POSIX_SOURCE -fdiagnostics-color=always"
     )
-    AFLAGS = " -c" + DEVICE + " -x assembler-with-cpp -D__ASSEMBLY__ -I."
-    LINK_SCRIPT = "link.lds"
-    LFLAGS = DEVICE + " -nostartfiles -Wl,--gc-sections,-Map={MAP_FILE},-cref,-u,system_vectors -T {LINKER_FILE}".format(
-        **OPTIONS
+    AFLAGS = DEVICE + " -c" + AFPFLAGS + " -x assembler-with-cpp"
+    LFLAGS = (
+        DEVICE
+        + " -Wl,--gc-sections,-Map=build/sitl-qemu.map,-cref,-u,system_vectors -T "
+        + LINK_SCRIPT
+        + " -lsupc++ -lgcc -static"
     )
-
     CPATH = ""
     LPATH = ""
 
-    # generate debug info in all cases
-    AFLAGS += " -gdwarf-2"
-    CFLAGS += " -g -gdwarf-2"
-
-    if OPTIONS["BUILD_TYPE"] == "debug":
-        CFLAGS += " -O0"
+    if BUILD == "debug":
+        CFLAGS += " -O0 -gdwarf-2"
+        CXXFLAGS += " -O0 -gdwarf-2"
+        AFLAGS += " -gdwarf-2"
     else:
-        CFLAGS += " -O0"
-
-    CXXFLAGS = CFLAGS + " -Woverloaded-virtual -fno-exceptions -fno-rtti"
-
-    CFLAGS += CFLAGS + " -Werror-implicit-function-declaration"
+        CFLAGS += " -Os"
+        CXXFLAGS += " -Os"
+    CXXFLAGS += " -Woverloaded-virtual -fno-rtti"
 
     M_CFLAGS = CFLAGS + " -mlong-calls -fPIC "
     M_CXXFLAGS = CXXFLAGS + " -mlong-calls -fPIC"
     M_LFLAGS = (
-        DEVICE + CXXFLAGS + " -Wl,--gc-sections,-z,max-page-size=0x4" + " -shared -fPIC -nostartfiles -nostdlib -static-libgcc"
+        DEVICE
+        + CXXFLAGS
+        + " -Wl,--gc-sections,-z,max-page-size=0x4"
+        + " -shared -fPIC -nostartfiles -nostdlib -static-libgcc"
     )
     M_POST_ACTION = STRIP + " -R .hash $TARGET\n" + SIZE + " $TARGET \n"
 
-    POST_ACTION = OBJCPY + " -O binary $TARGET {BIN_FILE}\n".format(**OPTIONS) + SIZE + " $TARGET \n"
+    DUMP_ACTION = OBJDUMP + " -D -S $TARGET > rtt.asm\n"
+    POST_ACTION = (
+        OBJCPY + " -O binary $TARGET build/sitl-qemu.bin\n" + SIZE + " $TARGET \n"
+    )
 else:
-    pass
+    print("ERROR: only support gcc toolchain!!!")
+    exit(-1)
+
+    # TARGET = "rtthread." + TARGET_EXT
 
 
 def get_build_env():
+    from building import GetDepend, DefaultEnvironment, Environment
+
     DefaultEnvironment(tools=[])
     env = Environment(
         tools=["mingw"],
@@ -111,4 +120,9 @@ def get_build_env():
     )
     env.PrependENVPath("PATH", EXEC_PATH)
     env["ASCOM"] = env["ASPPCOM"]
+
+    if GetDepend("RT_USING_SMART"):
+        # use smart link.lds
+        env["LINKFLAGS"] = env["LINKFLAGS"].replace("link.lds", "link_smart.lds")
+
     return env

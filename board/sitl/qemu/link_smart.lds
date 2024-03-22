@@ -2,7 +2,8 @@ OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
 SECTIONS
 {
-    . = 0x60010000;
+    /*. = 0x60010000; */
+    . = 0xc0010000;
 
     __text_start = .;
     .text :
@@ -10,24 +11,6 @@ SECTIONS
         *(.vectors)
         *(.text)
         *(.text.*)
-
-        /*section information for parameter*/
-        . = ALIGN(4);
-        __nextpilot_param_tab_start = .;
-        KEEP(*(NextpilotParamTab))
-        __nextpilot_param_tab_end = .;
-
-        /*section information for airframe*/
-        . = ALIGN(4);
-        __nextpilot_airframe_tab_start = .;
-        KEEP(*(NextpilotAirframeTab))
-        __nextpilot_airframe_tab_end = .;
-
-        /*section information for task*/
-        . = ALIGN(4);
-        __nextpilot_task_tab_start = .;
-        KEEP(*(NextpilotTaskTab))
-        __nextpilot_task_tab_end = .;
 
         /* section information for utest */
         . = ALIGN(4);
@@ -67,9 +50,9 @@ SECTIONS
 
     .ARM.exidx   :
     {
-    __exidx_start = .;
+        __exidx_start = .;
         *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-    __exidx_end = .;
+        __exidx_end = .;
     }
 
     __rodata_start = .;

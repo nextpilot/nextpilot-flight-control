@@ -98,13 +98,13 @@ def add_scons_option():
     )
 
     # 编译器的路径
-    AddOption(
-        "--exec-path",
-        dest="exec-path",
-        nargs=1,
-        default=None,
-        help="cross tool path",
-    )
+    # AddOption(
+    #     "--exec-path",
+    #     dest="exec-path",
+    #     nargs=1,
+    #     default=None,
+    #     help="cross tool path",
+    # )
 
     __scons_inited__ = True
 
@@ -132,7 +132,11 @@ def get_project_option():
         PKG_ROOT = os.path.normpath(PRJ_ROOT + "apps/package")
         RTT_ROOT = os.path.normpath(PRJ_ROOT + "/rtos/rt-thread")
         SDK_ROOT = os.path.normpath(PRJ_ROOT + "/rtos/platform")
-        BSP_NAME = os.path.relpath(BSP_ROOT, os.path.join(PRJ_ROOT, "target")).replace("\\", "-").replace("/", "-")
+        BSP_NAME = (
+            os.path.relpath(BSP_ROOT, os.path.join(PRJ_ROOT, "board"))
+            .replace("\\", "-")
+            .replace("/", "-")
+        )
 
     # 获取ENV路径
     if os.getenv("ENV_ROOT"):
@@ -182,7 +186,9 @@ def gen_rtconfig_header(target="default"):
 
     # 判断配置文件是否存在
     if not os.path.isfile(file):
-        if target == "default":  # 如果default目标，但是配置文件不存在，则使用当前rtconfig.h
+        if (
+            target == "default"
+        ):  # 如果default目标，但是配置文件不存在，则使用当前rtconfig.h
             return
         else:  # 非default目标，且配置文件不存在，则报错
             print("ERROR: %s not found!!!" % file)
@@ -276,9 +282,10 @@ def get_command_option():
             exit(-1)
 
         # 根据命令行和环境变量，覆盖工具链路径
-        if GetOption("exec-path"):
-            EXEC_PATH = GetOption("exec-path")
-        elif os.getenv("RTT_EXEC_PATH"):
+        # if GetOption("exec-path"):
+        #     EXEC_PATH = GetOption("exec-path")
+        # elif
+        if os.getenv("RTT_EXEC_PATH"):
             EXEC_PATH = os.getenv("RTT_EXEC_PATH")
         else:
             EXEC_PATH = "UNKNOWN"
@@ -313,8 +320,12 @@ def get_build_option(target=None):
         else:
             __options__["BOARD_NAME"] = __options__["BSP_NAME"] + "-default"
 
+    print(__options__["BSP_NAME"])
+
     # 根据target名字确定生成文件名称
-    __options__["TARGET_FILE"] = "build/" + __options__["BOARD_NAME"] + __options__["TARGET_EXT"]
+    __options__["TARGET_FILE"] = (
+        "build/" + __options__["BOARD_NAME"] + __options__["TARGET_EXT"]
+    )
     __options__["BIN_FILE"] = "build/" + __options__["BOARD_NAME"] + ".bin"
     __options__["HEX_FILE"] = "build/" + __options__["BOARD_NAME"] + ".hex"
     __options__["MAP_FILE"] = "build/" + __options__["BOARD_NAME"] + ".map"
@@ -512,7 +523,9 @@ def start_jlink_upload():
     import rtconfig
 
     stm32_programmer_cli = "C:/RT-ThreadStudio/repo/Extract/Debugger_Support_Packages/STMicroelectronics/ST-LINK_Debugger/1.6.0/tools/bin/STM32_Programmer_CLI"
-    st_link_cmd = " -c port=SWD  mode=NORMAL -d {0} 0x08000000 -s".format(rtconfig.BIN_FILE)
+    st_link_cmd = " -c port=SWD  mode=NORMAL -d {0} 0x08000000 -s".format(
+        rtconfig.BIN_FILE
+    )
     os.system(stm32_programmer_cli + st_link_cmd)
 
 
@@ -573,7 +586,7 @@ def init():
     add_scons_option()
 
     # 添加工程目录
-    # get_project_option()
+    get_build_option()
 
 
 def auto_build():
@@ -619,11 +632,13 @@ def build(target="default"):
         pass
 
     # include libraries
-    objs += SConscript(os.path.join(__options__["SDK_ROOT"], "SConscript"))
+    if os.path.exists(os.path.join(__options__["SDK_ROOT"], "SConscript")):
+        objs += SConscript(os.path.join(__options__["SDK_ROOT"], "SConscript"))
 
     # include application
     # building.AddDepend()
-    objs += SConscript(os.path.join(__options__["PRJ_ROOT"], "SConscript"))
+    if os.path.exists(os.path.join(__options__["PRJ_ROOT"], "SConscript")):
+        objs += SConscript(os.path.join(__options__["PRJ_ROOT"], "SConscript"))
 
     # make a building
     building.DoBuilding(__options__["TARGET_FILE"], objs)

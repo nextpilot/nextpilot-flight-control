@@ -1,19 +1,20 @@
-/******************************************************************
- *      _   __             __   ____   _  __        __
- *     / | / /___   _  __ / /_ / __ \ (_)/ /____   / /_
- *    /  |/ // _ \ | |/_// __// /_/ // // // __ \ / __/
- *   / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
- *  /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
+/*
+ * Copyright (c) 2006-2020, RT-Thread Development Team
  *
- * Copyright All Reserved © 2015-2023 NextPilot Development Team
- ******************************************************************/
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Change Logs:
+ * Date           Author       Notes
+ * 2020/12/31     Bernard      Add license info
+ */
 
 #include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include <rtthread.h>
 
-int main(void) {
-    // printf("Hello RT-Thread!\n");
+int main(void)
+{
+    rt_kprintf("Hello RT-Thread!\n");
 
     return 0;
 }
