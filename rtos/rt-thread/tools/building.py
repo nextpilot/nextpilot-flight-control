@@ -128,6 +128,13 @@ def PrepareBuilding(env, root_directory, has_libcpu=False, remove_components = [
     global Env
     global Rtt_Root
 
+    os.environ["RTT_DIR"] = root_directory
+    os.environ["BSP_DIR"] = os.getcwd()
+    if not "PKGS_DIR" in os.environ:
+        if "ENV_ROOT" in os.environ:
+            os.environ["PKGS_DIR"] = os.path.join(os.environ["ENV_ROOT"], "packages")
+        else:
+            os.environ["PKGS_DIR"] = os.path.join(os.getcwd(), "packages")
     AddOptions()
 
     Env = env
@@ -302,7 +309,7 @@ def PrepareBuilding(env, root_directory, has_libcpu=False, remove_components = [
             print('add_rtconfig arguements are illegal!')
 
     if GetOption('genconfig'):
-        from genconf import genconfig
+        from genconfig import genconfig
         genconfig()
         exit(0)
 
@@ -310,11 +317,11 @@ def PrepareBuilding(env, root_directory, has_libcpu=False, remove_components = [
         from WCS import ThreadStackStaticAnalysis
         ThreadStackStaticAnalysis(Env)
         exit(0)
-    if platform.system() != 'Windows':
-        if GetOption('menuconfig'):
-            from menuconfig import menuconfig
-            menuconfig(Rtt_Root)
-            exit(0)
+
+    if GetOption('menuconfig'):
+        from menuconfig import menuconfig
+        menuconfig(Rtt_Root)
+        exit(0)
 
     if GetOption('pyconfig_silent'):
         from menuconfig import guiconfig_silent
@@ -1047,4 +1054,3 @@ def PackageSConscript(package):
     from package import BuildPackage
 
     return BuildPackage(package)
-

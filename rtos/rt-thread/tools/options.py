@@ -112,23 +112,22 @@ def AddOptions():
                 action = 'store_true',
                 default = False,
                 help = 'print verbose information during build')
-    AddOption('--pyconfig',
+    AddOption('--pyconfig', '--guiconfig',
                 dest = 'pyconfig',
                 action = 'store_true',
                 default = False,
                 help = 'Python GUI menuconfig for RT-Thread BSP')
-    AddOption('--pyconfig-silent',
+    AddOption('--pyconfig-silent', '--defconfig',
                 dest = 'pyconfig_silent',
                 action = 'store_true',
                 default = False,
                 help = 'Don`t show pyconfig window')
     AddOption('--add-rtconfig',
-                dest = 'add_rtconfig',
-                type = 'string',
-                help = 'Add macro definitions and scons depend at build time. It is similar to adding macro definitions in rtconfig.h')
-    if platform.system() != 'Windows':
-        AddOption('--menuconfig',
-                    dest = 'menuconfig',
-                    action = 'store_true',
-                    default = False,
-                    help = 'make menuconfig for RT-Thread BSP')
+            dest = 'add_rtconfig',
+            type = 'string',
+            help = 'Add macro definitions and scons depend at build time. It is similar to adding macro definitions in rtconfig.h')
+    AddOption('--menuconfig',
+                dest = 'menuconfig',
+                action = 'store_true',
+                default = False,
+                help = 'make menuconfig for RT-Thread BSP')

@@ -4,5 +4,34 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"editor.formatOnPaste": true,
+		"editor.formatOnSave": true,
+		"editor.formatOnType": true,
+		"files.autoGuessEncoding": true,
+		"files.insertFinalNewline": true,
+		"files.trimFinalNewlines": true,
+		"files.trimTrailingWhitespace": true,
+		// c/c++
+		"C_Cpp.clang_format_fallbackStyle": "LLVM",
+		"C_Cpp.formatting": "clangFormat",
+		"C_Cpp.autocompleteAddParentheses": true,
+		"C_Cpp.default.cppStandard": "c++14",
+		"C_Cpp.default.cStandard": "c11",
+		// git
+		"git.rebaseWhenSync": true,
+		"git.autofetch": "all",
+		"git.pruneOnFetch": true,
+		"git.pullBeforeCheckout": true,
+		// python
+		"python.analysis.autoFormatStrings": true,
+		"python.analysis.autoImportCompletions": true,
+		"[python]": {
+			"editor.defaultFormatter": "ms-python.black-formatter"
+		},
+		"black-formatter.args": [
+			"--line-length=128",
+			"--extend-exclude=*/rt-thread/*.py"
+		]
+	}
 }
