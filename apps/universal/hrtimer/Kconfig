@@ -1,1 +1,24 @@
-rsource "new/Kconfig"
+menuconfig SYS_USING_HRTIMER
+    bool "hrtimer: high-resolution timer with callouts and timekeeping"
+    default n
+
+if SYS_USING_HRTIMER
+    choice
+        prompt "Select Hrtimer Version"
+        default SYS_USING_HRTIMER_V1
+
+        config SYS_USING_HRTIMER_V1
+            bool "SYS_USING_HRTIMER_V1"
+
+        config SYS_USING_HRTIMER_V2
+            bool "SYS_USING_HRTIMER_V2"
+    endchoice
+
+    if SYS_USING_HRTIMER_V1
+        rsource "V1/Kconfig"
+    endif
+
+    if SYS_USING_HRTIMER_V2
+        rsource "V2/Kconfig"
+    endif
+endif

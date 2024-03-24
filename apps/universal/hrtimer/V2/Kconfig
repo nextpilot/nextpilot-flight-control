@@ -1,9 +1,5 @@
-menuconfig SYS_USING_HRTIMER
-    bool "hrtimer: high-resolution timer with callouts and timekeeping"
-    select LIB_USING_QUEUE
-    default n
 
-if SYS_USING_HRTIMER
+if SYS_USING_HRTIMER_V2
     choice
         default HRT_USING_HARD_SYSTICK
         prompt "Select hrtimer source"

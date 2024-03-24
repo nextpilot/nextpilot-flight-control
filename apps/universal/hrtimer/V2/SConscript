@@ -4,7 +4,7 @@ from building import *
 
 objs = []
 
-if GetDepend(["SYS_USING_HRTIMER"]):
+if GetDepend(["SYS_USING_HRTIMER_V2"]):
     cwd = GetCurrentDir()
     src = ["hrtimer.c"]
 

@@ -1,0 +1,6 @@
+
+if SYS_USING_HRTIMER_V1
+    config HRT_USING_CALLOUT
+        bool "Using callout function"
+        default n
+endif
