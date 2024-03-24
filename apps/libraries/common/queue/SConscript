@@ -1,0 +1,13 @@
+import os
+import rtconfig
+from building import *
+
+cwd = GetCurrentDir()
+
+# 添加当前文件夹下的代码
+src = Glob("*.c") + Glob("*.cpp")
+inc = [cwd]
+
+objs = DefineGroup("lib/queue", src, depend=["LIB_USING_QUEUE"], CPPPATH=inc)
+
+Return("objs")

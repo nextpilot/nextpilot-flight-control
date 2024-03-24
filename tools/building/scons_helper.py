@@ -320,8 +320,6 @@ def get_build_option(target=None):
         else:
             __options__["BOARD_NAME"] = __options__["BSP_NAME"] + "-default"
 
-    print(__options__["BSP_NAME"])
-
     # 根据target名字确定生成文件名称
     __options__["TARGET_FILE"] = "build/" + __options__["BOARD_NAME"] + __options__["TARGET_EXT"]
     __options__["BIN_FILE"] = "build/" + __options__["BOARD_NAME"] + ".bin"
@@ -429,7 +427,6 @@ def deploy_bsp_project():
     for item in copy_list:
         src = os.path.join(__options__["PRJ_ROOT"], item)
         dst = os.path.join(dist_root, item)
-        print(dst)
         if os.path.isdir(src):
             do_copy_folder(src, dst)
         else:

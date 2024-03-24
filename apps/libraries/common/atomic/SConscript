@@ -4,16 +4,9 @@ from building import *
 
 objs = []
 
-if GetDepend(["SYS_USING_HRTIMER"]):
+if GetDepend([""]):
     cwd = GetCurrentDir()
-    src = ["hrtimer.c"]
-
-    if GetDepend(["HRT_USING_HARD_SYSTICK"]):
-        src += ["hrt_hard_systick.c"]
-
-    if GetDepend(["HRT_USING_HARD_TIMER"]):
-        src += ["hrt_hard_timer.c"]
-
+    src = Glob("*.c")
     inc = [cwd]
     objs += DefineGroup("lib/common", src, depend=[""], CPPPATH=inc)
 

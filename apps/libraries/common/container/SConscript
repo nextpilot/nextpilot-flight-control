@@ -2,24 +2,22 @@ import os
 import rtconfig
 from building import *
 
+
 objs = []
 
-if GetDepend(["SYS_USING_HRTIMER"]):
+if GetDepend(["LIB_USING_CONTAINER"]):
     cwd = GetCurrentDir()
-    src = ["hrtimer.c"]
 
-    if GetDepend(["HRT_USING_HARD_SYSTICK"]):
-        src += ["hrt_hard_systick.c"]
-
-    if GetDepend(["HRT_USING_HARD_TIMER"]):
-        src += ["hrt_hard_timer.c"]
-
+    # 添加当前文件夹下的代码
+    src = Glob("*.c") + Glob("*.cpp")
     inc = [cwd]
-    objs += DefineGroup("lib/common", src, depend=[""], CPPPATH=inc)
+
+    objs += DefineGroup("lib/common/container", src, depend=[""], CPPPATH=inc)
 
     for d in os.listdir(cwd):
         path = os.path.join(cwd, d)
         if os.path.isfile(os.path.join(path, "SConscript")):
+            # print(os.path.join(d, 'SConscript'))
             objs += SConscript(os.path.join(d, "SConscript"))
 else:
     objs = []

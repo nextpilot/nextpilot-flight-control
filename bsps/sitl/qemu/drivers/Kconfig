@@ -1,5 +1,9 @@
 menu "Nextpilot Hardware Config"
 
+config BSP_USING_QEMU
+    bool
+    default y
+
 config SOC_VEXPRESS_A9
     bool
     select ARCH_ARM_CORTEX_A9

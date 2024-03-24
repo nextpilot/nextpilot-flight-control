@@ -1,0 +1,3 @@
+config LIB_USING_LIBCRC
+    bool "crclib : cyclic redundancy check lib"
+    default n
