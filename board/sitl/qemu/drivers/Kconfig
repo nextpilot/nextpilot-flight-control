@@ -1,4 +1,4 @@
-menu "Hardware Drivers Config"
+menu "Nextpilot Hardware Config"
 
 config SOC_VEXPRESS_A9
     bool

@@ -1,0 +1,3 @@
+menu "Nextpilot Controller Config"
+orsource "*/Kconfig"
+endmenu

@@ -132,11 +132,7 @@ def get_project_option():
         PKG_ROOT = os.path.normpath(PRJ_ROOT + "apps/package")
         RTT_ROOT = os.path.normpath(PRJ_ROOT + "/rtos/rt-thread")
         SDK_ROOT = os.path.normpath(PRJ_ROOT + "/rtos/platform")
-        BSP_NAME = (
-            os.path.relpath(BSP_ROOT, os.path.join(PRJ_ROOT, "board"))
-            .replace("\\", "-")
-            .replace("/", "-")
-        )
+        BSP_NAME = os.path.relpath(BSP_ROOT, os.path.join(PRJ_ROOT, "board")).replace("\\", "-").replace("/", "-")
 
     # 获取ENV路径
     if os.getenv("ENV_ROOT"):
@@ -161,7 +157,7 @@ def get_project_option():
     __options__["BSP_ROOT"] = BSP_ROOT
     __options__["RTT_ROOT"] = RTT_ROOT
     __options__["SDK_ROOT"] = SDK_ROOT
-    __options__["PKG_ROOT"] = PKG_ROOT
+    # __options__["PKG_ROOT"] = PKG_ROOT
     __options__["BSP_NAME"] = BSP_NAME
     __options__["RTT_ENV_ROOT"] = RTT_ENV_ROOT
     __options__["RTT_STD_ROOT"] = RTT_STD_ROOT
@@ -171,6 +167,11 @@ def get_project_option():
         os.path.join(RTT_ROOT, "tools"),
         os.path.join(PRJ_ROOT, "tools/scripts"),
     ]
+
+    os.environ["RTT_DIR"] = RTT_ROOT
+    os.environ["PRJ_DIR"] = PRJ_ROOT
+    os.environ["SDK_DIR"] = SDK_ROOT
+    os.environ["BSP_DIR"] = BSP_ROOT
 
     return __options__
 
@@ -186,9 +187,7 @@ def gen_rtconfig_header(target="default"):
 
     # 判断配置文件是否存在
     if not os.path.isfile(file):
-        if (
-            target == "default"
-        ):  # 如果default目标，但是配置文件不存在，则使用当前rtconfig.h
+        if target == "default":  # 如果default目标，但是配置文件不存在，则使用当前rtconfig.h
             return
         else:  # 非default目标，且配置文件不存在，则报错
             print("ERROR: %s not found!!!" % file)
@@ -246,6 +245,7 @@ def get_command_option():
         TARGET_EXT = ".elf"
         PLATFORM = "gcc"
     else:
+
         # 编译方式
         if GetOption("build-type"):
             BUILD_TYPE = GetOption("build-type")
@@ -323,9 +323,7 @@ def get_build_option(target=None):
     print(__options__["BSP_NAME"])
 
     # 根据target名字确定生成文件名称
-    __options__["TARGET_FILE"] = (
-        "build/" + __options__["BOARD_NAME"] + __options__["TARGET_EXT"]
-    )
+    __options__["TARGET_FILE"] = "build/" + __options__["BOARD_NAME"] + __options__["TARGET_EXT"]
     __options__["BIN_FILE"] = "build/" + __options__["BOARD_NAME"] + ".bin"
     __options__["HEX_FILE"] = "build/" + __options__["BOARD_NAME"] + ".hex"
     __options__["MAP_FILE"] = "build/" + __options__["BOARD_NAME"] + ".map"
@@ -523,9 +521,7 @@ def start_jlink_upload():
     import rtconfig
 
     stm32_programmer_cli = "C:/RT-ThreadStudio/repo/Extract/Debugger_Support_Packages/STMicroelectronics/ST-LINK_Debugger/1.6.0/tools/bin/STM32_Programmer_CLI"
-    st_link_cmd = " -c port=SWD  mode=NORMAL -d {0} 0x08000000 -s".format(
-        rtconfig.BIN_FILE
-    )
+    st_link_cmd = " -c port=SWD  mode=NORMAL -d {0} 0x08000000 -s".format(rtconfig.BIN_FILE)
     os.system(stm32_programmer_cli + st_link_cmd)
 
 
