@@ -23,15 +23,34 @@
 		"git.autofetch": "all",
 		"git.pruneOnFetch": true,
 		"git.pullBeforeCheckout": true,
+		// toml
+		"evenBetterToml.formatter.trailingNewline": true,
+		"evenBetterToml.formatter.alignComments": true,
+		"evenBetterToml.formatter.alignEntries": true,
+		"evenBetterToml.formatter.allowedBlankLines": 3,
+		"evenBetterToml.formatter.inlineTableExpand": true,
+		"evenBetterToml.formatter.arrayAutoCollapse": true,
+		"evenBetterToml.formatter.compactInlineTables": true,
+		"evenBetterToml.formatter.indentTables": true,
+		"evenBetterToml.formatter.arrayTrailingComma": true,
+		"evenBetterToml.formatter.columnWidth": 128,
+		"evenBetterToml.formatter.compactArrays": true,
+		"evenBetterToml.syntax.semanticTokens": false,
+		"evenBetterToml.taplo.configFile.enabled": false,
+		"evenBetterToml.taplo.bundled": true,
+		"evenBetterToml.formatter.arrayAutoExpand": true,
+		"evenBetterToml.formatter.indentEntries": true,
 		// python
-		"python.analysis.autoFormatStrings": true,
+		"python.analysis.autoFormatStrings": false,
 		"python.analysis.autoImportCompletions": true,
+		"python.terminal.executeInFileDir": true,
+		"python.analysis.completeFunctionParens": true,
 		"[python]": {
 			"editor.defaultFormatter": "ms-python.black-formatter"
 		},
 		"black-formatter.args": [
 			"--line-length=128",
-			"--extend-exclude=*/rt-thread/*.py"
+			"--extend-exclude=rtos/rt-thread/*.py"
 		]
 	}
 }

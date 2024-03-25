@@ -1,0 +1,27 @@
+
+[info]
+name = "vtol_sih"
+id = 1102
+
+[[parameters]]
+name = "RC_INPUT"
+value = 12
+depend = ["a", "b"]
+
+[[outputs]]
+name = "left top"
+type = "rotor"
+channel = 1
+position = [1, 2, 3]
+axis = [1, 2, 3]
+direction = "clockwise" # colockwise
+ct = 0.1
+cm = 0.2
+
+[[outputs]]
+name = "throttle"
+type = "simple"
+# output_scale = k-, k+, offset, min, max
+output_scale = [1, 1, 0, -1, 1]
+# control_scale = group, index, k-, k+, offset, min, max
+control_scale = [[1, 0, 0.75, 0.75, 0, -1, 1], [1, 0, 0.75, 0.75, 0, -1, 1]]
