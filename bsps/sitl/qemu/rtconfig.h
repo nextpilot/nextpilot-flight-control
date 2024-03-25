@@ -397,6 +397,14 @@
 
 /* Nextpilot Estimator Config */
 
+/* Nextpilot Libraries Config */
+
+/* common packages */
+
+#define LIB_USING_LIBCRC
+/* end of common packages */
+/* end of Nextpilot Libraries Config */
+
 /* Nextpilot Peripheral Config */
 
 /* Nextpilot Simulation Config */
@@ -405,8 +413,12 @@
 
 /* Nextpilot Universal Config */
 
-#define SYS_USING_HRTIMER
+#define SYS_USING_HRTIMER_V2
 #define HRT_USING_HARD_SYSTICK
+#define SYS_USING_PARAM
+#define PARAM_USING_GLOBAL_AUTOGEN
+#define PARAM_USING_STORAGE_FILE
+#define PARAM_DEFAULT_FILE_PATH "/param.bin"
 /* end of Nextpilot Universal Config */
 /* end of Nextpilot Firmware Config */
 

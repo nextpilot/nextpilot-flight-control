@@ -4,9 +4,7 @@ import uuid
 
 def get_mac_address():
     mac = uuid.UUID(int=uuid.getnode()).hex[-12:]
-    return "#define AUTOMAC".join(
-        [str(int(e / 2) + 1) + "  0x" + mac[e : e + 2] + "\n" for e in range(5, 11, 2)]
-    )
+    return "#define AUTOMAC".join([str(int(e / 2) + 1) + "  0x" + mac[e : e + 2] + "\n" for e in range(5, 11, 2)])
 
 
 header = """
@@ -56,11 +54,7 @@ if PLATFORM == "gcc":
     DEVICE = " -march=armv7-a -mtune=cortex-a7 -ftree-vectorize -ffast-math -funwind-tables -fno-strict-aliasing"
 
     CXXFLAGS = DEVICE + CFPFLAGS + " -Wall -fdiagnostics-color=always"
-    CFLAGS = (
-        DEVICE
-        + CFPFLAGS
-        + " -Wall -Wno-cpp -std=gnu99 -D_POSIX_SOURCE -fdiagnostics-color=always"
-    )
+    CFLAGS = DEVICE + CFPFLAGS + " -Wall -Wno-cpp -std=gnu99 -D_POSIX_SOURCE -fdiagnostics-color=always"
     AFLAGS = DEVICE + " -c" + AFPFLAGS + " -x assembler-with-cpp"
     LFLAGS = (
         DEVICE
@@ -83,17 +77,12 @@ if PLATFORM == "gcc":
     M_CFLAGS = CFLAGS + " -mlong-calls -fPIC "
     M_CXXFLAGS = CXXFLAGS + " -mlong-calls -fPIC"
     M_LFLAGS = (
-        DEVICE
-        + CXXFLAGS
-        + " -Wl,--gc-sections,-z,max-page-size=0x4"
-        + " -shared -fPIC -nostartfiles -nostdlib -static-libgcc"
+        DEVICE + CXXFLAGS + " -Wl,--gc-sections,-z,max-page-size=0x4" + " -shared -fPIC -nostartfiles -nostdlib -static-libgcc"
     )
     M_POST_ACTION = STRIP + " -R .hash $TARGET\n" + SIZE + " $TARGET \n"
 
     DUMP_ACTION = OBJDUMP + " -D -S $TARGET > rtt.asm\n"
-    POST_ACTION = (
-        OBJCPY + " -O binary $TARGET build/sitl-qemu.bin\n" + SIZE + " $TARGET \n"
-    )
+    POST_ACTION = OBJCPY + " -O binary $TARGET build/sitl-qemu-default.bin\n" + SIZE + " $TARGET \n"
 else:
     print("ERROR: only support gcc toolchain!!!")
     exit(-1)

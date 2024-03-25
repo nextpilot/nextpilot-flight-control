@@ -147,7 +147,7 @@ def param_generate_hpp(params, dest=os.getcwd()):
 
     for template_file in template_files:
         template = env.get_template(template_file)
-        with open(os.path.join(dest, template_file.replace(".h.jinja", "_autogen.hpp")), "w") as f:
+        with open(os.path.join(dest, template_file.replace(".h.jinja", "_autogen.h")), "w") as f:
             f.write(template.render(params=params))
 
 

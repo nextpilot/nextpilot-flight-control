@@ -73,6 +73,16 @@
 		"black-formatter.args": [
 			"--line-length=128",
 			"--extend-exclude=rtos/rt-thread/*.py"
-		]
+		],
+		"files.associations": {
+			"chrono": "cpp",
+			"functional": "cpp",
+			"optional": "cpp",
+			"system_error": "cpp",
+			"type_traits": "cpp",
+			"xlocnum": "cpp",
+			"xtr1common": "cpp",
+			"xlocale": "cpp"
+		}
 	}
 }

@@ -1,0 +1,36 @@
+import os
+import rtconfig
+from building import *
+
+objs = []
+
+if GetDepend(["SYS_USING_PARAM"]):
+    cwd = GetCurrentDir()
+    src = ["param.cpp", "param_common.cpp"]
+
+    if GetDepend(["PARAM_USING_GLOBAL_AUTOGEN"]):
+        src += ["param_global_autogen.cpp"]
+
+    if GetDepend(["PARAM_USING_LINKER_SECTION"]):
+        src += ["param_linker_section.cpp"]
+
+    if GetDepend(["PARAM_USING_SIMULINK_CAPI"]):
+        src += ["param_simulink_capi.cpp"]
+
+    if GetDepend(["PARAM_USING_STORAGE_FILE"]):
+        src += ["param_storage_file.cpp"]
+
+    if GetDepend(["PARAM_USING_STORAGE_FM25V02"]):
+        src += ["param_storage_fm25v02.cpp"]
+
+    inc = [cwd]
+    objs += DefineGroup("sys/param", src, depend=[""], CPPPATH=inc)
+
+    for d in os.listdir(cwd):
+        path = os.path.join(cwd, d)
+        if os.path.isfile(os.path.join(path, "SConscript")):
+            objs += SConscript(os.path.join(d, "SConscript"))
+else:
+    objs = []
+
+Return("objs")

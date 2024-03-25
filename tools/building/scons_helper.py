@@ -132,7 +132,7 @@ def get_project_option():
         PKG_ROOT = os.path.normpath(PRJ_ROOT + "apps/package")
         RTT_ROOT = os.path.normpath(PRJ_ROOT + "/rtos/rt-thread")
         SDK_ROOT = os.path.normpath(PRJ_ROOT + "/rtos/platform")
-        BSP_NAME = os.path.relpath(BSP_ROOT, os.path.join(PRJ_ROOT, "board")).replace("\\", "-").replace("/", "-")
+        BSP_NAME = os.path.relpath(BSP_ROOT, os.path.join(BSP_ROOT, r"../../")).replace("\\", "-").replace("/", "-")
 
     # 获取ENV路径
     if os.getenv("ENV_ROOT"):
