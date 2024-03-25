@@ -20,8 +20,8 @@ name = "demo1"
 
 [[parameters]]
 name = "MAV_${i}_MODE"
-default = [0, 2, 0]
-instance = 3
+default = [0, 2]
+instance = 5
 reboot_required = true
 disarm_required = true
 type = "int32"
@@ -41,16 +41,16 @@ values = """
 """
 
 [[parameters]]
-name = "BB"
-type = "float"
+name    = "BB"
+type    = "float"
 default = 0
 
 [[parameters]]
-name = "AA"
-type = "float"
+name    = "AA"
+type    = "float"
 default = 0
 
 [[parameters]]
-name = "ZZ"
-type = "float"
+name    = "ZZ"
+type    = "float"
 default = 0

@@ -4,6 +4,40 @@
 			"path": "."
 		}
 	],
+	"extensions": {
+		"recommendations": [
+			// zh-hans
+			"ms-ceintl.vscode-language-pack-zh-hans",
+			// c/c++
+			"ms-vscode.cpptools",
+			"ms-vscode.cpptools-extension-pack",
+			"ms-vscode.cpptools-themes",
+			// python
+			"ms-python.python",
+			"ms-python.debugpy",
+			"ms-python.black-formatter",
+			"ms-python.vscode-pylance",
+			// embedded
+			"ms-vscode.vscode-embedded-tools",
+			"marus25.cortex-debug",
+			"cl.eide",
+			"rt-thread.rt-thread-studio",
+			// kconfig语法高亮和提示
+			"nordic-semiconductor.nrf-kconfig",
+			// pdf预览
+			"tomoki1207.pdf",
+			// markdown格式化
+			// "DavidAnson.vscode-markdownlint",
+			"yzhang.markdown-all-in-one",
+			// "shd101wyy.markdown-preview-enhanced",
+			// jinja语法高亮
+			"samuelcolvin.jinjahtml",
+			// toml格式化
+			"tamasfe.even-better-toml",
+			// yaml格式化
+			// "redhat.vscode-yaml"
+		],
+	},
 	"settings": {
 		"editor.formatOnPaste": true,
 		"editor.formatOnSave": true,
@@ -28,18 +62,6 @@
 		"evenBetterToml.formatter.alignComments": true,
 		"evenBetterToml.formatter.alignEntries": true,
 		"evenBetterToml.formatter.allowedBlankLines": 3,
-		"evenBetterToml.formatter.inlineTableExpand": true,
-		"evenBetterToml.formatter.arrayAutoCollapse": true,
-		"evenBetterToml.formatter.compactInlineTables": true,
-		"evenBetterToml.formatter.indentTables": true,
-		"evenBetterToml.formatter.arrayTrailingComma": true,
-		"evenBetterToml.formatter.columnWidth": 128,
-		"evenBetterToml.formatter.compactArrays": true,
-		"evenBetterToml.syntax.semanticTokens": false,
-		"evenBetterToml.taplo.configFile.enabled": false,
-		"evenBetterToml.taplo.bundled": true,
-		"evenBetterToml.formatter.arrayAutoExpand": true,
-		"evenBetterToml.formatter.indentEntries": true,
 		// python
 		"python.analysis.autoFormatStrings": false,
 		"python.analysis.autoImportCompletions": true,

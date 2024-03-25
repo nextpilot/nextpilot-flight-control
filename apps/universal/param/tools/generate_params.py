@@ -14,33 +14,35 @@ except ImportError as e:
 
 script_path = os.path.dirname(os.path.realpath(__file__))
 
+# 合法的字段
+param_valid_fields = {
+    "board",
+    "category",
+    "short_desc",
+    "long_desc",
+    "name",
+    "type",
+    "default",
+    "values",
+    "reboot_required",
+    "disarm_required",
+    "system_required",
+    "min",
+    "max",
+    "unit",
+    "decimal",
+    "increment",
+}
+
+# 合法的类型
+param_valid_type = {"enum", "bool", "int8", "uint8", "int16", "uint16", "int32", "uint32", "int64", "uint64", "float", "double"}
+
+# 必须包含的字段
+param_must_fields = {"name", "type", "default"}
+
 
 def param_parse_toml(param_toml_dirs=[os.getcwd()], param_toml_files=set()):
     import toml
-
-    # 合法的类型
-    param_valid_type = {"enum", "bool", "int8", "uint8", "uint32", "int32", "float"}
-    # 必须包含的字段
-    param_must_fields = {"name", "type", "default"}
-    # 合法的字段
-    param_valid_fields = {
-        "board",
-        "category",
-        "short_desc",
-        "long_desc",
-        "name",
-        "type",
-        "default",
-        "values",
-        "reboot_required",
-        "disarm_required",
-        "develop_required",
-        "min",
-        "max",
-        "unit",
-        "decimal",
-        "increment",
-    }
 
     # 搜索所有_params.toml文件
     for param_toml_dir in param_toml_dirs:
@@ -55,15 +57,25 @@ def param_parse_toml(param_toml_dirs=[os.getcwd()], param_toml_files=set()):
         param_toml_dict = toml.load(file)
         for param_section in param_toml_dict["parameters"]:
 
-            # 必须包含name,type和default字段
-            for key in param_must_fields:
-                if key not in param_section:
-                    raise Exception("without '{:}' in {:}".format(key, file))
+            # 参数名称
+            if "name" not in param_section:
+                raise Exception("param not give 'name' in {:}".format(file))
+            else:
+                param_section["name"].upper()
 
-            # 参数类型合法性校验
-            param_type = param_section["type"]
-            if param_type not in param_valid_type:
-                raise Exception("unkonwn param type '{:}' in {:}".format(param_type, file))
+            # 参数类型
+            if "type" not in param_section:
+                raise Exception("param '{:}' not set 'type' in {:}".format(param_section["name"], file))
+            elif param_section["type"].lower() not in param_valid_type:
+                raise Exception(
+                    "param '{:}' with unkown type '{:}' in {:}".format(param_section["name"], param_section["type"], file)
+                )
+            else:
+                pass
+
+            # 参数默认值
+            if "default" not in param_section:
+                raise Exception("param '{:}' not set 'default' in {:}".format(param_section["name"], file))
 
             # 取值说明
             # if "values" in param_section:
@@ -81,7 +93,10 @@ def param_parse_toml(param_toml_dirs=[os.getcwd()], param_toml_files=set()):
             else:
                 instance = 1
 
-            # 默认值
+            if instance > 1 and "${i}" not in param_section["name"]:
+                raise Exception("param '{:}' not support multi-instance in {:}".format(param_section["name"], file))
+
+            # 根据实例个数扩展默认值
             default_values = param_section.get("default", None)
             if default_values:
                 if type(default_values) == list:
@@ -95,11 +110,11 @@ def param_parse_toml(param_toml_dirs=[os.getcwd()], param_toml_files=set()):
             # 计算flags
             flags = 0
             if param_section.get("system_required", False):
-                flag |= 1 << 0
+                flags |= 1 << 0
             if param_section.get("reboot_required", False):
-                flag |= 1 << 1
+                flags |= 1 << 1
             if param_section.get("disarm_required", False):
-                flag |= 1 << 2
+                flags |= 1 << 2
             param_section["flags"] = flags
 
             for idx in range(instance):
@@ -112,10 +127,8 @@ def param_parse_toml(param_toml_dirs=[os.getcwd()], param_toml_files=set()):
                         param[key] = param_section[key].replace("${i}", str(idx))
                     else:
                         pass
-                # 名称转为大写
-                param["name"].upper()
-                param["type"].lower()
                 params.append(param)
+
     # 根据name进行排序
     params.sort(key=lambda x: x["name"])
     # TODO:判断是否有重复的name
@@ -130,11 +143,11 @@ def param_generate_hpp(params, dest=os.getcwd()):
 
     env = Environment(loader=FileSystemLoader(script_path))
 
-    template_files = ["parameters.hpp.jinja"]
+    template_files = ["parameters.h.jinja"]
 
     for template_file in template_files:
         template = env.get_template(template_file)
-        with open(os.path.join(dest, template_file.replace(".hpp.jinja", "_autogen.hpp")), "w") as f:
+        with open(os.path.join(dest, template_file.replace(".h.jinja", "_autogen.hpp")), "w") as f:
             f.write(template.render(params=params))
 
 
