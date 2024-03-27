@@ -8,10 +8,11 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#include <rtthread.h>
+#include <rtdbg.h>
+#include <string.h>
+#include "param_interface.h"
 #include "param_global_autogen.h"
-#include "rtthread.h"
-#include "rtdbg.h"
-#include <cstring>
 
 namespace nextpilot::global_params {
 
@@ -62,59 +63,48 @@ param_t param_find(const char *name, bool mark_used) {
     return PARAM_INVALID;
 }
 
-const char *param_get_name(uint16_t idx) {
-    return param_in_range(idx) ? __param_info__[idx].name : nullptr;
-}
-
-param_type_t param_get_type(uint16_t idx) {
-    return param_in_range(idx) ? __param_info__[idx].type : PARAM_TYPE_UNKNOWN;
-}
-
-uint8_t param_get_size(uint16_t idx) {
-    return param_in_range(idx) ? param_type_size(__param_info__[idx].type) : 0;
-}
-
-param_flag_t param_get_flag(uint16_t idx) {
-    param_flag_t flag = {.value = 0};
-    return param_in_range(idx) ? __param_info__[idx].flag : flag;
-}
-
-int param_get_default_value(uint16_t idx, void *val) {
-    if (!param_in_range(idx) || !val) {
+int param_get_info(param_t idx, param_info_t *info) {
+    if (!info || !param_in_range(idx)) {
         return -1;
     }
 
-    memcpy(val, &__param_info__[idx].value, param_get_size(idx));
+    info->name  = __param_info__[idx].name;
+    info->type  = __param_info__[idx].type;
+    info->value = __param_info__[idx].value;
+    info->flag  = __param_info__[idx].flag;
+    return 0;
+}
 
-    // 标记为已经使用
+int param_get_status(param_t idx, param_status_t *status) {
+    if (!status || !param_in_range(idx)) {
+        return -1;
+    }
+
     rt_enter_critical();
-    __param_data__[idx].status.actived = 1;
+    *status = __param_data__[idx].status;
     rt_exit_critical();
     return 0;
 }
 
-param_status_t param_get_status(param_t idx) {
-    param_status_t status = {.value = 0};
+int param_set_status(param_t idx, const param_status_t *status) {
+    if (!status || !param_in_range(idx)) {
+        return -1;
+    }
+
+    rt_enter_critical();
+    __param_data__[idx].status = (*status);
+    rt_exit_critical();
+    return 0;
+}
+
+uint8_t param_get_size(param_t idx) {
     if (param_in_range(idx)) {
-        rt_enter_critical();
-        status = __param_data__[idx].status;
-        rt_exit_critical();
+        return param_type_size(__param_info__[idx].type);
     }
-    return status;
-}
-
-int param_set_status(param_t idx, param_status_t status) {
-    if (!param_in_range(idx)) {
-        return -1;
-    }
-
-    rt_enter_critical();
-    __param_data__[idx].status = status;
-    rt_exit_critical();
     return 0;
 }
 
-int param_get_value(param_t idx, void *val, bool mark_used) {
+int param_get_value(param_t idx, param_value_t *val, bool mark_used) {
     if (!val || !param_in_range(idx)) {
         LOG_E("param idx %d out range %d", idx, param_get_count());
         return -1;
@@ -135,7 +125,7 @@ int param_get_value(param_t idx, void *val, bool mark_used) {
     return 0;
 }
 
-int param_set_value(param_t idx, const void *val, bool notify_changes) {
+int param_set_value(param_t idx, const param_value_t *val, bool notify_changes) {
     if (!param_in_range(idx) || !val) {
         return -1;
     }
@@ -155,7 +145,7 @@ int param_set_value(param_t idx, const void *val, bool notify_changes) {
     return 0;
 }
 
-int param_reset(param_t idx, bool mark_saved, bool notify_changes) {
+int param_reset(param_t idx, bool mark_saved) {
     if (!param_in_range(idx)) {
         return -1;
     }
@@ -164,9 +154,30 @@ int param_reset(param_t idx, bool mark_saved, bool notify_changes) {
     __param_data__[idx].status.value = 0;
     rt_exit_critical();
 
-    if (notify_changes) {
-        param_notify_changes();
-    }
+    return 0;
 }
 
 } // namespace nextpilot::global_params
+
+static param_interface_ops_t _ops = {
+    .init       = NULL,
+    .find       = nextpilot::global_params::param_find,
+    .get_count  = nextpilot::global_params::param_get_count,
+    .get_info   = nextpilot::global_params::param_get_info,
+    .get_value  = nextpilot::global_params::param_get_value,
+    .set_value  = nextpilot::global_params::param_set_value,
+    .get_status = nextpilot::global_params::param_get_status,
+    .set_status = nextpilot::global_params::param_set_status,
+    .reset      = nextpilot::global_params::param_reset,
+};
+
+static param_interface_t _itf = {
+    .name = "global",
+    .type = 0,
+    .ops  = &_ops,
+};
+
+static int param_global_autogen_init() {
+    return param_interface_register(&_itf);
+}
+INIT_COMPONENT_EXPORT(param_global_autogen_init);

@@ -21,12 +21,12 @@
 
 typedef uint16_t param_t;
 
-typedef enum {
-    PARAM_INTERFACE_UNKONWN = 0,
-    PARAM_INTERFACE_AUTOGEN,
-    PARAM_INTERFACE_SECTION,
-    PARAM_INTERFACE_SIMULINK,
-} param_interface_t;
+// typedef enum {
+//     PARAM_INTERFACE_UNKONWN = 0,
+//     PARAM_INTERFACE_AUTOGEN,
+//     PARAM_INTERFACE_SECTION,
+//     PARAM_INTERFACE_SIMULINK,
+// } param_interface_t;
 
 typedef enum {
     PARAM_TYPE_UNKNOWN = 0,
@@ -135,6 +135,9 @@ static inline const char *param_type_cstr(param_type_t type) {
     }
 }
 
+typedef bool (*param_filter_func)(param_t handle);
+
 void param_notify_changes();
+void param_notify_autosave();
 
 #endif // __PARAM_COMMON_H__

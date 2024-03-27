@@ -84,7 +84,9 @@
 			"xlocale": "cpp",
 			"memory": "cpp",
 			"fstream": "cpp",
-			"xlocmes": "cpp"
+			"xlocmes": "cpp",
+			"param_interface.h": "c",
+			"ios": "cpp"
 		},
 		"RTT_Studio.Build.Parallel_Jobs": "12",
 		"RTT_Studio.Env_Location": "C:/RT-ThreadStudio/platform/env_released/env",

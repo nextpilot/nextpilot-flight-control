@@ -8,7 +8,7 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include "param_interface_section.h"
+#include "param_linker_section.h"
 
 // 获取section的首位地址
 #if defined(__ARMCC_VERSION) /* ARM C Compiler */
@@ -115,7 +115,7 @@ static int param_reset(param_t idx) {
     return 0;
 }
 
-param_ops_t _section_param_ops_t = {
+param_interface_ops_t _ops = {
     .init       = param_init,
     .find       = find,
     .reset      = reset,

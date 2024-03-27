@@ -11,9 +11,8 @@
 #ifndef __PARAM_STORAGE_H__
 #define __PARAM_STORAGE_H__
 
-#include <stdint.h>
 #include <rtthread.h>
-#include "../param_common.h"
+#include "param_common.h"
 
 typedef struct {
     uint32_t check;
