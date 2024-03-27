@@ -125,7 +125,7 @@ int param_get_value(param_t idx, param_value_t *val, bool mark_used) {
     return 0;
 }
 
-int param_set_value(param_t idx, const param_value_t *val, bool notify) {
+int param_set_value(param_t idx, const param_value_t *val, bool mark_saved) {
     if (!param_in_range(idx) || !val) {
         return -1;
     }
@@ -134,13 +134,9 @@ int param_set_value(param_t idx, const param_value_t *val, bool notify) {
     memcpy(&__param_data__[idx].value, val, param_get_size(idx));
     // 标记状态
     __param_data__[idx].status.changed         = true;
-    __param_data__[idx].status.unsaved         = true;
+    __param_data__[idx].status.unsaved         = !mark_saved;
     __param_data__[idx].status.unsaved_to_ulog = true;
     rt_exit_critical();
-
-    if (notify) {
-        // param_notify_changes();
-    }
 
     return 0;
 }

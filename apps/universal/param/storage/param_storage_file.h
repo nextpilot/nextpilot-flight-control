@@ -8,17 +8,12 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#define LOG_TAG "param.common"
+#ifndef __PARAM_STORAGE_FILE_H__
+#define __PARAM_STORAGE_FILE_H__
 
-#include <rtdbg.h>
+const char *param_get_default_file();
+int         param_set_default_file(const char *filename);
 
-void param_notify_changes() {
-#ifdef SYS_USING_UORB
-    static uint32_t           param_instance = 0;
-    struct parameter_update_s pup;
-    pup.instance  = param_instance++;
-    pup.timestamp = hrt_absolute_time();
-    orb_publish(ORB_ID(parameter_update), NULL, &pup);
-#endif // SYS_USING_UORB
-    LOG_D("notify param updated");
-}
+const char *param_get_backup_file();
+int         param_set_backup_file(const char *filename);
+#endif // __PARAM_STORAGE_FILE_H__

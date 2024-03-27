@@ -9,10 +9,10 @@ inc = [cwd]
 src = []
 
 if GetDepend(["PARAM_USING_STORAGE_FILE"]):
-    src += ["param_storage_file.cpp"]
+    src += ["param_storage_file.c"]
 
 if GetDepend(["PARAM_USING_STORAGE_FM25V02"]):
-    src += ["param_storage_fm25v02.cpp"]
+    src += ["param_storage_fm25v02.c"]
 
 objs += DefineGroup("sys/param", src, depend=[""], CPPPATH=inc)
 

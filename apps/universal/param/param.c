@@ -17,8 +17,21 @@
 #include <ctype.h>
 #include "param.h"
 #include "param_interface.h"
+#include "param_storage.h"
+#include "storage/param_storage_file.h"
+
+static int param_do_touch(const char *params[], int num_params) {
+    for (int i = 0; i < num_params; ++i) {
+        if (param_find(params[i]) == PARAM_INVALID) {
+            LOG_W("param %s not found", params[i]);
+        }
+    }
+
+    return 0;
+}
 
 int param_do_set(const char *name, const char *val, bool fail_on_not_found) {
+    // 通过命令设置的参数，会标记为used
     param_t param = param_find(name);
 
     /* set nothing if parameter cannot be found */
@@ -69,7 +82,7 @@ int param_do_set(const char *name, const char *val, bool fail_on_not_found) {
         if (oldval.i32 != setval) {
             param_set(param, &setval);
         }
-
+        // 重新获取，看看是否修改进去了
         param_get(param, &newval);
         LOG_RAW("%12d  %12d  %12d  %6s  %6s\n", defval.i32, oldval.i32, newval.i32, flag_symbol, status_symbol);
         break;
@@ -83,9 +96,9 @@ int param_do_set(const char *name, const char *val, bool fail_on_not_found) {
 
         if (oldval.f32 != setval) {
 #pragma GCC diagnostic pop
-            // param_set(param, &setval);
+            param_set(param, &setval);
         }
-
+        // 重新获取，看看是否修改进去了
         param_get(param, &newval);
         LOG_RAW("%12g  %12g  %12g  %6s  %6s\n", defval.f32, oldval.f32, newval.f32, flag_symbol, status_symbol);
         break;
@@ -218,22 +231,15 @@ int param_do_show(const char *search_string, bool only_changed) {
 
 int param_main(int argc, char *argv[]) {
     if (argc >= 2) {
-        // if (!strcmp(argv[1], "save")) {
-        //     if (argc >= 3) {
-        //         return do_save(argv[2]);
+        if (!strcmp(argv[1], "export") ||
+            !strcmp(argv[1], "save")) {
+            if (argc >= 3) {
+                return param_export_internal(argv[2], NULL);
 
-        //     } else {
-        //         int ret = do_save_default();
-
-        //         if (ret) {
-        //             LOG_E("Param save failed (%i)", ret);
-        //             return 1;
-
-        //         } else {
-        //             return 0;
-        //         }
-        //     }
-        // }
+            } else {
+                return param_export_internal(NULL, NULL);
+            }
+        }
 
         // if (!strcmp(argv[1], "load")) {
         //     if (argc >= 3) {
@@ -244,31 +250,32 @@ int param_main(int argc, char *argv[]) {
         //     }
         // }
 
-        // if (!strcmp(argv[1], "import")) {
-        //     if (argc >= 3) {
-        //         return do_import(argv[2]);
+        if (!strcmp(argv[1], "import") ||
+            !strcmp(argv[1], "load")) {
+            if (argc >= 3) {
+                return param_import_internal(argv[2], NULL);
 
-        //     } else {
-        //         return do_import();
-        //     }
-        // }
+            } else {
+                return param_import_internal(NULL, NULL);
+            }
+        }
 
-        // if (!strcmp(argv[1], "select")) {
-        //     if (argc >= 3) {
-        //         param_set_default_file(argv[2]);
+        if (!strcmp(argv[1], "select")) {
+            if (argc >= 3) {
+                param_set_default_file(argv[2]);
 
-        //     } else {
-        //         param_set_default_file(NULL);
-        //     }
+            } else {
+                param_set_default_file(NULL);
+            }
 
-        //     const char *default_file = param_get_default_file();
+            const char *default_file = param_get_default_file();
 
-        //     if (default_file) {
-        //         LOG_I("selected parameter default file %s", default_file);
-        //     }
+            if (default_file) {
+                LOG_I("selected parameter default file %s", default_file);
+            }
 
-        //     return 0;
-        // }
+            return 0;
+        }
 
         if (!strcmp(argv[1], "show")) {
             if (argc >= 3) {
@@ -359,34 +366,37 @@ int param_main(int argc, char *argv[]) {
         //     }
         // }
 
-        // if (!strcmp(argv[1], "reset")) {
-        //     if (argc >= 3) {
-        //         return do_reset_specific((const char **)&argv[2], argc - 2);
+        if (!strcmp(argv[1], "reset")) {
+            if (argc >= 3) {
+                param_reset_specific((const char **)&argv[2], argc - 2);
+                return 0;
 
-        //     } else {
-        //         LOG_E("not enough arguments (use 'param reset_all' to reset all).");
-        //         return 1;
-        //     }
-        // }
+            } else {
+                LOG_E("not enough arguments (use 'param reset_all' to reset all).");
+                return 1;
+            }
+        }
 
-        // if (!strcmp(argv[1], "reset_all")) {
-        //     if (argc >= 3) {
-        //         return do_reset_all((const char **)&argv[2], argc - 2);
+        if (!strcmp(argv[1], "reset_all")) {
+            if (argc >= 3) {
+                param_reset_excludes((const char **)&argv[2], argc - 2);
+                return 0;
+            } else {
+                param_reset_all();
+                return 0;
+            }
+        }
 
-        //     } else {
-        //         return do_reset_all(NULL, 0);
-        //     }
-        // }
+        // mark a param used
+        if (!strcmp(argv[1], "touch")) {
+            if (argc >= 3) {
+                return param_do_touch((const char **)&argv[2], argc - 2);
 
-        // if (!strcmp(argv[1], "touch")) {
-        //     if (argc >= 3) {
-        //         return do_touch((const char **)&argv[2], argc - 2);
-
-        //     } else {
-        //         LOG_E("not enough arguments.");
-        //         return 1;
-        //     }
-        // }
+            } else {
+                LOG_E("not enough arguments.");
+                return 1;
+            }
+        }
 
         // if (!strcmp(argv[1], "index_used")) {
         //     if (argc >= 3) {

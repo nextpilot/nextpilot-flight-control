@@ -50,8 +50,7 @@ uint16_t param_get_count() {
 }
 
 param_t param_get_count_used() {
-    param_t        count = 0;
-    param_status_t status;
+    param_t count = 0;
 
     for (param_t i = 0; i < param_get_count(); i++) {
         if (param_get_status(i).actived) {
@@ -91,6 +90,7 @@ int param_find_internal(const char *name, bool mark_used) {
         if (api) {
             idx = api->ops->find(name, mark_used);
             if (idx != PARAM_INVALID) {
+                LOG_D("find %s ok", name);
                 return idx + offset;
             }
 
@@ -98,6 +98,7 @@ int param_find_internal(const char *name, bool mark_used) {
         }
     }
 
+    LOG_W("find %s fail", name);
     return PARAM_INVALID;
 }
 
@@ -179,6 +180,8 @@ int param_set_internal(param_t idx, const param_value_t *val, bool mark_saved, b
     int ret = api->ops->set_value(idx, val, mark_saved);
 
     if (ret == 0) {
+        LOG_D("set param %s ok", param_get_name(idx));
+
         if (notify) {
             param_notify_autosave();
             param_notify_changes();
@@ -200,6 +203,7 @@ int param_get_internal(param_t idx, param_value_t *val, bool mark_used) {
     param_interface_t *api = param_get_whois(&idx);
 
     if (api) {
+        LOG_D("get param %s", param_get_name(idx));
         return api->ops->get_value(idx, val, mark_used);
     }
 
@@ -271,12 +275,14 @@ int param_reset_internal(param_t idx, bool notify) {
 
     int ret = api->ops->reset(idx, false);
 
+    LOG_D("reset param %s ok", param_get_name(idx));
+
     if (ret == 0 && notify) {
         param_notify_changes();
         param_notify_autosave();
     }
 
-    return -1;
+    return 0;
 }
 
 int param_reset(param_t idx) {
@@ -292,8 +298,12 @@ void param_reset_all_internal(bool notify) {
         // 重置过程中不发送param_update消息
         param_reset_internal(i, false);
     }
+
+    LOG_I("reset all params ok");
+
     // 重置结束之后发送param_update消息
     if (notify) {
+        param_notify_autosave();
         param_notify_changes();
     }
 }
@@ -331,6 +341,7 @@ void param_reset_excludes(const char *excludes[], int num_excludes) {
 
     if (found) {
         param_notify_changes();
+        param_notify_autosave();
     }
 }
 
@@ -359,5 +370,6 @@ void param_reset_specific(const char *resets[], int num_resets) {
 
     if (found) {
         param_notify_changes();
+        param_notify_autosave();
     }
 }
