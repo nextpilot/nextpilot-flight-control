@@ -208,12 +208,12 @@ int param_get_internal(param_t idx, param_value_t *val, bool mark_used) {
 }
 
 int param_get(param_t idx, void *val) {
-    return param_get_internal(idx, (param_value_t *)val, true);
+    return param_get_internal(idx, (param_value_t *)val, false);
 }
 
 float param_get_float(param_t idx) {
     param_value_t val;
-    int           ret = param_get_internal(idx, &val, true);
+    int           ret = param_get_internal(idx, &val, false);
     if (ret == 0) {
         return val.f32;
     } else {
@@ -223,7 +223,7 @@ float param_get_float(param_t idx) {
 
 int32_t param_get_int32(param_t idx) {
     param_value_t val;
-    int           ret = param_get_internal(idx, &val, true);
+    int           ret = param_get_internal(idx, &val, false);
     if (ret == 0) {
         return val.f32;
     } else {
@@ -308,7 +308,7 @@ void param_reset_all() {
     param_reset_all_internal(true);
 }
 
-void param_reset_all_notification() {
+void param_reset_all_no_notification() {
     param_reset_all_internal(false);
 }
 

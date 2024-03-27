@@ -9,4 +9,11 @@
  ******************************************************************/
 
 void param_notify_changes() {
+#ifdef SYS_USING_UORB
+    static uint32_t           param_instance = 0;
+    struct parameter_update_s pup;
+    pup.instance  = param_instance++;
+    pup.timestamp = hrt_absolute_time();
+    orb_publish(ORB_ID(parameter_update), NULL, &pup);
+#endif // SYS_USING_UORB
 }

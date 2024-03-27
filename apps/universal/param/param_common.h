@@ -137,7 +137,15 @@ static inline const char *param_type_cstr(param_type_t type) {
 
 typedef bool (*param_filter_func)(param_t handle);
 
+#ifdef __cpluspuls
+extern "C" {
+#endif //__cpluspuls
+
 void param_notify_changes();
 void param_notify_autosave();
+
+#ifdef __cpluspuls
+}
+#endif //__cpluspuls
 
 #endif // __PARAM_COMMON_H__

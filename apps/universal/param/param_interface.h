@@ -83,7 +83,7 @@ int  param_reset(param_t idx);
 int  param_reset_no_notification(param_t idx);
 void param_reset_all_internal(bool notify);
 void param_reset_all();
-void param_reset_all_notification();
+void param_reset_all_no_notification();
 void param_reset_excludes(const char *excludes[], int num_excludes);
 void param_reset_specific(const char *resets[], int num_resets);
 

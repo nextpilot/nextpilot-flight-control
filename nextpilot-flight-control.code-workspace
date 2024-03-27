@@ -2,6 +2,9 @@
 	"folders": [
 		{
 			"path": "."
+		},
+		{
+			"path": "bsps/sitl/qemu"
 		}
 	],
 	"extensions": {
@@ -86,7 +89,9 @@
 			"fstream": "cpp",
 			"xlocmes": "cpp",
 			"param_interface.h": "c",
-			"ios": "cpp"
+			"ios": "cpp",
+			"random": "cpp",
+			"*.tcc": "cpp"
 		},
 		"RTT_Studio.Build.Parallel_Jobs": "12",
 		"RTT_Studio.Env_Location": "C:/RT-ThreadStudio/platform/env_released/env",
