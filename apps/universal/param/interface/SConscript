@@ -1,0 +1,23 @@
+import os
+import rtconfig
+from building import *
+
+objs = []
+cwd = GetCurrentDir()
+
+inc = [cwd]
+src = []
+
+
+if GetDepend(["PARAM_USING_GLOBAL_AUTOGEN"]):
+    src += ["param_global_autogen.cpp"]
+
+if GetDepend(["PARAM_USING_LINKER_SECTION"]):
+    src += ["param_linker_section.cpp"]
+
+if GetDepend(["PARAM_USING_SIMULINK_CAPI"]):
+    src += ["param_simulink_capi.cpp"]
+
+objs += DefineGroup("sys/param", src, depend=[""], CPPPATH=inc)
+
+Return("objs")

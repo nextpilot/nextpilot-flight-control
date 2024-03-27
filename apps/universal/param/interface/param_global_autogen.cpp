@@ -135,7 +135,7 @@ int param_get_value(param_t idx, void *val, bool mark_used) {
     return 0;
 }
 
-int param_set_value(param_t idx, const void *val, bool mark_saved, bool notify_changes) {
+int param_set_value(param_t idx, const void *val, bool notify_changes) {
     if (!param_in_range(idx) || !val) {
         return -1;
     }
@@ -143,20 +143,30 @@ int param_set_value(param_t idx, const void *val, bool mark_saved, bool notify_c
     rt_enter_critical();
     memcpy(&__param_data__[idx].value, val, param_get_size(idx));
     // 标记状态
-    __param_data__[idx].status.changed         = 1;
-    __param_data__[idx].status.unsaved         = !mark_saved;
-    __param_data__[idx].status.unsaved_to_ulog = !mark_saved;
+    __param_data__[idx].status.changed         = true;
+    __param_data__[idx].status.unsaved         = true;
+    __param_data__[idx].status.unsaved_to_ulog = true;
     rt_exit_critical();
-
-    // if (!mark_saved) {
-    //     rt_event_send(&_param_changed_event, EVENT_PARAM_CHANGED);
-    // }
 
     if (notify_changes) {
         param_notify_changes();
     }
 
     return 0;
+}
+
+int param_reset(param_t idx, bool mark_saved, bool notify_changes) {
+    if (!param_in_range(idx)) {
+        return -1;
+    }
+
+    rt_enter_critical();
+    __param_data__[idx].status.value = 0;
+    rt_exit_critical();
+
+    if (notify_changes) {
+        param_notify_changes();
+    }
 }
 
 } // namespace nextpilot::global_params

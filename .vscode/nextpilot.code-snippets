@@ -1,0 +1,75 @@
+{
+	// Place your nextpilot-flight-control-public Workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	//
+	"c/cpp file copyright": {
+		"scope": "cpp,c",
+		"prefix": "copyright",
+		"description": "Add c/cpp file copyright",
+		"body": [
+			"/*****************************************************************",
+			" *     _   __             __   ____   _  __        __",
+			" *    / | / /___   _  __ / /_ / __ \\ (_)/ /____   / /_",
+			" *   /  |/ // _ \\ | |/_// __// /_/ // // // __ \\ / __/",
+			" *  / /|  //  __/_>  < / /_ / ____// // // /_/ // /_",
+			" * /_/ |_/ \\___//_/|_| \\__//_/    /_//_/ \\____/ \\__/",
+			" *",
+			" * Copyright All Reserved © 2015-${CURRENT_YEAR} NextPilot Development Team",
+			" ******************************************************************/",
+			"",
+			"$0"
+		]
+	},
+	//
+	"h/hpp header file pragma once": {
+		"scope": "cpp,c",
+		"prefix": "once",
+		"description": "Add h/hpp header file pragam once",
+		"body": [
+			"#ifndef __${TM_FILENAME_BASE/(.*)/${1:/upcase}/}_H__",
+			"#define __${TM_FILENAME_BASE/(.*)/${1:/upcase}/}_H__",
+			"",
+			"$0",
+			"",
+			"#endif // __${TM_FILENAME_BASE/(.*)/${1:/upcase}/}_H__"
+		]
+	},
+	//
+	"h/hpp header file template": {
+		"scope": "cpp,c",
+		"prefix": "header",
+		"description": "Add h/hpp header file template",
+		"body": [
+			"/*****************************************************************",
+			" *     _   __             __   ____   _  __        __",
+			" *    / | / /___   _  __ / /_ / __ \\ (_)/ /____   / /_",
+			" *   /  |/ // _ \\ | |/_// __// /_/ // // // __ \\ / __/",
+			" *  / /|  //  __/_>  < / /_ / ____// // // /_/ // /_",
+			" * /_/ |_/ \\___//_/|_| \\__//_/    /_//_/ \\____/ \\__/",
+			" *",
+			" * Copyright All Reserved © 2015-${CURRENT_YEAR} NextPilot Development Team",
+			" ******************************************************************/",
+			"",
+			"#ifndef __${TM_FILENAME_BASE/(.*)/${1:/upcase}/}_H__",
+			"#define __${TM_FILENAME_BASE/(.*)/${1:/upcase}/}_H__",
+			"",
+			"$0",
+			"",
+			"#endif // __${TM_FILENAME_BASE/(.*)/${1:/upcase}/}_H__"
+		]
+	}
+}

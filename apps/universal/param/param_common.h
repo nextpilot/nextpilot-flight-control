@@ -12,6 +12,7 @@
 #define __PARAM_COMMON_H__
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #define PARAM_HASH        ((uint16_t)INT16_MAX)
 #define PARAM_HASH_NAME   "_HASH_CHECK"
@@ -73,6 +74,18 @@ typedef union {
         uint8_t unsaved_to_ulog : 1;
     };
 } param_status_t;
+
+typedef struct param_info_s {
+    const char   *name;
+    param_type_t  type;
+    param_value_t value;
+    param_flag_t  flag;
+} param_info_t;
+
+typedef struct param_data_s {
+    param_value_t  value;
+    param_status_t status;
+} param_data_t;
 
 static inline uint8_t param_type_size(param_type_t type) {
     switch (type) {

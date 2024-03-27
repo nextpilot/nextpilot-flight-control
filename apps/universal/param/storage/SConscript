@@ -1,0 +1,19 @@
+import os
+import rtconfig
+from building import *
+
+objs = []
+cwd = GetCurrentDir()
+
+inc = [cwd]
+src = []
+
+if GetDepend(["PARAM_USING_STORAGE_FILE"]):
+    src += ["param_storage_file.cpp"]
+
+if GetDepend(["PARAM_USING_STORAGE_FM25V02"]):
+    src += ["param_storage_fm25v02.cpp"]
+
+objs += DefineGroup("sys/param", src, depend=[""], CPPPATH=inc)
+
+Return("objs")

@@ -82,9 +82,7 @@ static bool param_init() {
     return true;
 }
 
-namespace nextpilot::section_params {
-
-uint16_t param_get_count() {
+static uint16_t param_get_count() {
     if (__param_count__ == UINT16_MAX) {
         param_int();
     }
@@ -92,20 +90,39 @@ uint16_t param_get_count() {
     return __param_count__;
 }
 
-bool param_in_range(param_t idx) {
+static bool param_in_range(param_t idx) {
     return idx < param_get_count();
 }
 
-const char *param_get_name(param_t idx) {
-    return param_in_range(idx) ? __param_table__[idx].name : nullptr;
+static int param_get_info(param_t idx, param_info_t *info) {
+    if (!param_in_range(idx) || !info) {
+        return -1;
+    }
+
+    info->name  = __param_table__[idx].ptr->name;
+    info->type  = __param_table__[idx].ptr->type;
+    info->value = __param_table__[idx].ptr->value;
+    info->falg  = __param_table__[idx].ptr->flag;
+
+    return 0;
 }
 
-param_type_t param_get_type(param_t idx) {
+static int param_find(const char *name) {
+    return 0;
 }
 
-param_flag_t param_get_flag(param_t idx) {
-    param_flag_t flag = {.value = 0};
-    return param_in_range(idx) ? __param_table__[idx].flag : flag;
+static int param_reset(param_t idx) {
+    return 0;
 }
 
-} // namespace nextpilot::section_params
+param_ops_t _section_param_ops_t = {
+    .init       = param_init,
+    .find       = find,
+    .reset      = reset,
+    .get_count  = get_count,
+    .get_info   = get_info,
+    .get_value  = get_value,
+    .set_value  = set_value,
+    .get_status = get_status,
+    .set_status = set_status,
+};

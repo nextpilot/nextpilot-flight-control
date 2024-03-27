@@ -25,18 +25,18 @@ typedef struct {
 #pragma pack(push, 4)
 typedef struct {
     section_param_data_t *ptr;
-} section_param_info_t;
+} section_param_export_t;
 #pragma pack(pop)
 
 #if defined(_MSC_VER)
 #pragma section("NextpilotParamTab$p", read)
 #pragma comment(linker, "/merge:NextpilotParamTab=myparam")
-#define PARAM_EXPORT __declspec(allocate("NextpilotParamTab$p")) static section_param_info_t
+#define PARAM_EXPORT __declspec(allocate("NextpilotParamTab$p")) static section_param_export_t
 #elif defined(__TI_COMPILER_VERSION__)
 #define __TI_FINSH_EXPORT_FUNCTION(f) PRAGMA(DATA_SECTION(f, "NextpilotParamTab"))
 #define PARAM_EXPORT
 #else
-#define PARAM_EXPORT RT_USED const section_param_info_t RT_SECTION("NextpilotParamTab")
+#define PARAM_EXPORT RT_USED const section_param_export_t RT_SECTION("NextpilotParamTab")
 #endif
 
 #define PARAM_DEFINE_FLOAT(_name, _value, _flag)          \
@@ -55,12 +55,6 @@ typedef struct {
 #define PARAM_DECLARE(_name) extern "C" param_data_t __param_data_##_name
 #else
 #define PARAM_DECLARE(_name) extern param_data_t __param_data_##_name
-#endif //__cplusplus
-
-#ifdef __cplusplus
-namespace nextpilot::section_params {
-
-} // namespace nextpilot::section_params
 #endif //__cplusplus
 
 #endif // __PARAM_INTERFACE_SECTION_H__

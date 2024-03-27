@@ -6,22 +6,7 @@ objs = []
 
 if GetDepend(["SYS_USING_PARAM"]):
     cwd = GetCurrentDir()
-    src = ["param.cpp", "param_common.cpp"]
-
-    if GetDepend(["PARAM_USING_GLOBAL_AUTOGEN"]):
-        src += ["param_global_autogen.cpp"]
-
-    if GetDepend(["PARAM_USING_LINKER_SECTION"]):
-        src += ["param_linker_section.cpp"]
-
-    if GetDepend(["PARAM_USING_SIMULINK_CAPI"]):
-        src += ["param_simulink_capi.cpp"]
-
-    if GetDepend(["PARAM_USING_STORAGE_FILE"]):
-        src += ["param_storage_file.cpp"]
-
-    if GetDepend(["PARAM_USING_STORAGE_FM25V02"]):
-        src += ["param_storage_fm25v02.cpp"]
+    src = Glob("*.cpp") + Glob("*.c")
 
     inc = [cwd]
     objs += DefineGroup("sys/param", src, depend=[""], CPPPATH=inc)
