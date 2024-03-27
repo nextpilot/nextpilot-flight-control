@@ -8,8 +8,7 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#define DBG_ENABLE
-#define DBG_LEVEL DBG_LOG
+#define LOG_TAG "param.main"
 
 #include <rtthread.h>
 #include <rtdbg.h>
@@ -20,15 +19,12 @@
 #include "param_interface.h"
 
 int param_do_set(const char *name, const char *val, bool fail_on_not_found) {
-    int32_t i;
-    float   f;
-
     param_t param = param_find(name);
 
     /* set nothing if parameter cannot be found */
     if (param == PARAM_INVALID) {
         /* param not found - fail silenty in scripts as it prevents booting */
-        LOG_E("Parameter %s not found.", name);
+        LOG_E("param %s not found", name);
         return (fail_on_not_found) ? 1 : 0;
     }
 
@@ -36,46 +32,64 @@ int param_do_set(const char *name, const char *val, bool fail_on_not_found) {
      * Set parameter if type is known and conversion from string to value turns out fine
      */
 
-    switch (param_get_type(param)) {
-    case PARAM_TYPE_INT32:
-        if (!param_get(param, &i)) {
-            /* convert string */
-            char   *end;
-            int32_t newval = strtol(val, &end, 10);
+    char status_symbol[4] = "";
+    char flag_symbol[4]   = "";
 
-            if (i != newval) {
-                // LOG_RAW("%c %s: ",
-                //         param_value_unsaved(param) ? '*' : (param_value_is_default(param) ? ' ' : '+'),
-                //         param_get_name(param));
-                LOG_RAW("curr: %ld", (long)i);
-                param_set(param, &newval);
-                LOG_RAW(" -> new: %ld\n", (long)newval);
-            }
+    param_status_t status = param_get_status(param);
+    param_flag_t   flag   = param_get_flag(param);
+
+    rt_snprintf(status_symbol, 4, "%c%c%c\0",
+                (status.actived ? 'x' : ' '),
+                (status.changed ? '+' : ' '),
+                (status.unsaved ? '*' : ' '));
+
+    rt_snprintf(flag_symbol, 4, "%c%c%c\0",
+                (flag.system_required ? '$' : ' '),
+                (flag.reboot_required ? '&' : ' '),
+                (flag.disarm_required ? '@' : ' '));
+
+    LOG_RAW("\n-------------------------------------------------------------------------------------------\n");
+    LOG_RAW("disarm = @, reboot = #, system = $, unsaved = *, changed = +, actived = x\n");
+    LOG_RAW("-------------------------------------------------------------------------------------------\n");
+    LOG_RAW("index        name          type         def           old          new        flag   status\n");
+    LOG_RAW("-----  ----------------  --------  ------------  ------------  ------------  ------  ------\n");
+    LOG_RAW("%5d  %16s  %8s  ", param, name, param_get_type_cstr(param));
+
+    param_value_t defval, oldval, newval;
+
+    param_get_default_value(param, &defval);
+    param_get(param, &oldval);
+
+    switch (param_get_type(param)) {
+    case PARAM_TYPE_INT32: {
+        /* convert string */
+        char   *end;
+        int32_t setval = strtol(val, &end, 10);
+
+        if (oldval.i32 != setval) {
+            param_set(param, &setval);
         }
 
+        param_get(param, &newval);
+        LOG_RAW("%12d  %12d  %12d  %6s  %6s\n", defval.i32, oldval.i32, newval.i32, flag_symbol, status_symbol);
         break;
-
-    case PARAM_TYPE_FLOAT:
-        if (!param_get(param, &f)) {
-            /* convert string */
-            char *end;
-            float newval = strtod(val, &end);
+    }
+    case PARAM_TYPE_FLOAT: {
+        /* convert string */
+        char *end;
+        float setval = strtod(val, &end);
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 
-            if (f != newval) {
+        if (oldval.f32 != setval) {
 #pragma GCC diagnostic pop
-                // LOG_RAW("%c %s: ",
-                //         param_value_unsaved(param) ? '*' : (param_value_is_default(param) ? ' ' : '+'),
-                //         param_get_name(param));
-                LOG_RAW("curr: %4.4f", (double)f);
-                param_set(param, &newval);
-                LOG_RAW(" -> new: %4.4f\n", (double)newval);
-            }
+            // param_set(param, &setval);
         }
 
+        param_get(param, &newval);
+        LOG_RAW("%12g  %12g  %12g  %6s  %6s\n", defval.f32, oldval.f32, newval.f32, flag_symbol, status_symbol);
         break;
-
+    }
     default:
         LOG_E("<unknown / unsupported type %d>\n", 0 + param_get_type(param));
         return 1;
@@ -132,21 +146,19 @@ void param_do_print(param_t idx, bool show_header) {
     }
 
     if (show_header) {
-        LOG_RAW("-----------------------------------------------------------------------------\n");
+        LOG_RAW("\n-----------------------------------------------------------------------------\n");
         LOG_RAW("disarm = @, reboot = #, system = $, unsaved = *, changed = +, actived = x\n");
         LOG_RAW("-----------------------------------------------------------------------------\n");
-        LOG_RAW("index    type         name            default       current     flag   status\n");
-        LOG_RAW("-----  --------  ----------------  ------------  ------------  ------  ------\n");
+        LOG_RAW("index        name          type       default       current     flag   status\n");
+        LOG_RAW("-----  ----------------  --------  ------------  ------------  ------  ------\n");
     }
 
-    param_value_t def_val = param_get_default_value(idx);
-    param_flag_t  flag    = param_get_flag(idx);
-
-    param_value_t now_val;
+    param_value_t now_val, def_val;
     param_get(idx, &now_val);
+    param_get_default_value(idx, &def_val);
 
-    param_status_t status;
-    param_get_status(idx, &status);
+    param_flag_t   flag   = param_get_flag(idx);
+    param_status_t status = param_get_status(idx);
 
     char status_symbol[4] = "";
     char flag_symbol[4]   = "";
@@ -172,7 +184,7 @@ void param_do_print(param_t idx, bool show_header) {
                 status_symbol);
         break;
     case PARAM_TYPE_FLOAT:
-        LOG_RAW("%5d  %16s  %8s  %12f  %12d  %6s  %6s\n", idx,
+        LOG_RAW("%5d  %16s  %8s  %12g  %12g  %6s  %6s\n", idx,
                 param_get_name(idx),
                 param_get_type_cstr(idx),
                 def_val.f32,
@@ -200,6 +212,7 @@ int param_do_show(const char *search_string, bool only_changed) {
             }
         }
     }
+
     return 0;
 }
 

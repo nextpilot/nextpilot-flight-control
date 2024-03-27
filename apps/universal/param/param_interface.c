@@ -54,8 +54,7 @@ param_t param_get_count_used() {
     param_status_t status;
 
     for (param_t i = 0; i < param_get_count(); i++) {
-        param_get_status(i, &status);
-        if (status.actived) {
+        if (param_get_status(i).actived) {
             count++;
         }
     }
@@ -148,14 +147,14 @@ const char *param_get_type_cstr(param_t idx) {
     return param_type_cstr(param_get_type(idx));
 }
 
-param_value_t param_get_default_value(param_t idx) {
+int param_get_default_value(param_t idx, param_value_t *val) {
     param_info_t info;
     int          ret = param_get_info(idx, &info);
     if (ret == 0) {
-        return info.value;
+        (*val) = info.value;
+        return 0;
     } else {
-        param_value_t val = {.f32 = 0};
-        return val;
+        return -1;
     }
 }
 
@@ -231,14 +230,14 @@ int32_t param_get_int32(param_t idx) {
     }
 }
 
-int param_get_status(param_t idx, param_status_t *status) {
-    param_interface_t *api = param_get_whois(&idx);
-
+param_status_t param_get_status(param_t idx) {
+    param_interface_t *api    = param_get_whois(&idx);
+    param_status_t     status = {.value = 0};
     if (api) {
-        return api->ops->get_status(idx, status);
+        api->ops->get_status(idx, &status);
     }
 
-    return -1;
+    return status;
 }
 
 int param_set_status(param_t idx, const param_status_t *status) {
@@ -252,20 +251,15 @@ int param_set_status(param_t idx, const param_status_t *status) {
 }
 
 bool param_value_used(param_t idx) {
-    param_status_t status;
-    return (param_get_status(idx, &status) == 0) ? status.actived : false;
+    return param_get_status(idx).actived;
 }
 
 bool param_value_unsaved(param_t idx) {
-    param_status_t status;
-
-    return (param_get_status(idx, &status) == 0) ? status.unsaved : false;
+    return param_get_status(idx).unsaved;
 }
 
 bool param_value_changed(param_t idx) {
-    param_status_t status;
-
-    return (param_get_status(idx, &status) == 0) ? status.changed : false;
+    return param_get_status(idx).changed;
 }
 
 int param_reset_internal(param_t idx, bool notify) {

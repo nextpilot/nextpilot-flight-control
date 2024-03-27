@@ -46,13 +46,13 @@ int     param_find_internal(const char *name, bool mark_used);
 param_t param_find(const char *name);
 
 // 获取meta信息
-int           param_get_info(param_t idx, param_info_t *info);
-const char   *param_get_name(param_t idx);
-uint8_t       param_get_size(param_t idx);
-const char   *param_get_type_cstr(param_t idx);
-param_type_t  param_get_type(param_t idx);
-param_flag_t  param_get_flag(param_t idx);
-param_value_t param_get_default_value(param_t idx);
+int          param_get_info(param_t idx, param_info_t *info);
+const char  *param_get_name(param_t idx);
+uint8_t      param_get_size(param_t idx);
+const char  *param_get_type_cstr(param_t idx);
+param_type_t param_get_type(param_t idx);
+param_flag_t param_get_flag(param_t idx);
+int          param_get_default_value(param_t idx, param_value_t *val);
 
 // 获取参数
 int     param_get_internal(param_t idx, param_value_t *val, bool mark_used);
@@ -68,11 +68,11 @@ int param_set_float(param_t idx, float val);
 int param_set_int32(param_t idx, int32_t val);
 
 // 设置/查询状态
-int  param_get_status(param_t idx, param_status_t *status);
-int  param_set_status(param_t idx, const param_status_t *status);
-bool param_value_unsaved(param_t idx);
-bool param_value_used(param_t idx);
-bool param_value_changed(param_t idx);
+param_status_t param_get_status(param_t idx);
+int            param_set_status(param_t idx, const param_status_t *status);
+bool           param_value_unsaved(param_t idx);
+bool           param_value_used(param_t idx);
+bool           param_value_changed(param_t idx);
 // int  param_set_used(param_t idx);
 // int  param_set_saved(param_t idx);
 // int  param_set_saved_ulog(param_t idx);

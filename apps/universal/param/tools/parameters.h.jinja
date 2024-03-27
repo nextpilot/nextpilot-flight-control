@@ -35,6 +35,7 @@ param_type_t param_get_type(uint16_t idx);
 uint8_t      param_get_size(uint16_t idx);
 param_flag_t param_get_flag(uint16_t idx);
 int          param_get_default_value(uint16_t idx, void *val);
+
 // get/set param value and status
 int            param_get_value(param_t idx, void *val, bool mark_used);
 int            param_set_value(param_t idx, const void *val, bool mark_saved, bool notify_changes);
