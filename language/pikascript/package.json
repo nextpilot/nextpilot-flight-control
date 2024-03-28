@@ -1,0 +1,28 @@
+{
+  "name": "pikascript",
+  "description": "Lightweight Python scripting support tool that is easy to customize",
+  "description_zh": "极易定制的轻量级python脚本支持工具",
+  "enable": "PKG_USING_PIKASCRIPT",
+  "keywords": [
+    "pikascript"
+  ],
+  "category": "language",
+  "author": {
+    "name": "lyon",
+    "email": "645275593@qq.com",
+    "github": "pikasTech"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/pikasTech/pikascript",
+  "icon": "https://user-images.githubusercontent.com/88232613/144221063-a85b2cb0-0416-493f-9afb-56cff31e977d.jpg",
+  "homepage": "https://www.yuque.com/liang-mltek/pikascript/wcc36r",
+  "doc": "https://www.yuque.com/liang-mltek/pikascript/wcc36r",
+  "site": [
+    {
+      "version": "latest",
+      "URL": "https://github.com/pikasTech/pikascript.git",
+      "filename": "Null for git package",
+      "VER_SHA": "master"
+    }
+  ]
+}

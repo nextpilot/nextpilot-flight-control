@@ -1,0 +1,37 @@
+{
+  "name": "bme680",
+  "description": "BME680: Digital 4-in-1 sensor with gas, humidity, pressure and temperature.",
+  "description_zh": "BME680 四合一 MEMS 环境传感器驱动软件包",
+  "enable": "PKG_USING_BME680",
+  "keywords": [
+    "bme680",
+    "IAQ", "gas", "pressure",
+    "humidity", "temperature",
+    "sensor",
+    "bosch"
+  ],
+  "category": "peripherals/sensors",
+  "author": {
+    "name": "luhuadong",
+    "email": "luhuadong@163.com",
+    "github": "luhuadong"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/luhuadong/rtt-bme680",
+  "icon": "unknown",
+  "homepage": "https://github.com/luhuadong/rtt-bme680",
+  "doc": "unknown",
+  "site": [
+    {
+      "version": "v1.0.0",
+      "URL": "https://github.com/luhuadong/rtt-bme680/archive/v1.0.0.zip",
+      "filename": "bme680-v1.0.0.zip"
+    },
+    {
+      "version": "latest",
+      "URL": "https://github.com/luhuadong/rtt-bme680.git",
+      "filename": "bme680-latest.zip",
+      "VER_SHA": "main"
+    }
+  ]
+}

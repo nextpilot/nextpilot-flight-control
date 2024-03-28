@@ -1,0 +1,29 @@
+{
+  "name": "uC_Common",
+  "description": "uC/Common for RT-Thread",
+  "description_zh": "uC/Common for RT-Thread",
+  "enable": "PKG_USING_UC_COMMON",
+  "keywords": [
+    "uC_Common",
+    "uC/Common"
+  ],
+  "category": "system",
+  "author": {
+    "name": "Meco Man",
+    "email": "jiantingman@foxmail.com",
+    "github": "mysterywolf"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/mysterywolf/uC-Common-for-RT-Thread",
+  "icon": "unknown",
+  "homepage": "https://github.com/mysterywolf/uC-Common-for-RT-Thread#readme",
+  "doc": "https://github.com/mysterywolf/uC-Common-for-RT-Thread#readme",
+  "site": [
+    {
+      "version": "latest",
+      "URL": "https://github.com/mysterywolf/uC-Common-for-RT-Thread.git",
+      "filename": "Null for git package",
+      "VER_SHA": "master"
+    }
+  ]
+}

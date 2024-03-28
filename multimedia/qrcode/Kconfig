@@ -1,0 +1,36 @@
+
+# Kconfig file for package qrcode
+menuconfig PKG_USING_QRCODE
+    bool "qrcode: A simple library for generating QR codes in C"
+    default n
+
+if PKG_USING_QRCODE
+
+    config PKG_QRCODE_PATH
+        string
+        default "/packages/multimedia/qrcode"
+
+    config PKG_QRCODE_SAMPLE
+        bool "Enable qrcode sample"
+        default n
+
+    choice
+        prompt "Version"
+        default PKG_USING_QRCODE_LATEST_VERSION
+        help
+            Select the package version
+
+        config PKG_USING_QRCODE_V100
+            bool "v1.0.0"
+
+        config PKG_USING_QRCODE_LATEST_VERSION
+            bool "latest"
+    endchoice
+
+    config PKG_QRCODE_VER
+       string
+       default "v1.0.0"    if PKG_USING_QRCODE_V100
+       default "latest"    if PKG_USING_QRCODE_LATEST_VERSION
+
+endif
+

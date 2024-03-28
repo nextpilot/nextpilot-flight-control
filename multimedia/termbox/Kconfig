@@ -1,0 +1,43 @@
+
+# Kconfig file for package termbox
+menuconfig PKG_USING_TERMBOX
+    bool "termbox: library for writing text-based user interfaces"
+    select RT_USING_POSIX_FS
+    select RT_USING_POSIX_POLL
+    select RT_USING_POSIX_STDIO
+    select RT_USING_POSIX_TERMIOS
+    default n
+    depends on RT_VER_NUM > 0x40100
+
+if PKG_USING_TERMBOX
+
+    config PKG_TERMBOX_PATH
+        string
+        default "/packages/multimedia/termbox"
+
+    config TERMBOX_USING_DEMOS
+        bool "Enable demos"
+        default n
+
+    config TERMBOX_USING_CPP_DEMOS
+        bool "Enable cpp demos"
+        depends on TERMBOX_USING_DEMOS
+        select RT_USING_CPLUSPLUS
+        default n
+
+    choice
+        prompt "Version"
+        default PKG_USING_TERMBOX_LATEST_VERSION
+        help
+            Select the package version
+
+        config PKG_USING_TERMBOX_LATEST_VERSION
+            bool "latest"
+    endchoice
+
+    config PKG_TERMBOX_VER
+       string
+       default "latest"    if PKG_USING_TERMBOX_LATEST_VERSION
+
+endif
+

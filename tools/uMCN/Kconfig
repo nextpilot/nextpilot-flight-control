@@ -1,0 +1,40 @@
+
+# Kconfig file for package uMCN
+menuconfig PKG_USING_UMCN
+    bool "uMCN is a light-weight and powerful IPC library based on the publisher/subscriber model."
+    default n
+
+if PKG_USING_UMCN
+
+    config PKG_UMCN_PATH
+        string
+        default "/packages/tools/uMCN"
+
+    choice
+        prompt "Version"
+        default PKG_USING_UMCN_LATEST_VERSION
+        help
+            Select the package version
+
+        config PKG_USING_UMCN_LATEST_VERSION
+            bool "latest"
+    endchoice
+
+    config PKG_UMCN_VER
+       string
+       default "latest"    if PKG_USING_UMCN_LATEST_VERSION
+
+    config UMCN_USING_DEMO
+        bool
+        prompt "uMCN demo example"
+        default n
+
+    config UMCN_USING_CMD
+        bool
+        prompt "uMCN command"
+        select PKG_USING_OPTPARSE
+        select RT_USING_POSIX_DELAY
+        default n
+
+endif
+

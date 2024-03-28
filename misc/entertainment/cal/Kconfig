@@ -1,0 +1,18 @@
+
+# Kconfig file for package cal
+menuconfig PKG_USING_CAL
+    bool "cal: a terminal calendar"
+    default n
+
+if PKG_USING_CAL
+
+    config PKG_CAL_PATH
+        string
+        default "/packages/misc/entertainment/cal"
+
+    config PKG_CAL_VER
+       string
+       default "latest"
+
+endif
+

@@ -1,0 +1,41 @@
+
+menuconfig PKG_USING_SQLITE
+    bool "SQLite: a self-contained, high-reliability, embedded, full-featured, public-domain, SQL database engine."
+    default n
+    select RT_USING_DFS      if RT_VER_NUM < 0x40100
+    select RT_USING_POSIX_FS if RT_VER_NUM >= 0x40100
+
+if PKG_USING_SQLITE
+
+    config PKG_SQLITE_PATH
+        string
+        default "/packages/system/sqlite"
+
+    config PKG_SQLITE_VER
+        string
+        default "v3.19.3"
+
+    config PKG_SQLITE_SQL_MAX_LEN
+        int "SQL statements max length"
+        default 1024
+
+    config PKG_SQLITE_DB_NAME_MAX_LEN
+        int "Database filename(fullpath) length"
+        range 8 256
+        default 64
+
+    config PKG_SQLITE_DAO_EXAMPLE
+        bool "Enable example"
+            default y
+
+    choice
+        prompt "version"
+        help
+            Select the Sqlite version
+
+        config PKG_USING_SQLITE_V3193
+            bool "v3.19.3"
+    endchoice
+
+endif
+

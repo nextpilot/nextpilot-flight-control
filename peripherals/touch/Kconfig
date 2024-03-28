@@ -1,0 +1,14 @@
+menu "touch drivers"
+
+source "$PKGS_DIR/packages/peripherals/touch/gt9147/Kconfig"
+source "$PKGS_DIR/packages/peripherals/touch/gt1151/Kconfig"
+source "$PKGS_DIR/packages/peripherals/touch/gt917s/Kconfig"
+source "$PKGS_DIR/packages/peripherals/touch/gt911/Kconfig"
+source "$PKGS_DIR/packages/peripherals/touch/ft6206/Kconfig"
+source "$PKGS_DIR/packages/peripherals/touch/ft5426/Kconfig"
+source "$PKGS_DIR/packages/peripherals/touch/ft6236/Kconfig"
+source "$PKGS_DIR/packages/peripherals/touch/xpt2046/Kconfig"
+source "$PKGS_DIR/packages/peripherals/touch/cst816x/Kconfig"
+source "$PKGS_DIR/packages/peripherals/touch/cst812t/Kconfig"
+
+endmenu

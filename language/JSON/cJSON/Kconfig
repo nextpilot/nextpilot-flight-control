@@ -1,0 +1,49 @@
+
+menuconfig PKG_USING_CJSON
+    bool "cJSON: Ultralightweight JSON parser in ANSI C"
+    default n
+
+if PKG_USING_CJSON
+
+    config PKG_CJSON_PATH
+        string
+        default "/packages/language/JSON/cJSON"
+
+    choice
+        prompt "Version"
+        help
+            Select the cJSON version
+
+        config PKG_USING_CJSON_V1717
+            bool "v1.7.17"
+
+        config PKG_USING_CJSON_V1716
+            bool "v1.7.16"
+
+        config PKG_USING_CJSON_V1715
+            bool "v1.7.15"
+
+        config PKG_USING_CJSON_V1714
+            bool "v1.7.14"
+
+        config PKG_USING_CJSON_V159
+            bool "v1.5.9"
+
+        config PKG_USING_CJSON_V102
+            bool "v1.0.2"
+
+        config PKG_USING_CJSON_LATEST_VERSION
+            bool "latest"
+    endchoice
+
+    config PKG_CJSON_VER
+        string
+        default "v1.0.2" if PKG_USING_CJSON_V102
+        default "v1.5.9" if PKG_USING_CJSON_V159
+        default "v1.7.14" if PKG_USING_CJSON_V1714
+        default "v1.7.15" if PKG_USING_CJSON_V1715
+        default "v1.7.16" if PKG_USING_CJSON_V1716
+        default "v1.7.17" if PKG_USING_CJSON_V1717
+        default "latest" if PKG_USING_CJSON_LATEST_VERSION
+
+endif

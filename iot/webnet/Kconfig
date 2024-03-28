@@ -1,0 +1,148 @@
+
+# Kconfig file for package webnet
+menuconfig PKG_USING_WEBNET
+    bool "WebNet: A lightweight, customizable, embeddable Web Server for RT-Thread"
+    select RT_USING_SAL             if RT_VER_NUM < 0x40100
+    select SAL_USING_POSIX          if RT_VER_NUM < 0x40100
+    select RT_USING_DFS             if RT_VER_NUM < 0x40100
+    select RT_USING_POSIX_FS        if RT_VER_NUM >= 0x40100
+    select RT_USING_POSIX_SOCKET    if RT_VER_NUM >= 0x40100
+    default n
+
+if PKG_USING_WEBNET
+
+    config PKG_WEBNET_PATH
+        string
+        default "/packages/iot/webnet"
+
+    config WEBNET_PORT
+        int "Server listen port"
+        default 80
+        range 0 65535
+
+    config WEBNET_CONN_MAX
+        int "Maximum number of server connections"
+        default 16
+        range 1 100
+
+    config WEBNET_ROOT
+        string "Server root directory"
+        default "/webnet"
+
+    menu "Select supported modules"
+
+        config WEBNET_USING_LOG
+            bool "LOG: Enable output log support"
+            default n
+
+        config WEBNET_USING_AUTH
+            bool "AUTH: Enable basic HTTP authentication support"
+            default n
+
+        config WEBNET_USING_CGI
+            bool "CGI: Enable Common Gateway Interface support"
+            default n
+
+        config WEBNET_USING_ASP
+            bool "ASP: Enable Active Server Pages support"
+            default n
+
+        config WEBNET_USING_SSI
+            bool "SSI: Enable Server Side Includes support"
+            default n
+
+        config WEBNET_USING_INDEX
+            bool "INDEX: Enable list all the file in the directory support"
+            default n
+
+        config WEBNET_USING_ALIAS
+            bool "ALIAS: Enable alias support"
+            default n
+
+        config WEBNET_USING_DAV
+            bool "DAV: Enable Web-based Distributed Authoring and Versioning support"
+            default n
+
+        config WEBNET_USING_UPLOAD
+            bool "UPLOAD: Enable upload file support"
+            default n
+
+        config WEBNET_USING_GZIP
+            bool "GZIP: Enable compressed file support by GZIP"
+            default n
+
+        config WEBNET_CACHE_LEVEL
+            int "CACHE: Configure cache level(0:disable 1:use Last-Modified 2:use Cache-Control)"
+            default 0
+            range 0 2
+
+        if WEBNET_CACHE_LEVEL = 2
+
+            config WEBNET_CACHE_MAX_AGE
+            int "Cache-Control time in seconds"
+            default 1800
+
+        endif
+
+        if WEBNET_USING_SSI
+
+            config WEBNET_USING_SSI_VIRTUAL_HANDLER
+                bool "SSI: Enable Virtual callback handler"
+                depends on WEBNET_USING_SSI
+                default n
+
+        endif
+
+    endmenu
+
+    config WEBNET_USING_SAMPLES
+        bool "Enable webnet samples"
+        default n
+        select WEBNET_USING_ASP
+        select WEBNET_USING_AUTH
+        select WEBNET_USING_CGI
+        select WEBNET_USING_INDEX
+        select WEBNET_USING_ALIAS
+        select WEBNET_USING_SSI
+        select WEBNET_USING_UPLOAD
+
+    choice
+        prompt "Version"
+        help
+            Select the webnet version
+        default PKG_USING_WEBNET_V203
+
+        config PKG_USING_WEBNET_V203
+            bool "v2.0.3"
+
+        config PKG_USING_WEBNET_V202
+            bool "v2.0.2"
+
+        config PKG_USING_WEBNET_V201
+            bool "v2.0.1"
+
+        config PKG_USING_WEBNET_V200
+            bool "v2.0.0"
+
+        config PKG_USING_WEBNET_LATEST_VERSION
+            bool "latest"
+    endchoice
+
+    config PKG_WEBNET_VER
+       string
+       default "v2.0.3"    if PKG_USING_WEBNET_V203
+       default "v2.0.2"    if PKG_USING_WEBNET_V202
+       default "v2.0.1"    if PKG_USING_WEBNET_V201
+       default "v2.0.0"    if PKG_USING_WEBNET_V200
+       default "latest"    if PKG_USING_WEBNET_LATEST_VERSION
+
+    config PKG_WEBNET_VER_NUM
+        hex
+        default 0x99999    if PKG_USING_WEBNET_LATEST_VERSION
+        default 0x20000    if PKG_USING_WEBNET_V200
+        default 0x20001    if PKG_USING_WEBNET_V201
+        default 0x20002    if PKG_USING_WEBNET_V202
+        default 0x20003    if PKG_USING_WEBNET_V203
+
+endif
+
