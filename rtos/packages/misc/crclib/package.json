@@ -1,0 +1,46 @@
+{
+  "name": "crclib",
+  "description": "A library of functions with 8-bit ,16-bit ,32-bit crc check calculations",
+  "description_zh": "一个包含8位、16位、32位CRC校验计算的函数库",
+  "enable": "PKG_USING_CRCLIB",
+  "keywords": [
+    "crc",
+    "rt-thread"
+  ],
+  "category": "misc",
+  "author": {
+    "name": "qiyongzhong0",
+    "email": "917768104@qq.com",
+    "github": "qiyongzhong0"
+  },
+  "license": " LGPL-2.1",
+  "repository": "https://github.com/qiyongzhong0/crclib",
+  "icon": "https://www.rt-thread.org/qa/template/fxiaomi/style/image/logo.png",
+  "homepage": "https://github.com/qiyongzhong0/crclib#readme",
+  "site": [
+    {
+      "version": "latest",
+      "URL": "https://github.com/qiyongzhong0/crclib.git",
+      "filename": "",
+      "VER_SHA": "master"
+    },
+    {
+      "version": "v1.02",
+      "URL": "https://github.com/qiyongzhong0/crclib/archive/v1.02.zip",
+      "filename": "crclib-1.02.zip",
+      "VER_SHA": ""
+    },
+    {
+      "version": "v1.01",
+      "URL": "https://github.com/qiyongzhong0/crclib/archive/v1.01.zip",
+      "filename": "crclib-1.01.zip",
+      "VER_SHA": ""
+    },
+    {
+      "version": "v1.00",
+      "URL": "https://github.com/qiyongzhong0/crclib/archive/v1.00.zip",
+      "filename": "crclib-1.00.zip",
+      "VER_SHA": ""
+    }
+  ]
+}

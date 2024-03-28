@@ -1,0 +1,19 @@
+
+# Kconfig file for package tetris
+menuconfig PKG_USING_TETRIS
+    bool "Tetris: An indie puzzle video game run on RT-Thread console"
+    select PKG_USING_VT100
+    default n
+
+if PKG_USING_TETRIS
+
+    config PKG_TETRIS_PATH
+        string
+        default "/packages/misc/entertainment/tetris"
+
+    config PKG_TETRIS_VER
+       string
+       default "latest"
+
+endif
+

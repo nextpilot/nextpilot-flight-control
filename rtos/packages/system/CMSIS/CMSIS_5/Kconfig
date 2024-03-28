@@ -1,0 +1,173 @@
+
+# Kconfig file for package CMSIS_5
+menuconfig PKG_USING_CMSIS_5
+    bool "CMSIS-5 Development"
+    default n
+
+if PKG_USING_CMSIS_5
+
+    config PKG_CMSIS_5_PATH
+        string
+        default "/packages/system/CMSIS/CMSIS_5"
+
+    config PKG_CMSIS_CORE
+        bool "CMSIS core API for Cortex-M"
+        default y
+
+    config PKG_CMSIS_DSP
+        bool "A suite of common signal processing (DSP) functions for Cortex-M"
+        default n
+
+    if PKG_CMSIS_DSP
+        config PKG_CMSIS_DSP_BASIC_MATH
+            bool "Basic math functions"
+            default y
+
+        config PKG_CMSIS_DSP_BAYES
+            bool "Bayes classifier functions"
+            default n
+
+        config PKG_CMSIS_DSP_COMMON_TABLES
+            bool "Common tables"
+            default n
+
+        config PKG_CMSIS_DSP_COMPLEX_MATH
+            bool "Complex math functions"
+            default n
+
+        config PKG_CMSIS_DSP_CONTROLLER
+            bool "Motor control functions"
+            default n
+
+        config PKG_CMSIS_DSP_DISTANCE
+            bool "Distance functions"
+            default n
+
+        config PKG_CMSIS_DSP_FAST_MATH
+            bool "Fast math functions"
+            default n
+
+        config PKG_CMSIS_DSP_FILTERING
+            bool "Filtering functions"
+            default n
+
+        config PKG_CMSIS_DSP_INTERPOLATION
+            bool "Interpolation functions"
+            default n
+
+        config PKG_CMSIS_DSP_MATRIX
+            bool "Matrix functions"
+            default n
+
+        config PKG_CMSIS_DSP_QUATERNION_MATH
+            bool "Quaternion functions"
+            default n
+
+        config PKG_CMSIS_DSP_SVM
+            bool "Support Vector Machine functions (SVM)"
+            default n
+
+        config PKG_CMSIS_DSP_STATISTICS
+            bool "Statistical functions"
+            default n
+
+        config PKG_CMSIS_DSP_SUPPORT
+            bool "Support functions"
+            default n
+
+        config PKG_CMSIS_DSP_TRANSFORM
+            bool "Transform functions"
+            default n
+    endif
+
+    config PKG_CMSIS_NN
+        bool "A collection of efficient neural network (NN) kernels for Cortex-M"
+        default n
+
+    if PKG_CMSIS_NN
+        config PKG_CMSIS_NN_ACTIVATION
+            bool "Activation Functions"
+            default n
+
+        config PKG_CMSIS_NN_BASIC_MATH
+            bool "Basic Math Functions"
+            default y
+
+        config PKG_CMSIS_NN_CONCATENATION
+            bool "Concatenation Functions"
+            default n
+
+        config PKG_CMSIS_NN_CONVOLUTION
+            bool "Convolution Functions"
+            default n
+
+        config PKG_CMSIS_NN_FULLY_CONNECTED
+            bool "Fully-connected Layer Functions"
+            default n
+
+        config PKG_CMSIS_NN_SUPPORT
+            bool "NN Support Functions"
+            default n
+
+        config PKG_CMSIS_NN_POOLING
+            bool "Pooling Functions"
+            default n
+
+        config PKG_CMSIS_NN_RESHAPE
+            bool "Reshape Functions"
+            default n
+
+        config PKG_CMSIS_NN_SVDF
+            bool "SVDF Layer Functions"
+            default n
+
+        config PKG_CMSIS_NN_SOFTMAX
+            bool "Softmax Functions"
+            default n
+    endif
+
+    choice
+        prompt "Version"
+        default PKG_USING_CMSIS_5_V50900
+        help
+            Select the package version
+
+        config PKG_USING_CMSIS_5_LATEST_VERSION
+            bool "latest"
+
+        config PKG_USING_CMSIS_5_V50900
+            bool "v5.9.0"
+
+        config PKG_USING_CMSIS_5_V50800
+            bool "v5.8.0"
+    endchoice
+
+    config PKG_CMSIS_5_VER
+       string
+       default "v5.9.0"    if PKG_USING_CMSIS_5_V50900
+       default "v5.8.0"    if PKG_USING_CMSIS_5_V50800
+       default "latest"    if PKG_USING_CMSIS_5_LATEST_VERSION
+
+    config PKG_CMSIS_5_VER_NUM
+        hex
+        default 0x50900    if PKG_USING_CMSIS_5_V50900
+        default 0x50800    if PKG_USING_CMSIS_5_V50800
+        default 0x99999    if PKG_USING_FLASHDB_LATEST_VERSION
+
+    # ---- auxiliary package ------
+    config PKG_USING_CMSIS_5_AUX
+        bool
+        default y
+
+    if PKG_USING_CMSIS_5_AUX
+        config PKG_CMSIS_5_AUX_PATH
+            string
+            default "/packages/system/CMSIS/CMSIS_5_AUX"
+
+        config PKG_CMSIS_5_AUX_VER
+            string
+            default "latest"
+    endif
+
+endif
+

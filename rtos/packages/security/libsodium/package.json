@@ -1,0 +1,29 @@
+{
+  "name": "libsodium",
+  "description": "A modern and easy-to-use crypto library (NOT Recommended for MCU. Use libhydrogen instead).",
+  "description_zh": "一个现代的、易用的加密库 (不推荐在 MCU 上使用，请用 libhydrogen 替代).",
+  "enable": "PKG_USING_LIBSODIUM",
+  "keywords": [
+    "libsodium",
+    "crypto"
+  ],
+  "category": "security",
+  "author": {
+    "name": "RealThread",
+    "email": "package_team@rt-thread.com",
+    "github": "RT-Thread-packages"
+  },
+  "license": "ISC",
+  "repository": "https://github.com/RT-Thread-packages/libsodium-legacy",
+  "icon": "https://www.rt-thread.org/qa/template/fxiaomi/style/image/logo.png",
+  "homepage": "https://github.com/RT-Thread-packages/libsodium-legacy#readme",
+  "readme": "A modern and easy-to-use crypto library.",
+  "site": [
+    {
+      "version": "latest",
+      "URL": "https://github.com/RT-Thread-packages/libsodium-legacy.git",
+      "filename": "",
+      "VER_SHA": "master"
+    }
+  ]
+}

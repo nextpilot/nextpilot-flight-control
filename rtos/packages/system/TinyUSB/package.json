@@ -1,0 +1,48 @@
+{
+  "name": "TinyUSB",
+  "description": "An open source cross-platform USB stack for embedded system",
+  "description_zh": "用于嵌入式系统的开源跨平台USB协议栈",
+  "enable": "PKG_USING_TINYUSB",
+  "keywords": [
+    "TinyUSB",
+    "USB"
+  ],
+  "category": "system",
+  "author": {
+    "name": "tfx2001",
+    "email": "tfx2001@outlook.com",
+    "github": "tfx2001"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/RT-Thread-packages/tinyusb",
+  "homepage": "https://github.com/RT-Thread-packages/tinyusb#readme",
+  "doc": "unknown",
+  "site": [
+    {
+      "version": "latest",
+      "URL": "https://github.com/RT-Thread-packages/tinyusb.git",
+      "filename": "Null for git package",
+      "VER_SHA": "master"
+    },
+    {
+      "version": "v0.13.0",
+      "URL": "https://github.com/RT-Thread-packages/tinyusb/archive/0.13.0.zip",
+      "filename": "tinyusb-0.13.0.zip"
+    },
+    {
+      "version": "v0.13.1",
+      "URL": "https://github.com/RT-Thread-packages/tinyusb/archive/0.13.1.zip",
+      "filename": "tinyusb-0.13.1.zip"
+    },
+    {
+      "version": "v0.14.0",
+      "URL": "https://github.com/RT-Thread-packages/tinyusb/archive/0.14.0.zip",
+      "filename": "tinyusb-0.14.0.zip"
+    },
+    {
+      "version": "v0.14.1",
+      "URL": "https://github.com/RT-Thread-packages/tinyusb/archive/0.14.1.zip",
+      "filename": "tinyusb-0.14.1.zip"
+    }
+  ]
+}

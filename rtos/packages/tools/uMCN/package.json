@@ -1,0 +1,28 @@
+{
+  "name": "uMCN",
+  "description": "uMCN is a light-weight and powerful IPC module based on the publisher/subscriber model.",
+  "description_zh": "uMCN是一个基于发布者/订阅者模式的轻量级且功能强大的跨线程/进程通信模块。",
+  "enable": "PKG_USING_UMCN",
+  "keywords": [
+    "uMCN"
+  ],
+  "category": "tools",
+  "author": {
+    "name": "JCZou",
+    "email": "jiachi.zou@gmail.com",
+    "github": "JCZou"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/JcZou/uMCN",
+  "icon": "unknown",
+  "homepage": "https://github.com/Firmament-Autopilot",
+  "doc": "https://firmament-autopilot.github.io/FMT-DOCS/#/",
+  "site": [
+    {
+      "version": "latest",
+      "URL": "https://github.com/JcZou/uMCN.git",
+      "filename": "uMCN.zip",
+      "VER_SHA": "master"
+    }
+  ]
+}

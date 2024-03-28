@@ -1,0 +1,121 @@
+
+# Kconfig file for package littlefs
+menuconfig PKG_USING_LITTLEFS
+    bool "Littlefs: A high-integrity embedded file system"
+    select RT_USING_MTD_NOR
+    default n
+
+if PKG_USING_LITTLEFS
+
+    config PKG_LITTLEFS_PATH
+        string
+        default "/packages/system/littlefs"
+
+    choice
+        prompt "Version"
+        default PKG_USING_LITTLEFS_V250  if RT_VER_NUM < 0x50000
+        default PKG_USING_LITTLEFS_LATEST_VERSION
+        help
+            Select the package version
+
+        config PKG_USING_LITTLEFS_V090
+            bool "v0.9.0"
+
+        config PKG_USING_LITTLEFS_V170
+            bool "v1.7.0"
+
+        config PKG_USING_LITTLEFS_V172
+            bool "v1.7.2"
+
+        config PKG_USING_LITTLEFS_V201
+            bool "v2.0.1"
+
+        config PKG_USING_LITTLEFS_V205
+            bool "v2.0.5"
+
+        config PKG_USING_LITTLEFS_V214
+            bool "v2.1.4"
+
+        config PKG_USING_LITTLEFS_V220
+            bool "v2.2.0"
+
+        config PKG_USING_LITTLEFS_V221
+            bool "v2.2.1"
+
+        config PKG_USING_LITTLEFS_V230
+            bool "v2.3.0"
+
+        config PKG_USING_LITTLEFS_V250
+            bool "v2.5.0"
+
+        config PKG_USING_LITTLEFS_LATEST_VERSION
+            bool "latest"
+    endchoice
+
+    config LFS_READ_SIZE
+        int "disk read size"
+        default 256
+
+    config LFS_PROG_SIZE
+        int "disk write size"
+        default 256
+
+    config LFS_BLOCK_SIZE
+        int "disk block size"
+        default 4096
+
+    if PKG_USING_LITTLEFS_V090 || PKG_USING_LITTLEFS_V170 || PKG_USING_LITTLEFS_V172
+        config LFS_LOOKAHEAD
+            int "lfs lookahead size"
+            default 128
+    endif
+
+    if !(PKG_USING_LITTLEFS_V090 || PKG_USING_LITTLEFS_V170 || PKG_USING_LITTLEFS_V172)
+        config LFS_CACHE_SIZE
+            int "lfs r/w cache size"
+            default LFS_PROG_SIZE
+        if (PKG_USING_LITTLEFS_V201 || PKG_USING_LITTLEFS_V205)
+        config LFS_BLOCK_CYCLES
+            int "lfs enable wear leveling. 0 is disable."
+            default 0
+        endif
+        if !(PKG_USING_LITTLEFS_V201 || PKG_USING_LITTLEFS_V205)
+        config LFS_BLOCK_CYCLES
+            int "lfs enable wear leveling. -1 is disable."
+            default -1
+        endif
+
+        config DFS_LFS_READONLY
+            bool "lfs enable readonly system"
+            default 0
+            if DFS_LFS_READONLY
+            config LFS_READONLY
+                bool
+                default y
+            endif
+
+        config LFS_THREADSAFE
+            bool
+            default y
+
+        config LFS_LOOKAHEAD_MAX
+            int "lfs lookahead size"
+            default 128
+    endif
+
+    config PKG_LITTLEFS_VER
+       string
+       default "v0.9.0" if PKG_USING_LITTLEFS_V090
+       default "v1.7.0" if PKG_USING_LITTLEFS_V170
+       default "v1.7.2" if PKG_USING_LITTLEFS_V172
+       default "v2.0.1" if PKG_USING_LITTLEFS_V201
+       default "v2.0.5" if PKG_USING_LITTLEFS_V205
+       default "v2.1.4" if PKG_USING_LITTLEFS_V214
+       default "v2.2.0" if PKG_USING_LITTLEFS_V220
+       default "v2.2.1" if PKG_USING_LITTLEFS_V221
+       default "v2.3.0" if PKG_USING_LITTLEFS_V230
+       default "v2.5.0" if PKG_USING_LITTLEFS_V250
+       default "latest" if PKG_USING_LITTLEFS_LATEST_VERSION
+
+endif
+

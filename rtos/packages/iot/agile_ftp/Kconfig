@@ -1,0 +1,42 @@
+
+# Kconfig file for package agile_ftp
+menuconfig PKG_USING_AGILE_FTP
+    bool "agile_ftp: Lightweight ftp server."
+    default n
+    select RT_USING_SAL             if RT_VER_NUM < 0x40100
+    select SAL_USING_POSIX          if RT_VER_NUM < 0x40100
+    select RT_USING_DFS             if RT_VER_NUM < 0x40100
+    select RT_USING_POSIX_FS        if RT_VER_NUM >= 0x40100
+    select RT_USING_POSIX_SOCKET    if RT_VER_NUM >= 0x40100
+
+if PKG_USING_AGILE_FTP
+
+    config PKG_AGILE_FTP_PATH
+        string
+        default "/packages/iot/agile_ftp"
+
+    choice
+        prompt "Version"
+        default PKG_USING_AGILE_FTP_LATEST_VERSION
+        help
+            Select the package version
+
+        config PKG_USING_AGILE_FTP_V100
+            bool "v1.0.0"
+
+        config PKG_USING_AGILE_FTP_LATEST_VERSION
+            bool "latest"
+    endchoice
+
+    config PKG_AGILE_FTP_VER
+       string
+       default "v1.0.0"    if PKG_USING_AGILE_FTP_V100
+       default "latest"    if PKG_USING_AGILE_FTP_LATEST_VERSION
+
+    config PKG_AGILE_FTP_VER_NUM
+        hex
+        default 0x10000    if PKG_USING_AGILE_FTP_V100
+        default 0x99999    if PKG_USING_AGILE_FTP_LATEST_VERSION
+
+endif
+
