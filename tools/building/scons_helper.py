@@ -157,7 +157,7 @@ def get_project_option():
     __options__["BSP_ROOT"] = BSP_ROOT
     __options__["RTT_ROOT"] = RTT_ROOT
     __options__["SDK_ROOT"] = SDK_ROOT
-    # __options__["PKG_ROOT"] = PKG_ROOT
+    __options__["PKG_ROOT"] = PKG_ROOT
     __options__["BSP_NAME"] = BSP_NAME
     __options__["RTT_ENV_ROOT"] = RTT_ENV_ROOT
     __options__["RTT_STD_ROOT"] = RTT_STD_ROOT
@@ -172,6 +172,7 @@ def get_project_option():
     os.environ["PRJ_DIR"] = PRJ_ROOT
     os.environ["SDK_DIR"] = SDK_ROOT
     os.environ["BSP_DIR"] = BSP_ROOT
+    os.environ["PKGS_DIR"] = os.path.join(PRJ_ROOT, "rtos")
 
     return __options__
 

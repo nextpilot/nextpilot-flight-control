@@ -1,1 +1,2 @@
-orsource "*/Kconfig"
+orsource "rt-thread/Kconfig"
+orsource "packages/Kconfig"
