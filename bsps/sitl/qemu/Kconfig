@@ -1,4 +1,4 @@
-mainmenu "RT-Thread Project Configuration"
+mainmenu "Nexpilot Project Configuration"
 
 config BSP_DIR
     string
@@ -20,7 +20,17 @@ config PKGS_DIR
     option env="PKGS_ROOT"
     default "../../../tools/packages"
 
-source "$RTT_DIR/Kconfig"
-source "$PKGS_DIR/Kconfig"
-source "$BSP_DIR/drivers/Kconfig"
-source "$PRJ_DIR/apps/Kconfig"
+# bsp
+menu "Nextpilot Hardware Config" 
+orsource "*/Kconfig"
+endmenu
+
+# apps
+source "../../../*/Kconfig"
+
+# rthread
+#source "$RTT_DIR/Kconfig"
+
+# online package
+#source "$PKGS_DIR/Kconfig"
+

@@ -1,4 +1,4 @@
-menu "Nextpilot Hardware Config"
+menu "Hardware Driver Config"
 
 config BSP_USING_QEMU
     bool
