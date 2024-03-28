@@ -1,0 +1,3 @@
+menuconfig PKG_USING_GETOPT
+    bool "getopt: Minimal, thread safe version of getopt"
+    default n

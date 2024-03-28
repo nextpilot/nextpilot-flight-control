@@ -1,3 +1,0 @@
-config LIB_USING_QUEUE
- bool "queue : single/double linked list based C language"
- default n

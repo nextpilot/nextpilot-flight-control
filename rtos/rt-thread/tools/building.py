@@ -339,7 +339,6 @@ def PrepareBuilding(env, root_directory, has_libcpu=False, remove_components = [
         mk_rtconfig(configfn)
         exit(0)
 
-
     if not GetOption('verbose'):
         # override the default verbose command string
         env.Replace(
@@ -360,7 +359,7 @@ def PrepareBuilding(env, root_directory, has_libcpu=False, remove_components = [
     # have their own components etc. If they point to the same folder, SCons
     # would find the wrong source code to compile.
     bsp_vdir = 'build'
-    kernel_vdir = 'build/kernel'
+    kernel_vdir = "#/build/rtos/rt-thread"  # kernel
     # board build script
     objs = SConscript('SConscript', variant_dir=bsp_vdir, duplicate=0)
     # include kernel

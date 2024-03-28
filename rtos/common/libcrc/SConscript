@@ -1,0 +1,12 @@
+import os
+import rtconfig
+from building import *
+
+cwd = GetCurrentDir()
+
+src = Glob("*.c")
+inc = [cwd]
+
+objs = DefineGroup("pkg/common", src, depend=["PKG_USING_LIBCRC"], CPPPATH=inc)
+
+Return("objs")

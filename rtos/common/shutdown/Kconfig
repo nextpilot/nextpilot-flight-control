@@ -1,0 +1,19 @@
+menuconfig PKG_USING_SHUTDOWN
+    bool "shutdown: Power-related API"
+    default n
+
+if PKG_USING_SHUTDOWN
+
+config BOARD_HAS_POWER_CONTROL
+    bool "BOARD_HAS_POWER_CONTROL"
+    default n
+
+config CONFIG_BOARDCTL_RESET
+    bool "CONFIG_BOARDCTL_RESET"
+    default n
+
+config CONFIG_BOARDCTL_POWEROFF
+    bool "CONFIG_BOARDCTL_POWEROFF"
+    default n
+
+endif
