@@ -14,8 +14,8 @@
 #define ATOMIC_ENTER rt_enter_critical()
 #define ATOMIC_LEAVE rt_exit_critical()
 
-#define ORB_MULTI_MAX_INSTANCES 4
-#define ORB_TOPICS_COUNT        10
+// #define ORB_MULTI_MAX_INSTANCES 4
+#define ORB_TOPICS_COUNT 10
 
 #define ORB_BITS_PER_ELEM (32)
 #define ORB_TOTAL_BITS    (ORB_TOPICS_COUNT * ORB_MULTI_MAX_INSTANCES)
@@ -61,6 +61,10 @@ static inline uint8_t round_pow_of_two_8(uint8_t n) {
 }
 
 bool uorb_device_is_exist(ORB_ID orb_id, uint8_t instance) {
+    if (/*orb_id == ORB_ID::INVALID ||*/
+        (instance > ORB_MULTI_MAX_INSTANCES)) {
+        return false;
+    }
     uint32_t idx = orb_id * ORB_MULTI_MAX_INSTANCES + instance;
     uint32_t grp = idx / ORB_BITS_PER_ELEM;
     uint32_t bit = idx % ORB_BITS_PER_ELEM;
@@ -69,6 +73,11 @@ bool uorb_device_is_exist(ORB_ID orb_id, uint8_t instance) {
 }
 
 void uorb_device_set_exist(ORB_ID orb_id, uint8_t instance) {
+    if (/*orb_id == ORB_ID::INVALID ||*/
+        (instance > ORB_MULTI_MAX_INSTANCES)) {
+        return;
+    }
+
     uint32_t idx = orb_id * ORB_MULTI_MAX_INSTANCES + instance;
     uint32_t grp = idx / ORB_BITS_PER_ELEM;
     uint32_t bit = idx % ORB_BITS_PER_ELEM;
@@ -97,7 +106,7 @@ bool uorb_device_copy(uorb_device_t node, void *dst, uint32_t *generation) {
     if ((dst != NULL) && (node->data != NULL)) {
         if (node->queue_size == 1) {
             ATOMIC_ENTER;
-            memcpy(dst, node->data, node->meta->o_size);
+            rt_memcpy(dst, node->data, node->meta->o_size);
             *generation = rt_atomic_load(&node->generation);
             ATOMIC_LEAVE;
             return true;
@@ -119,7 +128,7 @@ bool uorb_device_copy(uorb_device_t node, void *dst, uint32_t *generation) {
                 *generation = current_generation - node->queue_size;
             }
 
-            memcpy(dst, node->data + (node->meta->o_size * (*generation % node->queue_size)), node->meta->o_size);
+            rt_memcpy(dst, node->data + (node->meta->o_size * (*generation % node->queue_size)), node->meta->o_size);
             ATOMIC_LEAVE;
 
             ++(*generation);
@@ -162,7 +171,7 @@ int uorb_device_unadvertise(uorb_device_t node) {
     }
 
     node->advertised = false;
-    return;
+    return 0;
 }
 
 void uorb_device_add_internal_subscriber(uorb_device_t node) {
@@ -199,9 +208,11 @@ bool uorb_device_register_callback(uorb_device_t node, void *callback_sub) {
     if (!callback_sub) {
         return false;
     }
+
+    return true;
 }
 
-uorb_device_t *uorb_device_get_node(const struct orb_metadata *meta, uint8_t instance) {
+uorb_device_t uorb_device_get_node(const struct orb_metadata *meta, uint8_t instance) {
     if (!meta) {
         return NULL;
     }

@@ -17,21 +17,25 @@
 #include <uORB.h>
 
 struct uorb_device_node {
-    // rt_device_t   parent;
-    rt_list_t     list;
-    orb_metadata *meta;
-    uint8_t      *data;
-    bool          data_valid;
-    rt_atomic_t   generation;
-    uint8_t       instance;
-    bool          advertised;
-    uint8_t       queue_size;
-    int8_t        subscriber_count;
-
-    struct uorb_device_node *_head;
+    rt_list_t            list;
+    struct orb_metadata *meta;
+    uint8_t             *data;
+    bool                 data_valid;
+    rt_atomic_t          generation;
+    uint8_t              instance;
+    bool                 advertised;
+    uint8_t              queue_size;
+    int8_t               subscriber_count;
 };
 
 typedef struct uorb_device_node *uorb_device_t;
+typedef struct uorb_device_node *orb_advert_t;
+
+uorb_device_t uorb_device_get_node(const struct orb_metadata *meta, uint8_t instance);
+bool          uorb_device_is_exist(ORB_ID orb_id, uint8_t instance);
+
+int  uorb_device_unadvertise(uorb_device_t node);
+bool uorb_device_publish(uorb_device_t node, const void *data);
 
 #ifdef __cplusplus
 namespace nextpilot::uORB {

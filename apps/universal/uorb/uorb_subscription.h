@@ -14,6 +14,8 @@
 #include <rtthread.h>
 #include <stdint.h>
 
+#define __EXPORT
+
 typedef uint16_t ORB_ID;
 
 struct uorb_subscription {
@@ -23,7 +25,69 @@ struct uorb_subscription {
     uint8_t  _instance;
 };
 
-typedef struct uorb_subscription *uorb_subscription_t;
+typedef struct uorb_subscription  orb_subval_t;
+typedef struct uorb_subscription *orb_subptr_t;
+
+/**
+ * @see uORB::Manager::orb_subscribe()
+ */
+// orb_subval_t orb_subscribe(const struct orb_metadata *meta) __EXPORT;
+
+/**
+ * @see uORB::Manager::orb_subscribe_multi()
+ */
+// extern orb_subval_t orb_subscribe_multi(const struct orb_metadata *meta, unsigned instance) __EXPORT;
+
+/**
+ * @see uORB::Manager::orb_unsubscribe()
+ */
+// extern int orb_unsubscribe(orb_subptr_t handle) __EXPORT;
+
+/**
+ * @see uORB::Manager::orb_copy()
+ */
+// extern int orb_copy(const struct orb_metadata *meta, int handle, void *buffer) __EXPORT;
+
+/**
+ * @see uORB::Manager::orb_check()
+ */
+// extern int orb_check(int handle, bool *updated) __EXPORT;
+
+/**
+ * @see uORB::Manager::orb_exists()
+ */
+// extern int orb_exists(const struct orb_metadata *meta, int instance) __EXPORT;
+
+/**
+ * Get the number of published instances of a topic group
+ *
+ * @param meta    ORB topic metadata.
+ * @return    The number of published instances of this topic
+ */
+// extern int orb_group_count(const struct orb_metadata *meta) __EXPORT;
+
+/**
+ * @see uORB::Manager::orb_set_interval()
+ */
+// extern int orb_set_interval(int handle, unsigned interval) __EXPORT;
+
+/**
+ * @see uORB::Manager::orb_get_interval()
+ */
+// extern int orb_get_interval(int handle, unsigned *interval) __EXPORT;
+
+/**
+ * Returns the C type string from a short type in o_fields metadata, or nullptr
+ * if not a short type
+ */
+// const char *orb_get_c_type(unsigned char short_type);
+
+/**
+ * Print a topic to console. Do not call this directly, use print_message() instead.
+ * @param meta orb topic metadata
+ * @param data expected to be aligned to the largest member
+ */
+// void orb_print_message_internal(const struct orb_metadata *meta, const void *data, bool print_topic_name);
 
 #ifdef __cplusplus
 namespace nextpilot::uORB {

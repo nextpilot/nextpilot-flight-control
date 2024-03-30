@@ -108,12 +108,7 @@
 			"xutility": "c",
 			"string": "c",
 			"unordered_map": "c",
-			"string_view": "c",
-			"param_storage.h": "c",
-			"queue.h": "c",
-			"uorb.h": "c",
-			"mutex": "cpp",
-			"uorb_device_node.h": "c"
+			"string_view": "c"
 		},
 		"RTT_Studio.Build.Parallel_Jobs": "12",
 		"RTT_Studio.Env_Location": "C:/RT-ThreadStudio/platform/env_released/env",
