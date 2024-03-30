@@ -1,6 +1,56 @@
 #ifndef RT_CONFIG_H__
 #define RT_CONFIG_H__
 
+/* Nextpilot Hardware Config */
+
+/* Hardware Driver Config */
+
+#define BSP_USING_QEMU
+#define SOC_VEXPRESS_A9
+
+/* Onboard Peripheral Drivers */
+
+#define RT_USING_UART0
+#define RT_USING_UART1
+/* end of Onboard Peripheral Drivers */
+/* end of Hardware Driver Config */
+/* end of Nextpilot Hardware Config */
+
+/* Nextpilot Firmware Config */
+
+/* Nextpilot Airframe Config */
+
+/* Nextpilot Bootloader Config */
+
+/* Nextpilot Controller Config */
+
+/* Nextpilot Estimator Config */
+
+/* Nextpilot Libraries Config */
+
+/* common packages */
+
+/* end of Nextpilot Libraries Config */
+
+/* Nextpilot Peripheral Config */
+
+/* Nextpilot Simulation Config */
+
+/* Nextpilot Telemetry Config */
+
+/* Nextpilot Universal Config */
+
+#define SYS_USING_PARAM
+#define PARAM_USING_GLOBAL_AUTOGEN
+#define PARAM_USING_STORAGE_FILE
+#define PARAM_DEFAULT_FILE_PATH "/param.bin"
+/* end of Nextpilot Universal Config */
+/* end of Nextpilot Firmware Config */
+
+/* Nextpilot Packages Config */
+
+/* end of Nextpilot Packages Config */
+
 /* RT-Thread Kernel */
 
 #define RT_NAME_MAX 8
@@ -25,7 +75,6 @@
 #define RT_USING_DEBUG
 #define RT_DEBUGING_COLOR
 #define RT_DEBUGING_CONTEXT
-#define RT_DEBUGING_INIT
 
 /* Inter-Thread communication */
 
@@ -59,6 +108,7 @@
 #define RT_CONSOLE_DEVICE_NAME "uart0"
 /* end of Kernel Device Object */
 #define RT_VER_NUM 0x50002
+#define RT_USING_STDC_ATOMIC
 /* end of RT-Thread Kernel */
 #define RT_USING_CACHE
 #define RT_USING_HW_ATOMIC
@@ -226,10 +276,12 @@
 #define ULOG_OUTPUT_FLOAT
 #define ULOG_USING_COLOR
 #define ULOG_OUTPUT_TIME
+#define ULOG_TIME_USING_TIMESTAMP
 #define ULOG_OUTPUT_LEVEL
 #define ULOG_OUTPUT_TAG
 /* end of log format */
 #define ULOG_BACKEND_USING_CONSOLE
+#define ULOG_BACKEND_USING_FILE
 #define RT_USING_RESOURCE_ID
 #define RT_USING_ADT
 #define RT_USING_ADT_AVL
@@ -429,50 +481,5 @@
 
 /* end of Arduino libraries */
 /* end of RT-Thread online packages */
-
-/* Nextpilot Hardware Config */
-
-#define BSP_USING_QEMU
-#define SOC_VEXPRESS_A9
-
-/* Onboard Peripheral Drivers */
-
-#define RT_USING_UART0
-#define RT_USING_UART1
-/* end of Onboard Peripheral Drivers */
-/* end of Nextpilot Hardware Config */
-
-/* Nextpilot Firmware Config */
-
-/* Nextpilot Airframe Config */
-
-/* Nextpilot Bootloader Config */
-
-/* Nextpilot Controller Config */
-
-/* Nextpilot Estimator Config */
-
-/* Nextpilot Libraries Config */
-
-/* common packages */
-
-#define LIB_USING_LIBCRC
-/* end of common packages */
-/* end of Nextpilot Libraries Config */
-
-/* Nextpilot Peripheral Config */
-
-/* Nextpilot Simulation Config */
-
-/* Nextpilot Telemetry Config */
-
-/* Nextpilot Universal Config */
-
-#define SYS_USING_PARAM
-#define PARAM_USING_GLOBAL_AUTOGEN
-#define PARAM_USING_STORAGE_FILE
-#define PARAM_DEFAULT_FILE_PATH "/param.bin"
-/* end of Nextpilot Universal Config */
-/* end of Nextpilot Firmware Config */
 
 #endif
