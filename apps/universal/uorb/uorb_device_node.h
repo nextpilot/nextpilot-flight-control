@@ -17,15 +17,19 @@
 #include <uORB.h>
 
 struct uorb_device_node {
-    rt_list_t            list;
-    struct orb_metadata *meta;
-    uint8_t             *data;
-    bool                 data_valid;
-    rt_atomic_t          generation;
-    uint8_t              instance;
-    bool                 advertised;
-    uint8_t              queue_size;
-    int8_t               subscriber_count;
+    rt_list_t                  list;
+    const struct orb_metadata *meta;
+    uint8_t                   *data;       // 数据指针，只有publish的时候才会去分配
+    bool                       data_valid; // data是否已经发布过一次
+    rt_atomic_t                generation; // 发布数据次数
+    uint8_t                    instance;   // 主题的第instance个实例
+    // advertised是占位符，只有公告的主题才能进行copy和publish
+    // 因为有些特殊情况，需要订阅某个还没有创建的主题，且必须现在就拿到主题的地址
+    // 这个时候会新建这个主题，并标记为advertised=false，表示我先占坑
+    // 等下次调用orb_advertise函数的时候，使用这个坑就可以，advertised=true
+    bool    advertised;       // placeholder
+    uint8_t queue_size;       // data中保存多少拍的数据
+    int8_t  subscriber_count; // 订阅者数量
 };
 
 typedef struct uorb_device_node *uorb_device_t;
@@ -34,8 +38,10 @@ typedef struct uorb_device_node *orb_advert_t;
 uorb_device_t uorb_device_get_node(const struct orb_metadata *meta, uint8_t instance);
 bool          uorb_device_is_exist(ORB_ID orb_id, uint8_t instance);
 
-int  uorb_device_unadvertise(uorb_device_t node);
-bool uorb_device_publish(uorb_device_t node, const void *data);
+uorb_device_t uorb_device_create(const struct orb_metadata *meta, const uint8_t instance, uint8_t queue_size);
+int           uorb_device_delete(uorb_device_t node);
+bool          uorb_device_publish(uorb_device_t node, const void *data);
+bool          uorb_device_copy(uorb_device_t node, void *dst, uint32_t *generation);
 
 #ifdef __cplusplus
 namespace nextpilot::uORB {

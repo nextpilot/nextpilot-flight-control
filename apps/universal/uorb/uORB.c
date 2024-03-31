@@ -20,6 +20,7 @@ int orb_exists(const struct orb_metadata *meta, int instance) {
         return -1;
     }
 
+    // instance valid range: [0, ORB_MULTI_MAX_INSTANCES)
     if (instance < 0 || instance > (ORB_MULTI_MAX_INSTANCES - 1)) {
         return -1;
     }
@@ -31,6 +32,13 @@ int orb_exists(const struct orb_metadata *meta, int instance) {
     }
 
     return -1;
+}
+
+// 注意跟orb_exists的区别
+// orb_device_node_exists仅仅判断节点是否存在
+// orb_exist需要还需判断节点是否advertised的
+bool orb_device_node_exists(ORB_ID orb_id, uint8_t instance) {
+    return uorb_device_is_exist(orb_id, instance);
 }
 
 int orb_group_count(const struct orb_metadata *meta) {
@@ -91,10 +99,6 @@ uint8_t orb_get_instance(const uorb_device_t node) {
     return node->instance;
 }
 
-bool orb_device_node_exists(ORB_ID orb_id, uint8_t instance) {
-    return uorb_device_is_exist(orb_id, instance);
-}
-
 static bool orb_data_copy(uorb_device_t node, void *dst, uint32_t *generation, bool only_if_updated) {
     if (!orb_is_advertised(node)) {
         return false;
@@ -109,13 +113,85 @@ static bool orb_data_copy(uorb_device_t node, void *dst, uint32_t *generation, b
     return true;
 }
 
-orb_advert_t orb_advertise_multi(const struct orb_metadata *meta, const void *data, int *instance,
+// 广告新主题，并指定queue_size
+// 当instance=NULL是表示只广告instance=0的主题
+// 当instance!=NULL则公告新主题，返回instance
+orb_advert_t orb_advertise_multi_queue(const struct orb_metadata *meta, const void *data, int *instance,
+                                       unsigned int queue_size) {
+    if (!meta) {
+        return NULL;
+    }
+
+    orb_advert_t node = NULL;
+
+    // 允许的最大instance个数
+    int max_inst = ORB_MULTI_MAX_INSTANCES;
+    int inst     = 0;
+
+    // instance=NULL，表示只公告inst=0主题
+    if (!instance) {
+        node = uorb_device_get_node(meta, 0); //  查找inst=0主题
+        if (node) {
+            max_inst = 0; // 查找到不需要创建
+        } else {
+            max_inst = 1; // 没有查到到，后面代码创建
+        }
+    }
+
+    // 搜索实例是否存在，不存在则创建，存在则判断是否公告
+    for (inst = 0; inst < max_inst; inst++) {
+        node = uorb_device_get_node(meta, inst);
+        if (node) {
+            if (!node->advertised) {
+                break;
+            }
+        } else {
+            node = uorb_device_create(meta, inst, queue_size);
+            break;
+        }
+    }
+
+    // 如果node找到/创建成功，发布首次数据，且返回instance
+    if (node) {
+        // 标记为已经公告，只有公告过的主题才能copy和publish数据
+        node->advertised = true;
+        if (data) {
+            orb_publish(meta, node, data);
+        }
+        // 返回inst
+        if (instance) {
+            *instance = inst;
+        }
+    }
+
+    return node;
+}
+
+// 广告新主题，使用默认queue_size=1
+// 当instance=NULL是表示只广告instance=0的主题
+// 当instance!=NULL则公告新主题，返回instance
+orb_advert_t orb_advertise_multi(const struct orb_metadata *meta, const void *data, int *instance) {
+    return orb_advertise_multi_queue(meta, data, instance, 1);
+}
+
+// 广告instance=0的主题，并指定queue_size
+orb_advert_t orb_advertise_queue(const struct orb_metadata *meta, const void *data,
                                  unsigned int queue_size) {
-    return 0;
+    return orb_advertise_multi_queue(meta, data, NULL, queue_size);
+}
+
+// 广告instance = 0的主题使用默认queue_size=1
+orb_advert_t orb_advertise(const struct orb_metadata *meta, const void *data) {
+    return orb_advertise_multi_queue(meta, data, NULL, 1);
 }
 
 int orb_unadvertise(orb_advert_t node) {
-    return uorb_device_unadvertise(node);
+    if (!node) {
+        return -1;
+    }
+
+    node->advertised = false;
+    return 0;
 }
 
 int orb_publish(const struct orb_metadata *meta, orb_advert_t node, const void *data) {
