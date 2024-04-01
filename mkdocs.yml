@@ -43,10 +43,13 @@ site_dir: build
 theme:
   name: material
   features:
+    - navigation.instant
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.indexes
     - seach.highlight
+    - search.suggest
+    - search.share
   language: zh
   icon:
     admonition:
@@ -109,6 +112,9 @@ plugins:
 
 
 extra:
+  version:
+    method: mike
+  generator: false
   alternate:
     # Switch to English
     - name: English
