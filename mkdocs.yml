@@ -8,11 +8,16 @@ repo_url: https://github.com/nextpilot/nextpilot-flight-control/
 
 edit_uri: blob/master/docs/
 # edit_uri_template: 'blob/main/docs/{path}'
-# site_description:
-# site_author:
 # remote_branch: gh-pages
 # remote_name: origin
 
+docs_dir: docs
+site_dir: build/gh-pages
+
+use_directory_urls: false
+dev_addr: "127.0.0.1:8000"
+
+copyright: Copyright &copy; 2015-2024 <a href="https://www.nextpilot.com">Nextpilot Develop Team</a>, Maintained by <a href="/about/release-notes/#maintenance-team">LaterComer</a>.
 
 # nav:
 #     - 主页: index.md
@@ -27,18 +32,6 @@ edit_uri: blob/master/docs/
 #       - 集成测试: develop/testing
 #       - 代码贡献: develop/contribute
 #     - 关于我们: aboutus
-
-docs_dir: docs
-site_dir: build
-
-# theme:
-#     name: mkdocs
-#     locale: en
-#     analytics: {gtag: 'G-274394082'}
-#     highlightjs: true
-#     hljs_languages:
-#         - yaml
-#         - django
 
 theme:
   name: material
@@ -69,24 +62,21 @@ theme:
       example: octicons/beaker-16
       quote: octicons/quote-16
 
-use_directory_urls: false
-dev_addr: '127.0.0.1:8000'
-
 markdown_extensions:
-    - toc:
-        permalink: True
-        separator: "_"
-    - attr_list
-    - def_list
-    - tables
-    - admonition
-    - pymdownx.highlight:
-          use_pygments: false
-          anchor_linenums: true
-    - pymdownx.inlinehilite
-    - pymdownx.snippets
-    - pymdownx.details
-    - pymdownx.superfences
+  - toc:
+      permalink: True
+      separator: "_"
+  - attr_list
+  - def_list
+  - tables
+  - admonition
+  - pymdownx.highlight:
+      use_pygments: false
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.details
+  - pymdownx.superfences
 
 # - mdx_gh_links:
 #       user: mkdocs
@@ -95,10 +85,8 @@ markdown_extensions:
 
 # - callouts
 
-copyright: Copyright &copy; 2015-2024 <a href="https://www.nextpilot.com">Nextpilot Develop Team</a>, Maintained by <a href="/about/release-notes/#maintenance-team">LaterComer</a>.
-
 plugins:
-    - search
+  - search
 #     - autorefs
 #     - literate-nav:
 #         nav_file: README.md
@@ -112,7 +100,6 @@ plugins:
 #               show_root_heading: true
 #               show_source: false
 #               show_signature_annotations: true
-
 
 extra:
   version:
