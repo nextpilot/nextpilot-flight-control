@@ -1,0 +1,121 @@
+site_name: NextPilot Flight Control System
+site_url: http://docs.nextpilot.com
+site_author: NextPilot Develop Team
+site_description: NextPilot 一款基于RT-thread和Simulink MBD的国产飞行控制系统
+
+repo_name: nextpilot-flight-control
+repo_url: https://github.com/nextpilot/nextpilot-flight-control/
+
+edit_uri: blob/master/docs/
+# edit_uri_template: 'blob/main/docs/{path}'
+# site_description:
+# site_author:
+# remote_branch: gh-pages
+# remote_name: origin
+
+
+# nav:
+#     - 主页: index.md
+#     - 用户手册:
+#       - 入门指南: userguide/getting-started
+#     - 开发指南:
+#       - 入门指南: develop/getting-started
+#       - 核心组件: develop/modules
+#       - 飞行仿真: develop/simulation
+#       - 分析调试: develop/debugging
+#       - 高级功能: develop/advance
+#       - 集成测试: develop/testing
+#       - 代码贡献: develop/contribute
+#     - 关于我们: aboutus
+
+docs_dir: docs
+site_dir: build
+
+# theme:
+#     name: mkdocs
+#     locale: en
+#     analytics: {gtag: 'G-274394082'}
+#     highlightjs: true
+#     hljs_languages:
+#         - yaml
+#         - django
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.indexes
+    - seach.highlight
+  language: zh
+  icon:
+    admonition:
+      note: octicons/tag-16
+      abstract: octicons/checklist-16
+      info: octicons/info-16
+      tip: octicons/squirrel-16
+      success: octicons/check-16
+      question: octicons/question-16
+      warning: octicons/alert-16
+      failure: octicons/x-circle-16
+      danger: octicons/zap-16
+      bug: octicons/bug-16
+      example: octicons/beaker-16
+      quote: octicons/quote-16
+
+use_directory_urls: false
+dev_addr: '127.0.0.1:8000'
+
+markdown_extensions:
+    - toc:
+        permalink: True
+        separator: "_"
+    - attr_list
+    - def_list
+    - tables
+    - admonition
+    - pymdownx.highlight:
+          use_pygments: false
+          anchor_linenums: true
+    - pymdownx.inlinehilite
+    - pymdownx.snippets
+    - pymdownx.details
+    - pymdownx.superfences
+
+# - mdx_gh_links:
+#       user: mkdocs
+#       repo: mkdocs
+# - mkdocs-click
+
+# - callouts
+
+copyright: Copyright &copy; 2015-2024 <a href="https://www.nextpilot.com">Nextpilot Develop Team</a>, Maintained by <a href="/about/release-notes/#maintenance-team">LaterComer</a>.
+
+plugins:
+    - search
+#     - autorefs
+#     - literate-nav:
+#         nav_file: README.md
+#         implicit_index: true
+#     - mkdocstrings:
+#         handlers:
+#           python:
+#             options:
+#               docstring_section_style: list
+#               members_order: source
+#               show_root_heading: true
+#               show_source: false
+#               show_signature_annotations: true
+
+
+extra:
+  alternate:
+    # Switch to English
+    - name: English
+      link: /en/
+      lang: en
+
+    # Switch to English
+    - name: 简体中文
+      link: /zh/
+      lang: zh
