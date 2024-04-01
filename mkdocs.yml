@@ -47,9 +47,12 @@ theme:
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.indexes
+    - navigation.top
+    - navigation.path
     - seach.highlight
     - search.suggest
     - search.share
+    - toc.follow
   language: zh
   icon:
     admonition:
