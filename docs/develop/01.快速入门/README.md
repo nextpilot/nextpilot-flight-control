@@ -1,4 +1,4 @@
 # 快速入门
 
-- [安装开发工具链](./1-toolchain.md)
-- [编译飞控代码](2-buildcode.md)
+- [搭建开发环境](./01.setup-toolchain.md)
+- [编译飞控代码](./02.build-code.md)

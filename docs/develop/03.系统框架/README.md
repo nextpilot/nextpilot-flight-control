@@ -1,11 +1,7 @@
 # 系统框架
 
-1. [启动流程](./01.system_startup.md)
-1. [调试终端](./02.finsh_console.md)
-1. [文件系统](./04.file_system.md)
-1. [运行日志](./)
+1. [启动流程](./03.system-startup.md)
+2. [控 制 台](./05.finsh-console.md)
+3. [文件系统](./04.file_system.md)
+4. [系统日志](./07.micro-log.md)
 
-## 业务逻辑
-
-1. [UORB](./51.uorb.md)
-2. [PARAM](./52.param.md)
