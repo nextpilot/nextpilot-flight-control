@@ -1,0 +1,40 @@
+menuconfig SYS_USING_VERSION
+    bool "version : hardware and software version manage"
+    default n
+
+if SYS_USING_VERSION
+    config BOARD_TYPE_NAME
+        string "board name"
+        default "unkown"
+
+    config BOARD_CHIP_NAME
+        string "chip name"
+        default "unkown"
+
+    config BOARD_HAS_HW_VERSIONING
+        bool "board has hw version"
+        default n
+
+    if BOARD_HAS_HW_VERSIONING
+        config ADC_HW_VER_DEVICE_NAME
+            string "adc device name"
+            default "adc1"
+
+        config ADC_HW_VER_SENSE_CHANNEL
+            int "version sense adc channel"
+            default 12
+
+        config GPIO_HW_VER_DRIVE
+            int "version drive pin (PH14=126)"
+            default 126
+
+        config ADC_HW_REV_SENSE_CHANNEL
+            int "revision sense adc channel"
+            default 13
+
+        config GPIO_HW_REV_DRIVE
+            int "revision drive pin (PH14=126)"
+            default 126
+    endif
+
+endif

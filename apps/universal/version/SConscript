@@ -1,0 +1,33 @@
+import os
+import sys
+import rtconfig
+from building import *
+
+objs = []
+
+if GetDepend(["SYS_USING_VERSION"]):
+    cwd = GetCurrentDir()
+
+    # 自动更新版本信息
+    pycmd = os.path.basename(sys.executable)
+
+    os.system(
+        "%s %s/update_version_header.py -v %s/board_fw_version_autogen.h"
+        % (pycmd, cwd, cwd)
+    )
+
+    # 添加当前文件夹下的代码
+    src = Glob("*.c")  # + Glob("*.cpp")
+    inc = [cwd]
+
+    objs += DefineGroup("sys/version", src, depend=[""], CPPPATH=inc)
+
+    for d in os.listdir(cwd):
+        path = os.path.join(cwd, d)
+        if os.path.isfile(os.path.join(path, "SConscript")):
+            # print(os.path.join(d, 'SConscript'))
+            objs += SConscript(os.path.join(d, "SConscript"))
+else:
+    objs = []
+
+Return("objs")

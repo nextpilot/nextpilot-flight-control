@@ -108,7 +108,8 @@
 			"xutility": "c",
 			"string": "c",
 			"unordered_map": "c",
-			"string_view": "c"
+			"string_view": "c",
+			"atomic": "cpp"
 		},
 		"RTT_Studio.Build.Parallel_Jobs": "12",
 		"RTT_Studio.Env_Location": "C:/RT-ThreadStudio/platform/env_released/env",

@@ -13,60 +13,61 @@
 
 #include "uorb_device_node.h"
 
-/**
- * @see uORB::Manager::orb_advertise()
- */
-extern orb_advert_t orb_advertise(const struct orb_metadata *meta, const void *data) __EXPORT;
+#ifdef __cplusplus
 
-/**
- * @see uORB::Manager::orb_advertise()
- */
-extern orb_advert_t orb_advertise_queue(const struct orb_metadata *meta, const void *data,
-                                        unsigned int queue_size) __EXPORT;
+namespace nextpilot::uORB {
+template <typename U>
+class DefaultQueueSize {
+private:
+    template <typename T>
+    static constexpr uint8_t get_queue_size(decltype(T::ORB_QUEUE_LENGTH) *) {
+        return T::ORB_QUEUE_LENGTH;
+    }
 
-/**
- * @see uORB::Manager::orb_advertise_multi()
- */
-// extern orb_advert_t orb_advertise_multi(const struct orb_metadata *meta, const void *data, int *instance) __EXPORT;
+    template <typename T>
+    static constexpr uint8_t get_queue_size(...) {
+        return 1;
+    }
 
-/**
- * @see uORB::Manager::orb_advertise_multi()
- */
-extern orb_advert_t orb_advertise_multi_queue(const struct orb_metadata *meta, const void *data, int *instance,
-                                              unsigned int queue_size) __EXPORT;
+public:
+    static constexpr unsigned value = get_queue_size<U>(nullptr);
+};
 
-/**
- * @see uORB::Manager::orb_unadvertise()
- */
-extern int orb_unadvertise(orb_advert_t handle) __EXPORT;
+class PublicationBase {
+public:
+    bool advertised() const {
+        return _handle != nullptr;
+    }
 
-/**
- * @see uORB::Manager::orb_publish()
- */
-extern int orb_publish(const struct orb_metadata *meta, orb_advert_t handle, const void *data) __EXPORT;
+    bool unadvertise() {
+        // return (Manager::orb_unadvertise(_handle) == PX4_OK);
+        // _handle->
+    }
 
-/**
- * Advertise as the publisher of a topic.
- *
- * This performs the initial advertisement of a topic; it creates the topic
- * node in /obj if required and publishes the initial data.
- *
- * @see uORB::Manager::orb_advertise_multi() for meaning of the individual parameters
- */
-// static inline int orb_publish_auto(const struct orb_metadata *meta, orb_advert_t *handle, const void *data,
-//                                    int *instance) {
-//     if (!*handle) {
-//         *handle = orb_advertise_multi(meta, data, instance);
+    orb_id_t get_topic() const {
+        return get_orb_meta(_orb_id);
+    }
 
-//         if (*handle) {
-//             return 0;
-//         }
+protected:
+    PublicationBase(ORB_ID id) :
+        _orb_id(id) {
+    }
 
-//     } else {
-//         return orb_publish(meta, *handle, data);
-//     }
+    ~PublicationBase() {
+        if (_handle != nullptr) {
+            // don't automatically unadvertise queued publications (eg vehicle_command)
+            if (Manager::orb_get_queue_size(_handle) == 1) {
+                unadvertise();
+            }
+        }
+    }
 
-//     return -1;
-// }
+    orb_advert_t _handle{nullptr};
+    const ORB_ID _orb_id;
+};
+
+} // namespace nextpilot::uORB
+
+#endif //__cplusplus
 
 #endif // __UORB_PUBLICATION_H__

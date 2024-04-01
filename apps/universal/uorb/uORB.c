@@ -13,8 +13,7 @@
 #include "uorb_publication.h"
 #include "uorb_subscription.h"
 
-// 查找对应的主题是否存在，且已经公告
-// 没有公告的主题是不能publish和copy数据
+// 查找对应的主题是否存在，且已经公告，没有公告advertised=false主题不能publish和copy数据
 int orb_exists(const struct orb_metadata *meta, int instance) {
     if (!meta) {
         return -1;
@@ -27,7 +26,7 @@ int orb_exists(const struct orb_metadata *meta, int instance) {
 
     uorb_device_t node = uorb_device_get_node(meta, instance);
 
-    if (node && node->advertised) {
+    if (node && node->_advertised) {
         return 0;
     }
 
@@ -51,7 +50,7 @@ int orb_group_count(const struct orb_metadata *meta) {
 }
 
 bool orb_is_advertised(const uorb_device_t node) {
-    if (node && node->advertised) {
+    if (node && node->_advertised) {
         return true;
     }
 
@@ -62,8 +61,8 @@ uorb_device_t orb_add_internal_subscriber(ORB_ID orb_id, uint8_t instance, unsig
     uorb_device_t node = uorb_device_get_node(get_orb_meta(orb_id), instance);
     if (node) {
         rt_enter_critical();
-        node->subscriber_count++;
-        *initial_generation = node->generation;
+        node->_subscriber_count++;
+        *initial_generation = node->_generation;
         rt_exit_critical();
     }
     return node;
@@ -72,14 +71,14 @@ uorb_device_t orb_add_internal_subscriber(ORB_ID orb_id, uint8_t instance, unsig
 void orb_remove_internal_subscriber(uorb_device_t node) {
     if (node) {
         rt_enter_critical();
-        node->subscriber_count--;
+        node->_subscriber_count--;
         rt_exit_critical();
     }
 }
 
 unsigned orb_updates_available(uorb_device_t node, unsigned last_generation) {
-    if (node && node->advertised) {
-        return (node->generation - last_generation);
+    if (node && node->_advertised) {
+        return (node->_generation - last_generation);
     }
     return 0;
 }
@@ -88,7 +87,7 @@ uint8_t orb_get_queue_size(const uorb_device_t node) {
     if (!node) {
         return 0;
     }
-    return node->queue_size;
+    return node->_queue_size;
 }
 
 uint8_t orb_get_instance(const uorb_device_t node) {
@@ -96,7 +95,7 @@ uint8_t orb_get_instance(const uorb_device_t node) {
         return -1;
     }
 
-    return node->instance;
+    return node->_instance;
 }
 
 static bool orb_data_copy(uorb_device_t node, void *dst, uint32_t *generation, bool only_if_updated) {
@@ -142,7 +141,7 @@ orb_advert_t orb_advertise_multi_queue(const struct orb_metadata *meta, const vo
     for (inst = 0; inst < max_inst; inst++) {
         node = uorb_device_get_node(meta, inst);
         if (node) {
-            if (!node->advertised) {
+            if (!node->_advertised) {
                 break;
             }
         } else {
@@ -154,9 +153,10 @@ orb_advert_t orb_advertise_multi_queue(const struct orb_metadata *meta, const vo
     // 如果node找到/创建成功，发布首次数据，且返回instance
     if (node) {
         // 标记为已经公告，只有公告过的主题才能copy和publish数据
-        node->advertised = true;
+        node->_advertised = true;
         if (data) {
-            orb_publish(meta, node, data);
+            // orb_publish(meta, node, data);
+            uorb_device_publish(node, data);
         }
         // 返回inst
         if (instance) {
@@ -190,12 +190,25 @@ int orb_unadvertise(orb_advert_t node) {
         return -1;
     }
 
-    node->advertised = false;
+    node->_advertised = false;
     return 0;
 }
 
 int orb_publish(const struct orb_metadata *meta, orb_advert_t node, const void *data) {
     return uorb_device_publish(node, data);
+}
+
+int orb_publish_auto(const struct orb_metadata *meta, orb_advert_t *node, const void *data, int *instance) {
+    if (!*node) {
+        *node = orb_advertise_multi(meta, data, instance);
+        if (*node) {
+            return 0;
+        }
+    } else {
+        return orb_publish(meta, *node, data);
+    }
+
+    return -1;
 }
 
 static bool orb_search_node(orb_subptr_t sub) {
