@@ -5,7 +5,7 @@
  *   / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
  *  /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
  *
- * Copyright All Reserved © 2015-2023 NextPilot Development Team
+ * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
 #ifndef __INCLUDE_CRC16_H

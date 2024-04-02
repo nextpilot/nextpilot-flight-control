@@ -5,7 +5,7 @@
 #  *   / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
 #  *  /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
 #  *
-#  * Copyright All Reserved © 2015-2023 NextPilot Development Team
+#  * Copyright All Reserved © 2015-2024 NextPilot Development Team
 #  ******************************************************************/
 
 
@@ -118,12 +118,8 @@ def menuconfig(
 
 @rtt.command()
 def genheader(
-    config_file: str = typer.Option(
-        default=".config", help="configuration file used to generate c header"
-    ),
-    header_file: str = typer.Option(
-        default="rtconfig.h", help="the generated c header file"
-    ),
+    config_file: str = typer.Option(default=".config", help="configuration file used to generate c header"),
+    header_file: str = typer.Option(default="rtconfig.h", help="the generated c header file"),
 ):
     """
     Generates a header file with #defines from the configuration, matching the
@@ -139,12 +135,8 @@ def genheader(
 
 @rtt.command()
 def genconfig(
-    header_file: str = typer.Option(
-        default="rtconfig.h", help="the generated c header file"
-    ),
-    config_file: str = typer.Option(
-        default=".config", help="configuration file used to generate c header"
-    ),
+    header_file: str = typer.Option(default="rtconfig.h", help="the generated c header file"),
+    config_file: str = typer.Option(default=".config", help="configuration file used to generate c header"),
 ):
     """
     Generates a configuration file from the header file with #defines matching the
