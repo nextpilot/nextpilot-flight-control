@@ -28,7 +28,7 @@ class DeviceNode : public uorb_device_node {
         _subscriber_count = 0;
 
         // 标记主题已经创建
-        uorb_device_set_exist(meta->o_id, instance);
+        uorb_device_mark_exist(meta->o_id, instance);
         // 将主题节点添加到链表
         uorb_device_add_node(this);
     }

@@ -40,7 +40,7 @@ bool uorb_device_is_exist(ORB_ID orb_id, uint8_t instance) {
     return exist;
 }
 
-void uorb_device_set_exist(ORB_ID orb_id, uint8_t instance) {
+void uorb_device_mark_exist(ORB_ID orb_id, uint8_t instance) {
     if (/*orb_id == ORB_ID::INVALID ||*/
         (instance > ORB_MULTI_MAX_INSTANCES)) {
         return;
@@ -80,6 +80,100 @@ void uorb_device_remove_node(uorb_device_t node) {
     }
 }
 
+uorb_device_t uorb_device_find_node(const struct orb_metadata *meta, uint8_t instance) {
+    if (!meta) {
+        return NULL;
+    }
+
+    // 先看看是否创建
+    if (!uorb_device_is_exist((ORB_ID)(meta->o_id), instance)) {
+        return NULL;
+    }
+
+    // 遍历list查找节点
+    rt_list_t *pos, *temp_list;
+    rt_enter_critical();
+    rt_list_for_each_safe(pos, temp_list, &_uorb_device_list) {
+        uorb_device_t node = (uorb_device_t)pos;
+        if ((rt_strcmp(node->_meta->o_name, meta->o_name) == 0) &&
+            (node->_instance == instance)) {
+            rt_exit_critical();
+            return node;
+        }
+    }
+    rt_exit_critical();
+
+    return NULL;
+}
+
+uint8_t uorb_device_get_queue_size(const uorb_device_t node) {
+    if (!node) {
+        return 0;
+    }
+    return node->_queue_size;
+}
+
+uint8_t uorb_device_get_instance(const uorb_device_t node) {
+    if (!node) {
+        return -1;
+    }
+
+    return node->_instance;
+}
+
+bool uorb_device_is_advertised(const uorb_device_t node) {
+    if (node) {
+        return node->_advertised;
+    }
+
+    return false;
+}
+
+void uorb_device_mark_advertised(uorb_device_t node) {
+    if (node) {
+        node->_advertised = true;
+    }
+}
+
+int urob_device_set_queue_size(uorb_device_t node, uint32_t queue_size) {
+    if (node->_queue_size == queue_size) {
+        return 0;
+    }
+
+    if (node->_data || node->_queue_size > queue_size || queue_size > 255) {
+        return -1;
+    }
+
+    node->_queue_size = round_pow_of_two_8(queue_size);
+    return 0;
+}
+
+unsigned uorb_device_updates_available(const uorb_device_t node, unsigned last_generation) {
+    if (node && node->_advertised) {
+        return (node->_generation - last_generation);
+    }
+    return 0;
+}
+
+uorb_device_t uorb_device_add_internal_subscriber(ORB_ID orb_id, uint8_t instance, unsigned *initial_generation) {
+    uorb_device_t node = uorb_device_find_node(get_orb_meta(orb_id), instance);
+    if (node) {
+        rt_enter_critical();
+        node->_subscriber_count++;
+        *initial_generation = node->_generation;
+        rt_exit_critical();
+    }
+    return node;
+}
+
+void uorb_device_remove_internal_subscriber(uorb_device_t node) {
+    if (node) {
+        rt_enter_critical();
+        node->_subscriber_count--;
+        rt_exit_critical();
+    }
+}
+
 uorb_device_t uorb_device_create(const struct orb_metadata *meta, const uint8_t instance, uint8_t queue_size) {
     uorb_device_t node = rt_malloc(sizeof(struct uorb_device_node));
 
@@ -97,7 +191,7 @@ uorb_device_t uorb_device_create(const struct orb_metadata *meta, const uint8_t 
     node->_subscriber_count = 0;
 
     // 标记主题已经创建
-    uorb_device_set_exist(meta->o_id, instance);
+    uorb_device_mark_exist(meta->o_id, instance);
     // 将主题节点添加到链表
     rt_list_insert_before(&_uorb_device_list, &node->_list);
 
@@ -134,14 +228,82 @@ int uorb_device_delete(uorb_device_t node) {
     return 0;
 }
 
-bool uorb_device_copy(uorb_device_t node, void *dst, uint32_t *generation) {
+// 广告新主题，并指定queue_size
+// 当instance=NULL是表示只广告instance=0的主题
+// 当instance!=NULL则公告新主题，返回instance
+uorb_device_t uorb_device_advertise(const struct orb_metadata *meta, const void *data, int *instance,
+                                    unsigned int queue_size) {
+    if (!meta) {
+        return NULL;
+    }
+
+    orb_advert_t node = NULL;
+
+    // 允许的最大instance个数
+    int max_inst = ORB_MULTI_MAX_INSTANCES;
+    int inst     = 0;
+
+    // instance=NULL，表示只公告inst=0主题
+    if (!instance) {
+        node = uorb_device_find_node(meta, 0); //  查找inst=0主题
+        if (node) {
+            max_inst = 0; // 查找到不需要创建
+        } else {
+            max_inst = 1; // 没有查到到，后面代码创建
+        }
+    }
+
+    // 搜索实例是否存在，不存在则创建，存在则判断是否公告
+    for (inst = 0; inst < max_inst; inst++) {
+        node = uorb_device_find_node(meta, inst);
+        if (node) {
+            if (!node->_advertised) {
+                break;
+            }
+        } else {
+            node = uorb_device_create(meta, inst, queue_size);
+            break;
+        }
+    }
+
+    // 如果node找到/创建成功，发布首次数据，且返回instance
+    if (node) {
+        // 标记为已经公告，只有公告过的主题才能copy和publish数据
+        node->_advertised = true;
+        if (data) {
+            // orb_publish(meta, node, data);
+            uorb_device_write(node, data);
+        }
+        // 返回inst
+        if (instance) {
+            *instance = inst;
+        }
+    }
+
+    return node;
+}
+
+int uorb_device_unadvertise(orb_advert_t node) {
+    if (!node) {
+        return -1;
+    }
+
+    if (node->_subscriber_count > 0) {
+        node->_advertised = false;
+        return 0;
+    }
+
+    return uorb_device_delete(node);
+}
+
+int uorb_device_read(uorb_device_t node, void *dst, uint32_t *generation) {
     if ((dst != NULL) && (node->_data != NULL)) {
         if (node->_queue_size == 1) {
             rt_enter_critical();
             rt_memcpy(dst, node->_data, node->_meta->o_size);
             *generation = rt_atomic_load(&node->_generation);
             rt_exit_critical();
-            return true;
+            return node->_meta->o_size;
 
         } else {
             rt_enter_critical();
@@ -165,16 +327,16 @@ bool uorb_device_copy(uorb_device_t node, void *dst, uint32_t *generation) {
 
             ++(*generation);
 
-            return true;
+            return node->_meta->o_size;
         }
     }
 
-    return false;
+    return 0;
 }
 
-bool uorb_device_publish(uorb_device_t node, const void *data) {
+int uorb_device_write(uorb_device_t node, const void *data) {
     if (!node || !data || !node->_meta) {
-        return false;
+        return 0;
     }
 
     if (!node->_data) {
@@ -184,7 +346,7 @@ bool uorb_device_publish(uorb_device_t node, const void *data) {
 
         /* failed or could not allocate */
         if (!node->_data) {
-            return false;
+            return 0;
         }
     }
 
@@ -208,44 +370,5 @@ bool uorb_device_publish(uorb_device_t node, const void *data) {
     /* notify any poll waiters */
     // poll_notify(POLLIN);
 
-    return true;
-}
-
-int urob_device_update_queue_size(uorb_device_t node, uint32_t queue_size) {
-    if (node->_queue_size == queue_size) {
-        return 0;
-    }
-
-    if (node->_data || node->_queue_size > queue_size || queue_size > 255) {
-        return -1;
-    }
-
-    node->_queue_size = round_pow_of_two_8(queue_size);
-    return 0;
-}
-
-uorb_device_t uorb_device_get_node(const struct orb_metadata *meta, uint8_t instance) {
-    if (!meta) {
-        return NULL;
-    }
-
-    // 先看看是否创建
-    if (!uorb_device_is_exist((ORB_ID)(meta->o_id), instance)) {
-        return NULL;
-    }
-
-    // 遍历list查找节点
-    rt_list_t *pos, *temp_list;
-    rt_enter_critical();
-    rt_list_for_each_safe(pos, temp_list, &_uorb_device_list) {
-        uorb_device_t node = (uorb_device_t)pos;
-        if ((rt_strcmp(node->_meta->o_name, meta->o_name) == 0) &&
-            (node->_instance == instance)) {
-            rt_exit_critical();
-            return node;
-        }
-    }
-    rt_exit_critical();
-
-    return NULL;
+    return node->_meta->o_size;
 }

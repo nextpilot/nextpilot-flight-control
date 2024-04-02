@@ -35,17 +35,34 @@ struct uorb_device_node {
 typedef struct uorb_device_node *uorb_device_t;
 typedef struct uorb_device_node *orb_advert_t;
 
-uorb_device_t uorb_device_get_node(const struct orb_metadata *meta, uint8_t instance);
 bool          uorb_device_is_exist(ORB_ID orb_id, uint8_t instance);
+void          uorb_device_mark_exist(ORB_ID orb_id, uint8_t instance);
 void          uorb_device_clear_exist(ORB_ID orb_id, uint8_t instance);
-void          uorb_device_set_exist(ORB_ID orb_id, uint8_t instance);
-void          uorb_device_remove_node(uorb_device_t node);
-void          uorb_device_add_node(uorb_device_t node);
+uorb_device_t uorb_device_find_node(const struct orb_metadata *meta, uint8_t instance);
+
+void uorb_device_add_node(uorb_device_t node);
+void uorb_device_remove_node(uorb_device_t node);
+
+uint8_t uorb_device_get_queue_size(const uorb_device_t node);
+int     urob_device_set_queue_size(uorb_device_t node, uint32_t queue_size);
+
+uint8_t uorb_device_get_instance(const uorb_device_t node);
+bool    uorb_device_is_advertised(const uorb_device_t node);
+void    uorb_device_mark_advertised(uorb_device_t node);
+
+unsigned uorb_device_updates_available(const uorb_device_t node, unsigned last_generation);
+
+uorb_device_t uorb_device_add_internal_subscriber(ORB_ID orb_id, uint8_t instance, unsigned *initial_generation);
+void          uorb_device_remove_internal_subscriber(uorb_device_t node);
 
 uorb_device_t uorb_device_create(const struct orb_metadata *meta, const uint8_t instance, uint8_t queue_size);
 int           uorb_device_delete(uorb_device_t node);
-bool          uorb_device_publish(uorb_device_t node, const void *data);
-bool          uorb_device_copy(uorb_device_t node, void *dst, uint32_t *generation);
+uorb_device_t uorb_device_advertise(const struct orb_metadata *meta, const void *data, int *instance,
+                                    unsigned int queue_size);
+int           uorb_device_unadvertise(orb_advert_t node);
+
+int uorb_device_write(uorb_device_t node, const void *data);
+int uorb_device_read(uorb_device_t node, void *dst, uint32_t *generation);
 
 // Determine the data range
 static inline bool is_in_range(unsigned left, unsigned value, unsigned right) {
