@@ -2,6 +2,20 @@
 #include "uorb_device_node.h"
 #include "uORB.h"
 
+uint8_t orb_get_queue_size(const uorb_device_t node) {
+    if (node) {
+        return node->_queue_size;
+    }
+    return 0;
+}
+
+uint8_t orb_get_instance(const uorb_device_t node) {
+    if (node) {
+        return node->_instance;
+    }
+    return 0;
+}
+
 // 广告新主题，并指定queue_size
 // 当instance=NULL是表示只广告instance=0的主题
 // 当instance!=NULL则公告新主题，返回instance

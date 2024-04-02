@@ -13,6 +13,8 @@
 
 #include "uorb_device_node.h"
 
+uint8_t      orb_get_instance(const uorb_device_t node);
+uint8_t      orb_get_queue_size(const uorb_device_t node);
 orb_advert_t orb_advertise_multi_queue(const struct orb_metadata *meta, const void *data, int *instance, unsigned int queue_size);
 orb_advert_t orb_advertise_multi(const struct orb_metadata *meta, const void *data, int *instance);
 orb_advert_t orb_advertise_queue(const struct orb_metadata *meta, const void *data, unsigned int queue_size);
@@ -63,7 +65,7 @@ protected:
     ~PublicationBase() {
         if (_handle != nullptr) {
             // don't automatically unadvertise queued publications (eg vehicle_command)
-            if (uorb_device_get_queue_size(_handle) == 1) {
+            if (orb_get_queue_size(_handle) == 1) {
                 unadvertise();
             }
         }
@@ -193,7 +195,7 @@ public:
     int get_instance() {
         // advertise if not already advertised
         if (advertise()) {
-            return uorb_device_get_instance(_handle);
+            return orb_get_instance(_handle);
         }
 
         return -1;
