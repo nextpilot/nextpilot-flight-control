@@ -48,7 +48,7 @@ public:
     }
 
     bool unadvertise() {
-        return (uorb_device_unadvertise(_handle) == 0);
+        return (orb_unadvertise(_handle) == 0);
     }
 
     orb_id_t get_topic() const {
@@ -71,6 +71,171 @@ protected:
 
     orb_advert_t _handle{nullptr};
     const ORB_ID _orb_id;
+};
+
+/**
+ * uORB publication wrapper class
+ */
+template <typename T, uint8_t ORB_QSIZE = DefaultQueueSize<T>::value>
+class Publication : public PublicationBase {
+public:
+    /**
+     * Constructor
+     *
+     * @param meta The uORB metadata (usually from the ORB_ID() macro) for the topic.
+     */
+    Publication(ORB_ID id) :
+        PublicationBase(id) {
+    }
+    Publication(const orb_metadata *meta) :
+        PublicationBase(static_cast<ORB_ID>(meta->o_id)) {
+    }
+
+    bool advertise() {
+        if (!advertised()) {
+            _handle = orb_advertise_queue(get_topic(), nullptr, ORB_QSIZE);
+        }
+
+        return advertised();
+    }
+
+    /**
+     * Publish the struct
+     * @param data The uORB message struct we are updating.
+     */
+    bool publish(const T &data) {
+        if (!advertised()) {
+            advertise();
+        }
+
+        return (orb_publish(get_topic(), _handle, &data) == 0);
+    }
+};
+
+/**
+ * The publication class with data embedded.
+ */
+template <typename T>
+class PublicationData : public Publication<T> {
+public:
+    /**
+     * Constructor
+     *
+     * @param meta The uORB metadata (usually from the ORB_ID() macro) for the topic.
+     */
+    PublicationData(ORB_ID id) :
+        Publication<T>(id) {
+    }
+    PublicationData(const orb_metadata *meta) :
+        Publication<T>(meta) {
+    }
+
+    T &get() {
+        return _data;
+    }
+    void set(const T &data) {
+        _data = data;
+    }
+
+    // Publishes the embedded struct.
+    bool update() {
+        return Publication<T>::publish(_data);
+    }
+    bool update(const T &data) {
+        _data = data;
+        return Publication<T>::publish(_data);
+    }
+
+private:
+    T _data{};
+};
+
+/**
+ * Base publication multi wrapper class
+ */
+template <typename T, uint8_t QSIZE = DefaultQueueSize<T>::value>
+class PublicationMulti : public PublicationBase {
+public:
+    /**
+     * Constructor
+     *
+     * @param meta The uORB metadata (usually from the ORB_ID() macro) for the topic.
+     */
+    PublicationMulti(ORB_ID id) :
+        PublicationBase(id) {
+    }
+
+    PublicationMulti(const orb_metadata *meta) :
+        PublicationBase(static_cast<ORB_ID>(meta->o_id)) {
+    }
+
+    bool advertise() {
+        if (!advertised()) {
+            int instance = 0;
+            _handle      = orb_advertise_multi_queue(get_topic(), nullptr, &instance, QSIZE);
+        }
+
+        return advertised();
+    }
+
+    /**
+     * Publish the struct
+     * @param data The uORB message struct we are updating.
+     */
+    bool publish(const T &data) {
+        if (!advertised()) {
+            advertise();
+        }
+
+        return (orb_publish(get_topic(), _handle, &data) == 0);
+    }
+
+    int get_instance() {
+        // advertise if not already advertised
+        if (advertise()) {
+            return uorb_device_get_instance(_handle);
+        }
+
+        return -1;
+    }
+};
+
+/**
+ * The publication multi class with data embedded.
+ */
+template <typename T>
+class PublicationMultiData : public PublicationMulti<T> {
+public:
+    /**
+     * Constructor
+     *
+     * @param meta The uORB metadata (usually from the ORB_ID() macro) for the topic.
+     */
+    PublicationMultiData(ORB_ID id) :
+        PublicationMulti<T>(id) {
+    }
+    PublicationMultiData(const orb_metadata *meta) :
+        PublicationMulti<T>(meta) {
+    }
+
+    T &get() {
+        return _data;
+    }
+    void set(const T &data) {
+        _data = data;
+    }
+
+    // Publishes the embedded struct.
+    bool update() {
+        return PublicationMulti<T>::publish(_data);
+    }
+    bool update(const T &data) {
+        _data = data;
+        return PublicationMulti<T>::publish(_data);
+    }
+
+private:
+    T _data{};
 };
 
 } // namespace nextpilot::uORB
