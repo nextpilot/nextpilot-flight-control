@@ -39,9 +39,9 @@ public:
      * @param id The uORB ORB_ID enum for the topic.
      * @param instance The instance for multi sub.
      */
-    Subscription(uint16_t id, uint8_t instance = 0) :
-        _orb_id(id),
-        _instance(instance) {
+    Subscription(uint16_t id, uint8_t instance = 0) {
+        _orb_id   = id;
+        _instance = instance;
         subscribe();
     }
 
@@ -51,20 +51,23 @@ public:
      * @param meta The uORB metadata (usually from the ORB_ID() macro) for the topic.
      * @param instance The instance for multi sub.
      */
-    Subscription(const orb_metadata *meta = nullptr, uint8_t instance = 0) :
-        _orb_id((meta == nullptr) ? ORB_ID::INVALID : static_cast<ORB_ID>(meta->o_id)),
-        _instance(instance) {
+    Subscription(const orb_metadata *meta = nullptr, uint8_t instance = 0) {
+#define ORB_ID_INVALID UINT32_MAX
+        _orb_id   = ((meta == nullptr) ? ORB_ID_INVALID : static_cast<ORB_ID>(meta->o_id));
+        _instance = (instance);
         subscribe();
     }
 
     // Copy constructor
-    Subscription(const Subscription &other) :
-        _orb_id(other._orb_id), _instance(other._instance) {
+    Subscription(const Subscription &other) {
+        _orb_id   = (other._orb_id);
+        _instance = (other._instance);
     }
 
     // Move constructor
-    Subscription(const Subscription &&other) noexcept :
-        _orb_id(other._orb_id), _instance(other._instance) {
+    Subscription(const Subscription &&other) noexcept {
+        _orb_id   = (other._orb_id);
+        _instance = (other._instance);
     }
 
     // copy assignment
@@ -93,7 +96,7 @@ public:
             return true;
         }
 
-        if (_orb_id != ORB_ID::INVALID && uORB::Manager::get_instance()) {
+        if (_orb_id != ORB_ID_INVALID && uORB::Manager::get_instance()) {
             unsigned initial_generation;
             void    *node = nullptr;
             // uORB::Manager::orb_add_internal_subscriber(_orb_id, _instance, &initial_generation);

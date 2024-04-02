@@ -26,40 +26,6 @@ typedef uint16_t ORB_ID;
 static rt_list_t _uorb_device_list                  = {NULL, NULL};
 static uint32_t  _uorb_device_exist[ORB_TOTAL_ELEM] = {};
 
-// Determine the data range
-static inline bool is_in_range(unsigned left, unsigned value, unsigned right) {
-    if (right > left) {
-        return (left <= value) && (value <= right);
-
-    } else { // Maybe the data overflowed and a wraparound occurred
-        return (left <= value) || (value <= right);
-    }
-}
-
-// round up to nearest power of two
-// Such as 0 => 1, 1 => 1, 2 => 2 ,3 => 4, 10 => 16, 60 => 64, 65...255 => 128
-// Note: When the input value > 128, the output is always 128
-static inline uint8_t round_pow_of_two_8(uint8_t n) {
-    if (n == 0) {
-        return 1;
-    }
-
-    // Avoid is already a power of 2
-    uint8_t value = n - 1;
-
-    // Fill 1
-    value |= value >> 1U;
-    value |= value >> 2U;
-    value |= value >> 4U;
-
-    // Unable to round-up, take the value of round-down
-    if (value == UINT8_MAX) {
-        value >>= 1U;
-    }
-
-    return value + 1;
-}
-
 bool uorb_device_is_exist(ORB_ID orb_id, uint8_t instance) {
     if (/*orb_id == ORB_ID::INVALID ||*/
         (instance > ORB_MULTI_MAX_INSTANCES)) {
@@ -100,6 +66,18 @@ void uorb_device_clear_exist(ORB_ID orb_id, uint8_t instance) {
     rt_enter_critical();
     _uorb_device_exist[grp] &= (~(1 << bit));
     rt_exit_critical();
+}
+
+void uorb_device_add_node(uorb_device_t node) {
+    if (node) {
+        rt_list_insert_before(&_uorb_device_list, &node->_list);
+    }
+}
+
+void uorb_device_remove_node(uorb_device_t node) {
+    if (node) {
+        rt_list_remove(&node->_list);
+    }
 }
 
 uorb_device_t uorb_device_create(const struct orb_metadata *meta, const uint8_t instance, uint8_t queue_size) {
@@ -159,14 +137,14 @@ int uorb_device_delete(uorb_device_t node) {
 bool uorb_device_copy(uorb_device_t node, void *dst, uint32_t *generation) {
     if ((dst != NULL) && (node->_data != NULL)) {
         if (node->_queue_size == 1) {
-            ATOMIC_ENTER;
+            rt_enter_critical();
             rt_memcpy(dst, node->_data, node->_meta->o_size);
             *generation = rt_atomic_load(&node->_generation);
-            ATOMIC_LEAVE;
+            rt_exit_critical();
             return true;
 
         } else {
-            ATOMIC_ENTER;
+            rt_enter_critical();
             const unsigned current_generation = rt_atomic_load(&node->_generation);
 
             if (current_generation == *generation) {
@@ -183,7 +161,7 @@ bool uorb_device_copy(uorb_device_t node, void *dst, uint32_t *generation) {
             }
 
             rt_memcpy(dst, node->_data + (node->_meta->o_size * (*generation % node->_queue_size)), node->_meta->o_size);
-            ATOMIC_LEAVE;
+            rt_exit_critical();
 
             ++(*generation);
 
@@ -200,14 +178,36 @@ bool uorb_device_publish(uorb_device_t node, const void *data) {
     }
 
     if (!node->_data) {
-        node->_data = rt_malloc(node->_meta->o_size * node->_queue_size);
+        // rt_enter_critical();
+        node->_data = rt_calloc(1, node->_meta->o_size * node->_queue_size);
+        // rt_exit_critical();
 
+        /* failed or could not allocate */
         if (!node->_data) {
             return false;
         }
     }
 
+    /* Perform an atomic copy. */
+    rt_enter_critical();
+    /* wrap-around happens after ~49 days, assuming a publisher rate of 1 kHz */
+    unsigned generation = rt_atomic_add(&node->_generation, 1L); //.fetch_add(1);
+
+    rt_memcpy(node->_data + (node->_meta->o_size * (generation % node->_queue_size)), data, node->_meta->o_size);
+
+    // 注册callback
+    // for (auto item : _callbacks) {
+    //     item->call();
+    // }
+
+    /* Mark at least one data has been published */
     node->_data_valid = true;
+
+    rt_exit_critical();
+
+    /* notify any poll waiters */
+    // poll_notify(POLLIN);
+
     return true;
 }
 

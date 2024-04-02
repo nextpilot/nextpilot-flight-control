@@ -11,15 +11,26 @@
 #include <rtthread.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include "atomic.h"
 #include "uorb_device_node.h"
 
 // #ifdef __cplusplus
 namespace nextpilot::uORB {
 class DeviceNode : public uorb_device_node {
-    DeviceNode(const struct orb_metadata *meta, const uint8_t instance, const char *path, uint8_t queue_size = 1) :
-        _meta(meta),
-        _instance(instance),
-        _queue_size(round_pow_of_two_8(queue_size)) {
+    DeviceNode(const struct orb_metadata *meta, const uint8_t instance, const char *path, uint8_t queue_size = 1) {
+        _meta             = meta;
+        _data             = nullptr;
+        _data_valid       = false;
+        _generation       = 0;
+        _instance         = instance;
+        _advertised       = false;
+        _queue_size       = round_pow_of_two_8(queue_size);
+        _subscriber_count = 0;
+
+        // 标记主题已经创建
+        uorb_device_set_exist(meta->o_id, instance);
+        // 将主题节点添加到链表
+        uorb_device_add_node(this);
     }
 
     virtual ~DeviceNode() {
@@ -29,7 +40,24 @@ class DeviceNode : public uorb_device_node {
             return;
         }
 
-        rt_free(_data);
+        // 将节点从链表移除
+        uorb_device_remove_node(this);
+        // 标记主题不存在
+        uorb_device_clear_exist(_meta->o_id, _instance);
+
+        // 释放data指针
+        if (_data) {
+            void *data = _data;
+            _data      = NULL;
+            rt_free(data);
+        }
+
+        _data_valid       = false;
+        _generation       = 0;
+        _instance         = 0;
+        _advertised       = false;
+        _queue_size       = 0;
+        _subscriber_count = 0;
     }
 
     // no copy, assignment, move, move assignment
@@ -66,7 +94,7 @@ class DeviceNode : public uorb_device_node {
         /* Perform an atomic copy. */
         rt_enter_critical();
         /* wrap-around happens after ~49 days, assuming a publisher rate of 1 kHz */
-        unsigned generation = rt_atomic_add(&_generation, 1); //.fetch_add(1);
+        unsigned generation = rt_atomic_add(&_generation, 1L); //.fetch_add(1);
 
         rt_memcpy(_data + (_meta->o_size * (generation % _queue_size)), buffer, _meta->o_size);
 
@@ -237,10 +265,12 @@ class DeviceNode : public uorb_device_node {
 
     // add item to list of work items to schedule on node update
     bool register_callback(/*SubscriptionCallback *callback_sub*/) {
+        return true;
     }
 
     // remove item from list of work items
     void unregister_callback(/*SubscriptionCallback *callback_sub*/) {
+        return;
     }
 };
 

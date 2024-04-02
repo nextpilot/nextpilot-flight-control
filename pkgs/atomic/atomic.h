@@ -35,8 +35,25 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-// namespace px4
-// {
+template <typename T>
+T rt_atomic_load(T *val) {
+    return __atomic_load_n(val, __ATOMIC_SEQ_CST);
+}
+
+template <typename T>
+T rt_atomic_store(T *val, T num) {
+    return __atomic_store(val, &num, __ATOMIC_SEQ_CST);
+}
+
+template <typename T>
+T rt_atomic_add(T *val, T num) {
+    return __atomic_fetch_add(val, num, __ATOMIC_SEQ_CST);
+}
+
+template <typename T>
+T rt_atomic_sub(T *val, T num) {
+    return __atomic_fetch_sub(val, num, __ATOMIC_SEQ_CST);
+}
 
 template <typename T>
 class atomic {
@@ -152,7 +169,5 @@ private:
 using atomic_int     = atomic<int>;
 using atomic_int32_t = atomic<int32_t>;
 using atomic_bool    = atomic<bool>;
-
-// } /* namespace px4 */
 
 #endif /* __cplusplus */
