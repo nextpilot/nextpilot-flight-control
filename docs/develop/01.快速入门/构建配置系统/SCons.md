@@ -52,7 +52,7 @@ flowchart LR
       A(RT-Thread构建系统)-->rtconfig.py
       A(RT-Thread构建系统)-->SCons
       	SCons --> SConscript
-      	SCons --> SConstruct 
+      	SCons --> SConstruct
       	SConscript --> Scons标准函数
       	SConscript --> RT-Thread自定义函数
       	SConscript --> Python函数
@@ -336,7 +336,7 @@ Sconscript 脚本中可以使用任何 Python 库函数，使用方式和正常�
 ```python
 # 导入RT-Thread的自定义构建函数，几乎每一个RT-Thread的Sconscript都需要这么做。
 # 只有导入了building模块，才可以使用2.2.2介绍的RT-Thread自定义Scons函数
-from building import * 
+from building import *
 
 cwd     = GetCurrentDir() # 获取当前脚本的路径
 CPPPATH = [cwd] # 将当前路径加入构建搜索的头文件路径
@@ -356,7 +356,7 @@ if GetDepend('DFS_USING_POSIX'): # 判断是否启用文件系统的POSIX接口
 # 使用DefineGroup创建一个名为Finsh的组
 # 该Group是否被添加到工程中，参与编译，取决于depend的宏是否在Kconfig中被使能。
 # 即上述的头文件路径和C文件是否被编译，取决于用户在Kconfig中是否使能了RT_USING_FINSH
-group = DefineGroup('Finsh', src, depend = ['RT_USING_FINSH'], CPPPATH = CPPPATH) 
+group = DefineGroup('Finsh', src, depend = ['RT_USING_FINSH'], CPPPATH = CPPPATH)
 
 Return('group') # 将当前脚本指定的构建对象返回上级SCons脚本
 ```
@@ -367,7 +367,7 @@ Return('group') # 将当前脚本指定的构建对象返回上级SCons脚本
 
    ```python
    src = []
-   group = DefineGroup('Finsh', src, depend = [''], CPPPATH = CPPPATH) 
+   group = DefineGroup('Finsh', src, depend = [''], CPPPATH = CPPPATH)
    ```
 
 2. 头文件路径的参数不是必选项，如果不想添加头文件目录，就不需要填写 `CPPPATH` 参数

@@ -1,8 +1,8 @@
 # Kconfig
 
-## Kconfig在RT-Thread中的工作机制
+## Kconfig在Nextpilot中的工作机制
 
-C语言项目的裁剪配置本质上通过条件编译和宏的展开来实现的，RT-Thread借助Kconfig这套机制更方便的实现了这一功能。当前以Windows下Env工具中的使用为例，简述Kconfig在RT-Thread的工作机制。
+C/C++语言项目的裁剪配置本质上通过条件编译和宏的展开来实现的，Nextpilot借助Kconfig这套机制更方便的实现了这一功能。当前以Windows下Env工具中的使用为例，简述Kconfig在Nextpilot的工作机制。
 
 Kconfig机制包括了Kconfig文件和配置UI界面（如menuconfig，pyconfig等）。Kconfig机制有如下特点：
 
@@ -28,13 +28,13 @@ CONFIG_RT_DEBUG=y
 
 ![构建配置系统](./figures/buildconfig2.png)
 
-Kconfig文件在源码中呈现树形结构，需要**在工程的根目录下存在一份顶层Kconfig文件**，顶层Kconfig文件在文件中通过source语句显示地调用各子目录下的Kconfig文件。Env在根目录下执行menuconfig命令后会递归解析各级Kconfig文件，然后提供如下配置界面，完成相应的配置后并保存，根目录下会存在一份.config文件保存当前选择的配置项，并将.config文件转为RT-Thread的系统配置文件rtconfig.h。
+Kconfig文件在源码中呈现树形结构，需要**在工程的根目录下存在一份顶层Kconfig文件**，顶层Kconfig文件在文件中通过source语句显示地调用各子目录下的Kconfig文件。Env在根目录下执行menuconfig命令后会递归解析各级Kconfig文件，然后提供如下配置界面，完成相应的配置后并保存，根目录下会存在一份.config文件保存当前选择的配置项，并将.config文件转为Nextpilot的系统配置文件rtconfig.h。
 
 ![构建配置系统](./figures/buildconfig3.png)
 
 ## Kconfig语法及示例
 
-Kconfig源于[Linux内核的配置构建系统](https://www.kernel.org/doc/html/latest/kbuild/kconfig-language.html#)，当前只介绍RT-Thread中的常用语法。
+Kconfig源于[Linux内核的配置构建系统](https://www.kernel.org/doc/html/latest/kbuild/kconfig-language.html#)，当前只介绍Nextpilot中的常用语法。
 
 ### 注释
 
@@ -48,7 +48,7 @@ Kconfig 采用 `#` 作为注释标记符，例如：
 
 config 定义了一组新的配置选项
 
-以下为 RT-Thread 系统中 config 语句的示例
+以下为 Nextpilot 系统中 config 语句的示例
 
 ```C
 config BSP_USING_GPIO
@@ -169,7 +169,7 @@ config BSP_I2C1_SCL_PIN
 
 menu 语句用于生成菜单。
 
-以下为 RT-Thread 系统中 menu/endmenu 语句的示例
+以下为 Nextpilot 系统中 menu/endmenu 语句的示例
 
 ```C
 menu "Hardware Drivers Config"
@@ -237,7 +237,7 @@ endmenu
 
 menuconfig 语句表示带菜单的配置项
 
-以下为 RT-Thread 系统 menuconfig 语句的示例
+以下为 Nextpilot 系统 menuconfig 语句的示例
 
 ```C
 menu "Hardware Drivers Config"
@@ -285,7 +285,7 @@ endmenu
 
 choice 语句将多个类似的配置选项组合在一起，供用户选择一组配置项
 
-RT-Thread Kconfig 文件中 choice 代码示例如下
+Nextpilot Kconfig 文件中 choice 代码示例如下
 
 ```C
 menu "Hardware Drivers Config"
@@ -320,7 +320,7 @@ endmenu
 
 ```C
 bool "Networking support"
- 
+
 bool
 prompt "Networking support"
 ```
