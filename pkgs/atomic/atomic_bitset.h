@@ -14,9 +14,6 @@
 
 #include "atomic.h"
 
-// namespace px4
-// {
-
 template <size_t N>
 class AtomicBitset {
 public:
@@ -56,6 +53,12 @@ public:
         }
     }
 
+    void reset() {
+        for (auto &d : _data) {
+            d.store(0);
+        }
+    }
+
 private:
     static constexpr uint8_t BITS_PER_ELEMENT = 32;
     static constexpr size_t  ARRAY_SIZE       = ((N % BITS_PER_ELEMENT) == 0) ? (N / BITS_PER_ELEMENT) :
@@ -72,7 +75,5 @@ private:
 
     atomic<uint32_t> _data[ARRAY_SIZE];
 };
-
-// } // namespace px4
 
 #endif /* __cplusplus */
