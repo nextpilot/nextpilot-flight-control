@@ -10,9 +10,7 @@
  ******************************************************************/
 
 #include "uorb_device_node.h"
-
-#define ATOMIC_ENTER rt_enter_critical()
-#define ATOMIC_LEAVE rt_exit_critical()
+#include <rtdbg.h>
 
 // #define ORB_MULTI_MAX_INSTANCES 4
 #define ORB_TOPICS_COUNT 10
@@ -158,6 +156,9 @@ unsigned uorb_device_updates_available(const uorb_device_t node, unsigned last_g
 uorb_device_t uorb_device_add_internal_subscriber(ORB_ID orb_id, uint8_t instance, unsigned *initial_generation) {
     uorb_device_t node = uorb_device_find_node(get_orb_meta(orb_id), instance);
     if (node) {
+        if (node->_subscriber_count > 50) {
+            LOG_W("%s's follows reach %d, maybe not clean older", node->_meta->o_name, node->_subscriber_count);
+        }
         rt_enter_critical();
         node->_subscriber_count++;
         *initial_generation = node->_generation;
@@ -169,6 +170,7 @@ uorb_device_t uorb_device_add_internal_subscriber(ORB_ID orb_id, uint8_t instanc
 void uorb_device_remove_internal_subscriber(uorb_device_t node) {
     if (node) {
         rt_enter_critical();
+
         node->_subscriber_count--;
         rt_exit_critical();
     }

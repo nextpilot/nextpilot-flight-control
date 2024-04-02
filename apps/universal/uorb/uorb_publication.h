@@ -48,8 +48,7 @@ public:
     }
 
     bool unadvertise() {
-        // return (Manager::orb_unadvertise(_handle) == PX4_OK);
-        // _handle->
+        return (uorb_device_unadvertise(_handle) == 0);
     }
 
     orb_id_t get_topic() const {
@@ -64,7 +63,7 @@ protected:
     ~PublicationBase() {
         if (_handle != nullptr) {
             // don't automatically unadvertise queued publications (eg vehicle_command)
-            if (Manager::orb_get_queue_size(_handle) == 1) {
+            if (uorb_device_get_queue_size(_handle) == 1) {
                 unadvertise();
             }
         }

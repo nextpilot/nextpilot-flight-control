@@ -194,7 +194,6 @@ class DeviceNode : public uorb_device_node {
         rt_enter_critical();
         // If there any previous publications allow the subscriber to read them
         unsigned generation = rt_atomic_load(&_generation) - (_data_valid ? 1 : 0);
-
         rt_exit_critical();
         return generation;
     }

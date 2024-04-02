@@ -129,7 +129,7 @@ public:
     }
     void unsubscribe() {
         if (_node != nullptr) {
-            // uORB::Manager::orb_remove_internal_subscriber(_node);
+            uorb_device_remove_internal_subscriber(_node);
         }
 
         _node            = nullptr;
@@ -142,14 +142,14 @@ public:
 
     bool advertised() {
         if (valid()) {
-            return Manager::is_advertised(_node);
+            return uorb_deviceis_advertised(_node);
         }
 
         // try to initialize
         if (subscribe()) {
             // check again if valid
             if (valid()) {
-                return Manager::is_advertised(_node);
+                return uorb_deviceis_advertised(_node);
             }
         }
 
@@ -164,8 +164,7 @@ public:
             subscribe();
         }
 
-        // return valid() ? Manager::updates_available(_node, _last_generation) : false;
-        return true;
+        return valid() ? uorb_device_updates_available(_node, _last_generation) : false;
     }
 
     /**

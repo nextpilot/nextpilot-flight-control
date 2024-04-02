@@ -33,7 +33,21 @@ int orb_unadvertise(orb_advert_t node) {
 }
 
 int orb_publish(const struct orb_metadata *meta, orb_advert_t node, const void *data) {
-    return uorb_device_write(node, data);
+    // 如果没有指定节点，则使用instance=0的节点
+    if (meta && node) {
+        if (meta != node->_meta) {
+            return -1;
+        } else {
+            return uorb_device_write(node, data);
+        }
+    } else if (!meta && node) {
+        return uorb_device_write(node, data);
+    } else if (meta && !node) {
+        orb_advert_t node = uorb_device_find_node(meta, 0);
+        return uorb_device_write(node, data);
+    } else {
+        return -1;
+    }
 }
 
 int orb_publish_auto(const struct orb_metadata *meta, orb_advert_t *node, const void *data, int *instance) {
