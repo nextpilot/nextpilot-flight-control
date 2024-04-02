@@ -24,6 +24,40 @@ typedef uint16_t ORB_ID;
 static rt_list_t _uorb_device_list                  = {NULL, NULL};
 static uint32_t  _uorb_device_exist[ORB_TOTAL_ELEM] = {};
 
+// Determine the data range
+static inline bool is_in_range(unsigned left, unsigned value, unsigned right) {
+    if (right > left) {
+        return (left <= value) && (value <= right);
+
+    } else { // Maybe the data overflowed and a wraparound occurred
+        return (left <= value) || (value <= right);
+    }
+}
+
+// round up to nearest power of two
+// Such as 0 => 1, 1 => 1, 2 => 2 ,3 => 4, 10 => 16, 60 => 64, 65...255 => 128
+// Note: When the input value > 128, the output is always 128
+static inline uint8_t round_pow_of_two_8(uint8_t n) {
+    if (n == 0) {
+        return 1;
+    }
+
+    // Avoid is already a power of 2
+    uint8_t value = n - 1;
+
+    // Fill 1
+    value |= value >> 1U;
+    value |= value >> 2U;
+    value |= value >> 4U;
+
+    // Unable to round-up, take the value of round-down
+    if (value == UINT8_MAX) {
+        value >>= 1U;
+    }
+
+    return value + 1;
+}
+
 bool uorb_device_is_exist(ORB_ID orb_id, uint8_t instance) {
     if (/*orb_id == ORB_ID::INVALID ||*/
         (instance > ORB_MULTI_MAX_INSTANCES)) {
