@@ -17,7 +17,7 @@ site_dir: build/gh-pages
 use_directory_urls: false
 dev_addr: "127.0.0.1:8000"
 
-copyright: Copyright &copy; 2015-2024 <a href="https://www.nextpilot.com">Nextpilot Develop Team</a>, Maintained by <a href="/about/release-notes/#maintenance-team">LaterComer</a>.
+copyright: Copyright &copy; 2015-2024 <a href="https://docs.nextpilot.cn">Nextpilot Develop Team</a>, Maintained by <a href="/about/release-notes/#maintenance-team">LaterComer</a>.
 
 # nav:
 #     - 主页: index.md

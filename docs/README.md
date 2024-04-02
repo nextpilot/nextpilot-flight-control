@@ -1,5 +1,5 @@
 
-# HOME
+# Home
 
 NextPilot是一款的高性能高可靠的自动驾驶仪，支持多旋翼、复合翼、固定翼等。软件框架(param/workq)、通信中间层（uorb/mavlink）、控制算法等参考或移植于[PX4 V1.14.2](https://github.com/px4/px4-autopilot.git)项目，并基于国产[RT-Thread V5.0.2](https://github.com/RT-Thread/rt-thread/tree/v5.0.2)实时操作系统进行打造。
 
