@@ -29,7 +29,7 @@
 			// pdf预览
 			"tomoki1207.pdf",
 			// markdown格式化
-			// "DavidAnson.vscode-markdownlint",
+			"DavidAnson.vscode-markdownlint",
 			"yzhang.markdown-all-in-one",
 			// "shd101wyy.markdown-preview-enhanced",
 			// jinja语法高亮
@@ -37,7 +37,7 @@
 			// toml格式化
 			"tamasfe.even-better-toml",
 			// yaml格式化
-			// "redhat.vscode-yaml"
+			"redhat.vscode-yaml"
 		],
 	},
 	"settings": {
@@ -76,6 +76,10 @@
 			"--line-length=128",
 			"--extend-exclude=rtos/rt-thread/*.py"
 		],
+		// markdown
+		"[markdown]": {
+			"editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+		},
 		"files.associations": {
 			"chrono": "cpp",
 			"functional": "cpp",
