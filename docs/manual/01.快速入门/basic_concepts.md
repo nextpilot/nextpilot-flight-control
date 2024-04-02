@@ -1,6 +1,6 @@
 # 基本概念
 
-This topic provides a basic introduction to drones and using PX4 (it is meant mostly for novice users but is also a good introduction for experienced users).
+This topic provides a basic introduction to drones and using Nextpilot (it is meant mostly for novice users but is also a good introduction for experienced users).
 
 If you are already familiar with the basic concepts, you can move on to [Basic Assembly](../assembly/README.md) to learn how to wire your specific autopilot hardware.
 To load firmware and set up the vehicle with _QGroundControl_, see [Basic Configuration](../config/README.md).
@@ -47,14 +47,14 @@ Download and install it from [here](http://qgroundcontrol.com/downloads/).
 
 ## Flight Controller Board
 
-PX4 was initially designed to run on [Pixhawk Series](../flight_controller/pixhawk_series.md) controllers, but can now run on Linux computers and other hardware.
+Nextpilot was initially designed to run on [Pixhawk Series](../flight_controller/pixhawk_series.md) controllers, but can now run on Linux computers and other hardware.
 You should select a board that suits the physical constraints of your vehicle, the activities you wish to perform, and of course cost.
 
 For more information see: [Flight Controller Selection](flight_controller_selection.md).
 
 ## Sensors
 
-PX4 uses sensors to determine vehicle state (needed for stabilization and to enable autonomous control).
+Nextpilot uses sensors to determine vehicle state (needed for stabilization and to enable autonomous control).
 The system _minimally requires_ a gyroscope, accelerometer, magnetometer (compass) and barometer.
 A GPS or other positioning system is needed to enable all automatic flight modes and some manual modes.
 Fixed-wing and VTOL-vehicles should additionally include an airspeed sensor (very highly recommended).
@@ -65,7 +65,7 @@ For more information see:
 
 ## Outputs: Motors, Servos, Actuators
 
-PX4 uses _outputs_ to control: motor speed (e.g. via [ESC](#escs-motors)), flight surfaces like ailerons and flaps, camera triggers, parachutes, grippers, and many other types of payloads.
+Nextpilot uses _outputs_ to control: motor speed (e.g. via [ESC](#escs-motors)), flight surfaces like ailerons and flaps, camera triggers, parachutes, grippers, and many other types of payloads.
 
 The outputs may be PWM ports or DroneCAN nodes (e.g. DroneCAN [motor controllers](../dronecan/escs.md)).
 The images below show the PWM output ports for [Pixhawk 4](../flight_controller/pixhawk4.md) and [Pixhawk 4 mini](../flight_controller/pixhawk4_mini.md).
@@ -75,10 +75,9 @@ The images below show the PWM output ports for [Pixhawk 4](../flight_controller/
 The outputs are divided into `MAIN` and `AUX` outputs, and individually numbered (i.e. `MAINn` and `AUXn`, where `n` is 1 to usually 6 or 8).
 They might also be marked as `IO PWM Out` and `FMU PWM OUT` (or similar).
 
-:::warning
-A flight controller may only have `MAIN` PWM outputs (like the _Pixhawk 4 Mini_), or may have only 6 outputs on either `MAIN` or `AUX`.
-Ensure that you select a controller that has enough ports/outputs for your [airframe](../airframes/airframe_reference.md).
-:::
+!!! warning
+    A flight controller may only have `MAIN` PWM outputs (like the _Pixhawk 4 Mini_), or may have only 6 outputs on either `MAIN` or `AUX`.
+    Ensure that you select a controller that has enough ports/outputs for your [airframe](../airframes/airframe_reference.md).
 
 You can connect almost any output to any motor or other actuator, by assigning the associated function ("Motor 1") to the desired output ("AUX1") in QGroundControl: [Actuator Configuration and Testing](../config/actuators.md).
 Note that the functions (motor and control surface actuator positions) for each frame are given in the [Airframe Reference](../airframes/airframe_reference.md).
@@ -126,9 +125,8 @@ They can be used for most manual flight use cases such as taking off, surveys, a
 Joysticks are often used in integrated GCS/manual control systems because it is cheaper and easier to integrate a joystick than a separate radio system, and for the majority of use cases, the lower latency does not matter.
 They are also perfect for flying the PX4 simulator, because you can plug them directly into your ground control computer.
 
-:::note
-PX4 does not _require_ a manual control system for autonomous flight modes.
-:::
+!!! note
+    PX4 does not _require_ a manual control system for autonomous flight modes.
 
 ## Safety Switch
 
@@ -162,10 +160,9 @@ PX4 uses SD memory cards for storing [flight logs](../getting_started/flight_rep
 
 By default, if no SD card is present PX4 will play the [format failed (2-beep)](../getting_started/tunes.md#format-failed) tune twice during boot (and none of the above features will be available).
 
-::: tip
-The maximum supported SD card size on Pixhawk boards is 32GB.
-The _SanDisk Extreme U3 32GB_ and _Samsung EVO Plus 32_ are [highly recommended](../dev_log/logging.md#sd-cards).
-:::
+!!! tip
+    The maximum supported SD card size on Pixhawk boards is 32GB.
+    The _SanDisk Extreme U3 32GB_ and _Samsung EVO Plus 32_ are [highly recommended](../dev_log/logging.md#sd-cards).
 
 SD cards are never-the-less optional.
 Flight controllers that do not include an SD Card slot may:
@@ -191,9 +188,8 @@ For more information see:
 A vehicle is said to be _armed_ when all motors and actuators are powered, and _disarmed_ when nothing is powered.
 There is also a _prearmed_ state when only actuators are powered.
 
-:::warning
-Armed vehicles can be dangerous as propellors will be spinning.
-:::
+!!! warning
+    Armed vehicles can be dangerous as propellors will be spinning.
 
 Arming is triggered by default (on Mode 2 transmitters) by holding the RC throttle/yaw stick on the _bottom right_ for one second (to disarm, hold stick on bottom left).
 It is alternatively possible to configure PX4 to arm using an RC switch or button (and arming MAVLink commands can also be sent from a ground station).
@@ -211,11 +207,10 @@ By default, vehicles are:
 When prearmed you can still use actuators, while disarming unpowers everything.
 Prearmed and disarmed should both be safe, and a particular vehicle may support either or both.
 
-:::tip
-Sometimes a vehicle will not arm for reasons that are not obvious.
-QGC v4.2.0 (Daily build at time of writing) and later provide an arming check report in [Fly View > Arming and Preflight Checks](https://docs.qgroundcontrol.com/master/en/qgc-user-guide/fly_view/fly_view.html#arm).
-From PX4 v1.14 this provides comprehensive information about arming problems along with possible solutions.
-:::
+!!! tip
+    Sometimes a vehicle will not arm for reasons that are not obvious.
+    QGC v4.2.0 (Daily build at time of writing) and later provide an arming check report in [Fly View > Arming and Preflight Checks](https://docs.qgroundcontrol.com/master/en/qgc-user-guide/fly_view/fly_view.html#arm).
+    From PX4 v1.14 this provides comprehensive information about arming problems along with possible solutions.
 
 A detailed overview of arming and disarming configuration can be found here: [Prearm, Arm, Disarm Configuration](../advanced_config/prearm_arm_disarm.md).
 
@@ -230,9 +225,8 @@ _Manual modes_ are controlled by the user (via the RC control sticks/joystick) w
 Different manual modes enable different flight characteristics - for example, some modes enable acrobatic tricks,
 while others are impossible to flip and will hold position/course against wind.
 
-:::tip
-Not all flight modes are available on all vehicle types, and some modes can only be used when specific conditions have been met (e.g. many modes require a global position estimate).
-:::
+!!! tip
+    Not all flight modes are available on all vehicle types, and some modes can only be used when specific conditions have been met (e.g. many modes require a global position estimate).
 
 An overview of the available flight modes for each vehicle can be found below:
 
@@ -248,10 +242,9 @@ Instructions for how to set up your remote control switches to enable different 
 PX4 has configurable failsafe systems to protect and recover your vehicle if something goes wrong!
 These allow you to specify areas and conditions under which you can safely fly, and the action that will be performed if a failsafe is triggered (for example, landing, holding position, or returning to a specified point).
 
-:::note
-You can only specify the action for the _first_ failsafe event.
-Once a failsafe occurs the system will enter special handling code, such that subsequent failsafe triggers are managed by separate system level and vehicle specific code.
-:::
+!!! note
+    You can only specify the action for the _first_ failsafe event.
+    Once a failsafe occurs the system will enter special handling code, such that subsequent failsafe triggers are managed by separate system level and vehicle specific code.
 
 The main failsafe areas are listed below:
 
@@ -272,9 +265,8 @@ All the vehicles, boats and aircraft have a heading direction or an orientation 
 
 ![Frame Heading](../../assets/concepts/frame_heading.png)
 
-:::note
-For a VTOL Tailsitter the heading is relative to the multirotor configuration (i.e. vehicle pose during takeoff, hovering, landing).
-:::
+!!! note
+    For a VTOL Tailsitter the heading is relative to the multirotor configuration (i.e. vehicle pose during takeoff, hovering, landing).
 
 It is important to know the vehicle heading direction in order to align the autopilot with the vehicle vector of movement.
 Multicopters have a heading even when they are symmetrical from all sides!

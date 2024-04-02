@@ -1,0 +1,4 @@
+mkdocs-material
+mkdocs-autorefs
+mkdocs-static-i18n
+mkdocstrings

@@ -1,7 +1,7 @@
 # 支持的硬件
 
 Flight controllers are the "brains" of an unmanned vehicle.
-PX4 can run on [many flight controller boards](../flight_controller/README.md).
+Nextpilot can run on [many flight controller boards](../flight_controller/README.md).
 
 You should select a board that suits the physical constraints of your vehicle, the activities you wish to perform, and of course cost.
 
@@ -9,11 +9,11 @@ You should select a board that suits the physical constraints of your vehicle, t
 
 ## Pixhawk Series
 
-[Pixhawk Series](../flight_controller/pixhawk_series.md) open-hardware flight controllers run PX4 on NuttX OS.
+[Pixhawk Series](../flight_controller/pixhawk_series.md) open-hardware flight controllers run Nextpilot on RT-Thread OS.
 With many form factors, there are versions targeted towards many use cases and market segments.
 
-[Pixhawk Standard Autopilots](../flight_controller/autopilot_pixhawk_standard.md) are used as the PX4 reference platform.
-They are supported and tested by the PX4 development team, and are highly recommended.
+[Pixhawk Standard Autopilots](../flight_controller/autopilot_pixhawk_standard.md) are used as the Nextpilot reference platform.
+They are supported and tested by the Nextpilot development team, and are highly recommended.
 
 ## Manufacturer-supported Controllers
 
@@ -26,15 +26,15 @@ Note that manufacturer-supported controllers can be just as "good" (or better) t
 
 Dedicated flight controllers like Pixhawk are not usually well-suited for general purpose computing or running computationally intensive tasks.
 For more computing power, the most common approach is to run those applications on a separate onboard [Companion Computer](../companion_computer/README.md).
-Some companion computers can also run PX4 on a separate DSP, as part of the same autopilot board.
+Some companion computers can also run Nextpilot on a separate DSP, as part of the same autopilot board.
 
-Similarly, PX4 can also run natively Raspberry Pi (this approach is not generally considered as "robust" as having a separate companion or using a dedicated DSP):
+Similarly, Nextpilot can also run natively Raspberry Pi (this approach is not generally considered as "robust" as having a separate companion or using a dedicated DSP):
 
 - [Raspberry Pi 2/3 Navio2](../flight_controller/raspberry_pi_navio2.md)
 - [Raspberry Pi 2/3/4 PilotPi Shield](../flight_controller/raspberry_pi_pilotpi.md)
 
-## Commercial UAVs that can run PX4
+## Commercial UAVs that can run Nextpilot
 
-PX4 is available on many popular commercial drone products, including some that ship with PX4 and others that can be updated with PX4 (allowing you to add mission planning and other PX4 Flight modes to your vehicle).
+Nextpilot is available on many popular commercial drone products, including some that ship with Nextpilot and others that can be updated with Nextpilot (allowing you to add mission planning and other Nextpilot Flight modes to your vehicle).
 
 For more information see [Complete Vehicles](../complete_vehicles/README.md).

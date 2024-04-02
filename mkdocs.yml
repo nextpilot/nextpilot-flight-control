@@ -68,38 +68,56 @@ markdown_extensions:
       separator: "_"
   - attr_list
   - def_list
+  - md_in_html
   - tables
   - admonition
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.highlight:
       use_pygments: false
       anchor_linenums: true
+  - pymdownx.arithmatex:
+      generic: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+            # - mdx_gh_links:
+            #       user: mkdocs
+            #       repo: mkdocs
+            # - mkdocs-click
+            # - callouts
 
-# - mdx_gh_links:
-#       user: mkdocs
-#       repo: mkdocs
-# - mkdocs-click
-
-# - callouts
 
 plugins:
   - search
-#     - autorefs
-#     - literate-nav:
-#         nav_file: README.md
-#         implicit_index: true
-#     - mkdocstrings:
-#         handlers:
-#           python:
-#             options:
-#               docstring_section_style: list
-#               members_order: source
-#               show_root_heading: true
-#               show_source: false
-#               show_signature_annotations: true
+  - autorefs
+  #     - literate-nav:
+  #         nav_file: README.md
+  #         implicit_index: true
+  # - mkdocstrings:
+  #     handlers:
+  #       python:
+  #         options:
+  #           docstring_section_style: list
+  #           members_order: source
+  #           show_root_heading: true
+  #           show_source: false
+  #           show_signature_annotations: true
+  - i18n:
+      docs_structure: suffix
+      languages:
+        - locale: en
+          name: English
+          build: true
+        - locale: zh
+          name: 简体中文
+          default: true
+          build: true
 
 extra:
   version:
@@ -115,3 +133,8 @@ extra:
     - name: 简体中文
       link: /zh/
       lang: zh
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
