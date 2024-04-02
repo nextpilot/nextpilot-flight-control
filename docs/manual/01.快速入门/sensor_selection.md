@@ -1,4 +1,4 @@
-# Sensors
+# 传感器选择
 
 PX4-based systems use sensors to determine vehicle state (needed for stabilization and to enable autonomous control).
 The vehicle states include: position/altitude, heading, speed, airspeed, orientation (attitude), rates of rotation in different directions, battery level, and so on.
@@ -15,7 +15,7 @@ Below we describe some of the external sensors.
 
 ## GPS & Compass
 
-PX4 supports a number of Global Navigation Satellite System (GNSS) receivers and compasses (magnetometers). 
+PX4 supports a number of Global Navigation Satellite System (GNSS) receivers and compasses (magnetometers).
 It also supports Real Time Kinematic (RTK) GPS Receivers, which extend GPS systems to centimetre-level precision.
 
 We recommend the use of an external "combined" compass/GPS module mounted as far away from the motor/ESC power supply lines as possible - typically on a pedestal or wing (for fixed-wing).
@@ -23,6 +23,7 @@ We recommend the use of an external "combined" compass/GPS module mounted as far
 ![GPS + Compass](../../assets/hardware/gps/gps_compass.jpg)
 
 GPS/compass hardware options are listed in:
+
 - [GPS/Compass](../gps_compass/README.md)
 - [RTK GNSS (GPS)](../gps_compass/rtk_gps.md)
 
@@ -53,11 +54,10 @@ For more information see: [Distance Sensors](../sensor/rangefinders.md).
 ## Optical Flow
 
 [Optical Flow sensors](../sensor/optical_flow.md) use a downward facing camera and a downward facing distance sensor for velocity estimation.
-PX4 blends the sensor output with information from other position sources (e.g. GPS) to provide a more accurate position lock. 
+PX4 blends the sensor output with information from other position sources (e.g. GPS) to provide a more accurate position lock.
 This sensor can be used indoors, when no GPS signal is available.
 
 ![Image of ARK Flow optical flow sensor](../../assets/hardware/sensors/optical_flow/ark_flow.jpg)
-
 
 ## See Also
 
