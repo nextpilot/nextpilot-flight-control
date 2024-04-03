@@ -64,42 +64,16 @@ void PRINT_MODULE_USAGE_PARAM_COMMENT(const char *comment) {
 #endif
 }
 
-void PRINT_MODULE_USAGE_PARAMS_I2C_SPI_DRIVER(bool i2c_support, bool spi_support) {
+void PRINT_MODULE_USAGE_PARAM_FLAG(char option_char, const char *description, bool is_optional) {
 #ifndef CONSTRAINED_FLASH_NO_HELP
 
-    // Note: this must be kept in sync with Tools/px4moduledoc/srcparser.py
-    if (i2c_support) {
-        PRINT_MODULE_USAGE_PARAM_FLAG('I', "Internal I2C bus(es)", true);
-        PRINT_MODULE_USAGE_PARAM_FLAG('X', "External I2C bus(es)", true);
+    if (is_optional) {
+        LOG_RAW("     [-%c]        %s\n", option_char, description);
+
+    } else {
+        LOG_RAW("     -%c          %s\n", option_char, description);
     }
 
-    if (spi_support) {
-        PRINT_MODULE_USAGE_PARAM_FLAG('s', "Internal SPI bus(es)", true);
-        PRINT_MODULE_USAGE_PARAM_FLAG('S', "External SPI bus", true);
-    }
-
-    PRINT_MODULE_USAGE_PARAM_INT('b', -1, 0, 16, "board-specific bus (default=all) (external SPI: n-th bus (default=1))",
-                                 true);
-
-    if (spi_support) {
-        PRINT_MODULE_USAGE_PARAM_INT('c', -1, 0, 31, "chip-select pin (for internal SPI) or index (for external SPI)", true);
-        PRINT_MODULE_USAGE_PARAM_INT('m', -1, 0, 3, "SPI mode", true);
-    }
-
-    PRINT_MODULE_USAGE_PARAM_INT('f', -1, 0, 100000, "bus frequency in kHz", true);
-    PRINT_MODULE_USAGE_PARAM_FLAG('q', "quiet startup (no message if no device found)", true);
-#endif
-}
-
-void PRINT_MODULE_USAGE_PARAMS_I2C_ADDRESS(uint8_t default_address) {
-#ifndef CONSTRAINED_FLASH_NO_HELP
-    PRINT_MODULE_USAGE_PARAM_INT('a', default_address, 0, 0xff, "I2C address", true);
-#endif
-}
-
-void PRINT_MODULE_USAGE_PARAMS_I2C_KEEP_RUNNING_FLAG() {
-#ifndef CONSTRAINED_FLASH_NO_HELP
-    PRINT_MODULE_USAGE_PARAM_FLAG('k', "if initialization (probing) fails, keep retrying periodically", true);
 #endif
 }
 
@@ -139,19 +113,6 @@ void PRINT_MODULE_USAGE_PARAM_FLOAT(char option_char, float default_val, float m
 #endif
 }
 
-void PRINT_MODULE_USAGE_PARAM_FLAG(char option_char, const char *description, bool is_optional) {
-#ifndef CONSTRAINED_FLASH_NO_HELP
-
-    if (is_optional) {
-        LOG_RAW("     [-%c]        %s\n", option_char, description);
-
-    } else {
-        LOG_RAW("     -%c          %s\n", option_char, description);
-    }
-
-#endif
-}
-
 void PRINT_MODULE_USAGE_PARAM_STRING(char option_char, const char *default_val, const char *values,
                                      const char *description, bool is_optional) {
 #ifndef CONSTRAINED_FLASH_NO_HELP
@@ -180,6 +141,45 @@ void PRINT_MODULE_USAGE_PARAM_STRING(char option_char, const char *default_val, 
 #endif
 }
 
+void PRINT_MODULE_USAGE_PARAMS_I2C_SPI_DRIVER(bool i2c_support, bool spi_support) {
+#ifndef CONSTRAINED_FLASH_NO_HELP
+
+    // Note: this must be kept in sync with Tools/px4moduledoc/srcparser.py
+    if (i2c_support) {
+        PRINT_MODULE_USAGE_PARAM_FLAG('I', "Internal I2C bus(es)", true);
+        PRINT_MODULE_USAGE_PARAM_FLAG('X', "External I2C bus(es)", true);
+    }
+
+    if (spi_support) {
+        PRINT_MODULE_USAGE_PARAM_FLAG('s', "Internal SPI bus(es)", true);
+        PRINT_MODULE_USAGE_PARAM_FLAG('S', "External SPI bus", true);
+    }
+
+    PRINT_MODULE_USAGE_PARAM_INT('b', -1, 0, 16, "board-specific bus (default=all) (external SPI: n-th bus (default=1))",
+                                 true);
+
+    if (spi_support) {
+        PRINT_MODULE_USAGE_PARAM_INT('c', -1, 0, 31, "chip-select pin (for internal SPI) or index (for external SPI)", true);
+        PRINT_MODULE_USAGE_PARAM_INT('m', -1, 0, 3, "SPI mode", true);
+    }
+
+    PRINT_MODULE_USAGE_PARAM_INT('f', -1, 0, 100000, "bus frequency in kHz", true);
+    PRINT_MODULE_USAGE_PARAM_FLAG('q', "quiet startup (no message if no device found)", true);
+#endif
+}
+
+void PRINT_MODULE_USAGE_PARAMS_I2C_ADDRESS(uint8_t default_address) {
+#ifndef CONSTRAINED_FLASH_NO_HELP
+    PRINT_MODULE_USAGE_PARAM_INT('a', default_address, 0, 0xff, "I2C address", true);
+#endif
+}
+
+void PRINT_MODULE_USAGE_PARAMS_I2C_KEEP_RUNNING_FLAG() {
+#ifndef CONSTRAINED_FLASH_NO_HELP
+    PRINT_MODULE_USAGE_PARAM_FLAG('k', "if initialization (probing) fails, keep retrying periodically", true);
+#endif
+}
+
 void PRINT_MODULE_USAGE_ARG(const char *values, const char *description, bool is_optional) {
 #ifndef CONSTRAINED_FLASH_NO_HELP
 
@@ -192,5 +192,15 @@ void PRINT_MODULE_USAGE_ARG(const char *values, const char *description, bool is
 
 #endif
 }
+
+#define PRINT_MODULE_USAGE_COMMAND(name) \
+    PRINT_MODULE_USAGE_COMMAND_DESCR(name, NULL);
+
+/**
+ * @brief Prints the default commands: stop & status.
+ */
+#define PRINT_MODULE_USAGE_DEFAULT_COMMANDS() \
+    PRINT_MODULE_USAGE_COMMAND("stop");       \
+    PRINT_MODULE_USAGE_COMMAND_DESCR("status", "print status info");
 
 #endif // __MODULE_USAGE_H__

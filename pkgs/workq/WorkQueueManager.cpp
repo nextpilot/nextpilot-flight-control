@@ -8,6 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#include <rtthread.h>
+#include <rtdbg.h>
 #include <WorkQueueManager.hpp>
 #include <WorkQueue.hpp>
 #include <hrtimer.h>
@@ -32,8 +34,7 @@ static BlockingQueue<const wq_config_t *, 1> *_wq_manager_create_queue{nullptr};
 
 static atomic_bool _wq_manager_should_exit{true};
 
-static WorkQueue *
-FindWorkQueueByName(const char *name) {
+static WorkQueue *FindWorkQueueByName(const char *name) {
     if (_wq_manager_wqs_list == nullptr) {
         LOG_E("not running");
         return nullptr;
@@ -51,8 +52,7 @@ FindWorkQueueByName(const char *name) {
     return nullptr;
 }
 
-WorkQueue *
-WorkQueueFindOrCreate(const wq_config_t &new_wq) {
+WorkQueue *WorkQueueFindOrCreate(const wq_config_t &new_wq) {
     if (_wq_manager_create_queue == nullptr) {
         LOG_E("not running");
         return nullptr;
@@ -86,51 +86,49 @@ WorkQueueFindOrCreate(const wq_config_t &new_wq) {
     return wq;
 }
 
-const wq_config_t &
-device_bus_to_wq(uint32_t device_id_int) {
-    union device::Device::DeviceId device_id;
-    device_id.devid = device_id_int;
+const wq_config_t &device_bus_to_wq(uint32_t device_id_int) {
+    // union device::Device::DeviceId device_id;
+    // device_id.devid = device_id_int;
 
-    const device::Device::DeviceBusType bus_type = device_id.devid_s.bus_type;
-    const uint8_t                       bus      = device_id.devid_s.bus;
+    // const device::Device::DeviceBusType bus_type = device_id.devid_s.bus_type;
+    // const uint8_t                       bus      = device_id.devid_s.bus;
 
-    if (bus_type == device::Device::DeviceBusType_I2C) {
-        switch (bus) {
-        case 0: return wq_configurations::I2C0;
+    // if (bus_type == device::Device::DeviceBusType_I2C) {
+    //     switch (bus) {
+    //     case 0: return wq_configurations::I2C0;
 
-        case 1: return wq_configurations::I2C1;
+    //     case 1: return wq_configurations::I2C1;
 
-        case 2: return wq_configurations::I2C2;
+    //     case 2: return wq_configurations::I2C2;
 
-        case 3: return wq_configurations::I2C3;
+    //     case 3: return wq_configurations::I2C3;
 
-        case 4: return wq_configurations::I2C4;
-        }
+    //     case 4: return wq_configurations::I2C4;
+    //     }
 
-    } else if (bus_type == device::Device::DeviceBusType_SPI) {
-        switch (bus) {
-        case 0: return wq_configurations::SPI0;
+    // } else if (bus_type == device::Device::DeviceBusType_SPI) {
+    //     switch (bus) {
+    //     case 0: return wq_configurations::SPI0;
 
-        case 1: return wq_configurations::SPI1;
+    //     case 1: return wq_configurations::SPI1;
 
-        case 2: return wq_configurations::SPI2;
+    //     case 2: return wq_configurations::SPI2;
 
-        case 3: return wq_configurations::SPI3;
+    //     case 3: return wq_configurations::SPI3;
 
-        case 4: return wq_configurations::SPI4;
+    //     case 4: return wq_configurations::SPI4;
 
-        case 5: return wq_configurations::SPI5;
+    //     case 5: return wq_configurations::SPI5;
 
-        case 6: return wq_configurations::SPI6;
-        }
-    }
+    //     case 6: return wq_configurations::SPI6;
+    //     }
+    // }
 
     // otherwise use high priority
     return wq_configurations::hp_default;
 };
 
-const wq_config_t &
-serial_port_to_wq(const char *serial) {
+const wq_config_t &serial_port_to_wq(const char *serial) {
     if (serial == nullptr) {
         return wq_configurations::ttyUnknown;
 
@@ -189,8 +187,7 @@ const wq_config_t &ins_instance_to_wq(uint8_t instance) {
     return wq_configurations::INS0;
 }
 
-static void *
-WorkQueueRunner(void *context) {
+static void WorkQueueRunner(void *context) {
     wq_config_t *config = static_cast<wq_config_t *>(context);
     WorkQueue    wq(*config);
 
@@ -201,22 +198,18 @@ WorkQueueRunner(void *context) {
 
     // remove from work queue list
     _wq_manager_wqs_list->remove(&wq);
-
-    return nullptr;
 }
 
-#if defined(__PX4_NUTTX) && !defined(CONFIG_BUILD_FLAT)
-// Wrapper for px4_task_spawn_cmd interface
-inline static int
-WorkQueueRunner(int argc, char *argv[]) {
-    wq_config_t *context = (wq_config_t *)strtoul(argv[argc - 1], nullptr, 16);
-    WorkQueueRunner(context);
-    return 0;
-}
-#endif
+// #if defined(__PX4_NUTTX) && !defined(CONFIG_BUILD_FLAT)
+// // Wrapper for px4_task_spawn_cmd interface
+// inline static int WorkQueueRunner(int argc, char *argv[]) {
+//     wq_config_t *context = (wq_config_t *)strtoul(argv[argc - 1], nullptr, 16);
+//     WorkQueueRunner(context);
+//     return 0;
+// }
+// #endif
 
-static int
-WorkQueueManagerRun(int, char **) {
+static void WorkQueueManagerEntry(void *param) {
     _wq_manager_wqs_list     = new BlockingList<WorkQueue *>();
     _wq_manager_create_queue = new BlockingQueue<const wq_config_t *, 1>();
 
@@ -236,111 +229,54 @@ WorkQueueManagerRun(int, char **) {
             const unsigned int page_size     = sysconf(_SC_PAGESIZE);
             const size_t       stacksize_adj = math::max((int)PTHREAD_STACK_MIN, PX4_STACK_ADJUSTED(wq->stacksize));
             const size_t       stacksize     = (stacksize_adj + page_size - (stacksize_adj % page_size));
+#else
+            const size_t stacksize = 2048;
 #endif
 
             // priority
-            int sched_priority = sched_get_priority_max(SCHED_FIFO) + wq->relative_priority;
-
-            // use pthreads for NuttX flat and posix builds. For NuttX protected build, use tasks or kernel threads
-#if !defined(__PX4_NUTTX) || defined(CONFIG_BUILD_FLAT)
-            pthread_attr_t attr;
-            int            ret_attr_init = pthread_attr_init(&attr);
-
-            int ret_setstacksize = pthread_attr_setstacksize(&attr, stacksize);
-
-            if (ret_setstacksize != 0) {
-                LOG_E("setting stack size for %s failed (%i)", wq->name, ret_setstacksize);
-            }
-
-            if (ret_attr_init != 0) {
-                LOG_E("attr init for %s failed (%i)", wq->name, ret_attr_init);
-            }
-
-            sched_param param;
-            int         ret_getschedparam = pthread_attr_getschedparam(&attr, &param);
-
-            if (ret_getschedparam != 0) {
-                LOG_E("getting sched param for %s failed (%i)", wq->name, ret_getschedparam);
-            }
-
-            // schedule policy FIFO
-            int ret_setschedpolicy = pthread_attr_setschedpolicy(&attr, SCHED_FIFO);
-
-            if (ret_setschedpolicy != 0) {
-                LOG_E("failed to set sched policy SCHED_FIFO (%i)", ret_setschedpolicy);
-            }
-
-            // priority
-            param.sched_priority  = sched_priority;
-            int ret_setschedparam = pthread_attr_setschedparam(&attr, &param);
-
-            if (ret_setschedparam != 0) {
-                LOG_E("setting sched params for %s failed (%i)", wq->name, ret_setschedparam);
-            }
+            // int sched_priority = sched_get_priority_max(SCHED_FIFO) + wq->relative_priority;
+            int sched_priority = 10;
 
             // create thread
-            pthread_t thread;
-            int       ret_create = pthread_create(&thread, &attr, WorkQueueRunner, (void *)wq);
-
-            if (ret_create == 0) {
-                LOG_D("starting: %s, priority: %d, stack: %zu bytes", wq->name, param.sched_priority, stacksize);
-
-            } else {
-                LOG_E("failed to create thread for %s (%i): %s", wq->name, ret_create, strerror(ret_create));
-            }
-
-            // destroy thread attributes
-            int ret_destroy = pthread_attr_destroy(&attr);
-
-            if (ret_destroy != 0) {
-                LOG_E("failed to destroy thread attributes for %s (%i)", wq->name, ret_create);
-            }
-
-#else
-            // create thread
-
-            // pack wq struct pointer into string, this is compatible with px4_task_spawn_cmd
             char arg1[sizeof(void *) * 3];
-            sprintf(arg1, "%lx", (long unsigned)wq);
+            rt_sprintf(arg1, "%lx", (long unsigned)wq);
             const char *arg[2] = {arg1, nullptr};
 
-            int pid = px4_task_spawn_cmd(wq->name,
-                                         SCHED_FIFO,
-                                         sched_priority,
-                                         stacksize,
-                                         WorkQueueRunner,
-                                         (char *const *)arg);
+            rt_thread_t tid = rt_thread_create(wq->name,
+                                               WorkQueueRunner, nullptr,
+                                               stacksize, sched_priority, 5);
 
-            if (pid > 0) {
+            if (tid) {
                 LOG_D("starting: %s, priority: %d, stack: %zu bytes", wq->name, sched_priority, stacksize);
 
+                rt_thread_startup(tid);
             } else {
-                LOG_E("failed to create thread for %s (%i): %s", wq->name, pid, strerror(pid));
+                // LOG_E("failed to create thread for %s (%i): %s", wq->name, pid, strerror(pid));
             }
-
-#endif
         }
     }
-
-    return 0;
 }
 
 int WorkQueueManagerStart() {
     if (_wq_manager_should_exit.load() && (_wq_manager_create_queue == nullptr)) {
         _wq_manager_should_exit.store(false);
 
-        int task_id = px4_task_spawn_cmd("wq:manager",
-                                         SCHED_DEFAULT,
-                                         SCHED_PRIORITY_MAX,
-                                         PX4_STACK_ADJUSTED(1280),
-                                         (px4_main_t)&WorkQueueManagerRun,
-                                         nullptr);
+        // int task_id = px4_task_spawn_cmd("wq:manager",
+        //                                  SCHED_DEFAULT,
+        //                                  SCHED_PRIORITY_MAX,
+        //                                  PX4_STACK_ADJUSTED(1280),
+        //                                  (px4_main_t)&WorkQueueManagerEntry,
+        //                                  nullptr);
 
-        if (task_id < 0) {
+        rt_thread_t tid = rt_thread_create("wq:manager", WorkQueueManagerEntry, nullptr, 1024, 11, 5);
+
+        if (!tid) {
             _wq_manager_should_exit.store(true);
-            LOG_E("task start failed (%i)", task_id);
+            LOG_E("task start failed (%i)", tid);
             return -errno;
         }
+
+        rt_thread_startup(tid);
 
     } else {
         LOG_W("already running");
@@ -428,4 +364,50 @@ int WorkQueueManagerStatus() {
     return RT_EOK;
 }
 
-} // namespace px4
+} // namespace nextpilot
+
+#include <module_usage.h>
+static void usage() {
+    PRINT_MODULE_DESCRIPTION(
+        R"DESCR_STR(
+### Description
+
+Command-line tool to show work queue status.
+
+)DESCR_STR");
+
+    PRINT_MODULE_USAGE_NAME("workq", "system");
+    PRINT_MODULE_USAGE_COMMAND("start");
+    PRINT_MODULE_USAGE_DEFAULT_COMMANDS();
+}
+
+static int work_queue_main(int argc, char *argv[]) {
+    if (argc != 2) {
+        usage();
+        return 1;
+    }
+
+    if (!strcmp(argv[1], "start")) {
+        nextpilot::WorkQueueManagerStart();
+        return 0;
+
+    } else if (!strcmp(argv[1], "stop")) {
+        nextpilot::WorkQueueManagerStop();
+        return 0;
+
+    } else if (!strcmp(argv[1], "status")) {
+        nextpilot::WorkQueueManagerStatus();
+        return 0;
+    }
+
+    usage();
+
+    return 0;
+}
+MSH_CMD_EXPORT(work_queue_main, workq);
+
+int work_queue_start() {
+    nextpilot::WorkQueueManagerStart();
+    return 0;
+}
+INIT_APP_EXPORT(work_queue_start);

@@ -38,7 +38,7 @@
 			"tamasfe.even-better-toml",
 			// yaml格式化
 			"redhat.vscode-yaml"
-		],
+		]
 	},
 	"settings": {
 		"editor.formatOnPaste": true,
