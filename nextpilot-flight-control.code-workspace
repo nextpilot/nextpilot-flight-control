@@ -74,7 +74,7 @@
 		},
 		"black-formatter.args": [
 			"--line-length=128",
-			"--extend-exclude=rtos/rt-thread/*.py"
+			"--extend-exclude=rtos/**/*.py"
 		],
 		// markdown
 		"[markdown]": {

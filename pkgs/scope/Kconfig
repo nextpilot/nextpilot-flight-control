@@ -1,0 +1,42 @@
+menuconfig PKG_USING_SCOPE
+    bool "scope: a simple debug scope"
+    default n
+
+
+if PKG_USING_SCOPE
+    config SCOPE_UART_NAME
+        string "scope uart name"
+        default "uart1"
+
+    config SCOPE_UART_BAUDRATE
+        int "scope uart baudrate"
+        default 460800
+
+    config ULOG_USING_SCOPE_BACKEND
+        depends on RT_USING_ULOG
+        bool "enable ulog scope backend"
+        default n
+
+    config SCOPE_USING_ASYNC_OUTPUT
+        bool "scope using async output"
+        default y
+
+    config SCOPE_ASYNC_BUFFER_SIZE
+        depends on SCOPE_USING_ASYNC_OUTPUT
+        int "scope async buffer size"
+        default 2048
+
+    config SCOPE_ASYNC_THREAD_STACKSIZE
+        depends on SCOPE_USING_ASYNC_OUTPUT
+        int "scope async thread stack size"
+        default 1024
+
+    config SCOPE_ASYNC_THREAD_PRIORITY
+        depends on SCOPE_USING_ASYNC_OUTPUT
+        int "scope async thread priority"
+        default 20
+
+    config SCOPE_USING_INSIDE_CRC8
+        bool "using CRC8 function inside scope"
+        default y
+endif

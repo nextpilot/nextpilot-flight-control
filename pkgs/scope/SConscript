@@ -1,0 +1,12 @@
+import os
+import rtconfig
+from building import *
+
+cwd = GetCurrentDir()
+
+src = ["scope.c"]
+inc = [cwd]
+
+objs = DefineGroup("sys/scope", src, depend=["PKG_USING_SCOPE"], CPPPATH=inc)
+
+Return("objs")

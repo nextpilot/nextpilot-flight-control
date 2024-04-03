@@ -130,11 +130,13 @@ def PrepareBuilding(env, root_directory, has_libcpu=False, remove_components = [
 
     os.environ["RTT_DIR"] = root_directory
     os.environ["BSP_DIR"] = os.getcwd()
+
     if not "PKGS_DIR" in os.environ:
         if "ENV_ROOT" in os.environ:
             os.environ["PKGS_DIR"] = os.path.join(os.environ["ENV_ROOT"], "packages")
         else:
             os.environ["PKGS_DIR"] = os.path.join(os.getcwd(), "packages")
+
     AddOptions()
 
     Env = env
@@ -149,7 +151,7 @@ def PrepareBuilding(env, root_directory, has_libcpu=False, remove_components = [
     # set BSP_ROOT in ENV
     Env['BSP_ROOT'] = Dir('#').abspath
 
-    sys.path = sys.path + [os.path.join(Rtt_Root, 'tools')]
+    sys.path = sys.path + [os.path.join(Rtt_Root, 'tools'), os.path.join(Rtt_Root, 'tools/Kconfiglib')]
 
     # {target_name:(CROSS_TOOL, PLATFORM)}
     tgt_dict = {'mdk':('keil', 'armcc'),
