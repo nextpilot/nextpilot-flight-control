@@ -12,7 +12,7 @@
 
 #ifdef __cplusplus
 
-#include "atomic.h"
+#include <atomic.hpp>
 
 template <size_t N>
 class AtomicBitset {

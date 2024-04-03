@@ -11,7 +11,7 @@
 #include <rtthread.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include "atomic.h"
+#include <atomic.hpp>
 #include "uorb_device_node.h"
 
 // #ifdef __cplusplus

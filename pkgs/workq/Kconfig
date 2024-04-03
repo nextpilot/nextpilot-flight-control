@@ -1,0 +1,7 @@
+menuconfig PKG_USING_WORKQUEUE
+    bool
+    select PKG_USING_QUEUE
+    select PKG_USING_HRTIMER
+    select PKG_USING_CONTAINER
+
+    default n
