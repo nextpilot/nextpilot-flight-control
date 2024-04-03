@@ -118,7 +118,10 @@
 			"thread": "c",
 			"xlocmon": "c",
 			"xloctime": "c",
-			"xmemory": "c"
+			"xmemory": "c",
+			"getopt.h": "c",
+			"hrtimer.h": "c",
+			"stdio.h": "c"
 		},
 		"RTT_Studio.Build.Parallel_Jobs": "12",
 		"RTT_Studio.Env_Location": "C:/RT-ThreadStudio/platform/env_released/env",

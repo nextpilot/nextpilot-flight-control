@@ -12,8 +12,6 @@
  * Included Files
  ****************************************************************************/
 
-#include <nuttx/config.h>
-
 #include <queue.h>
 #include <assert.h>
 
@@ -33,7 +31,7 @@ size_t dq_count(dq_queue_t *queue) {
     dq_entry_t *node;
     size_t      count;
 
-    DEBUGASSERT(queue != NULL);
+    assert(queue != NULL);
 
     for (node = queue->head, count = 0;
          node != NULL;

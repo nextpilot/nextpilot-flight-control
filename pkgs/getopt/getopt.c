@@ -13,7 +13,7 @@
  * Minimal, thread safe version of getopt
  */
 
-#include <getopt.h>
+#include "getopt.h"
 #include <stdio.h>
 
 // check if p is a valid option and if the option takes an arg

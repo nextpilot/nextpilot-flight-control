@@ -11,9 +11,12 @@
 #define LOG_TAG "param.common"
 
 #include <rtdbg.h>
+#ifdef PKG_USING_HRTIMER
+#include "hrtimer.h"
+#endif // PKG_USING_HRTIMER
 
 void param_notify_changes() {
-#ifdef PKG_USING_UORB
+#ifdef PKG_USING_UORB_
     static uint32_t           param_instance = 0;
     struct parameter_update_s pup;
     pup.instance = param_instance++;

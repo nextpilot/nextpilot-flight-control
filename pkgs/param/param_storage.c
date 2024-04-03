@@ -21,7 +21,7 @@ static param_storage_t *__param_storage__[MAX_DEV_COUNT] = {NULL, NULL};
 
 RT_WEAK uint32_t crc32part(const void *buff, int size, uint32_t crc) {
     for (int i = 0; i < size; i++) {
-        crc += buff[i];
+        crc += ((uint8_t *)buff)[i];
     }
     return crc;
 }

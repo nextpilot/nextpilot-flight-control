@@ -43,10 +43,19 @@
 /* Nextpilot Packages Config */
 
 #define PKG_USING_CONTAINER
+#define PKG_USING_GETOPT
+#define PKG_USING_HRTIMER
+#define PKG_USING_HRTIMER_V1
+#define PKG_USING_LIBCRC
 #define PKG_USING_PARAM
 #define PARAM_USING_GLOBAL_AUTOGEN
 #define PARAM_USING_STORAGE_FILE
 #define PARAM_DEFAULT_FILE_PATH "/param.bin"
+#define PKG_USING_QUEUE
+#define PKG_USING_UORB
+#define PKG_USING_BOARD_VERSION
+#define BOARD_TYPE_NAME "sitl-qemu-default"
+#define BOARD_CHIP_NAME "cortex-A9"
 /* end of Nextpilot Packages Config */
 
 /* RT-Thread Kernel */

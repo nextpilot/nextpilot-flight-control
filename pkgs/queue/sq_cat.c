@@ -28,7 +28,7 @@
  ****************************************************************************/
 
 void sq_cat(sq_queue_t *queue1, sq_queue_t *queue2) {
-    DEBUGASSERT(queue1 != NULL && queue2 != NULL);
+    assert(queue1 != NULL && queue2 != NULL);
 
     /* If queue2 is empty, then just move queue1 to queue2 */
 

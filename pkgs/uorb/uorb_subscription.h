@@ -56,8 +56,21 @@ int orb_get_interval(orb_subptr_t sub, unsigned *interval);
 #include <IntrusiveList.hpp>
 #include <pthread.h>
 #include <LockGuard.hpp>
+#ifdef PKG_USING_HRTIMER
+#include <hrtimer.h>
+#endif // PKG_USING_HRTIMER
 
 namespace nextpilot::uORB {
+
+#ifndef PKG_USING_HRTIMER
+typedef uint64_t       hrt_abstime;
+static inline uint64_t hrt_absolute_time() {
+    return rt_tick_get() * 1000ULL;
+}
+static inline uint64_t hrt_elapsed_time(uint64_t *time) {
+    return rt_tick_get() * 1000ULL - (*time);
+}
+#endif // PKG_USING_HRTIMER
 
 class Subscription {
 public:
@@ -262,15 +275,6 @@ protected:
     };
 };
 
-#ifndef PKG_USING_HRTIMER
-typedef uint64_t       hrt_abstime;
-static inline uint64_t hrt_absolute_time() {
-    return rt_tick_get() * 1000ULL;
-}
-static inline uint64_t hrt_elapsed_time(uint64_t *time) {
-    return rt_tick_get() * 1000ULL - (*time);
-}
-#endif // PKG_USING_HRTIMER
 class SubscriptionInterval : public Subscription {
 public:
     /**

@@ -34,6 +34,7 @@ int board_get_hw_revision() {
     return _hw_revision;
 }
 
+#ifdef BOARD_HAS_HW_VERSIONING
 static uint32_t get_adc_dn_full_count() {
 #ifdef SOC_SERIES_STM32F7
     return 1 << 12;
@@ -78,7 +79,6 @@ static int dn_to_ordinal(rt_uint32_t dn) {
     return -1;
 }
 
-#ifdef BOARD_HAS_HW_VERSIONING
 /************************************************************************************
  *
  *                0 VDD

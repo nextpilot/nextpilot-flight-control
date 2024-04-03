@@ -11,7 +11,7 @@ if True:
     for d in os.listdir(cwd):
         path = os.path.join(cwd, d)
         if os.path.isfile(os.path.join(path, "SConscript")):
-            objs += SConscript(os.path.join(d, "SConscript"), variant_dir="#/build/bsp/" + d, duplicate=0)
+            objs += SConscript(os.path.join(d, "SConscript"), variant_dir="#/build/bsps/" + d, duplicate=0)
 else:
     objs = []
 

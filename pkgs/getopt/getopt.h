@@ -18,6 +18,10 @@
 
 #pragma once
 
+#define __EXPORT
+#define __BEGIN_DECLS
+#define __END_DECLS
+
 __BEGIN_DECLS
 
 int getopt(int argc, char *argv[], const char *options, int *myoptind, const char **myoptarg);
