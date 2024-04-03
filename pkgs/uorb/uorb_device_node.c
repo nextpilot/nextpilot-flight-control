@@ -58,7 +58,7 @@ static inline uint8_t round_pow_of_two_8(uint8_t n) {
     return value + 1;
 }
 
-bool uorb_device_is_exist(ORB_ID orb_id, uint8_t instance) {
+bool uorb_device_node_exist(ORB_ID orb_id, uint8_t instance) {
     if (/*orb_id == ORB_ID::INVALID ||*/
         (instance > ORB_MULTI_MAX_INSTANCES)) {
         return false;
@@ -102,13 +102,13 @@ void uorb_device_clear_exist(ORB_ID orb_id, uint8_t instance) {
 
 void uorb_device_add_node(uorb_device_t node) {
     if (node) {
-        rt_list_insert_before(&_uorb_device_list, &node->_list);
+        rt_list_insert_before(&_uorb_device_list, &node->list);
     }
 }
 
 void uorb_device_remove_node(uorb_device_t node) {
     if (node) {
-        rt_list_remove(&node->_list);
+        rt_list_remove(&node->list);
     }
 }
 
@@ -118,7 +118,7 @@ uorb_device_t uorb_device_find_node(const struct orb_metadata *meta, uint8_t ins
     }
 
     // 先看看是否创建
-    if (!uorb_device_is_exist((ORB_ID)(meta->o_id), instance)) {
+    if (!uorb_device_node_exist((ORB_ID)(meta->o_id), instance)) {
         return NULL;
     }
 
@@ -127,8 +127,8 @@ uorb_device_t uorb_device_find_node(const struct orb_metadata *meta, uint8_t ins
     rt_enter_critical();
     rt_list_for_each_safe(pos, temp_list, &_uorb_device_list) {
         uorb_device_t node = (uorb_device_t)pos;
-        if ((rt_strcmp(node->_meta->o_name, meta->o_name) == 0) &&
-            (node->_instance == instance)) {
+        if ((rt_strcmp(node->meta->o_name, meta->o_name) == 0) &&
+            (node->instance == instance)) {
             rt_exit_critical();
             return node;
         }
@@ -142,7 +142,7 @@ uint8_t uorb_device_get_queue_size(const uorb_device_t node) {
     if (!node) {
         return 0;
     }
-    return node->_queue_size;
+    return node->queue_size;
 }
 
 uint8_t uorb_device_get_instance(const uorb_device_t node) {
@@ -150,12 +150,12 @@ uint8_t uorb_device_get_instance(const uorb_device_t node) {
         return -1;
     }
 
-    return node->_instance;
+    return node->instance;
 }
 
-bool uorb_device_is_advertised(const uorb_device_t node) {
+bool uorb_device_node_advertised(const uorb_device_t node) {
     if (node) {
-        return node->_advertised;
+        return node->advertised;
     }
 
     return false;
@@ -163,26 +163,26 @@ bool uorb_device_is_advertised(const uorb_device_t node) {
 
 void uorb_device_mark_advertised(uorb_device_t node) {
     if (node) {
-        node->_advertised = true;
+        node->advertised = true;
     }
 }
 
 int urob_device_set_queue_size(uorb_device_t node, uint32_t queue_size) {
-    if (node->_queue_size == queue_size) {
+    if (node->queue_size == queue_size) {
         return 0;
     }
 
-    if (node->_data || node->_queue_size > queue_size || queue_size > 255) {
+    if (node->data || node->queue_size > queue_size || queue_size > 255) {
         return -1;
     }
 
-    node->_queue_size = round_pow_of_two_8(queue_size);
+    node->queue_size = round_pow_of_two_8(queue_size);
     return 0;
 }
 
 unsigned uorb_device_updates_available(const uorb_device_t node, unsigned last_generation) {
-    if (node && node->_advertised) {
-        return (node->_generation - last_generation);
+    if (node && node->advertised) {
+        return (node->generation - last_generation);
     }
     return 0;
 }
@@ -190,12 +190,12 @@ unsigned uorb_device_updates_available(const uorb_device_t node, unsigned last_g
 uorb_device_t uorb_device_add_internal_subscriber(ORB_ID orb_id, uint8_t instance, unsigned *initial_generation) {
     uorb_device_t node = uorb_device_find_node(get_orb_meta(orb_id), instance);
     if (node) {
-        if (node->_subscriber_count > 50) {
-            LOG_W("%s's follows reach %d, maybe not clean older", node->_meta->o_name, node->_subscriber_count);
+        if (node->subscriber_count > 50) {
+            LOG_W("%s's follows reach %d, maybe not clean older", node->meta->o_name, node->subscriber_count);
         }
         rt_enter_critical();
-        node->_subscriber_count++;
-        *initial_generation = node->_generation;
+        node->subscriber_count++;
+        *initial_generation = node->generation;
         rt_exit_critical();
     }
     return node;
@@ -205,7 +205,7 @@ void uorb_device_remove_internal_subscriber(uorb_device_t node) {
     if (node) {
         rt_enter_critical();
 
-        node->_subscriber_count--;
+        node->subscriber_count--;
         rt_exit_critical();
     }
 }
@@ -217,47 +217,47 @@ uorb_device_t uorb_device_create(const struct orb_metadata *meta, const uint8_t 
         return NULL;
     }
 
-    node->_meta             = meta;
-    node->_data             = NULL;
-    node->_data_valid       = false;
-    node->_generation       = 0;
-    node->_instance         = instance;
-    node->_advertised       = false;
-    node->_queue_size       = round_pow_of_two_8(queue_size);
-    node->_subscriber_count = 0;
+    node->meta             = meta;
+    node->data             = NULL;
+    node->data_valid       = false;
+    node->generation       = 0;
+    node->instance         = instance;
+    node->advertised       = false;
+    node->queue_size       = round_pow_of_two_8(queue_size);
+    node->subscriber_count = 0;
 
     // 标记主题已经创建
     uorb_device_mark_exist(meta->o_id, instance);
     // 将主题节点添加到链表
-    rt_list_insert_before(&_uorb_device_list, &node->_list);
+    rt_list_insert_before(&_uorb_device_list, &node->list);
 
     return node;
 }
 
 int uorb_device_delete(uorb_device_t node) {
     // 主要订阅数大于0，就不允许删除节点
-    if (!node || node->_subscriber_count > 0) {
+    if (!node || node->subscriber_count > 0) {
         return -1;
     }
 
     // 将节点从链表移除
-    rt_list_remove(&node->_list);
+    rt_list_remove(&node->list);
     // 标记主题不存在
-    uorb_device_clear_exist(node->_meta->o_id, node->_instance);
+    uorb_device_clear_exist(node->meta->o_id, node->instance);
 
-    node->_meta = NULL;
+    node->meta = NULL;
     // 释放data指针
-    if (node->_data) {
-        void *data  = node->_data;
-        node->_data = NULL;
+    if (node->data) {
+        void *data = node->data;
+        node->data = NULL;
         rt_free(data);
     }
-    node->_data_valid       = false;
-    node->_generation       = 0;
-    node->_instance         = 0;
-    node->_advertised       = false;
-    node->_queue_size       = 0;
-    node->_subscriber_count = 0;
+    node->data_valid       = false;
+    node->generation       = 0;
+    node->instance         = 0;
+    node->advertised       = false;
+    node->queue_size       = 0;
+    node->subscriber_count = 0;
     // 释放node指针
     rt_free(node);
 
@@ -293,7 +293,7 @@ uorb_device_t uorb_device_advertise(const struct orb_metadata *meta, const void 
     for (inst = 0; inst < max_inst; inst++) {
         node = uorb_device_find_node(meta, inst);
         if (node) {
-            if (!node->_advertised) {
+            if (!node->advertised) {
                 break;
             }
         } else {
@@ -305,7 +305,7 @@ uorb_device_t uorb_device_advertise(const struct orb_metadata *meta, const void 
     // 如果node找到/创建成功，发布首次数据，且返回instance
     if (node) {
         // 标记为已经公告，只有公告过的主题才能copy和publish数据
-        node->_advertised = true;
+        node->advertised = true;
         if (data) {
             // orb_publish(meta, node, data);
             uorb_device_write(node, data);
@@ -324,8 +324,8 @@ int uorb_device_unadvertise(orb_advert_t node) {
         return -1;
     }
 
-    if (node->_subscriber_count > 0) {
-        node->_advertised = false;
+    if (node->subscriber_count > 0) {
+        node->advertised = false;
         return 0;
     }
 
@@ -333,17 +333,17 @@ int uorb_device_unadvertise(orb_advert_t node) {
 }
 
 int uorb_device_read(uorb_device_t node, void *dst, uint32_t *generation) {
-    if ((dst != NULL) && (node->_data != NULL)) {
-        if (node->_queue_size == 1) {
+    if ((dst != NULL) && (node->data != NULL)) {
+        if (node->queue_size == 1) {
             rt_enter_critical();
-            rt_memcpy(dst, node->_data, node->_meta->o_size);
-            *generation = rt_atomic_load(&node->_generation);
+            rt_memcpy(dst, node->data, node->meta->o_size);
+            *generation = rt_atomic_load(&node->generation);
             rt_exit_critical();
-            return node->_meta->o_size;
+            return node->meta->o_size;
 
         } else {
             rt_enter_critical();
-            const unsigned current_generation = rt_atomic_load(&node->_generation);
+            const unsigned current_generation = rt_atomic_load(&node->generation);
 
             if (current_generation == *generation) {
                 /* The subscriber already read the latest message, but nothing new was published yet.
@@ -353,17 +353,17 @@ int uorb_device_read(uorb_device_t node, void *dst, uint32_t *generation) {
             }
 
             // Compatible with normal and overflow conditions
-            if (!is_in_range(current_generation - node->_queue_size, *generation, current_generation - 1)) {
+            if (!is_in_range(current_generation - node->queue_size, *generation, current_generation - 1)) {
                 // Reader is too far behind: some messages are lost
-                *generation = current_generation - node->_queue_size;
+                *generation = current_generation - node->queue_size;
             }
 
-            rt_memcpy(dst, node->_data + (node->_meta->o_size * (*generation % node->_queue_size)), node->_meta->o_size);
+            rt_memcpy(dst, node->data + (node->meta->o_size * (*generation % node->queue_size)), node->meta->o_size);
             rt_exit_critical();
 
             ++(*generation);
 
-            return node->_meta->o_size;
+            return node->meta->o_size;
         }
     }
 
@@ -371,17 +371,17 @@ int uorb_device_read(uorb_device_t node, void *dst, uint32_t *generation) {
 }
 
 int uorb_device_write(uorb_device_t node, const void *data) {
-    if (!node || !data || !node->_meta) {
+    if (!node || !data || !node->meta) {
         return 0;
     }
 
-    if (!node->_data) {
+    if (!node->data) {
         // rt_enter_critical();
-        node->_data = rt_calloc(1, node->_meta->o_size * node->_queue_size);
+        node->data = rt_calloc(1, node->meta->o_size * node->queue_size);
         // rt_exit_critical();
 
         /* failed or could not allocate */
-        if (!node->_data) {
+        if (!node->data) {
             return 0;
         }
     }
@@ -389,9 +389,9 @@ int uorb_device_write(uorb_device_t node, const void *data) {
     /* Perform an atomic copy. */
     rt_enter_critical();
     /* wrap-around happens after ~49 days, assuming a publisher rate of 1 kHz */
-    unsigned generation = rt_atomic_add(&node->_generation, 1L); //.fetch_add(1);
+    unsigned generation = rt_atomic_add(&node->generation, 1L); //.fetch_add(1);
 
-    rt_memcpy(node->_data + (node->_meta->o_size * (generation % node->_queue_size)), data, node->_meta->o_size);
+    rt_memcpy(node->data + (node->meta->o_size * (generation % node->queue_size)), data, node->meta->o_size);
 
     // 注册callback
     // for (auto item : _callbacks) {
@@ -399,12 +399,12 @@ int uorb_device_write(uorb_device_t node, const void *data) {
     // }
 
     /* Mark at least one data has been published */
-    node->_data_valid = true;
+    node->data_valid = true;
 
     rt_exit_critical();
 
     /* notify any poll waiters */
     // poll_notify(POLLIN);
 
-    return node->_meta->o_size;
+    return node->meta->o_size;
 }

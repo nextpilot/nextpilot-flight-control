@@ -4,7 +4,7 @@ from building import *
 
 objs = []
 
-if GetDepend(["SYS_USING_HRTIMER_V1"]):
+if GetDepend(["PKG_USING_HRTIMER_V1"]):
     cwd = GetCurrentDir()
     src = Glob("*.c")
     inc = [cwd]

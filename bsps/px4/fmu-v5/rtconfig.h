@@ -493,7 +493,7 @@
 
 /* nextpilot storage config */
 
-#define SYS_USING_PARAM
+#define PKG_USING_PARAM
 #define SYS_USING_ROMFS
 #define SYS_USING_DATAMAN
 #define DATAMAN_DEFAULT_FILE_PATH "/mnt/microsd/etc/dataman.bin"
@@ -517,16 +517,16 @@
 /* common packages */
 
 #define SYS_USING_AIRFRAME
-#define LIB_USING_CONTAINER
-#define LIB_USING_QUEUE
-#define LIB_USING_HRTIMER
-#define SYS_USING_UORB
-#define SYS_USING_PARAM
+#define PKG_USING_CONTAINER
+#define PKG_USING_QUEUE
+#define PKG_USING_HRTIMER
+#define PKG_USING_UORB
+#define PKG_USING_PARAM
 #define PARAM_USING_FORMAT_JSON
 #define PARAM_USING_SAVE_FILE
 #define PARAM_FILE_PATH_NAME "/mnt/microsd/etc/param.bin"
 #define LIB_USING_MODULE
-#define LIB_USING_LIBCRC
+#define PKG_USING_LIBCRC
 
 /* math packages */
 
@@ -576,7 +576,7 @@
 
 /* utilities pacakge */
 
-#define SYS_USING_VERSION
+#define PKG_USING_BOARD_VERSION
 #define BOARD_TYPE_NAME "CETCS-FCS-DEFAULT"
 #define BOARD_CHIP_NAME "STM32F765IIk"
 #define BOARD_HAS_HW_VERSIONING

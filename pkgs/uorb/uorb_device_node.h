@@ -17,25 +17,25 @@
 #include <uORB.h>
 
 struct uorb_device_node {
-    rt_list_t                  _list;
-    const struct orb_metadata *_meta;
-    uint8_t                   *_data;       // 数据指针，只有publish的时候才会去分配
-    int                        _data_valid; // data是否已经发布过一次
-    long /*rt_atomic_t */      _generation; // 发布数据次数
-    uint8_t                    _instance;   // 主题的第instance个实例
+    rt_list_t                  list;
+    const struct orb_metadata *meta;
+    uint8_t                   *data;       // 数据指针，只有publish的时候才会去分配
+    int                        data_valid; // data是否已经发布过一次
+    long /*rt_atomic_t */      generation; // 发布数据次数
+    uint8_t                    instance;   // 主题的第instance个实例
     // advertised是占位符，只有公告的主题才能进行copy和publish
     // 因为有些特殊情况，需要订阅某个还没有创建的主题，且必须现在就拿到主题的地址
     // 这个时候会新建这个主题，并标记为advertised=false，表示我先占坑
     // 等下次调用orb_advertise函数的时候，使用这个坑就可以，advertised=true
-    bool    _advertised;       // placeholder
-    uint8_t _queue_size;       // data中保存多少拍的数据
-    int8_t  _subscriber_count; // 订阅者数量
+    bool    advertised;       // placeholder
+    uint8_t queue_size;       // data中保存多少拍的数据
+    int8_t  subscriber_count; // 订阅者数量
 };
 
 typedef struct uorb_device_node *uorb_device_t;
 typedef struct uorb_device_node *orb_advert_t;
 
-bool          uorb_device_is_exist(ORB_ID orb_id, uint8_t instance);
+bool          uorb_device_node_exist(ORB_ID orb_id, uint8_t instance);
 void          uorb_device_mark_exist(ORB_ID orb_id, uint8_t instance);
 void          uorb_device_clear_exist(ORB_ID orb_id, uint8_t instance);
 uorb_device_t uorb_device_find_node(const struct orb_metadata *meta, uint8_t instance);
@@ -47,7 +47,7 @@ uint8_t uorb_device_get_queue_size(const uorb_device_t node);
 int     urob_device_set_queue_size(uorb_device_t node, uint32_t queue_size);
 
 uint8_t uorb_device_get_instance(const uorb_device_t node);
-bool    uorb_device_is_advertised(const uorb_device_t node);
+bool    uorb_device_node_advertised(const uorb_device_t node);
 void    uorb_device_mark_advertised(uorb_device_t node);
 
 unsigned uorb_device_updates_available(const uorb_device_t node, unsigned last_generation);

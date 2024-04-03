@@ -11,6 +11,8 @@
 
 #include <stdlib.h>
 
+// namespace nextpilot::container {
+
 template <class T>
 class IntrusiveQueue {
 public:
@@ -157,3 +159,5 @@ private:
 
     T _next_intrusive_queue_node{nullptr};
 };
+
+// } // namespace nextpilot::container

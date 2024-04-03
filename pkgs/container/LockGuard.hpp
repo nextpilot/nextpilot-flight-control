@@ -11,6 +11,7 @@
 #pragma once
 
 #include <pthread.h>
+
 class LockGuard {
 public:
     explicit LockGuard(pthread_mutex_t &mutex) :

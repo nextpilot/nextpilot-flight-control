@@ -1,8 +1,8 @@
-menuconfig SYS_USING_VERSION
+menuconfig PKG_USING_BOARD_VERSION
     bool "version : hardware and software version manage"
     default n
 
-if SYS_USING_VERSION
+if PKG_USING_BOARD_VERSION
     config BOARD_TYPE_NAME
         string "board name"
         default "unkown"

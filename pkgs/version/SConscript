@@ -5,7 +5,7 @@ from building import *
 
 objs = []
 
-if GetDepend(["SYS_USING_VERSION"]):
+if GetDepend(["PKG_USING_BOARD_VERSION"]):
     cwd = GetCurrentDir()
 
     # 自动更新版本信息

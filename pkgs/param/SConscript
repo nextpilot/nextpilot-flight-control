@@ -4,7 +4,7 @@ from building import *
 
 objs = []
 
-if GetDepend(["SYS_USING_PARAM"]):
+if GetDepend(["PKG_USING_PARAM"]):
     cwd = GetCurrentDir()
     src = Glob("*.cpp") + Glob("*.c")
 

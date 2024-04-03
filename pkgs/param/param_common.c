@@ -13,12 +13,16 @@
 #include <rtdbg.h>
 
 void param_notify_changes() {
-#ifdef SYS_USING_UORB
+#ifdef PKG_USING_UORB
     static uint32_t           param_instance = 0;
     struct parameter_update_s pup;
-    pup.instance  = param_instance++;
+    pup.instance = param_instance++;
+#ifdef PKG_USING_HRTIMER
     pup.timestamp = hrt_absolute_time();
+#else
+    pup.timestamp = rt_tick_get() * 1000ULL;
+#endif // PKG_USING_HRTIMER
     orb_publish(ORB_ID(parameter_update), NULL, &pup);
-#endif // SYS_USING_UORB
+#endif // PKG_USING_UORB
     LOG_D("notify param updated");
 }

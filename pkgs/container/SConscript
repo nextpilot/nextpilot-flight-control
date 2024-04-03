@@ -5,14 +5,15 @@ from building import *
 
 objs = []
 
-if GetDepend(["LIB_USING_CONTAINER"]):
+# if GetDepend(["PKG_USING_CONTAINER"]):
+if GetDepend([""]):
     cwd = GetCurrentDir()
 
     # 添加当前文件夹下的代码
     src = Glob("*.c") + Glob("*.cpp")
     inc = [cwd]
 
-    objs += DefineGroup("lib/common/container", src, depend=[""], CPPPATH=inc)
+    objs += DefineGroup("pkg/container", src, depend=[""], CPPPATH=inc)
 
     for d in os.listdir(cwd):
         path = os.path.join(cwd, d)

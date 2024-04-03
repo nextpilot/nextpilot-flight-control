@@ -18,6 +18,8 @@
 
 #include <stdlib.h>
 
+// namespace nextpilot::container {
+
 template <class T>
 class IntrusiveSortedListNode {
 public:
@@ -170,3 +172,5 @@ public:
 protected:
     T _head{nullptr};
 };
+
+// } // namespace nextpilot::container

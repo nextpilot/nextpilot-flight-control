@@ -26,7 +26,7 @@ rt_err_t orb_exists(const struct orb_metadata *meta, int instance) {
 
     uorb_device_t node = uorb_device_find_node(meta, instance);
 
-    if (node && node->_advertised) {
+    if (node && node->advertised) {
         return 0;
     }
 
@@ -42,8 +42,8 @@ int orb_group_count(const struct orb_metadata *meta) {
     return instance;
 }
 
-static bool orb_data_copy(uorb_device_t node, void *dst, uint32_t *generation, bool only_if_updated) {
-    if (!uorb_device_is_advertised(node)) {
+bool orb_data_copy(uorb_device_t node, void *dst, uint32_t *generation, bool only_if_updated) {
+    if (!uorb_device_node_advertised(node)) {
         return false;
     }
 
@@ -60,16 +60,16 @@ static bool orb_subscribe_find_node(orb_subptr_t sub) {
         return false;
     }
     // 如果node不为空，则不需要查找了
-    if (sub->_node) {
+    if (sub->node) {
         return true;
     }
 
     unsigned      initial_generation = 0;
-    uorb_device_t node               = uorb_device_add_internal_subscriber(sub->_orb_id, sub->_instance, &initial_generation);
+    uorb_device_t node               = uorb_device_add_internal_subscriber(sub->orb_id, sub->instance, &initial_generation);
 
     if (node) {
-        sub->_node            = node;
-        sub->_last_generation = initial_generation;
+        sub->node            = node;
+        sub->last_generation = initial_generation;
         return true;
     }
     return false;
@@ -78,10 +78,10 @@ static bool orb_subscribe_find_node(orb_subptr_t sub) {
 orb_subval_t orb_subscribe_multi(const struct orb_metadata *meta, uint8_t instance) {
     orb_subval_t sub;
     if (meta) {
-        sub._orb_id          = meta->o_id;
-        sub._node            = NULL;
-        sub._instance        = instance;
-        sub._last_generation = 0;
+        sub.orb_id          = meta->o_id;
+        sub.node            = NULL;
+        sub.instance        = instance;
+        sub.last_generation = 0;
 
         orb_subscribe_find_node(&sub);
     }
@@ -98,12 +98,12 @@ rt_err_t orb_unsubscribe(orb_subptr_t sub) {
         return -1;
     }
 
-    if (sub->_node) {
-        uorb_device_remove_internal_subscriber(sub->_node);
+    if (sub->node) {
+        uorb_device_remove_internal_subscriber(sub->node);
     }
 
-    sub->_node            = NULL;
-    sub->_last_generation = 0;
+    sub->node            = NULL;
+    sub->last_generation = 0;
 
     return 0;
 }
@@ -115,15 +115,15 @@ rt_err_t orb_check(orb_subptr_t sub, bool *updated) {
     }
 
     // 获取node
-    if (!sub->_node) {
+    if (!sub->node) {
         orb_subscribe_find_node(sub);
     }
 
-    if (!sub->_node) {
+    if (!sub->node) {
         return -1;
     }
 
-    unsigned available = uorb_device_updates_available(sub->_node, sub->_last_generation);
+    unsigned available = uorb_device_updates_available(sub->node, sub->last_generation);
 
     *updated = available != 0;
 
@@ -136,12 +136,12 @@ rt_err_t orb_copy(const struct orb_metadata *meta, orb_subptr_t sub, void *buffe
         return -1;
     }
 
-    if (sub->_orb_id != meta->o_id) {
+    if (sub->orb_id != meta->o_id) {
         return -1;
     }
 
-    if (sub->_node) {
-        return orb_data_copy(sub->_node, buffer, &sub->_last_generation, false) ? 0 : -1;
+    if (sub->node) {
+        return orb_data_copy(sub->node, buffer, &sub->last_generation, false) ? 0 : -1;
     }
 
     return -1;
@@ -153,12 +153,12 @@ rt_err_t orb_update(orb_subptr_t sub, void *data) {
         return -1;
     }
 
-    if (!sub->_node) {
+    if (!sub->node) {
         orb_subscribe_find_node(sub);
     }
 
-    if (sub->_node) {
-        return orb_data_copy(sub->_node, data, &sub->_last_generation, true) ? 0 : -1;
+    if (sub->node) {
+        return orb_data_copy(sub->node, data, &sub->last_generation, true) ? 0 : -1;
     }
 
     return -1;
@@ -169,7 +169,7 @@ rt_err_t orb_poll(orb_subptr_t sub, int timeout_us) {
 }
 
 rt_err_t orb_change_instance(orb_subptr_t sub, uint8_t instance) {
-    if (!sub || sub->_instance == instance) {
+    if (!sub || sub->instance == instance) {
         return -1;
     }
 
@@ -177,11 +177,11 @@ rt_err_t orb_change_instance(orb_subptr_t sub, uint8_t instance) {
     orb_unsubscribe(sub);
 
     // 查找新的node
-    sub->_instance                   = instance;
+    sub->instance                    = instance;
     unsigned      initial_generation = 0;
-    uorb_device_t node               = uorb_device_add_internal_subscriber(sub->_orb_id, sub->_instance, &initial_generation);
-    sub->_node                       = node;
-    sub->_last_generation            = initial_generation;
+    uorb_device_t node               = uorb_device_add_internal_subscriber(sub->orb_id, sub->instance, &initial_generation);
+    sub->node                        = node;
+    sub->last_generation             = initial_generation;
 
     return 0;
 }

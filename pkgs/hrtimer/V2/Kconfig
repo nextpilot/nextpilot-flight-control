@@ -1,5 +1,5 @@
 
-if SYS_USING_HRTIMER_V2
+if PKG_USING_HRTIMER_V2
     choice
         default HRT_USING_HARD_SYSTICK
         prompt "Select hrtimer source"

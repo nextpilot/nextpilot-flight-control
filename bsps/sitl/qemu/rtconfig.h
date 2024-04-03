@@ -38,17 +38,15 @@
 
 /* Nextpilot Telemetry Config */
 
-/* Nextpilot Universal Config */
-
-#define SYS_USING_PARAM
-#define PARAM_USING_GLOBAL_AUTOGEN
-#define PARAM_USING_STORAGE_FILE
-#define PARAM_DEFAULT_FILE_PATH "/param.bin"
-/* end of Nextpilot Universal Config */
 /* end of Nextpilot Firmware Config */
 
 /* Nextpilot Packages Config */
 
+#define PKG_USING_CONTAINER
+#define PKG_USING_PARAM
+#define PARAM_USING_GLOBAL_AUTOGEN
+#define PARAM_USING_STORAGE_FILE
+#define PARAM_DEFAULT_FILE_PATH "/param.bin"
 /* end of Nextpilot Packages Config */
 
 /* RT-Thread Kernel */
@@ -239,6 +237,8 @@
 #define RT_USING_POSIX_DELAY
 #define RT_USING_POSIX_CLOCK
 #define RT_USING_POSIX_TIMER
+#define RT_USING_PTHREADS
+#define PTHREAD_NUM_MAX 8
 
 /* Interprocess Communication (IPC) */
 

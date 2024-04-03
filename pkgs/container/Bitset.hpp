@@ -13,8 +13,7 @@
 #include <stdint.h>
 #include <stddef.h>
 
-// namespace px4
-//{
+namespace nextpilot::container {
 
 template <size_t N>
 class Bitset {
@@ -51,6 +50,13 @@ public:
         }
     }
 
+    void reset() {
+        // set bits to false
+        for (auto &d : _data) {
+            d = 0;
+        }
+    }
+
 private:
     static constexpr uint8_t BITS_PER_ELEMENT = 8;
     static constexpr size_t  ARRAY_SIZE       = (N % BITS_PER_ELEMENT == 0) ? N / BITS_PER_ELEMENT : N / BITS_PER_ELEMENT + 1;
@@ -66,4 +72,4 @@ private:
     uint8_t _data[ARRAY_SIZE]{};
 };
 
-//} // namespace px4
+} // namespace nextpilot::container

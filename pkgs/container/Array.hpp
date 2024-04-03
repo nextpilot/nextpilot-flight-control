@@ -12,8 +12,7 @@
 
 #include <stdlib.h>
 
-// namespace px4
-//{
+namespace nextpilot::container {
 
 template <class T, size_t N>
 class Array {
@@ -102,4 +101,4 @@ private:
     bool   _overflow{false};
 };
 
-//}
+} // namespace nextpilot::container

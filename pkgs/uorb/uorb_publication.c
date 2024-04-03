@@ -4,14 +4,14 @@
 
 uint8_t orb_get_queue_size(const uorb_device_t node) {
     if (node) {
-        return node->_queue_size;
+        return node->queue_size;
     }
     return 0;
 }
 
 uint8_t orb_get_instance(const uorb_device_t node) {
     if (node) {
-        return node->_instance;
+        return node->instance;
     }
     return 0;
 }
@@ -49,7 +49,7 @@ int orb_unadvertise(orb_advert_t node) {
 int orb_publish(const struct orb_metadata *meta, orb_advert_t node, const void *data) {
     // 如果没有指定节点，则使用instance=0的节点
     if (meta && node) {
-        if (meta != node->_meta) {
+        if (meta != node->meta) {
             return -1;
         } else {
             return uorb_device_write(node, data);

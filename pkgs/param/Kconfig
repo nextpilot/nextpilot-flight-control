@@ -1,10 +1,8 @@
-menuconfig SYS_USING_PARAM
+menuconfig PKG_USING_PARAM
     bool "param: global parameter store manage"
-    select LIB_USING_LIBCRC
-    select LIB_USING_HRTIMER
     default n
 
-if SYS_USING_PARAM
+if PKG_USING_PARAM
     config PARAM_USING_GLOBAL_AUTOGEN
         bool "Enable autogen interface"
         default y

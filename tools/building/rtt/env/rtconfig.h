@@ -6,11 +6,11 @@
 
 /* RT-Thread Kernel */
 
-#define RT_NAME_MAX 16
+#define RT_NAME_MAX   16
 #define RT_ALIGN_SIZE 4
 #define RT_THREAD_PRIORITY_32
 #define RT_THREAD_PRIORITY_MAX 32
-#define RT_TICK_PER_SECOND 1000
+#define RT_TICK_PER_SECOND     1000
 #define RT_USING_OVERFLOW_CHECK
 #define RT_USING_HOOK
 #define RT_HOOK_USING_FUNC_PTR
@@ -44,9 +44,9 @@
 #define RT_USING_DEVICE
 #define RT_USING_DEVICE_OPS
 #define RT_USING_CONSOLE
-#define RT_CONSOLEBUF_SIZE 256
+#define RT_CONSOLEBUF_SIZE     256
 #define RT_CONSOLE_DEVICE_NAME "uart4"
-#define RT_VER_NUM 0x40101
+#define RT_VER_NUM             0x40101
 #define ARCH_ARM
 #define RT_USING_CPU_FFS
 #define ARCH_ARM_CORTEX_M
@@ -57,12 +57,12 @@
 #define RT_USING_COMPONENTS_INIT
 #define RT_USING_USER_MAIN
 #define RT_MAIN_THREAD_STACK_SIZE 2048
-#define RT_MAIN_THREAD_PRIORITY 10
+#define RT_MAIN_THREAD_PRIORITY   10
 #define RT_USING_MSH
 #define RT_USING_FINSH
 #define FINSH_USING_MSH
-#define FINSH_THREAD_NAME "tshell"
-#define FINSH_THREAD_PRIORITY 28
+#define FINSH_THREAD_NAME       "tshell"
+#define FINSH_THREAD_PRIORITY   28
 #define FINSH_THREAD_STACK_SIZE 4096
 #define FINSH_USING_HISTORY
 #define FINSH_HISTORY_LINES 5
@@ -74,9 +74,9 @@
 #define RT_USING_DFS
 #define DFS_USING_POSIX
 #define DFS_USING_WORKDIR
-#define DFS_FILESYSTEMS_MAX 4
+#define DFS_FILESYSTEMS_MAX      4
 #define DFS_FILESYSTEM_TYPES_MAX 4
-#define DFS_FD_MAX 16
+#define DFS_FD_MAX               16
 #define RT_USING_DFS_ELMFAT
 
 /* elm-chan's FatFs, Generic FAT Filesystem Module */
@@ -86,9 +86,9 @@
 #define RT_DFS_ELM_USE_LFN_3
 #define RT_DFS_ELM_USE_LFN 3
 #define RT_DFS_ELM_LFN_UNICODE_0
-#define RT_DFS_ELM_LFN_UNICODE 0
-#define RT_DFS_ELM_MAX_LFN 255
-#define RT_DFS_ELM_DRIVES 2
+#define RT_DFS_ELM_LFN_UNICODE     0
+#define RT_DFS_ELM_MAX_LFN         255
+#define RT_DFS_ELM_DRIVES          2
 #define RT_DFS_ELM_MAX_SECTOR_SIZE 512
 #define RT_DFS_ELM_USE_ERASE
 #define RT_DFS_ELM_REENTRANT
@@ -111,11 +111,11 @@
 #define RT_USING_PWM
 #define RT_USING_RTC
 #define RT_USING_SDIO
-#define RT_SDIO_STACK_SIZE 512
-#define RT_SDIO_THREAD_PRIORITY 15
-#define RT_MMCSD_STACK_SIZE 2048
+#define RT_SDIO_STACK_SIZE       512
+#define RT_SDIO_THREAD_PRIORITY  15
+#define RT_MMCSD_STACK_SIZE      2048
 #define RT_MMCSD_THREAD_PREORITY 22
-#define RT_MMCSD_MAX_PARTITION 16
+#define RT_MMCSD_MAX_PARTITION   16
 #define RT_USING_SPI
 
 /* Using USB */
@@ -123,15 +123,15 @@
 #define RT_USING_USB
 #define RT_USING_USB_DEVICE
 #define RT_USBD_THREAD_STACK_SZ 4096
-#define USB_VENDOR_ID 0x0FFE
-#define USB_PRODUCT_ID 0x0001
+#define USB_VENDOR_ID           0x0FFE
+#define USB_PRODUCT_ID          0x0001
 #define _RT_USB_DEVICE_CDC
 #define RT_USB_DEVICE_CDC
 #define RT_VCOM_TASK_STK_SIZE 512
-#define RT_CDC_RX_BUFSIZE 128
-#define RT_VCOM_SERNO "32021919830108"
-#define RT_VCOM_SER_LEN 14
-#define RT_VCOM_TX_TIMEOUT 1000
+#define RT_CDC_RX_BUFSIZE     128
+#define RT_VCOM_SERNO         "32021919830108"
+#define RT_VCOM_SER_LEN       14
+#define RT_VCOM_TX_TIMEOUT    1000
 
 /* C/C++ and POSIX layer */
 
@@ -158,7 +158,6 @@
 
 /* Network */
 
-
 /* Utilities */
 
 #define RT_USING_ULOG
@@ -169,7 +168,7 @@
 #define ULOG_USING_ASYNC_OUTPUT
 #define ULOG_ASYNC_OUTPUT_BUF_SIZE 4096
 #define ULOG_ASYNC_OUTPUT_BY_THREAD
-#define ULOG_ASYNC_OUTPUT_THREAD_STACK 2048
+#define ULOG_ASYNC_OUTPUT_THREAD_STACK    2048
 #define ULOG_ASYNC_OUTPUT_THREAD_PRIORITY 30
 
 /* log format */
@@ -183,53 +182,39 @@
 
 /* RT-Thread Utestcases */
 
-
 /* RT-Thread online packages */
 
 /* IoT - internet of things */
-
 
 /* Wi-Fi */
 
 /* Marvell WiFi */
 
-
 /* Wiced WiFi */
-
 
 /* CYW43012 WiFi */
 
-
 /* BL808 WiFi */
-
 
 /* CYW43439 WiFi */
 
-
 /* IoT Cloud */
 
-
 /* security packages */
-
 
 /* language packages */
 
 /* JSON: JavaScript Object Notation, a lightweight data-interchange format */
 
-
 /* XML: Extensible Markup Language */
-
 
 /* multimedia packages */
 
 /* LVGL: powerful and easy-to-use embedded GUI library */
 
-
 /* u8g2: a monochrome graphic library */
 
-
 /* tools packages */
-
 
 /* system packages */
 
@@ -246,46 +231,37 @@
 #define PKG_VSNPRINTF_SUPPORT_WRITEBACK_SPECIFIER
 #define PKG_VSNPRINTF_SUPPORT_LONG_LONG
 #define PKG_VSNPRINTF_CHECK_FOR_NUL_IN_FORMAT_SPECIFIER
-#define PKG_VSNPRINTF_INTEGER_BUFFER_SIZE 32
-#define PKG_VSNPRINTF_DECIMAL_BUFFER_SIZE 32
-#define PKG_VSNPRINTF_DEFAULT_FLOAT_PRECISION 6
+#define PKG_VSNPRINTF_INTEGER_BUFFER_SIZE             32
+#define PKG_VSNPRINTF_DECIMAL_BUFFER_SIZE             32
+#define PKG_VSNPRINTF_DEFAULT_FLOAT_PRECISION         6
 #define PKG_VSNPRINTF_MAX_INTEGRAL_DIGITS_FOR_DECIMAL 9
-#define PKG_VSNPRINTF_LOG10_TAYLOR_TERMS 4
+#define PKG_VSNPRINTF_LOG10_TAYLOR_TERMS              4
 #define PKG_USING_RT_VSNPRINTF_FULL_LATEST_VERSION
 #define PKG_RT_VSNPRINTF_FULL_VER "latest"
 
 /* acceleration: Assembly language or algorithmic acceleration packages */
 
-
 /* CMSIS: ARM Cortex-M Microcontroller Software Interface Standard */
 
-
 /* Micrium: Micrium software products porting for RT-Thread */
-
 
 /* peripheral libraries and drivers */
 
 /* sensors drivers */
 
-
 /* touch drivers */
-
 
 /* Kendryte SDK */
 
-
 /* AI packages */
 
-
 /* Signal Processing and Control Algorithm Packages */
-
 
 /* miscellaneous packages */
 
 /* project laboratory */
 
 /* samples: kernel and components samples */
-
 
 /* entertainment: terminal games and other interesting software packages */
 
@@ -296,35 +272,25 @@
 
 /* Arduino libraries */
 
-
 /* Projects and Demos */
-
 
 /* Sensors */
 
-
 /* Display */
-
 
 /* Timing */
 
-
 /* Data Processing */
-
 
 /* Data Storage */
 
 /* Communication */
 
-
 /* Device Control */
-
 
 /* Other */
 
-
 /* Signal IO */
-
 
 /* Uncategorized */
 
@@ -335,11 +301,11 @@
 
 /* Chip Memory Setting */
 
-#define FLASH_START_ADDRESS 0x80000000
-#define FLASH_APP_VTOR_OFFSET 128
+#define FLASH_START_ADDRESS    0x80000000
+#define FLASH_APP_VTOR_OFFSET  128
 #define FLASH_APP_TOTAL_LENGTH 1920
-#define SRAM_START_ADDRESS 0x24000000
-#define SRAM_TOTAL_LENGTH 512
+#define SRAM_START_ADDRESS     0x24000000
+#define SRAM_TOTAL_LENGTH      512
 
 /* On-chip Peripheral Drivers */
 
@@ -421,9 +387,9 @@
 #define MAVLINK_HANDLE_LOG_DOWNLOAD
 #define MALVINK_LOG_ROOT_DIR "/mnt/microsd"
 #define MAVLINK_HANDLE_TIMESYNC
-#define SYS_USING_UORB
+#define PKG_USING_UORB
 #define UORB_USING_CALLBACK
-#define SYS_USING_PARAM
+#define PKG_USING_PARAM
 #define PARAM_USING_SAVE_FRAM
 #define PARAM_FRAM_DEVICE_NAME "fm25v02"
 #define PARAM_USING_FORMAT_JSON
@@ -432,40 +398,40 @@
 #define SYS_USING_LOGGER
 #define LOGGER_FULL_LOG_ROOT_PATH "/mnt/microsd/log"
 #define LOGGER_LESS_LOG_ROOT_PATH "/mnt/micorsd/mission_log"
-#define SYS_USING_VERSION
+#define PKG_USING_BOARD_VERSION
 #define BOARD_TYPE_NAME "CETCS-FCSv4-DEFAULT"
 #define BOARD_CHIP_NAME "STM32H753IIk"
 #define SYS_USING_ROMFS
 #define DRV_USING_RC_INPUT_OLD
 #define RC_SERIAL_PORT "uart8"
 #define DRV_USING_BATTERY_STATUS
-#define BOARD_NUMBER_BRICKS 1
-#define ADC_BATTERY_DEVICE_NAME "adc3"
+#define BOARD_NUMBER_BRICKS          1
+#define ADC_BATTERY_DEVICE_NAME      "adc3"
 #define ADC_BATTERY1_VOLTAGE_CHANNEL 4
 #define ADC_BATTERY1_CURRENT_CHANNEL 1
-#define SGD_INS_UART_NAME "uart7"
-#define SGD_INS_UART_BAUDRATE 460800
+#define SGD_INS_UART_NAME            "uart7"
+#define SGD_INS_UART_BAUDRATE        460800
 #define SGD_INS_UART_SWAP_RXTX
 #define DRV_USING_SGD_INS_V2
 #define DRV_USING_PWM_OUT_OLD
 #define BOARD_HAS_PWM 8
 #define DRV_USING_CYS90H
-#define CYS90H_UART_NAME "uart5"
-#define CYS90H_UART_BAUDRATE "115200"
+#define CYS90H_UART_NAME         "uart5"
+#define CYS90H_UART_BAUDRATE     "115200"
 #define CYS90H_THROTTLE_PWM_NAME "pwm8"
 #define CYS90H_THROTTLE_PWM_CHAN 3
-#define CYS90H_ENING_START_PIN 129
-#define CYS90H_CHARGE_START_PIN 131
-#define CYS90H_PUMP_START_PIN 4
+#define CYS90H_ENING_START_PIN   129
+#define CYS90H_CHARGE_START_PIN  131
+#define CYS90H_PUMP_START_PIN    4
 #define DRV_USING_TONE_ALARM
 #define BUZZER_TIMER_NAME "pwm5"
 #define BUZZER_TIMER_CHAN 4
-#define LIB_USING_CONTAINER
-#define LIB_USING_QUEUE
-#define LIB_USING_HRTIMER
+#define PKG_USING_CONTAINER
+#define PKG_USING_QUEUE
+#define PKG_USING_HRTIMER
 #define HRT_USING_HARD_SYSTICK
 #define LIB_USING_MODULE
-#define LIB_USING_LIBCRC
+#define PKG_USING_LIBCRC
 #define LIB_USING_MATHLIB
 #define LIB_USING_MATRIX
 #define LIB_USING_ROTATION
@@ -584,6 +550,5 @@
 /* telemetry packages */
 
 /* utilities pacakge */
-
 
 #endif
