@@ -1,0 +1,17 @@
+import os
+import rtconfig
+from building import *
+
+cwd = GetCurrentDir()
+inc = [cwd]
+src = []
+
+if GetDepend(["ULOG_BACKEND_USING_LOGGER"]):
+    src += ["ulog_file_backend.c"]
+
+if GetDepend(["ULOG_BACKEND_USING_UORB"]):
+    src += ["ulog_uorb_backend.c"]
+
+objs = DefineGroup("pkg/ulog_be", src, depend=[""], CPPPATH=inc)
+
+Return("objs")
