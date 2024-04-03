@@ -35,6 +35,8 @@ copyright: Copyright &copy; 2015-2024 <a href="https://docs.nextpilot.cn">Nextpi
 
 theme:
   name: material
+  favicon: favicon.png
+  # logo: logo.png
   features:
     - navigation.instant
     - navigation.tabs
