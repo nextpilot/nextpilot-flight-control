@@ -1,0 +1,17 @@
+menuconfig SYS_USING_LOGGER
+    bool "logger : save uorb and ulog message to file"
+    default n
+
+if SYS_USING_LOGGER
+
+    config LOGGER_FULL_LOG_ROOT_PATH
+        string "full size log root path"
+        default "/mnt/microsd/log" if SYS_USING_ROMFS
+        default "/log"
+
+    config LOGGER_LESS_LOG_ROOT_PATH
+        string "reduced mission log root path"
+        default "/mnt/micorsd/mission_log"  if SYS_USING_ROMFS
+        default "/mission_log"
+
+endif

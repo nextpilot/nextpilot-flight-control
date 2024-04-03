@@ -1,0 +1,13 @@
+menuconfig SYS_USING_DATAMAN
+    bool "dataman : geofense, mission data manage"
+    default n
+
+if SYS_USING_DATAMAN
+
+    config DATAMAN_DEFAULT_FILE_PATH
+        string "dataman save path"
+        # default "/mnt/norflash/dataman.bin" if RT_USING_QSPI
+        default "/mnt/microsd/etc/dataman.bin" if SYS_USING_ROMFS
+        default "/dataman.bin"
+
+endif

@@ -1,3 +1,0 @@
-menu "Nextpilot Universal Config"
-orsource "*/Kconfig"
-endmenu
