@@ -18,6 +18,6 @@ if GetDepend(["PARAM_USING_LINKER_SECTION"]):
 if GetDepend(["PARAM_USING_SIMULINK_CAPI"]):
     src += ["param_simulink_capi.cpp"]
 
-objs += DefineGroup("sys/param", src, depend=[""], CPPPATH=inc)
+objs += DefineGroup("pkg/param", src, depend=[""], CPPPATH=inc)
 
 Return("objs")
