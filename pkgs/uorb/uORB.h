@@ -117,10 +117,4 @@ typedef uint8_t hil_state_t;
 typedef uint8_t navigation_state_t;
 typedef uint8_t switch_pos_t;
 
-typedef uint16_t ORB_ID;
-
-static inline const struct orb_metadata *get_orb_meta(ORB_ID orb_id) {
-    return NULL;
-}
-
 #endif // __UORB_H__

@@ -2,8 +2,13 @@ import os
 import rtconfig
 from building import *
 
-objs = []
 cwd = GetCurrentDir()
+
+
+objs = []
+inc = [cwd]
+
+objs += DefineGroup(name="pkg", src=[], depend=[], CPPPATH=inc)
 
 for d in os.listdir(cwd):
     path = os.path.join(cwd, d)
