@@ -1,0 +1,3 @@
+menu "Controller Libraries Config"
+orsource "*/Kconfig"
+endmenu

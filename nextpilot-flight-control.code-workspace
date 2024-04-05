@@ -126,7 +126,11 @@
 			"queue": "cpp",
 			"algorithm": "cpp",
 			"xlocinfo": "cpp",
-			"typeinfo": "cpp"
+			"typeinfo": "cpp",
+			"math.h": "c",
+			"mavlink_vasprintf.h": "c",
+			"stdbool.h": "c",
+			"rtdevice.h": "c"
 		},
 		"RTT_Studio.Build.Parallel_Jobs": "12",
 		"RTT_Studio.Env_Location": "C:/RT-ThreadStudio/platform/env_released/env",

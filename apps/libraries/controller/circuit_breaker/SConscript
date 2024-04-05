@@ -1,0 +1,17 @@
+import os
+import rtconfig
+from building import *
+
+objs = []
+
+if GetDepend(["LIB_USING_CIRCUIT_BREAKER"]):
+    cwd = GetCurrentDir()
+    src = ["circuit_breaker.cpp", circuit_breaker_params.c]
+    inc = [cwd]
+
+    objs += DefineGroup("lib/control", src, depend=[""], CPPPATH=inc)
+
+else:
+    objs = []
+
+Return("objs")

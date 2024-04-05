@@ -4,11 +4,12 @@ from building import *
 
 objs = []
 
-if GetDepend([""]):
+if GetDepend(["LIB_USING_MATRIX"]):
     cwd = GetCurrentDir()
     src = []
     inc = [cwd]
-    objs += DefineGroup("pkg/atomic", src, depend=[""], CPPPATH=inc)
+
+    objs += DefineGroup("lib/matrix", src, depend=[""], CPPPATH=inc)
 
     for d in os.listdir(cwd):
         path = os.path.join(cwd, d)

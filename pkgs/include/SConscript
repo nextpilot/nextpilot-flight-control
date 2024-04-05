@@ -8,7 +8,7 @@ if GetDepend([""]):
     cwd = GetCurrentDir()
     src = []
     inc = [cwd]
-    objs += DefineGroup("pkg/atomic", src, depend=[""], CPPPATH=inc)
+    objs += DefineGroup("pkg/include", src, depend=[""], CPPPATH=inc)
 
     for d in os.listdir(cwd):
         path = os.path.join(cwd, d)

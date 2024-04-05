@@ -1,0 +1,14 @@
+menuconfig FCS_MC_RATE_CONTROL
+	bool "mc_rate_control"
+	select PKG_USING_UORB
+	select PKG_USING_PARAM
+	default n
+	---help---
+		Enable support for mc_rate_control
+
+# menuconfig USER_MC_RATE_CONTROL
+# 	bool "mc_rate_control running as userspace module"
+# 	default n
+# 	depends on BOARD_PROTECTED && MODULES_MC_RATE_CONTROL
+# 	---help---
+# 		Put mc_rate_control in userspace memory
