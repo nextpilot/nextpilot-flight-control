@@ -16,7 +16,6 @@
 #include <atomic.hpp>
 #include <BlockingIntrusiveSortedList.hpp>
 #include <BlockingRingBuffer.hpp>
-
 #include <limits.h>
 #include <string.h>
 
@@ -185,9 +184,11 @@ const wq_config_t &ins_instance_to_wq(uint8_t instance) {
     return wq_configurations::INS0;
 }
 
-static void WorkQueueRunner(void *context) {
-    wq_config_t *config = static_cast<wq_config_t *>(context);
-    WorkQueue    wq(*config);
+static void WorkQueueRunnerEntry(void *param) {
+    wq_config_t *config = static_cast<wq_config_t *>(param);
+
+    // 创建workqueue
+    WorkQueue wq(*config);
 
     // add to work queue list
     _wq_manager_wqs_list->add(&wq);
@@ -226,21 +227,21 @@ static void WorkQueueManagerEntry(void *param) {
             // int sched_priority = sched_get_priority_max(SCHED_FIFO) + wq->relative_priority;
             int sched_priority = 10;
 
-            // create thread
-            char arg1[sizeof(void *) * 3];
-            rt_sprintf(arg1, "%lx", (long unsigned)wq);
-            const char *arg[2] = {arg1, nullptr};
+            // create workqueue runner thread
 
             rt_thread_t tid = rt_thread_create(wq->name,
-                                               WorkQueueRunner, nullptr,
-                                               stacksize, sched_priority, 5);
+                                               WorkQueueRunnerEntry,
+                                               (void *)wq,
+                                               stacksize,
+                                               sched_priority,
+                                               5);
 
             if (tid) {
-                LOG_D("starting: %s, priority: %d, stack: %zu bytes", wq->name, sched_priority, stacksize);
-
                 rt_thread_startup(tid);
+                LOG_I("starting: %s, priority: %d, stack: %zu bytes", wq->name, sched_priority, stacksize);
+
             } else {
-                // LOG_E("failed to create thread for %s (%i): %s", wq->name, pid, strerror(pid));
+                LOG_E("fail to create thread for %s", wq->name);
             }
         }
     }
@@ -250,29 +251,26 @@ int WorkQueueManagerStart() {
     if (_wq_manager_should_exit.load() && (_wq_manager_create_queue == nullptr)) {
         _wq_manager_should_exit.store(false);
 
-        // int task_id = px4_task_spawn_cmd("wq:manager",
-        //                                  SCHED_DEFAULT,
-        //                                  SCHED_PRIORITY_MAX,
-        //                                  PX4_STACK_ADJUSTED(1280),
-        //                                  (px4_main_t)&WorkQueueManagerEntry,
-        //                                  nullptr);
-
-        rt_thread_t tid = rt_thread_create("wq:manager", WorkQueueManagerEntry, nullptr, 1024, 11, 5);
+        rt_thread_t tid = rt_thread_create("wq:manager",
+                                           WorkQueueManagerEntry, nullptr, 1024, 10, 5);
 
         if (!tid) {
             _wq_manager_should_exit.store(true);
-            LOG_E("task start failed (%i)", tid);
-            return -errno;
+            LOG_E("create wq:manager thread fail");
+            return -1;
         }
 
-        rt_thread_startup(tid);
+        if (rt_thread_startup(tid) != 0) {
+            LOG_E("startup wq:manager thread fail");
+            return -1;
+        }
 
+        LOG_I("init ok");
+        return RT_EOK;
     } else {
         LOG_W("already running");
-        return RT_ERROR;
+        return -1;
     }
-
-    return RT_EOK;
 }
 
 int WorkQueueManagerStop() {
