@@ -60,8 +60,9 @@ void WorkItem::Deinit() {
         _wq                           = nullptr;
 
         // remove any queued work
+        // 从调度中移除（不再进行调度了）
         wq_temp->Cancel(this);
-
+        // 从列表中移除（只是用来遍历）
         wq_temp->Detach(this);
     }
 }

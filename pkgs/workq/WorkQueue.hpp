@@ -40,13 +40,16 @@ public:
         return _config.name;
     }
 
-    // 将work_item添加到链表，便于遍历
+    // 将work_item添加到链表，用于遍历
     bool Attach(WorkItem *item);
+    // 将work_item从链表移除，该work_item不再属于这个工作队列了
     void Detach(WorkItem *item);
 
-    // 将work_item添加到待执行列表
+    // 将work_item添加到待执行队列
     void Submit(WorkItem *item);
+    // 将work_item从执行队列中移除
     void Cancel(WorkItem *item);
+    // 清空执行队列
     void Clear();
 
     void Run();
@@ -69,16 +72,7 @@ private:
 
     inline void SignalWorkerThread();
 
-#ifdef __PX4_NUTTX
-    // In NuttX work can be enqueued from an ISR
-    void work_lock() {
-        _flags = enter_critical_section();
-    }
-    void work_unlock() {
-        leave_critical_section(_flags);
-    }
-    irqstate_t _flags;
-#elif __RTTHREAD__
+#ifdef __RTTHREAD__
     void work_lock() {
         rt_enter_critical();
     }
@@ -97,12 +91,14 @@ private:
 
     // 等待被执行的item
     IntrusiveQueue<WorkItem *> _q;
-    struct rt_semaphore        _process_lock;
-    struct rt_semaphore        _exit_lock;
-    const wq_config_t         &_config;
+    // 工作队列线程激活信号量，当有新的item加入调度，就激活该线程
+    struct rt_semaphore _process_lock;
+    // 工作队列线程退出信号
+    struct rt_semaphore _exit_lock;
+    const wq_config_t  &_config;
     // 该工作队列上的所有work_item
-    BlockingList<WorkItem *> _work_items;
-    atomic_bool   _should_exit{false};
+    BlockingList<WorkItem *> _work_item_list;
+    atomic_bool              _should_exit{false};
 
 #if defined(ENABLE_LOCKSTEP_SCHEDULER)
     int _lockstep_component{-1};

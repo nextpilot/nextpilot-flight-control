@@ -728,6 +728,52 @@ private:
     pthread_cond_t  _cv    = PTHREAD_COND_INITIALIZER;
 };
 
+#ifdef PKG_USING_WORKQ
+#include "WorkItem.hpp"
+// Subscription with callback that schedules a WorkItem
+class SubscriptionCallbackWorkItem : public SubscriptionCallback {
+public:
+    /**
+     * Constructor
+     *
+     * @param work_item The WorkItem that will be scheduled immediately on new publications.
+     * @param meta The uORB metadata (usually from the ORB_ID() macro) for the topic.
+     * @param instance The instance for multi sub.
+     */
+    SubscriptionCallbackWorkItem(nextpilot::WorkItem *work_item, const orb_metadata *meta, uint8_t instance = 0) :
+        SubscriptionCallback(meta, 0, instance), // interval 0
+        _work_item(work_item) {
+    }
+
+    virtual ~SubscriptionCallbackWorkItem() = default;
+
+    void call() override {
+        // schedule immediately if updated (queue depth or subscription interval)
+        if ((_required_updates == 0) || (uorb_device_updates_available(get_node(), get_last_generation()) >= _required_updates)) {
+            if (updated()) {
+                _work_item->ScheduleNow();
+            }
+        }
+    }
+
+    /**
+     * Optionally limit callback until more samples are available.
+     *
+     * @param required_updates Number of queued updates required before a callback can be called.
+     */
+    void set_required_updates(uint8_t required_updates) {
+        // TODO: constrain to queue depth?
+        _required_updates = required_updates;
+    }
+
+private:
+    nextpilot::WorkItem *_work_item;
+
+    uint8_t _required_updates{0};
+};
+
+#endif // PKG_USING_WORKQ
+
 } // namespace nextpilot::uORB
 #endif //__cplusplus
 

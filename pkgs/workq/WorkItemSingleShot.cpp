@@ -14,7 +14,7 @@ namespace nextpilot {
 
 WorkItemSingleShot::WorkItemSingleShot(const nextpilot::wq_config_t &config, worker_method method, void *argument) :
     nextpilot::WorkItem("<single_shot>", config), _argument(argument), _method(method) {
-    rt_sem_init(&_sem, "lock", 0, RT_IPC_FLAG_PRIO);
+    rt_sem_init(&_sem, "wiss_lock", 0, RT_IPC_FLAG_PRIO);
 }
 
 WorkItemSingleShot::WorkItemSingleShot(const nextpilot::WorkItem &work_item, worker_method method, void *argument) :

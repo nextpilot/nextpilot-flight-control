@@ -16,8 +16,6 @@
 #include <atomic.hpp>
 #include <BlockingIntrusiveSortedList.hpp>
 #include <BlockingRingBuffer.hpp>
-// #include <lib/drivers/device/Device.hpp>
-// #include <lib/mathlib/mathlib.h>
 
 #include <limits.h>
 #include <string.h>
@@ -199,15 +197,6 @@ static void WorkQueueRunner(void *context) {
     // remove from work queue list
     _wq_manager_wqs_list->remove(&wq);
 }
-
-// #if defined(__PX4_NUTTX) && !defined(CONFIG_BUILD_FLAT)
-// // Wrapper for px4_task_spawn_cmd interface
-// inline static int WorkQueueRunner(int argc, char *argv[]) {
-//     wq_config_t *context = (wq_config_t *)strtoul(argv[argc - 1], nullptr, 16);
-//     WorkQueueRunner(context);
-//     return 0;
-// }
-// #endif
 
 static void WorkQueueManagerEntry(void *param) {
     _wq_manager_wqs_list     = new BlockingList<WorkQueue *>();

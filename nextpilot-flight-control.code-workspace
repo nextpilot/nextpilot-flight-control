@@ -124,7 +124,8 @@
 			"stdio.h": "c",
 			"stdint.h": "c",
 			"queue": "cpp",
-			"algorithm": "cpp"
+			"algorithm": "cpp",
+			"xlocinfo": "cpp"
 		},
 		"RTT_Studio.Build.Parallel_Jobs": "12",
 		"RTT_Studio.Env_Location": "C:/RT-ThreadStudio/platform/env_released/env",
