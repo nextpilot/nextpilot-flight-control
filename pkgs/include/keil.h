@@ -23,6 +23,7 @@
 #define rt_isnormal(x) \
     ((sizeof(x) == sizeof(float)) ? __ARM_isnormalf(x) : __ARM_isnormal(x))
 #else
+#include <math.h>
 // 采用系统自带的函数
 #define rt_isfinite(x) (isfinite(x))
 #define rt_isnan(x)    (isnan(x))

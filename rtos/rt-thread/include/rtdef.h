@@ -161,6 +161,8 @@ typedef rt_base_t                       rt_off_t;       /**< Type for offset */
     #endif /* __GNUC__ && !__STDC_NO_ATOMICS__ */
 
 #endif /* RT_USING_STDC_ATOMIC */
+#else
+typedef rt_base_t rt_atomic_t;
 #endif /* __cplusplus */
 
 /* boolean type definitions */

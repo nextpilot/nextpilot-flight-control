@@ -13,11 +13,13 @@
 
 #include <stdint.h>
 #include <rtthread.h>
+#include <rtdbg.h>
 
 template <class T, uint8_t N = 1>
 class ModuleCommand {
 public:
-    ModuleCommand : _task_should_exit{false} {
+    ModuleCommand() :
+        _task_should_exit{false} {
     }
 
     virtual ~ModuleCommand() {
@@ -36,12 +38,12 @@ public:
             strcmp(argv[1], "help") == 0 ||
             strcmp(argv[1], "info") == 0 ||
             strcmp(argv[1], "usage") == 0) {
-            return T::print_usage();
+            return T::usage_command();
         }
 
         if (strcmp(argv[1], "start") == 0) {
             // Pass the 'start' argument too, because later on px4_getopt() will ignore the first argument.
-            return start_command_base(argc - 1, argv + 1);
+            return start_command(argc - 1, argv + 1);
         }
 
         if (strcmp(argv[1], "status") == 0) {
@@ -52,9 +54,9 @@ public:
             return stop_command();
         }
 
-        lock_module(); // Lock here, as the method could access _object.
+        // lock_module(); // Lock here, as the method could access _object.
         int ret = T::custom_command(argc - 1, argv + 1);
-        unlock_module();
+        // unlock_module();
 
         return ret;
     }
@@ -71,15 +73,15 @@ public:
         // 获取实例个数
         int count = 0;
         lock_module();
-        for (int inst = 0; inst < N; inst++) {
-            if (_object[inst].load()) {
+        for (int idx = 0; idx < N; idx++) {
+            if (_object[idx].load()) {
                 count++;
             }
         }
         unlock_module();
 
-        if (count == N) {
-            LOG_E("already start %d instance", N);
+        if (count >= N) {
+            LOG_E("already have %d instance, can't start more", N);
             return -1;
         }
 
@@ -92,19 +94,26 @@ public:
 
         // 初始化实例
         if (object->init() != 0) {
-            LOG_E(init instance fail);
+            LOG_E("init instance fail");
             delete object;
             return -1;
         }
 
         // 添加到列表中
+        int inst = -1;
         lock_module();
-        for (int inst = 0; inst < N; inst++) {
-            if (!_object[inst].load()) {
-                _object[inst].store(object)
+        for (int idx = 0; inst < N; idx++) {
+            if (!_object[idx].load()) {
+                inst = idx;
+                _object[idx].store(object);
+                break;
             }
         }
         unlock_module();
+
+        if (inst != -1) {
+            LOG_I("start instance #%d ok", inst);
+        }
 
         return 0;
     }
@@ -126,10 +135,20 @@ public:
             end   = inst;
         }
 
-        for (idx = start; idx < end; idx++) {
+        bool found = false;
+        for (int idx = start; idx < end; idx++) {
             T *object = _object[idx].load();
             if (object) {
+                found = true;
+
+                // 请求停止
                 object->request_stop();
+                // TODO：这里应该判断是否真的停止
+                // 删除实例
+                delete object;
+                _object[idx].store(nullptr);
+                LOG_I("request stop instance #%d", idx);
+
                 // do {
                 //     rt_thread_mdelay(10);
 
@@ -142,6 +161,10 @@ public:
             }
         }
 
+        if (!found) {
+            LOG_W("no instance running");
+        }
+
         return 0;
     }
 
@@ -150,18 +173,36 @@ public:
      * @return Returns 0 iff successful, -1 otherwise.
      */
     static int status_command() {
-        int ret = -1;
+        bool found = false;
         // lock_module();
-
         for (int inst = 0; inst < N; inst++) {
-            T *object = _object[N].load();
+            T *object = _object[inst].load();
             if (object) {
+                found = true;
+                LOG_I("instance #%d status:", inst);
                 object->print_status();
             }
         }
-
         // unlock_module();
-        return ret;
+
+        if (!found) {
+            LOG_W("no instance running");
+        }
+        return 0;
+    }
+
+    static int custom_command(int argc, char *argv[]) {
+        // support for custom commands
+        // it none are supported, just do:
+        return usage_command("unrecognized command");
+    }
+
+    static int usage_command(const char *reason = nullptr) {
+        // use the PRINT_MODULE_* methods...
+        if (reason) {
+            LOG_W(reason);
+        }
+        return 0;
     }
 
     static T *instantiate(int argc, char *argv[]) {
@@ -174,7 +215,7 @@ public:
      * @return Returns 0 iff successful, -1 otherwise.
      */
     virtual int print_status() {
-        LOG_I("running");
+        rt_kprintf("running, addr=%x\n", this);
         return 0;
     }
 
@@ -197,16 +238,16 @@ protected:
     /**
      * @brief Tells the module to stop (used from outside or inside the module thread).
      */
-    virtual void request_stop(int inst = 0) {
-        _task_should_exit[inst].store(true);
+    virtual void request_stop() {
+        _task_should_exit.store(true);
     }
 
     /**
      * @brief Checks if the module should stop (used within the module thread).
      * @return Returns True iff successful, false otherwise.
      */
-    bool should_exit(int inst = 0) const {
-        return _task_should_exit[inst].load();
+    bool should_exit() const {
+        return _task_should_exit.load();
     }
     /**
      * @brief Get the module's object instance, (this is null if it's not running).
@@ -235,10 +276,10 @@ private:
     }
 
     /** @var _task_should_exit Boolean flag to indicate if the task should exit. */
-    atomic_bool _task_should_exit[N]{false};
+    atomic_bool _task_should_exit{false};
 };
 
-template <class T, uint8_t N = 1>
-atomic<T *> ModuleCommand<T, N>::_object[N]{nullptr};
+template <class T, uint8_t N>
+atomic<T *> ModuleCommand<T, N>::_object[N]{};
 
 #endif // __MODULE_COMMAND_H__

@@ -5,6 +5,11 @@ from building import *
 cwd = GetCurrentDir()
 objs = []
 
+src = Glob("*.cpp")
+inc = [cwd]
+
+objs += DefineGroup(name="app", src=src, depend=[], CPPPATH=inc)
+
 for d in os.listdir(cwd):
     path = os.path.join(cwd, d)
     if os.path.isfile(os.path.join(path, "SConscript")):

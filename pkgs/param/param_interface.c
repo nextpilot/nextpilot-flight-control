@@ -275,7 +275,7 @@ int param_reset_internal(param_t idx, bool notify) {
 
     int ret = api->ops->reset(idx, false);
 
-    LOG_D("reset param %s ok", param_get_name(idx));
+    // LOG_D("reset param %s ok", param_get_name(idx));
 
     if (ret == 0 && notify) {
         param_notify_changes();

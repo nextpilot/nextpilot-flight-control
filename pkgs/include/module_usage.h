@@ -14,19 +14,20 @@
 
 #include <rtdbg.h>
 #include <stdint.h>
+#include "keil.h"
 
 #ifndef MODULE_NAME
 #define MODULE_NAME LOG_TAG
 #endif // MODULE_NAME
 
-void PRINT_MODULE_DESCRIPTION(const char *description) {
+static inline void PRINT_MODULE_DESCRIPTION(const char *description) {
     // TODO: the output could be improved by:
     // - mark titles in bold (lines starting with ##)
     // - highlight commands (lines starting with $, or `cmd`)
     LOG_RAW("%s\n\n", description);
 }
 
-void PRINT_MODULE_USAGE_NAME(const char *executable_name, const char *category) {
+static inline void PRINT_MODULE_USAGE_NAME(const char *executable_name, const char *category) {
 #ifndef CONSTRAINED_FLASH_NO_HELP
     LOG_RAW("Usage: %s <command> [arguments...]\n", executable_name);
     LOG_RAW(" Commands:\n");
@@ -35,17 +36,17 @@ void PRINT_MODULE_USAGE_NAME(const char *executable_name, const char *category) 
 #endif
 }
 
-void PRINT_MODULE_USAGE_SUBCATEGORY(const char *subcategory) {
+static inline void PRINT_MODULE_USAGE_SUBCATEGORY(const char *subcategory) {
     (void)subcategory;
 }
 
-void PRINT_MODULE_USAGE_NAME_SIMPLE(const char *executable_name, const char *category) {
+static inline void PRINT_MODULE_USAGE_NAME_SIMPLE(const char *executable_name, const char *category) {
 #ifndef CONSTRAINED_FLASH_NO_HELP
     LOG_RAW("Usage: %s [arguments...]\n", executable_name);
 #endif
 }
 
-void PRINT_MODULE_USAGE_COMMAND_DESCR(const char *name, const char *description) {
+static inline void PRINT_MODULE_USAGE_COMMAND_DESCR(const char *name, const char *description) {
 #ifndef CONSTRAINED_FLASH_NO_HELP
 
     if (description) {
@@ -58,13 +59,13 @@ void PRINT_MODULE_USAGE_COMMAND_DESCR(const char *name, const char *description)
 #endif
 }
 
-void PRINT_MODULE_USAGE_PARAM_COMMENT(const char *comment) {
+static inline void PRINT_MODULE_USAGE_PARAM_COMMENT(const char *comment) {
 #ifndef CONSTRAINED_FLASH_NO_HELP
     LOG_RAW("\n %s\n", comment);
 #endif
 }
 
-void PRINT_MODULE_USAGE_PARAM_FLAG(char option_char, const char *description, bool is_optional) {
+static inline void PRINT_MODULE_USAGE_PARAM_FLAG(char option_char, const char *description, bool is_optional) {
 #ifndef CONSTRAINED_FLASH_NO_HELP
 
     if (is_optional) {
@@ -77,8 +78,8 @@ void PRINT_MODULE_USAGE_PARAM_FLAG(char option_char, const char *description, bo
 #endif
 }
 
-void PRINT_MODULE_USAGE_PARAM_INT(char option_char, int default_val, int min_val, int max_val,
-                                  const char *description, bool is_optional) {
+static inline void PRINT_MODULE_USAGE_PARAM_INT(char option_char, int default_val, int min_val, int max_val,
+                                                const char *description, bool is_optional) {
 #ifndef CONSTRAINED_FLASH_NO_HELP
 
     if (is_optional) {
@@ -95,14 +96,14 @@ void PRINT_MODULE_USAGE_PARAM_INT(char option_char, int default_val, int min_val
 #endif
 }
 
-void PRINT_MODULE_USAGE_PARAM_FLOAT(char option_char, float default_val, float min_val, float max_val,
-                                    const char *description, bool is_optional) {
+static inline void PRINT_MODULE_USAGE_PARAM_FLOAT(char option_char, float default_val, float min_val, float max_val,
+                                                  const char *description, bool is_optional) {
 #ifndef CONSTRAINED_FLASH_NO_HELP
 
     if (is_optional) {
         LOG_RAW("     [-%c <val>]  %s\n", option_char, description);
 
-        if (PX4_ISFINITE(default_val)) {
+        if (rt_isfinite(default_val)) {
             LOG_RAW("                 default: %.1f\n", (double)default_val);
         }
 
@@ -113,8 +114,8 @@ void PRINT_MODULE_USAGE_PARAM_FLOAT(char option_char, float default_val, float m
 #endif
 }
 
-void PRINT_MODULE_USAGE_PARAM_STRING(char option_char, const char *default_val, const char *values,
-                                     const char *description, bool is_optional) {
+static inline void PRINT_MODULE_USAGE_PARAM_STRING(char option_char, const char *default_val, const char *values,
+                                                   const char *description, bool is_optional) {
 #ifndef CONSTRAINED_FLASH_NO_HELP
 
     if (is_optional) {
@@ -141,7 +142,7 @@ void PRINT_MODULE_USAGE_PARAM_STRING(char option_char, const char *default_val, 
 #endif
 }
 
-void PRINT_MODULE_USAGE_PARAMS_I2C_SPI_DRIVER(bool i2c_support, bool spi_support) {
+static inline void PRINT_MODULE_USAGE_PARAMS_I2C_SPI_DRIVER(bool i2c_support, bool spi_support) {
 #ifndef CONSTRAINED_FLASH_NO_HELP
 
     // Note: this must be kept in sync with Tools/px4moduledoc/srcparser.py
@@ -168,19 +169,19 @@ void PRINT_MODULE_USAGE_PARAMS_I2C_SPI_DRIVER(bool i2c_support, bool spi_support
 #endif
 }
 
-void PRINT_MODULE_USAGE_PARAMS_I2C_ADDRESS(uint8_t default_address) {
+static inline void PRINT_MODULE_USAGE_PARAMS_I2C_ADDRESS(uint8_t default_address) {
 #ifndef CONSTRAINED_FLASH_NO_HELP
     PRINT_MODULE_USAGE_PARAM_INT('a', default_address, 0, 0xff, "I2C address", true);
 #endif
 }
 
-void PRINT_MODULE_USAGE_PARAMS_I2C_KEEP_RUNNING_FLAG() {
+static inline void PRINT_MODULE_USAGE_PARAMS_I2C_KEEP_RUNNING_FLAG() {
 #ifndef CONSTRAINED_FLASH_NO_HELP
     PRINT_MODULE_USAGE_PARAM_FLAG('k', "if initialization (probing) fails, keep retrying periodically", true);
 #endif
 }
 
-void PRINT_MODULE_USAGE_ARG(const char *values, const char *description, bool is_optional) {
+static inline void PRINT_MODULE_USAGE_ARG(const char *values, const char *description, bool is_optional) {
 #ifndef CONSTRAINED_FLASH_NO_HELP
 
     if (is_optional) {

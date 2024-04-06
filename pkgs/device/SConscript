@@ -4,6 +4,6 @@ src = ["device-new.cpp"]
 inc = []
 CPPDEFINES = []
 
-objs = DefineGroup("pkg/common", src, depend=[""], CPPDEFINES=CPPDEFINES)
+objs = DefineGroup("pkg/common", src, depend=["PKG_USING_DEVICE"], CPPDEFINES=CPPDEFINES)
 
 Return("objs")

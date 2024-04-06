@@ -127,8 +127,8 @@ rt_err_t DeviceBase::register_device() {
     return rt_device_register(this, _devname, 0);
 }
 
-int reg_a_dev() {
-    static struct rt_device _mydev;
-    return rt_device_register(&_mydev, "/obj/s/ds/we/g/we/gw/we", 0);
-}
-INIT_APP_EXPORT(reg_a_dev);
+// int reg_a_dev() {
+//     static struct rt_device _mydev;
+//     return rt_device_register(&_mydev, "/obj/s/ds/we/g/we/gw/we", 0);
+// }
+// INIT_APP_EXPORT(reg_a_dev);

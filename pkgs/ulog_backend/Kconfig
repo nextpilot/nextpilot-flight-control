@@ -1,10 +1,13 @@
+menu "ULog backend"
 
 config ULOG_BACKEND_USING_UORB
     bool "enable uORB backend for ulog"
     select PKG_USING_UORB
     default n
 
-config ULOG_BACKEND_USING_LOGGER
-    bool "enable logger backend for ulog"
+config ULOG_BACKEND_USING_FILES
+    bool "enable files backend for ulog"
     select ULOG_BACKEND_USING_FILE
     default n
+
+endmenu

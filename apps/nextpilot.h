@@ -95,7 +95,7 @@
 #ifdef PKG_USING_SCOPE
 #endif // PKG_USING_SCOPE
 
-#include "mavlink_vasprintf.h"
+#include "mavlink_log.h"
 #include "module_usage.h"
 
 #endif // __NEXTPILOT_H__

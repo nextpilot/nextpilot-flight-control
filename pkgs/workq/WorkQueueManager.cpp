@@ -8,6 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "workqueue.manager"
+
 #include <rtthread.h>
 #include <rtdbg.h>
 #include <WorkQueueManager.hpp>

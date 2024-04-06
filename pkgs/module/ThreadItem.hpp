@@ -16,25 +16,29 @@
 
 class ModuleThread {
 public:
-    ModuleThread(const char *name, rt_uint32_t stack_size, rt_uint8_t priority = 20, rt_uint32_t max_tick = 10) :
+    ModuleThread(const char *name = "Unkown", rt_uint32_t stack_size = 1024, rt_uint8_t priority = 20, rt_uint32_t max_tick = 10) :
         _name{name}, _stack_size{stack_size}, _priority{priority}, _max_tick{max_tick} {
         _tid = rt_thread_create(_name, RunEntry, this, stack_size, priority, max_tick);
+
         if (!_tid) {
             LOG_E("create thread fail");
             return;
         }
+
         if (rt_thread_startup(_tid) != 0) {
             LOG_E("startup thread fail");
             rt_thread_delete(_tid);
             _tid = nullptr;
             return;
         }
+
+        LOG_D("create/startup thread ok");
     }
 
     virtual ~ModuleThread() {
         if (_tid) {
-            rt_thread_delete(_tid);
-            delete _tid;
+            // TODO:这里为什么会报错呢
+            // rt_thread_delete(_tid);
         }
     }
 
@@ -55,11 +59,11 @@ public:
     }
 
 protected:
-    rt_thread_t _tid = nullptr;
     const char *_name;
     rt_uint32_t _stack_size = 2048;
     rt_uint8_t  _priority   = 15;
     rt_uint32_t _max_tick   = 10;
+    rt_thread_t _tid        = nullptr;
 };
 
 #endif // __MODULE_THREAD_H__
