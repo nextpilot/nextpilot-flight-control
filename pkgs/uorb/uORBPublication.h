@@ -11,10 +11,11 @@
 #ifndef __UORB_PUBLICATION_H__
 #define __UORB_PUBLICATION_H__
 
-#include "uorb_device_node.h"
+#include <stdint.h>
+#include <uORB.h>
 
-uint8_t      orb_get_instance(const uorb_device_t node);
-uint8_t      orb_get_queue_size(const uorb_device_t node);
+uint8_t      orb_get_instance(const orb_advert_t node);
+uint8_t      orb_get_queue_size(const orb_advert_t node);
 orb_advert_t orb_advertise_multi_queue(const struct orb_metadata *meta, const void *data, int *instance, unsigned int queue_size);
 orb_advert_t orb_advertise_multi(const struct orb_metadata *meta, const void *data, int *instance);
 orb_advert_t orb_advertise_queue(const struct orb_metadata *meta, const void *data, unsigned int queue_size);
@@ -24,8 +25,12 @@ int          orb_publish(const struct orb_metadata *meta, orb_advert_t node, con
 int          orb_publish_auto(const struct orb_metadata *meta, orb_advert_t *node, const void *data, int *instance);
 
 #ifdef __cplusplus
+#include <uORB/topics/uORBTopics.hpp>
 
 namespace nextpilot::uORB {
+
+class DeviceNode;
+
 template <typename U>
 class DefaultQueueSize {
 private:
@@ -71,7 +76,7 @@ protected:
         }
     }
 
-    orb_advert_t _handle{nullptr};
+    DeviceNode  *_handle{nullptr};
     const ORB_ID _orb_id;
 };
 
@@ -97,7 +102,6 @@ public:
         if (!advertised()) {
             _handle = orb_advertise_queue(get_topic(), nullptr, ORB_QSIZE);
         }
-
         return advertised();
     }
 

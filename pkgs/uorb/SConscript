@@ -38,7 +38,7 @@ if GetDepend(["PKG_USING_UORB"]):
 
     gen_uorb_msgs()
 
-    src = Glob("*.cpp") + Glob("*.c") + Glob("topics/*.cpp")
+    src = Glob("*.cpp") + Glob("topics/*.cpp")
 
     inc = [cwd]
     objs += DefineGroup("pkg/uorb", src, depend=[""], CPPPATH=inc)

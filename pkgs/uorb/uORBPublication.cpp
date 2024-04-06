@@ -1,17 +1,19 @@
-#include "uorb_publication.h"
-#include "uorb_device_node.h"
+#include "uORBPublication.h"
+#include "uORBDeviceNode.hpp"
 #include "uORB.h"
 
-uint8_t orb_get_queue_size(const uorb_device_t node) {
+using namespace nextpilot::uORB;
+
+uint8_t orb_get_queue_size(const orb_advert_t node) {
     if (node) {
-        return node->queue_size;
+        return static_cast<const DeviceNode *>(node)->get_queue_size();
     }
     return 0;
 }
 
-uint8_t orb_get_instance(const uorb_device_t node) {
+uint8_t orb_get_instance(const orb_advert_t node) {
     if (node) {
-        return node->instance;
+        return static_cast<const DeviceNode *>(node)->get_instance();
     }
     return 0;
 }
@@ -19,9 +21,8 @@ uint8_t orb_get_instance(const uorb_device_t node) {
 // 广告新主题，并指定queue_size
 // 当instance=NULL是表示只广告instance=0的主题
 // 当instance!=NULL则公告新主题，返回instance
-orb_advert_t orb_advertise_multi_queue(const struct orb_metadata *meta, const void *data, int *instance,
-                                       unsigned int queue_size) {
-    return uorb_device_advertise(meta, data, instance, queue_size);
+orb_advert_t orb_advertise_multi_queue(const struct orb_metadata *meta, const void *data, int *instance, unsigned int queue_size) {
+    return DeviceNode::advertise(meta, data, instance, queue_size);
 }
 
 // 广告新主题，使用默认queue_size=1
@@ -43,22 +44,24 @@ orb_advert_t orb_advertise(const struct orb_metadata *meta, const void *data) {
 }
 
 int orb_unadvertise(orb_advert_t node) {
-    return uorb_device_unadvertise(node);
+    return DeviceNode::unadvertise((DeviceNode *)node);
 }
 
-int orb_publish(const struct orb_metadata *meta, orb_advert_t node, const void *data) {
+int orb_publish(const struct orb_metadata *meta, orb_advert_t handle, const void *data) {
+    DeviceNode *node = (DeviceNode *)handle;
+
     // 如果没有指定节点，则使用instance=0的节点
     if (meta && node) {
-        if (meta != node->meta) {
+        if (meta != node->get_meta()) {
             return -1;
         } else {
-            return uorb_device_write(node, data);
+            return node->write(data);
         }
     } else if (!meta && node) {
-        return uorb_device_write(node, data);
+        return node->write(data);
     } else if (meta && !node) {
-        orb_advert_t node = uorb_device_find_node(meta, 0);
-        return uorb_device_write(node, data);
+        node = DeviceNode::getDeviceNode(meta, 0);
+        return node->write(data);
     } else {
         return -1;
     }

@@ -126,7 +126,25 @@
 			"queue": "cpp",
 			"algorithm": "cpp",
 			"xlocinfo": "cpp",
-			"typeinfo": "cpp"
+			"typeinfo": "cpp",
+			"uorb_device_node.h": "c",
+			"compare": "cpp",
+			"exception": "cpp",
+			"iosfwd": "cpp",
+			"iostream": "cpp",
+			"istream": "cpp",
+			"iterator": "cpp",
+			"limits": "cpp",
+			"ostream": "cpp",
+			"sstream": "cpp",
+			"stdexcept": "cpp",
+			"streambuf": "cpp",
+			"tuple": "cpp",
+			"xfacet": "cpp",
+			"xlocbuf": "cpp",
+			"memory_resource": "cpp",
+			"new": "cpp",
+			"*.cpp6": "c"
 		}
 	}
 }

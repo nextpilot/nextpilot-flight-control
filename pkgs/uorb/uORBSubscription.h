@@ -15,52 +15,45 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <rtdbg.h>
-#include "uorb_device_node.h"
+// #include "uorb_device_node.h"
 #include "uORB.h"
-
-#define ORB_ID_INVALID UINT16_MAX
 
 #define __EXPORT
 
-typedef uint16_t ORB_ID;
+// typedef struct uorb_subscription  orb_subval_t;
+// typedef struct uorb_subscription *orb_subptr_t;
 
-struct uorb_subscription {
-    uint16_t      orb_id;
-    uorb_device_t node;
-    uint32_t      last_generation;
-    uint8_t       instance;
-};
+// rt_err_t orb_exists(const struct orb_metadata *meta, int instance);
+// int      orb_group_count(const struct orb_metadata *meta);
+// bool     orb_data_copy(orb_advert_t node, void *dst, uint32_t *generation, bool only_if_updated);
 
-typedef struct uorb_subscription  orb_subval_t;
-typedef struct uorb_subscription *orb_subptr_t;
+// orb_subval_t orb_subscribe_multi(const struct orb_metadata *meta, uint8_t instance);
+// orb_subval_t orb_subscribe(const struct orb_metadata *meta);
+// rt_err_t     orb_unsubscribe(orb_subptr_t sub);
+// rt_err_t     orb_check(orb_subptr_t sub, bool *updated);
+// rt_err_t     orb_copy(const struct orb_metadata *meta, orb_subptr_t sub, void *buffer);
+// rt_err_t     orb_update(orb_subptr_t sub, void *data);
+// rt_err_t     orb_poll(orb_subptr_t sub, int timeout_us);
+// rt_err_t     orb_change_instance(orb_subptr_t sub, uint8_t instance);
 
-rt_err_t orb_exists(const struct orb_metadata *meta, int instance);
-int      orb_group_count(const struct orb_metadata *meta);
-bool     orb_data_copy(uorb_device_t node, void *dst, uint32_t *generation, bool only_if_updated);
-
-orb_subval_t orb_subscribe_multi(const struct orb_metadata *meta, uint8_t instance);
-orb_subval_t orb_subscribe(const struct orb_metadata *meta);
-rt_err_t     orb_unsubscribe(orb_subptr_t sub);
-rt_err_t     orb_check(orb_subptr_t sub, bool *updated);
-rt_err_t     orb_copy(const struct orb_metadata *meta, orb_subptr_t sub, void *buffer);
-rt_err_t     orb_update(orb_subptr_t sub, void *data);
-rt_err_t     orb_poll(orb_subptr_t sub, int timeout_us);
-rt_err_t     orb_change_instance(orb_subptr_t sub, uint8_t instance);
-
-int orb_set_interval(orb_subptr_t sub, unsigned interval);
-int orb_get_interval(orb_subptr_t sub, unsigned *interval);
-// rt_err_t orb_register_callback(uorb_device_t node);
-// rt_err_t orb_unregister_callback(uorb_device_t node);
+// int orb_set_interval(orb_subptr_t sub, unsigned interval);
+// int orb_get_interval(orb_subptr_t sub, unsigned *interval);
+// // rt_err_t orb_register_callback(orb_advert_t node);
+// // rt_err_t orb_unregister_callback(orb_advert_t node);
 
 #ifdef __cplusplus
-#include <IntrusiveList.hpp>
 #include <pthread.h>
+#include <IntrusiveList.hpp>
 #include <LockGuard.hpp>
 #ifdef PKG_USING_HRTIMER
 #include <hrtimer.h>
 #endif // PKG_USING_HRTIMER
+#include <uORB/topics/uORBTopics.hpp>
+#include <uORBDeviceNode.hpp>
 
 namespace nextpilot::uORB {
+
+class DeviceNode;
 
 #ifndef PKG_USING_HRTIMER
 typedef uint64_t       hrt_abstime;
@@ -81,10 +74,8 @@ public:
      * @param instance The instance for multi sub.
      */
     Subscription(ORB_ID id, uint8_t instance = 0) :
-        _handle{
-            .orb_id   = id,
-            .instance = instance,
-        } {
+        _orb_id(id),
+        _instance(instance) {
         subscribe();
     }
 
@@ -95,43 +86,36 @@ public:
      * @param instance The instance for multi sub.
      */
     Subscription(const orb_metadata *meta = nullptr, uint8_t instance = 0) :
-        _handle{
-            .orb_id = 0,
-            // ((meta == nullptr) ? ORB_ID_INVALID : static_cast<ORB_ID>(meta->o_id)),
-            .instance = (instance),
-        } {
+        _orb_id((meta == nullptr) ? ORB_ID::INVALID : static_cast<ORB_ID>(meta->o_id)),
+        _instance(instance) {
         subscribe();
     }
 
     // Copy constructor
     Subscription(const Subscription &other) :
-        _handle{
-            .orb_id   = (other._handle.orb_id),
-            .instance = (other._handle.instance),
-        } {
+        _orb_id(other._orb_id),
+        _instance(other._instance) {
     }
 
     // Move constructor
     Subscription(const Subscription &&other) noexcept :
-        _handle{
-            .orb_id   = (other._handle.orb_id),
-            .instance = (other._handle.instance),
-        } {
+        _orb_id(other._orb_id),
+        _instance(other._instance) {
     }
 
     // copy assignment
     Subscription &operator=(const Subscription &other) {
         unsubscribe();
-        _handle.orb_id   = other._handle.orb_id;
-        _handle.instance = other._handle.instance;
+        _orb_id   = other._orb_id;
+        _instance = other._instance;
         return *this;
     }
 
     // move assignment
     Subscription &operator=(Subscription &&other) noexcept {
         unsubscribe();
-        _handle.orb_id   = other._handle.orb_id;
-        _handle.instance = other._handle.instance;
+        _orb_id   = other._orb_id;
+        _instance = other._instance;
         return *this;
     }
 
@@ -141,18 +125,17 @@ public:
 
     bool subscribe() {
         // check if already subscribed
-        if (_handle.node != nullptr) {
+        if (_node != nullptr) {
             return true;
         }
 
-        if (_handle.orb_id != ORB_ID_INVALID) {
-            unsigned      initial_generation;
-            uorb_device_t node = nullptr;
-            node               = uorb_device_add_internal_subscriber(_handle.orb_id, _handle.instance, &initial_generation);
+        if (_orb_id != ORB_ID::INVALID) {
+            DeviceNode *node = DeviceNode::getDeviceNode(get_orb_meta(_orb_id), _instance);
 
             if (node) {
-                _handle.node            = node;
-                _handle.last_generation = initial_generation;
+                node->add_internal_subscriber();
+                _node            = node;
+                _last_generation = node->get_initial_generation();
                 return true;
             }
         }
@@ -160,32 +143,40 @@ public:
         return false;
     }
     void unsubscribe() {
-        if (_handle.node != nullptr) {
-            uorb_device_remove_internal_subscriber(_handle.node);
+        if (_node != nullptr) {
+            _node->remove_internal_subscriber();
         }
 
-        _handle.node            = nullptr;
-        _handle.last_generation = 0;
+        _node            = nullptr;
+        _last_generation = 0;
     }
 
     bool valid() const {
-        return _handle.node != nullptr;
+        return _node != nullptr;
     }
 
     bool advertised() {
         if (valid()) {
-            return uorb_device_node_advertised(_handle.node);
+            return _node->is_advertised();
         }
 
         // try to initialize
         if (subscribe()) {
             // check again if valid
             if (valid()) {
-                return uorb_device_node_advertised(_handle.node);
+                return _node->is_advertised();
             }
         }
 
         return false;
+    }
+
+    unsigned updates_available() {
+        if (_node && _node->is_advertised()) {
+            return _node->updates_available(_last_generation);
+        }
+
+        return 0;
     }
 
     /**
@@ -196,7 +187,7 @@ public:
             subscribe();
         }
 
-        return valid() ? uorb_device_updates_available(_handle.node, _handle.last_generation) : false;
+        return valid() ? updates_available() : false;
     }
 
     /**
@@ -204,10 +195,11 @@ public:
      * @param dst The uORB message struct we are updating.
      */
     bool update(void *dst) {
-        if (!valid()) {
-            subscribe();
+        if (advertised() && updates_available()) {
+            return _node->read(dst, _last_generation);
         }
-        return valid() ? orb_data_copy(_handle.node, dst, &_handle.last_generation, true) : false;
+
+        return false;
     }
 
     /**
@@ -215,10 +207,11 @@ public:
      * @param dst The uORB message struct we are updating.
      */
     bool copy(void *dst) {
-        if (!valid()) {
-            subscribe();
+        if (advertised()) {
+            return _node->read(dst, _last_generation);
         }
-        return valid() ? orb_data_copy(_handle.node, dst, &_handle.last_generation, false) : false;
+
+        return false;
     }
 
     /**
@@ -226,11 +219,11 @@ public:
      * @param instance The new multi-Subscription instance
      */
     bool change_instance(uint8_t instance) {
-        if (instance != _handle.instance) {
-            if (uorb_device_node_exist(_handle.orb_id, _handle.instance)) {
+        if (instance != _instance) {
+            if (DeviceNode::deviceNodeExists(_orb_id, _instance)) {
                 // if desired new instance exists, unsubscribe from current
                 unsubscribe();
-                _handle.instance = instance;
+                _instance = instance;
                 subscribe();
                 return true;
             }
@@ -244,19 +237,19 @@ public:
     }
 
     uint8_t get_instance() const {
-        return _handle.instance;
+        return _instance;
     }
 
     unsigned get_last_generation() const {
-        return _handle.last_generation;
+        return _last_generation;
     }
 
     orb_id_t get_topic() const {
-        return get_orb_meta(_handle.orb_id);
+        return get_orb_meta(_orb_id);
     }
 
     ORB_ID orb_id() const {
-        return _handle.orb_id;
+        return _orb_id;
     }
 
 protected:
@@ -264,15 +257,13 @@ protected:
     // friend class SubscriptionCallbackWorkItem;
 
     void *get_node() {
-        return _handle.node;
+        return _node;
     }
 
-    orb_subval_t _handle{
-        .orb_id          = ORB_ID_INVALID,
-        .node            = nullptr,
-        .last_generation = 0,
-        .instance        = 0,
-    };
+    ORB_ID      _orb_id          = ORB_ID::INVALID;
+    DeviceNode *_node            = nullptr;
+    unsigned    _last_generation = 0;
+    uint8_t     _instance        = 0;
 };
 
 class SubscriptionInterval : public Subscription {
@@ -545,7 +536,7 @@ public:
 
             } else {
                 // force topic creation by subscribing with old API
-                orb_subval_t fd = orb_subscribe_multi(get_topic(), get_instance());
+                // SubscriptionInterval *sub = new SubscriptionInterval(get_topic(), 0, get_instance());
 
                 // try to register callback again
                 if (subscribe()) {
@@ -554,7 +545,8 @@ public:
                     }
                 }
 
-                orb_unsubscribe(&fd);
+                // TODO:
+                // orb_unsubscribe(&fd);
             }
         }
 
