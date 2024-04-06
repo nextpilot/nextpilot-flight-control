@@ -16,8 +16,7 @@
 
 #pragma once
 
-#include <containers/List.hpp>
-
+#include <IntrusiveList.hpp>
 #include "param.h"
 
 class ModuleParams : public ListNode<ModuleParams *> {

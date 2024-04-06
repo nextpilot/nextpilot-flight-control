@@ -223,3 +223,101 @@ output('''
 #define STRIP(x) EAT x
 // Show the type without parenthesis
 #define PAIR(x) REM x
+
+//////////////////////////////////////////////////////////
+// 以下宏用于param定义和更新
+//////////////////////////////////////////////////////////
+#define _DEFINE_SINGLE_PARAMETER(x) \
+    do_not_explicitly_use_this_namespace::PAIR(x);
+
+#define _CALL_UPDATE(x) \
+    STRIP(x).update();
+
+// define the parameter update method, which will update all parameters.
+// It is marked as 'final', so that wrong usages lead to a compile error (see below)
+#define _DEFINE_PARAMETER_UPDATE_METHOD(...) \
+protected:                                   \
+    void updateParamsImpl() final {          \
+        APPLY_ALL(_CALL_UPDATE, __VA_ARGS__) \
+    }                                        \
+                                             \
+private:
+
+// Define a list of parameters. This macro also creates code to update parameters.
+// If you get a compile error like:
+//   error: virtual function ‘virtual void <class>::updateParamsImpl()’
+// It means you have a custom inheritance tree (at least one class with params that inherits from another
+// class with params) and you need to use DEFINE_PARAMETERS_CUSTOM_PARENT() for **all** classes in
+// that tree.
+#define DEFINE_PARAMETERS(...)                       \
+    APPLY_ALL(_DEFINE_SINGLE_PARAMETER, __VA_ARGS__) \
+    _DEFINE_PARAMETER_UPDATE_METHOD(__VA_ARGS__)
+
+#define _DEFINE_PARAMETER_UPDATE_METHOD_CUSTOM_PARENT(parent_class, ...) \
+protected:                                                               \
+    void updateParamsImpl() override {                                   \
+        parent_class::updateParamsImpl();                                \
+        APPLY_ALL(_CALL_UPDATE, __VA_ARGS__)                             \
+    }                                                                    \
+                                                                         \
+private:
+
+#define DEFINE_PARAMETERS_CUSTOM_PARENT(parent_class, ...) \
+    APPLY_ALL(_DEFINE_SINGLE_PARAMETER, __VA_ARGS__)       \
+    _DEFINE_PARAMETER_UPDATE_METHOD_CUSTOM_PARENT(parent_class, __VA_ARGS__)
+
+//////////////////////////////////////////////////////////
+// 以下宏是NextPilot自己定义的
+//////////////////////////////////////////////////////////
+
+#define _PARAM_DEFINE_SINGLE_VARIABLE(_type, _name, _var) \
+    _type _var{#_name};
+
+#define _PARAM_DEFINE_SINGLE_UPDATE(_type, _name, _var) \
+    _var.update();
+
+// 由于宏的输入x是一个带()的参数，这里是去掉()调用宏
+#define PARAM_DEFINE_SINGLE_VARIABLE(x) _PARAM_DEFINE_SINGLE_VARIABLE x
+#define PARAM_DEFINE_SINGLE_UPDATE(x)   _PARAM_DEFINE_SINGLE_UPDATE x
+
+// 定义param变量
+#define PARAM_DEFINE_VARIABLE(...) \
+protected:                         \
+    APPLY_ALL(PARAM_DEFINE_SINGLE_VARIABLE, __VA_ARGS__)
+
+// 定义updateParamsImpl函数
+#define PARAM_DEFINE_UPDATE_FINAL(...)                     \
+protected:                                                 \
+    void updateParamsImpl() final {                        \
+        APPLY_ALL(PARAM_DEFINE_SINGLE_UPDATE, __VA_ARGS__) \
+    }
+
+// 定义updateParamsImpl函数，并调用父类updateParamsImpl
+#define PARAM_DEFINE_UPDATE_OVERRIDE(parent, ...)          \
+protected:                                                 \
+    void updateParamsImpl() override {                     \
+        parent::updateParamsImpl();                        \
+        APPLY_ALL(PARAM_DEFINE_SINGLE_UPDATE, __VA_ARGS__) \
+    }
+
+// updateParamsImpl是final属性，不允许被override
+#define PARAM_DEFINE_FINAL(...)        \
+    PARAM_DEFINE_VARIABLE(__VA_ARGS__) \
+    PARAM_DEFINE_UPDATE_FINAL(__VA_ARGS__)
+
+// updateParamsImpl是override属性，并调用父类的updateParamsImpl函数
+#define PARAM_DEFINE_OVERRIDE(parent, ...) \
+    PARAM_DEFINE_VARIABLE(__VA_ARGS__)     \
+    PARAM_DEFINE_UPDATE_OVERRIDE(parent, __VA_ARGS__)
+
+// float类型参数
+#define PARAM_VAR_FLOAT(_name, _var) \
+    (param_float, _name, _var)
+
+// int32类型参数
+#define PARAM_VAR_INT32(_name, _var) \
+    (param_int32, _name, _var)
+
+// bool类型参数
+#define PARAM_VAR_BOOL(_name, _var) \
+    (param_bool, _name, _var)

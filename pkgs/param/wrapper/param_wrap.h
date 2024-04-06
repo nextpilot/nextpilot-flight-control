@@ -29,45 +29,6 @@ inline static param_t param_handle(global_params p) {
     return (param_t)p;
 }
 
-#define _DEFINE_SINGLE_PARAMETER(x) \
-    do_not_explicitly_use_this_namespace::PAIR(x);
-
-#define _CALL_UPDATE(x) \
-    STRIP(x).update();
-
-// define the parameter update method, which will update all parameters.
-// It is marked as 'final', so that wrong usages lead to a compile error (see below)
-#define _DEFINE_PARAMETER_UPDATE_METHOD(...) \
-protected:                                   \
-    void updateParamsImpl() final {          \
-        APPLY_ALL(_CALL_UPDATE, __VA_ARGS__) \
-    }                                        \
-                                             \
-private:
-
-// Define a list of parameters. This macro also creates code to update parameters.
-// If you get a compile error like:
-//   error: virtual function ‘virtual void <class>::updateParamsImpl()’
-// It means you have a custom inheritance tree (at least one class with params that inherits from another
-// class with params) and you need to use DEFINE_PARAMETERS_CUSTOM_PARENT() for **all** classes in
-// that tree.
-#define DEFINE_PARAMETERS(...)                       \
-    APPLY_ALL(_DEFINE_SINGLE_PARAMETER, __VA_ARGS__) \
-    _DEFINE_PARAMETER_UPDATE_METHOD(__VA_ARGS__)
-
-#define _DEFINE_PARAMETER_UPDATE_METHOD_CUSTOM_PARENT(parent_class, ...) \
-protected:                                                               \
-    void updateParamsImpl() override {                                   \
-        parent_class::updateParamsImpl();                                \
-        APPLY_ALL(_CALL_UPDATE, __VA_ARGS__)                             \
-    }                                                                    \
-                                                                         \
-private:
-
-#define DEFINE_PARAMETERS_CUSTOM_PARENT(parent_class, ...) \
-    APPLY_ALL(_DEFINE_SINGLE_PARAMETER, __VA_ARGS__)       \
-    _DEFINE_PARAMETER_UPDATE_METHOD_CUSTOM_PARENT(parent_class, __VA_ARGS__)
-
 // This namespace never needs to be used directly. Use the DEFINE_PARAMETERS_CUSTOM_PARENT and
 // DEFINE_PARAMETERS macros instead (the Param classes don't depend on using the macro, the macro just
 // makes sure that update() is automatically called).

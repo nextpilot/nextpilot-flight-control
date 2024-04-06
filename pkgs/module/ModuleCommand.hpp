@@ -14,6 +14,7 @@
 #include <stdint.h>
 #include <rtthread.h>
 #include <rtdbg.h>
+#include <module_usage.h>
 
 template <class T, uint8_t N = 1>
 class ModuleCommand {
@@ -38,7 +39,7 @@ public:
             strcmp(argv[1], "help") == 0 ||
             strcmp(argv[1], "info") == 0 ||
             strcmp(argv[1], "usage") == 0) {
-            return T::usage_command();
+            return T::custom_usage();
         }
 
         if (strcmp(argv[1], "start") == 0) {
@@ -194,14 +195,20 @@ public:
     static int custom_command(int argc, char *argv[]) {
         // support for custom commands
         // it none are supported, just do:
-        return usage_command("unrecognized command");
+        return custom_usage("unrecognized command");
     }
 
-    static int usage_command(const char *reason = nullptr) {
+    static int custom_usage(const char *reason = nullptr) {
         // use the PRINT_MODULE_* methods...
         if (reason) {
             LOG_W(reason);
         }
+
+        LOG_RAW("start\tstart a new instance\n");
+        LOG_RAW("stop\tstop a exist instance\n");
+        LOG_RAW("status\tshow status\n");
+        LOG_RAW("help\tshow help\n");
+
         return 0;
     }
 
