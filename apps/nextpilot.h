@@ -62,6 +62,8 @@
 // uorb
 #ifdef PKG_USING_UORB
 #include "uORB.h"
+#include "uORBPublication.h"
+#include "uORBSubscription.h"
 #endif // PKG_USING_UORB
 
 // param

@@ -1,3 +1,3 @@
-menuconfig LIB_USING_MATHLIB
+menuconfig LIB_USING_MATRIX
 	bool "matrix: A simple matrix template library"
 	default n

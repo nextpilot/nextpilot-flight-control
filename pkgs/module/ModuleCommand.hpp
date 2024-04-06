@@ -1,0 +1,244 @@
+/*****************************************************************
+ *     _   __             __   ____   _  __        __
+ *    / | / /___   _  __ / /_ / __ \ (_)/ /____   / /_
+ *   /  |/ // _ \ | |/_// __// /_/ // // // __ \ / __/
+ *  / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
+ * /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
+ *
+ * Copyright All Reserved © 2015-2024 NextPilot Development Team
+ ******************************************************************/
+
+#ifndef __MODULE_COMMAND_H__
+#define __MODULE_COMMAND_H__
+
+#include <stdint.h>
+#include <rtthread.h>
+
+template <class T, uint8_t N = 1>
+class ModuleCommand {
+public:
+    ModuleCommand : _task_should_exit{false} {
+    }
+
+    virtual ~ModuleCommand() {
+    }
+
+    /**
+     * @brief main Main entry point to the module that should be
+     *        called directly from the module's main method.
+     * @param argc The task argument count.
+     * @param argc Pointer to the task argument variable array.
+     * @return Returns 0 iff successful, -1 otherwise.
+     */
+    static int main(int argc, char *argv[]) {
+        if (argc <= 1 ||
+            strcmp(argv[1], "-h") == 0 ||
+            strcmp(argv[1], "help") == 0 ||
+            strcmp(argv[1], "info") == 0 ||
+            strcmp(argv[1], "usage") == 0) {
+            return T::print_usage();
+        }
+
+        if (strcmp(argv[1], "start") == 0) {
+            // Pass the 'start' argument too, because later on px4_getopt() will ignore the first argument.
+            return start_command_base(argc - 1, argv + 1);
+        }
+
+        if (strcmp(argv[1], "status") == 0) {
+            return status_command();
+        }
+
+        if (strcmp(argv[1], "stop") == 0) {
+            return stop_command();
+        }
+
+        lock_module(); // Lock here, as the method could access _object.
+        int ret = T::custom_command(argc - 1, argv + 1);
+        unlock_module();
+
+        return ret;
+    }
+
+    /**
+     * @brief Stars the command, ('command start'), checks if if is already
+     *        running and calls T::task_spawn() if it's not.
+     * @param argc The task argument count.
+     * @param argc Pointer to the task argument variable array.
+     * @return Returns 0 iff successful, -1 otherwise.
+     */
+
+    static int start_command(int argc, char *argv[]) {
+        // 获取实例个数
+        int count = 0;
+        lock_module();
+        for (int inst = 0; inst < N; inst++) {
+            if (_object[inst].load()) {
+                count++;
+            }
+        }
+        unlock_module();
+
+        if (count == N) {
+            LOG_E("already start %d instance", N);
+            return -1;
+        }
+
+        // 创建实例
+        T *object = instantiate(argc, argv);
+        if (!object) {
+            LOG_E("create instance fail");
+            return -1;
+        }
+
+        // 初始化实例
+        if (object->init() != 0) {
+            LOG_E(init instance fail);
+            delete object;
+            return -1;
+        }
+
+        // 添加到列表中
+        lock_module();
+        for (int inst = 0; inst < N; inst++) {
+            if (!_object[inst].load()) {
+                _object[inst].store(object)
+            }
+        }
+        unlock_module();
+
+        return 0;
+    }
+
+    /**
+     * @brief Stops the command, ('command stop'), checks if it is running and if it is, request the module to stop
+     *        and waits for the task to complete.
+     * @return Returns 0 iff successful, -1 otherwise.
+     */
+    static int stop_command(int inst = -1) {
+        int start = 0;
+        int end   = N;
+
+        if (inst >= N) {
+            // LOG_E("")
+            return -1;
+        } else if (inst >= 0) {
+            start = inst;
+            end   = inst;
+        }
+
+        for (idx = start; idx < end; idx++) {
+            T *object = _object[idx].load();
+            if (object) {
+                object->request_stop();
+                // do {
+                //     rt_thread_mdelay(10);
+
+                //     if (++i > 500) {
+                //         delete object;
+                //         _object[idx].store(nullptr);
+                //     }
+
+                // } while (1)
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * @brief Handle 'command status': check if running and call print_status() if it is
+     * @return Returns 0 iff successful, -1 otherwise.
+     */
+    static int status_command() {
+        int ret = -1;
+        // lock_module();
+
+        for (int inst = 0; inst < N; inst++) {
+            T *object = _object[N].load();
+            if (object) {
+                object->print_status();
+            }
+        }
+
+        // unlock_module();
+        return ret;
+    }
+
+    static T *instantiate(int argc, char *argv[]) {
+        return new T();
+    }
+
+    /**
+     * @brief Print the status if the module is running. This can be overridden by the module to provide
+     * more specific information.
+     * @return Returns 0 iff successful, -1 otherwise.
+     */
+    virtual int print_status() {
+        LOG_I("running");
+        return 0;
+    }
+
+    /**
+     * @brief Main loop method for modules running in their own thread. Called from run_trampoline().
+     *        This method must return when should_exit() returns true.
+     */
+    virtual void run() {
+    }
+
+    /**
+     * @brief Returns the status of the module.
+     * @return Returns true if the module is running, false otherwise.
+     */
+    static bool is_running(int inst = 0) {
+        return _object[inst].load != nullptr;
+    }
+
+protected:
+    /**
+     * @brief Tells the module to stop (used from outside or inside the module thread).
+     */
+    virtual void request_stop(int inst = 0) {
+        _task_should_exit[inst].store(true);
+    }
+
+    /**
+     * @brief Checks if the module should stop (used within the module thread).
+     * @return Returns True iff successful, false otherwise.
+     */
+    bool should_exit(int inst = 0) const {
+        return _task_should_exit[inst].load();
+    }
+    /**
+     * @brief Get the module's object instance, (this is null if it's not running).
+     */
+    static T *get_instacne(int inst = 0) {
+        return (T *)_object[inst].load();
+    }
+
+    static atomic<T *> _object[N];
+
+private:
+    /**
+     * @brief lock_module Mutex to lock the module thread.
+     */
+    static void lock_module() {
+        // pthread_mutex_lock(&px4_modules_mutex);
+        rt_enter_critical();
+    }
+
+    /**
+     * @brief unlock_module Mutex to unlock the module thread.
+     */
+    static void unlock_module() {
+        // pthread_mutex_unlock(&px4_modules_mutex);
+        rt_exit_critical();
+    }
+
+    /** @var _task_should_exit Boolean flag to indicate if the task should exit. */
+    atomic_bool _task_should_exit[N]{false};
+};
+
+template <class T, uint8_t N = 1>
+atomic<T *> ModuleCommand<T, N>::_object[N]{nullptr};
+
+#endif // __MODULE_COMMAND_H__

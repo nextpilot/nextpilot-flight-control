@@ -24,12 +24,23 @@
 
 /* Nextpilot Controller Config */
 
+#define FCS_MC_RATE_CONTROL
+/* end of Nextpilot Controller Config */
+
 /* Nextpilot Estimator Config */
 
 /* Nextpilot Libraries Config */
 
-/* common packages */
+/* Common Libraries Config */
 
+#define LIB_USING_MATHLIB
+#define LIB_USING_MATRIX
+/* end of Common Libraries Config */
+
+/* Controller Libraries Config */
+
+#define LIB_USING_CIRCUIT_BREAKER
+/* end of Controller Libraries Config */
 /* end of Nextpilot Libraries Config */
 
 /* Nextpilot Peripheral Config */

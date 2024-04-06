@@ -48,6 +48,10 @@ int orb_unadvertise(orb_advert_t node) {
 }
 
 int orb_publish(const struct orb_metadata *meta, orb_advert_t handle, const void *data) {
+    if (!data) {
+        return -1;
+    }
+
     DeviceNode *node = (DeviceNode *)handle;
 
     // 如果没有指定节点，则使用instance=0的节点

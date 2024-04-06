@@ -43,63 +43,27 @@ int orb_group_count(const struct orb_metadata *meta) {
     return instance;
 }
 
-// bool orb_data_copy(orb_advert_t handle, void *dst, uint32_t &generation, bool only_if_updated) {
-//     DeviceNode *node = (DeviceNode *)handle;
+orb_subscr_t orb_subscribe_multi(const struct orb_metadata *meta, uint8_t instance) {
+    return new SubscriptionInterval(meta, 0, instance);
+}
 
-//     if (!node->is_advertised()) {
-//         return false;
-//     }
+orb_subscr_t orb_subscribe(const struct orb_metadata *meta) {
+    return new SubscriptionInterval(meta, 0, 0);
+}
 
-//     if (only_if_updated &&
-//         !node->updates_available(generation)) {
-//         return false;
-//     }
+rt_err_t orb_unsubscribe(orb_subscr_t handle) {
+    if (!handle) {
+        return -1;
+    }
 
-//     return node->read(dst, generation);
-// }
+    SubscriptionInterval *sub = (SubscriptionInterval *)handle;
 
-// static bool orb_subscribe_find_node(orb_subscr_t sub) {
-//     // if (!sub) {
-//     //     return false;
-//     // }
-//     // // 如果node不为空，则不需要查找了
-//     // if (sub->node) {
-//     //     return true;
-//     // }
+    sub->unsubscribe();
 
-//     // unsigned    initial_generation = 0;
-//     // DeviceNode *node               = uorb_device_add_internal_subscriber(sub->orb_id, sub->instance, &initial_generation);
+    delete sub;
 
-//     // if (node) {
-//     //     sub->node            = node;
-//     //     sub->last_generation = initial_generation;
-//     //     return true;
-//     // }
-//     return false;
-// }
-
-// orb_subscr_t orb_subscribe_multi(const struct orb_metadata *meta, uint8_t instance) {
-//     return new SubscriptionInterval(meta, 0, instance);
-// }
-
-// orb_subscr_t orb_subscribe(const struct orb_metadata *meta) {
-//     return new SubscriptionInterval(meta, 0, 0);
-// }
-
-// rt_err_t orb_unsubscribe(orb_subscr_t sub) {
-//     // if (!sub) {
-//     //     return -1;
-//     // }
-
-//     // if (sub->node) {
-//     //     uorb_device_remove_internal_subscriber(sub->node);
-//     // }
-
-//     // sub->node            = NULL;
-//     // sub->last_generation = 0;
-
-//     return 0;
-// }
+    return 0;
+}
 
 // 检查数据是否更新
 rt_err_t orb_check(orb_subscr_t handle, bool *updated) {
@@ -113,49 +77,44 @@ rt_err_t orb_check(orb_subscr_t handle, bool *updated) {
     return 0;
 }
 
-// // 强制拷贝，不管是否更新都拷贝
-// rt_err_t orb_copy(const struct orb_metadata *meta, orb_subscr_t handle, void *buffer) {
-//     if (!handle || !meta || !buffer) {
-//         return -1;
-//     }
+// 强制拷贝，不管是否更新都拷贝
+rt_err_t orb_copy(const struct orb_metadata *meta, orb_subscr_t handle, void *buffer) {
+    if (!buffer) {
+        return -1;
+    }
 
-//     SubscriptionInterval *sub = (SubscriptionInterval *)handle;
+    if (!meta && !handle) {
+        return -1;
+    } else if (meta && !handle) { // 拷贝instance=0
+        DeviceNode *node = DeviceNode::getDeviceNode(meta, 0);
+        if (node && node->is_advertised()) {
+            unsigned generation;
+            node->read(buffer, generation);
+            return 0;
+        }
+        return -1;
+    } else if (!meta && handle) { // 直接拷贝
+        SubscriptionInterval *sub = (SubscriptionInterval *)handle;
+        return sub->copy(buffer) ? 0 : -1;
+    } else { // 校验meta之后再拷贝
+        SubscriptionInterval *sub = (SubscriptionInterval *)handle;
+        if (sub->get_topic() == meta) {
+            return sub->copy(buffer) ? 0 : -1;
+        }
+        return -1;
+    }
+}
 
-//     if (sub->get_orb_id() != meta->o_id) {
-//         return -1;
-//     }
+// 更新了才拷贝
+rt_err_t orb_update(orb_subscr_t handle, void *data) {
+    if (!handle || !data) {
+        return -1;
+    }
 
-//     if (sub->get_node()) {
-//         return orb_data_copy(sub->get_node(), buffer, sub->get_last_generation(), false) ? 0 : -1;
-//     }
+    SubscriptionInterval *sub = (SubscriptionInterval *)handle;
 
-//     return -1;
-// }
-
-// // 更新了才拷贝
-// rt_err_t orb_update(orb_subscr_t handle, void *data) {
-//     // if (!handle || !data) {
-//     //     return -1;
-//     // }
-
-//     // SubscriptionInterval *sub = (SubscriptionInterval *)handle;
-
-//     // if (sub->updated()) {
-//     //     orb_copy()
-//     // }
-
-//     // SubscriptionInterval *sub = (SubscriptionInterval *)handle;
-
-//     // if (!sub->get_node) {
-//     //     orb_subscribe_find_node(sub);
-//     // }
-
-//     // if (sub->node) {
-//     //     return orb_data_copy(sub->node, data, &sub->last_generation, true) ? 0 : -1;
-//     // }
-
-//     return -1;
-// }
+    return sub->update(data) ? 0 : -1;
+}
 
 // rt_err_t orb_poll(orb_subscr_t sub, int timeout_us) {
 //     return 0;
@@ -180,18 +139,18 @@ rt_err_t orb_check(orb_subscr_t handle, bool *updated) {
 // }
 
 int orb_set_interval(orb_subscr_t handle, unsigned interval_ms) {
-    SubscriptionInterval *sub = (SubscriptionInterval *)handle;
-
-    if (!sub) {
+    if (!handle) {
         return -1;
     }
+
+    SubscriptionInterval *sub = (SubscriptionInterval *)handle;
 
     sub->set_interval_us(interval_ms * 1000UL);
     return 0;
 }
 
 int orb_get_interval(orb_subscr_t handle, unsigned *interval_ms) {
-    if (!handle || interval_ms) {
+    if (!handle || !interval_ms) {
         return -1;
     }
 

@@ -70,8 +70,9 @@ bool DeviceNode::unadvertise(DeviceNode *node) {
         return -1;
     }
 
+    node->_advertised = false;
+
     if (node->_subscriber_count > 0) {
-        node->_advertised = false;
         return 0;
     }
 

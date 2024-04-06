@@ -5,7 +5,7 @@ from building import *
 
 objs = []
 
-if GetDepend(["FCS_MC_RATE_CONTROL"]):
+if GetDepend(["FCS_MC_RATE_CONTROL__"]):
     cwd = GetCurrentDir()
     inc = []
     src = Glob("*.cpp") + Glob("rate_control/rate_control.cpp")

@@ -144,7 +144,8 @@
 			"xlocbuf": "cpp",
 			"memory_resource": "cpp",
 			"new": "cpp",
-			"*.cpp6": "c"
+			"*.cpp6": "c",
+			"stop_token": "cpp"
 		}
 	}
 }
