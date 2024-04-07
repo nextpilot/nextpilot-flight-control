@@ -9,10 +9,10 @@ cwd = GetCurrentDir()
 
 
 def gen_global_params():
-
-    prj_root = os.path.abspath(os.path.join(os.getcwd(), "../../"))
+    # 工程根目录
+    prj_root = os.path.abspath(os.path.join(cwd, "../../"))
+    # 搜索包含*_params.c文件的目录
     src_path = set()
-
     for root, dirs, files in os.walk(prj_root):
         for file in files:
             if file.endswith("_params.c") and "rtos" not in root:

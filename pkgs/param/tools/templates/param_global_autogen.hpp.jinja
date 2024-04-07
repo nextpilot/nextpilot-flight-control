@@ -7,7 +7,7 @@
  *  / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
  * /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
  *
- * Copyright All Reserved © 2015-2024 NextPilot Development Team
+ * Copyright All Reserved (C) 2015-2024 NextPilot Development Team
  ******************************************************************/
 
 #include <math.h> // NAN
@@ -34,10 +34,10 @@ static constexpr param_info_s params_meta[] = {
 		.name = "{{ param.attrib["name"] }}",
 	{%- if param.attrib["type"] == "FLOAT" %}
 		.type = PARAM_TYPE_FLOAT,
-		.value = {{ "{" }} .f = {{ param.attrib["default"] }} {{ "}" }},
+		.value = {{ "{" }} .f32 = {{ param.attrib["default"] }} {{ "}" }},
 	{%- elif param.attrib["type"] == "INT32" %}
 		.type = PARAM_TYPE_INT32,
-		.value = {{ "{" }} .i = {{ param.attrib["default"] }}{{ "}" }},
+		.value = {{ "{" }} .i32 = {{ param.attrib["default"] }}{{ "}" }},
 	{%- endif %}
 		.flag = { .value = 0 },
 	},

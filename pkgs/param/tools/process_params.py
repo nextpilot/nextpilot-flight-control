@@ -27,11 +27,12 @@ import os
 import argparse
 from px4params import srcscanner, srcparser, injectxmlparams, xmlout, markdownout, jsonout
 
-import lzma  # to create .xz file
 import json
 
 
 def save_compressed(filename):
+    import lzma  # to create .xz file
+
     # create lzma compressed version
     xz_filename = filename + ".xz"
     with lzma.open(xz_filename, "wt", preset=9, encoding="utf-8") as f:
@@ -157,7 +158,7 @@ def main():
         out.Save(args.json)
         output_files.append(args.json)
 
-    if args.compress:
+    if args.compress and sys.version_info >= (3, 3):
         for f in output_files:
             if args.verbose:
                 print("Compressing file " + f)

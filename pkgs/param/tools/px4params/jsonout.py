@@ -48,7 +48,7 @@ class JsonOutput:
         for group in groups:
             group_name = group.GetName()
 
-            def get_typed_value(value: str, type_name: str):
+            def get_typed_value(value, type_name):
                 if type_name == "Float":
                     return float(value)
                 if type_name == "Int32":
