@@ -146,6 +146,7 @@
 			"new": "cpp",
 			"*.cpp6": "c",
 			"stop_token": "cpp"
-		}
+		},
+		"RTT_Studio.Build.Parallel_Jobs": "20"
 	}
 }

@@ -1,0 +1,275 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }, 
+        {
+            "path": "..\\..\\..\\apps", 
+            "name": "rtthread/apps"
+        }, 
+        {
+            "path": "..\\..\\..\\apps\\libraries\\controller\\circuit_breaker", 
+            "name": "rtthread/apps/libraries/controller/circuit_breaker"
+        }, 
+        {
+            "path": "..\\..\\..\\pkgs\\getopt", 
+            "name": "rtthread/pkgs/getopt"
+        }, 
+        {
+            "path": "..\\..\\..\\pkgs\\hrtimer\\V1", 
+            "name": "rtthread/pkgs/hrtimer/V1"
+        }, 
+        {
+            "path": "..\\..\\..\\pkgs\\kservice\\rt_memcpy_cm", 
+            "name": "rtthread/pkgs/kservice/rt_memcpy_cm"
+        }, 
+        {
+            "path": "..\\..\\..\\pkgs\\kservice\\rt_vsnprintf_full", 
+            "name": "rtthread/pkgs/kservice/rt_vsnprintf_full"
+        }, 
+        {
+            "path": "..\\..\\..\\pkgs\\libcrc", 
+            "name": "rtthread/pkgs/libcrc"
+        }, 
+        {
+            "path": "..\\..\\..\\pkgs\\param", 
+            "name": "rtthread/pkgs/param"
+        }, 
+        {
+            "path": "..\\..\\..\\pkgs\\param\\interface", 
+            "name": "rtthread/pkgs/param/interface"
+        }, 
+        {
+            "path": "..\\..\\..\\pkgs\\param\\storage", 
+            "name": "rtthread/pkgs/param/storage"
+        }, 
+        {
+            "path": "..\\..\\..\\pkgs\\queue", 
+            "name": "rtthread/pkgs/queue"
+        }, 
+        {
+            "path": "..\\..\\..\\pkgs\\uorb", 
+            "name": "rtthread/pkgs/uorb"
+        }, 
+        {
+            "path": "..\\..\\..\\pkgs\\uorb\\topics", 
+            "name": "rtthread/pkgs/uorb/topics"
+        }, 
+        {
+            "path": "..\\..\\..\\pkgs\\version", 
+            "name": "rtthread/pkgs/version"
+        }, 
+        {
+            "path": "..\\..\\..\\pkgs\\workq", 
+            "name": "rtthread/pkgs/workq"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\dfs\\dfs_v2\\filesystems\\devfs", 
+            "name": "rtthread/rtos/rt-thread/components/dfs/dfs_v2/filesystems/devfs"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\dfs\\dfs_v2\\filesystems\\elmfat", 
+            "name": "rtthread/rtos/rt-thread/components/dfs/dfs_v2/filesystems/elmfat"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\dfs\\dfs_v2\\filesystems\\mqueue", 
+            "name": "rtthread/rtos/rt-thread/components/dfs/dfs_v2/filesystems/mqueue"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\dfs\\dfs_v2\\filesystems\\romfs", 
+            "name": "rtthread/rtos/rt-thread/components/dfs/dfs_v2/filesystems/romfs"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\dfs\\dfs_v2\\filesystems\\tmpfs", 
+            "name": "rtthread/rtos/rt-thread/components/dfs/dfs_v2/filesystems/tmpfs"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\dfs\\dfs_v2\\include", 
+            "name": "rtthread/rtos/rt-thread/components/dfs/dfs_v2/include"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\dfs\\dfs_v2\\src", 
+            "name": "rtthread/rtos/rt-thread/components/dfs/dfs_v2/src"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\core", 
+            "name": "rtthread/rtos/rt-thread/components/drivers/core"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\i2c", 
+            "name": "rtthread/rtos/rt-thread/components/drivers/i2c"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\include", 
+            "name": "rtthread/rtos/rt-thread/components/drivers/include"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\ipc", 
+            "name": "rtthread/rtos/rt-thread/components/drivers/ipc"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\ktime", 
+            "name": "rtthread/rtos/rt-thread/components/drivers/ktime"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\ktime\\inc", 
+            "name": "rtthread/rtos/rt-thread/components/drivers/ktime/inc"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\ktime\\src", 
+            "name": "rtthread/rtos/rt-thread/components/drivers/ktime/src"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\misc", 
+            "name": "rtthread/rtos/rt-thread/components/drivers/misc"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\mtd", 
+            "name": "rtthread/rtos/rt-thread/components/drivers/mtd"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\rtc", 
+            "name": "rtthread/rtos/rt-thread/components/drivers/rtc"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\sdio", 
+            "name": "rtthread/rtos/rt-thread/components/drivers/sdio"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\serial", 
+            "name": "rtthread/rtos/rt-thread/components/drivers/serial"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\spi", 
+            "name": "rtthread/rtos/rt-thread/components/drivers/spi"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\spi\\sfud\\inc", 
+            "name": "rtthread/rtos/rt-thread/components/drivers/spi/sfud/inc"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\spi\\sfud\\src", 
+            "name": "rtthread/rtos/rt-thread/components/drivers/spi/sfud/src"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\watchdog", 
+            "name": "rtthread/rtos/rt-thread/components/drivers/watchdog"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\finsh", 
+            "name": "rtthread/rtos/rt-thread/components/finsh"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\legacy", 
+            "name": "rtthread/rtos/rt-thread/components/legacy"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\legacy\\dfs", 
+            "name": "rtthread/rtos/rt-thread/components/legacy/dfs"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\legacy\\ipc", 
+            "name": "rtthread/rtos/rt-thread/components/legacy/ipc"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\compilers\\common", 
+            "name": "rtthread/rtos/rt-thread/components/libc/compilers/common"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\compilers\\common\\include", 
+            "name": "rtthread/rtos/rt-thread/components/libc/compilers/common/include"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\compilers\\newlib", 
+            "name": "rtthread/rtos/rt-thread/components/libc/compilers/newlib"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\cplusplus", 
+            "name": "rtthread/rtos/rt-thread/components/libc/cplusplus"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\posix\\delay", 
+            "name": "rtthread/rtos/rt-thread/components/libc/posix/delay"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\posix\\io\\aio", 
+            "name": "rtthread/rtos/rt-thread/components/libc/posix/io/aio"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\posix\\io\\epoll", 
+            "name": "rtthread/rtos/rt-thread/components/libc/posix/io/epoll"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\posix\\io\\eventfd", 
+            "name": "rtthread/rtos/rt-thread/components/libc/posix/io/eventfd"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\posix\\io\\poll", 
+            "name": "rtthread/rtos/rt-thread/components/libc/posix/io/poll"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\posix\\io\\stdio", 
+            "name": "rtthread/rtos/rt-thread/components/libc/posix/io/stdio"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\posix\\io\\termios", 
+            "name": "rtthread/rtos/rt-thread/components/libc/posix/io/termios"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\posix\\ipc", 
+            "name": "rtthread/rtos/rt-thread/components/libc/posix/ipc"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\posix\\pthreads", 
+            "name": "rtthread/rtos/rt-thread/components/libc/posix/pthreads"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\mm", 
+            "name": "rtthread/rtos/rt-thread/components/mm"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\utilities\\libadt\\avl", 
+            "name": "rtthread/rtos/rt-thread/components/utilities/libadt/avl"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\utilities\\libadt\\bitmap", 
+            "name": "rtthread/rtos/rt-thread/components/utilities/libadt/bitmap"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\utilities\\libadt\\hashmap", 
+            "name": "rtthread/rtos/rt-thread/components/utilities/libadt/hashmap"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\utilities\\libadt\\ref", 
+            "name": "rtthread/rtos/rt-thread/components/utilities/libadt/ref"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\utilities\\resource", 
+            "name": "rtthread/rtos/rt-thread/components/utilities/resource"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\utilities\\ulog", 
+            "name": "rtthread/rtos/rt-thread/components/utilities/ulog"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\utilities\\ulog\\backend", 
+            "name": "rtthread/rtos/rt-thread/components/utilities/ulog/backend"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\include", 
+            "name": "rtthread/rtos/rt-thread/include"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\libcpu\\arm\\common", 
+            "name": "rtthread/rtos/rt-thread/libcpu/arm/common"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\libcpu\\arm\\cortex-a", 
+            "name": "rtthread/rtos/rt-thread/libcpu/arm/cortex-a"
+        }, 
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\src", 
+            "name": "rtthread/rtos/rt-thread/src"
+        }
+    ]
+}

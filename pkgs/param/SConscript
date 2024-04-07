@@ -1,13 +1,59 @@
 import os
+import sys
 import rtconfig
+import subprocess
 from building import *
 
 objs = []
+cwd = GetCurrentDir()
+
+
+def gen_global_params():
+
+    prj_root = os.path.abspath(os.path.join(os.getcwd(), "../../"))
+    src_path = set()
+
+    for root, dirs, files in os.walk(prj_root):
+        for file in files:
+            if file.endswith("_params.c") and "rtos" not in root:
+                src_path.add(root)
+
+    # 生成parameters.xml文件
+    cmd = [
+        sys.executable,
+        os.path.join(cwd, "tools/process_params.py"),
+        "--xml",
+        File("#/build/parameters.xml").abspath,
+        "--json",
+        File("#/build/paramters.json").abspath,
+        "--compress",
+        "--inject-xml",
+        os.path.join(cwd, "tools/parameters_injected.xml"),
+        "--board",
+        "nextpilot",
+        # --verbose
+        "--src-path",
+    ] + list(src_path)
+
+    subprocess.call(cmd)
+
+    # 生成parameters.hpp文件
+    cmd = [
+        sys.executable,
+        os.path.join(cwd, "tools/generate_params.py"),
+        "--xml",
+        File("#/build/parameters.xml").abspath,
+        "--dest",
+        cwd,
+    ]
+
+    subprocess.call(cmd)
+
 
 if GetDepend(["PKG_USING_PARAM"]):
-    cwd = GetCurrentDir()
-    src = Glob("*.cpp") + Glob("*.c")
+    gen_global_params()
 
+    src = Glob("*.cpp") + Glob("*.c")
     inc = [cwd]
     objs += DefineGroup("pkg/param", src, depend=[""], CPPPATH=inc)
 
