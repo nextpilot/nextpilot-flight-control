@@ -14,7 +14,7 @@
 
 #include <rtdbg.h>
 #include <stdint.h>
-#include "keil.h"
+#include <defines.h>
 
 #ifndef MODULE_NAME
 #define MODULE_NAME LOG_TAG

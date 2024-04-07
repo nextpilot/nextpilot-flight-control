@@ -21,8 +21,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include <topics/uORBTopics.hpp>
 #include <uORB.h>
+#include <topics/uORBTopics.hpp>
 @{
 msg_names = list(set([mn.replace(".msg", "") for mn in msgs])) # set() filters duplicates
 msg_names.sort()
@@ -31,11 +31,7 @@ msgs_count = len(msg_names)
 topic_names = list(set(topics)) # set() filters duplicates
 topic_names.sort()
 topics_count = len(topics)
-
 }@
-@[for msg_name in msg_names]@
-#include <topics/@(msg_name).h>
-@[end for]
 
 const constexpr struct orb_metadata *const uorb_topics_list[ORB_TOPICS_COUNT] = {
 @[for idx, topic_name in enumerate(topic_names, 1)]@

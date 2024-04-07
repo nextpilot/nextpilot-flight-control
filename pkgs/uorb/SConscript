@@ -8,15 +8,19 @@ cwd = GetCurrentDir()
 
 
 def gen_uorb_msgs():
-    # 生成header
+    # msg文件所在路径
+    msg_path = os.path.abspath(os.path.join(cwd, "../../msgs/uorb_msgs"))
+    # 获取所有msg文件
     msg_files = Glob(os.path.join(cwd, "../../msgs/uorb_msgs/*.msg"), strings=True)
+    msg_files = [os.path.relpath(x, msg_path) for x in msg_files]
 
+    # 需要执行的命令
     cmd = [
         sys.executable,
-        "tools/generate_uorb_topic_files.py",
+        os.path.abspath(os.path.join(cwd, "tools/generate_uorb_topic_files.py")),
         "--header",  # 生成header或source
         "-i",
-        os.path.join(cwd, "../../msgs/uorb_msgs"),
+        msg_path,
         "-o",  # 代码生成目录
         os.path.abspath(os.path.join(cwd, "topics")),
         "-e",  # 模板所在目录
@@ -26,10 +30,10 @@ def gen_uorb_msgs():
 
     # 生成header文件
     cmd[2] = "--headers"
-    subprocess.call(" ".join(cmd), cwd=cwd)
+    subprocess.call(cmd, cwd=msg_path)
     # 生成source文件
     cmd[2] = "--sources"
-    subprocess.call(" ".join(cmd), cwd=cwd)
+    subprocess.call(cmd, cwd=msg_path)
 
 
 objs = []
@@ -39,8 +43,8 @@ if GetDepend(["PKG_USING_UORB"]):
     gen_uorb_msgs()
 
     src = Glob("*.cpp") + Glob("topics/*.cpp")
-
     inc = [cwd]
+
     objs += DefineGroup("pkg/uorb", src, depend=[""], CPPPATH=inc)
 
     for d in os.listdir(cwd):

@@ -42,14 +42,9 @@ topic_fields = ["%s %s" % (convert_type(field.type, True), field.name) for field
 
 #include <rtdbg.h>
 #include <inttypes.h>
-//#include <px4_platform_common/log.h>
-//#include <px4_platform_common/defines.h>
-#include <topics/@(name_snake_case).h>
-#include <topics/uORBTopics.hpp>
 #include <hrtimer.h>
-//#include <lib/drivers/device/Device.hpp>
-//#include <lib/matrix/matrix/math.hpp>
-//#include <lib/mathlib/mathlib.h>
+#include <topics/uORBTopics.hpp>
+#include <topics/@(name_snake_case).h>
 
 @# join all msg files in one line e.g: "float[3] position;float[3] velocity;bool armed"
 @# This is used for the logger

@@ -21,6 +21,10 @@
  ******************************************************************/
 
 @{
+msg_names = list(set([mn.replace(".msg", "") for mn in msgs])) # set() filters duplicates
+msg_names.sort()
+msgs_count = len(msg_names)
+
 topics_count = len(topics)
 topic_names_all = list(set(topics)) # set() filters duplicates
 topic_names_all.sort()
@@ -30,6 +34,9 @@ topic_names_all.sort()
 
 #include <stddef.h>
 #include <uORB.h>
+@[for msg_name in msg_names]@
+#include <topics/@(msg_name).h>
+@[end for]
 
 static constexpr size_t ORB_TOPICS_COUNT{@(topics_count)};
 static constexpr size_t orb_topics_count() { return ORB_TOPICS_COUNT; }

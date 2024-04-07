@@ -22,7 +22,6 @@
 #include "circuit_breaker.h"
 
 #include <stdint.h>
-// #include <px4_platform_common/defines.h>
 #include <param.h>
 
 bool circuit_breaker_enabled(const char *breaker, int32_t magic) {

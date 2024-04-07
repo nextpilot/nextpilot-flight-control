@@ -18,7 +18,7 @@
 #include <uORB.h>
 #include <hrtimer.h>
 #include <matrix/Quaternion.hpp>
-#include <mathlib/mathlib.h>
+#include <mathlib.h>
 
 const char *orb_get_c_type(unsigned char short_type) {
     // this matches with the uorb o_fields generator

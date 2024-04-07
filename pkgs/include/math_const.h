@@ -11,64 +11,64 @@
 #ifndef __NEXTPILOT_CONSTANTS_H__
 #define __NEXTPILOT_CONSTANTS_H__
 
-/* Exponential and Logarithmic constants */
-#define M_E       2.7182818284590452353602874713526625 // e
-#define M_SQRT2   1.4142135623730950488016887242096981 // sqrt(2)
-#define M_SQRT1_2 0.7071067811865475244008443621048490 // 1/sqrt(2)
-#define M_LOG2E   1.4426950408889634073599246810018921 // log2(e)
-#define M_LOG10E  0.4342944819032518276511289189166051 // lo
-#define M_LN2     0.6931471805599453094172321214581765
-#define M_LN10    2.3025850929940456840179914546843642
+/* Define rt_isfinite */
+#if defined(__cplusplus) && defined(__ARMCC_VERSION)
+// KEIL在C++ 代码中isfinite / isnan有问题，因此重新定义
+#define rt_isfinite(x) \
+    ((sizeof(x) == sizeof(float)) ? __ARM_isfinitef(x) : __ARM_isfinite(x))
+#define rt_isnan(x) \
+    ((sizeof(x) == sizeof(float)) ? __ARM_isnanf(x) : __ARM_isnan(x))
+#define rt_isinf(x) \
+    ((sizeof(x) == sizeof(float)) ? __ARM_isinff(x) : __ARM_isinf(x))
+#define rt_isnormal(x) \
+    ((sizeof(x) == sizeof(float)) ? __ARM_isnormalf(x) : __ARM_isnormal(x))
+#else
+#include <math.h>
+// static inline constexpr bool rt_isfinite(float x) {
+//     return __builtin_isfinite(x);
+// }
+// static inline constexpr bool rt_isfinite(double x) {
+//     return __builtin_isfinite(x);
+// }
+// 采用系统自带的函数
+#define rt_isfinite(x) (isfinite(x))
+#define rt_isnan(x)    (isnan(x))
+#define rt_isinf(x)    (isinf(x))
+#define rt_isnormal(x) (isnormal(x))
+#endif /* __cplusplus && __ARMCC_VERSION */
 
-/* Trigonometric Constants */
-#ifndef M_PI
-#define M_PI 3.1415926535897932384626433832795029
-#endif
+/* Math macro's for float literals. Do not use M_PI et al as they aren't
+ * defined (neither C nor the C++ standard define math constants) */
+#define M_E_F          2.71828183f
+#define M_LOG2E_F      1.44269504f
+#define M_LOG10E_F     0.43429448f
+#define M_LN2_F        0.69314718f
+#define M_LN10_F       2.30258509f
+#define M_PI_F         3.14159265f
+#define M_TWOPI_F      6.28318531f
+#define M_PI_2_F       1.57079632f
+#define M_PI_4_F       0.78539816f
+#define M_3PI_4_F      2.35619449f
+#define M_SQRTPI_F     1.77245385f
+#define M_1_PI_F       0.31830989f
+#define M_2_PI_F       0.63661977f
+#define M_2_SQRTPI_F   1.12837917f
+#define M_DEG_TO_RAD_F 0.0174532925f
+#define M_RAD_TO_DEG_F 57.2957795f
+#define M_SQRT2_F      1.41421356f
+#define M_SQRT1_2_F    0.70710678f
+#define M_LN2LO_F      1.90821484E-10f
+#define M_LN2HI_F      0.69314718f
+#define M_SQRT3_F      1.73205081f
+#define M_IVLN10_F     0.43429448f // 1 / log(10)
+#define M_LOG2_E_F     0.69314718f
+#define M_INVLN2_F     1.44269504f // 1 / log(2)
 
-#ifndef M_PI_2
-#define M_PI_2 1.5707963267948966192313216916397514
-#endif
+/* The M_PI, as stated above, is not C standard. If you need it and
+ * it isn't in your math.h file then you can use this instead. */
+#define M_PI_PRECISE 3.141592653589793238462643383279502884
 
-#ifndef M_PI_4
-#define M_PI_4 0.7853981633974483096156608458198757
-#endif
-
-#ifndef M_1_PI
-#define M_1_PI 0.3183098861837906715377675267450287
-#endif
-
-#ifndef M_2_PI
-#define M_2_PI 0.6366197723675813430755350534900574
-#endif
-
-#ifndef M_2_SQRTPI
-#define M_2_SQRTPI 1.1283791670955125738961589031215452
-#endif
-
-#ifndef M_PI_F
-#define M_PI_F ((float)M_PI)
-#endif
-
-#ifndef M_PI_2_F
-#define M_PI_2_F ((float)M_PI_2)
-#endif
-
-#ifndef M_DEG_TO_RAD
 #define M_DEG_TO_RAD 0.017453292519943295
-#endif
-
-#ifndef M_RAD_TO_DEG
 #define M_RAD_TO_DEG 57.295779513082323
-#endif
-
-#ifndef M_PI_F
-#define M_PI_F 3.14159265358979323846f
-#endif
-
-// #ifndef CONSTANTS_ONE_G
-// #ifndef LIB_USING_ECL_GEO
-// #define CONSTANTS_ONE_G 9.80665 // m/s^2
-// #endif
-// #endif
 
 #endif // __NEXTPILOT_CONSTANTS_H__

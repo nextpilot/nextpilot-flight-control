@@ -1,4 +1,15 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+# /*****************************************************************
+#  *     _   __             __   ____   _  __        __
+#  *    / | / /___   _  __ / /_ / __ \ (_)/ /____   / /_
+#  *   /  |/ // _ \ | |/_// __// /_/ // // // __ \ / __/
+#  *  / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
+#  * /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
+#  *
+#  * Copyright All Reserved © 2015-2024 NextPilot Development Team
+#  ******************************************************************/
+
 """
 Param source code generation script.
 """
@@ -22,7 +33,7 @@ import os
 
 def generate(xml_file, dest="."):
     """
-    Generate px4 param source from xml.
+    Generate param source from xml.
 
     @param xml_file: input parameter xml file
     @param dest: Destination directory for generated files
@@ -49,7 +60,7 @@ def generate(xml_file, dest="."):
         os.path.mkdir(dest)
 
     template_files = [
-        "parameters.hpp.jinja",
+        "param_global_autogen.hpp.jinja",
     ]
     for template_file in template_files:
         template = env.get_template(template_file)

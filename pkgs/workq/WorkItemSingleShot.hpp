@@ -11,7 +11,6 @@
 #pragma once
 
 #include "WorkItem.hpp"
-// #include <px4_platform_common/sem.h>
 
 namespace nextpilot {
 
