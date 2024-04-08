@@ -24,7 +24,14 @@ static inline void PRINT_MODULE_DESCRIPTION(const char *description) {
     // TODO: the output could be improved by:
     // - mark titles in bold (lines starting with ##)
     // - highlight commands (lines starting with $, or `cmd`)
-    LOG_RAW("%s\n\n", description);
+    const char *pos = description;
+    int         rem = rt_strlen(description);
+    while (rem > (ULOG_LINE_BUF_SIZE - 1)) {
+        LOG_RAW("%s", pos);
+        pos += (ULOG_LINE_BUF_SIZE - 1);
+        rem -= (ULOG_LINE_BUF_SIZE - 1);
+    }
+    LOG_RAW("%s\n\n", pos);
 }
 
 static inline void PRINT_MODULE_USAGE_NAME(const char *executable_name, const char *category) {

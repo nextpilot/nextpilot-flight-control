@@ -295,7 +295,6 @@ This implements the multicopter rate controller. It takes rate setpoints (in acr
 via `manual_control_setpoint` topic) as inputs and outputs actuator control messages.
 
 The controller has a PID loop for angular rate error.
-
 )DESCR_STR");
 
     PRINT_MODULE_USAGE_NAME("mc_rate_control", "controller");

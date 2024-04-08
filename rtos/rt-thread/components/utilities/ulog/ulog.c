@@ -598,7 +598,8 @@ static void do_output(rt_uint32_t level, const char *tag, rt_bool_t is_raw, cons
         }
         else if (ulog.async_rb)
         {
-            rt_ringbuffer_put(ulog.async_rb, (const rt_uint8_t *)log_buf, (rt_uint16_t)log_buf_size);
+            // LOG_RAW异步输出的时候不要将尾部的\0压到rb里面，否则后面的内容会被截断
+            rt_ringbuffer_put(ulog.async_rb, (const rt_uint8_t *)log_buf, (rt_uint16_t)log_buf_size - 1);
             /* send a notice */
             rt_sem_release(&ulog.async_notice);
         }
@@ -793,13 +794,15 @@ void ulog_raw(const char *format, ...)
     va_end(args);
 
     /* calculate log length */
-    if ((fmt_result > -1) && (fmt_result <= ULOG_LINE_BUF_SIZE))
+    // 当fmt_result >= ULOG_LINE_BUF_SIZE时候，最后一个字节是\0
+    // 此时字符串的实际长度是ULOG_LINE_BUF_SIZE - 1
+    if ((fmt_result > -1) && (fmt_result < ULOG_LINE_BUF_SIZE))
     {
         log_len = fmt_result;
     }
     else
     {
-        log_len = ULOG_LINE_BUF_SIZE;
+        log_len = ULOG_LINE_BUF_SIZE - 1;
     }
 
     /* do log output */
