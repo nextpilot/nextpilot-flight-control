@@ -8,6 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "mc_rate_control"
+
 #include "MulticopterRateControl.hpp"
 #include <circuit_breaker/circuit_breaker.h>
 
@@ -247,7 +249,7 @@ void MulticopterRateControl::updateActuatorControlsStatus(const vehicle_torque_s
     }
 }
 
-int MulticopterRateControl::task_spawn(int argc, char *argv[]) {
+MulticopterRateControl *MulticopterRateControl::instantiate(int argc, char *argv[]) {
     bool vtol = false;
 
     if (argc > 1) {
@@ -274,7 +276,7 @@ int MulticopterRateControl::task_spawn(int argc, char *argv[]) {
     // _object.store(nullptr);
     // _task_id = -1;
 
-    return PX4_ERROR;
+    return instance;
 }
 
 int MulticopterRateControl::custom_command(int argc, char *argv[]) {
@@ -307,3 +309,11 @@ The controller has a PID loop for angular rate error.
 extern "C" __EXPORT int mc_rate_control_main(int argc, char *argv[]) {
     return MulticopterRateControl::main(argc, argv);
 }
+MSH_CMD_EXPORT_ALIAS(mc_rate_control_main, mc_rate_control, );
+
+int mc_rate_control_start() {
+    const char *argv[] = {"mc_rate_control", "start", "vtol"};
+    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    return MulticopterRateControl::main(argc, (char **)argv);
+}
+INIT_APP_EXPORT(mc_rate_control_start);

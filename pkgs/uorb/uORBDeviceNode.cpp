@@ -9,9 +9,11 @@
  ******************************************************************/
 
 #include "uORBDeviceNode.hpp"
-// #include "uorb_subscription.h"
 
 namespace nextpilot::uORB {
+
+IntrusiveSortedList<DeviceNode *> DeviceNode::_node_list{};
+AtomicBitset<ORB_TOPICS_COUNT>    DeviceNode::_node_exist[ORB_MULTI_MAX_INSTANCES]{};
 
 DeviceNode *DeviceNode::advertise(const struct orb_metadata *meta, const void *data, int *instance,
                                   uint8_t queue_size) {

@@ -53,7 +53,7 @@ static constexpr param_type_t params_type[] = {
 static constexpr params_id params_volatile[] = {
 {%- for param in params %}
 	{%- if param.attrib["volatile"] == "true" %}
-	params::{{ param.attrib["name"] }},
+	params_id::{{ param.attrib["name"] }},
 	{%- endif %}
 {%- endfor %}
 };

@@ -39,7 +39,7 @@ public:
             strcmp(argv[1], "help") == 0 ||
             strcmp(argv[1], "info") == 0 ||
             strcmp(argv[1], "usage") == 0) {
-            return T::custom_usage();
+            return T::print_usage();
         }
 
         if (strcmp(argv[1], "start") == 0) {
@@ -180,7 +180,7 @@ public:
             T *object = _object[inst].load();
             if (object) {
                 found = true;
-                LOG_I("instance #%d status:", inst);
+                LOG_RAW("\ninstance #%d status:\n", inst);
                 object->print_status();
             }
         }
@@ -195,16 +195,16 @@ public:
     static int custom_command(int argc, char *argv[]) {
         // support for custom commands
         // it none are supported, just do:
-        return custom_usage("unrecognized command");
+        return print_usage("unrecognized command");
     }
 
-    static int custom_usage(const char *reason = nullptr) {
+    static int print_usage(const char *reason = nullptr) {
         // use the PRINT_MODULE_* methods...
         if (reason) {
             LOG_W(reason);
         }
 
-        LOG_RAW("start\tstart a new instance\n");
+        LOG_RAW("\nstart\tstart a new instance\n");
         LOG_RAW("stop\tstop a exist instance\n");
         LOG_RAW("status\tshow status\n");
         LOG_RAW("help\tshow help\n");
@@ -222,7 +222,7 @@ public:
      * @return Returns 0 iff successful, -1 otherwise.
      */
     virtual int print_status() {
-        rt_kprintf("running, addr=%x\n", this);
+        LOG_RAW("running, addr=%x\n", this);
         return 0;
     }
 
