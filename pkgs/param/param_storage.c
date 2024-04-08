@@ -243,11 +243,17 @@ static void param_autosave_entry(void *param) {
     }
 }
 
-static int param_autosave_init() {
+RT_WEAK void board_param_init() {
+}
+
+static int param_storage_init() {
     // 从默认设备加载param
     if (param_load_default() == 0) {
         LOG_I("load default ok");
     }
+
+    // 加载板级参数
+    // board_param_init();
 
     _param_autosave_event = rt_event_create("param_autosave", RT_IPC_FLAG_PRIO);
     if (!_param_autosave_event) {
@@ -271,4 +277,4 @@ static int param_autosave_init() {
     return 0;
 }
 
-INIT_APP_EXPORT(param_autosave_init);
+INIT_APP_EXPORT(param_storage_init);

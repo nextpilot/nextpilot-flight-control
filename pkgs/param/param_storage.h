@@ -52,11 +52,64 @@ struct param_storage_s {
 };
 
 int param_storage_register(param_storage_t *dev);
+
+/**
+ * Import parameters from a file, discarding any unrecognized parameters.
+ *
+ * This function merges the imported parameters with the current parameter set.
+ *
+ * @param fd		File descriptor to import from (-1 selects the FLASH storage).
+ * @return		Zero on success, nonzero if an error occurred during import.
+ *			Note that in the failure case, parameters may be inconsistent.
+ */
 int param_export_internal(const char *devname, param_filter_func filter);
+
+/**
+ * Export changed parameters to a file.
+ * Note: this method requires a large amount of stack size!
+ *
+ * @param filename	Path to the default parameter file.
+ * @param filter	Filter parameters to be exported. The method should return true if
+ * 			the parameter should be exported. No filtering if nullptr is passed.
+ * @return		Zero on success, nonzero on failure.
+ */
 int param_import_internal(const char *devname, param_filter_func filter);
+
+/**
+ * Load parameters from a file.
+ *
+ * This function resets all parameters to their default values, then loads new
+ * values from a file.
+ *
+ * @param fd		File descriptor to import from (-1 selects the FLASH storage).
+ * @return		Zero on success, nonzero if an error occurred during import.
+ *			Note that in the failure case, parameters may be inconsistent.
+ */
 int param_reset_and_import(const char *devname);
+
+/**
+ * Load parameters from the default parameter file.
+ *
+ * @return		Zero on success.
+ */
 int param_load_default();
+
+/**
+ * Save parameters to the default file.
+ * Note: this method requires a large amount of stack size!
+ *
+ * This function saves all parameters with non-default values.
+ *
+ * @return		Zero on success.
+ */
 int param_save_default();
+
+/**
+ * Enable/disable the param autosaving.
+ * Re-enabling with changed params will not cause an autosave.
+ * @param enable true: enable autosaving, false: disable autosaving
+ */
+void param_control_autosave(bool enable);
 
 #ifdef __cplusplus
 }

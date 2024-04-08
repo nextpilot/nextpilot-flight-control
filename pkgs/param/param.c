@@ -20,6 +20,45 @@
 #include "param_storage.h"
 #include "storage/param_storage_file.h"
 
+static void param_print_status() {
+    LOG_RAW("summary: %d/%d (used/total)\n", param_get_count_used(), param_get_count());
+
+#ifndef FLASH_BASED_PARAMS
+    const char *filename = param_get_default_file();
+
+    if (filename != NULL) {
+        LOG_RAW("file: %s\n", param_get_default_file());
+    }
+
+    if (param_get_backup_file()) {
+        LOG_RAW("backup file: %s\n", param_get_backup_file());
+    }
+
+#endif /* FLASH_BASED_PARAMS */
+
+    // if (param_values != NULL) {
+    //     PX4_INFO("storage array: %d/%d elements (%zu bytes total)",
+    //              utarray_len(param_values), param_values->n, param_values->n * sizeof(UT_icd));
+    // }
+
+    // if (param_custom_default_values != NULL) {
+    //     PX4_INFO("storage array (custom defaults): %d/%d elements (%zu bytes total)",
+    //              utarray_len(param_custom_default_values), param_custom_default_values->n,
+    //              param_custom_default_values->n * sizeof(UT_icd));
+    // }
+
+    // LOG_RAW("auto save: %s\n", autosave_disabled ? "off" : "on");
+
+    // if (!autosave_disabled && (last_autosave_timestamp > 0)) {
+    //     LOG_RAW("last auto save: %.3f seconds ago", hrt_elapsed_time(&last_autosave_timestamp) * 1e-6);
+    // }
+
+    // perf_print_counter(param_export_perf);
+    // perf_print_counter(param_find_perf);
+    // perf_print_counter(param_get_perf);
+    // perf_print_counter(param_set_perf);
+}
+
 static int param_do_touch(const char *params[], int num_params) {
     for (int i = 0; i < num_params; ++i) {
         if (param_find(params[i]) == PARAM_INVALID) {
@@ -235,7 +274,6 @@ int param_main(int argc, char *argv[]) {
             !strcmp(argv[1], "save")) {
             if (argc >= 3) {
                 return param_export_internal(argv[2], NULL);
-
             } else {
                 return param_export_internal(NULL, NULL);
             }
@@ -254,7 +292,6 @@ int param_main(int argc, char *argv[]) {
             !strcmp(argv[1], "load")) {
             if (argc >= 3) {
                 return param_import_internal(argv[2], NULL);
-
             } else {
                 return param_import_internal(NULL, NULL);
             }
@@ -263,7 +300,6 @@ int param_main(int argc, char *argv[]) {
         if (!strcmp(argv[1], "select")) {
             if (argc >= 3) {
                 param_set_default_file(argv[2]);
-
             } else {
                 param_set_default_file(NULL);
             }
@@ -273,7 +309,6 @@ int param_main(int argc, char *argv[]) {
             if (default_file) {
                 LOG_I("selected parameter default file %s", default_file);
             }
-
             return 0;
         }
 
@@ -283,7 +318,6 @@ int param_main(int argc, char *argv[]) {
                 if (!strcmp(argv[2], "-c")) {
                     if (argc >= 4) {
                         return param_do_show(argv[3], true);
-
                     } else {
                         return param_do_show(NULL, true);
                     }
@@ -295,11 +329,9 @@ int param_main(int argc, char *argv[]) {
                     if (argc >= 4) {
                         // return do_show_quiet(argv[3]);
                     }
-
                 } else {
                     return param_do_show(argv[2], false);
                 }
-
             } else {
                 return param_do_show(NULL, false);
             }
@@ -309,10 +341,10 @@ int param_main(int argc, char *argv[]) {
         //     return do_show_for_airframe();
         // }
 
-        // if (!strcmp(argv[1], "status")) {
-        //     param_print_status();
-        //     return 0;
-        // }
+        if (!strcmp(argv[1], "status")) {
+            param_print_status();
+            return 0;
+        }
 
         if (!strcmp(argv[1], "set")) {
             if (argc >= 5) {
@@ -370,7 +402,6 @@ int param_main(int argc, char *argv[]) {
             if (argc >= 3) {
                 param_reset_specific((const char **)&argv[2], argc - 2);
                 return 0;
-
             } else {
                 LOG_E("not enough arguments (use 'param reset_all' to reset all).");
                 return 1;
@@ -391,7 +422,6 @@ int param_main(int argc, char *argv[]) {
         if (!strcmp(argv[1], "touch")) {
             if (argc >= 3) {
                 return param_do_touch((const char **)&argv[2], argc - 2);
-
             } else {
                 LOG_E("not enough arguments.");
                 return 1;
@@ -401,7 +431,6 @@ int param_main(int argc, char *argv[]) {
         // if (!strcmp(argv[1], "index_used")) {
         //     if (argc >= 3) {
         //         return do_show_index(argv[2], true);
-
         //     } else {
         //         LOG_E("no index provided");
         //         return 1;
@@ -411,7 +440,6 @@ int param_main(int argc, char *argv[]) {
         // if (!strcmp(argv[1], "index")) {
         //     if (argc >= 3) {
         //         return do_show_index(argv[2], false);
-
         //     } else {
         //         LOG_E("no index provided");
         //         return 1;
@@ -421,7 +449,6 @@ int param_main(int argc, char *argv[]) {
         // if (!strcmp(argv[1], "find")) {
         //     if (argc >= 3) {
         //         return do_find(argv[2]);
-
         //     } else {
         //         LOG_E("not enough arguments.\nTry 'param find %s'", (argc > 2) ? argv[2] : "PARAM_NAME");
         //         return 1;

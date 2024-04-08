@@ -1,4 +1,4 @@
-#include "uORBPublication.h"
+#include "uORBPublication.hpp"
 #include "uORBDeviceNode.hpp"
 #include "uORB.h"
 
@@ -71,15 +71,15 @@ int orb_publish(const struct orb_metadata *meta, orb_advert_t handle, const void
     }
 }
 
-int orb_publish_auto(const struct orb_metadata *meta, orb_advert_t *node, const void *data, int *instance) {
-    if (!*node) {
-        *node = orb_advertise_multi(meta, data, instance);
-        if (*node) {
-            return 0;
-        }
-    } else {
-        return orb_publish(meta, *node, data);
-    }
+// int orb_publish_auto(const struct orb_metadata *meta, orb_advert_t *node, const void *data, int *instance) {
+//     if (!*node) {
+//         *node = orb_advertise_multi(meta, data, instance);
+//         if (*node) {
+//             return 0;
+//         }
+//     } else {
+//         return orb_publish(meta, *node, data);
+//     }
 
-    return -1;
-}
+//     return -1;
+// }

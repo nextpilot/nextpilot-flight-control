@@ -15,29 +15,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <rtdbg.h>
-
 #include "uORB.h"
-
-// typedef struct uorb_subscription  orb_subval_t;
-// typedef struct uorb_subscription *orb_subptr_t;
-
-// rt_err_t orb_exists(const struct orb_metadata *meta, int instance);
-// int      orb_group_count(const struct orb_metadata *meta);
-// bool     orb_data_copy(orb_advert_t node, void *dst, uint32_t *generation, bool only_if_updated);
-
-// orb_subval_t orb_subscribe_multi(const struct orb_metadata *meta, uint8_t instance);
-// orb_subval_t orb_subscribe(const struct orb_metadata *meta);
-// rt_err_t     orb_unsubscribe(orb_subptr_t sub);
-// rt_err_t     orb_check(orb_subptr_t sub, bool *updated);
-// rt_err_t     orb_copy(const struct orb_metadata *meta, orb_subptr_t sub, void *buffer);
-// rt_err_t     orb_update(orb_subptr_t sub, void *data);
-// rt_err_t     orb_poll(orb_subptr_t sub, int timeout_us);
-// rt_err_t     orb_change_instance(orb_subptr_t sub, uint8_t instance);
-
-// int orb_set_interval(orb_subptr_t sub, unsigned interval);
-// int orb_get_interval(orb_subptr_t sub, unsigned *interval);
-// // rt_err_t orb_register_callback(orb_advert_t node);
-// // rt_err_t orb_unregister_callback(orb_advert_t node);
 
 #ifdef __cplusplus
 #include <pthread.h>

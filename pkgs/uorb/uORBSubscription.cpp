@@ -8,14 +8,14 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include "uORBSubscription.h"
+#include "uORBSubscription.hpp"
 #include "uORBDeviceNode.hpp"
 #include "uORB.h"
 
 using namespace nextpilot::uORB;
 
 // 查找对应的主题是否存在，且已经公告，没有公告advertised=false主题不能publish和copy数据
-rt_err_t orb_exists(const struct orb_metadata *meta, int instance) {
+int orb_exists(const struct orb_metadata *meta, int instance) {
     if (!meta) {
         return -1;
     }
@@ -51,7 +51,7 @@ orb_subscr_t orb_subscribe(const struct orb_metadata *meta) {
     return new SubscriptionInterval(meta, 0, 0);
 }
 
-rt_err_t orb_unsubscribe(orb_subscr_t handle) {
+int orb_unsubscribe(orb_subscr_t handle) {
     if (!handle) {
         return -1;
     }
@@ -66,7 +66,7 @@ rt_err_t orb_unsubscribe(orb_subscr_t handle) {
 }
 
 // 检查数据是否更新
-rt_err_t orb_check(orb_subscr_t handle, bool *updated) {
+int orb_check(orb_subscr_t handle, bool *updated) {
     if (!handle || !updated) {
         return -1;
     }
@@ -78,7 +78,7 @@ rt_err_t orb_check(orb_subscr_t handle, bool *updated) {
 }
 
 // 强制拷贝，不管是否更新都拷贝
-rt_err_t orb_copy(const struct orb_metadata *meta, orb_subscr_t handle, void *buffer) {
+int orb_copy(const struct orb_metadata *meta, orb_subscr_t handle, void *buffer) {
     if (!buffer) {
         return -1;
     }
@@ -106,7 +106,7 @@ rt_err_t orb_copy(const struct orb_metadata *meta, orb_subscr_t handle, void *bu
 }
 
 // 更新了才拷贝
-rt_err_t orb_update(orb_subscr_t handle, void *data) {
+int orb_update(orb_subscr_t handle, void *data) {
     if (!handle || !data) {
         return -1;
     }
@@ -116,11 +116,11 @@ rt_err_t orb_update(orb_subscr_t handle, void *data) {
     return sub->update(data) ? 0 : -1;
 }
 
-// rt_err_t orb_poll(orb_subscr_t sub, int timeout_us) {
+// int orb_poll(orb_subscr_t sub, int timeout_us) {
 //     return 0;
 // }
 
-// rt_err_t orb_change_instance(orb_subscr_t handle, uint8_t instance) {
+// int orb_change_instance(orb_subscr_t handle, uint8_t instance) {
 //     // if (!sub || sub->get_instance() == instance) {
 //     //     return -1;
 //     // }
@@ -160,10 +160,10 @@ int orb_get_interval(orb_subscr_t handle, unsigned *interval_ms) {
     return 0;
 }
 
-// rt_err_t orb_register_callback(orb_advert_tnode) {
+// int orb_register_callback(orb_advert_tnode) {
 //     return 0;
 // }
 
-// rt_err_t orb_unregister_callback(orb_advert_tnode) {
+// int orb_unregister_callback(orb_advert_tnode) {
 //     return 0;
 // }

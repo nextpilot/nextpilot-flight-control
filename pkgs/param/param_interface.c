@@ -13,6 +13,13 @@
 #include <rtthread.h>
 #include <rtdbg.h>
 #include "param_interface.h"
+#ifdef PKG_USING_HRTIMER
+#include <hrtimer.h>
+#endif // PKG_USING_HRTIMER
+#ifdef PKG_USING_UORB_
+#include <uORB.h>
+#include <topics/parameter_update.h>
+#endif // PKG_USING_UORB_
 
 #define MAX_API_COUNT 3
 static param_interface_t *__param_api_table__[MAX_API_COUNT] = {NULL, NULL, NULL};
@@ -34,8 +41,23 @@ int param_interface_register(param_interface_t *api) {
     return success ? 0 : -1;
 }
 
-int param_init_internal() {
+int param_interface_init() {
     return 0;
+}
+
+void param_notify_changes() {
+#ifdef PKG_USING_UORB_
+    static uint32_t           param_instance = 0;
+    struct parameter_update_s pup;
+    pup.instance = param_instance++;
+#ifdef PKG_USING_HRTIMER
+    pup.timestamp = hrt_absolute_time();
+#else
+    pup.timestamp = rt_tick_get() * 1000ULL;
+#endif // PKG_USING_HRTIMER
+    orb_publish(ORB_ID(parameter_update), NULL, &pup);
+#endif // PKG_USING_UORB
+    LOG_D("notify param updated");
 }
 
 uint16_t param_get_count() {
@@ -254,7 +276,7 @@ int param_set_status(param_t idx, const param_status_t *status) {
     return -1;
 }
 
-int  param_set_used(param_t idx){
+int param_set_used(param_t idx) {
     param_status_t status = param_get_status(idx);
     return param_set_status(idx, &status);
 }
@@ -376,5 +398,22 @@ void param_reset_specific(const char *resets[], int num_resets) {
     if (found) {
         param_notify_changes();
         param_notify_autosave();
+    }
+}
+
+void param_foreach(void (*func)(void *arg, param_t idx), void *arg, bool only_changed, bool only_used) {
+    param_t idx;
+
+    for (idx = 0; param_in_range(idx); idx++) {
+        /* if requested, skip unchanged values */
+        if (only_changed && param_value_changed(idx)) {
+            continue;
+        }
+
+        if (only_used && !param_value_used(idx)) {
+            continue;
+        }
+
+        func(arg, idx);
     }
 }

@@ -67,16 +67,16 @@
 // uorb
 #ifdef PKG_USING_UORB
 #include "uORB.h"
-#include "uORBPublication.h"
-#include "uORBSubscription.h"
+#ifdef __cplusplus
+#include "uORBPublication.hpp"
+#include "uORBSubscription.hpp"
+#include "topics/uORBTopics.hpp"
+#endif //__cplusplus
 #endif // PKG_USING_UORB
 
 // param
 #ifdef PKG_USING_PARAM
 #include "param.h"
-#ifdef __cplusplus
-#include "module_params.hpp"
-#endif // __cplusplus
 #endif // PKG_USING_PARAM
 
 // workq
@@ -107,6 +107,7 @@
 #include "module_usage.h"
 #if defined(__cplusplus)
 #include "module_command.hpp"
+#include "module_params.hpp"
 #endif // PKG_USING_WORKQ
 
 // mathlib

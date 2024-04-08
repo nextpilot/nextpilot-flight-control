@@ -14,15 +14,12 @@
 #include <stdint.h>
 #include <uORB.h>
 
-uint8_t      orb_get_instance(const orb_advert_t node);
-uint8_t      orb_get_queue_size(const orb_advert_t node);
-orb_advert_t orb_advertise_multi_queue(const struct orb_metadata *meta, const void *data, int *instance, unsigned int queue_size);
-orb_advert_t orb_advertise_multi(const struct orb_metadata *meta, const void *data, int *instance);
-orb_advert_t orb_advertise_queue(const struct orb_metadata *meta, const void *data, unsigned int queue_size);
-orb_advert_t orb_advertise(const struct orb_metadata *meta, const void *data);
-int          orb_unadvertise(orb_advert_t node);
-int          orb_publish(const struct orb_metadata *meta, orb_advert_t node, const void *data);
-int          orb_publish_auto(const struct orb_metadata *meta, orb_advert_t *node, const void *data, int *instance);
+uint8_t orb_get_instance(const orb_advert_t node);
+uint8_t orb_get_queue_size(const orb_advert_t node);
+
+// orb_advert_t orb_advertise_multi_queue(const struct orb_metadata *meta, const void *data, int *instance, unsigned int queue_size);
+// orb_advert_t orb_advertise_queue(const struct orb_metadata *meta, const void *data, unsigned int queue_size);
+// int          orb_publish_auto(const struct orb_metadata *meta, orb_advert_t *node, const void *data, int *instance);
 
 #ifdef __cplusplus
 #include <uORB/topics/uORBTopics.hpp>

@@ -157,4 +157,5 @@ static param_storage_t _dev = {
 static int param_storage_file_init() {
     return param_storage_register(&_dev);
 }
+
 INIT_COMPONENT_EXPORT(param_storage_file_init);

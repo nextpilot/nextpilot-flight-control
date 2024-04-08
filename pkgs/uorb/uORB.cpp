@@ -10,8 +10,8 @@
 //  ******************************************************************/
 
 #include "uORBDeviceNode.hpp"
-#include "uORBPublication.h"
-#include "uORBSubscription.h"
+#include "uORBPublication.hpp"
+#include "uORBSubscription.hpp"
 
 #include <rtdbg.h>
 #include <stddef.h>
