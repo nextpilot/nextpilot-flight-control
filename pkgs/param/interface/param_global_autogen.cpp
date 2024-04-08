@@ -12,12 +12,12 @@
 #include <rtdbg.h>
 #include <string.h>
 #include "param_interface.h"
-#include "parameters.hpp"
+#include "param_global_autogen.hpp"
 
 namespace nextpilot::global_params {
 
-static constexpr uint16_t  __param_count__ = (uint16_t)params::MAX_COUNT;
-static const param_info_s *__param_info__  = infos;
+static constexpr uint16_t  __param_count__ = sizeof(params_meta) / sizeof(param_info_s);
+static const param_info_s *__param_info__  = params_meta;
 static param_data_t        __param_data__[__param_count__]{};
 
 uint16_t param_get_count() {
