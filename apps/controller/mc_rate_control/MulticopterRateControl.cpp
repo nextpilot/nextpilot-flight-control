@@ -9,12 +9,7 @@
  ******************************************************************/
 
 #include "MulticopterRateControl.hpp"
-
-// #include <drivers/drv_hrt.h>
 #include <circuit_breaker/circuit_breaker.h>
-// #include <mathlib/math/Limits.hpp>
-// #include <mathlib/math/Functions.hpp>
-// #include <px4_platform_common/events.h>
 
 using namespace matrix;
 using namespace time_literals;

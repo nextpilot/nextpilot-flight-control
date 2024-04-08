@@ -52,6 +52,10 @@
 #include "queue.h"
 #endif // PKG_USING_QUEUE
 
+#ifdef PKG_USING_CONTAINER
+#include "container.h"
+#endif // PKG_USING_CONTAINER
+
 #ifdef PKG_USING_LIBCRC
 #include "crc8.h"
 #include "crc16.h"
@@ -84,12 +88,7 @@
 #include "WorkItem.hpp"
 #include "WorkItemScheduled.hpp"
 #include "WorkItemSingleShot.hpp"
-#include "WorkQueueManager.hpp"
 #endif // PKG_USING_WORKQUEUE
-
-#ifdef PKG_USING_CONTAINER
-#include "container.h"
-#endif // PKG_USING_CONTAINER
 
 #ifdef PKG_USING_BOARD_VERSION
 #include "board_version.h"
@@ -100,9 +99,10 @@
 #include "getopt.h"
 #endif // PKG_USING_GETOPT
 
-// scope
-#ifdef PKG_USING_SCOPE
-#endif // PKG_USING_SCOPE
+// perf
+#ifdef PKG_USING_PERF
+#include "perf_counter.h"
+#endif // PKG_USING_PERF
 
 // module
 #include "module_usage.h"
@@ -125,5 +125,14 @@
 #if defined(PKG_USING_MATRIX) && defined(cplusplus)
 #include "matrix/math.hpp"
 #endif // PKG_USING_MATRIX
+
+// Circuit breaker
+#ifdef LIB_USING_CIRCUIT_BREAKER
+#include "circuit_breaker.h"
+#endif // LIB_USING_CIRCUIT_BREAKER
+
+// scope
+#ifdef PKG_USING_SCOPE
+#endif // PKG_USING_SCOPE
 
 #endif // __NEXTPILOT_H__

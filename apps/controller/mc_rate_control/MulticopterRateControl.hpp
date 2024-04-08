@@ -12,33 +12,6 @@
 
 #include "nextpilot.h"
 #include "rate_control/rate_control.hpp"
-#include <perf/perf_counter.h>
-
-// #include <lib/matrix/matrix/math.hpp>
-// #include <lib/perf/perf_counter.h>
-// #include <px4_platform_common/defines.h>
-// #include <px4_platform_common/module.h>
-// #include <px4_platform_common/module_params.h>
-// #include <px4_platform_common/posix.h>
-// #include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
-// #include <lib/systemlib/mavlink_log.h>
-// #include <uORB/Publication.hpp>
-// #include <uORB/PublicationMulti.hpp>
-// #include <uORB/Subscription.hpp>
-// #include <uORB/SubscriptionCallback.hpp>
-// #include <uORB/topics/actuator_controls_status.h>
-// #include <uORB/topics/battery_status.h>
-// #include <uORB/topics/control_allocator_status.h>
-// #include <uORB/topics/manual_control_setpoint.h>
-// #include <uORB/topics/parameter_update.h>
-// #include <uORB/topics/rate_ctrl_status.h>
-// #include <uORB/topics/vehicle_angular_velocity.h>
-// #include <uORB/topics/vehicle_control_mode.h>
-// #include <uORB/topics/vehicle_land_detected.h>
-// #include <uORB/topics/vehicle_rates_setpoint.h>
-// #include <uORB/topics/vehicle_status.h>
-// #include <uORB/topics/vehicle_thrust_setpoint.h>
-// #include <uORB/topics/vehicle_torque_setpoint.h>
 
 using namespace time_literals;
 using namespace nextpilot::global_params;
