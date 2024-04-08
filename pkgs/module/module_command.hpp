@@ -226,6 +226,10 @@ public:
         return 0;
     }
 
+    virtual int init() {
+        return 0;
+    }
+
     /**
      * @brief Main loop method for modules running in their own thread. Called from run_trampoline().
      *        This method must return when should_exit() returns true.

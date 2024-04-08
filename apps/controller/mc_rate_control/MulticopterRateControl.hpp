@@ -41,6 +41,7 @@
 
 using namespace time_literals;
 using namespace nextpilot::global_params;
+using namespace nextpilot;
 
 class MulticopterRateControl : public ModuleCommand<MulticopterRateControl>, public ModuleParams, public nextpilot::WorkItem {
 public:
@@ -109,34 +110,34 @@ private:
     float _control_energy[4]{};
 
     DEFINE_PARAMETERS(
-        (ParamFloat<param_id::MC_ROLLRATE_P>)_param_mc_rollrate_p,
-        (ParamFloat<param_id::MC_ROLLRATE_I>)_param_mc_rollrate_i,
-        (ParamFloat<param_id::MC_RR_INT_LIM>)_param_mc_rr_int_lim,
-        (ParamFloat<param_id::MC_ROLLRATE_D>)_param_mc_rollrate_d,
-        (ParamFloat<param_id::MC_ROLLRATE_FF>)_param_mc_rollrate_ff,
-        (ParamFloat<param_id::MC_ROLLRATE_K>)_param_mc_rollrate_k,
+        (ParamFloat<params_id::MC_ROLLRATE_P>)_param_mc_rollrate_p,
+        (ParamFloat<params_id::MC_ROLLRATE_I>)_param_mc_rollrate_i,
+        (ParamFloat<params_id::MC_RR_INT_LIM>)_param_mc_rr_int_lim,
+        (ParamFloat<params_id::MC_ROLLRATE_D>)_param_mc_rollrate_d,
+        (ParamFloat<params_id::MC_ROLLRATE_FF>)_param_mc_rollrate_ff,
+        (ParamFloat<params_id::MC_ROLLRATE_K>)_param_mc_rollrate_k,
 
-        (ParamFloat<param_id::MC_PITCHRATE_P>)_param_mc_pitchrate_p,
-        (ParamFloat<param_id::MC_PITCHRATE_I>)_param_mc_pitchrate_i,
-        (ParamFloat<param_id::MC_PR_INT_LIM>)_param_mc_pr_int_lim,
-        (ParamFloat<param_id::MC_PITCHRATE_D>)_param_mc_pitchrate_d,
-        (ParamFloat<param_id::MC_PITCHRATE_FF>)_param_mc_pitchrate_ff,
-        (ParamFloat<param_id::MC_PITCHRATE_K>)_param_mc_pitchrate_k,
+        (ParamFloat<params_id::MC_PITCHRATE_P>)_param_mc_pitchrate_p,
+        (ParamFloat<params_id::MC_PITCHRATE_I>)_param_mc_pitchrate_i,
+        (ParamFloat<params_id::MC_PR_INT_LIM>)_param_mc_pr_int_lim,
+        (ParamFloat<params_id::MC_PITCHRATE_D>)_param_mc_pitchrate_d,
+        (ParamFloat<params_id::MC_PITCHRATE_FF>)_param_mc_pitchrate_ff,
+        (ParamFloat<params_id::MC_PITCHRATE_K>)_param_mc_pitchrate_k,
 
-        (ParamFloat<param_id::MC_YAWRATE_P>)_param_mc_yawrate_p,
-        (ParamFloat<param_id::MC_YAWRATE_I>)_param_mc_yawrate_i,
-        (ParamFloat<param_id::MC_YR_INT_LIM>)_param_mc_yr_int_lim,
-        (ParamFloat<param_id::MC_YAWRATE_D>)_param_mc_yawrate_d,
-        (ParamFloat<param_id::MC_YAWRATE_FF>)_param_mc_yawrate_ff,
-        (ParamFloat<param_id::MC_YAWRATE_K>)_param_mc_yawrate_k,
+        (ParamFloat<params_id::MC_YAWRATE_P>)_param_mc_yawrate_p,
+        (ParamFloat<params_id::MC_YAWRATE_I>)_param_mc_yawrate_i,
+        (ParamFloat<params_id::MC_YR_INT_LIM>)_param_mc_yr_int_lim,
+        (ParamFloat<params_id::MC_YAWRATE_D>)_param_mc_yawrate_d,
+        (ParamFloat<params_id::MC_YAWRATE_FF>)_param_mc_yawrate_ff,
+        (ParamFloat<params_id::MC_YAWRATE_K>)_param_mc_yawrate_k,
 
-        (ParamFloat<param_id::MC_ACRO_R_MAX>)_param_mc_acro_r_max,
-        (ParamFloat<param_id::MC_ACRO_P_MAX>)_param_mc_acro_p_max,
-        (ParamFloat<param_id::MC_ACRO_Y_MAX>)_param_mc_acro_y_max,
-        (ParamFloat<param_id::MC_ACRO_EXPO>)_param_mc_acro_expo,         /**< expo stick curve shape (roll & pitch) */
-        (ParamFloat<param_id::MC_ACRO_EXPO_Y>)_param_mc_acro_expo_y,     /**< expo stick curve shape (yaw) */
-        (ParamFloat<param_id::MC_ACRO_SUPEXPO>)_param_mc_acro_supexpo,   /**< superexpo stick curve shape (roll & pitch) */
-        (ParamFloat<param_id::MC_ACRO_SUPEXPOY>)_param_mc_acro_supexpoy, /**< superexpo stick curve shape (yaw) */
+        (ParamFloat<params_id::MC_ACRO_R_MAX>)_param_mc_acro_r_max,
+        (ParamFloat<params_id::MC_ACRO_P_MAX>)_param_mc_acro_p_max,
+        (ParamFloat<params_id::MC_ACRO_Y_MAX>)_param_mc_acro_y_max,
+        (ParamFloat<params_id::MC_ACRO_EXPO>)_param_mc_acro_expo,         /**< expo stick curve shape (roll & pitch) */
+        (ParamFloat<params_id::MC_ACRO_EXPO_Y>)_param_mc_acro_expo_y,     /**< expo stick curve shape (yaw) */
+        (ParamFloat<params_id::MC_ACRO_SUPEXPO>)_param_mc_acro_supexpo,   /**< superexpo stick curve shape (roll & pitch) */
+        (ParamFloat<params_id::MC_ACRO_SUPEXPOY>)_param_mc_acro_supexpoy, /**< superexpo stick curve shape (yaw) */
 
-        (ParamBool<param_id::MC_BAT_SCALE_EN>)_param_mc_bat_scale_en)
+        (ParamBool<params_id::MC_BAT_SCALE_EN>)_param_mc_bat_scale_en)
 };

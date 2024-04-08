@@ -15,10 +15,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <rtdbg.h>
-// #include "uorb_device_node.h"
-#include "uORB.h"
 
-#define __EXPORT
+#include "uORB.h"
 
 // typedef struct uorb_subscription  orb_subval_t;
 // typedef struct uorb_subscription *orb_subptr_t;

@@ -73,7 +73,7 @@ int            param_set_status(param_t idx, const param_status_t *status);
 bool           param_value_unsaved(param_t idx);
 bool           param_value_used(param_t idx);
 bool           param_value_changed(param_t idx);
-// int  param_set_used(param_t idx);
+int            param_set_used(param_t idx);
 // int  param_set_saved(param_t idx);
 // int  param_set_saved_ulog(param_t idx);
 

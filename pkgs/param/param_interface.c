@@ -254,6 +254,11 @@ int param_set_status(param_t idx, const param_status_t *status) {
     return -1;
 }
 
+int  param_set_used(param_t idx){
+    param_status_t status = param_get_status(idx);
+    return param_set_status(idx, &status);
+}
+
 bool param_value_used(param_t idx) {
     return param_get_status(idx).actived;
 }
