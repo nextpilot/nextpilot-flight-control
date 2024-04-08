@@ -20,8 +20,6 @@
 #include <math.h>
 #include <atomic.hpp>
 
-#define PX4_ISFINITE isfinite
-
 namespace nextpilot {
 
 class WorkItem;
@@ -82,7 +80,8 @@ private:
 #else
     // loop as the wait may be interrupted by a signal
     void work_lock() {
-        do { } while (rt_sem_take(&_qlock, RT_WAITING_FOREVER) != 0); }
+        rt_sem_take(&_qlock, RT_WAITING_FOREVER);
+    }
     void work_unlock() {
         rt_sem_release(&_qlock);
     }

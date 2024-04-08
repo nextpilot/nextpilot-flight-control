@@ -12,12 +12,9 @@
 
 #include "WorkQueueManager.hpp"
 #include "WorkQueue.hpp"
-
 #include <IntrusiveQueue.hpp>
 #include <IntrusiveSortedList.hpp>
 #include <hrtimer.h>
-
-
 #include <string.h>
 
 namespace nextpilot {

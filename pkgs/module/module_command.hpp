@@ -260,6 +260,46 @@ protected:
     bool should_exit() const {
         return _task_should_exit.load();
     }
+
+    /**
+     * @brief Exits the module and delete the object. Called from within the module's thread.
+     *        For work queue modules, this needs to be called from the derived class in the
+     *        cycle method, when should_exit() returns true.
+     */
+    static void exit_and_cleanup() {
+        // Take the lock here:
+        // - if startup fails and we're faster than the parent thread, it will set
+        //   _task_id and subsequently it will look like the task is running.
+        // - deleting the object must take place inside the lock.
+        // lock_module();
+
+        // delete _object.load();
+        // _object.store(nullptr);
+
+        // _task_id = -1; // Signal a potentially waiting thread for the module to exit that it can continue.
+        // unlock_module();
+    }
+
+    /**
+     * @brief Waits until _object is initialized, (from the new thread). This can be called from task_spawn().
+     * @return Returns 0 iff successful, -1 on timeout or otherwise.
+     */
+    static int wait_until_running(int timeout_ms = 1000) {
+        // int i = 0;
+
+        // do {
+        //     px4_usleep(2000);
+
+        // } while (!_object.load() && ++i < timeout_ms / 2);
+
+        // if (i >= timeout_ms / 2) {
+        //     PX4_ERR("Timed out while waiting for thread to start");
+        //     return -1;
+        // }
+
+        return 0;
+    }
+
     /**
      * @brief Get the module's object instance, (this is null if it's not running).
      */

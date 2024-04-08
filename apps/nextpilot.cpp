@@ -2,10 +2,14 @@
 #include "nextpilot.h"
 
 using namespace nextpilot::global_params;
-class mymodule : public ModuleCommand<mymodule>, public ModuleParams {
+class mymodule : public ModuleCommand<mymodule>, public ModuleParams, public nextpilot::WorkItem {
 public:
     mymodule() :
-        ModuleParams(nullptr) {
+        ModuleParams(nullptr),
+        WorkItem("aba", nextpilot::wq_configurations::hp_default) {
+    }
+
+    void Run() override {
     }
 
     DEFINE_PARAMETERS(
@@ -21,4 +25,7 @@ public:
 int mymodule_main(int argc, char *argv[]) {
     return mymodule::main(argc, argv);
 }
-MSH_CMD_EXPORT_ALIAS(mymodule_main, my, );
+// MSH_CMD_EXPORT_ALIAS(mymodule_main, my, );
+// void abc() {
+//     nextpilot::WorkItem a("ab", nextpilot::wq_configurations::rate_ctrl);
+// }

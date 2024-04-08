@@ -27,6 +27,10 @@
 #include <uORB/topics/uORBTopics.hpp>
 #include <uORBDeviceNode.hpp>
 
+#ifdef PKG_USING_WORKQUEUE
+#include "WorkItem.hpp"
+#endif // PKG_USING_WORKQUEUE
+
 namespace nextpilot::uORB {
 
 class DeviceNode;
@@ -696,8 +700,8 @@ private:
     pthread_cond_t  _cv    = PTHREAD_COND_INITIALIZER;
 };
 
-#ifdef PKG_USING_WORKQ
-#include "WorkItem.hpp"
+#ifdef PKG_USING_WORKQUEUE
+
 // Subscription with callback that schedules a WorkItem
 class SubscriptionCallbackWorkItem : public SubscriptionCallback {
 public:
@@ -717,11 +721,11 @@ public:
 
     void call() override {
         // schedule immediately if updated (queue depth or subscription interval)
-        if ((_required_updates == 0) || (uorb_device_updates_available(get_node(), get_last_generation()) >= _required_updates)) {
-            if (updated()) {
-                _work_item->ScheduleNow();
-            }
-        }
+        // if ((_required_updates == 0) || (uorb_device_updates_available(get_node(), get_last_generation()) >= _required_updates)) {
+        //     if (updated()) {
+        //         _work_item->ScheduleNow();
+        //     }
+        // }
     }
 
     /**
@@ -740,7 +744,7 @@ private:
     uint8_t _required_updates{0};
 };
 
-#endif // PKG_USING_WORKQ
+#endif // PKG_USING_WORKQUEUE
 
 } // namespace nextpilot::uORB
 #endif //__cplusplus

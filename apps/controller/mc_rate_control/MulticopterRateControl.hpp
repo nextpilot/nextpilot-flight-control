@@ -11,8 +11,9 @@
 #pragma once
 
 #include "nextpilot.h"
+#include "rate_control/rate_control.hpp"
+#include <perf/perf_counter.h>
 
-// #include <lib/rate_control/rate_control.hpp>
 // #include <lib/matrix/matrix/math.hpp>
 // #include <lib/perf/perf_counter.h>
 // #include <px4_platform_common/defines.h>
@@ -57,7 +58,7 @@ public:
     /** @see ModuleBase */
     static int print_usage(const char *reason = nullptr);
 
-    bool init();
+    int init() override;
 
 private:
     void Run() override;

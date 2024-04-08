@@ -80,7 +80,7 @@ float WorkItem::elapsed_time() const {
 float WorkItem::average_rate() const {
     const float rate = _run_count / elapsed_time();
 
-    if ((_run_count > 1) && PX4_ISFINITE(rate)) {
+    if ((_run_count > 1) && isfinite(rate)) {
         return rate;
     }
 
@@ -91,7 +91,7 @@ float WorkItem::average_interval() const {
     const float rate     = average_rate();
     const float interval = 1e6f / rate;
 
-    if ((rate > FLT_EPSILON) && PX4_ISFINITE(interval)) {
+    if ((rate > FLT_EPSILON) && isfinite(interval)) {
         return roundf(interval);
     }
 

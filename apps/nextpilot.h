@@ -80,11 +80,12 @@
 #endif // PKG_USING_PARAM
 
 // workq
-#ifdef PKG_USING_WORKQ
+#ifdef PKG_USING_WORKQUEUE
 #include "WorkItem.hpp"
 #include "WorkItemScheduled.hpp"
 #include "WorkItemSingleShot.hpp"
-#endif // PKG_USING_WORKQ
+#include "WorkQueueManager.hpp"
+#endif // PKG_USING_WORKQUEUE
 
 #ifdef PKG_USING_CONTAINER
 #include "container.h"
@@ -108,7 +109,7 @@
 #if defined(__cplusplus)
 #include "module_command.hpp"
 #include "module_params.hpp"
-#endif // PKG_USING_WORKQ
+#endif //__cplusplus
 
 // mathlib
 #if defined(PKG_USING_MATHLIB) && defined(__cplusplus)

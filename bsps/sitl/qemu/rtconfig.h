@@ -72,6 +72,7 @@
 #define PKG_USING_BOARD_VERSION
 #define BOARD_TYPE_NAME "sitl-qemu-default"
 #define BOARD_CHIP_NAME "cortex-A9"
+#define PKG_USING_WORKQUEUE
 /* end of Nextpilot Packages Config */
 
 /* RT-Thread Kernel */

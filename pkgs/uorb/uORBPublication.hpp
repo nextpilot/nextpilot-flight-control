@@ -23,6 +23,7 @@ uint8_t orb_get_queue_size(const orb_advert_t node);
 
 #ifdef __cplusplus
 #include <uORB/topics/uORBTopics.hpp>
+#include "uORBDeviceNode.hpp"
 
 namespace nextpilot::uORB {
 
@@ -97,7 +98,8 @@ public:
 
     bool advertise() {
         if (!advertised()) {
-            _handle = orb_advertise_queue(get_topic(), nullptr, ORB_QSIZE);
+            // orb_advertise_queue(get_topic(), nullptr, ORB_QSIZE);
+            _handle = DeviceNode::advertise(get_topic(), nullptr, nullptr, ORB_QSIZE);
         }
         return advertised();
     }
@@ -175,7 +177,8 @@ public:
     bool advertise() {
         if (!advertised()) {
             int instance = 0;
-            _handle      = orb_advertise_multi_queue(get_topic(), nullptr, &instance, QSIZE);
+            // orb_advertise_multi_queue(get_topic(), nullptr, &instance, QSIZE);
+            _handle = DeviceNode::advertise(get_topic(), nullptr, &instance, QSIZE);
         }
 
         return advertised();

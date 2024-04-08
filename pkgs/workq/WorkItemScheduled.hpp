@@ -11,7 +11,6 @@
 #pragma once
 
 #include "WorkItem.hpp"
-
 #include <hrtimer.h>
 
 namespace nextpilot {

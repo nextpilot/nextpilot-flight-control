@@ -22,7 +22,7 @@ using math::radians;
 
 MulticopterRateControl::MulticopterRateControl(bool vtol) :
     ModuleParams(nullptr),
-    WorkItem(MODULE_NAME, px4::wq_configurations::rate_ctrl),
+    WorkItem(MODULE_NAME, nextpilot::wq_configurations::rate_ctrl),
     _vehicle_torque_setpoint_pub(vtol ? ORB_ID(vehicle_torque_setpoint_virtual_mc) : ORB_ID(vehicle_torque_setpoint)),
     _vehicle_thrust_setpoint_pub(vtol ? ORB_ID(vehicle_thrust_setpoint_virtual_mc) : ORB_ID(vehicle_thrust_setpoint)),
     _loop_perf(perf_alloc(PC_ELAPSED, MODULE_NAME ": cycle")) {
@@ -36,8 +36,8 @@ MulticopterRateControl::~MulticopterRateControl() {
     perf_free(_loop_perf);
 }
 
-bool MulticopterRateControl::init() {
-    if (!_vehicle_angular_velocity_sub.registerCallback()) {
+int MulticopterRateControl::init() {
+    if (!_vehicle_angular_velocity_sub.register_callback()) {
         PX4_ERR("callback registration failed");
         return false;
     }
@@ -69,7 +69,7 @@ void MulticopterRateControl::parameters_updated() {
 
 void MulticopterRateControl::Run() {
     if (should_exit()) {
-        _vehicle_angular_velocity_sub.unregisterCallback();
+        _vehicle_angular_velocity_sub.unregister_callback();
         exit_and_cleanup();
         return;
     }
