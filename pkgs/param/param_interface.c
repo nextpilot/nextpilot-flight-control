@@ -21,6 +21,9 @@
 #include <topics/parameter_update.h>
 #endif // PKG_USING_UORB_
 
+void param_notify_changes();
+void param_notify_autosave();
+
 #define MAX_API_COUNT 3
 static param_interface_t *__param_api_table__[MAX_API_COUNT] = {NULL, NULL, NULL};
 

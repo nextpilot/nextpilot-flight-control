@@ -16,6 +16,9 @@
 #include "param_storage.h"
 #include "param_interface.h"
 
+void param_notify_changes();
+void param_notify_autosave();
+
 #define MAX_DEV_COUNT 2
 static param_storage_t *__param_storage__[MAX_DEV_COUNT] = {NULL, NULL};
 

@@ -141,7 +141,7 @@ static int _close(param_storage_t *dev) {
 }
 
 static param_storage_ops_t _ops = {
-    .init  = NULL,
+    .init  = _init,
     .open  = _open,
     .read  = _read,
     .write = _write,

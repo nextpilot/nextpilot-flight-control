@@ -11,6 +11,8 @@
 #ifndef __PARAM_STORAGE_FILE_H__
 #define __PARAM_STORAGE_FILE_H__
 
+#include "param_storage.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

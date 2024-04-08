@@ -11,25 +11,7 @@
 #ifndef __PARAM_STORAGE_H__
 #define __PARAM_STORAGE_H__
 
-#include <rtthread.h>
 #include "param_common.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif //__cplusplus
-
-typedef struct {
-    uint32_t check;
-    char     magic[4]; // "zhan"
-    uint64_t utc;      // 保存时间戳
-    uint16_t count;    // 参数个数
-} param_header_t;
-
-typedef struct {
-    char          name[16];
-    param_type_t  type;
-    param_value_t value;
-} param_payload_t;
 
 typedef struct param_storage_s param_storage_t;
 
@@ -50,6 +32,23 @@ struct param_storage_s {
         rt_device_t dev;
     };
 };
+
+typedef struct {
+    uint32_t check;
+    char     magic[4]; // "zhan"
+    uint64_t utc;      // 保存时间戳
+    uint16_t count;    // 参数个数
+} param_header_t;
+
+typedef struct {
+    char          name[16];
+    param_type_t  type;
+    param_value_t value;
+} param_payload_t;
+
+#ifdef __cplusplus
+extern "C" {
+#endif //__cplusplus
 
 int param_storage_register(param_storage_t *dev);
 

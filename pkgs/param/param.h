@@ -13,7 +13,6 @@
 
 #include <rtthread.h>
 
-#include "param_common.h"
 #include "param_interface.h"
 #include "param_storage.h"
 

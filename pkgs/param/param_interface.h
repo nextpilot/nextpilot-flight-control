@@ -13,10 +13,6 @@
 
 #include "param_common.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif // __cplusplus
-
 typedef struct param_interface_ops_s {
     int (*init)();
     param_t (*find)(const char *name, bool mark_used);
@@ -35,7 +31,9 @@ typedef struct param_interface_s {
     param_interface_ops_t *ops;
 } param_interface_t;
 
-typedef bool (*param_filter_func)(param_t handle);
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
 
 int param_interface_register(param_interface_t *api);
 
