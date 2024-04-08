@@ -2,7 +2,6 @@ import os
 import sys
 from building import *
 
-
 objs = []
 
 if GetDepend(["FCS_MC_RATE_CONTROL__"]):

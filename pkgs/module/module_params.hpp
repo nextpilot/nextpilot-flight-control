@@ -17,7 +17,8 @@
 #pragma once
 
 #include <IntrusiveList.hpp>
-#include "param.h"
+#include "param_wrap.hpp"
+#include "param_macros.h"
 
 class ModuleParams : public ListNode<ModuleParams *> {
 public:

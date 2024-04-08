@@ -10,11 +10,11 @@
 
 #include "MulticopterRateControl.hpp"
 
-#include <drivers/drv_hrt.h>
+// #include <drivers/drv_hrt.h>
 #include <circuit_breaker/circuit_breaker.h>
-#include <mathlib/math/Limits.hpp>
-#include <mathlib/math/Functions.hpp>
-#include <px4_platform_common/events.h>
+// #include <mathlib/math/Limits.hpp>
+// #include <mathlib/math/Functions.hpp>
+// #include <px4_platform_common/events.h>
 
 using namespace matrix;
 using namespace time_literals;
@@ -263,21 +263,21 @@ int MulticopterRateControl::task_spawn(int argc, char *argv[]) {
 
     MulticopterRateControl *instance = new MulticopterRateControl(vtol);
 
-    if (instance) {
-        _object.store(instance);
-        _task_id = task_id_is_work_queue;
+    // if (instance) {
+    //     _object.store(instance);
+    //     _task_id = task_id_is_work_queue;
 
-        if (instance->init()) {
-            return PX4_OK;
-        }
+    //     if (instance->init()) {
+    //         return PX4_OK;
+    //     }
 
-    } else {
-        PX4_ERR("alloc failed");
-    }
+    // } else {
+    //     PX4_ERR("alloc failed");
+    // }
 
-    delete instance;
-    _object.store(nullptr);
-    _task_id = -1;
+    // delete instance;
+    // _object.store(nullptr);
+    // _task_id = -1;
 
     return PX4_ERROR;
 }

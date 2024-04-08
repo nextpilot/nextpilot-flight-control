@@ -43,6 +43,11 @@
 #include <pthread.h>
 #endif // RT_USING_PTHREADS
 
+//
+#include "defines.h"
+#include "mavlink_log.h"
+
+// queue
 #ifdef PKG_USING_QUEUE
 #include "queue.h"
 #endif // PKG_USING_QUEUE
@@ -69,6 +74,9 @@
 // param
 #ifdef PKG_USING_PARAM
 #include "param.h"
+#ifdef __cplusplus
+#include "module_params.hpp"
+#endif // __cplusplus
 #endif // PKG_USING_PARAM
 
 // workq
@@ -89,13 +97,31 @@
 // getopt
 #ifdef PKG_USING_GETOPT
 #include "getopt.h"
-#endif // PKG_USING_PARAM
+#endif // PKG_USING_GETOPT
 
 // scope
 #ifdef PKG_USING_SCOPE
 #endif // PKG_USING_SCOPE
 
-#include "mavlink_log.h"
+// module
 #include "module_usage.h"
+#if defined(__cplusplus)
+#include "module_command.hpp"
+#endif // PKG_USING_WORKQ
+
+// mathlib
+#if defined(PKG_USING_MATHLIB) && defined(__cplusplus)
+#include "mathlib.h"
+#include "math/filter/AlphaFilter.hpp"
+#include "math/filter/LowPassFilter2p.hpp"
+#include "math/filter/MedianFilter.hpp"
+#include "math/filter/NotchFilter.hpp"
+#include "math/filter/second_order_reference_model.hpp"
+#endif // PKG_USING_MATHLIB
+
+// matrix
+#if defined(PKG_USING_MATRIX) && defined(cplusplus)
+#include "matrix/math.hpp"
+#endif // PKG_USING_MATRIX
 
 #endif // __NEXTPILOT_H__

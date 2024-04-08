@@ -1,7 +1,7 @@
 #define LOG_TAG "my"
 #include "nextpilot.h"
-#include "ModuleCommand.hpp"
-#include "ThreadItem.hpp"
+#include "module_command.hpp"
+#include "module_thread.hpp"
 
 class mymodule : public ModuleCommand<mymodule>, public ModuleThread {
 public:

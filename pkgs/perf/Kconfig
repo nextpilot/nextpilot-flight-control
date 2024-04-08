@@ -1,0 +1,3 @@
+menuconfig PKG_USING_PERF
+    bool "perf: Performance measuring tools"
+    default n

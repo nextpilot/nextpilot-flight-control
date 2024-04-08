@@ -5,6 +5,12 @@ from building import *
 objs = []
 
 cwd = GetCurrentDir()
+
+inc = [cwd]
+
+objs += DefineGroup(name="lib/include", src=[], depend=[], CPPPATH=inc)
+
+cwd = GetCurrentDir()
 for d in os.listdir(cwd):
     path = os.path.join(cwd, d)
     if os.path.isfile(os.path.join(path, "SConscript")):

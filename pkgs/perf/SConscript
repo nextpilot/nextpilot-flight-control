@@ -1,0 +1,25 @@
+import os
+import rtconfig
+from building import *
+
+
+objs = []
+
+if GetDepend(["PKG_USING_PERF"]):
+    cwd = GetCurrentDir()
+
+    # 添加当前文件夹下的代码
+    src = Glob("*.c") + Glob("*.cpp")
+    inc = [cwd]
+
+    objs += DefineGroup("pkg/perf", src, depend=[""], CPPPATH=inc)
+
+    for d in os.listdir(cwd):
+        path = os.path.join(cwd, d)
+        if os.path.isfile(os.path.join(path, "SConscript")):
+            # print(os.path.join(d, 'SConscript'))
+            objs += SConscript(os.path.join(d, "SConscript"))
+else:
+    objs = []
+
+Return("objs")

@@ -62,7 +62,12 @@
 #define PARAM_USING_GLOBAL_AUTOGEN
 #define PARAM_USING_STORAGE_FILE
 #define PARAM_DEFAULT_FILE_PATH "/param.bin"
+#define PKG_USING_PERF
 #define PKG_USING_QUEUE
+
+/* ULog backend */
+
+/* end of ULog backend */
 #define PKG_USING_UORB
 #define PKG_USING_BOARD_VERSION
 #define BOARD_TYPE_NAME "sitl-qemu-default"

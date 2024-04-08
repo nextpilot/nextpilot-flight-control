@@ -17,7 +17,7 @@
 #include "hrtimer.h"
 #endif // PKG_USING_HRTIMER
 
-#ifdef PKG_USING_UORB
+#ifdef PKG_USING_UORB__
 #include "uORB.h"
 #include "topics/mavlink_log.h"
 void mavlink_vasprintf(uint8_t severity, orb_advert_t *mavlink_log_pub, const char *fmt, ...) {

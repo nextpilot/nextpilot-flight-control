@@ -16,16 +16,14 @@
 
 #pragma once
 
-#include "param_macros.h"
 #include <float.h>
 #include <math.h>
-
-#include <parameters/px4_parameters.hpp>
+#include "param_global_autogen.hpp"
 
 /**
  * get the parameter handle from a parameter enum
  */
-inline static param_t param_handle(global_params p) {
+inline static param_t param_handle(nextpilot::global_params::params_id p) {
     return (param_t)p;
 }
 
@@ -34,17 +32,17 @@ inline static param_t param_handle(global_params p) {
 // makes sure that update() is automatically called).
 namespace do_not_explicitly_use_this_namespace {
 
-template <typename T, global_params p>
+template <typename T, nextpilot::global_params::params_id p>
 class Param {
 };
 
 // We use partial template specialization for each param type. This is only supported for classes, not individual methods,
 // which is why we have to repeat the whole class
-template <global_params p>
+template <nextpilot::global_params::params_id p>
 class Param<float, p> {
 public:
     // static type-check
-    static_assert(px4::parameters_type[(int)p] == PARAM_TYPE_FLOAT, "parameter type must be float");
+    static_assert(nextpilot::global_params::params_type[(int)p] == PARAM_TYPE_FLOAT, "parameter type must be float");
 
     Param() {
         param_set_used(handle());
@@ -102,11 +100,11 @@ private:
 };
 
 // external version
-template <global_params p>
+template <nextpilot::global_params::params_id p>
 class Param<float &, p> {
 public:
     // static type-check
-    static_assert(px4::parameters_type[(int)p] == PARAM_TYPE_FLOAT, "parameter type must be float");
+    static_assert(nextpilot::global_params::params_type[(int)p] == PARAM_TYPE_FLOAT, "parameter type must be float");
 
     Param(float &external_val) :
         _val(external_val) {
@@ -164,11 +162,11 @@ private:
     float &_val;
 };
 
-template <global_params p>
+template <nextpilot::global_params::params_id p>
 class Param<int32_t, p> {
 public:
     // static type-check
-    static_assert(px4::parameters_type[(int)p] == PARAM_TYPE_INT32, "parameter type must be int32_t");
+    static_assert(nextpilot::global_params::params_type[(int)p] == PARAM_TYPE_INT32, "parameter type must be int32_t");
 
     Param() {
         param_set_used(handle());
@@ -226,11 +224,11 @@ private:
 };
 
 // external version
-template <global_params p>
+template <nextpilot::global_params::params_id p>
 class Param<int32_t &, p> {
 public:
     // static type-check
-    static_assert(px4::parameters_type[(int)p] == PARAM_TYPE_INT32, "parameter type must be int32_t");
+    static_assert(nextpilot::global_params::params_type[(int)p] == PARAM_TYPE_INT32, "parameter type must be int32_t");
 
     Param(int32_t &external_val) :
         _val(external_val) {
@@ -288,11 +286,11 @@ private:
     int32_t &_val;
 };
 
-template <global_params p>
+template <nextpilot::global_params::params_id p>
 class Param<bool, p> {
 public:
     // static type-check
-    static_assert(px4::parameters_type[(int)p] == PARAM_TYPE_INT32, "parameter type must be int32_t");
+    static_assert(nextpilot::global_params::params_type[(int)p] == PARAM_TYPE_INT32, "parameter type must be int32_t");
 
     Param() {
         param_set_used(handle());
@@ -359,29 +357,29 @@ private:
     bool _val;
 };
 
-template <global_params p>
+template <nextpilot::global_params::params_id p>
 using ParamFloat = Param<float, p>;
 
-template <global_params p>
+template <nextpilot::global_params::params_id p>
 using ParamInt = Param<int32_t, p>;
 
-template <global_params p>
+template <nextpilot::global_params::params_id p>
 using ParamExtFloat = Param<float &, p>;
 
-template <global_params p>
+template <nextpilot::global_params::params_id p>
 using ParamExtInt = Param<int32_t &, p>;
 
-template <global_params p>
+template <nextpilot::global_params::params_id p>
 using ParamBool = Param<bool, p>;
 
 } /* namespace do_not_explicitly_use_this_namespace */
 
 // Raise an appropriate compile error if a Param class is used directly (just to simplify debugging)
-template <global_params p>
+template <nextpilot::global_params::params_id p>
 class ParamInt {
     static_assert((int)p && false, "Do not use this class directly, use the DEFINE_PARAMETERS macro instead");
 };
-template <global_params p>
+template <nextpilot::global_params::params_id p>
 class ParamFloat {
     static_assert((int)p && false, "Do not use this class directly, use the DEFINE_PARAMETERS macro instead");
 };
