@@ -159,11 +159,3 @@ int orb_get_interval(orb_subscr_t handle, unsigned *interval_ms) {
 
     return 0;
 }
-
-// int orb_register_callback(orb_advert_tnode) {
-//     return 0;
-// }
-
-// int orb_unregister_callback(orb_advert_tnode) {
-//     return 0;
-// }

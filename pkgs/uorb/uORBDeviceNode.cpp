@@ -9,6 +9,7 @@
  ******************************************************************/
 
 #include "uORBDeviceNode.hpp"
+#include "uORBSubscription.hpp"
 
 namespace nextpilot::uORB {
 
@@ -205,30 +206,30 @@ unsigned DeviceNode::get_initial_generation() {
     return generation;
 }
 
-// bool DeviceNode::register_callback(uORB::SubscriptionCallback *callback_sub) {
-//     if (callback_sub != nullptr) {
-//         rt_enter_critical();
+bool DeviceNode::register_callback(SubscriptionCallback *callback_sub) {
+    if (callback_sub != nullptr) {
+        rt_enter_critical();
 
-//         // prevent duplicate registrations
-//         for (auto existing_callbacks : _callbacks) {
-//             if (callback_sub == existing_callbacks) {
-//                 rt_exit_critical();
-//                 return true;
-//             }
-//         }
+        // prevent duplicate registrations
+        for (auto existing_callbacks : _callbacks) {
+            if (callback_sub == existing_callbacks) {
+                rt_exit_critical();
+                return true;
+            }
+        }
 
-//         _callbacks.add(callback_sub);
-//         rt_exit_critical();
-//         return true;
-//     }
+        _callbacks.add(callback_sub);
+        rt_exit_critical();
+        return true;
+    }
 
-//     return false;
-// }
+    return false;
+}
 
-// void uORB::DeviceNode::unregister_callback(uORB::SubscriptionCallback *callback_sub) {
-//     rt_enter_critical();
-//     _callbacks.remove(callback_sub);
-//     rt_exit_critical();
-// }
+void uORB::DeviceNode::unregister_callback(SubscriptionCallback *callback_sub) {
+    rt_enter_critical();
+    _callbacks.remove(callback_sub);
+    rt_exit_critical();
+}
 
 } // namespace nextpilot::uORB

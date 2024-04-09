@@ -236,7 +236,7 @@ protected:
     // friend class SubscriptionCallback;
     // friend class SubscriptionCallbackWorkItem;
 
-    void *get_node() {
+    DeviceNode *get_node() {
         return _node;
     }
 
@@ -510,23 +510,23 @@ public:
 
     bool register_callback() {
         if (!_registered) {
-            if (get_node() /*&& Manager::register_callback(get_node(), this)*/) {
+            if (get_node() && get_node()->register_callback(this)) {
                 // registered
+                _registered = true;
+
+            } else if (subscribe() && get_node()->register_callback(this)) {
                 _registered = true;
 
             } else {
                 // force topic creation by subscribing with old API
-                // SubscriptionInterval *sub = new SubscriptionInterval(get_topic(), 0, get_instance());
+                DeviceNode *node = new DeviceNode(get_topic(), get_instance());
 
                 // try to register callback again
-                if (subscribe()) {
-                    if (get_node() /*&& Manager::register_callback(get_node(), this)*/) {
+                if (node && subscribe()) {
+                    if (node->register_callback(this)) {
                         _registered = true;
                     }
                 }
-
-                // TODO:
-                // orb_unsubscribe(&fd);
             }
         }
 

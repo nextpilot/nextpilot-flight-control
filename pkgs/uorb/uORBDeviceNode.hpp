@@ -23,6 +23,7 @@
 #include <uORB/topics/uORBTopics.hpp>
 
 namespace nextpilot::uORB {
+
 // Determine the data range
 static inline bool is_in_range(unsigned left, unsigned value, unsigned right) {
     if (right > left) {
@@ -57,6 +58,7 @@ static inline uint8_t round_pow_of_two_8(uint8_t n) {
     return value + 1;
 }
 
+class DeviceNode;
 class SubscriptionCallback;
 
 class DeviceNode : public IntrusiveSortedListNode<DeviceNode *> {
@@ -189,14 +191,10 @@ public:
     }
 
     // add item to list of work items to schedule on node update
-    bool register_callback(/*SubscriptionCallback *callback_sub*/) {
-        return true;
-    }
+    bool register_callback(SubscriptionCallback *callback_sub);
 
     // remove item from list of work items
-    void unregister_callback(/*SubscriptionCallback *callback_sub*/) {
-        return;
-    }
+    void unregister_callback(SubscriptionCallback *callback_sub);
 
     /**
      * Print statistics

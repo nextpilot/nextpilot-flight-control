@@ -93,7 +93,23 @@
 			"charconv": "cpp",
 			"xiosbase": "cpp",
 			"atomic": "cpp",
-			"memory": "cpp"
+			"memory": "cpp",
+			"ios": "cpp",
+			"chrono": "cpp",
+			"functional": "cpp",
+			"optional": "cpp",
+			"system_error": "cpp",
+			"type_traits": "cpp",
+			"xlocmon": "cpp",
+			"xlocnum": "cpp",
+			"xtr1common": "cpp",
+			"*.tcc": "cpp",
+			"istream": "cpp",
+			"ostream": "cpp",
+			"ratio": "cpp",
+			"array": "cpp",
+			"tuple": "cpp",
+			"utility": "cpp"
 		}
 	}
 }

@@ -36,10 +36,10 @@ MulticopterRateControl::~MulticopterRateControl() {
 int MulticopterRateControl::init() {
     if (!_vehicle_angular_velocity_sub.register_callback()) {
         PX4_ERR("callback registration failed");
-        return false;
+        return -1;
     }
 
-    return true;
+    return 0;
 }
 
 void MulticopterRateControl::parameters_updated() {
