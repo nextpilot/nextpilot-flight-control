@@ -65,7 +65,10 @@ int orb_publish(const struct orb_metadata *meta, orb_advert_t handle, const void
         return node->write(data);
     } else if (meta && !node) {
         node = DeviceNode::getDeviceNode(meta, 0);
-        return node->write(data);
+        if (node) {
+            return node->write(data);
+        }
+        return -1;
     } else {
         return -1;
     }

@@ -25,7 +25,7 @@ public:
     static constexpr int MAX_ACTUATORS = MixingOutput::MAX_ACTUATORS;
 
     GZMixingInterfaceESC(gz::transport::Node &node, pthread_mutex_t &node_mutex) :
-        OutputModuleInterface(MODULE_NAME "-actuators-esc", px4::wq_configurations::rate_ctrl),
+        OutputModuleInterface(MODULE_NAME "-actuators-esc", wq_configurations::rate_ctrl),
         _node(node),
         _node_mutex(node_mutex) {
     }

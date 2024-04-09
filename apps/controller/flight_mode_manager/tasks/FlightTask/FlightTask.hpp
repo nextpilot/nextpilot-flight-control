@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <drivers/drv_hrt.h>
 #include <matrix/matrix/math.hpp>
 #include <uORB/Subscription.hpp>
@@ -182,11 +182,11 @@ protected:
      * TODO: add the delta values to all the handlers
      */
     void         _checkEkfResetCounters();
-    virtual void _ekfResetHandlerPositionXY(const matrix::Vector2f &delta_xy) {};
-    virtual void _ekfResetHandlerVelocityXY(const matrix::Vector2f &delta_vxy) {};
-    virtual void _ekfResetHandlerPositionZ(float delta_z) {};
-    virtual void _ekfResetHandlerVelocityZ(float delta_vz) {};
-    virtual void _ekfResetHandlerHeading(float delta_psi) {};
+    virtual void _ekfResetHandlerPositionXY(const matrix::Vector2f &delta_xy){};
+    virtual void _ekfResetHandlerVelocityXY(const matrix::Vector2f &delta_vxy){};
+    virtual void _ekfResetHandlerPositionZ(float delta_z){};
+    virtual void _ekfResetHandlerVelocityZ(float delta_vz){};
+    virtual void _ekfResetHandlerHeading(float delta_psi){};
 
     MapProjection _geo_projection{};
     float         _global_local_alt0{NAN};
@@ -244,7 +244,7 @@ protected:
     vehicle_trajectory_waypoint_s _desired_waypoint{};
 
     DEFINE_PARAMETERS_CUSTOM_PARENT(ModuleParams,
-                                    (ParamFloat<px4::params::MPC_XY_VEL_MAX>)_param_mpc_xy_vel_max,
-                                    (ParamFloat<px4::params::MPC_Z_VEL_MAX_DN>)_param_mpc_z_vel_max_dn,
-                                    (ParamFloat<px4::params::MPC_Z_VEL_MAX_UP>)_param_mpc_z_vel_max_up)
+                                    (ParamFloat<params_id::MPC_XY_VEL_MAX>)_param_mpc_xy_vel_max,
+                                    (ParamFloat<params_id::MPC_Z_VEL_MAX_DN>)_param_mpc_z_vel_max_dn,
+                                    (ParamFloat<params_id::MPC_Z_VEL_MAX_UP>)_param_mpc_z_vel_max_up)
 };

@@ -20,7 +20,7 @@
 
 #include <drivers/drv_hrt.h>
 #include <drivers/drv_led.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <lib/parameters/param.h>
 #include <lib/perf/perf_counter.h>
 #include <uORB/Subscription.hpp>
@@ -171,6 +171,6 @@ private:
 	bool _breathe_enabled{false}; ///< true if at least one of the led's is currently in breathe mode
 
 	DEFINE_PARAMETERS(
-		(ParamFloat<px4::params::SYS_RGB_MAXBRT>) _param_sys_rgb_maxbrt
+		(ParamFloat<params_id::SYS_RGB_MAXBRT>) _param_sys_rgb_maxbrt
 	)
 };

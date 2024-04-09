@@ -595,7 +595,7 @@ int Sih::print_status() {
     return 0;
 }
 
-int Sih::task_spawn(int argc, char *argv[]) {
+int Sih::instantiate(int argc, char *argv[]) {
     _task_id = px4_task_spawn_cmd("sih",
                                   SCHED_DEFAULT,
                                   SCHED_PRIORITY_MAX,

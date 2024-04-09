@@ -20,7 +20,7 @@
 #include "data_validator/DataValidatorGroup.hpp"
 
 #include <px4_platform_common/events.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <drivers/drv_hrt.h>
 #include <mathlib/mathlib.h>
 #include <matrix/math.hpp>
@@ -155,7 +155,7 @@ private:
     bool _parameter_update{false};
 
     DEFINE_PARAMETERS(
-        (ParamBool<px4::params::SENS_IMU_MODE>)_param_sens_imu_mode)
+        (ParamBool<params_id::SENS_IMU_MODE>)_param_sens_imu_mode)
 };
 
 } /* namespace sensors */

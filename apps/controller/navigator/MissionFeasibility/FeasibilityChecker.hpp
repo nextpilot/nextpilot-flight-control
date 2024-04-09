@@ -17,7 +17,7 @@
 #include <uORB/topics/vehicle_global_position.h>
 #include <uORB/topics/vehicle_land_detected.h>
 #include <uORB/Subscription.hpp>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 
 class FeasibilityChecker : public ModuleParams {
 public:

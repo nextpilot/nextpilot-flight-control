@@ -25,67 +25,68 @@
  */
 
 #pragma once
-
-#include <drivers/drv_hrt.h>
-#include <lib/geo/geo.h>
-#include <lib/mathlib/mathlib.h>
-#include <lib/perf/perf_counter.h>
-#include <matrix/math.hpp>
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/px4_work_queue/WorkItem.hpp>
-#include <uORB/Publication.hpp>
-#include <uORB/PublicationMulti.hpp>
-#include <uORB/Subscription.hpp>
-#include <uORB/SubscriptionCallback.hpp>
-#include <uORB/topics/action_request.h>
-#include <uORB/topics/airspeed_validated.h>
-#include <uORB/topics/home_position.h>
-#include <uORB/topics/normalized_unsigned_setpoint.h>
-#include <uORB/topics/vehicle_air_data.h>
-#include <uORB/topics/parameter_update.h>
-#include <uORB/topics/position_setpoint_triplet.h>
-#include <uORB/topics/tecs_status.h>
-#include <uORB/topics/vehicle_attitude.h>
-#include <uORB/topics/vehicle_attitude_setpoint.h>
-#include <uORB/topics/vehicle_command.h>
-#include <uORB/topics/vehicle_command_ack.h>
-#include <uORB/topics/vehicle_control_mode.h>
-#include <uORB/topics/vehicle_land_detected.h>
-#include <uORB/topics/vehicle_local_position.h>
-#include <uORB/topics/vehicle_local_position_setpoint.h>
-#include <uORB/topics/vtol_vehicle_status.h>
-#include <uORB/topics/vehicle_status.h>
-#include <uORB/topics/vehicle_thrust_setpoint.h>
-#include <uORB/topics/vehicle_torque_setpoint.h>
+#include "nextpilot.h"
+// #include <drivers/drv_hrt.h>
+// #include <lib/geo/geo.h>
+// #include <lib/mathlib/mathlib.h>
+// #include <lib/perf/perf_counter.h>
+// #include <matrix/math.hpp>
+// #include <px4_platform_common/px4_config.h>
+// #include <px4_platform_common/defines.h>
+// #include <px4_platform_common/module.h>
+// #include <px4_platform_common/module_params.hpp>
+// #include <px4_platform_common/posix.h>
+// #include <px4_platform_common/px4_work_queue/WorkItem.hpp>
+// #include <uORB/Publication.hpp>
+// #include <uORB/PublicationMulti.hpp>
+// #include <uORB/Subscription.hpp>
+// #include <uORB/SubscriptionCallback.hpp>
+// #include <uORB/topics/action_request.h>
+// #include <uORB/topics/airspeed_validated.h>
+// #include <uORB/topics/home_position.h>
+// #include <uORB/topics/normalized_unsigned_setpoint.h>
+// #include <uORB/topics/vehicle_air_data.h>
+// #include <uORB/topics/parameter_update.h>
+// #include <uORB/topics/position_setpoint_triplet.h>
+// #include <uORB/topics/tecs_status.h>
+// #include <uORB/topics/vehicle_attitude.h>
+// #include <uORB/topics/vehicle_attitude_setpoint.h>
+// #include <uORB/topics/vehicle_command.h>
+// #include <uORB/topics/vehicle_command_ack.h>
+// #include <uORB/topics/vehicle_control_mode.h>
+// #include <uORB/topics/vehicle_land_detected.h>
+// #include <uORB/topics/vehicle_local_position.h>
+// #include <uORB/topics/vehicle_local_position_setpoint.h>
+// #include <uORB/topics/vtol_vehicle_status.h>
+// #include <uORB/topics/vehicle_status.h>
+// #include <uORB/topics/vehicle_thrust_setpoint.h>
+// #include <uORB/topics/vehicle_torque_setpoint.h>
 #include "standard.h"
 #include "tailsitter.h"
 #include "tiltrotor.h"
 
 using namespace time_literals;
+using namespace nextpilot::global_params;
 
 extern "C" __EXPORT int vtol_att_control_main(int argc, char *argv[]);
 
 static constexpr float kMaxVTOLAttitudeControlTimeStep = 0.1f; // max time step [s]
 
-class VtolAttitudeControl : public ModuleBase<VtolAttitudeControl>, public ModuleParams, public px4::WorkItem {
+class VtolAttitudeControl : public ModuleCommand<VtolAttitudeControl>, public ModuleParams, public WorkItem {
 public:
     VtolAttitudeControl();
     ~VtolAttitudeControl() override;
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    static VtolAttitudeControl *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    bool init();
+    int init() override;
 
     bool is_fixed_wing_requested() {
         return _transition_command == vtol_vehicle_status_s::VEHICLE_VTOL_STATE_FW;
@@ -263,6 +264,6 @@ private:
     void parameters_update();
 
     DEFINE_PARAMETERS(
-        (ParamInt<px4::params::VT_TYPE>)_param_vt_type,
-        (ParamFloat<px4::params::VT_SPOILER_MC_LD>)_param_vt_spoiler_mc_ld)
+        (ParamInt<params_id::VT_TYPE>)_param_vt_type,
+        (ParamFloat<params_id::VT_SPOILER_MC_LD>)_param_vt_spoiler_mc_ld)
 };

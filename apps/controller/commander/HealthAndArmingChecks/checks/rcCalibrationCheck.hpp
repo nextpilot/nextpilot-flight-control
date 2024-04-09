@@ -42,5 +42,5 @@ private:
     ParamValues  _param_values[input_rc_s::RC_INPUT_MAX_CHANNELS];
 
     DEFINE_PARAMETERS_CUSTOM_PARENT(HealthAndArmingCheckBase,
-                                    (ParamInt<px4::params::COM_RC_IN_MODE>)_param_com_rc_in_mode)
+                                    (ParamInt<params_id::COM_RC_IN_MODE>)_param_com_rc_in_mode)
 };

@@ -269,13 +269,13 @@ protected:
 
     DEFINE_PARAMETERS_CUSTOM_PARENT(
         FlightTask,
-        (ParamInt<px4::params::MAV_SYS_ID>)_param_mav_sys_id,
-        (ParamInt<px4::params::MAV_COMP_ID>)_param_mav_comp_id,
-        (ParamFloat<px4::params::FLW_TGT_HT>)_param_flw_tgt_ht,
-        (ParamFloat<px4::params::FLW_TGT_DST>)_param_flw_tgt_dst,
-        (ParamFloat<px4::params::FLW_TGT_FA>)_param_flw_tgt_fa,
-        (ParamInt<px4::params::FLW_TGT_ALT_M>)_param_flw_tgt_alt_m,
-        (ParamFloat<px4::params::FLW_TGT_MAX_VEL>)_param_flw_tgt_max_vel)
+        (ParamInt<params_id::MAV_SYS_ID>)_param_mav_sys_id,
+        (ParamInt<params_id::MAV_COMP_ID>)_param_mav_comp_id,
+        (ParamFloat<params_id::FLW_TGT_HT>)_param_flw_tgt_ht,
+        (ParamFloat<params_id::FLW_TGT_DST>)_param_flw_tgt_dst,
+        (ParamFloat<params_id::FLW_TGT_FA>)_param_flw_tgt_fa,
+        (ParamInt<params_id::FLW_TGT_ALT_M>)_param_flw_tgt_alt_m,
+        (ParamFloat<params_id::FLW_TGT_MAX_VEL>)_param_flw_tgt_max_vel)
 
     uORB::Subscription _follow_target_estimator_sub{ORB_ID(follow_target_estimator)};
 

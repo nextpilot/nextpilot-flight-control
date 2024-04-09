@@ -79,17 +79,17 @@ private:
     bool _gps_was_fused{false};
 
     DEFINE_PARAMETERS_CUSTOM_PARENT(HealthAndArmingCheckBase,
-                                    (ParamInt<px4::params::SYS_MC_EST_GROUP>)_param_sys_mc_est_group,
-                                    (ParamInt<px4::params::SENS_IMU_MODE>)_param_sens_imu_mode,
-                                    (ParamInt<px4::params::COM_ARM_MAG_STR>)_param_com_arm_mag_str,
-                                    (ParamFloat<px4::params::COM_ARM_EKF_HGT>)_param_com_arm_ekf_hgt,
-                                    (ParamFloat<px4::params::COM_ARM_EKF_VEL>)_param_com_arm_ekf_vel,
-                                    (ParamFloat<px4::params::COM_ARM_EKF_POS>)_param_com_arm_ekf_pos,
-                                    (ParamFloat<px4::params::COM_ARM_EKF_YAW>)_param_com_arm_ekf_yaw,
-                                    (ParamBool<px4::params::COM_ARM_WO_GPS>)_param_com_arm_wo_gps,
-                                    (ParamBool<px4::params::SYS_HAS_GPS>)_param_sys_has_gps,
-                                    (ParamFloat<px4::params::COM_POS_FS_EPH>)_param_com_pos_fs_eph,
-                                    (ParamFloat<px4::params::COM_VEL_FS_EVH>)_param_com_vel_fs_evh,
-                                    (ParamInt<px4::params::COM_POS_FS_DELAY>)_param_com_pos_fs_delay,
-                                    (ParamFloat<px4::params::COM_POS_LOW_EPH>)_param_com_low_eph)
+                                    (ParamInt<params_id::SYS_MC_EST_GROUP>)_param_sys_mc_est_group,
+                                    (ParamInt<params_id::SENS_IMU_MODE>)_param_sens_imu_mode,
+                                    (ParamInt<params_id::COM_ARM_MAG_STR>)_param_com_arm_mag_str,
+                                    (ParamFloat<params_id::COM_ARM_EKF_HGT>)_param_com_arm_ekf_hgt,
+                                    (ParamFloat<params_id::COM_ARM_EKF_VEL>)_param_com_arm_ekf_vel,
+                                    (ParamFloat<params_id::COM_ARM_EKF_POS>)_param_com_arm_ekf_pos,
+                                    (ParamFloat<params_id::COM_ARM_EKF_YAW>)_param_com_arm_ekf_yaw,
+                                    (ParamBool<params_id::COM_ARM_WO_GPS>)_param_com_arm_wo_gps,
+                                    (ParamBool<params_id::SYS_HAS_GPS>)_param_sys_has_gps,
+                                    (ParamFloat<params_id::COM_POS_FS_EPH>)_param_com_pos_fs_eph,
+                                    (ParamFloat<params_id::COM_VEL_FS_EVH>)_param_com_vel_fs_evh,
+                                    (ParamInt<params_id::COM_POS_FS_DELAY>)_param_com_pos_fs_delay,
+                                    (ParamFloat<params_id::COM_POS_LOW_EPH>)_param_com_low_eph)
 };

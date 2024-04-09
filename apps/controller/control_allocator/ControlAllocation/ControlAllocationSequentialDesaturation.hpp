@@ -22,7 +22,7 @@
 
 #include "ControlAllocationPseudoInverse.hpp"
 
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 
 class ControlAllocationSequentialDesaturation : public ControlAllocationPseudoInverse, public ModuleParams {
 public:
@@ -100,6 +100,6 @@ private:
     void mixYaw();
 
     DEFINE_PARAMETERS(
-        (ParamInt<px4::params::MC_AIRMODE>)_param_mc_airmode ///< air-mode
+        (ParamInt<params_id::MC_AIRMODE>)_param_mc_airmode ///< air-mode
     );
 };

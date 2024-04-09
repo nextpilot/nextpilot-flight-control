@@ -4,7 +4,7 @@ from building import *
 
 objs = []
 
-if GetDepend(["PKG_MC_AUTOTUNE_ATTITUDE_CONTROL"]):
+if GetDepend(["FCS_MC_AUTOTUNE_ATTITUDE_CONTROL"]):
     cwd = GetCurrentDir()
     inc = []
     src = Glob("*.cpp")

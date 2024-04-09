@@ -31,7 +31,7 @@
 
 #include <dataman/dataman.h>
 #include <drivers/drv_hrt.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/home_position.h>
 #include <uORB/topics/mission.h>
@@ -241,8 +241,8 @@ private:
     void publish_navigator_mission_item();
 
     DEFINE_PARAMETERS(
-        (ParamFloat<px4::params::MIS_DIST_1WP>)_param_mis_dist_1wp,
-        (ParamInt<px4::params::MIS_MNT_YAW_CTL>)_param_mis_mnt_yaw_ctl)
+        (ParamFloat<params_id::MIS_DIST_1WP>)_param_mis_dist_1wp,
+        (ParamInt<params_id::MIS_MNT_YAW_CTL>)_param_mis_mnt_yaw_ctl)
 
     uORB::Publication<navigator_mission_item_s> _navigator_mission_item_pub{ORB_ID::navigator_mission_item};
 

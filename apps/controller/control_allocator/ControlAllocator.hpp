@@ -39,8 +39,8 @@
 #include <lib/perf/perf_counter.h>
 #include <px4_platform_common/px4_config.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/module_params.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <uORB/Publication.hpp>
 #include <uORB/PublicationMulti.hpp>
 #include <uORB/Subscription.hpp>
@@ -55,7 +55,7 @@
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/failure_detector_status.h>
 
-class ControlAllocator : public ModuleBase<ControlAllocator>, public ModuleParams, public px4::ScheduledWorkItem {
+class ControlAllocator : public ModuleCommand<ControlAllocator>, public ModuleParams, public WorkItemScheduled {
 public:
     static constexpr int NUM_ACTUATORS = ControlAllocation::NUM_ACTUATORS;
     static constexpr int NUM_AXES      = ControlAllocation::NUM_AXES;
@@ -69,21 +69,21 @@ public:
 
     virtual ~ControlAllocator();
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    static int *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    /** @see ModuleBase::print_status() */
+    /** @see ModuleCommand::print_status() */
     int print_status() override;
 
     void Run() override;
 
-    bool init();
+    int init() override;
 
 private:
     struct ParamHandles {
@@ -181,8 +181,8 @@ private:
     bool         _has_slew_rate{false};
 
     DEFINE_PARAMETERS(
-        (ParamInt<px4::params::CA_AIRFRAME>)_param_ca_airframe,
-        (ParamInt<px4::params::CA_METHOD>)_param_ca_method,
-        (ParamInt<px4::params::CA_FAILURE_MODE>)_param_ca_failure_mode,
-        (ParamInt<px4::params::CA_R_REV>)_param_r_rev)
+        (ParamInt<params_id::CA_AIRFRAME>)_param_ca_airframe,
+        (ParamInt<params_id::CA_METHOD>)_param_ca_method,
+        (ParamInt<params_id::CA_FAILURE_MODE>)_param_ca_failure_mode,
+        (ParamInt<params_id::CA_R_REV>)_param_r_rev)
 };

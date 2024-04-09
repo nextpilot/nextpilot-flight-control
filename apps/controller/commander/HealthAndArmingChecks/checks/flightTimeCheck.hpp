@@ -23,5 +23,5 @@ private:
     int _last_flight_time_warning_sec{-1};
 
     DEFINE_PARAMETERS_CUSTOM_PARENT(HealthAndArmingCheckBase,
-                                    (ParamInt<px4::params::COM_FLT_TIME_MAX>)_param_com_flt_time_max)
+                                    (ParamInt<params_id::COM_FLT_TIME_MAX>)_param_com_flt_time_max)
 };

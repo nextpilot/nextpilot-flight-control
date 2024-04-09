@@ -12,7 +12,7 @@
 
 #include "ActuatorEffectiveness.hpp"
 
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/vehicle_status.h>

@@ -13,7 +13,7 @@
 #include "ActuatorEffectiveness.hpp"
 #include "ActuatorEffectivenessRotors.hpp"
 
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 
 class ActuatorEffectivenessTilts : public ModuleParams, public ActuatorEffectiveness {
 public:

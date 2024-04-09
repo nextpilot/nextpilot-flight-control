@@ -24,12 +24,15 @@
 
 /* Nextpilot Controller Config */
 
+#define FCS_USING_LAND_DETECTOR
 #define FCS_USING_MANUAL_CONTROL
 #define FCS_USING_MC_ATT_CONTROL
-#define PKG_MC_AUTOTUNE_ATTITUDE_CONTROL
+#define FCS_MC_AUTOTUNE_ATTITUDE_CONTROL
 #define PKG_USING_MC_HOVER_THRUST_ESTIMATOR
 #define FCS_USING_MC_POS_CONTROL
 #define FCS_USING_MC_RATE_CONTROL
+#define FCS_USING_RC_UPDATE
+#define FCS_USING_VTOL_ATT_CONTROL
 /* end of Nextpilot Controller Config */
 
 /* Nextpilot Estimator Config */

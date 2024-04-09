@@ -16,28 +16,32 @@
  * @author Beat Kueng <beat-kueng@gmx.net>
  */
 
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/px4_work_queue/WorkItem.hpp>
-#include <drivers/drv_hrt.h>
-#include <lib/hysteresis/hysteresis.h>
-#include <lib/mathlib/mathlib.h>
-#include <lib/perf/perf_counter.h>
-#include <uORB/Publication.hpp>
-#include <uORB/PublicationMulti.hpp>
-#include <uORB/Subscription.hpp>
-#include <uORB/SubscriptionCallback.hpp>
-#include <uORB/topics/manual_control_setpoint.h>
-#include <uORB/topics/manual_control_switches.h>
-#include <uORB/topics/input_rc.h>
-#include <uORB/topics/rc_channels.h>
-#include <uORB/topics/rc_parameter_map.h>
-#include <uORB/topics/parameter_update.h>
+#include "nextpilot.h"
+
+// #include <px4_platform_common/px4_config.h>
+// #include <px4_platform_common/defines.h>
+// #include <px4_platform_common/module.h>
+// #include <px4_platform_common/module_params.hpp>
+// #include <px4_platform_common/posix.h>
+// #include <px4_platform_common/px4_work_queue/WorkItem.hpp>
+// #include <drivers/drv_hrt.h>
+// #include <lib/hysteresis/hysteresis.h>
+// #include <lib/mathlib/mathlib.h>
+// #include <lib/perf/perf_counter.h>
+// #include <uORB/Publication.hpp>
+// #include <uORB/PublicationMulti.hpp>
+// #include <uORB/Subscription.hpp>
+// #include <uORB/SubscriptionCallback.hpp>
+// #include <uORB/topics/manual_control_setpoint.h>
+// #include <uORB/topics/manual_control_switches.h>
+// #include <uORB/topics/input_rc.h>
+// #include <uORB/topics/rc_channels.h>
+// #include <uORB/topics/rc_parameter_map.h>
+// #include <uORB/topics/parameter_update.h>
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 namespace rc_update {
 
@@ -46,21 +50,21 @@ namespace rc_update {
  *
  * Handling of RC updates
  */
-class RCUpdate : public ModuleBase<RCUpdate>, public ModuleParams, public px4::WorkItem {
+class RCUpdate : public ModuleCommand<RCUpdate>, public ModuleParams, public WorkItem {
 public:
     RCUpdate();
     ~RCUpdate() override;
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    static RCUpdate *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    bool init();
+    int init() override;
 
     int print_status() override;
 
@@ -161,9 +165,9 @@ public:
     uint8_t _channel_count_previous{0};
     uint8_t _input_source_previous{input_rc_s::RC_INPUT_SOURCE_UNKNOWN};
 
-    uint8_t               _potential_button_press_slot{0};
-    systemlib::Hysteresis _button_pressed_hysteresis{false};
-    systemlib::Hysteresis _rc_signal_lost_hysteresis{true};
+    uint8_t    _potential_button_press_slot{0};
+    Hysteresis _button_pressed_hysteresis{false};
+    Hysteresis _rc_signal_lost_hysteresis{true};
 
     uint8_t _channel_count_max{0};
 
@@ -173,45 +177,45 @@ public:
 
     DEFINE_PARAMETERS(
 
-        (ParamInt<px4::params::RC_MAP_ROLL>)_param_rc_map_roll,
-        (ParamInt<px4::params::RC_MAP_PITCH>)_param_rc_map_pitch,
-        (ParamInt<px4::params::RC_MAP_YAW>)_param_rc_map_yaw,
-        (ParamInt<px4::params::RC_MAP_THROTTLE>)_param_rc_map_throttle,
-        (ParamInt<px4::params::RC_MAP_FAILSAFE>)_param_rc_map_failsafe,
+        (ParamInt<params_id::RC_MAP_ROLL>)_param_rc_map_roll,
+        (ParamInt<params_id::RC_MAP_PITCH>)_param_rc_map_pitch,
+        (ParamInt<params_id::RC_MAP_YAW>)_param_rc_map_yaw,
+        (ParamInt<params_id::RC_MAP_THROTTLE>)_param_rc_map_throttle,
+        (ParamInt<params_id::RC_MAP_FAILSAFE>)_param_rc_map_failsafe,
 
-        (ParamInt<px4::params::RC_MAP_FLTMODE>)_param_rc_map_fltmode,
+        (ParamInt<params_id::RC_MAP_FLTMODE>)_param_rc_map_fltmode,
 
-        (ParamInt<px4::params::RC_MAP_FLAPS>)_param_rc_map_flaps,
+        (ParamInt<params_id::RC_MAP_FLAPS>)_param_rc_map_flaps,
 
-        (ParamInt<px4::params::RC_MAP_RETURN_SW>)_param_rc_map_return_sw,
-        (ParamInt<px4::params::RC_MAP_LOITER_SW>)_param_rc_map_loiter_sw,
-        (ParamInt<px4::params::RC_MAP_OFFB_SW>)_param_rc_map_offb_sw,
-        (ParamInt<px4::params::RC_MAP_KILL_SW>)_param_rc_map_kill_sw,
-        (ParamInt<px4::params::RC_MAP_ARM_SW>)_param_rc_map_arm_sw,
-        (ParamInt<px4::params::RC_MAP_TRANS_SW>)_param_rc_map_trans_sw,
-        (ParamInt<px4::params::RC_MAP_GEAR_SW>)_param_rc_map_gear_sw,
-        (ParamInt<px4::params::RC_MAP_FLTM_BTN>)_param_rc_map_fltm_btn,
+        (ParamInt<params_id::RC_MAP_RETURN_SW>)_param_rc_map_return_sw,
+        (ParamInt<params_id::RC_MAP_LOITER_SW>)_param_rc_map_loiter_sw,
+        (ParamInt<params_id::RC_MAP_OFFB_SW>)_param_rc_map_offb_sw,
+        (ParamInt<params_id::RC_MAP_KILL_SW>)_param_rc_map_kill_sw,
+        (ParamInt<params_id::RC_MAP_ARM_SW>)_param_rc_map_arm_sw,
+        (ParamInt<params_id::RC_MAP_TRANS_SW>)_param_rc_map_trans_sw,
+        (ParamInt<params_id::RC_MAP_GEAR_SW>)_param_rc_map_gear_sw,
+        (ParamInt<params_id::RC_MAP_FLTM_BTN>)_param_rc_map_fltm_btn,
 
-        (ParamInt<px4::params::RC_MAP_AUX1>)_param_rc_map_aux1,
-        (ParamInt<px4::params::RC_MAP_AUX2>)_param_rc_map_aux2,
-        (ParamInt<px4::params::RC_MAP_AUX3>)_param_rc_map_aux3,
-        (ParamInt<px4::params::RC_MAP_AUX4>)_param_rc_map_aux4,
-        (ParamInt<px4::params::RC_MAP_AUX5>)_param_rc_map_aux5,
-        (ParamInt<px4::params::RC_MAP_AUX6>)_param_rc_map_aux6,
+        (ParamInt<params_id::RC_MAP_AUX1>)_param_rc_map_aux1,
+        (ParamInt<params_id::RC_MAP_AUX2>)_param_rc_map_aux2,
+        (ParamInt<params_id::RC_MAP_AUX3>)_param_rc_map_aux3,
+        (ParamInt<params_id::RC_MAP_AUX4>)_param_rc_map_aux4,
+        (ParamInt<params_id::RC_MAP_AUX5>)_param_rc_map_aux5,
+        (ParamInt<params_id::RC_MAP_AUX6>)_param_rc_map_aux6,
 
-        (ParamInt<px4::params::RC_MAP_ENG_MOT>)_param_rc_map_eng_mot,
+        (ParamInt<params_id::RC_MAP_ENG_MOT>)_param_rc_map_eng_mot,
 
-        (ParamInt<px4::params::RC_FAILS_THR>)_param_rc_fails_thr,
+        (ParamInt<params_id::RC_FAILS_THR>)_param_rc_fails_thr,
 
-        (ParamFloat<px4::params::RC_LOITER_TH>)_param_rc_loiter_th,
-        (ParamFloat<px4::params::RC_OFFB_TH>)_param_rc_offb_th,
-        (ParamFloat<px4::params::RC_KILLSWITCH_TH>)_param_rc_killswitch_th,
-        (ParamFloat<px4::params::RC_ARMSWITCH_TH>)_param_rc_armswitch_th,
-        (ParamFloat<px4::params::RC_TRANS_TH>)_param_rc_trans_th,
-        (ParamFloat<px4::params::RC_GEAR_TH>)_param_rc_gear_th,
-        (ParamFloat<px4::params::RC_RETURN_TH>)_param_rc_return_th,
-        (ParamFloat<px4::params::RC_ENG_MOT_TH>)_param_rc_eng_mot_th,
+        (ParamFloat<params_id::RC_LOITER_TH>)_param_rc_loiter_th,
+        (ParamFloat<params_id::RC_OFFB_TH>)_param_rc_offb_th,
+        (ParamFloat<params_id::RC_KILLSWITCH_TH>)_param_rc_killswitch_th,
+        (ParamFloat<params_id::RC_ARMSWITCH_TH>)_param_rc_armswitch_th,
+        (ParamFloat<params_id::RC_TRANS_TH>)_param_rc_trans_th,
+        (ParamFloat<params_id::RC_GEAR_TH>)_param_rc_gear_th,
+        (ParamFloat<params_id::RC_RETURN_TH>)_param_rc_return_th,
+        (ParamFloat<params_id::RC_ENG_MOT_TH>)_param_rc_eng_mot_th,
 
-        (ParamInt<px4::params::RC_CHAN_CNT>)_param_rc_chan_cnt)
+        (ParamInt<params_id::RC_CHAN_CNT>)_param_rc_chan_cnt)
 };
 } /* namespace rc_update */

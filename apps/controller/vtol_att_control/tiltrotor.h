@@ -17,12 +17,16 @@
 
 #ifndef TILTROTOR_H
 #define TILTROTOR_H
-#include "vtol_type.h"
-#include <parameters/param.h>
-#include <drivers/drv_hrt.h>
 
-#include <uORB/Publication.hpp>
+#include "vtol_type.h"
+#include <param.h>
+#include <hrtimer.h>
+
+#include <uORB/uORBPublication.hpp>
 #include <uORB/topics/tiltrotor_extra_controls.h>
+
+using namespace nextpilot::global_params;
+using namespace nextpilot;
 
 class Tiltrotor : public VtolType {
 public:
@@ -69,10 +73,10 @@ private:
     bool        _tilt_motors_for_startup{false};
 
     DEFINE_PARAMETERS_CUSTOM_PARENT(VtolType,
-                                    (ParamFloat<px4::params::VT_TILT_MC>)_param_vt_tilt_mc,
-                                    (ParamFloat<px4::params::VT_TILT_TRANS>)_param_vt_tilt_trans,
-                                    (ParamFloat<px4::params::VT_TILT_FW>)_param_vt_tilt_fw,
-                                    (ParamFloat<px4::params::VT_TILT_SPINUP>)_param_vt_tilt_spinup,
-                                    (ParamFloat<px4::params::VT_TRANS_P2_DUR>)_param_vt_trans_p2_dur)
+                                    (ParamFloat<params_id::VT_TILT_MC>)_param_vt_tilt_mc,
+                                    (ParamFloat<params_id::VT_TILT_TRANS>)_param_vt_tilt_trans,
+                                    (ParamFloat<params_id::VT_TILT_FW>)_param_vt_tilt_fw,
+                                    (ParamFloat<params_id::VT_TILT_SPINUP>)_param_vt_tilt_spinup,
+                                    (ParamFloat<params_id::VT_TRANS_P2_DUR>)_param_vt_trans_p2_dur)
 };
 #endif

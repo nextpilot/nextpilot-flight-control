@@ -24,7 +24,7 @@
 #include <lib/mathlib/mathlib.h>
 #include <lib/mathlib/math/filter/AlphaFilter.hpp>
 #include <matrix/matrix/math.hpp>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 
 // subscriptions
 #include <uORB/Subscription.hpp>
@@ -99,10 +99,10 @@ private:
 
     failure_detector_status_u _status{};
 
-    systemlib::Hysteresis _roll_failure_hysteresis{false};
-    systemlib::Hysteresis _pitch_failure_hysteresis{false};
-    systemlib::Hysteresis _ext_ats_failure_hysteresis{false};
-    systemlib::Hysteresis _esc_failure_hysteresis{false};
+    Hysteresis _roll_failure_hysteresis{false};
+    Hysteresis _pitch_failure_hysteresis{false};
+    Hysteresis _ext_ats_failure_hysteresis{false};
+    Hysteresis _esc_failure_hysteresis{false};
 
     static constexpr float _imbalanced_prop_lpf_time_constant{5.f};
     AlphaFilter<float>     _imbalanced_prop_lpf{};
@@ -126,18 +126,18 @@ private:
     FailureInjector _failure_injector;
 
     DEFINE_PARAMETERS(
-        (ParamInt<px4::params::FD_FAIL_P>)_param_fd_fail_p,
-        (ParamInt<px4::params::FD_FAIL_R>)_param_fd_fail_r,
-        (ParamFloat<px4::params::FD_FAIL_R_TTRI>)_param_fd_fail_r_ttri,
-        (ParamFloat<px4::params::FD_FAIL_P_TTRI>)_param_fd_fail_p_ttri,
-        (ParamBool<px4::params::FD_EXT_ATS_EN>)_param_fd_ext_ats_en,
-        (ParamInt<px4::params::FD_EXT_ATS_TRIG>)_param_fd_ext_ats_trig,
-        (ParamInt<px4::params::FD_ESCS_EN>)_param_escs_en,
-        (ParamInt<px4::params::FD_IMB_PROP_THR>)_param_fd_imb_prop_thr,
+        (ParamInt<params_id::FD_FAIL_P>)_param_fd_fail_p,
+        (ParamInt<params_id::FD_FAIL_R>)_param_fd_fail_r,
+        (ParamFloat<params_id::FD_FAIL_R_TTRI>)_param_fd_fail_r_ttri,
+        (ParamFloat<params_id::FD_FAIL_P_TTRI>)_param_fd_fail_p_ttri,
+        (ParamBool<params_id::FD_EXT_ATS_EN>)_param_fd_ext_ats_en,
+        (ParamInt<params_id::FD_EXT_ATS_TRIG>)_param_fd_ext_ats_trig,
+        (ParamInt<params_id::FD_ESCS_EN>)_param_escs_en,
+        (ParamInt<params_id::FD_IMB_PROP_THR>)_param_fd_imb_prop_thr,
 
         // Actuator failure
-        (ParamBool<px4::params::FD_ACT_EN>)_param_fd_actuator_en,
-        (ParamFloat<px4::params::FD_ACT_MOT_THR>)_param_fd_motor_throttle_thres,
-        (ParamFloat<px4::params::FD_ACT_MOT_C2T>)_param_fd_motor_current2throttle_thres,
-        (ParamInt<px4::params::FD_ACT_MOT_TOUT>)_param_fd_motor_time_thres)
+        (ParamBool<params_id::FD_ACT_EN>)_param_fd_actuator_en,
+        (ParamFloat<params_id::FD_ACT_MOT_THR>)_param_fd_motor_throttle_thres,
+        (ParamFloat<params_id::FD_ACT_MOT_C2T>)_param_fd_motor_current2throttle_thres,
+        (ParamInt<params_id::FD_ACT_MOT_TOUT>)_param_fd_motor_time_thres)
 };

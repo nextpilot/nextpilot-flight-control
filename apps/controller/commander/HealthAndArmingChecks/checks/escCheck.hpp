@@ -30,5 +30,5 @@ private:
     const hrt_abstime _start_time{hrt_absolute_time()};
 
     DEFINE_PARAMETERS_CUSTOM_PARENT(HealthAndArmingCheckBase,
-                                    (ParamBool<px4::params::COM_ARM_CHK_ESCS>)_param_escs_checks_required)
+                                    (ParamBool<params_id::COM_ARM_CHK_ESCS>)_param_escs_checks_required)
 };

@@ -17,7 +17,7 @@
 #pragma once
 
 #include <lib/mathlib/math/filter/AlphaFilter.hpp>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 
 class StickYaw : public ModuleParams {
 public:
@@ -44,7 +44,7 @@ private:
     static float updateYawLock(float yaw, float yawspeed_setpoint, float yaw_setpoint, bool is_yaw_good_for_control);
 
     DEFINE_PARAMETERS(
-        (ParamFloat<px4::params::MPC_MAN_Y_MAX>)_param_mpc_man_y_max, ///< Maximum yaw speed with full stick deflection
-        (ParamFloat<px4::params::MPC_MAN_Y_TAU>)_param_mpc_man_y_tau  ///< time constant for yaw speed filtering
+        (ParamFloat<params_id::MPC_MAN_Y_MAX>)_param_mpc_man_y_max, ///< Maximum yaw speed with full stick deflection
+        (ParamFloat<params_id::MPC_MAN_Y_TAU>)_param_mpc_man_y_tau  ///< time constant for yaw speed filtering
     )
 };

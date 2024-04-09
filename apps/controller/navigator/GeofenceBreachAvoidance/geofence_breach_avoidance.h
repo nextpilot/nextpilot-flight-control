@@ -9,7 +9,7 @@
  ******************************************************************/
 
 #include <lib/mathlib/mathlib.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include "../geofence.h"
 #include <px4_platform_common/defines.h>
 

@@ -21,7 +21,7 @@
 
 #include <lib/mathlib/mathlib.h>
 
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 class VtolTakeoff : public MissionBlock, public ModuleParams {
 public:
     VtolTakeoff(Navigator *navigator);
@@ -55,7 +55,7 @@ private:
     float            _loiter_height{0};
 
     DEFINE_PARAMETERS(
-        (ParamFloat<px4::params::VTO_LOITER_ALT>)_param_loiter_alt)
+        (ParamFloat<params_id::VTO_LOITER_ALT>)_param_loiter_alt)
 
     void set_takeoff_position();
 };

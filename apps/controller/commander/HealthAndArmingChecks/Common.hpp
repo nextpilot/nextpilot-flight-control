@@ -12,7 +12,7 @@
 
 #include <px4_platform_common/events.h>
 #include <px4_platform_common/log.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <uORB/topics/health_report.h>
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/failsafe_flags.h>

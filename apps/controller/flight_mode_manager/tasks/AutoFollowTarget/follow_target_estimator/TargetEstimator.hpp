@@ -29,8 +29,8 @@
 #include <lib/mathlib/math/filter/AlphaFilter.hpp>
 #include <lib/geo/geo.h>
 #include <mathlib/mathlib.h>
-#include <px4_platform_common/module_params.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/module_params.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 
 static constexpr float GPS_MESSAGE_STALE_TIMEOUT_MS =
     3000.0f; // Duration after which the connection to the target is considered lost
@@ -84,7 +84,7 @@ struct filter_states_s {
     }
 };
 
-class TargetEstimator : public ModuleParams, public px4::ScheduledWorkItem {
+class TargetEstimator : public ModuleParams, public WorkItemScheduled {
 public:
     TargetEstimator();
     ~TargetEstimator() override;
@@ -177,7 +177,7 @@ protected:
     matrix::Vector3f _vel_measurement_old{};
 
     DEFINE_PARAMETERS(
-        (ParamFloat<px4::params::FLW_TGT_RS>)_param_flw_tgt_rs)
+        (ParamFloat<params_id::FLW_TGT_RS>)_param_flw_tgt_rs)
 
     // Subscriptions
     uORB::SubscriptionCallbackWorkItem                _follow_target_sub{this, ORB_ID(follow_target)};

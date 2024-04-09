@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <matrix/matrix/math.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/manual_control_setpoint.h>
@@ -99,8 +99,8 @@ private:
     uORB::Subscription _failsafe_flags_sub{ORB_ID(failsafe_flags)};
 
     DEFINE_PARAMETERS(
-        (ParamFloat<px4::params::MPC_HOLD_DZ>)_param_mpc_hold_dz,
-        (ParamFloat<px4::params::MPC_XY_MAN_EXPO>)_param_mpc_xy_man_expo,
-        (ParamFloat<px4::params::MPC_Z_MAN_EXPO>)_param_mpc_z_man_expo,
-        (ParamFloat<px4::params::MPC_YAW_EXPO>)_param_mpc_yaw_expo)
+        (ParamFloat<params_id::MPC_HOLD_DZ>)_param_mpc_hold_dz,
+        (ParamFloat<params_id::MPC_XY_MAN_EXPO>)_param_mpc_xy_man_expo,
+        (ParamFloat<params_id::MPC_Z_MAN_EXPO>)_param_mpc_z_man_expo,
+        (ParamFloat<params_id::MPC_YAW_EXPO>)_param_mpc_yaw_expo)
 };

@@ -285,7 +285,6 @@ void MulticopterAttitudeControl::Run() {
 
 MulticopterAttitudeControl *MulticopterAttitudeControl::instantiate(int argc, char *argv[]) {
     bool vtol = false;
-
     if (argc > 1) {
         if (strcmp(argv[1], "vtol") == 0) {
             vtol = true;

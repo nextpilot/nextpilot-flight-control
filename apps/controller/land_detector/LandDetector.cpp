@@ -15,6 +15,8 @@
  * @author Julian Oes <julian@oes.ch>
  */
 
+#define LOG_TAG "land_detector"
+
 #include "LandDetector.h"
 
 using namespace time_literals;
@@ -23,7 +25,7 @@ namespace land_detector {
 
 LandDetector::LandDetector() :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::nav_and_controllers) {
+    WorkItemScheduled(MODULE_NAME, wq_configurations::nav_and_controllers) {
     _land_detected.ground_contact                   = true;
     _land_detected.maybe_landed                     = true;
     _land_detected.landed                           = true;
@@ -196,7 +198,7 @@ void LandDetector::UpdateVehicleAtRest() {
                 imu_status_sub.copy(&imu_status);
 
                 if ((imu_status.gyro_device_id != 0) && (imu_status.gyro_device_id == sensor_selection.gyro_device_id)) {
-                    _vehicle_imu_status_sub.ChangeInstance(imu_instance);
+                    _vehicle_imu_status_sub.change_instance(imu_instance);
                     _device_id_gyro   = sensor_selection.gyro_device_id;
                     gyro_status_found = true;
                     break;

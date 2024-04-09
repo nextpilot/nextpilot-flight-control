@@ -24,7 +24,7 @@
 
 #include <board_config.h>
 #include <px4_platform_common/board_common.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <matrix/math.hpp>
 
 #include <drivers/drv_hrt.h>

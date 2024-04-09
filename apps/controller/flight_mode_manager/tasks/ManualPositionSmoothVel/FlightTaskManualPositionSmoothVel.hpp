@@ -41,9 +41,9 @@ protected:
     void _ekfResetHandlerVelocityZ(float delta_vz) override;
 
     DEFINE_PARAMETERS_CUSTOM_PARENT(FlightTaskManualPosition,
-                                    (ParamFloat<px4::params::MPC_JERK_MAX>)_param_mpc_jerk_max,
-                                    (ParamFloat<px4::params::MPC_ACC_UP_MAX>)_param_mpc_acc_up_max,
-                                    (ParamFloat<px4::params::MPC_ACC_DOWN_MAX>)_param_mpc_acc_down_max)
+                                    (ParamFloat<params_id::MPC_JERK_MAX>)_param_mpc_jerk_max,
+                                    (ParamFloat<params_id::MPC_ACC_UP_MAX>)_param_mpc_acc_up_max,
+                                    (ParamFloat<params_id::MPC_ACC_DOWN_MAX>)_param_mpc_acc_down_max)
 
 private:
     void _updateTrajConstraints();

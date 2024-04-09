@@ -161,7 +161,7 @@ void FailsafeBase::notifyUser(uint8_t user_intended_mode, Action action, Action 
             /* EVENT
              * @type append_health_and_arming_messages
              */
-            events::send<uint32_t, events::px4::enums::failsafe_action_t, uint16_t>(
+            // events::send<uint32_t, events::px4::enums::failsafe_action_t, uint16_t>(
                 events::ID("commander_failsafe_enter_generic_hold"),
                 {events::Log::Critical, events::LogInternal::Warning},
                 "Failsafe activated, triggering {2} in {3} seconds", mavlink_mode, failsafe_action,
@@ -170,7 +170,7 @@ void FailsafeBase::notifyUser(uint8_t user_intended_mode, Action action, Action 
         } else {
             /* EVENT
              */
-            events::send<uint32_t, events::px4::enums::failsafe_action_t, uint16_t, events::px4::enums::failsafe_cause_t>(
+            // events::send<uint32_t, events::px4::enums::failsafe_action_t, uint16_t, events::px4::enums::failsafe_cause_t>(
                 events::ID("commander_failsafe_enter_hold"),
                 {events::Log::Critical, events::LogInternal::Warning},
                 "Failsafe activated due to {4}, triggering {2} in {3} seconds", mavlink_mode, failsafe_action,
@@ -188,7 +188,7 @@ void FailsafeBase::notifyUser(uint8_t user_intended_mode, Action action, Action 
                  * @description No action is triggered.
                  * @type append_health_and_arming_messages
                  */
-                events::send<uint32_t>(
+                // events::send<uint32_t>(
                     events::ID("commander_failsafe_enter_generic_warn"),
                     {events::Log::Warning, events::LogInternal::Warning},
                     "Failsafe warning triggered", mavlink_mode);
@@ -197,7 +197,7 @@ void FailsafeBase::notifyUser(uint8_t user_intended_mode, Action action, Action 
                 /* EVENT
                  * @type append_health_and_arming_messages
                  */
-                events::send<uint32_t, events::px4::enums::failsafe_action_t>(
+                // events::send<uint32_t, events::px4::enums::failsafe_action_t>(
                     events::ID("commander_failsafe_enter_generic"),
                     {events::Log::Critical, events::LogInternal::Warning},
                     "Failsafe activated, triggering {2}", mavlink_mode, failsafe_action);
@@ -206,33 +206,33 @@ void FailsafeBase::notifyUser(uint8_t user_intended_mode, Action action, Action 
         } else {
             if (action == Action::Warn) {
                 if (cause == Cause::BatteryLow) {
-                    events::send(events::ID("commander_failsafe_enter_low_bat"),
+                    // events::send(events::ID("commander_failsafe_enter_low_bat"),
                                  {events::Log::Warning, events::LogInternal::Info},
                                  "Low battery level, return advised");
 
                 } else if (cause == Cause::BatteryCritical) {
-                    events::send(events::ID("commander_failsafe_enter_crit_bat_warn"),
+                    // events::send(events::ID("commander_failsafe_enter_crit_bat_warn"),
                                  {events::Log::Critical, events::LogInternal::Info},
                                  "Critical battery level, land now");
 
                 } else if (cause == Cause::BatteryEmergency) {
-                    events::send(events::ID("commander_failsafe_enter_crit_low_bat_warn"), {events::Log::Emergency, events::LogInternal::Info},
+                    // events::send(events::ID("commander_failsafe_enter_crit_low_bat_warn"), {events::Log::Emergency, events::LogInternal::Info},
                                  "Emergency battery level, land immediately");
 
                 } else {
                     /* EVENT
                      * @description No action is triggered.
                      */
-                    events::send<uint32_t, events::px4::enums::failsafe_cause_t>(
+                    // events::send<uint32_t, events::px4::enums::failsafe_cause_t>(
                         events::ID("commander_failsafe_enter_warn"),
                         {events::Log::Warning, events::LogInternal::Warning},
                         "Failsafe warning triggered due to {2}", mavlink_mode, failsafe_cause);
                 }
 
             } else { // action != Warn
-                /* EVENT
-                 */
-                events::send<uint32_t, events::px4::enums::failsafe_action_t, events::px4::enums::failsafe_cause_t>(
+                     /* EVENT
+                      */
+                     // events::send<uint32_t, events::px4::enums::failsafe_action_t, events::px4::enums::failsafe_cause_t>(
                     events::ID("commander_failsafe_enter"),
                     {events::Log::Critical, events::LogInternal::Warning},
                     "Failsafe activated due to {3}, triggering {2}", mavlink_mode, failsafe_action, failsafe_cause);
@@ -450,7 +450,7 @@ void FailsafeBase::getSelectedAction(const State &state, const failsafe_flags_s 
         if (!_user_takeover_active) {
             PX4_DEBUG("Activating user takeover");
 #ifndef EMSCRIPTEN_BUILD
-            events::send(events::ID("failsafe_rc_override"), events::Log::Info, "Pilot took over using sticks");
+            // events::send(events::ID("failsafe_rc_override"), events::Log::Info, "Pilot took over using sticks");
 #endif // EMSCRIPTEN_BUILD
         }
 

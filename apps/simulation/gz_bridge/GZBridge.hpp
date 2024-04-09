@@ -16,9 +16,9 @@
 #include <px4_platform_common/atomic.h>
 #include <px4_platform_common/defines.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <px4_platform_common/posix.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <lib/geo/geo.h>
 #include <uORB/PublicationMulti.hpp>
 #include <uORB/Subscription.hpp>
@@ -44,23 +44,23 @@
 
 using namespace time_literals;
 
-class GZBridge : public ModuleBase<GZBridge>, public ModuleParams, public px4::ScheduledWorkItem {
+class GZBridge : public ModuleCommand<GZBridge>, public ModuleParams, public WorkItemScheduled {
 public:
     GZBridge(const char *world, const char *name, const char *model, const char *pose_str);
     ~GZBridge() override;
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    static int *instantiate(int argc, char *argv[]);
 
     int init();
 
-    /** @see ModuleBase::print_status() */
+    /** @see ModuleCommand::print_status() */
     int print_status() override;
 
     uint64_t world_time_us() const {
@@ -128,7 +128,7 @@ private:
     gz::transport::Node _node;
 
     DEFINE_PARAMETERS(
-        (ParamFloat<px4::params::SIM_GZ_HOME_LAT>)_param_sim_home_lat,
-        (ParamFloat<px4::params::SIM_GZ_HOME_LON>)_param_sim_home_lon,
-        (ParamFloat<px4::params::SIM_GZ_HOME_ALT>)_param_sim_home_alt)
+        (ParamFloat<params_id::SIM_GZ_HOME_LAT>)_param_sim_home_lat,
+        (ParamFloat<params_id::SIM_GZ_HOME_LON>)_param_sim_home_lon,
+        (ParamFloat<params_id::SIM_GZ_HOME_ALT>)_param_sim_home_alt)
 };

@@ -33,7 +33,7 @@
 #pragma once
 
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <px4_platform_common/posix.h>
 
 #include <matrix/matrix/math.hpp> // matrix, vectors, dcm, quaterions
@@ -61,27 +61,27 @@
 
 using namespace time_literals;
 
-class Sih : public ModuleBase<Sih>, public ModuleParams {
+class Sih : public ModuleCommand<Sih>, public ModuleParams {
 public:
     Sih();
     virtual ~Sih();
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    static int *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static Sih *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase::print_status() */
+    /** @see ModuleCommand::print_status() */
     int print_status() override;
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    /** @see ModuleBase::run() */
+    /** @see ModuleCommand::run() */
     void run() override;
 
     static float generate_wgn(); // generate white Gaussian noise sample
@@ -235,27 +235,27 @@ private:
 
     // parameters defined in sih_params.c
     DEFINE_PARAMETERS(
-        (ParamInt<px4::params::IMU_GYRO_RATEMAX>)_imu_gyro_ratemax,
-        (ParamInt<px4::params::IMU_INTEG_RATE>)_imu_integration_rate,
-        (ParamFloat<px4::params::SIH_MASS>)_sih_mass,
-        (ParamFloat<px4::params::SIH_IXX>)_sih_ixx,
-        (ParamFloat<px4::params::SIH_IYY>)_sih_iyy,
-        (ParamFloat<px4::params::SIH_IZZ>)_sih_izz,
-        (ParamFloat<px4::params::SIH_IXY>)_sih_ixy,
-        (ParamFloat<px4::params::SIH_IXZ>)_sih_ixz,
-        (ParamFloat<px4::params::SIH_IYZ>)_sih_iyz,
-        (ParamFloat<px4::params::SIH_T_MAX>)_sih_t_max,
-        (ParamFloat<px4::params::SIH_Q_MAX>)_sih_q_max,
-        (ParamFloat<px4::params::SIH_L_ROLL>)_sih_l_roll,
-        (ParamFloat<px4::params::SIH_L_PITCH>)_sih_l_pitch,
-        (ParamFloat<px4::params::SIH_KDV>)_sih_kdv,
-        (ParamFloat<px4::params::SIH_KDW>)_sih_kdw,
-        (ParamInt<px4::params::SIH_LOC_LAT0>)_sih_lat0,
-        (ParamInt<px4::params::SIH_LOC_LON0>)_sih_lon0,
-        (ParamFloat<px4::params::SIH_LOC_H0>)_sih_h0,
-        (ParamFloat<px4::params::SIH_DISTSNSR_MIN>)_sih_distance_snsr_min,
-        (ParamFloat<px4::params::SIH_DISTSNSR_MAX>)_sih_distance_snsr_max,
-        (ParamFloat<px4::params::SIH_DISTSNSR_OVR>)_sih_distance_snsr_override,
-        (ParamFloat<px4::params::SIH_T_TAU>)_sih_thrust_tau,
-        (ParamInt<px4::params::SIH_VEHICLE_TYPE>)_sih_vtype)
+        (ParamInt<params_id::IMU_GYRO_RATEMAX>)_imu_gyro_ratemax,
+        (ParamInt<params_id::IMU_INTEG_RATE>)_imu_integration_rate,
+        (ParamFloat<params_id::SIH_MASS>)_sih_mass,
+        (ParamFloat<params_id::SIH_IXX>)_sih_ixx,
+        (ParamFloat<params_id::SIH_IYY>)_sih_iyy,
+        (ParamFloat<params_id::SIH_IZZ>)_sih_izz,
+        (ParamFloat<params_id::SIH_IXY>)_sih_ixy,
+        (ParamFloat<params_id::SIH_IXZ>)_sih_ixz,
+        (ParamFloat<params_id::SIH_IYZ>)_sih_iyz,
+        (ParamFloat<params_id::SIH_T_MAX>)_sih_t_max,
+        (ParamFloat<params_id::SIH_Q_MAX>)_sih_q_max,
+        (ParamFloat<params_id::SIH_L_ROLL>)_sih_l_roll,
+        (ParamFloat<params_id::SIH_L_PITCH>)_sih_l_pitch,
+        (ParamFloat<params_id::SIH_KDV>)_sih_kdv,
+        (ParamFloat<params_id::SIH_KDW>)_sih_kdw,
+        (ParamInt<params_id::SIH_LOC_LAT0>)_sih_lat0,
+        (ParamInt<params_id::SIH_LOC_LON0>)_sih_lon0,
+        (ParamFloat<params_id::SIH_LOC_H0>)_sih_h0,
+        (ParamFloat<params_id::SIH_DISTSNSR_MIN>)_sih_distance_snsr_min,
+        (ParamFloat<params_id::SIH_DISTSNSR_MAX>)_sih_distance_snsr_max,
+        (ParamFloat<params_id::SIH_DISTSNSR_OVR>)_sih_distance_snsr_override,
+        (ParamFloat<params_id::SIH_T_TAU>)_sih_thrust_tau,
+        (ParamInt<params_id::SIH_VEHICLE_TYPE>)_sih_vtype)
 };

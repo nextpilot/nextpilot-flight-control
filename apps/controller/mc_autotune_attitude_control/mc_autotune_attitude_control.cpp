@@ -14,6 +14,8 @@
  * @author Mathieu Bresciani <mathieu@auterion.com>
  */
 
+#define LOG_TAG "mc_autotune"
+
 #include "mc_autotune_attitude_control.hpp"
 
 using namespace matrix;
@@ -614,3 +616,11 @@ int McAutotuneAttitudeControl::print_usage(const char *reason) {
 extern "C" __EXPORT int mc_autotune_attitude_control_main(int argc, char *argv[]) {
     return McAutotuneAttitudeControl::main(argc, argv);
 }
+MSH_CMD_EXPORT_ALIAS(mc_autotune_attitude_control_main, mc_autotune, mc autotune attitude control);
+
+int mc_autotune_attitude_control_start() {
+    const char *argv[] = {"mc_autotune", "start"};
+    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    return McAutotuneAttitudeControl::main(argc, (char **)argv);
+}
+INIT_APP_EXPORT(mc_autotune_attitude_control_start);

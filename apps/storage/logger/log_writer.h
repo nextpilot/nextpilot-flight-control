@@ -31,7 +31,7 @@ public:
     LogWriter(Backend configured_backend, size_t file_buffer_size);
     ~LogWriter();
 
-    bool init();
+    int init() override;
 
     Backend backend() const {
         return _backend;

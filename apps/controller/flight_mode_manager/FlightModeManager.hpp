@@ -15,8 +15,8 @@
 
 #include <drivers/drv_hrt.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/module_params.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 
 #include <uORB/Subscription.hpp>
 #include <uORB/SubscriptionCallback.hpp>
@@ -41,24 +41,24 @@ enum class FlightTaskError : int {
     ActivationFailed = -2
 };
 
-class FlightModeManager : public ModuleBase<FlightModeManager>, public ModuleParams, public px4::WorkItem {
+class FlightModeManager : public ModuleCommand<FlightModeManager>, public ModuleParams, public WorkItem {
 public:
     FlightModeManager();
     ~FlightModeManager() override;
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    static int *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    /** @see ModuleBase::print_status() */
+    /** @see ModuleCommand::print_status() */
     int print_status() override;
 
-    bool init();
+    int init() override;
 
 private:
     void Run() override;
@@ -133,6 +133,6 @@ private:
     uORB::Publication<vehicle_constraints_s> _vehicle_constraints_pub{ORB_ID(vehicle_constraints)};
 
     DEFINE_PARAMETERS(
-        (ParamFloat<px4::params::LNDMC_ALT_MAX>)_param_lndmc_alt_max,
-        (ParamInt<px4::params::MPC_POS_MODE>)_param_mpc_pos_mode);
+        (ParamFloat<params_id::LNDMC_ALT_MAX>)_param_lndmc_alt_max,
+        (ParamInt<params_id::MPC_POS_MODE>)_param_mpc_pos_mode);
 };

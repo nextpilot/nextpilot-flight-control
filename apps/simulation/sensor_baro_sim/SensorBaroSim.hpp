@@ -13,8 +13,8 @@
 #include <lib/perf/perf_counter.h>
 #include <px4_platform_common/defines.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/module_params.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <uORB/Publication.hpp>
 #include <uORB/PublicationMulti.hpp>
 #include <uORB/Subscription.hpp>
@@ -25,21 +25,21 @@
 
 using namespace time_literals;
 
-class SensorBaroSim : public ModuleBase<SensorBaroSim>, public ModuleParams, public px4::ScheduledWorkItem {
+class SensorBaroSim : public ModuleCommand<SensorBaroSim>, public ModuleParams, public WorkItemScheduled {
 public:
     SensorBaroSim();
     ~SensorBaroSim() override;
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    static int *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    bool init();
+    int init() override;
 
 private:
     void Run() override;
@@ -62,6 +62,6 @@ private:
     perf_counter_t _loop_perf{perf_alloc(PC_ELAPSED, MODULE_NAME ": cycle")};
 
     DEFINE_PARAMETERS(
-        (ParamFloat<px4::params::SIM_BARO_OFF_P>)_sim_baro_off_p,
-        (ParamFloat<px4::params::SIM_BARO_OFF_T>)_sim_baro_off_t)
+        (ParamFloat<params_id::SIM_BARO_OFF_P>)_sim_baro_off_p,
+        (ParamFloat<params_id::SIM_BARO_OFF_T>)_sim_baro_off_t)
 };

@@ -22,7 +22,7 @@
 #include <parameters/param.h>
 #include <px4_platform_common/printload.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 
 #include <uORB/PublicationMulti.hpp>
 #include <uORB/Subscription.hpp>
@@ -56,7 +56,7 @@ struct LoggerSubscription : public uORB::SubscriptionInterval {
     uint8_t msg_id{MSG_ID_INVALID};
 };
 
-class Logger : public ModuleBase<Logger>, public ModuleParams {
+class Logger : public ModuleCommand<Logger>, public ModuleParams {
 public:
     enum class LogMode {
         while_armed = 0,
@@ -84,22 +84,22 @@ public:
 
     ~Logger();
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    static int *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static Logger *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    /** @see ModuleBase::run() */
+    /** @see ModuleCommand::run() */
     void run() override;
 
-    /** @see ModuleBase::print_status() */
+    /** @see ModuleCommand::print_status() */
     int print_status() override;
 
     /**
@@ -365,17 +365,17 @@ private:
     uORB::SubscriptionInterval _parameter_update_sub{ORB_ID(parameter_update), 1_s};
 
     DEFINE_PARAMETERS(
-        (ParamInt<px4::params::SDLOG_UTC_OFFSET>)_param_sdlog_utc_offset,
-        (ParamInt<px4::params::SDLOG_DIRS_MAX>)_param_sdlog_dirs_max,
-        (ParamInt<px4::params::SDLOG_PROFILE>)_param_sdlog_profile,
-        (ParamInt<px4::params::SDLOG_MISSION>)_param_sdlog_mission,
-        (ParamBool<px4::params::SDLOG_BOOT_BAT>)_param_sdlog_boot_bat,
-        (ParamBool<px4::params::SDLOG_UUID>)_param_sdlog_uuid
+        (ParamInt<params_id::SDLOG_UTC_OFFSET>)_param_sdlog_utc_offset,
+        (ParamInt<params_id::SDLOG_DIRS_MAX>)_param_sdlog_dirs_max,
+        (ParamInt<params_id::SDLOG_PROFILE>)_param_sdlog_profile,
+        (ParamInt<params_id::SDLOG_MISSION>)_param_sdlog_mission,
+        (ParamBool<params_id::SDLOG_BOOT_BAT>)_param_sdlog_boot_bat,
+        (ParamBool<params_id::SDLOG_UUID>)_param_sdlog_uuid
 #if defined(PX4_CRYPTO)
         ,
-        (ParamInt<px4::params::SDLOG_ALGORITHM>)_param_sdlog_crypto_algorithm,
-        (ParamInt<px4::params::SDLOG_KEY>)_param_sdlog_crypto_key,
-        (ParamInt<px4::params::SDLOG_EXCH_KEY>)_param_sdlog_crypto_exchange_key
+        (ParamInt<params_id::SDLOG_ALGORITHM>)_param_sdlog_crypto_algorithm,
+        (ParamInt<params_id::SDLOG_KEY>)_param_sdlog_crypto_key,
+        (ParamInt<params_id::SDLOG_EXCH_KEY>)_param_sdlog_crypto_exchange_key
 #endif
     )
 };

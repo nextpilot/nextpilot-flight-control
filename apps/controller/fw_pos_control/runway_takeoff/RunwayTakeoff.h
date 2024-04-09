@@ -23,7 +23,7 @@
 #include <math.h>
 
 #include <drivers/drv_hrt.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <mathlib/mathlib.h>
 #include <matrix/math.hpp>
 
@@ -215,13 +215,13 @@ private:
     matrix::Vector2d start_pos_global_{};
 
     DEFINE_PARAMETERS(
-        (ParamBool<px4::params::RWTO_TKOFF>)param_rwto_tkoff_,
-        (ParamInt<px4::params::RWTO_HDG>)param_rwto_hdg_,
-        (ParamFloat<px4::params::RWTO_MAX_THR>)param_rwto_max_thr_,
-        (ParamFloat<px4::params::RWTO_PSP>)param_rwto_psp_,
-        (ParamFloat<px4::params::RWTO_RAMP_TIME>)param_rwto_ramp_time_,
-        (ParamFloat<px4::params::RWTO_ROT_AIRSPD>)param_rwto_rot_airspd_,
-        (ParamFloat<px4::params::RWTO_ROT_TIME>)param_rwto_rot_time_)
+        (ParamBool<params_id::RWTO_TKOFF>)param_rwto_tkoff_,
+        (ParamInt<params_id::RWTO_HDG>)param_rwto_hdg_,
+        (ParamFloat<params_id::RWTO_MAX_THR>)param_rwto_max_thr_,
+        (ParamFloat<params_id::RWTO_PSP>)param_rwto_psp_,
+        (ParamFloat<params_id::RWTO_RAMP_TIME>)param_rwto_ramp_time_,
+        (ParamFloat<params_id::RWTO_ROT_AIRSPD>)param_rwto_rot_airspd_,
+        (ParamFloat<params_id::RWTO_ROT_TIME>)param_rwto_rot_time_)
 };
 
 } // namespace runwaytakeoff

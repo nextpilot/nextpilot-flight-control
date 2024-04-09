@@ -21,7 +21,7 @@ static constexpr uint32_t SENSOR_TIMEOUT{300_ms};
 
 VehicleOpticalFlow::VehicleOpticalFlow() :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::nav_and_controllers) {
+    WorkItemScheduled(MODULE_NAME, wq_configurations::nav_and_controllers) {
     _vehicle_optical_flow_pub.advertise();
 
     _gyro_integrator.set_reset_samples(1);

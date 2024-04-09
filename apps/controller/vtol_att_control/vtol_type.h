@@ -20,9 +20,11 @@
 #ifndef VTOL_TYPE_H
 #define VTOL_TYPE_H
 
-#include <drivers/drv_hrt.h>
-#include <lib/mathlib/mathlib.h>
-#include <px4_platform_common/module_params.h>
+#include <hrtimer.h>
+#include <mathlib/mathlib.h>
+#include <module_params.hpp>
+
+using namespace nextpilot::global_params;
 
 static constexpr float kFlapSlewRateVtol    = 1.f; // minimum time from none to full flap deflection [s]
 static constexpr float kSpoilerSlewRateVtol = 1.f; // minimum time from none to full spoiler deflection [s]
@@ -192,7 +194,7 @@ public:
      */
     float pusher_assist();
 
-    virtual void blendThrottleAfterFrontTransition(float scale) {};
+    virtual void blendThrottleAfterFrontTransition(float scale){};
 
     mode get_mode() {
         return _common_vtol_mode;
@@ -276,7 +278,7 @@ protected:
     hrt_abstime _last_loop_ts  = 0;
     float       _transition_dt = 0;
 
-    float _quadchute_ref_alt{-MAXFLOAT}; // altitude (AMSL) reference to compute quad-chute altitude loss condition
+    float _quadchute_ref_alt{-FLT_MAX}; // altitude (AMSL) reference to compute quad-chute altitude loss condition
 
     float _accel_to_pitch_integ = 0;
 
@@ -291,38 +293,38 @@ protected:
     float _local_position_z_start_of_transition{0.f}; // altitude at start of transition
 
     DEFINE_PARAMETERS_CUSTOM_PARENT(ModuleParams,
-                                    (ParamBool<px4::params::VT_ELEV_MC_LOCK>)_param_vt_elev_mc_lock,
-                                    (ParamFloat<px4::params::VT_FW_MIN_ALT>)_param_vt_fw_min_alt,
-                                    (ParamFloat<px4::params::VT_QC_ALT_LOSS>)_param_vt_qc_alt_loss,
-                                    (ParamInt<px4::params::VT_FW_QC_P>)_param_vt_fw_qc_p,
-                                    (ParamInt<px4::params::VT_FW_QC_R>)_param_vt_fw_qc_r,
-                                    (ParamFloat<px4::params::VT_QC_T_ALT_LOSS>)_param_vt_qc_t_alt_loss,
-                                    (ParamInt<px4::params::VT_FW_QC_HMAX>)_param_quadchute_max_height,
-                                    (ParamFloat<px4::params::VT_F_TR_OL_TM>)_param_vt_f_tr_ol_tm,
-                                    (ParamFloat<px4::params::VT_TRANS_MIN_TM>)_param_vt_trans_min_tm,
+                                    (ParamBool<params_id::VT_ELEV_MC_LOCK>)_param_vt_elev_mc_lock,
+                                    (ParamFloat<params_id::VT_FW_MIN_ALT>)_param_vt_fw_min_alt,
+                                    (ParamFloat<params_id::VT_QC_ALT_LOSS>)_param_vt_qc_alt_loss,
+                                    (ParamInt<params_id::VT_FW_QC_P>)_param_vt_fw_qc_p,
+                                    (ParamInt<params_id::VT_FW_QC_R>)_param_vt_fw_qc_r,
+                                    (ParamFloat<params_id::VT_QC_T_ALT_LOSS>)_param_vt_qc_t_alt_loss,
+                                    (ParamInt<params_id::VT_FW_QC_HMAX>)_param_quadchute_max_height,
+                                    (ParamFloat<params_id::VT_F_TR_OL_TM>)_param_vt_f_tr_ol_tm,
+                                    (ParamFloat<params_id::VT_TRANS_MIN_TM>)_param_vt_trans_min_tm,
 
-                                    (ParamFloat<px4::params::VT_F_TRANS_DUR>)_param_vt_f_trans_dur,
-                                    (ParamFloat<px4::params::VT_B_TRANS_DUR>)_param_vt_b_trans_dur,
-                                    (ParamFloat<px4::params::VT_ARSP_TRANS>)_param_vt_arsp_trans,
-                                    (ParamFloat<px4::params::VT_F_TRANS_THR>)_param_vt_f_trans_thr,
-                                    (ParamFloat<px4::params::VT_ARSP_BLEND>)_param_vt_arsp_blend,
-                                    (ParamBool<px4::params::FW_ARSP_MODE>)_param_fw_arsp_mode,
-                                    (ParamFloat<px4::params::VT_TRANS_TIMEOUT>)_param_vt_trans_timeout,
-                                    (ParamFloat<px4::params::MPC_XY_CRUISE>)_param_mpc_xy_cruise,
-                                    (ParamInt<px4::params::VT_FW_DIFTHR_EN>)_param_vt_fw_difthr_en,
-                                    (ParamFloat<px4::params::VT_FW_DIFTHR_S_Y>)_param_vt_fw_difthr_s_y,
-                                    (ParamFloat<px4::params::VT_FW_DIFTHR_S_P>)_param_vt_fw_difthr_s_p,
-                                    (ParamFloat<px4::params::VT_FW_DIFTHR_S_R>)_param_vt_fw_difthr_s_r,
-                                    (ParamFloat<px4::params::VT_B_DEC_FF>)_param_vt_b_dec_ff,
-                                    (ParamFloat<px4::params::VT_B_DEC_I>)_param_vt_b_dec_i,
-                                    (ParamFloat<px4::params::VT_B_DEC_MSS>)_param_vt_b_dec_mss,
+                                    (ParamFloat<params_id::VT_F_TRANS_DUR>)_param_vt_f_trans_dur,
+                                    (ParamFloat<params_id::VT_B_TRANS_DUR>)_param_vt_b_trans_dur,
+                                    (ParamFloat<params_id::VT_ARSP_TRANS>)_param_vt_arsp_trans,
+                                    (ParamFloat<params_id::VT_F_TRANS_THR>)_param_vt_f_trans_thr,
+                                    (ParamFloat<params_id::VT_ARSP_BLEND>)_param_vt_arsp_blend,
+                                    (ParamBool<params_id::FW_ARSP_MODE>)_param_fw_arsp_mode,
+                                    (ParamFloat<params_id::VT_TRANS_TIMEOUT>)_param_vt_trans_timeout,
+                                    (ParamFloat<params_id::MPC_XY_CRUISE>)_param_mpc_xy_cruise,
+                                    (ParamInt<params_id::VT_FW_DIFTHR_EN>)_param_vt_fw_difthr_en,
+                                    (ParamFloat<params_id::VT_FW_DIFTHR_S_Y>)_param_vt_fw_difthr_s_y,
+                                    (ParamFloat<params_id::VT_FW_DIFTHR_S_P>)_param_vt_fw_difthr_s_p,
+                                    (ParamFloat<params_id::VT_FW_DIFTHR_S_R>)_param_vt_fw_difthr_s_r,
+                                    (ParamFloat<params_id::VT_B_DEC_FF>)_param_vt_b_dec_ff,
+                                    (ParamFloat<params_id::VT_B_DEC_I>)_param_vt_b_dec_i,
+                                    (ParamFloat<params_id::VT_B_DEC_MSS>)_param_vt_b_dec_mss,
 
-                                    (ParamFloat<px4::params::VT_PITCH_MIN>)_param_vt_pitch_min,
-                                    (ParamFloat<px4::params::VT_FWD_THRUST_SC>)_param_vt_fwd_thrust_sc,
-                                    (ParamInt<px4::params::VT_FWD_THRUST_EN>)_param_vt_fwd_thrust_en,
-                                    (ParamFloat<px4::params::MPC_LAND_ALT1>)_param_mpc_land_alt1,
-                                    (ParamFloat<px4::params::MPC_LAND_ALT2>)_param_mpc_land_alt2,
-                                    (ParamFloat<px4::params::VT_LND_PITCH_MIN>)_param_vt_lnd_pitch_min)
+                                    (ParamFloat<params_id::VT_PITCH_MIN>)_param_vt_pitch_min,
+                                    (ParamFloat<params_id::VT_FWD_THRUST_SC>)_param_vt_fwd_thrust_sc,
+                                    (ParamInt<params_id::VT_FWD_THRUST_EN>)_param_vt_fwd_thrust_en,
+                                    (ParamFloat<params_id::MPC_LAND_ALT1>)_param_mpc_land_alt1,
+                                    (ParamFloat<params_id::MPC_LAND_ALT2>)_param_mpc_land_alt2,
+                                    (ParamFloat<params_id::VT_LND_PITCH_MIN>)_param_vt_lnd_pitch_min)
 
 private:
     hrt_abstime _throttle_blend_start_ts{0}; // time at which we start blending between transition throttle and fixed wing throttle

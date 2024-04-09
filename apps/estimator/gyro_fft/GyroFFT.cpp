@@ -18,7 +18,7 @@ using namespace matrix;
 
 GyroFFT::GyroFFT() :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::hp_default) {
+    WorkItemScheduled(MODULE_NAME, wq_configurations::hp_default) {
     for (int i = 0; i < MAX_NUM_PEAKS; i++) {
         _sensor_gyro_fft.peak_frequencies_x[i] = NAN;
         _sensor_gyro_fft.peak_frequencies_y[i] = NAN;
@@ -624,7 +624,7 @@ void GyroFFT::Publish() {
     _sensor_gyro_fft_pub.publish(_sensor_gyro_fft);
 }
 
-int GyroFFT::task_spawn(int argc, char *argv[]) {
+int GyroFFT::instantiate(int argc, char *argv[]) {
     GyroFFT *instance = new GyroFFT();
 
     if (instance) {

@@ -30,6 +30,6 @@ private:
 #endif
 
     DEFINE_PARAMETERS_CUSTOM_PARENT(HealthAndArmingCheckBase,
-                                    (ParamInt<px4::params::COM_ARM_SDCARD>)_param_com_arm_sdcard,
-                                    (ParamBool<px4::params::COM_ARM_HFLT_CHK>)_param_com_arm_hardfault_check)
+                                    (ParamInt<params_id::COM_ARM_SDCARD>)_param_com_arm_sdcard,
+                                    (ParamBool<params_id::COM_ARM_HFLT_CHK>)_param_com_arm_hardfault_check)
 };

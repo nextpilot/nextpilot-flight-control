@@ -12,7 +12,7 @@
 
 #include "Common.hpp"
 
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <uORB/Publication.hpp>
 #include <uORB/topics/health_report.h>
 #include <uORB/topics/failsafe_flags.h>

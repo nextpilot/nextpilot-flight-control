@@ -20,7 +20,7 @@
 #include <float.h>
 
 #include <lib/mathlib/mathlib.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <drivers/drv_hrt.h>
 #include <lib/geo/geo.h>
 #include <px4_platform_common/defines.h>
@@ -202,11 +202,11 @@ private:
     bool insideCircle(const PolygonInfo &polygon, double lat, double lon, float altitude);
 
     DEFINE_PARAMETERS(
-        (ParamInt<px4::params::GF_ACTION>)_param_gf_action,
-        (ParamInt<px4::params::GF_ALTMODE>)_param_gf_altmode,
-        (ParamInt<px4::params::GF_SOURCE>)_param_gf_source,
-        (ParamInt<px4::params::GF_COUNT>)_param_gf_count,
-        (ParamFloat<px4::params::GF_MAX_HOR_DIST>)_param_gf_max_hor_dist,
-        (ParamFloat<px4::params::GF_MAX_VER_DIST>)_param_gf_max_ver_dist,
-        (ParamBool<px4::params::GF_PREDICT>)_param_gf_predict)
+        (ParamInt<params_id::GF_ACTION>)_param_gf_action,
+        (ParamInt<params_id::GF_ALTMODE>)_param_gf_altmode,
+        (ParamInt<params_id::GF_SOURCE>)_param_gf_source,
+        (ParamInt<params_id::GF_COUNT>)_param_gf_count,
+        (ParamFloat<params_id::GF_MAX_HOR_DIST>)_param_gf_max_hor_dist,
+        (ParamFloat<params_id::GF_MAX_VER_DIST>)_param_gf_max_ver_dist,
+        (ParamBool<params_id::GF_PREDICT>)_param_gf_predict)
 };

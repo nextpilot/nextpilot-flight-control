@@ -26,6 +26,6 @@ private:
     uORB::Subscription _sensors_status_imu_sub{ORB_ID(sensors_status_imu)};
 
     DEFINE_PARAMETERS_CUSTOM_PARENT(HealthAndArmingCheckBase,
-                                    (ParamFloat<px4::params::COM_ARM_IMU_ACC>)_param_com_arm_imu_acc,
-                                    (ParamFloat<px4::params::COM_ARM_IMU_GYR>)_param_com_arm_imu_gyr)
+                                    (ParamFloat<params_id::COM_ARM_IMU_ACC>)_param_com_arm_imu_acc,
+                                    (ParamFloat<params_id::COM_ARM_IMU_GYR>)_param_com_arm_imu_gyr)
 };

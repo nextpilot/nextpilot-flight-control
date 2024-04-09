@@ -20,7 +20,7 @@
 class GZMixingInterfaceServo : public OutputModuleInterface {
 public:
     GZMixingInterfaceServo(gz::transport::Node &node, pthread_mutex_t &node_mutex) :
-        OutputModuleInterface(MODULE_NAME "-actuators-servo", px4::wq_configurations::rate_ctrl),
+        OutputModuleInterface(MODULE_NAME "-actuators-servo", wq_configurations::rate_ctrl),
         _node(node),
         _node_mutex(node_mutex) {
     }

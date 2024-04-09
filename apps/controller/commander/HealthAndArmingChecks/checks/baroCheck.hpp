@@ -32,5 +32,5 @@ private:
     uORB::SubscriptionMultiArray<estimator_status_s>                                      _estimator_status_sub{ORB_ID::estimator_status};
 
     DEFINE_PARAMETERS_CUSTOM_PARENT(HealthAndArmingCheckBase,
-                                    (ParamBool<px4::params::SYS_HAS_BARO>)_param_sys_has_baro)
+                                    (ParamBool<params_id::SYS_HAS_BARO>)_param_sys_has_baro)
 };

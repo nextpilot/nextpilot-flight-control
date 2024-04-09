@@ -25,7 +25,7 @@ namespace sensors {
 
 VehicleIMU::VehicleIMU(int instance, uint8_t accel_index, uint8_t gyro_index, const px4::wq_config_t &config) :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, config),
+    WorkItemScheduled(MODULE_NAME, config),
     _sensor_accel_sub(ORB_ID(sensor_accel), accel_index),
     _sensor_gyro_sub(this, ORB_ID(sensor_gyro), gyro_index),
     _instance(instance) {
@@ -339,10 +339,10 @@ bool VehicleIMU::UpdateAccel() {
                      * @description Land now, and check the vehicle setup.
                      * Clipping can lead to fly-aways.
                      */
-                    events::send<uint8_t>(events::ID("vehicle_imu_accel_clipping"), events::Log::Critical,
+                    // events::send<uint8_t>(events::ID("vehicle_imu_accel_clipping"), events::Log::Critical,
                                           "Accel {1} clipping, not safe to fly!", _instance);
-                    _last_accel_clipping_notify_time        = accel.timestamp_sample;
-                    _last_accel_clipping_notify_total_count = clipping_total;
+                                          _last_accel_clipping_notify_time        = accel.timestamp_sample;
+                                          _last_accel_clipping_notify_total_count = clipping_total;
                 }
             }
         }
@@ -466,10 +466,10 @@ bool VehicleIMU::UpdateGyro() {
                      * @description Land now, and check the vehicle setup.
                      * Clipping can lead to fly-aways.
                      */
-                    events::send<uint8_t>(events::ID("vehicle_imu_gyro_clipping"), events::Log::Critical,
+                    // events::send<uint8_t>(events::ID("vehicle_imu_gyro_clipping"), events::Log::Critical,
                                           "Gyro {1} clipping, not safe to fly!", _instance);
-                    _last_gyro_clipping_notify_time        = gyro.timestamp_sample;
-                    _last_gyro_clipping_notify_total_count = clipping_total;
+                                          _last_gyro_clipping_notify_time        = gyro.timestamp_sample;
+                                          _last_gyro_clipping_notify_total_count = clipping_total;
                 }
             }
         }

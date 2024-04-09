@@ -25,7 +25,7 @@
 #include <lib/perf/perf_counter.h>
 #include <px4_platform_common/atomic.h>
 #include <px4_platform_common/bitmask.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <px4_platform_common/posix.h>
 #include <uORB/Publication.hpp>
 #include <uORB/Subscription.hpp>
@@ -295,7 +295,7 @@ private:
     int _lockstep_component{-1};
 
     DEFINE_PARAMETERS(
-        (ParamInt<px4::params::MAV_TYPE>)_param_mav_type,
-        (ParamInt<px4::params::MAV_SYS_ID>)_param_mav_sys_id,
-        (ParamInt<px4::params::MAV_COMP_ID>)_param_mav_comp_id)
+        (ParamInt<params_id::MAV_TYPE>)_param_mav_type,
+        (ParamInt<params_id::MAV_SYS_ID>)_param_mav_sys_id,
+        (ParamInt<params_id::MAV_COMP_ID>)_param_mav_comp_id)
 };

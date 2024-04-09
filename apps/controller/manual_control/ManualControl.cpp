@@ -8,15 +8,13 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include "ManualControl.hpp"
+#define LOG_TAG "manual_control"
 
-#include <px4_platform_common/events.h>
-// #include <lib/systemlib/mavlink_log.h>
-// #include <uORB/topics/vehicle_command.h>
+#include "ManualControl.hpp"
 
 ManualControl::ManualControl() :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::hp_default) {
+    WorkItemScheduled(MODULE_NAME, wq_configurations::hp_default) {
 }
 
 ManualControl::~ManualControl() {
@@ -24,9 +22,9 @@ ManualControl::~ManualControl() {
     perf_free(_loop_interval_perf);
 }
 
-bool ManualControl::init() {
+int ManualControl::init() {
     ScheduleNow();
-    return true;
+    return 0;
 }
 
 void ManualControl::Run() {
@@ -79,11 +77,11 @@ void ManualControl::Run() {
 
                     orb_advert_t mavlink_log_pub = nullptr;
                     mavlink_log_critical(&mavlink_log_pub, "Arm stick gesture disabled if arm switch in use\t")
-                        /* EVENT
-                         * @description <param>MAN_ARM_GESTURE</param> is now set to disable arm/disarm stick gesture.
-                         */
-                        events::send(events::ID("rc_update_arm_stick_gesture_disabled_with_switch"), {events::Log::Info, events::LogInternal::Disabled},
-                                     "Arm stick gesture disabled if arm switch in use");
+                    /* EVENT
+                     * @description <param>MAN_ARM_GESTURE</param> is now set to disable arm/disarm stick gesture.
+                     */
+                    // events::send(events::ID("rc_update_arm_stick_gesture_disabled_with_switch"), {events::Log::Info, events::LogInternal::Disabled},
+                    //             "Arm stick gesture disabled if arm switch in use");
                 }
             }
 
@@ -101,11 +99,11 @@ void ManualControl::Run() {
 
                         orb_advert_t mavlink_log_pub = nullptr;
                         mavlink_log_critical(&mavlink_log_pub, "Yaw Airmode requires disabling the stick arm gesture\t")
-                            /* EVENT
-                             * @description <param>MC_AIRMODE</param> is now set to roll/pitch airmode.
-                             */
-                            events::send(events::ID("commander_airmode_requires_no_arm_gesture"), {events::Log::Error, events::LogInternal::Disabled},
-                                         "Yaw Airmode requires disabling the stick arm gesture");
+                        /* EVENT
+                         * @description <param>MC_AIRMODE</param> is now set to roll/pitch airmode.
+                         */
+                        // events::send(events::ID("commander_airmode_requires_no_arm_gesture"), {events::Log::Error, events::LogInternal::Disabled},
+                        //             "Yaw Airmode requires disabling the stick arm gesture");
                     }
                 }
             }
@@ -425,26 +423,27 @@ void ManualControl::send_video_command() {
     _video_recording = !_video_recording;
 }
 
-int ManualControl::task_spawn(int argc, char *argv[]) {
+ManualControl *ManualControl::instantiate(int argc, char *argv[]) {
     ManualControl *instance = new ManualControl();
 
-    if (instance) {
-        _object.store(instance);
-        _task_id = task_id_is_work_queue;
+    // if (instance) {
+    //     _object.store(instance);
+    //     _task_id = task_id_is_work_queue;
 
-        if (instance->init()) {
-            return PX4_OK;
-        }
+    //     if (instance->init()) {
+    //         return PX4_OK;
+    //     }
 
-    } else {
-        PX4_ERR("alloc failed");
-    }
+    // } else {
+    //     PX4_ERR("alloc failed");
+    // }
 
-    delete instance;
-    _object.store(nullptr);
-    _task_id = -1;
+    // delete instance;
+    // _object.store(nullptr);
+    // _task_id = -1;
 
-    return PX4_ERROR;
+    // return PX4_ERROR;
+    return instance;
 }
 
 int ManualControl::print_status() {
@@ -500,3 +499,11 @@ int8_t ManualControl::navStateFromParam(int32_t param_value) {
 extern "C" __EXPORT int manual_control_main(int argc, char *argv[]) {
     return ManualControl::main(argc, argv);
 }
+MSH_CMD_EXPORT_ALIAS(manual_control_main, manual_control, manual control);
+
+int manual_control_start() {
+    const char *argv[] = {"manual_control", "start"};
+    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    return ManualControl::main(argc, (char **)argv);
+}
+INIT_APP_EXPORT(manual_control_start);

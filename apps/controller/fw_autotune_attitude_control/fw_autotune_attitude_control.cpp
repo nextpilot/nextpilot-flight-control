@@ -20,7 +20,7 @@ using namespace matrix;
 
 FwAutotuneAttitudeControl::FwAutotuneAttitudeControl(bool is_vtol) :
     ModuleParams(nullptr),
-    WorkItem(MODULE_NAME, px4::wq_configurations::hp_default),
+    WorkItem(MODULE_NAME, wq_configurations::hp_default),
     _vehicle_torque_setpoint_sub(this, ORB_ID(vehicle_torque_setpoint), is_vtol ? 1 : 0),
     _actuator_controls_status_sub(is_vtol ? ORB_ID(actuator_controls_status_1) : ORB_ID(actuator_controls_status_0)) {
     _autotune_attitude_control_status_pub.advertise();
@@ -599,7 +599,7 @@ const Vector3f FwAutotuneAttitudeControl::getIdentificationSignal() {
     return rate_sp;
 }
 
-int FwAutotuneAttitudeControl::task_spawn(int argc, char *argv[]) {
+int FwAutotuneAttitudeControl::instantiate(int argc, char *argv[]) {
     bool is_vtol = false;
 
     if (argc > 1) {

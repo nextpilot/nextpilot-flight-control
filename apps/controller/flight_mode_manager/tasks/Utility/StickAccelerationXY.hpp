@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <lib/mathlib/math/filter/AlphaFilter.hpp>
 #include <matrix/math.hpp>
 #include <uORB/Subscription.hpp>
@@ -67,9 +67,9 @@ private:
     float _velocity_constraint{INFINITY};
 
     DEFINE_PARAMETERS(
-        (ParamFloat<px4::params::MPC_VEL_MANUAL>)_param_mpc_vel_manual,
-        (ParamFloat<px4::params::MPC_VEL_MAN_SIDE>)_param_mpc_vel_man_side,
-        (ParamFloat<px4::params::MPC_VEL_MAN_BACK>)_param_mpc_vel_man_back,
-        (ParamFloat<px4::params::MPC_ACC_HOR>)_param_mpc_acc_hor,
-        (ParamFloat<px4::params::MPC_JERK_MAX>)_param_mpc_jerk_max)
+        (ParamFloat<params_id::MPC_VEL_MANUAL>)_param_mpc_vel_manual,
+        (ParamFloat<params_id::MPC_VEL_MAN_SIDE>)_param_mpc_vel_man_side,
+        (ParamFloat<params_id::MPC_VEL_MAN_BACK>)_param_mpc_vel_man_back,
+        (ParamFloat<params_id::MPC_ACC_HOR>)_param_mpc_acc_hor,
+        (ParamFloat<params_id::MPC_JERK_MAX>)_param_mpc_jerk_max)
 };

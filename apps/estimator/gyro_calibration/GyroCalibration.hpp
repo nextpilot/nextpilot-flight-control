@@ -12,9 +12,9 @@
 
 #include <px4_platform_common/defines.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <px4_platform_common/posix.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <drivers/drv_hrt.h>
 #include <lib/mathlib/math/WelfordMeanVector.hpp>
 #include <lib/perf/perf_counter.h>
@@ -29,21 +29,21 @@
 
 using namespace time_literals;
 
-class GyroCalibration : public ModuleBase<GyroCalibration>, public ModuleParams, public px4::ScheduledWorkItem {
+class GyroCalibration : public ModuleCommand<GyroCalibration>, public ModuleParams, public WorkItemScheduled {
 public:
     GyroCalibration();
     ~GyroCalibration() override;
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    static int *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    bool init();
+    int init() override;
 
     int print_status() override;
 

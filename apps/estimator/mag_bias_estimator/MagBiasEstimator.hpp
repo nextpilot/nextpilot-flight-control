@@ -18,8 +18,8 @@
 #include <px4_platform_common/px4_config.h>
 #include <px4_platform_common/defines.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/module_params.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <uORB/Publication.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/SubscriptionMultiArray.hpp>
@@ -31,22 +31,22 @@
 
 namespace mag_bias_estimator {
 
-class MagBiasEstimator : public ModuleBase<MagBiasEstimator>, public ModuleParams, public px4::ScheduledWorkItem {
+class MagBiasEstimator : public ModuleCommand<MagBiasEstimator>, public ModuleParams, public WorkItemScheduled {
 public:
     MagBiasEstimator();
     ~MagBiasEstimator() override;
 
-    static int task_spawn(int argc, char *argv[]);
+    static int *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]) {
         return print_usage("unknown command");
     }
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    /** @see ModuleBase::print_status() */
+    /** @see ModuleCommand::print_status() */
     int print_status() override;
 
     void start();
@@ -80,7 +80,7 @@ private:
     perf_counter_t _cycle_perf{perf_alloc(PC_ELAPSED, MODULE_NAME ": cycle")};
 
     DEFINE_PARAMETERS(
-        (ParamFloat<px4::params::MBE_LEARN_GAIN>)_param_mbe_learn_gain)
+        (ParamFloat<params_id::MBE_LEARN_GAIN>)_param_mbe_learn_gain)
 };
 
 } // namespace mag_bias_estimator

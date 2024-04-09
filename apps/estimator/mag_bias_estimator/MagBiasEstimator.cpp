@@ -17,7 +17,7 @@ namespace mag_bias_estimator {
 
 MagBiasEstimator::MagBiasEstimator() :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::lp_default) {
+    WorkItemScheduled(MODULE_NAME, wq_configurations::lp_default) {
     _magnetometer_bias_estimate_pub.advertise();
 }
 
@@ -25,7 +25,7 @@ MagBiasEstimator::~MagBiasEstimator() {
     perf_free(_cycle_perf);
 }
 
-int MagBiasEstimator::task_spawn(int argc, char *argv[]) {
+int MagBiasEstimator::instantiate(int argc, char *argv[]) {
     MagBiasEstimator *obj = new MagBiasEstimator();
 
     if (!obj) {

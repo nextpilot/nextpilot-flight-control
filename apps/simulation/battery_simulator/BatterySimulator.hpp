@@ -14,8 +14,8 @@
 #include <lib/perf/perf_counter.h>
 #include <px4_platform_common/defines.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/module_params.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <uORB/Publication.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/SubscriptionInterval.hpp>
@@ -27,21 +27,21 @@
 
 using namespace time_literals;
 
-class BatterySimulator : public ModuleBase<BatterySimulator>, public ModuleParams, public px4::ScheduledWorkItem {
+class BatterySimulator : public ModuleCommand<BatterySimulator>, public ModuleParams, public WorkItemScheduled {
 public:
     BatterySimulator();
     ~BatterySimulator() override;
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    static int *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    bool init();
+    int init() override;
 
 private:
     void Run() override;
@@ -69,7 +69,7 @@ private:
     perf_counter_t _loop_perf{perf_alloc(PC_ELAPSED, MODULE_NAME ": cycle")};
 
     DEFINE_PARAMETERS(
-        (ParamFloat<px4::params::SIM_BAT_DRAIN>)_param_sim_bat_drain, ///< battery drain interval
-        (ParamFloat<px4::params::SIM_BAT_MIN_PCT>)_param_bat_min_pct  //< minimum battery percentage
+        (ParamFloat<params_id::SIM_BAT_DRAIN>)_param_sim_bat_drain, ///< battery drain interval
+        (ParamFloat<params_id::SIM_BAT_MIN_PCT>)_param_bat_min_pct  //< minimum battery percentage
     )
 };

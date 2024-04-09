@@ -21,7 +21,7 @@
 
 #include <dataman/dataman.h>
 #include <uORB/topics/mission.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include "MissionFeasibility/FeasibilityChecker.hpp"
 
 class Geofence;

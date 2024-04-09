@@ -16,7 +16,7 @@
  * @author Julian Oes <julian@oes.ch>
  */
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <matrix/math.hpp>
 
 #include "VtolLandDetector.h"

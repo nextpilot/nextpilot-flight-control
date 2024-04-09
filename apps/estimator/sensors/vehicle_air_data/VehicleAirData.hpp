@@ -18,9 +18,9 @@
 #include <lib/perf/perf_counter.h>
 #include <lib/systemlib/mavlink_log.h>
 #include <px4_platform_common/log.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <uORB/Publication.hpp>
 #include <uORB/PublicationMulti.hpp>
 #include <uORB/Subscription.hpp>
@@ -35,7 +35,7 @@
 using namespace time_literals;
 
 namespace sensors {
-class VehicleAirData : public ModuleParams, public px4::ScheduledWorkItem {
+class VehicleAirData : public ModuleParams, public WorkItemScheduled {
 public:
     VehicleAirData();
     ~VehicleAirData() override;
@@ -100,7 +100,7 @@ private:
     float _air_temperature_celsius{20.f}; // initialize with typical 20degC ambient temperature
 
     DEFINE_PARAMETERS(
-        (ParamFloat<px4::params::SENS_BARO_QNH>)_param_sens_baro_qnh,
-        (ParamFloat<px4::params::SENS_BARO_RATE>)_param_sens_baro_rate)
+        (ParamFloat<params_id::SENS_BARO_QNH>)_param_sens_baro_qnh,
+        (ParamFloat<params_id::SENS_BARO_RATE>)_param_sens_baro_rate)
 };
 }; // namespace sensors

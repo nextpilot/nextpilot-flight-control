@@ -25,7 +25,7 @@ static px4::atomic<EKF2Selector *> _ekf2_selector{nullptr};
 
 EKF2::EKF2(bool multi_mode, const px4::wq_config_t &config, bool replay_mode) :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, config),
+    WorkItemScheduled(MODULE_NAME, config),
     _replay_mode(replay_mode && !multi_mode),
     _multi_mode(multi_mode),
     _instance(multi_mode ? -1 : 0),
@@ -697,7 +697,7 @@ void EKF2::VerifyParams() {
         /* EVENT
          * @description <param>EKF2_AID_MASK</param> is set to {1:.0}.
          */
-        events::send<float>(events::ID("ekf2_aid_mask_gps"), events::Log::Warning,
+        // events::send<float>(events::ID("ekf2_aid_mask_gps"), events::Log::Warning,
                             "Use EKF2_GPS_CTRL instead", _param_ekf2_aid_mask.get());
     }
 
@@ -708,7 +708,7 @@ void EKF2::VerifyParams() {
         /* EVENT
          * @description <param>EKF2_GPS_CTRL</param> is set to {1:.0}.
          */
-        events::send<float>(events::ID("ekf2_gps_ctrl_alt"), events::Log::Warning,
+        // events::send<float>(events::ID("ekf2_gps_ctrl_alt"), events::Log::Warning,
                             "GPS lon/lat is required for altitude fusion", _param_ekf2_gps_ctrl.get());
     }
 
@@ -719,7 +719,7 @@ void EKF2::VerifyParams() {
         /* EVENT
          * @description <param>EKF2_BARO_CTRL</param> is set to {1:.0}.
          */
-        events::send<float>(events::ID("ekf2_hgt_ref_baro"), events::Log::Warning,
+        // events::send<float>(events::ID("ekf2_hgt_ref_baro"), events::Log::Warning,
                             "Baro enabled by EKF2_HGT_REF", _param_ekf2_baro_ctrl.get());
     }
 
@@ -732,7 +732,7 @@ void EKF2::VerifyParams() {
         /* EVENT
          * @description <param>EKF2_RNG_CTRL</param> is set to {1:.0}.
          */
-        events::send<float>(events::ID("ekf2_hgt_ref_rng"), events::Log::Warning,
+        // events::send<float>(events::ID("ekf2_hgt_ref_rng"), events::Log::Warning,
                             "Range enabled by EKF2_HGT_REF", _param_ekf2_rng_ctrl.get());
     }
 
@@ -745,7 +745,7 @@ void EKF2::VerifyParams() {
         /* EVENT
          * @description <param>EKF2_GPS_CTRL</param> is set to {1:.0}.
          */
-        events::send<float>(events::ID("ekf2_hgt_ref_gps"), events::Log::Warning,
+        // events::send<float>(events::ID("ekf2_hgt_ref_gps"), events::Log::Warning,
                             "GPS enabled by EKF2_HGT_REF", _param_ekf2_gps_ctrl.get());
     }
 
@@ -758,7 +758,7 @@ void EKF2::VerifyParams() {
         /* EVENT
          * @description <param>EKF2_EV_CTRL</param> is set to {1:.0}.
          */
-        events::send<float>(events::ID("ekf2_hgt_ref_ev"), events::Log::Warning,
+        // events::send<float>(events::ID("ekf2_hgt_ref_ev"), events::Log::Warning,
                             "EV vertical position enabled by EKF2_HGT_REF", _param_ekf2_ev_ctrl.get());
     }
 
@@ -790,7 +790,7 @@ void EKF2::VerifyParams() {
         /* EVENT
          * @description <param>EKF2_AID_MASK</param> is set to {1:.0}.
          */
-        events::send<float>(events::ID("ekf2_aid_mask_ev"), events::Log::Warning,
+        // events::send<float>(events::ID("ekf2_aid_mask_ev"), events::Log::Warning,
                             "Use EKF2_EV_CTRL instead", _param_ekf2_aid_mask.get());
     }
 
@@ -811,7 +811,7 @@ void EKF2::VerifyParams() {
         /* EVENT
          * @description <param>EKF2_AID_MASK</param> is set to {1:.0}.
          */
-        events::send<float>(events::ID("ekf2_aid_mask_imu"), events::Log::Warning,
+        // events::send<float>(events::ID("ekf2_aid_mask_imu"), events::Log::Warning,
                             "Use EKF2_IMU_CTRL instead", _param_ekf2_aid_mask.get());
     }
 
@@ -831,7 +831,7 @@ void EKF2::VerifyParams() {
         /* EVENT
          * @description <param>EKF2_AID_MASK</param> is set to {1:.0}.
          */
-        events::send<float>(events::ID("ekf2_aid_mask_drag"), events::Log::Warning,
+        // events::send<float>(events::ID("ekf2_aid_mask_drag"), events::Log::Warning,
                             "Use EKF2_DRAG_CTRL instead", _param_ekf2_aid_mask.get());
     }
 
@@ -854,7 +854,7 @@ void EKF2::VerifyParams() {
         /* EVENT
          * @description <param>EKF2_AID_MASK</param> is set to {1:.0}.
          */
-        events::send<float>(events::ID("ekf2_aid_mask_opt_flow"), events::Log::Warning,
+        // events::send<float>(events::ID("ekf2_aid_mask_opt_flow"), events::Log::Warning,
                             "Use EKF2_OF_CTRL instead", _param_ekf2_aid_mask.get());
     }
 
@@ -2410,7 +2410,7 @@ int EKF2::custom_command(int argc, char *argv[]) {
     return print_usage("unknown command");
 }
 
-int EKF2::task_spawn(int argc, char *argv[]) {
+int EKF2::instantiate(int argc, char *argv[]) {
     bool success     = false;
     bool replay_mode = false;
 
@@ -2555,7 +2555,7 @@ int EKF2::task_spawn(int argc, char *argv[]) {
 
     {
         // otherwise launch regular
-        EKF2 *ekf2_inst = new EKF2(false, px4::wq_configurations::INS0, replay_mode);
+        EKF2 *ekf2_inst = new EKF2(false, wq_configurations::INS0, replay_mode);
 
         if (ekf2_inst) {
             _objects[0].store(ekf2_inst);

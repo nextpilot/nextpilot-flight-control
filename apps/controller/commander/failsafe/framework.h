@@ -12,7 +12,7 @@
 
 #include <uORB/topics/failsafe_flags.h>
 #include <drivers/drv_hrt.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 
 #include <cstddef>
 
@@ -287,5 +287,5 @@ private:
     orb_advert_t _mavlink_log_pub{nullptr};
 
     DEFINE_PARAMETERS_CUSTOM_PARENT(ModuleParams,
-                                    (ParamFloat<px4::params::COM_FAIL_ACT_T>)_param_com_fail_act_t);
+                                    (ParamFloat<params_id::COM_FAIL_ACT_T>)_param_com_fail_act_t);
 };

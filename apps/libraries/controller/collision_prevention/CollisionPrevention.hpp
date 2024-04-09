@@ -24,7 +24,7 @@
 #include <drivers/drv_hrt.h>
 #include <mathlib/mathlib.h>
 #include <matrix/matrix/math.hpp>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <systemlib/mavlink_log.h>
 #include <uORB/Publication.hpp>
 #include <uORB/Subscription.hpp>
@@ -119,13 +119,13 @@ private:
 	hrt_abstime	_time_activated{0};
 
 	DEFINE_PARAMETERS(
-		(ParamFloat<px4::params::CP_DIST>) _param_cp_dist, /**< collision prevention keep minimum distance */
-		(ParamFloat<px4::params::CP_DELAY>) _param_cp_delay, /**< delay of the range measurement data*/
-		(ParamFloat<px4::params::CP_GUIDE_ANG>) _param_cp_guide_ang, /**< collision prevention change setpoint angle */
-		(ParamBool<px4::params::CP_GO_NO_DATA>) _param_cp_go_nodata, /**< movement allowed where no data*/
-		(ParamFloat<px4::params::MPC_XY_P>) _param_mpc_xy_p, /**< p gain from position controller*/
-		(ParamFloat<px4::params::MPC_JERK_MAX>) _param_mpc_jerk_max, /**< vehicle maximum jerk*/
-		(ParamFloat<px4::params::MPC_ACC_HOR>) _param_mpc_acc_hor /**< vehicle maximum horizontal acceleration*/
+		(ParamFloat<params_id::CP_DIST>) _param_cp_dist, /**< collision prevention keep minimum distance */
+		(ParamFloat<params_id::CP_DELAY>) _param_cp_delay, /**< delay of the range measurement data*/
+		(ParamFloat<params_id::CP_GUIDE_ANG>) _param_cp_guide_ang, /**< collision prevention change setpoint angle */
+		(ParamBool<params_id::CP_GO_NO_DATA>) _param_cp_go_nodata, /**< movement allowed where no data*/
+		(ParamFloat<params_id::MPC_XY_P>) _param_mpc_xy_p, /**< p gain from position controller*/
+		(ParamFloat<params_id::MPC_JERK_MAX>) _param_mpc_jerk_max, /**< vehicle maximum jerk*/
+		(ParamFloat<params_id::MPC_ACC_HOR>) _param_mpc_acc_hor /**< vehicle maximum horizontal acceleration*/
 	)
 
 	/**

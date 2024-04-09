@@ -23,7 +23,7 @@
 
 // #include <px4_platform_common/defines.h>
 // #include <px4_platform_common/module.h>
-// #include <px4_platform_common/module_params.h>
+// #include <px4_platform_common/module_params.hpp>
 // #include <px4_platform_common/posix.h>
 // #include <px4_platform_common/px4_work_queue/WorkItem.hpp>
 // #include <uORB/Publication.hpp>
@@ -47,18 +47,18 @@ public:
     McAutotuneAttitudeControl();
     ~McAutotuneAttitudeControl() override;
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static McAutotuneAttitudeControl *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
     int init() override;
 
-    /** @see ModuleBase::print_status() */
+    /** @see ModuleCommand::print_status() */
     int print_status() override;
 
 private:

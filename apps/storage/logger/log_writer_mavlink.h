@@ -27,7 +27,7 @@ public:
     LogWriterMavlink();
     ~LogWriterMavlink();
 
-    bool init();
+    int init() override;
 
     void start_log();
 

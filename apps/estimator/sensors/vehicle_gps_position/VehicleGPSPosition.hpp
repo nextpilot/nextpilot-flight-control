@@ -14,9 +14,9 @@
 #include <lib/matrix/matrix/math.hpp>
 #include <lib/perf/perf_counter.h>
 #include <px4_platform_common/log.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <uORB/Publication.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/SubscriptionCallback.hpp>
@@ -28,7 +28,7 @@
 using namespace time_literals;
 
 namespace sensors {
-class VehicleGPSPosition : public ModuleParams, public px4::ScheduledWorkItem {
+class VehicleGPSPosition : public ModuleParams, public WorkItemScheduled {
 public:
     VehicleGPSPosition();
     ~VehicleGPSPosition() override;
@@ -68,8 +68,8 @@ private:
     GpsBlending _gps_blending;
 
     DEFINE_PARAMETERS(
-        (ParamInt<px4::params::SENS_GPS_MASK>)_param_sens_gps_mask,
-        (ParamFloat<px4::params::SENS_GPS_TAU>)_param_sens_gps_tau,
-        (ParamInt<px4::params::SENS_GPS_PRIME>)_param_sens_gps_prime)
+        (ParamInt<params_id::SENS_GPS_MASK>)_param_sens_gps_mask,
+        (ParamFloat<params_id::SENS_GPS_TAU>)_param_sens_gps_tau,
+        (ParamInt<params_id::SENS_GPS_PRIME>)_param_sens_gps_prime)
 };
 }; // namespace sensors

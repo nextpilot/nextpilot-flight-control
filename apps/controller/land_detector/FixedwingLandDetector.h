@@ -36,7 +36,7 @@ public:
 
 protected:
     bool _get_landed_state() override;
-    void _set_hysteresis_factor(const int factor) override {};
+    void _set_hysteresis_factor(const int factor) override{};
 
 private:
     static constexpr hrt_abstime FLYING_TRIGGER_TIME_US = 0_us;
@@ -51,11 +51,11 @@ private:
 
     DEFINE_PARAMETERS_CUSTOM_PARENT(
         LandDetector,
-        (ParamFloat<px4::params::LNDFW_XYACC_MAX>)_param_lndfw_xyaccel_max,
-        (ParamFloat<px4::params::LNDFW_AIRSPD_MAX>)_param_lndfw_airspd,
-        (ParamFloat<px4::params::LNDFW_VEL_XY_MAX>)_param_lndfw_vel_xy_max,
-        (ParamFloat<px4::params::LNDFW_VEL_Z_MAX>)_param_lndfw_vel_z_max,
-        (ParamFloat<px4::params::LNDFW_TRIG_TIME>)_param_lndfw_trig_time);
+        (ParamFloat<params_id::LNDFW_XYACC_MAX>)_param_lndfw_xyaccel_max,
+        (ParamFloat<params_id::LNDFW_AIRSPD_MAX>)_param_lndfw_airspd,
+        (ParamFloat<params_id::LNDFW_VEL_XY_MAX>)_param_lndfw_vel_xy_max,
+        (ParamFloat<params_id::LNDFW_VEL_Z_MAX>)_param_lndfw_vel_z_max,
+        (ParamFloat<params_id::LNDFW_TRIG_TIME>)_param_lndfw_trig_time);
 };
 
 } // namespace land_detector

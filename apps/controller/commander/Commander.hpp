@@ -25,7 +25,7 @@
 #include <lib/mathlib/mathlib.h>
 #include <lib/perf/perf_counter.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 
 // publications
 #include <uORB/Publication.hpp>
@@ -66,27 +66,27 @@ using systemlib::Hysteresis;
 
 using namespace time_literals;
 
-class Commander : public ModuleBase<Commander>, public ModuleParams {
+class Commander : public ModuleCommand<Commander>, public ModuleParams {
 public:
     Commander();
     ~Commander();
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    static int *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static Commander *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    /** @see ModuleBase::run() */
+    /** @see ModuleCommand::run() */
     void run() override;
 
-    /** @see ModuleBase::print_status() */
+    /** @see ModuleCommand::print_status() */
     int print_status() override;
 
     void enable_hil();
@@ -285,22 +285,22 @@ private:
 
     DEFINE_PARAMETERS(
 
-        (ParamFloat<px4::params::COM_DISARM_LAND>)_param_com_disarm_land,
-        (ParamFloat<px4::params::COM_DISARM_PRFLT>)_param_com_disarm_preflight,
-        (ParamInt<px4::params::COM_DL_LOSS_T>)_param_com_dl_loss_t,
-        (ParamInt<px4::params::COM_HLDL_LOSS_T>)_param_com_hldl_loss_t,
-        (ParamInt<px4::params::COM_HLDL_REG_T>)_param_com_hldl_reg_t,
-        (ParamBool<px4::params::COM_HOME_EN>)_param_com_home_en,
-        (ParamBool<px4::params::COM_HOME_IN_AIR>)_param_com_home_in_air,
-        (ParamInt<px4::params::COM_FLT_PROFILE>)_param_com_flt_profile,
-        (ParamBool<px4::params::COM_FORCE_SAFETY>)_param_com_force_safety,
-        (ParamFloat<px4::params::COM_KILL_DISARM>)_param_com_kill_disarm,
-        (ParamBool<px4::params::COM_MOT_TEST_EN>)_param_com_mot_test_en,
-        (ParamBool<px4::params::COM_OBS_AVOID>)_param_com_obs_avoid,
-        (ParamFloat<px4::params::COM_OBC_LOSS_T>)_param_com_obc_loss_t,
-        (ParamInt<px4::params::COM_PREARM_MODE>)_param_com_prearm_mode,
-        (ParamInt<px4::params::COM_RC_OVERRIDE>)_param_com_rc_override,
-        (ParamInt<px4::params::COM_FLIGHT_UUID>)_param_flight_uuid,
-        (ParamInt<px4::params::COM_TAKEOFF_ACT>)_param_takeoff_finished_action,
-        (ParamFloat<px4::params::COM_CPU_MAX>)_param_com_cpu_max)
+        (ParamFloat<params_id::COM_DISARM_LAND>)_param_com_disarm_land,
+        (ParamFloat<params_id::COM_DISARM_PRFLT>)_param_com_disarm_preflight,
+        (ParamInt<params_id::COM_DL_LOSS_T>)_param_com_dl_loss_t,
+        (ParamInt<params_id::COM_HLDL_LOSS_T>)_param_com_hldl_loss_t,
+        (ParamInt<params_id::COM_HLDL_REG_T>)_param_com_hldl_reg_t,
+        (ParamBool<params_id::COM_HOME_EN>)_param_com_home_en,
+        (ParamBool<params_id::COM_HOME_IN_AIR>)_param_com_home_in_air,
+        (ParamInt<params_id::COM_FLT_PROFILE>)_param_com_flt_profile,
+        (ParamBool<params_id::COM_FORCE_SAFETY>)_param_com_force_safety,
+        (ParamFloat<params_id::COM_KILL_DISARM>)_param_com_kill_disarm,
+        (ParamBool<params_id::COM_MOT_TEST_EN>)_param_com_mot_test_en,
+        (ParamBool<params_id::COM_OBS_AVOID>)_param_com_obs_avoid,
+        (ParamFloat<params_id::COM_OBC_LOSS_T>)_param_com_obc_loss_t,
+        (ParamInt<params_id::COM_PREARM_MODE>)_param_com_prearm_mode,
+        (ParamInt<params_id::COM_RC_OVERRIDE>)_param_com_rc_override,
+        (ParamInt<params_id::COM_FLIGHT_UUID>)_param_flight_uuid,
+        (ParamInt<params_id::COM_TAKEOFF_ACT>)_param_takeoff_finished_action,
+        (ParamFloat<params_id::COM_CPU_MAX>)_param_com_cpu_max)
 };

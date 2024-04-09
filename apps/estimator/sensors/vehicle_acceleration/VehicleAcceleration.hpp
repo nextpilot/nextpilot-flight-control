@@ -15,9 +15,9 @@
 #include <lib/matrix/matrix/math.hpp>
 #include <lib/mathlib/math/filter/LowPassFilter2p.hpp>
 #include <px4_platform_common/log.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <uORB/Publication.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/SubscriptionCallback.hpp>
@@ -32,7 +32,7 @@ using namespace time_literals;
 
 namespace sensors {
 
-class VehicleAcceleration : public ModuleParams, public px4::ScheduledWorkItem {
+class VehicleAcceleration : public ModuleParams, public WorkItemScheduled {
 public:
     VehicleAcceleration();
     ~VehicleAcceleration() override;
@@ -73,8 +73,8 @@ private:
     math::LowPassFilter2p<matrix::Vector3f> _lp_filter{};
 
     DEFINE_PARAMETERS(
-        (ParamFloat<px4::params::IMU_ACCEL_CUTOFF>)_param_imu_accel_cutoff,
-        (ParamInt<px4::params::IMU_INTEG_RATE>)_param_imu_integ_rate)
+        (ParamFloat<params_id::IMU_ACCEL_CUTOFF>)_param_imu_accel_cutoff,
+        (ParamInt<params_id::IMU_INTEG_RATE>)_param_imu_integ_rate)
 };
 
 } // namespace sensors

@@ -19,7 +19,7 @@
 #include <px4_platform_common/sem.hpp>
 
 PWMSim::PWMSim(bool hil_mode_enabled) :
-    OutputModuleInterface(MODULE_NAME, px4::wq_configurations::hp_default) {
+    OutputModuleInterface(MODULE_NAME, wq_configurations::hp_default) {
     _mixing_output.setAllDisarmedValues(PWM_SIM_DISARMED_MAGIC);
     _mixing_output.setAllFailsafeValues(PWM_SIM_FAILSAFE_MAGIC);
     _mixing_output.setAllMinValues(PWM_SIM_PWM_MIN_MAGIC);
@@ -91,7 +91,7 @@ void PWMSim::Run() {
     _mixing_output.updateSubscriptions(true);
 }
 
-int PWMSim::task_spawn(int argc, char *argv[]) {
+int PWMSim::instantiate(int argc, char *argv[]) {
     bool hil_mode = false;
 
     int         myoptind = 1;

@@ -17,7 +17,7 @@ using namespace matrix;
 
 SensorMagSim::SensorMagSim() :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::hp_default) {
+    WorkItemScheduled(MODULE_NAME, wq_configurations::hp_default) {
     _px4_mag.set_device_type(DRV_MAG_DEVTYPE_MAGSIM);
 }
 
@@ -113,7 +113,7 @@ void SensorMagSim::Run() {
     perf_end(_loop_perf);
 }
 
-int SensorMagSim::task_spawn(int argc, char *argv[]) {
+int SensorMagSim::instantiate(int argc, char *argv[]) {
     SensorMagSim *instance = new SensorMagSim();
 
     if (instance) {

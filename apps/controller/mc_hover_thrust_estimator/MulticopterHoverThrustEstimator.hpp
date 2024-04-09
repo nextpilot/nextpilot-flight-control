@@ -30,18 +30,18 @@ public:
     MulticopterHoverThrustEstimator();
     ~MulticopterHoverThrustEstimator() override;
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static MulticopterHoverThrustEstimator *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
     int init() override;
 
-    /** @see ModuleBase::print_status() */
+    /** @see ModuleCommand::print_status() */
     int print_status() override;
 
 private:

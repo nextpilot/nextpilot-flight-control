@@ -13,8 +13,8 @@
 #include <lib/perf/perf_counter.h>
 #include <px4_platform_common/defines.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/module_params.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <uORB/PublicationMulti.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/SubscriptionInterval.hpp>
@@ -31,21 +31,21 @@ static constexpr float PRESSURE_MSL    = 101325.0; // pressure at MSL [Pa]
 static constexpr float LAPSE_RATE      = 0.0065;   // reduction in temperature with altitude for troposphere [K/m]
 static constexpr float AIR_DENSITY_MSL = 1.225;    // air density at MSL [kg/m^3]
 
-class SensorAirspeedSim : public ModuleBase<SensorAirspeedSim>, public ModuleParams, public px4::ScheduledWorkItem {
+class SensorAirspeedSim : public ModuleCommand<SensorAirspeedSim>, public ModuleParams, public WorkItemScheduled {
 public:
     SensorAirspeedSim();
     ~SensorAirspeedSim() override;
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    static int *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    bool init();
+    int init() override;
 
 private:
     void Run() override;
@@ -68,5 +68,5 @@ private:
     perf_counter_t _loop_perf{perf_alloc(PC_ELAPSED, MODULE_NAME ": cycle")};
 
     DEFINE_PARAMETERS(
-        (ParamInt<px4::params::SIM_ARSPD_FAIL>)_sim_failure)
+        (ParamInt<params_id::SIM_ARSPD_FAIL>)_sim_failure)
 };

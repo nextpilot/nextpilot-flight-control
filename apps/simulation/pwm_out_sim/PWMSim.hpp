@@ -29,21 +29,21 @@
 
 using namespace time_literals;
 
-class PWMSim : public ModuleBase<PWMSim>, public OutputModuleInterface {
+class PWMSim : public ModuleCommand<PWMSim>, public OutputModuleInterface {
 public:
     PWMSim(bool hil_mode_enabled);
     ~PWMSim() override;
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    static int *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    /** @see ModuleBase::print_status() */
+    /** @see ModuleCommand::print_status() */
     int print_status() override;
 
     bool updateOutputs(bool stop_motors, uint16_t outputs[MAX_ACTUATORS],

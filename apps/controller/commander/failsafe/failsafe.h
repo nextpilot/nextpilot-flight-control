@@ -125,18 +125,18 @@ private:
     bool        _manual_control_lost_at_arming{false}; ///< true if manual control was lost at arming time
 
     DEFINE_PARAMETERS_CUSTOM_PARENT(FailsafeBase,
-                                    (ParamInt<px4::params::NAV_DLL_ACT>)_param_nav_dll_act,
-                                    (ParamInt<px4::params::NAV_RCL_ACT>)_param_nav_rcl_act,
-                                    (ParamInt<px4::params::COM_RCL_EXCEPT>)_param_com_rcl_except,
-                                    (ParamInt<px4::params::COM_RC_IN_MODE>)_param_com_rc_in_mode,
-                                    (ParamInt<px4::params::COM_POSCTL_NAVL>)_param_com_posctl_navl,
-                                    (ParamInt<px4::params::GF_ACTION>)_param_gf_action,
-                                    (ParamFloat<px4::params::COM_SPOOLUP_TIME>)_param_com_spoolup_time,
-                                    (ParamInt<px4::params::COM_IMB_PROP_ACT>)_param_com_imb_prop_act,
-                                    (ParamFloat<px4::params::COM_LKDOWN_TKO>)_param_com_lkdown_tko,
-                                    (ParamInt<px4::params::CBRK_FLIGHTTERM>)_param_cbrk_flightterm,
-                                    (ParamInt<px4::params::COM_ACT_FAIL_ACT>)_param_com_actuator_failure_act,
-                                    (ParamInt<px4::params::COM_LOW_BAT_ACT>)_param_com_low_bat_act,
-                                    (ParamInt<px4::params::COM_OBL_RC_ACT>)_param_com_obl_rc_act,
-                                    (ParamInt<px4::params::COM_QC_ACT>)_param_com_qc_act);
+                                    (ParamInt<params_id::NAV_DLL_ACT>)_param_nav_dll_act,
+                                    (ParamInt<params_id::NAV_RCL_ACT>)_param_nav_rcl_act,
+                                    (ParamInt<params_id::COM_RCL_EXCEPT>)_param_com_rcl_except,
+                                    (ParamInt<params_id::COM_RC_IN_MODE>)_param_com_rc_in_mode,
+                                    (ParamInt<params_id::COM_POSCTL_NAVL>)_param_com_posctl_navl,
+                                    (ParamInt<params_id::GF_ACTION>)_param_gf_action,
+                                    (ParamFloat<params_id::COM_SPOOLUP_TIME>)_param_com_spoolup_time,
+                                    (ParamInt<params_id::COM_IMB_PROP_ACT>)_param_com_imb_prop_act,
+                                    (ParamFloat<params_id::COM_LKDOWN_TKO>)_param_com_lkdown_tko,
+                                    (ParamInt<params_id::CBRK_FLIGHTTERM>)_param_cbrk_flightterm,
+                                    (ParamInt<params_id::COM_ACT_FAIL_ACT>)_param_com_actuator_failure_act,
+                                    (ParamInt<params_id::COM_LOW_BAT_ACT>)_param_com_low_bat_act,
+                                    (ParamInt<params_id::COM_OBL_RC_ACT>)_param_com_obl_rc_act,
+                                    (ParamInt<params_id::COM_QC_ACT>)_param_com_qc_act);
 };

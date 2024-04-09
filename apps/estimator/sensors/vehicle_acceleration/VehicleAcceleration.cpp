@@ -20,7 +20,7 @@ namespace sensors {
 
 VehicleAcceleration::VehicleAcceleration() :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::nav_and_controllers) {
+    WorkItemScheduled(MODULE_NAME, wq_configurations::nav_and_controllers) {
     _vehicle_acceleration_pub.advertise();
 
     CheckAndUpdateFilters();

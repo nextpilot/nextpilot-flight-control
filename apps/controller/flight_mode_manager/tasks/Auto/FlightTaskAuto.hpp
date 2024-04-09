@@ -130,33 +130,33 @@ protected:
     bool                _want_takeoff{false};
 
     DEFINE_PARAMETERS_CUSTOM_PARENT(FlightTask,
-                                    (ParamFloat<px4::params::MPC_XY_CRUISE>)_param_mpc_xy_cruise,
-                                    (ParamFloat<px4::params::NAV_MC_ALT_RAD>)
-                                        _param_nav_mc_alt_rad,                                  // vertical acceptance radius at which waypoints are updated
-                                    (ParamInt<px4::params::MPC_YAW_MODE>)_param_mpc_yaw_mode,   // defines how heading is executed,
-                                    (ParamInt<px4::params::COM_OBS_AVOID>)_param_com_obs_avoid, // obstacle avoidance active
-                                    (ParamFloat<px4::params::MPC_YAWRAUTO_MAX>)_param_mpc_yawrauto_max,
-                                    (ParamFloat<px4::params::MIS_YAW_ERR>)_param_mis_yaw_err, // yaw-error threshold
-                                    (ParamFloat<px4::params::MPC_ACC_HOR>)_param_mpc_acc_hor, // acceleration in flight
-                                    (ParamFloat<px4::params::MPC_ACC_UP_MAX>)_param_mpc_acc_up_max,
-                                    (ParamFloat<px4::params::MPC_ACC_DOWN_MAX>)_param_mpc_acc_down_max,
-                                    (ParamFloat<px4::params::MPC_JERK_AUTO>)_param_mpc_jerk_auto,
-                                    (ParamFloat<px4::params::MPC_XY_TRAJ_P>)_param_mpc_xy_traj_p,
-                                    (ParamFloat<px4::params::MPC_XY_ERR_MAX>)_param_mpc_xy_err_max,
-                                    (ParamFloat<px4::params::MPC_LAND_SPEED>)_param_mpc_land_speed,
-                                    (ParamFloat<px4::params::MPC_LAND_CRWL>)_param_mpc_land_crawl_speed,
-                                    (ParamInt<px4::params::MPC_LAND_RC_HELP>)_param_mpc_land_rc_help,
-                                    (ParamFloat<px4::params::MPC_LAND_RADIUS>)_param_mpc_land_radius,
-                                    (ParamFloat<px4::params::MPC_LAND_ALT1>)
+                                    (ParamFloat<params_id::MPC_XY_CRUISE>)_param_mpc_xy_cruise,
+                                    (ParamFloat<params_id::NAV_MC_ALT_RAD>)
+                                        _param_nav_mc_alt_rad,                                // vertical acceptance radius at which waypoints are updated
+                                    (ParamInt<params_id::MPC_YAW_MODE>)_param_mpc_yaw_mode,   // defines how heading is executed,
+                                    (ParamInt<params_id::COM_OBS_AVOID>)_param_com_obs_avoid, // obstacle avoidance active
+                                    (ParamFloat<params_id::MPC_YAWRAUTO_MAX>)_param_mpc_yawrauto_max,
+                                    (ParamFloat<params_id::MIS_YAW_ERR>)_param_mis_yaw_err, // yaw-error threshold
+                                    (ParamFloat<params_id::MPC_ACC_HOR>)_param_mpc_acc_hor, // acceleration in flight
+                                    (ParamFloat<params_id::MPC_ACC_UP_MAX>)_param_mpc_acc_up_max,
+                                    (ParamFloat<params_id::MPC_ACC_DOWN_MAX>)_param_mpc_acc_down_max,
+                                    (ParamFloat<params_id::MPC_JERK_AUTO>)_param_mpc_jerk_auto,
+                                    (ParamFloat<params_id::MPC_XY_TRAJ_P>)_param_mpc_xy_traj_p,
+                                    (ParamFloat<params_id::MPC_XY_ERR_MAX>)_param_mpc_xy_err_max,
+                                    (ParamFloat<params_id::MPC_LAND_SPEED>)_param_mpc_land_speed,
+                                    (ParamFloat<params_id::MPC_LAND_CRWL>)_param_mpc_land_crawl_speed,
+                                    (ParamInt<params_id::MPC_LAND_RC_HELP>)_param_mpc_land_rc_help,
+                                    (ParamFloat<params_id::MPC_LAND_RADIUS>)_param_mpc_land_radius,
+                                    (ParamFloat<params_id::MPC_LAND_ALT1>)
                                         _param_mpc_land_alt1, // altitude at which we start ramping down speed
-                                    (ParamFloat<px4::params::MPC_LAND_ALT2>)
+                                    (ParamFloat<params_id::MPC_LAND_ALT2>)
                                         _param_mpc_land_alt2, // altitude at which we descend at land speed
-                                    (ParamFloat<px4::params::MPC_LAND_ALT3>)
+                                    (ParamFloat<params_id::MPC_LAND_ALT3>)
                                         _param_mpc_land_alt3, // altitude where we switch to crawl speed, if LIDAR available
-                                    (ParamFloat<px4::params::MPC_Z_V_AUTO_UP>)_param_mpc_z_v_auto_up,
-                                    (ParamFloat<px4::params::MPC_Z_V_AUTO_DN>)_param_mpc_z_v_auto_dn,
-                                    (ParamFloat<px4::params::MPC_TKO_SPEED>)_param_mpc_tko_speed,
-                                    (ParamFloat<px4::params::MPC_TKO_RAMP_T>)
+                                    (ParamFloat<params_id::MPC_Z_V_AUTO_UP>)_param_mpc_z_v_auto_up,
+                                    (ParamFloat<params_id::MPC_Z_V_AUTO_DN>)_param_mpc_z_v_auto_dn,
+                                    (ParamFloat<params_id::MPC_TKO_SPEED>)_param_mpc_tko_speed,
+                                    (ParamFloat<params_id::MPC_TKO_RAMP_T>)
                                         _param_mpc_tko_ramp_t // time constant for smooth takeoff ramp
     );
 

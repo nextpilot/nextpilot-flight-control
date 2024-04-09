@@ -27,7 +27,7 @@ using matrix::wrap_pi;
 
 FixedwingPositionControl::FixedwingPositionControl(bool vtol) :
     ModuleParams(nullptr),
-    WorkItem(MODULE_NAME, px4::wq_configurations::nav_and_controllers),
+    WorkItem(MODULE_NAME, wq_configurations::nav_and_controllers),
     _attitude_sp_pub(vtol ? ORB_ID(fw_virtual_attitude_setpoint) : ORB_ID(vehicle_attitude_setpoint)),
     _loop_perf(perf_alloc(PC_ELAPSED, MODULE_NAME ": cycle")),
     _launchDetector(this),
@@ -126,10 +126,10 @@ int FixedwingPositionControl::parameters_update() {
          * - <param>FW_AIRSPD_MAX</param>: {1:.1}
          * - <param>FW_AIRSPD_MIN</param>: {2:.1}
          */
-        events::send<float, float>(events::ID("fixedwing_position_control_conf_invalid_airspeed"), events::Log::Error,
+        // events::send<float, float>(events::ID("fixedwing_position_control_conf_invalid_airspeed"), events::Log::Error,
                                    "Invalid configuration: Airspeed max smaller than min",
                                    _param_fw_airspd_max.get(), _param_fw_airspd_min.get());
-        check_ret = PX4_ERROR;
+                                   check_ret = PX4_ERROR;
     }
 
     if (_param_fw_airspd_max.get() < 5.0f || _param_fw_airspd_min.get() > 100.0f) {
@@ -138,10 +138,10 @@ int FixedwingPositionControl::parameters_update() {
          * - <param>FW_AIRSPD_MAX</param>: {1:.1}
          * - <param>FW_AIRSPD_MIN</param>: {2:.1}
          */
-        events::send<float, float>(events::ID("fixedwing_position_control_conf_invalid_airspeed_bounds"), events::Log::Error,
+        // events::send<float, float>(events::ID("fixedwing_position_control_conf_invalid_airspeed_bounds"), events::Log::Error,
                                    "Invalid configuration: Airspeed max \\< 5 m/s or min \\> 100 m/s",
                                    _param_fw_airspd_max.get(), _param_fw_airspd_min.get());
-        check_ret = PX4_ERROR;
+                                   check_ret = PX4_ERROR;
     }
 
     if (_param_fw_airspd_trim.get() < _param_fw_airspd_min.get() ||
@@ -152,11 +152,11 @@ int FixedwingPositionControl::parameters_update() {
          * - <param>FW_AIRSPD_MIN</param>: {2:.1}
          * - <param>FW_AIRSPD_TRIM</param>: {3:.1}
          */
-        events::send<float, float, float>(events::ID("fixedwing_position_control_conf_invalid_trim_bounds"),
+        // events::send<float, float, float>(events::ID("fixedwing_position_control_conf_invalid_trim_bounds"),
                                           events::Log::Error,
                                           "Invalid configuration: Airspeed trim out of min or max bounds",
                                           _param_fw_airspd_max.get(), _param_fw_airspd_min.get(), _param_fw_airspd_trim.get());
-        check_ret = PX4_ERROR;
+                                          check_ret = PX4_ERROR;
     }
 
     if (_param_fw_airspd_stall.get() > _param_fw_airspd_min.get()) {
@@ -165,10 +165,10 @@ int FixedwingPositionControl::parameters_update() {
          * - <param>FW_AIRSPD_MIN</param>: {1:.1}
          * - <param>FW_AIRSPD_STALL</param>: {2:.1}
          */
-        events::send<float, float>(events::ID("fixedwing_position_control_conf_invalid_stall"), events::Log::Error,
+        // events::send<float, float>(events::ID("fixedwing_position_control_conf_invalid_stall"), events::Log::Error,
                                    "Invalid configuration: FW_AIRSPD_STALL higher FW_AIRSPD_MIN",
                                    _param_fw_airspd_min.get(), _param_fw_airspd_stall.get());
-        check_ret = PX4_ERROR;
+                                   check_ret = PX4_ERROR;
     }
 
     return check_ret;
@@ -526,25 +526,25 @@ void FixedwingPositionControl::updateLandingAbortStatus(const uint8_t new_abort_
         if (new_abort_status > 0 && _landing_abort_status != new_abort_status) {
             switch (new_abort_status) {
             case (position_controller_landing_status_s::ABORTED_BY_OPERATOR): {
-                events::send(events::ID("fixedwing_position_control_landing_abort_status_operator_abort"), events::Log::Critical,
+                // events::send(events::ID("fixedwing_position_control_landing_abort_status_operator_abort"), events::Log::Critical,
                              "Landing aborted by operator");
-                break;
+                             break;
             }
 
             case (position_controller_landing_status_s::TERRAIN_NOT_FOUND): {
-                events::send(events::ID("fixedwing_position_control_landing_abort_status_terrain_not_found"), events::Log::Critical,
+                // events::send(events::ID("fixedwing_position_control_landing_abort_status_terrain_not_found"), events::Log::Critical,
                              "Landing aborted: terrain measurement not found");
-                break;
+                             break;
             }
 
             case (position_controller_landing_status_s::TERRAIN_TIMEOUT): {
-                events::send(events::ID("fixedwing_position_control_landing_abort_status_terrain_timeout"), events::Log::Critical,
+                // events::send(events::ID("fixedwing_position_control_landing_abort_status_terrain_timeout"), events::Log::Critical,
                              "Landing aborted: terrain estimate timed out");
-                break;
+                             break;
             }
 
             default: {
-                events::send(events::ID("fixedwing_position_control_landing_abort_status_unknown_criterion"), events::Log::Critical,
+                // events::send(events::ID("fixedwing_position_control_landing_abort_status_unknown_criterion"), events::Log::Critical,
                              "Landing aborted: unknown criterion");
             }
             }
@@ -703,7 +703,7 @@ void FixedwingPositionControl::set_control_mode_current(const hrt_abstime &now) 
         if (hrt_elapsed_time(&_time_in_fixed_bank_loiter) < (_param_nav_gpsf_lt.get() * 1_s) && !_vehicle_status.in_transition_mode) {
             if (commanded_position_control_mode != FW_POSCTRL_MODE_AUTO_ALTITUDE) {
                 // Need to init because last loop iteration was in a different mode
-                events::send(events::ID("fixedwing_position_control_fb_loiter"), events::Log::Critical,
+                // events::send(events::ID("fixedwing_position_control_fb_loiter"), events::Log::Critical,
                              "Start loiter with fixed bank angle");
             }
 
@@ -711,7 +711,7 @@ void FixedwingPositionControl::set_control_mode_current(const hrt_abstime &now) 
 
         } else {
             if (commanded_position_control_mode != FW_POSCTRL_MODE_AUTO_CLIMBRATE && !_vehicle_status.in_transition_mode) {
-                events::send(events::ID("fixedwing_position_control_descend"), events::Log::Critical, "Start descending");
+                // events::send(events::ID("fixedwing_position_control_descend"), events::Log::Critical, "Start descending");
             }
 
             _control_mode_current = FW_POSCTRL_MODE_AUTO_CLIMBRATE;
@@ -1203,7 +1203,7 @@ void FixedwingPositionControl::control_auto_takeoff(const hrt_abstime &now, cons
             _launch_current_yaw = _yaw;
             _airspeed_slew_rate_controller.setForcedValue(takeoff_airspeed);
 
-            events::send(events::ID("fixedwing_position_control_takeoff"), events::Log::Info, "Takeoff on runway");
+            // events::send(events::ID("fixedwing_position_control_takeoff"), events::Log::Info, "Takeoff on runway");
         }
 
         if (_skipping_takeoff_detection) {
@@ -1471,7 +1471,7 @@ void FixedwingPositionControl::control_auto_landing_straight(const hrt_abstime &
             _flare_states.start_time                   = now;
             _flare_states.initial_height_rate_setpoint = -_local_pos.vz;
             _flare_states.initial_throttle_setpoint    = _att_sp.thrust_body[0];
-            events::send(events::ID("fixedwing_position_control_landing_flaring"), events::Log::Info,
+            // events::send(events::ID("fixedwing_position_control_landing_flaring"), events::Log::Info,
                          "Landing, flaring");
         }
 
@@ -1673,7 +1673,7 @@ void FixedwingPositionControl::control_auto_landing_circular(const hrt_abstime &
             _flare_states.start_time                   = now;
             _flare_states.initial_height_rate_setpoint = -_local_pos.vz;
             _flare_states.initial_throttle_setpoint    = _att_sp.thrust_body[0];
-            events::send(events::ID("fixedwing_position_control_landing_circle_flaring"), events::Log::Info,
+            // events::send(events::ID("fixedwing_position_control_landing_circle_flaring"), events::Log::Info,
                          "Landing, flaring");
         }
 
@@ -2792,7 +2792,7 @@ void FixedwingPositionControl::navigateBearing(const matrix::Vector2f &vehicle_p
     _npfg.guideToPath(vehicle_pos, ground_vel, wind_vel, unit_path_tangent, vehicle_pos, 0.0f);
 }
 
-int FixedwingPositionControl::task_spawn(int argc, char *argv[]) {
+int FixedwingPositionControl::instantiate(int argc, char *argv[]) {
     bool vtol = false;
 
     if (argc > 1) {

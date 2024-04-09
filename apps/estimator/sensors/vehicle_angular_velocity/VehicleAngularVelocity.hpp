@@ -18,9 +18,9 @@
 #include <lib/mathlib/math/filter/LowPassFilter2p.hpp>
 #include <lib/mathlib/math/filter/NotchFilter.hpp>
 #include <px4_platform_common/log.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <uORB/Publication.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/SubscriptionCallback.hpp>
@@ -38,7 +38,7 @@ using namespace time_literals;
 
 namespace sensors {
 
-class VehicleAngularVelocity : public ModuleParams, public px4::ScheduledWorkItem {
+class VehicleAngularVelocity : public ModuleParams, public WorkItemScheduled {
 public:
     VehicleAngularVelocity();
     ~VehicleAngularVelocity() override;
@@ -157,18 +157,18 @@ private:
 
     DEFINE_PARAMETERS(
 #if !defined(CONSTRAINED_FLASH)
-        (ParamInt<px4::params::IMU_GYRO_DNF_EN>)_param_imu_gyro_dnf_en,
-        (ParamInt<px4::params::IMU_GYRO_DNF_HMC>)_param_imu_gyro_dnf_hmc,
-        (ParamFloat<px4::params::IMU_GYRO_DNF_BW>)_param_imu_gyro_dnf_bw,
-        (ParamFloat<px4::params::IMU_GYRO_DNF_MIN>)_param_imu_gyro_dnf_min,
+        (ParamInt<params_id::IMU_GYRO_DNF_EN>)_param_imu_gyro_dnf_en,
+        (ParamInt<params_id::IMU_GYRO_DNF_HMC>)_param_imu_gyro_dnf_hmc,
+        (ParamFloat<params_id::IMU_GYRO_DNF_BW>)_param_imu_gyro_dnf_bw,
+        (ParamFloat<params_id::IMU_GYRO_DNF_MIN>)_param_imu_gyro_dnf_min,
 #endif // !CONSTRAINED_FLASH
-        (ParamFloat<px4::params::IMU_GYRO_CUTOFF>)_param_imu_gyro_cutoff,
-        (ParamFloat<px4::params::IMU_GYRO_NF0_FRQ>)_param_imu_gyro_nf0_frq,
-        (ParamFloat<px4::params::IMU_GYRO_NF0_BW>)_param_imu_gyro_nf0_bw,
-        (ParamFloat<px4::params::IMU_GYRO_NF1_FRQ>)_param_imu_gyro_nf1_frq,
-        (ParamFloat<px4::params::IMU_GYRO_NF1_BW>)_param_imu_gyro_nf1_bw,
-        (ParamInt<px4::params::IMU_GYRO_RATEMAX>)_param_imu_gyro_ratemax,
-        (ParamFloat<px4::params::IMU_DGYRO_CUTOFF>)_param_imu_dgyro_cutoff)
+        (ParamFloat<params_id::IMU_GYRO_CUTOFF>)_param_imu_gyro_cutoff,
+        (ParamFloat<params_id::IMU_GYRO_NF0_FRQ>)_param_imu_gyro_nf0_frq,
+        (ParamFloat<params_id::IMU_GYRO_NF0_BW>)_param_imu_gyro_nf0_bw,
+        (ParamFloat<params_id::IMU_GYRO_NF1_FRQ>)_param_imu_gyro_nf1_frq,
+        (ParamFloat<params_id::IMU_GYRO_NF1_BW>)_param_imu_gyro_nf1_bw,
+        (ParamInt<params_id::IMU_GYRO_RATEMAX>)_param_imu_gyro_ratemax,
+        (ParamFloat<params_id::IMU_DGYRO_CUTOFF>)_param_imu_dgyro_cutoff)
 };
 
 } // namespace sensors

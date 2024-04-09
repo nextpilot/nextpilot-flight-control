@@ -17,7 +17,7 @@ using namespace time_literals;
 
 FlightModeManager::FlightModeManager() :
     ModuleParams(nullptr),
-    WorkItem(MODULE_NAME, px4::wq_configurations::nav_and_controllers) {
+    WorkItem(MODULE_NAME, wq_configurations::nav_and_controllers) {
     updateParams();
 
     // initialize all flight-tasks
@@ -402,7 +402,7 @@ const char *FlightModeManager::errorToString(const FlightTaskError error) {
     return "This error is not mapped to a string or is unknown.";
 }
 
-int FlightModeManager::task_spawn(int argc, char *argv[]) {
+int FlightModeManager::instantiate(int argc, char *argv[]) {
     FlightModeManager *instance = new FlightModeManager();
 
     if (instance) {

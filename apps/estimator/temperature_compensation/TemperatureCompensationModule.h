@@ -17,10 +17,10 @@
 #include <px4_platform_common/atomic.h>
 #include <px4_platform_common/getopt.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <px4_platform_common/tasks.h>
 #include <px4_platform_common/time.h>
 #include <uORB/Publication.hpp>
@@ -40,30 +40,30 @@ using namespace time_literals;
 
 namespace temperature_compensation {
 
-class TemperatureCompensationModule : public ModuleBase<TemperatureCompensationModule>, public ModuleParams, public px4::ScheduledWorkItem {
+class TemperatureCompensationModule : public ModuleCommand<TemperatureCompensationModule>, public ModuleParams, public WorkItemScheduled {
 public:
     TemperatureCompensationModule();
     ~TemperatureCompensationModule() override;
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    static int *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static TemperatureCompensationModule *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    /** @see ModuleBase::print_status() */
+    /** @see ModuleCommand::print_status() */
     int print_status() override;
 
     /**
      * Initializes scheduling on work queue.
      */
-    bool init();
+    int init() override;
 
 private:
     void Run() override;

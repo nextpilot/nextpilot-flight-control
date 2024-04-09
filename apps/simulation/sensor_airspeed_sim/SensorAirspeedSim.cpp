@@ -18,7 +18,7 @@ using namespace matrix;
 
 SensorAirspeedSim::SensorAirspeedSim() :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::hp_default) {
+    WorkItemScheduled(MODULE_NAME, wq_configurations::hp_default) {
 }
 
 SensorAirspeedSim::~SensorAirspeedSim() {
@@ -121,7 +121,7 @@ void SensorAirspeedSim::Run() {
     perf_end(_loop_perf);
 }
 
-int SensorAirspeedSim::task_spawn(int argc, char *argv[]) {
+int SensorAirspeedSim::instantiate(int argc, char *argv[]) {
     SensorAirspeedSim *instance = new SensorAirspeedSim();
 
     if (instance) {

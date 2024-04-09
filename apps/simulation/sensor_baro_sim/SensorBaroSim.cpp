@@ -16,7 +16,7 @@ using namespace matrix;
 
 SensorBaroSim::SensorBaroSim() :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::hp_default) {
+    WorkItemScheduled(MODULE_NAME, wq_configurations::hp_default) {
     srand(1234); // initialize the random seed once before calling generate_wgn()
 }
 
@@ -148,7 +148,7 @@ void SensorBaroSim::Run() {
     perf_end(_loop_perf);
 }
 
-int SensorBaroSim::task_spawn(int argc, char *argv[]) {
+int SensorBaroSim::instantiate(int argc, char *argv[]) {
     SensorBaroSim *instance = new SensorBaroSim();
 
     if (instance) {

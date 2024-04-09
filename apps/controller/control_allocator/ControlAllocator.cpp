@@ -28,7 +28,7 @@ using namespace time_literals;
 
 ControlAllocator::ControlAllocator() :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::rate_ctrl),
+    WorkItemScheduled(MODULE_NAME, wq_configurations::rate_ctrl),
     _loop_perf(perf_alloc(PC_ELAPSED, MODULE_NAME ": cycle")) {
     _control_allocator_status_pub[0].advertise();
     _control_allocator_status_pub[1].advertise();
@@ -693,7 +693,7 @@ void ControlAllocator::check_for_motor_failures() {
     }
 }
 
-int ControlAllocator::task_spawn(int argc, char *argv[]) {
+int ControlAllocator::instantiate(int argc, char *argv[]) {
     ControlAllocator *instance = new ControlAllocator();
 
     if (instance) {

@@ -43,7 +43,7 @@ public:
     LogWriterFile(size_t buffer_size);
     ~LogWriterFile();
 
-    bool init();
+    int init() override;
 
     /**
      * start the thread

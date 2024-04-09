@@ -25,7 +25,7 @@ using matrix::Vector3;
 
 TargetEstimator::TargetEstimator() :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::nav_and_controllers) {
+    WorkItemScheduled(MODULE_NAME, wq_configurations::nav_and_controllers) {
 }
 
 TargetEstimator::~TargetEstimator() {

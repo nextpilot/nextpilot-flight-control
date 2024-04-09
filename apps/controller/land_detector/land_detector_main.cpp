@@ -16,11 +16,13 @@
  * @author Lorenz Meier <lorenz@px4.io>
  */
 
-#include <drivers/drv_hrt.h>
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/tasks.h>
+#define LOG_TAG "land_detector_main"
+
+// #include <drivers/drv_hrt.h>
+// #include <px4_platform_common/px4_config.h>
+// #include <px4_platform_common/defines.h>
+// #include <px4_platform_common/posix.h>
+// #include <px4_platform_common/tasks.h>
 
 #include "FixedwingLandDetector.h"
 #include "MulticopterLandDetector.h"
@@ -32,10 +34,10 @@ namespace land_detector {
 
 static char _currentMode[12];
 
-int LandDetector::task_spawn(int argc, char *argv[]) {
+LandDetector *LandDetector::instantiate(int argc, char *argv[]) {
     if (argc < 2) {
         print_usage();
-        return PX4_ERROR;
+        return nullptr;
     }
 
     LandDetector *obj = nullptr;
@@ -57,24 +59,25 @@ int LandDetector::task_spawn(int argc, char *argv[]) {
 
     } else {
         print_usage("unknown mode");
-        return PX4_ERROR;
+        return nullptr;
     }
 
     if (obj == nullptr) {
         PX4_ERR("alloc failed");
-        return PX4_ERROR;
+        return nullptr;
     }
 
     // Remember current active mode
     strncpy(_currentMode, argv[1], sizeof(_currentMode) - 1);
     _currentMode[sizeof(_currentMode) - 1] = '\0';
 
-    _object.store(obj);
-    _task_id = task_id_is_work_queue;
+    // _object.store(obj);
+    // _task_id = task_id_is_work_queue;
 
     obj->start();
 
-    return PX4_OK;
+    // return PX4_OK;
+    return obj;
 }
 
 int LandDetector::print_status() {
@@ -122,5 +125,19 @@ The module runs periodically on the HP work queue.
 extern "C" __EXPORT int land_detector_main(int argc, char *argv[]) {
     return LandDetector::main(argc, argv);
 }
+MSH_CMD_EXPORT_ALIAS(land_detector_main, land_detector, land detector);
+
+int land_detector_start() {
+    int32_t     type    = param_get_int32((param_t)params_id::SYS_VEHICLE_TYPE);
+    const char *vehicle = "multicopter";
+    if (type == 2) {
+        vehicle = "vtol";
+    }
+
+    const char *argv[] = {"land_detector", "start", vehicle};
+    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    return LandDetector::main(argc, (char **)argv);
+}
+INIT_APP_EXPORT(land_detector_start);
 
 } // namespace land_detector

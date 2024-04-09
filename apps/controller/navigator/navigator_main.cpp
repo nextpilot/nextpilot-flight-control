@@ -335,7 +335,7 @@ void Navigator::run() {
 
                 } else {
                     mavlink_log_critical(&_mavlink_log_pub, "Reposition is outside geofence\t");
-                    events::send(events::ID("navigator_reposition_outside_geofence"), {events::Log::Error, events::LogInternal::Info},
+                    // events::send(events::ID("navigator_reposition_outside_geofence"), {events::Log::Error, events::LogInternal::Info},
                                  "Reposition is outside geofence");
                 }
 
@@ -416,7 +416,7 @@ void Navigator::run() {
 
                 } else {
                     mavlink_log_critical(&_mavlink_log_pub, "Altitude change is outside geofence\t");
-                    events::send(events::ID("navigator_change_altitude_outside_geofence"), {events::Log::Error, events::LogInternal::Info},
+                    // events::send(events::ID("navigator_change_altitude_outside_geofence"), {events::Log::Error, events::LogInternal::Info},
                                  "Altitude change is outside geofence");
                 }
 
@@ -654,7 +654,7 @@ void Navigator::run() {
                     // already in a mission landing, we just need to inform the user and stay in mission
                     if (rtl_activated_now) {
                         mavlink_log_info(get_mavlink_log_pub(), "RTL to Mission landing, continue landing\t");
-                        events::send(events::ID("rtl_land_at_mission_continue_landing"), events::Log::Info,
+                        // events::send(events::ID("rtl_land_at_mission_continue_landing"), events::Log::Info,
                                      "RTL to Mission landing, continue landing");
                     }
 
@@ -693,7 +693,7 @@ void Navigator::run() {
 
                     if (rtl_activated_now) {
                         mavlink_log_info(get_mavlink_log_pub(), "RTL Mission activated, continue mission\t");
-                        events::send(events::ID("navigator_rtl_mission_activated"), events::Log::Info,
+                        // events::send(events::ID("navigator_rtl_mission_activated"), events::Log::Info,
                                      "RTL Mission activated, continue mission");
                     }
 
@@ -717,7 +717,7 @@ void Navigator::run() {
 
                         if (rtl_activated_now) {
                             mavlink_log_info(get_mavlink_log_pub(), "RTL Mission activated, fly mission in reverse\t");
-                            events::send(events::ID("navigator_rtl_mission_activated_rev"), events::Log::Info,
+                            // events::send(events::ID("navigator_rtl_mission_activated_rev"), events::Log::Info,
                                          "RTL Mission activated, fly mission in reverse");
                         }
 
@@ -726,7 +726,7 @@ void Navigator::run() {
                     } else {
                         if (rtl_activated_now) {
                             mavlink_log_info(get_mavlink_log_pub(), "RTL Mission activated, fly to home\t");
-                            events::send(events::ID("navigator_rtl_mission_activated_home"), events::Log::Info,
+                            // events::send(events::ID("navigator_rtl_mission_activated_home"), events::Log::Info,
                                          "RTL Mission activated, fly to home");
                         }
 
@@ -739,7 +739,7 @@ void Navigator::run() {
             default:
                 if (rtl_activated_now) {
                     mavlink_log_info(get_mavlink_log_pub(), "RTL HOME activated\t");
-                    events::send(events::ID("navigator_rtl_home_activated"), events::Log::Info, "RTL activated");
+                    // events::send(events::ID("navigator_rtl_home_activated"), events::Log::Info, "RTL activated");
                 }
 
                 navigation_mode_new = &_rtl;
@@ -828,7 +828,7 @@ void Navigator::run() {
                 vcmd.param1            = vtol_vehicle_status_s::VEHICLE_VTOL_STATE_MC;
                 publish_vehicle_cmd(&vcmd);
                 mavlink_log_info(&_mavlink_log_pub, "Transition to hover mode and descend.\t");
-                events::send(events::ID("navigator_transition_descend"), events::Log::Critical,
+                // events::send(events::ID("navigator_transition_descend"), events::Log::Critical,
                              "Transition to hover mode and descend");
             }
         }
@@ -998,7 +998,7 @@ void Navigator::geofence_breach_check(bool &have_geofence_position_data) {
     }
 }
 
-int Navigator::task_spawn(int argc, char *argv[]) {
+int Navigator::instantiate(int argc, char *argv[]) {
     _task_id = px4_task_spawn_cmd("navigator",
                                   SCHED_DEFAULT,
                                   SCHED_PRIORITY_NAVIGATION,
@@ -1278,7 +1278,7 @@ void Navigator::set_mission_failure_heading_timeout() {
         _mission_result.failure = true;
         set_mission_result_updated();
         mavlink_log_critical(&_mavlink_log_pub, "unable to reach heading within timeout\t");
-        events::send(events::ID("navigator_mission_failure_heading"), events::Log::Critical,
+        // events::send(events::ID("navigator_mission_failure_heading"), events::Log::Critical,
                      "Mission failure: unable to reach heading within timeout");
     }
 }

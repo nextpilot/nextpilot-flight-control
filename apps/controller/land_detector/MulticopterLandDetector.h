@@ -110,7 +110,7 @@ private:
 
     uint8_t _takeoff_state{takeoff_status_s::TAKEOFF_STATE_DISARMED};
 
-    systemlib::Hysteresis _minimum_thrust_8s_hysteresis{false};
+    Hysteresis _minimum_thrust_8s_hysteresis{false};
 
     bool _in_descend{false};          ///< vehicle is commanded to desend
     bool _horizontal_movement{false}; ///< vehicle is moving horizontally
@@ -122,11 +122,11 @@ private:
 
     DEFINE_PARAMETERS_CUSTOM_PARENT(
         LandDetector,
-        (ParamFloat<px4::params::LNDMC_TRIG_TIME>)_param_lndmc_trig_time,
-        (ParamFloat<px4::params::LNDMC_ROT_MAX>)_param_lndmc_rot_max,
-        (ParamFloat<px4::params::LNDMC_XY_VEL_MAX>)_param_lndmc_xy_vel_max,
-        (ParamFloat<px4::params::LNDMC_Z_VEL_MAX>)_param_lndmc_z_vel_max,
-        (ParamFloat<px4::params::LNDMC_ALT_GND>)_param_lndmc_alt_gnd_effect);
+        (ParamFloat<params_id::LNDMC_TRIG_TIME>)_param_lndmc_trig_time,
+        (ParamFloat<params_id::LNDMC_ROT_MAX>)_param_lndmc_rot_max,
+        (ParamFloat<params_id::LNDMC_XY_VEL_MAX>)_param_lndmc_xy_vel_max,
+        (ParamFloat<params_id::LNDMC_Z_VEL_MAX>)_param_lndmc_z_vel_max,
+        (ParamFloat<params_id::LNDMC_ALT_GND>)_param_lndmc_alt_gnd_effect);
 };
 
 } // namespace land_detector

@@ -17,7 +17,7 @@
 namespace sensors {
 VehicleGPSPosition::VehicleGPSPosition() :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::nav_and_controllers) {
+    WorkItemScheduled(MODULE_NAME, wq_configurations::nav_and_controllers) {
     _vehicle_gps_position_pub.advertise();
 }
 

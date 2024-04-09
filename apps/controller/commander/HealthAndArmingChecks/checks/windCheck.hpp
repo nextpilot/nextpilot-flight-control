@@ -27,8 +27,8 @@ private:
     hrt_abstime        _last_wind_warning{0};
 
     DEFINE_PARAMETERS_CUSTOM_PARENT(HealthAndArmingCheckBase,
-                                    (ParamFloat<px4::params::COM_WIND_MAX>)_param_com_wind_max,
-                                    (ParamFloat<px4::params::COM_WIND_WARN>)_param_com_wind_warn
+                                    (ParamFloat<params_id::COM_WIND_MAX>)_param_com_wind_max,
+                                    (ParamFloat<params_id::COM_WIND_WARN>)_param_com_wind_warn
 
     )
 };

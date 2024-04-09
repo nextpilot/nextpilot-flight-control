@@ -23,7 +23,7 @@ static constexpr uint32_t SENSOR_TIMEOUT{300_ms};
 
 VehicleMagnetometer::VehicleMagnetometer() :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::nav_and_controllers) {
+    WorkItemScheduled(MODULE_NAME, wq_configurations::nav_and_controllers) {
     param_find("SENS_MAG_SIDES");
     param_find("SENS_MAG_AUTOROT");
 
@@ -564,11 +564,11 @@ void VehicleMagnetometer::CheckFailover(const hrt_abstime &time_now_us) {
                      * @description
                      * Land immediately and check the system.
                      */
-                    events::send<uint8_t, events::px4::enums::sensor_failover_reason_t>(
+                    // events::send<uint8_t, events::px4::enums::sensor_failover_reason_t>(
                         events::ID("sensor_failover_mag"), events::Log::Emergency, "Magnetometer sensor #{1} failure: {2}", failover_index,
                         failover_reason);
 
-                    _last_error_message = time_now_us;
+                        _last_error_message = time_now_us;
                 }
 
                 // reduce priority of failed sensor to the minimum

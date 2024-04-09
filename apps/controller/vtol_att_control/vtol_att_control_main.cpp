@@ -24,16 +24,16 @@
  *
  */
 #include "vtol_att_control_main.h"
-#include <px4_platform_common/events.h>
-#include <systemlib/mavlink_log.h>
-#include <uORB/Publication.hpp>
+// #include <px4_platform_common/events.h>
+// #include <systemlib/mavlink_log.h>
+// #include <uORB/Publication.hpp>
 
 using namespace matrix;
 using namespace time_literals;
 
 VtolAttitudeControl::VtolAttitudeControl() :
     ModuleParams(nullptr),
-    WorkItem(MODULE_NAME, px4::wq_configurations::rate_ctrl),
+    WorkItem(MODULE_NAME, wq_configurations::rate_ctrl),
     _loop_perf(perf_alloc(PC_ELAPSED, "vtol_att_control: cycle")) {
     // start vtol in rotary wing mode
     _vtol_vehicle_status.vehicle_vtol_state = vtol_vehicle_status_s::VEHICLE_VTOL_STATE_MC;
@@ -66,28 +66,28 @@ VtolAttitudeControl::~VtolAttitudeControl() {
     perf_free(_loop_perf);
 }
 
-bool VtolAttitudeControl::init() {
+int VtolAttitudeControl::init() {
     if (!_vehicle_torque_setpoint_virtual_fw_sub.registerCallback()) {
         PX4_ERR("callback registration failed");
-        return false;
+        return -1;
     }
 
     if (!_vehicle_torque_setpoint_virtual_mc_sub.registerCallback()) {
         PX4_ERR("callback registration failed");
-        return false;
+        return -1;
     }
 
     if (!_vehicle_thrust_setpoint_virtual_fw_sub.registerCallback()) {
         PX4_ERR("callback registration failed");
-        return false;
+        return -1;
     }
 
     if (!_vehicle_thrust_setpoint_virtual_mc_sub.registerCallback()) {
         PX4_ERR("callback registration failed");
-        return false;
+        return -1;
     }
 
-    return true;
+    return 0;
 }
 
 void VtolAttitudeControl::vehicle_status_poll() {
@@ -171,44 +171,44 @@ void VtolAttitudeControl::quadchute(QuadchuteReason reason) {
         switch (reason) {
         case QuadchuteReason::TransitionTimeout:
             mavlink_log_critical(&_mavlink_log_pub, "Quadchute: transition timeout\t");
-            events::send(events::ID("vtol_att_ctrl_quadchute_tout"), events::Log::Critical,
-                         "Quad-chute triggered due to transition timeout");
+            // events::send(events::ID("vtol_att_ctrl_quadchute_tout"), events::Log::Critical,
+            // "Quad-chute triggered due to transition timeout");
             break;
 
         case QuadchuteReason::ExternalCommand:
             mavlink_log_critical(&_mavlink_log_pub, "Quadchute: external command\t");
-            events::send(events::ID("vtol_att_ctrl_quadchute_ext_cmd"), events::Log::Critical,
-                         "Quad-chute triggered due to external command");
+            // events::send(events::ID("vtol_att_ctrl_quadchute_ext_cmd"), events::Log::Critical,
+            // "Quad-chute triggered due to external command");
             break;
 
         case QuadchuteReason::MinimumAltBreached:
             mavlink_log_critical(&_mavlink_log_pub, "Quadchute: minimum altitude breached\t");
-            events::send(events::ID("vtol_att_ctrl_quadchute_min_alt"), events::Log::Critical,
-                         "Quad-chute triggered due to minimum altitude breach");
+            // events::send(events::ID("vtol_att_ctrl_quadchute_min_alt"), events::Log::Critical,
+            // "Quad-chute triggered due to minimum altitude breach");
             break;
 
         case QuadchuteReason::UncommandedDescent:
             mavlink_log_critical(&_mavlink_log_pub, "Quadchute: Uncommanded descent detected\t");
-            events::send(events::ID("vtol_att_ctrl_quadchute_alt_loss"), events::Log::Critical,
-                         "Quad-chute triggered due to uncommanded descent detection");
+            // events::send(events::ID("vtol_att_ctrl_quadchute_alt_loss"), events::Log::Critical,
+            // "Quad-chute triggered due to uncommanded descent detection");
             break;
 
         case QuadchuteReason::TransitionAltitudeLoss:
             mavlink_log_critical(&_mavlink_log_pub, "Quadchute: loss of altitude during transition\t");
-            events::send(events::ID("vtol_att_ctrl_quadchute_trans_alt_err"), events::Log::Critical,
-                         "Quad-chute triggered due to loss of altitude during transition");
+            // events::send(events::ID("vtol_att_ctrl_quadchute_trans_alt_err"), events::Log::Critical,
+            // "Quad-chute triggered due to loss of altitude during transition");
             break;
 
         case QuadchuteReason::MaximumPitchExceeded:
             mavlink_log_critical(&_mavlink_log_pub, "Quadchute: maximum pitch exceeded\t");
-            events::send(events::ID("vtol_att_ctrl_quadchute_max_pitch"), events::Log::Critical,
-                         "Quad-chute triggered due to maximum pitch angle exceeded");
+            // events::send(events::ID("vtol_att_ctrl_quadchute_max_pitch"), events::Log::Critical,
+            // "Quad-chute triggered due to maximum pitch angle exceeded");
             break;
 
         case QuadchuteReason::MaximumRollExceeded:
             mavlink_log_critical(&_mavlink_log_pub, "Quadchute: maximum roll exceeded\t");
-            events::send(events::ID("vtol_att_ctrl_quadchute_max_roll"), events::Log::Critical,
-                         "Quad-chute triggered due to maximum roll angle exceeded");
+            // events::send(events::ID("vtol_att_ctrl_quadchute_max_roll"), events::Log::Critical,
+            // "Quad-chute triggered due to maximum roll angle exceeded");
             break;
 
         case QuadchuteReason::None:
@@ -422,26 +422,27 @@ void VtolAttitudeControl::Run() {
     perf_end(_loop_perf);
 }
 
-int VtolAttitudeControl::task_spawn(int argc, char *argv[]) {
+VtolAttitudeControl *VtolAttitudeControl::instantiate(int argc, char *argv[]) {
     VtolAttitudeControl *instance = new VtolAttitudeControl();
 
-    if (instance) {
-        _object.store(instance);
-        _task_id = task_id_is_work_queue;
+    // if (instance) {
+    //     _object.store(instance);
+    //     _task_id = task_id_is_work_queue;
 
-        if (instance->init()) {
-            return PX4_OK;
-        }
+    //     if (instance->init()) {
+    //         return PX4_OK;
+    //     }
 
-    } else {
-        PX4_ERR("alloc failed");
-    }
+    // } else {
+    //     PX4_ERR("alloc failed");
+    // }
 
-    delete instance;
-    _object.store(nullptr);
-    _task_id = -1;
+    // delete instance;
+    // _object.store(nullptr);
+    // _task_id = -1;
 
-    return PX4_ERROR;
+    // return PX4_ERROR;
+    return instance;
 }
 
 int VtolAttitudeControl::custom_command(int argc, char *argv[]) {
@@ -469,3 +470,11 @@ fw_att_control is the fixed wing attitude controller.
 int vtol_att_control_main(int argc, char *argv[]) {
     return VtolAttitudeControl::main(argc, argv);
 }
+MSH_CMD_EXPORT_ALIAS(vtol_att_control_main, vtol_att_control, vtol att control);
+
+int vtol_att_control_start() {
+    const char *argv[] = {"vtol_att_control", "start"};
+    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    return VtolAttitudeControl::main(argc, (char **)argv);
+}
+INIT_APP_EXPORT(vtol_att_control_start);

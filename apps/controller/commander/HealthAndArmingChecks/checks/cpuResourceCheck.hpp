@@ -26,5 +26,5 @@ private:
     uORB::Subscription _cpuload_sub{ORB_ID(cpuload)};
 
     DEFINE_PARAMETERS_CUSTOM_PARENT(HealthAndArmingCheckBase,
-                                    (ParamFloat<px4::params::COM_CPU_MAX>)_param_com_cpu_max)
+                                    (ParamFloat<params_id::COM_CPU_MAX>)_param_com_cpu_max)
 };

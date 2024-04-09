@@ -502,30 +502,30 @@ transition_result_t Commander::arm(arm_disarm_reason_t calling_reason, bool run_
             if (_vehicle_control_mode.flag_control_climb_rate_enabled &&
                 !_failsafe_flags.manual_control_signal_lost && _is_throttle_above_center) {
                 mavlink_log_critical(&_mavlink_log_pub, "Arming denied: throttle above center\t");
-                events::send(events::ID("commander_arm_denied_throttle_center"),
+                // events::send(events::ID("commander_arm_denied_throttle_center"),
                              {events::Log::Critical, events::LogInternal::Info},
                              "Arming denied: throttle above center");
-                tune_negative(true);
-                return TRANSITION_DENIED;
+                             tune_negative(true);
+                             return TRANSITION_DENIED;
             }
 
             if (!_vehicle_control_mode.flag_control_climb_rate_enabled &&
                 !_failsafe_flags.manual_control_signal_lost && !_is_throttle_low && _vehicle_status.vehicle_type != vehicle_status_s::VEHICLE_TYPE_ROVER) {
                 mavlink_log_critical(&_mavlink_log_pub, "Arming denied: high throttle\t");
-                events::send(events::ID("commander_arm_denied_throttle_high"),
+                // events::send(events::ID("commander_arm_denied_throttle_high"),
                              {events::Log::Critical, events::LogInternal::Info},
                              "Arming denied: high throttle");
-                tune_negative(true);
-                return TRANSITION_DENIED;
+                             tune_negative(true);
+                             return TRANSITION_DENIED;
             }
 
         } else if (calling_reason == arm_disarm_reason_t::rc_stick || calling_reason == arm_disarm_reason_t::rc_switch || calling_reason == arm_disarm_reason_t::rc_button) {
             mavlink_log_critical(&_mavlink_log_pub, "Arming denied: switch to manual mode first\t");
-            events::send(events::ID("commander_arm_denied_not_manual"),
+            // events::send(events::ID("commander_arm_denied_not_manual"),
                          {events::Log::Critical, events::LogInternal::Info},
                          "Arming denied: switch to manual mode first");
-            tune_negative(true);
-            return TRANSITION_DENIED;
+                         tune_negative(true);
+                         return TRANSITION_DENIED;
         }
     }
 
@@ -535,10 +535,10 @@ transition_result_t Commander::arm(arm_disarm_reason_t calling_reason, bool run_
 
     if (arming_res == TRANSITION_CHANGED) {
         mavlink_log_info(&_mavlink_log_pub, "Armed by %s\t", arm_disarm_reason_str(calling_reason));
-        events::send<events::px4::enums::arm_disarm_reason_t>(events::ID("commander_armed_by"), events::Log::Info,
+        // events::send<events::px4::enums::arm_disarm_reason_t>(events::ID("commander_armed_by"), events::Log::Info,
                                                               "Armed by {1}", calling_reason);
 
-        _status_changed = true;
+                                                              _status_changed = true;
 
     } else if (arming_res == TRANSITION_DENIED) {
         tune_negative(true);
@@ -556,7 +556,7 @@ transition_result_t Commander::disarm(arm_disarm_reason_t calling_reason, bool f
         if (!landed && !(mc_manual_thrust_mode && commanded_by_rc)) {
             if (calling_reason != arm_disarm_reason_t::rc_stick) {
                 mavlink_log_critical(&_mavlink_log_pub, "Disarming denied! Not landed\t");
-                events::send(events::ID("commander_disarming_denied_not_landed"),
+                // events::send(events::ID("commander_disarming_denied_not_landed"),
                              {events::Log::Critical, events::LogInternal::Info},
                              "Disarming denied, not landed");
             }
@@ -571,14 +571,14 @@ transition_result_t Commander::disarm(arm_disarm_reason_t calling_reason, bool f
 
     if (arming_res == TRANSITION_CHANGED) {
         mavlink_log_info(&_mavlink_log_pub, "Disarmed by %s\t", arm_disarm_reason_str(calling_reason));
-        events::send<events::px4::enums::arm_disarm_reason_t>(events::ID("commander_disarmed_by"), events::Log::Info,
+        // events::send<events::px4::enums::arm_disarm_reason_t>(events::ID("commander_disarmed_by"), events::Log::Info,
                                                               "Disarmed by {1}", calling_reason);
 
-        if (_param_com_force_safety.get()) {
-            _safety.activateSafety();
-        }
+                                                              if (_param_com_force_safety.get()) {
+                                                                  _safety.activateSafety();
+                                                              }
 
-        _status_changed = true;
+                                                              _status_changed = true;
 
     } else if (arming_res == TRANSITION_DENIED) {
         tune_negative(true);
@@ -726,9 +726,9 @@ bool Commander::handle_command(const vehicle_command_s &cmd) {
                     default:
                         main_ret = TRANSITION_DENIED;
                         mavlink_log_critical(&_mavlink_log_pub, "Unsupported auto mode\t");
-                        events::send(events::ID("commander_unsupported_auto_mode"), events::Log::Error,
+                        // events::send(events::ID("commander_unsupported_auto_mode"), events::Log::Error,
                                      "Unsupported auto mode");
-                        break;
+                                     break;
                     }
 
                 } else {
@@ -791,7 +791,7 @@ bool Commander::handle_command(const vehicle_command_s &cmd) {
 
         if (arming_action != vehicle_command_s::ARMING_ACTION_ARM && arming_action != vehicle_command_s::ARMING_ACTION_DISARM) {
             mavlink_log_critical(&_mavlink_log_pub, "Unsupported ARM_DISARM param: %.3f\t", (double)cmd.param1);
-            events::send<float>(events::ID("commander_unsupported_arm_disarm_param"), events::Log::Error,
+            // events::send<float>(events::ID("commander_unsupported_arm_disarm_param"), events::Log::Error,
                                 "Unsupported ARM_DISARM param: {1:.3}", cmd.param1);
 
         } else {
@@ -904,7 +904,7 @@ bool Commander::handle_command(const vehicle_command_s &cmd) {
         /* switch to RTL which ends the mission */
         if (_user_mode_intention.change(vehicle_status_s::NAVIGATION_STATE_AUTO_RTL)) {
             mavlink_log_info(&_mavlink_log_pub, "Returning to launch\t");
-            events::send(events::ID("commander_rtl"), events::Log::Info, "Returning to launch");
+            // events::send(events::ID("commander_rtl"), events::Log::Info, "Returning to launch");
             cmd_result = vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED;
 
         } else {
@@ -940,9 +940,9 @@ bool Commander::handle_command(const vehicle_command_s &cmd) {
     case vehicle_command_s::VEHICLE_CMD_NAV_LAND: {
         if (_user_mode_intention.change(vehicle_status_s::NAVIGATION_STATE_AUTO_LAND)) {
             mavlink_log_info(&_mavlink_log_pub, "Landing at current position\t");
-            events::send(events::ID("commander_landing_current_pos"), events::Log::Info,
+            // events::send(events::ID("commander_landing_current_pos"), events::Log::Info,
                          "Landing at current position");
-            cmd_result = vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED;
+                         cmd_result = vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED;
 
         } else {
             printRejectMode(vehicle_status_s::NAVIGATION_STATE_AUTO_LAND);
@@ -953,9 +953,9 @@ bool Commander::handle_command(const vehicle_command_s &cmd) {
     case vehicle_command_s::VEHICLE_CMD_NAV_PRECLAND: {
         if (_user_mode_intention.change(vehicle_status_s::NAVIGATION_STATE_AUTO_PRECLAND)) {
             mavlink_log_info(&_mavlink_log_pub, "Precision landing\t");
-            events::send(events::ID("commander_landing_prec_land"), events::Log::Info,
+            // events::send(events::ID("commander_landing_prec_land"), events::Log::Info,
                          "Landing using precision landing");
-            cmd_result = vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED;
+                         cmd_result = vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED;
 
         } else {
             printRejectMode(vehicle_status_s::NAVIGATION_STATE_AUTO_PRECLAND);
@@ -982,7 +982,7 @@ bool Commander::handle_command(const vehicle_command_s &cmd) {
 
         } else {
             mavlink_log_critical(&_mavlink_log_pub, "Mission start denied! No valid mission\t");
-            events::send(events::ID("commander_mission_start_denied_no_mission"), {events::Log::Critical, events::LogInternal::Info},
+            // events::send(events::ID("commander_mission_start_denied_no_mission"), {events::Log::Critical, events::LogInternal::Info},
                          "Mission start denied! No valid mission");
         }
     } break;
@@ -992,7 +992,7 @@ bool Commander::handle_command(const vehicle_command_s &cmd) {
         if (_high_latency_datalink_heartbeat > _boot_timestamp) {
             cmd_result = vehicle_command_ack_s::VEHICLE_CMD_RESULT_FAILED;
             mavlink_log_critical(&_mavlink_log_pub, "Control high latency failed! Telemetry unavailable\t");
-            events::send(events::ID("commander_ctrl_high_latency_failed"), {events::Log::Critical, events::LogInternal::Info},
+            // events::send(events::ID("commander_ctrl_high_latency_failed"), {events::Log::Critical, events::LogInternal::Info},
                          "Control high latency failed! Telemetry unavailable");
         }
     } break;
@@ -1126,7 +1126,7 @@ bool Commander::handle_command(const vehicle_command_s &cmd) {
                 /* disable RC control input completely */
                 _vehicle_status.rc_calibration_in_progress = true;
                 mavlink_log_info(&_mavlink_log_pub, "Calibration: Disabling RC input\t");
-                events::send(events::ID("commander_calib_rc_off"), events::Log::Info,
+                // events::send(events::ID("commander_calib_rc_off"), events::Log::Info,
                              "Calibration: Disabling RC input");
 
             } else if ((int)(cmd.param4) == 2) {
@@ -1167,7 +1167,7 @@ bool Commander::handle_command(const vehicle_command_s &cmd) {
 
                     if (_safety.isButtonAvailable() && !_safety.isSafetyOff()) {
                         mavlink_log_critical(&_mavlink_log_pub, "ESC calibration denied! Press safety button first\t");
-                        events::send(events::ID("commander_esc_calibration_denied"), events::Log::Critical,
+                        // events::send(events::ID("commander_esc_calibration_denied"), events::Log::Critical,
                                      "ESCs calibration denied");
 
                     } else {
@@ -1186,7 +1186,7 @@ bool Commander::handle_command(const vehicle_command_s &cmd) {
                     /* enable RC control input */
                     _vehicle_status.rc_calibration_in_progress = false;
                     mavlink_log_info(&_mavlink_log_pub, "Calibration: Restoring RC input\t");
-                    events::send(events::ID("commander_calib_rc_on"), events::Log::Info,
+                    // events::send(events::ID("commander_calib_rc_on"), events::Log::Info,
                                  "Calibration: Restoring RC input");
                 }
 
@@ -1417,7 +1417,7 @@ void Commander::executeActionRequest(const action_request_s &action_request) {
     case action_request_s::ACTION_UNKILL:
         if (arm_disarm_reason == arm_disarm_reason_t::rc_switch && _actuator_armed.manual_lockdown) {
             mavlink_log_info(&_mavlink_log_pub, "Kill-switch disengaged\t");
-            events::send(events::ID("commander_kill_sw_disengaged"), events::Log::Info, "Kill-switch disengaged");
+            // events::send(events::ID("commander_kill_sw_disengaged"), events::Log::Info, "Kill-switch disengaged");
             _status_changed                 = true;
             _actuator_armed.manual_lockdown = false;
         }
@@ -1437,7 +1437,7 @@ void Commander::executeActionRequest(const action_request_s &action_request) {
                 log_levels.external = events::Log::Critical;
             }
 
-            events::send(events::ID("commander_kill_sw_engaged"), log_levels, "Kill-switch engaged");
+            // events::send(events::ID("commander_kill_sw_engaged"), log_levels, "Kill-switch engaged");
 
             _status_changed                 = true;
             _actuator_armed.manual_lockdown = true;
@@ -1854,11 +1854,11 @@ void Commander::landDetectorUpdate() {
         if (_arm_state_machine.isArmed()) {
             if (!was_landed && _vehicle_land_detected.landed) {
                 mavlink_log_info(&_mavlink_log_pub, "Landing detected\t");
-                events::send(events::ID("commander_landing_detected"), events::Log::Info, "Landing detected");
+                // events::send(events::ID("commander_landing_detected"), events::Log::Info, "Landing detected");
 
             } else if (was_landed && !_vehicle_land_detected.landed) {
                 mavlink_log_info(&_mavlink_log_pub, "Takeoff detected\t");
-                events::send(events::ID("commander_takeoff_detected"), events::Log::Info, "Takeoff detected");
+                // events::send(events::ID("commander_takeoff_detected"), events::Log::Info, "Takeoff detected");
                 _vehicle_status.takeoff_time = hrt_absolute_time();
                 _have_taken_off_since_arming = true;
             }
@@ -2281,14 +2281,14 @@ void Commander::printRejectMode(uint8_t nav_state) {
         /* EVENT
          * @type append_health_and_arming_messages
          */
-        events::send<uint32_t, events::px4::enums::navigation_mode_t>(events::ID("commander_modeswitch_not_avail"), {events::Log::Critical, events::LogInternal::Info},
+        // events::send<uint32_t, events::px4::enums::navigation_mode_t>(events::ID("commander_modeswitch_not_avail"), {events::Log::Critical, events::LogInternal::Info},
                                                                       "Switching to mode '{2}' is currently not possible", mavlink_mode, mode_util::navigation_mode(nav_state));
 
-        /* only buzz if armed, because else we're driving people nuts indoors
-        they really need to look at the leds as well. */
-        tune_negative(_arm_state_machine.isArmed());
+                                                                      /* only buzz if armed, because else we're driving people nuts indoors
+                                                                      they really need to look at the leds as well. */
+                                                                      tune_negative(_arm_state_machine.isArmed());
 
-        _last_print_mode_reject_time = hrt_absolute_time();
+                                                                      _last_print_mode_reject_time = hrt_absolute_time();
     }
 }
 
@@ -2327,7 +2327,7 @@ void Commander::answer_command(const vehicle_command_s &cmd, uint8_t result) {
     _vehicle_command_ack_pub.publish(command_ack);
 }
 
-int Commander::task_spawn(int argc, char *argv[]) {
+int Commander::instantiate(int argc, char *argv[]) {
     _task_id = px4_task_spawn_cmd("commander",
                                   SCHED_DEFAULT,
                                   SCHED_PRIORITY_DEFAULT + 40,
@@ -2403,7 +2403,7 @@ void Commander::dataLinkCheck() {
 
                     if (_datalink_last_heartbeat_gcs != 0) {
                         mavlink_log_info(&_mavlink_log_pub, "GCS connection regained\t");
-                        events::send(events::ID("commander_dl_regained"), events::Log::Info, "GCS connection regained");
+                        // events::send(events::ID("commander_dl_regained"), events::Log::Info, "GCS connection regained");
                     }
                 }
 
@@ -2417,7 +2417,7 @@ void Commander::dataLinkCheck() {
 
                     if (_datalink_last_heartbeat_onboard_controller != 0) {
                         mavlink_log_info(&_mavlink_log_pub, "Onboard controller regained\t");
-                        events::send(events::ID("commander_onboard_ctrl_regained"), events::Log::Info, "Onboard controller regained");
+                        // events::send(events::ID("commander_onboard_ctrl_regained"), events::Log::Info, "Onboard controller regained");
                     }
                 }
 
@@ -2430,7 +2430,7 @@ void Commander::dataLinkCheck() {
 
                     if (_datalink_last_heartbeat_parachute_system != 0) {
                         mavlink_log_info(&_mavlink_log_pub, "Parachute system regained\t");
-                        events::send(events::ID("commander_parachute_regained"), events::Log::Info, "Parachute system regained");
+                        // events::send(events::ID("commander_parachute_regained"), events::Log::Info, "Parachute system regained");
                     }
                 }
 
@@ -2447,7 +2447,7 @@ void Commander::dataLinkCheck() {
 
                     if (_datalink_last_heartbeat_open_drone_id_system != 0) {
                         mavlink_log_info(&_mavlink_log_pub, "OpenDroneID system regained\t");
-                        events::send(events::ID("commander_open_drone_id_regained"), events::Log::Info, "OpenDroneID system regained");
+                        // events::send(events::ID("commander_open_drone_id_regained"), events::Log::Info, "OpenDroneID system regained");
                     }
                 }
 
@@ -2477,17 +2477,17 @@ void Commander::dataLinkCheck() {
             _vehicle_status.gcs_connection_lost_counter++;
 
             mavlink_log_info(&_mavlink_log_pub, "Connection to ground station lost\t");
-            events::send(events::ID("commander_gcs_lost"), {events::Log::Warning, events::LogInternal::Info},
+            // events::send(events::ID("commander_gcs_lost"), {events::Log::Warning, events::LogInternal::Info},
                          "Connection to ground control station lost");
 
-            _status_changed = true;
+                         _status_changed = true;
         }
     }
 
     // ONBOARD CONTROLLER data link loss failsafe
     if ((_datalink_last_heartbeat_onboard_controller > 0) && (hrt_elapsed_time(&_datalink_last_heartbeat_onboard_controller) > (_param_com_obc_loss_t.get() * 1_s)) && !_onboard_controller_lost) {
         mavlink_log_critical(&_mavlink_log_pub, "Connection to mission computer lost\t");
-        events::send(events::ID("commander_mission_comp_lost"), events::Log::Critical, "Connection to mission computer lost");
+        // events::send(events::ID("commander_mission_comp_lost"), events::Log::Critical, "Connection to mission computer lost");
         _onboard_controller_lost = true;
         _status_changed          = true;
     }
@@ -2504,7 +2504,7 @@ void Commander::dataLinkCheck() {
     // OpenDroneID system
     if ((hrt_elapsed_time(&_datalink_last_heartbeat_open_drone_id_system) > 3_s) && !_open_drone_id_system_lost) {
         mavlink_log_critical(&_mavlink_log_pub, "OpenDroneID system lost");
-        events::send(events::ID("commander_open_drone_id_lost"), events::Log::Critical, "OpenDroneID system lost");
+        // events::send(events::ID("commander_open_drone_id_lost"), events::Log::Critical, "OpenDroneID system lost");
         _vehicle_status.open_drone_id_system_present = false;
         _vehicle_status.open_drone_id_system_healthy = false;
         _open_drone_id_system_lost                   = true;
@@ -2527,7 +2527,7 @@ void Commander::dataLinkCheck() {
         if (!_vehicle_status.high_latency_data_link_lost) {
             _vehicle_status.high_latency_data_link_lost = true;
             mavlink_log_critical(&_mavlink_log_pub, "High latency data link lost\t");
-            events::send(events::ID("commander_high_latency_lost"), events::Log::Critical, "High latency data link lost");
+            // events::send(events::ID("commander_high_latency_lost"), events::Log::Critical, "High latency data link lost");
             _status_changed = true;
         }
     }
@@ -2541,17 +2541,17 @@ void Commander::battery_status_check() {
 
             if (shutdownIfAllowed() && (px4_shutdown_request(60_s) == 0)) {
                 mavlink_log_critical(&_mavlink_log_pub, "Dangerously low battery! Shutting system down in 60 seconds\t");
-                events::send(events::ID("commander_low_bat_shutdown"), {events::Log::Emergency, events::LogInternal::Warning},
+                // events::send(events::ID("commander_low_bat_shutdown"), {events::Log::Emergency, events::LogInternal::Warning},
                              "Dangerously low battery! Shutting system down");
 
-                while (1) { px4_usleep(1); }
+                             while (1) { px4_usleep(1); }
 
             } else {
                 mavlink_log_critical(&_mavlink_log_pub, "System does not support shutdown\t");
                 /* EVENT
                  * @description Cannot shut down, most likely the system does not support it.
                  */
-                events::send(events::ID("commander_low_bat_shutdown_failed"), {events::Log::Emergency, events::LogInternal::Error},
+                // events::send(events::ID("commander_low_bat_shutdown_failed"), {events::Log::Emergency, events::LogInternal::Error},
                              "Dangerously low battery! System shut down failed");
             }
 
@@ -2594,7 +2594,7 @@ void Commander::manualControlCheck() {
                         if (_user_mode_intention.change(vehicle_status_s::NAVIGATION_STATE_POSCTL, true)) {
                             tune_positive(true);
                             mavlink_log_info(&_mavlink_log_pub, "Pilot took over using sticks\t");
-                            events::send(events::ID("commander_rc_override"), events::Log::Info, "Pilot took over using sticks");
+                            // events::send(events::ID("commander_rc_override"), events::Log::Info, "Pilot took over using sticks");
                         }
 
                     } else {

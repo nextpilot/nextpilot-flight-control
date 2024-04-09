@@ -14,11 +14,11 @@
 #include <px4_platform_common/px4_config.h>
 #include <px4_platform_common/log.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <px4_platform_common/time.h>
 #include <lib/hysteresis/hysteresis.h>
 #include <lib/mathlib/mathlib.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/SubscriptionCallback.hpp>
 #include <uORB/Publication.hpp>
@@ -41,7 +41,7 @@
 
 using namespace time_literals;
 
-class EKF2Selector : public ModuleParams, public px4::ScheduledWorkItem {
+class EKF2Selector : public ModuleParams, public WorkItemScheduled {
 public:
     EKF2Selector();
     ~EKF2Selector() override;
@@ -108,7 +108,7 @@ private:
         float combined_test_ratio{NAN};
         float relative_test_ratio{NAN};
 
-        systemlib::Hysteresis healthy{false};
+        Hysteresis healthy{false};
 
         bool warning{false};
         bool filter_fault{false};
@@ -122,18 +122,18 @@ private:
     static constexpr float _rel_err_score_lim{1.0f}; // +- limit applied to the relative error score
     static constexpr float _rel_err_thresh{0.5f};    // the relative score difference needs to be greater than this to switch from an otherwise healthy instance
 
-    EstimatorInstance _instance[EKF2_MAX_INSTANCES]{
+    EstimatorInstance _instance[EKF2_MAX_INSTANCES] {
         {this, 0},
-        {this, 1},
+            {this, 1},
 #if EKF2_MAX_INSTANCES > 2
-        {this, 2},
-        {this, 3},
+            {this, 2},
+            {this, 3},
 #if EKF2_MAX_INSTANCES > 4
-        {this, 4},
-        {this, 5},
-        {this, 6},
-        {this, 7},
-        {this, 8},
+            {this, 4},
+            {this, 5},
+            {this, 6},
+            {this, 7},
+            {this, 8},
 #endif
 #endif
     };
@@ -217,10 +217,10 @@ private:
     uORB::Publication<wind_s>                      _wind_pub{ORB_ID(wind)};
 
     DEFINE_PARAMETERS(
-        (ParamFloat<px4::params::EKF2_SEL_ERR_RED>)_param_ekf2_sel_err_red,
-        (ParamFloat<px4::params::EKF2_SEL_IMU_RAT>)_param_ekf2_sel_imu_angle_rate,
-        (ParamFloat<px4::params::EKF2_SEL_IMU_ANG>)_param_ekf2_sel_imu_angle,
-        (ParamFloat<px4::params::EKF2_SEL_IMU_ACC>)_param_ekf2_sel_imu_accel,
-        (ParamFloat<px4::params::EKF2_SEL_IMU_VEL>)_param_ekf2_sel_imu_velocity)
+        (ParamFloat<params_id::EKF2_SEL_ERR_RED>)_param_ekf2_sel_err_red,
+        (ParamFloat<params_id::EKF2_SEL_IMU_RAT>)_param_ekf2_sel_imu_angle_rate,
+        (ParamFloat<params_id::EKF2_SEL_IMU_ANG>)_param_ekf2_sel_imu_angle,
+        (ParamFloat<params_id::EKF2_SEL_IMU_ACC>)_param_ekf2_sel_imu_accel,
+        (ParamFloat<params_id::EKF2_SEL_IMU_VEL>)_param_ekf2_sel_imu_velocity)
 };
 #endif // !EKF2SELECTOR_HPP

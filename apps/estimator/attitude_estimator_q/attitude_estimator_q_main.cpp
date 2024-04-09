@@ -26,7 +26,7 @@
 #include <matrix/math.hpp>
 #include <px4_platform_common/defines.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <px4_platform_common/posix.h>
 #include <uORB/Publication.hpp>
 #include <uORB/Subscription.hpp>
@@ -47,21 +47,21 @@ using matrix::wrap_pi;
 
 using namespace time_literals;
 
-class AttitudeEstimatorQ : public ModuleBase<AttitudeEstimatorQ>, public ModuleParams, public px4::WorkItem {
+class AttitudeEstimatorQ : public ModuleCommand<AttitudeEstimatorQ>, public ModuleParams, public WorkItem {
 public:
     AttitudeEstimatorQ();
     ~AttitudeEstimatorQ() override = default;
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    static int *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    bool init();
+    int init() override;
 
 private:
     void Run() override;
@@ -132,21 +132,21 @@ private:
     bool _initialized{false};
 
     DEFINE_PARAMETERS(
-        (ParamFloat<px4::params::ATT_W_ACC>)_param_att_w_acc,
-        (ParamFloat<px4::params::ATT_W_MAG>)_param_att_w_mag,
-        (ParamFloat<px4::params::ATT_W_EXT_HDG>)_param_att_w_ext_hdg,
-        (ParamFloat<px4::params::ATT_W_GYRO_BIAS>)_param_att_w_gyro_bias,
-        (ParamFloat<px4::params::ATT_MAG_DECL>)_param_att_mag_decl,
-        (ParamInt<px4::params::ATT_MAG_DECL_A>)_param_att_mag_decl_a,
-        (ParamInt<px4::params::ATT_EXT_HDG_M>)_param_att_ext_hdg_m,
-        (ParamInt<px4::params::ATT_ACC_COMP>)_param_att_acc_comp,
-        (ParamFloat<px4::params::ATT_BIAS_MAX>)_param_att_bias_mas,
-        (ParamInt<px4::params::SYS_HAS_MAG>)_param_sys_has_mag)
+        (ParamFloat<params_id::ATT_W_ACC>)_param_att_w_acc,
+        (ParamFloat<params_id::ATT_W_MAG>)_param_att_w_mag,
+        (ParamFloat<params_id::ATT_W_EXT_HDG>)_param_att_w_ext_hdg,
+        (ParamFloat<params_id::ATT_W_GYRO_BIAS>)_param_att_w_gyro_bias,
+        (ParamFloat<params_id::ATT_MAG_DECL>)_param_att_mag_decl,
+        (ParamInt<params_id::ATT_MAG_DECL_A>)_param_att_mag_decl_a,
+        (ParamInt<params_id::ATT_EXT_HDG_M>)_param_att_ext_hdg_m,
+        (ParamInt<params_id::ATT_ACC_COMP>)_param_att_acc_comp,
+        (ParamFloat<params_id::ATT_BIAS_MAX>)_param_att_bias_mas,
+        (ParamInt<params_id::SYS_HAS_MAG>)_param_sys_has_mag)
 };
 
 AttitudeEstimatorQ::AttitudeEstimatorQ() :
     ModuleParams(nullptr),
-    WorkItem(MODULE_NAME, px4::wq_configurations::nav_and_controllers) {
+    WorkItem(MODULE_NAME, wq_configurations::nav_and_controllers) {
     update_parameters(true);
 }
 
@@ -530,7 +530,7 @@ int AttitudeEstimatorQ::custom_command(int argc, char *argv[]) {
     return print_usage("unknown command");
 }
 
-int AttitudeEstimatorQ::task_spawn(int argc, char *argv[]) {
+int AttitudeEstimatorQ::instantiate(int argc, char *argv[]) {
     AttitudeEstimatorQ *instance = new AttitudeEstimatorQ();
 
     if (instance) {

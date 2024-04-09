@@ -17,7 +17,7 @@ using matrix::Vector3f;
 
 GyroCalibration::GyroCalibration() :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::lp_default) {
+    WorkItemScheduled(MODULE_NAME, wq_configurations::lp_default) {
 }
 
 GyroCalibration::~GyroCalibration() {
@@ -241,7 +241,7 @@ void GyroCalibration::Run() {
     }
 }
 
-int GyroCalibration::task_spawn(int argc, char *argv[]) {
+int GyroCalibration::instantiate(int argc, char *argv[]) {
     GyroCalibration *instance = new GyroCalibration();
 
     if (instance) {

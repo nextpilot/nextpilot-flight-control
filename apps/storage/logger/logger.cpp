@@ -134,7 +134,7 @@ int Logger::custom_command(int argc, char *argv[]) {
     return print_usage("unknown command");
 }
 
-int Logger::task_spawn(int argc, char *argv[]) {
+int Logger::instantiate(int argc, char *argv[]) {
     _task_id = px4_task_spawn_cmd("logger",
                                   SCHED_DEFAULT,
                                   SCHED_PRIORITY_LOG_CAPTURE,
@@ -1253,7 +1253,7 @@ int Logger::get_log_file_name(LogType type, char *file_name, size_t file_name_si
             uint8_t minute = 0;
             uint8_t second = 0;
             sscanf(log_file_name_time, "%hhd_%hhd_%hhd", &hour, &minute, &second);
-            events::send<uint16_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t>(events::ID("logger_open_file_time"),
+            // events::send<uint16_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t>(events::ID("logger_open_file_time"),
                                                                                 events::Log::Info,
                                                                                 "logging: opening log file {1}-{2}-{3}/{4}_{5}_{6}.ulg", year, month, day, hour, minute, second);
         }
@@ -1292,7 +1292,7 @@ int Logger::get_log_file_name(LogType type, char *file_name, size_t file_name_si
             sscanf(_file_name[(int)type].log_dir, "sess%hd", &sess);
             uint16_t index = 0;
             sscanf(log_file_name, "log%hd", &index);
-            events::send<uint16_t, uint16_t>(events::ID("logger_open_file_sess"), events::Log::Info,
+            // events::send<uint16_t, uint16_t>(events::ID("logger_open_file_sess"), events::Log::Info,
                                              "logging: opening log file sess{1}/log{2}.ulg", sess, index);
         }
     }

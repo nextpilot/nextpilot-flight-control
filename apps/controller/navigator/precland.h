@@ -19,7 +19,7 @@
 
 #include <matrix/math.hpp>
 #include <lib/geo/geo.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/landing_target_pose.h>
 
@@ -114,12 +114,12 @@ private:
     bool _is_activated{false}; /**< indicates if precland is activated */
 
     DEFINE_PARAMETERS(
-        (ParamFloat<px4::params::PLD_BTOUT>)_param_pld_btout,
-        (ParamFloat<px4::params::PLD_HACC_RAD>)_param_pld_hacc_rad,
-        (ParamFloat<px4::params::PLD_FAPPR_ALT>)_param_pld_fappr_alt,
-        (ParamFloat<px4::params::PLD_SRCH_ALT>)_param_pld_srch_alt,
-        (ParamFloat<px4::params::PLD_SRCH_TOUT>)_param_pld_srch_tout,
-        (ParamInt<px4::params::PLD_MAX_SRCH>)_param_pld_max_srch)
+        (ParamFloat<params_id::PLD_BTOUT>)_param_pld_btout,
+        (ParamFloat<params_id::PLD_HACC_RAD>)_param_pld_hacc_rad,
+        (ParamFloat<params_id::PLD_FAPPR_ALT>)_param_pld_fappr_alt,
+        (ParamFloat<params_id::PLD_SRCH_ALT>)_param_pld_srch_alt,
+        (ParamFloat<params_id::PLD_SRCH_TOUT>)_param_pld_srch_tout,
+        (ParamInt<params_id::PLD_MAX_SRCH>)_param_pld_max_srch)
 
     // non-navigator parameters
     param_t _handle_param_acceleration_hor{PARAM_INVALID};

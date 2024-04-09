@@ -18,7 +18,7 @@ using namespace matrix;
 
 SensorGpsSim::SensorGpsSim() :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::hp_default) {
+    WorkItemScheduled(MODULE_NAME, wq_configurations::hp_default) {
 }
 
 SensorGpsSim::~SensorGpsSim() {
@@ -153,7 +153,7 @@ void SensorGpsSim::Run() {
     perf_end(_loop_perf);
 }
 
-int SensorGpsSim::task_spawn(int argc, char *argv[]) {
+int SensorGpsSim::instantiate(int argc, char *argv[]) {
     SensorGpsSim *instance = new SensorGpsSim();
 
     if (instance) {

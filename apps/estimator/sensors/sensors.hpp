@@ -21,7 +21,7 @@
 #include <lib/sensor_calibration/Utilities.hpp>
 #include <px4_platform_common/getopt.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <uORB/Publication.hpp>
 #include <uORB/PublicationMulti.hpp>
 #include <uORB/Subscription.hpp>
@@ -72,27 +72,27 @@ using namespace time_literals;
  * subtract 5 degrees in an attempt to account for the electrical upheating of the PCB
  */
 #define PCB_TEMP_ESTIMATE_DEG 5.0f
-class Sensors : public ModuleBase<Sensors>, public ModuleParams, public px4::ScheduledWorkItem {
+class Sensors : public ModuleCommand<Sensors>, public ModuleParams, public WorkItemScheduled {
 public:
     explicit Sensors(bool hil_enabled);
     ~Sensors() override;
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    static int *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    /** @see ModuleBase::run() */
+    /** @see ModuleCommand::run() */
     void Run() override;
 
-    /** @see ModuleBase::print_status() */
+    /** @see ModuleCommand::print_status() */
     int print_status() override;
 
-    bool init();
+    int init() override;
 
 private:
     int parameters_update();
@@ -227,13 +227,13 @@ private:
 
     DEFINE_PARAMETERS(
 #if defined(CONFIG_SENSORS_VEHICLE_AIR_DATA)
-        (ParamBool<px4::params::SYS_HAS_BARO>)_param_sys_has_baro,
+        (ParamBool<params_id::SYS_HAS_BARO>)_param_sys_has_baro,
 #endif // CONFIG_SENSORS_VEHICLE_AIR_DATA
 #if defined(CONFIG_SENSORS_VEHICLE_GPS_POSITION)
-        (ParamBool<px4::params::SYS_HAS_GPS>)_param_sys_has_gps,
+        (ParamBool<params_id::SYS_HAS_GPS>)_param_sys_has_gps,
 #endif // CONFIG_SENSORS_VEHICLE_GPS_POSITION
 #if defined(CONFIG_SENSORS_VEHICLE_MAGNETOMETER)
-        (ParamInt<px4::params::SYS_HAS_MAG>)_param_sys_has_mag,
+        (ParamInt<params_id::SYS_HAS_MAG>)_param_sys_has_mag,
 #endif // CONFIG_SENSORS_VEHICLE_MAGNETOMETER
-        (ParamBool<px4::params::SENS_IMU_MODE>)_param_sens_imu_mode)
+        (ParamBool<params_id::SENS_IMU_MODE>)_param_sens_imu_mode)
 };

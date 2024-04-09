@@ -16,9 +16,9 @@
 #include <lib/perf/perf_counter.h>
 #include <px4_platform_common/defines.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <px4_platform_common/posix.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <uORB/Publication.hpp>
 #include <uORB/PublicationMulti.hpp>
 #include <uORB/Subscription.hpp>
@@ -35,24 +35,24 @@
 
 using namespace time_literals;
 
-class GyroFFT : public ModuleBase<GyroFFT>, public ModuleParams, public px4::ScheduledWorkItem {
+class GyroFFT : public ModuleCommand<GyroFFT>, public ModuleParams, public WorkItemScheduled {
 public:
     GyroFFT();
     ~GyroFFT() override;
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    static int *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    /** @see ModuleBase::print_status() */
+    /** @see ModuleCommand::print_status() */
     int print_status() override;
 
-    bool init();
+    int init() override;
 
 private:
     static constexpr int MAX_SENSOR_COUNT = 4;
@@ -135,10 +135,10 @@ private:
     bool _publish{false};
 
     DEFINE_PARAMETERS(
-        (ParamInt<px4::params::IMU_GYRO_FFT_LEN>)_param_imu_gyro_fft_len,
-        (ParamFloat<px4::params::IMU_GYRO_FFT_MIN>)_param_imu_gyro_fft_min,
-        (ParamFloat<px4::params::IMU_GYRO_FFT_MAX>)_param_imu_gyro_fft_max,
-        (ParamFloat<px4::params::IMU_GYRO_FFT_SNR>)_param_imu_gyro_fft_snr)
+        (ParamInt<params_id::IMU_GYRO_FFT_LEN>)_param_imu_gyro_fft_len,
+        (ParamFloat<params_id::IMU_GYRO_FFT_MIN>)_param_imu_gyro_fft_min,
+        (ParamFloat<params_id::IMU_GYRO_FFT_MAX>)_param_imu_gyro_fft_max,
+        (ParamFloat<params_id::IMU_GYRO_FFT_SNR>)_param_imu_gyro_fft_snr)
 };
 
 #endif // !GYRO_FFT_HPP

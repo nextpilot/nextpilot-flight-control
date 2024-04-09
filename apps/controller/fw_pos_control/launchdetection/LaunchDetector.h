@@ -18,7 +18,7 @@
 #ifndef LAUNCHDETECTOR_H
 #define LAUNCHDETECTOR_H
 
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <uORB/topics/launch_detection_status.h>
 
 namespace launchdetection {
@@ -85,9 +85,9 @@ private:
     uint state_{launch_detection_status_s::STATE_WAITING_FOR_LAUNCH};
 
     DEFINE_PARAMETERS(
-        (ParamFloat<px4::params::FW_LAUN_AC_THLD>)param_fw_laun_ac_thld_,
-        (ParamFloat<px4::params::FW_LAUN_AC_T>)param_fw_laun_ac_t_,
-        (ParamFloat<px4::params::FW_LAUN_MOT_DEL>)param_fw_laun_mot_del_)
+        (ParamFloat<params_id::FW_LAUN_AC_THLD>)param_fw_laun_ac_thld_,
+        (ParamFloat<params_id::FW_LAUN_AC_T>)param_fw_laun_ac_t_,
+        (ParamFloat<params_id::FW_LAUN_MOT_DEL>)param_fw_laun_mot_del_)
 };
 
 } // namespace launchdetection

@@ -35,7 +35,7 @@
 #include <lib/adsb/AdsbConflict.h>
 #include <lib/perf/perf_counter.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <uORB/Publication.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/SubscriptionInterval.hpp>
@@ -65,7 +65,7 @@ using namespace time_literals;
  */
 #define NAVIGATOR_MODE_ARRAY_SIZE 8
 
-class Navigator : public ModuleBase<Navigator>, public ModuleParams {
+class Navigator : public ModuleCommand<Navigator>, public ModuleParams {
 public:
     Navigator();
     ~Navigator() override;
@@ -73,22 +73,22 @@ public:
     Navigator(const Navigator &)           = delete;
     Navigator operator=(const Navigator &) = delete;
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    static int *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static Navigator *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    /** @see ModuleBase::run() */
+    /** @see ModuleCommand::run() */
     void run() override;
 
-    /** @see ModuleBase::print_status() */
+    /** @see ModuleCommand::print_status() */
     int print_status() override;
 
     /**
@@ -478,25 +478,25 @@ private:
     bool geofence_allows_position(const vehicle_global_position_s &pos);
 
     DEFINE_PARAMETERS(
-        (ParamFloat<px4::params::NAV_LOITER_RAD>)_param_nav_loiter_rad, /**< loiter radius for fixedwing */
-        (ParamFloat<px4::params::NAV_ACC_RAD>)_param_nav_acc_rad,       /**< acceptance for takeoff */
-        (ParamFloat<px4::params::NAV_FW_ALT_RAD>)_param_nav_fw_alt_rad, /**< acceptance rad for fixedwing alt */
-        (ParamFloat<px4::params::NAV_FW_ALTL_RAD>)
-            _param_nav_fw_altl_rad,                                          /**< acceptance rad for fixedwing alt before landing*/
-        (ParamFloat<px4::params::NAV_MC_ALT_RAD>)_param_nav_mc_alt_rad,      /**< acceptance rad for multicopter alt */
-        (ParamInt<px4::params::NAV_FORCE_VT>)_param_nav_force_vt,            /**< acceptance radius for multicopter alt */
-        (ParamInt<px4::params::NAV_TRAFF_AVOID>)_param_nav_traff_avoid,      /**< avoiding other aircraft is enabled */
-        (ParamFloat<px4::params::NAV_TRAFF_A_HOR>)_param_nav_traff_a_hor_ct, /**< avoidance Distance Crosstrack*/
-        (ParamFloat<px4::params::NAV_TRAFF_A_VER>)_param_nav_traff_a_ver,    /**< avoidance Distance Vertical*/
-        (ParamInt<px4::params::NAV_TRAFF_COLL_T>)_param_nav_traff_collision_time,
-        (ParamFloat<px4::params::NAV_MIN_LTR_ALT>)_param_min_ltr_alt, /**< minimum altitude in Loiter mode*/
+        (ParamFloat<params_id::NAV_LOITER_RAD>)_param_nav_loiter_rad, /**< loiter radius for fixedwing */
+        (ParamFloat<params_id::NAV_ACC_RAD>)_param_nav_acc_rad,       /**< acceptance for takeoff */
+        (ParamFloat<params_id::NAV_FW_ALT_RAD>)_param_nav_fw_alt_rad, /**< acceptance rad for fixedwing alt */
+        (ParamFloat<params_id::NAV_FW_ALTL_RAD>)
+            _param_nav_fw_altl_rad,                                        /**< acceptance rad for fixedwing alt before landing*/
+        (ParamFloat<params_id::NAV_MC_ALT_RAD>)_param_nav_mc_alt_rad,      /**< acceptance rad for multicopter alt */
+        (ParamInt<params_id::NAV_FORCE_VT>)_param_nav_force_vt,            /**< acceptance radius for multicopter alt */
+        (ParamInt<params_id::NAV_TRAFF_AVOID>)_param_nav_traff_avoid,      /**< avoiding other aircraft is enabled */
+        (ParamFloat<params_id::NAV_TRAFF_A_HOR>)_param_nav_traff_a_hor_ct, /**< avoidance Distance Crosstrack*/
+        (ParamFloat<params_id::NAV_TRAFF_A_VER>)_param_nav_traff_a_ver,    /**< avoidance Distance Vertical*/
+        (ParamInt<params_id::NAV_TRAFF_COLL_T>)_param_nav_traff_collision_time,
+        (ParamFloat<params_id::NAV_MIN_LTR_ALT>)_param_min_ltr_alt, /**< minimum altitude in Loiter mode*/
 
         // non-navigator parameters: Mission (MIS_*)
-        (ParamFloat<px4::params::MIS_TAKEOFF_ALT>)_param_mis_takeoff_alt,
-        (ParamInt<px4::params::MIS_TKO_LAND_REQ>)_para_mis_takeoff_land_req,
-        (ParamFloat<px4::params::MIS_YAW_TMT>)_param_mis_yaw_tmt,
-        (ParamFloat<px4::params::MIS_YAW_ERR>)_param_mis_yaw_err,
-        (ParamFloat<px4::params::MIS_PD_TO>)_param_mis_payload_delivery_timeout,
-        (ParamFloat<px4::params::LNDMC_ALT_MAX>)_param_lndmc_alt_max,
-        (ParamInt<px4::params::MIS_LND_ABRT_ALT>)_param_mis_lnd_abrt_alt)
+        (ParamFloat<params_id::MIS_TAKEOFF_ALT>)_param_mis_takeoff_alt,
+        (ParamInt<params_id::MIS_TKO_LAND_REQ>)_para_mis_takeoff_land_req,
+        (ParamFloat<params_id::MIS_YAW_TMT>)_param_mis_yaw_tmt,
+        (ParamFloat<params_id::MIS_YAW_ERR>)_param_mis_yaw_err,
+        (ParamFloat<params_id::MIS_PD_TO>)_param_mis_payload_delivery_timeout,
+        (ParamFloat<params_id::LNDMC_ALT_MAX>)_param_lndmc_alt_max,
+        (ParamInt<params_id::MIS_LND_ABRT_ALT>)_param_mis_lnd_abrt_alt)
 };

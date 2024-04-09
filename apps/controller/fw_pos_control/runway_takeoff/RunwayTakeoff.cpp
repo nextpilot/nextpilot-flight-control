@@ -54,7 +54,7 @@ void RunwayTakeoff::update(const hrt_abstime &time_now, const float takeoff_airs
         if (calibrated_airspeed > rotation_airspeed) {
             takeoff_time_  = time_now;
             takeoff_state_ = RunwayTakeoffState::CLIMBOUT;
-            events::send(events::ID("runway_takeoff_reached_airspeed"), events::Log::Info,
+            // events::send(events::ID("runway_takeoff_reached_airspeed"), events::Log::Info,
                          "Takeoff airspeed reached, climbout");
         }
 
@@ -64,7 +64,7 @@ void RunwayTakeoff::update(const hrt_abstime &time_now, const float takeoff_airs
     case RunwayTakeoffState::CLIMBOUT:
         if (vehicle_altitude > clearance_altitude) {
             takeoff_state_ = RunwayTakeoffState::FLY;
-            events::send(events::ID("runway_takeoff_reached_clearance_altitude"), events::Log::Info, "Reached clearance altitude");
+            // events::send(events::ID("runway_takeoff_reached_clearance_altitude"), events::Log::Info, "Reached clearance altitude");
         }
 
         break;

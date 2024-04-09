@@ -107,7 +107,7 @@ void Takeoff::set_takeoff_position() {
     }
 
     if (log_level != events::LogLevel::Disabled) {
-        events::send<float>(events::ID("navigator_takeoff_min_alt"), {log_level, events::LogInternal::Info},
+        // events::send<float>(events::ID("navigator_takeoff_min_alt"), {log_level, events::LogInternal::Info},
                             "Using minimum takeoff altitude: {1:.2m}",
                             _navigator->get_takeoff_min_alt());
     }
@@ -116,7 +116,7 @@ void Takeoff::set_takeoff_position() {
         // If the suggestion is lower than our current alt, let's not go down.
         abs_altitude = _navigator->get_global_position()->alt;
         mavlink_log_critical(_navigator->get_mavlink_log_pub(), "Already higher than takeoff altitude\t");
-        events::send(events::ID("navigator_takeoff_already_higher"), {events::Log::Error, events::LogInternal::Info},
+        // events::send(events::ID("navigator_takeoff_already_higher"), {events::Log::Error, events::LogInternal::Info},
                      "Already higher than takeoff altitude (not descending)");
     }
 

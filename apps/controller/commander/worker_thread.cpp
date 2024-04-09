@@ -124,7 +124,7 @@ void WorkerThread::threadEntry() {
 
         if (_ret_value != 0) {
             mavlink_log_critical(&_mavlink_log_pub, "Error loading settings\t");
-            events::send(events::ID("commander_load_param_failed"), events::Log::Critical, "Error loading settings");
+            // events::send(events::ID("commander_load_param_failed"), events::Log::Critical, "Error loading settings");
         }
 
         break;
@@ -134,7 +134,7 @@ void WorkerThread::threadEntry() {
 
         if (_ret_value != 0) {
             mavlink_log_critical(&_mavlink_log_pub, "Error saving settings\t");
-            events::send(events::ID("commander_save_param_failed"), events::Log::Critical, "Error saving settings");
+            // events::send(events::ID("commander_save_param_failed"), events::Log::Critical, "Error saving settings");
         }
 
         break;

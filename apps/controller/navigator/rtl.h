@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 
 #include "navigator_mode.h"
 #include "mission_block.h"
@@ -149,17 +149,17 @@ private:
     bool _rtl_alt_min{false};
 
     DEFINE_PARAMETERS(
-        (ParamFloat<px4::params::RTL_RETURN_ALT>)_param_rtl_return_alt,
-        (ParamFloat<px4::params::RTL_DESCEND_ALT>)_param_rtl_descend_alt,
-        (ParamFloat<px4::params::RTL_LAND_DELAY>)_param_rtl_land_delay,
-        (ParamFloat<px4::params::RTL_MIN_DIST>)_param_rtl_min_dist,
-        (ParamInt<px4::params::RTL_TYPE>)_param_rtl_type,
-        (ParamInt<px4::params::RTL_CONE_ANG>)_param_rtl_cone_half_angle_deg,
-        (ParamInt<px4::params::RTL_PLD_MD>)_param_rtl_pld_md,
-        (ParamFloat<px4::params::RTL_LOITER_RAD>)_param_rtl_loiter_rad,
-        (ParamInt<px4::params::RTL_HDG_MD>)_param_rtl_hdg_md,
-        (ParamFloat<px4::params::RTL_TIME_FACTOR>)_param_rtl_time_factor,
-        (ParamInt<px4::params::RTL_TIME_MARGIN>)_param_rtl_time_margin)
+        (ParamFloat<params_id::RTL_RETURN_ALT>)_param_rtl_return_alt,
+        (ParamFloat<params_id::RTL_DESCEND_ALT>)_param_rtl_descend_alt,
+        (ParamFloat<params_id::RTL_LAND_DELAY>)_param_rtl_land_delay,
+        (ParamFloat<params_id::RTL_MIN_DIST>)_param_rtl_min_dist,
+        (ParamInt<params_id::RTL_TYPE>)_param_rtl_type,
+        (ParamInt<params_id::RTL_CONE_ANG>)_param_rtl_cone_half_angle_deg,
+        (ParamInt<params_id::RTL_PLD_MD>)_param_rtl_pld_md,
+        (ParamFloat<params_id::RTL_LOITER_RAD>)_param_rtl_loiter_rad,
+        (ParamInt<params_id::RTL_HDG_MD>)_param_rtl_hdg_md,
+        (ParamFloat<params_id::RTL_TIME_FACTOR>)_param_rtl_time_factor,
+        (ParamInt<params_id::RTL_TIME_MARGIN>)_param_rtl_time_margin)
 
     param_t _param_mpc_z_v_auto_up{PARAM_INVALID};
     param_t _param_mpc_z_v_auto_dn{PARAM_INVALID};

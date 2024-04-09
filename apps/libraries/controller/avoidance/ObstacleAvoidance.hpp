@@ -19,7 +19,7 @@
 #pragma once
 
 #include <px4_platform_common/defines.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <commander/px4_custom_mode.h>
 #include <drivers/drv_hrt.h>
 
@@ -109,8 +109,8 @@ protected:
 
 	bool _avoidance_activated{false}; /**< true after the first avoidance setpoint is received */
 
-	systemlib::Hysteresis _avoidance_point_not_valid_hysteresis{false}; /**< becomes true if the companion doesn't start sending valid setpoints */
-	systemlib::Hysteresis _no_progress_z_hysteresis{false}; /**< becomes true if the vehicle is not making progress towards the z component of the goal */
+	Hysteresis _avoidance_point_not_valid_hysteresis{false}; /**< becomes true if the companion doesn't start sending valid setpoints */
+	Hysteresis _no_progress_z_hysteresis{false}; /**< becomes true if the vehicle is not making progress towards the z component of the goal */
 
 	float _prev_pos_to_target_z = -1.f; /**< z distance to the goal */
 
@@ -123,7 +123,7 @@ protected:
 	void _generateBezierSetpoints(matrix::Vector3f &position, matrix::Vector3f &velocity, float &yaw, float &yaw_velocity);
 
 	DEFINE_PARAMETERS(
-		(ParamFloat<px4::params::NAV_MC_ALT_RAD>) _param_nav_mc_alt_rad    /**< Acceptance radius for multicopter altitude */
+		(ParamFloat<params_id::NAV_MC_ALT_RAD>) _param_nav_mc_alt_rad    /**< Acceptance radius for multicopter altitude */
 	);
 
 };

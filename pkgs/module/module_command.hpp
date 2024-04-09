@@ -95,7 +95,7 @@ public:
         }
 
         // 创建实例
-        T *object = instantiate(argc, argv);
+        T *object = T::instantiate(argc, argv);
         if (!object) {
             LOG_E("create instance fail");
             return -1;
@@ -221,7 +221,8 @@ public:
     }
 
     static T *instantiate(int argc, char *argv[]) {
-        return new T();
+        return nullptr;
+        // return new T();
     }
 
     /**

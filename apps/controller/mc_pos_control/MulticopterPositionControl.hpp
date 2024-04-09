@@ -25,8 +25,8 @@
 #include <px4_platform_common/px4_config.h>
 #include <px4_platform_common/defines.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/module_params.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/tasks.h>
 #include <uORB/Publication.hpp>
@@ -44,21 +44,21 @@
 
 using namespace time_literals;
 
-class MulticopterPositionControl : public ModuleBase<MulticopterPositionControl>, public control::SuperBlock, public ModuleParams, public px4::ScheduledWorkItem {
+class MulticopterPositionControl : public ModuleCommand<MulticopterPositionControl>, public control::SuperBlock, public ModuleParams, public WorkItemScheduled {
 public:
     MulticopterPositionControl(bool vtol = false);
     ~MulticopterPositionControl() override;
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    static int *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    bool init();
+    int init() override;
 
 private:
     void Run() override;
@@ -104,53 +104,53 @@ private:
 
     DEFINE_PARAMETERS(
         // Position Control
-        (ParamFloat<px4::params::MPC_XY_P>)_param_mpc_xy_p,
-        (ParamFloat<px4::params::MPC_Z_P>)_param_mpc_z_p,
-        (ParamFloat<px4::params::MPC_XY_VEL_P_ACC>)_param_mpc_xy_vel_p_acc,
-        (ParamFloat<px4::params::MPC_XY_VEL_I_ACC>)_param_mpc_xy_vel_i_acc,
-        (ParamFloat<px4::params::MPC_XY_VEL_D_ACC>)_param_mpc_xy_vel_d_acc,
-        (ParamFloat<px4::params::MPC_Z_VEL_P_ACC>)_param_mpc_z_vel_p_acc,
-        (ParamFloat<px4::params::MPC_Z_VEL_I_ACC>)_param_mpc_z_vel_i_acc,
-        (ParamFloat<px4::params::MPC_Z_VEL_D_ACC>)_param_mpc_z_vel_d_acc,
-        (ParamFloat<px4::params::MPC_XY_VEL_MAX>)_param_mpc_xy_vel_max,
-        (ParamFloat<px4::params::MPC_Z_V_AUTO_UP>)_param_mpc_z_v_auto_up,
-        (ParamFloat<px4::params::MPC_Z_VEL_MAX_UP>)_param_mpc_z_vel_max_up,
-        (ParamFloat<px4::params::MPC_Z_V_AUTO_DN>)_param_mpc_z_v_auto_dn,
-        (ParamFloat<px4::params::MPC_Z_VEL_MAX_DN>)_param_mpc_z_vel_max_dn,
-        (ParamFloat<px4::params::MPC_TILTMAX_AIR>)_param_mpc_tiltmax_air,
-        (ParamFloat<px4::params::MPC_THR_HOVER>)_param_mpc_thr_hover,
-        (ParamBool<px4::params::MPC_USE_HTE>)_param_mpc_use_hte,
+        (ParamFloat<params_id::MPC_XY_P>)_param_mpc_xy_p,
+        (ParamFloat<params_id::MPC_Z_P>)_param_mpc_z_p,
+        (ParamFloat<params_id::MPC_XY_VEL_P_ACC>)_param_mpc_xy_vel_p_acc,
+        (ParamFloat<params_id::MPC_XY_VEL_I_ACC>)_param_mpc_xy_vel_i_acc,
+        (ParamFloat<params_id::MPC_XY_VEL_D_ACC>)_param_mpc_xy_vel_d_acc,
+        (ParamFloat<params_id::MPC_Z_VEL_P_ACC>)_param_mpc_z_vel_p_acc,
+        (ParamFloat<params_id::MPC_Z_VEL_I_ACC>)_param_mpc_z_vel_i_acc,
+        (ParamFloat<params_id::MPC_Z_VEL_D_ACC>)_param_mpc_z_vel_d_acc,
+        (ParamFloat<params_id::MPC_XY_VEL_MAX>)_param_mpc_xy_vel_max,
+        (ParamFloat<params_id::MPC_Z_V_AUTO_UP>)_param_mpc_z_v_auto_up,
+        (ParamFloat<params_id::MPC_Z_VEL_MAX_UP>)_param_mpc_z_vel_max_up,
+        (ParamFloat<params_id::MPC_Z_V_AUTO_DN>)_param_mpc_z_v_auto_dn,
+        (ParamFloat<params_id::MPC_Z_VEL_MAX_DN>)_param_mpc_z_vel_max_dn,
+        (ParamFloat<params_id::MPC_TILTMAX_AIR>)_param_mpc_tiltmax_air,
+        (ParamFloat<params_id::MPC_THR_HOVER>)_param_mpc_thr_hover,
+        (ParamBool<params_id::MPC_USE_HTE>)_param_mpc_use_hte,
 
         // Takeoff / Land
-        (ParamFloat<px4::params::COM_SPOOLUP_TIME>)_param_com_spoolup_time, /**< time to let motors spool up after arming */
-        (ParamFloat<px4::params::MPC_TKO_RAMP_T>)_param_mpc_tko_ramp_t,     /**< time constant for smooth takeoff ramp */
-        (ParamFloat<px4::params::MPC_TKO_SPEED>)_param_mpc_tko_speed,
-        (ParamFloat<px4::params::MPC_LAND_SPEED>)_param_mpc_land_speed,
+        (ParamFloat<params_id::COM_SPOOLUP_TIME>)_param_com_spoolup_time, /**< time to let motors spool up after arming */
+        (ParamFloat<params_id::MPC_TKO_RAMP_T>)_param_mpc_tko_ramp_t,     /**< time constant for smooth takeoff ramp */
+        (ParamFloat<params_id::MPC_TKO_SPEED>)_param_mpc_tko_speed,
+        (ParamFloat<params_id::MPC_LAND_SPEED>)_param_mpc_land_speed,
 
-        (ParamFloat<px4::params::MPC_VEL_MANUAL>)_param_mpc_vel_manual,
-        (ParamFloat<px4::params::MPC_VEL_MAN_BACK>)_param_mpc_vel_man_back,
-        (ParamFloat<px4::params::MPC_VEL_MAN_SIDE>)_param_mpc_vel_man_side,
-        (ParamFloat<px4::params::MPC_XY_CRUISE>)_param_mpc_xy_cruise,
-        (ParamFloat<px4::params::MPC_LAND_ALT2>)_param_mpc_land_alt2, /**< downwards speed limited below this altitude */
-        (ParamInt<px4::params::MPC_POS_MODE>)_param_mpc_pos_mode,
-        (ParamInt<px4::params::MPC_ALT_MODE>)_param_mpc_alt_mode,
-        (ParamFloat<px4::params::MPC_TILTMAX_LND>)_param_mpc_tiltmax_lnd, /**< maximum tilt for landing and smooth takeoff */
-        (ParamFloat<px4::params::MPC_THR_MIN>)_param_mpc_thr_min,
-        (ParamFloat<px4::params::MPC_THR_MAX>)_param_mpc_thr_max,
-        (ParamFloat<px4::params::MPC_THR_XY_MARG>)_param_mpc_thr_xy_marg,
+        (ParamFloat<params_id::MPC_VEL_MANUAL>)_param_mpc_vel_manual,
+        (ParamFloat<params_id::MPC_VEL_MAN_BACK>)_param_mpc_vel_man_back,
+        (ParamFloat<params_id::MPC_VEL_MAN_SIDE>)_param_mpc_vel_man_side,
+        (ParamFloat<params_id::MPC_XY_CRUISE>)_param_mpc_xy_cruise,
+        (ParamFloat<params_id::MPC_LAND_ALT2>)_param_mpc_land_alt2, /**< downwards speed limited below this altitude */
+        (ParamInt<params_id::MPC_POS_MODE>)_param_mpc_pos_mode,
+        (ParamInt<params_id::MPC_ALT_MODE>)_param_mpc_alt_mode,
+        (ParamFloat<params_id::MPC_TILTMAX_LND>)_param_mpc_tiltmax_lnd, /**< maximum tilt for landing and smooth takeoff */
+        (ParamFloat<params_id::MPC_THR_MIN>)_param_mpc_thr_min,
+        (ParamFloat<params_id::MPC_THR_MAX>)_param_mpc_thr_max,
+        (ParamFloat<params_id::MPC_THR_XY_MARG>)_param_mpc_thr_xy_marg,
 
-        (ParamFloat<px4::params::SYS_VEHICLE_RESP>)_param_sys_vehicle_resp,
-        (ParamFloat<px4::params::MPC_ACC_HOR>)_param_mpc_acc_hor,
-        (ParamFloat<px4::params::MPC_ACC_DOWN_MAX>)_param_mpc_acc_down_max,
-        (ParamFloat<px4::params::MPC_ACC_UP_MAX>)_param_mpc_acc_up_max,
-        (ParamFloat<px4::params::MPC_ACC_HOR_MAX>)_param_mpc_acc_hor_max,
-        (ParamFloat<px4::params::MPC_JERK_AUTO>)_param_mpc_jerk_auto,
-        (ParamFloat<px4::params::MPC_JERK_MAX>)_param_mpc_jerk_max,
-        (ParamFloat<px4::params::MPC_MAN_Y_MAX>)_param_mpc_man_y_max,
-        (ParamFloat<px4::params::MPC_MAN_Y_TAU>)_param_mpc_man_y_tau,
+        (ParamFloat<params_id::SYS_VEHICLE_RESP>)_param_sys_vehicle_resp,
+        (ParamFloat<params_id::MPC_ACC_HOR>)_param_mpc_acc_hor,
+        (ParamFloat<params_id::MPC_ACC_DOWN_MAX>)_param_mpc_acc_down_max,
+        (ParamFloat<params_id::MPC_ACC_UP_MAX>)_param_mpc_acc_up_max,
+        (ParamFloat<params_id::MPC_ACC_HOR_MAX>)_param_mpc_acc_hor_max,
+        (ParamFloat<params_id::MPC_JERK_AUTO>)_param_mpc_jerk_auto,
+        (ParamFloat<params_id::MPC_JERK_MAX>)_param_mpc_jerk_max,
+        (ParamFloat<params_id::MPC_MAN_Y_MAX>)_param_mpc_man_y_max,
+        (ParamFloat<params_id::MPC_MAN_Y_TAU>)_param_mpc_man_y_tau,
 
-        (ParamFloat<px4::params::MPC_XY_VEL_ALL>)_param_mpc_xy_vel_all,
-        (ParamFloat<px4::params::MPC_Z_VEL_ALL>)_param_mpc_z_vel_all);
+        (ParamFloat<params_id::MPC_XY_VEL_ALL>)_param_mpc_xy_vel_all,
+        (ParamFloat<params_id::MPC_Z_VEL_ALL>)_param_mpc_z_vel_all);
 
     control::BlockDerivative _vel_x_deriv; /**< velocity derivative in x */
     control::BlockDerivative _vel_y_deriv; /**< velocity derivative in y */

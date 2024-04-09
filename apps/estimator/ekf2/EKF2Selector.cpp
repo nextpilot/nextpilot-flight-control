@@ -18,7 +18,7 @@ using math::radians;
 
 EKF2Selector::EKF2Selector() :
     ModuleParams(nullptr),
-    ScheduledWorkItem("ekf2_selector", px4::wq_configurations::nav_and_controllers) {
+    WorkItemScheduled("ekf2_selector", wq_configurations::nav_and_controllers) {
     _estimator_selector_status_pub.advertise();
     _sensor_selection_pub.advertise();
     _vehicle_attitude_pub.advertise();

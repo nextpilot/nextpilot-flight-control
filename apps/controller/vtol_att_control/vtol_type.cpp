@@ -20,7 +20,7 @@
 #include "vtol_att_control_main.h"
 
 #include <float.h>
-#include <px4_platform_common/defines.h>
+#include <defines.h>
 #include <matrix/math.hpp>
 
 using namespace matrix;
@@ -233,7 +233,7 @@ bool VtolType::isUncommandedDescent() {
         return (_quadchute_ref_alt - current_altitude) > _param_vt_qc_alt_loss.get();
 
     } else {
-        _quadchute_ref_alt = -MAXFLOAT;
+        _quadchute_ref_alt = -FLT_MAX;
     }
 
     return false;

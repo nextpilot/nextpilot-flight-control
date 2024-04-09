@@ -19,9 +19,9 @@
 #include <lib/perf/perf_counter.h>
 #include <lib/systemlib/mavlink_log.h>
 #include <px4_platform_common/log.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <uORB/Publication.hpp>
 #include <uORB/PublicationMulti.hpp>
 #include <uORB/Subscription.hpp>
@@ -41,7 +41,7 @@
 using namespace time_literals;
 
 namespace sensors {
-class VehicleMagnetometer : public ModuleParams, public px4::ScheduledWorkItem {
+class VehicleMagnetometer : public ModuleParams, public WorkItemScheduled {
 public:
     VehicleMagnetometer();
     ~VehicleMagnetometer() override;
@@ -147,11 +147,11 @@ private:
     bool _armed{false};
 
     DEFINE_PARAMETERS(
-        (ParamInt<px4::params::CAL_MAG_COMP_TYP>)_param_mag_comp_typ,
-        (ParamBool<px4::params::SENS_MAG_MODE>)_param_sens_mag_mode,
-        (ParamFloat<px4::params::SENS_MAG_RATE>)_param_sens_mag_rate,
-        (ParamBool<px4::params::SENS_MAG_AUTOCAL>)_param_sens_mag_autocal,
-        (ParamInt<px4::params::CAL_MAG_SIDES>)_param_cal_mag_sides,
-        (ParamInt<px4::params::SENS_MAG_SIDES>)_param_sens_mag_sides)
+        (ParamInt<params_id::CAL_MAG_COMP_TYP>)_param_mag_comp_typ,
+        (ParamBool<params_id::SENS_MAG_MODE>)_param_sens_mag_mode,
+        (ParamFloat<params_id::SENS_MAG_RATE>)_param_sens_mag_rate,
+        (ParamBool<params_id::SENS_MAG_AUTOCAL>)_param_sens_mag_autocal,
+        (ParamInt<params_id::CAL_MAG_SIDES>)_param_cal_mag_sides,
+        (ParamInt<params_id::SENS_MAG_SIDES>)_param_sens_mag_sides)
 };
 }; // namespace sensors

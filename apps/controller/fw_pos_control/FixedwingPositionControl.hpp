@@ -38,7 +38,7 @@
 #include <px4_platform_common/px4_config.h>
 #include <px4_platform_common/defines.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/px4_work_queue/WorkItem.hpp>
 #include <uORB/Publication.hpp>
@@ -142,21 +142,21 @@ static constexpr float MANUAL_TOUCHDOWN_NUDGE_INPUT_DEADZONE = 0.15f;
 // [s] time interval after touchdown for ramping in runway clamping constraints (touchdown is assumed at FW_LND_TD_TIME after start of flare)
 static constexpr float POST_TOUCHDOWN_CLAMP_TIME = 0.5f;
 
-class FixedwingPositionControl final : public ModuleBase<FixedwingPositionControl>, public ModuleParams, public px4::WorkItem {
+class FixedwingPositionControl final : public ModuleCommand<FixedwingPositionControl>, public ModuleParams, public WorkItem {
 public:
     FixedwingPositionControl(bool vtol = false);
     ~FixedwingPositionControl() override;
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    static int *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    bool init();
+    int init() override;
 
 private:
     void Run() override;
@@ -859,113 +859,113 @@ private:
 
     DEFINE_PARAMETERS(
 
-        (ParamFloat<px4::params::FW_AIRSPD_MAX>)_param_fw_airspd_max,
-        (ParamFloat<px4::params::FW_AIRSPD_MIN>)_param_fw_airspd_min,
-        (ParamFloat<px4::params::FW_AIRSPD_TRIM>)_param_fw_airspd_trim,
-        (ParamFloat<px4::params::FW_AIRSPD_STALL>)_param_fw_airspd_stall,
+        (ParamFloat<params_id::FW_AIRSPD_MAX>)_param_fw_airspd_max,
+        (ParamFloat<params_id::FW_AIRSPD_MIN>)_param_fw_airspd_min,
+        (ParamFloat<params_id::FW_AIRSPD_TRIM>)_param_fw_airspd_trim,
+        (ParamFloat<params_id::FW_AIRSPD_STALL>)_param_fw_airspd_stall,
 
-        (ParamFloat<px4::params::FW_GND_SPD_MIN>)_param_fw_gnd_spd_min,
+        (ParamFloat<params_id::FW_GND_SPD_MIN>)_param_fw_gnd_spd_min,
 
-        (ParamFloat<px4::params::FW_PN_R_SLEW_MAX>)_param_fw_pn_r_slew_max,
-        (ParamFloat<px4::params::FW_R_LIM>)_param_fw_r_lim,
+        (ParamFloat<params_id::FW_PN_R_SLEW_MAX>)_param_fw_pn_r_slew_max,
+        (ParamFloat<params_id::FW_R_LIM>)_param_fw_r_lim,
 
-        (ParamFloat<px4::params::NPFG_PERIOD>)_param_npfg_period,
-        (ParamFloat<px4::params::NPFG_DAMPING>)_param_npfg_damping,
-        (ParamBool<px4::params::NPFG_LB_PERIOD>)_param_npfg_en_period_lb,
-        (ParamBool<px4::params::NPFG_UB_PERIOD>)_param_npfg_en_period_ub,
-        (ParamBool<px4::params::NPFG_TRACK_KEEP>)_param_npfg_en_track_keeping,
-        (ParamBool<px4::params::NPFG_EN_MIN_GSP>)_param_npfg_en_min_gsp,
-        (ParamBool<px4::params::NPFG_WIND_REG>)_param_npfg_en_wind_reg,
-        (ParamFloat<px4::params::NPFG_GSP_MAX_TK>)_param_npfg_track_keeping_gsp_max,
-        (ParamFloat<px4::params::NPFG_ROLL_TC>)_param_npfg_roll_time_const,
-        (ParamFloat<px4::params::NPFG_SW_DST_MLT>)_param_npfg_switch_distance_multiplier,
-        (ParamFloat<px4::params::NPFG_PERIOD_SF>)_param_npfg_period_safety_factor,
+        (ParamFloat<params_id::NPFG_PERIOD>)_param_npfg_period,
+        (ParamFloat<params_id::NPFG_DAMPING>)_param_npfg_damping,
+        (ParamBool<params_id::NPFG_LB_PERIOD>)_param_npfg_en_period_lb,
+        (ParamBool<params_id::NPFG_UB_PERIOD>)_param_npfg_en_period_ub,
+        (ParamBool<params_id::NPFG_TRACK_KEEP>)_param_npfg_en_track_keeping,
+        (ParamBool<params_id::NPFG_EN_MIN_GSP>)_param_npfg_en_min_gsp,
+        (ParamBool<params_id::NPFG_WIND_REG>)_param_npfg_en_wind_reg,
+        (ParamFloat<params_id::NPFG_GSP_MAX_TK>)_param_npfg_track_keeping_gsp_max,
+        (ParamFloat<params_id::NPFG_ROLL_TC>)_param_npfg_roll_time_const,
+        (ParamFloat<params_id::NPFG_SW_DST_MLT>)_param_npfg_switch_distance_multiplier,
+        (ParamFloat<params_id::NPFG_PERIOD_SF>)_param_npfg_period_safety_factor,
 
-        (ParamFloat<px4::params::FW_LND_AIRSPD>)_param_fw_lnd_airspd,
-        (ParamFloat<px4::params::FW_LND_ANG>)_param_fw_lnd_ang,
-        (ParamFloat<px4::params::FW_LND_FL_PMAX>)_param_fw_lnd_fl_pmax,
-        (ParamFloat<px4::params::FW_LND_FL_PMIN>)_param_fw_lnd_fl_pmin,
-        (ParamFloat<px4::params::FW_LND_FLALT>)_param_fw_lnd_flalt,
-        (ParamFloat<px4::params::FW_LND_THRTC_SC>)_param_fw_thrtc_sc,
-        (ParamBool<px4::params::FW_LND_EARLYCFG>)_param_fw_lnd_earlycfg,
-        (ParamInt<px4::params::FW_LND_USETER>)_param_fw_lnd_useter,
+        (ParamFloat<params_id::FW_LND_AIRSPD>)_param_fw_lnd_airspd,
+        (ParamFloat<params_id::FW_LND_ANG>)_param_fw_lnd_ang,
+        (ParamFloat<params_id::FW_LND_FL_PMAX>)_param_fw_lnd_fl_pmax,
+        (ParamFloat<params_id::FW_LND_FL_PMIN>)_param_fw_lnd_fl_pmin,
+        (ParamFloat<params_id::FW_LND_FLALT>)_param_fw_lnd_flalt,
+        (ParamFloat<params_id::FW_LND_THRTC_SC>)_param_fw_thrtc_sc,
+        (ParamBool<params_id::FW_LND_EARLYCFG>)_param_fw_lnd_earlycfg,
+        (ParamInt<params_id::FW_LND_USETER>)_param_fw_lnd_useter,
 
-        (ParamFloat<px4::params::FW_P_LIM_MAX>)_param_fw_p_lim_max,
-        (ParamFloat<px4::params::FW_P_LIM_MIN>)_param_fw_p_lim_min,
+        (ParamFloat<params_id::FW_P_LIM_MAX>)_param_fw_p_lim_max,
+        (ParamFloat<params_id::FW_P_LIM_MIN>)_param_fw_p_lim_min,
 
-        (ParamFloat<px4::params::FW_T_CLMB_MAX>)_param_fw_t_clmb_max,
-        (ParamFloat<px4::params::FW_T_HRATE_FF>)_param_fw_t_hrate_ff,
-        (ParamFloat<px4::params::FW_T_ALT_TC>)_param_fw_t_h_error_tc,
-        (ParamFloat<px4::params::FW_T_I_GAIN_THR>)_param_fw_t_I_gain_thr,
-        (ParamFloat<px4::params::FW_T_I_GAIN_PIT>)_param_fw_t_I_gain_pit,
-        (ParamFloat<px4::params::FW_T_PTCH_DAMP>)_param_fw_t_ptch_damp,
-        (ParamFloat<px4::params::FW_T_RLL2THR>)_param_fw_t_rll2thr,
-        (ParamFloat<px4::params::FW_T_SINK_MAX>)_param_fw_t_sink_max,
-        (ParamFloat<px4::params::FW_T_SINK_MIN>)_param_fw_t_sink_min,
-        (ParamFloat<px4::params::FW_T_SPDWEIGHT>)_param_fw_t_spdweight,
-        (ParamFloat<px4::params::FW_T_TAS_TC>)_param_fw_t_tas_error_tc,
-        (ParamFloat<px4::params::FW_T_THR_DAMP>)_param_fw_t_thr_damp,
-        (ParamFloat<px4::params::FW_T_VERT_ACC>)_param_fw_t_vert_acc,
-        (ParamFloat<px4::params::FW_T_STE_R_TC>)_param_ste_rate_time_const,
-        (ParamFloat<px4::params::FW_T_SEB_R_FF>)_param_seb_rate_ff,
-        (ParamFloat<px4::params::FW_T_CLMB_R_SP>)_param_climbrate_target,
-        (ParamFloat<px4::params::FW_T_SINK_R_SP>)_param_sinkrate_target,
-        (ParamFloat<px4::params::FW_T_SPD_STD>)_param_speed_standard_dev,
-        (ParamFloat<px4::params::FW_T_SPD_DEV_STD>)_param_speed_rate_standard_dev,
-        (ParamFloat<px4::params::FW_T_SPD_PRC_STD>)_param_process_noise_standard_dev,
+        (ParamFloat<params_id::FW_T_CLMB_MAX>)_param_fw_t_clmb_max,
+        (ParamFloat<params_id::FW_T_HRATE_FF>)_param_fw_t_hrate_ff,
+        (ParamFloat<params_id::FW_T_ALT_TC>)_param_fw_t_h_error_tc,
+        (ParamFloat<params_id::FW_T_I_GAIN_THR>)_param_fw_t_I_gain_thr,
+        (ParamFloat<params_id::FW_T_I_GAIN_PIT>)_param_fw_t_I_gain_pit,
+        (ParamFloat<params_id::FW_T_PTCH_DAMP>)_param_fw_t_ptch_damp,
+        (ParamFloat<params_id::FW_T_RLL2THR>)_param_fw_t_rll2thr,
+        (ParamFloat<params_id::FW_T_SINK_MAX>)_param_fw_t_sink_max,
+        (ParamFloat<params_id::FW_T_SINK_MIN>)_param_fw_t_sink_min,
+        (ParamFloat<params_id::FW_T_SPDWEIGHT>)_param_fw_t_spdweight,
+        (ParamFloat<params_id::FW_T_TAS_TC>)_param_fw_t_tas_error_tc,
+        (ParamFloat<params_id::FW_T_THR_DAMP>)_param_fw_t_thr_damp,
+        (ParamFloat<params_id::FW_T_VERT_ACC>)_param_fw_t_vert_acc,
+        (ParamFloat<params_id::FW_T_STE_R_TC>)_param_ste_rate_time_const,
+        (ParamFloat<params_id::FW_T_SEB_R_FF>)_param_seb_rate_ff,
+        (ParamFloat<params_id::FW_T_CLMB_R_SP>)_param_climbrate_target,
+        (ParamFloat<params_id::FW_T_SINK_R_SP>)_param_sinkrate_target,
+        (ParamFloat<params_id::FW_T_SPD_STD>)_param_speed_standard_dev,
+        (ParamFloat<params_id::FW_T_SPD_DEV_STD>)_param_speed_rate_standard_dev,
+        (ParamFloat<params_id::FW_T_SPD_PRC_STD>)_param_process_noise_standard_dev,
 
-        (ParamFloat<px4::params::FW_THR_ASPD_MIN>)_param_fw_thr_aspd_min,
-        (ParamFloat<px4::params::FW_THR_ASPD_MAX>)_param_fw_thr_aspd_max,
+        (ParamFloat<params_id::FW_THR_ASPD_MIN>)_param_fw_thr_aspd_min,
+        (ParamFloat<params_id::FW_THR_ASPD_MAX>)_param_fw_thr_aspd_max,
 
-        (ParamFloat<px4::params::FW_THR_TRIM>)_param_fw_thr_trim,
-        (ParamFloat<px4::params::FW_THR_IDLE>)_param_fw_thr_idle,
-        (ParamFloat<px4::params::FW_THR_MAX>)_param_fw_thr_max,
-        (ParamFloat<px4::params::FW_THR_MIN>)_param_fw_thr_min,
-        (ParamFloat<px4::params::FW_THR_SLEW_MAX>)_param_fw_thr_slew_max,
+        (ParamFloat<params_id::FW_THR_TRIM>)_param_fw_thr_trim,
+        (ParamFloat<params_id::FW_THR_IDLE>)_param_fw_thr_idle,
+        (ParamFloat<params_id::FW_THR_MAX>)_param_fw_thr_max,
+        (ParamFloat<params_id::FW_THR_MIN>)_param_fw_thr_min,
+        (ParamFloat<params_id::FW_THR_SLEW_MAX>)_param_fw_thr_slew_max,
 
-        (ParamFloat<px4::params::FW_FLAPS_LND_SCL>)_param_fw_flaps_lnd_scl,
-        (ParamFloat<px4::params::FW_FLAPS_TO_SCL>)_param_fw_flaps_to_scl,
-        (ParamFloat<px4::params::FW_SPOILERS_LND>)_param_fw_spoilers_lnd,
-        (ParamFloat<px4::params::FW_SPOILERS_DESC>)_param_fw_spoilers_desc,
+        (ParamFloat<params_id::FW_FLAPS_LND_SCL>)_param_fw_flaps_lnd_scl,
+        (ParamFloat<params_id::FW_FLAPS_TO_SCL>)_param_fw_flaps_to_scl,
+        (ParamFloat<params_id::FW_SPOILERS_LND>)_param_fw_spoilers_lnd,
+        (ParamFloat<params_id::FW_SPOILERS_DESC>)_param_fw_spoilers_desc,
 
-        (ParamInt<px4::params::FW_POS_STK_CONF>)_param_fw_pos_stk_conf,
+        (ParamInt<params_id::FW_POS_STK_CONF>)_param_fw_pos_stk_conf,
 
-        (ParamInt<px4::params::FW_GPSF_LT>)_param_nav_gpsf_lt,
-        (ParamFloat<px4::params::FW_GPSF_R>)_param_nav_gpsf_r,
+        (ParamInt<params_id::FW_GPSF_LT>)_param_nav_gpsf_lt,
+        (ParamFloat<params_id::FW_GPSF_R>)_param_nav_gpsf_r,
 
         // external parameters
-        (ParamInt<px4::params::FW_ARSP_MODE>)_param_fw_arsp_mode,
+        (ParamInt<params_id::FW_ARSP_MODE>)_param_fw_arsp_mode,
 
-        (ParamFloat<px4::params::FW_PSP_OFF>)_param_fw_psp_off,
+        (ParamFloat<params_id::FW_PSP_OFF>)_param_fw_psp_off,
 
-        (ParamFloat<px4::params::NAV_LOITER_RAD>)_param_nav_loiter_rad,
+        (ParamFloat<params_id::NAV_LOITER_RAD>)_param_nav_loiter_rad,
 
-        (ParamFloat<px4::params::FW_TKO_PITCH_MIN>)_takeoff_pitch_min,
+        (ParamFloat<params_id::FW_TKO_PITCH_MIN>)_takeoff_pitch_min,
 
-        (ParamFloat<px4::params::NAV_FW_ALT_RAD>)_param_nav_fw_alt_rad,
+        (ParamFloat<params_id::NAV_FW_ALT_RAD>)_param_nav_fw_alt_rad,
 
-        (ParamFloat<px4::params::WEIGHT_BASE>)_param_weight_base,
-        (ParamFloat<px4::params::WEIGHT_GROSS>)_param_weight_gross,
+        (ParamFloat<params_id::WEIGHT_BASE>)_param_weight_base,
+        (ParamFloat<params_id::WEIGHT_GROSS>)_param_weight_gross,
 
-        (ParamFloat<px4::params::FW_WING_SPAN>)_param_fw_wing_span,
-        (ParamFloat<px4::params::FW_WING_HEIGHT>)_param_fw_wing_height,
+        (ParamFloat<params_id::FW_WING_SPAN>)_param_fw_wing_span,
+        (ParamFloat<params_id::FW_WING_HEIGHT>)_param_fw_wing_height,
 
-        (ParamFloat<px4::params::RWTO_NPFG_PERIOD>)_param_rwto_npfg_period,
-        (ParamBool<px4::params::RWTO_NUDGE>)_param_rwto_nudge,
+        (ParamFloat<params_id::RWTO_NPFG_PERIOD>)_param_rwto_npfg_period,
+        (ParamBool<params_id::RWTO_NUDGE>)_param_rwto_nudge,
 
-        (ParamFloat<px4::params::FW_LND_FL_TIME>)_param_fw_lnd_fl_time,
-        (ParamFloat<px4::params::FW_LND_FL_SINK>)_param_fw_lnd_fl_sink,
-        (ParamFloat<px4::params::FW_LND_TD_TIME>)_param_fw_lnd_td_time,
-        (ParamFloat<px4::params::FW_LND_TD_OFF>)_param_fw_lnd_td_off,
-        (ParamInt<px4::params::FW_LND_NUDGE>)_param_fw_lnd_nudge,
-        (ParamInt<px4::params::FW_LND_ABORT>)_param_fw_lnd_abort,
+        (ParamFloat<params_id::FW_LND_FL_TIME>)_param_fw_lnd_fl_time,
+        (ParamFloat<params_id::FW_LND_FL_SINK>)_param_fw_lnd_fl_sink,
+        (ParamFloat<params_id::FW_LND_TD_TIME>)_param_fw_lnd_td_time,
+        (ParamFloat<params_id::FW_LND_TD_OFF>)_param_fw_lnd_td_off,
+        (ParamInt<params_id::FW_LND_NUDGE>)_param_fw_lnd_nudge,
+        (ParamInt<params_id::FW_LND_ABORT>)_param_fw_lnd_abort,
 
-        (ParamFloat<px4::params::FW_WIND_ARSP_SC>)_param_fw_wind_arsp_sc,
+        (ParamFloat<params_id::FW_WIND_ARSP_SC>)_param_fw_wind_arsp_sc,
 
-        (ParamFloat<px4::params::FW_TKO_AIRSPD>)_param_fw_tko_airspd,
+        (ParamFloat<params_id::FW_TKO_AIRSPD>)_param_fw_tko_airspd,
 
-        (ParamFloat<px4::params::RWTO_PSP>)_param_rwto_psp,
-        (ParamBool<px4::params::FW_LAUN_DETCN_ON>)_param_fw_laun_detcn_on)
+        (ParamFloat<params_id::RWTO_PSP>)_param_rwto_psp,
+        (ParamBool<params_id::FW_LAUN_DETCN_ON>)_param_fw_laun_detcn_on)
 };
 
 #endif // FIXEDWINGPOSITIONCONTROL_HPP_

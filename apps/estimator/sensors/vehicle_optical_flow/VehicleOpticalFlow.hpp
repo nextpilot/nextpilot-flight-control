@@ -20,9 +20,9 @@
 #include <lib/perf/perf_counter.h>
 #include <lib/sensor_calibration/Gyroscope.hpp>
 #include <px4_platform_common/log.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <uORB/Publication.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/SubscriptionCallback.hpp>
@@ -38,7 +38,7 @@
 
 namespace sensors {
 
-class VehicleOpticalFlow : public ModuleParams, public px4::ScheduledWorkItem {
+class VehicleOpticalFlow : public ModuleParams, public WorkItemScheduled {
 public:
     VehicleOpticalFlow();
     ~VehicleOpticalFlow() override;
@@ -112,10 +112,10 @@ private:
     RingBuffer<rangeSample, 5> _range_buffer{};
 
     DEFINE_PARAMETERS(
-        (ParamInt<px4::params::SENS_FLOW_ROT>)_param_sens_flow_rot,
-        (ParamFloat<px4::params::SENS_FLOW_MINHGT>)_param_sens_flow_minhgt,
-        (ParamFloat<px4::params::SENS_FLOW_MAXHGT>)_param_sens_flow_maxhgt,
-        (ParamFloat<px4::params::SENS_FLOW_MAXR>)_param_sens_flow_maxr,
-        (ParamFloat<px4::params::SENS_FLOW_RATE>)_param_sens_flow_rate)
+        (ParamInt<params_id::SENS_FLOW_ROT>)_param_sens_flow_rot,
+        (ParamFloat<params_id::SENS_FLOW_MINHGT>)_param_sens_flow_minhgt,
+        (ParamFloat<params_id::SENS_FLOW_MAXHGT>)_param_sens_flow_maxhgt,
+        (ParamFloat<params_id::SENS_FLOW_MAXR>)_param_sens_flow_maxr,
+        (ParamFloat<params_id::SENS_FLOW_RATE>)_param_sens_flow_rate)
 };
 }; // namespace sensors

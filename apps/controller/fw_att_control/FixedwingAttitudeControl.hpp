@@ -22,10 +22,10 @@
 #include <px4_platform_common/px4_config.h>
 #include <px4_platform_common/defines.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/tasks.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <uORB/Publication.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/SubscriptionCallback.hpp>
@@ -50,21 +50,21 @@ using uORB::SubscriptionData;
 
 using namespace time_literals;
 
-class FixedwingAttitudeControl final : public ModuleBase<FixedwingAttitudeControl>, public ModuleParams, public px4::ScheduledWorkItem {
+class FixedwingAttitudeControl final : public ModuleCommand<FixedwingAttitudeControl>, public ModuleParams, public WorkItemScheduled {
 public:
     FixedwingAttitudeControl(bool vtol = false);
     ~FixedwingAttitudeControl() override;
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    static int *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    bool init();
+    int init() override;
 
 private:
     void Run() override;
@@ -106,31 +106,31 @@ private:
     bool  _in_fw_or_transition_wo_tailsitter_transition{false}; // only run the FW attitude controller in these states
 
     DEFINE_PARAMETERS(
-        (ParamFloat<px4::params::FW_AIRSPD_MAX>)_param_fw_airspd_max,
-        (ParamFloat<px4::params::FW_AIRSPD_MIN>)_param_fw_airspd_min,
-        (ParamFloat<px4::params::FW_AIRSPD_STALL>)_param_fw_airspd_stall,
-        (ParamFloat<px4::params::FW_AIRSPD_TRIM>)_param_fw_airspd_trim,
-        (ParamInt<px4::params::FW_ARSP_MODE>)_param_fw_arsp_mode,
+        (ParamFloat<params_id::FW_AIRSPD_MAX>)_param_fw_airspd_max,
+        (ParamFloat<params_id::FW_AIRSPD_MIN>)_param_fw_airspd_min,
+        (ParamFloat<params_id::FW_AIRSPD_STALL>)_param_fw_airspd_stall,
+        (ParamFloat<params_id::FW_AIRSPD_TRIM>)_param_fw_airspd_trim,
+        (ParamInt<params_id::FW_ARSP_MODE>)_param_fw_arsp_mode,
 
-        (ParamFloat<px4::params::FW_MAN_P_MAX>)_param_fw_man_p_max,
-        (ParamFloat<px4::params::FW_MAN_R_MAX>)_param_fw_man_r_max,
+        (ParamFloat<params_id::FW_MAN_P_MAX>)_param_fw_man_p_max,
+        (ParamFloat<params_id::FW_MAN_R_MAX>)_param_fw_man_r_max,
 
-        (ParamFloat<px4::params::FW_P_RMAX_NEG>)_param_fw_p_rmax_neg,
-        (ParamFloat<px4::params::FW_P_RMAX_POS>)_param_fw_p_rmax_pos,
-        (ParamFloat<px4::params::FW_P_TC>)_param_fw_p_tc,
-        (ParamFloat<px4::params::FW_PSP_OFF>)_param_fw_psp_off,
+        (ParamFloat<params_id::FW_P_RMAX_NEG>)_param_fw_p_rmax_neg,
+        (ParamFloat<params_id::FW_P_RMAX_POS>)_param_fw_p_rmax_pos,
+        (ParamFloat<params_id::FW_P_TC>)_param_fw_p_tc,
+        (ParamFloat<params_id::FW_PSP_OFF>)_param_fw_psp_off,
 
-        (ParamFloat<px4::params::FW_R_RMAX>)_param_fw_r_rmax,
-        (ParamFloat<px4::params::FW_R_TC>)_param_fw_r_tc,
+        (ParamFloat<params_id::FW_R_RMAX>)_param_fw_r_rmax,
+        (ParamFloat<params_id::FW_R_TC>)_param_fw_r_tc,
 
-        (ParamBool<px4::params::FW_W_EN>)_param_fw_w_en,
-        (ParamFloat<px4::params::FW_W_RMAX>)_param_fw_w_rmax,
-        (ParamFloat<px4::params::FW_WR_FF>)_param_fw_wr_ff,
-        (ParamFloat<px4::params::FW_WR_I>)_param_fw_wr_i,
-        (ParamFloat<px4::params::FW_WR_IMAX>)_param_fw_wr_imax,
-        (ParamFloat<px4::params::FW_WR_P>)_param_fw_wr_p,
+        (ParamBool<params_id::FW_W_EN>)_param_fw_w_en,
+        (ParamFloat<params_id::FW_W_RMAX>)_param_fw_w_rmax,
+        (ParamFloat<params_id::FW_WR_FF>)_param_fw_wr_ff,
+        (ParamFloat<params_id::FW_WR_I>)_param_fw_wr_i,
+        (ParamFloat<params_id::FW_WR_IMAX>)_param_fw_wr_imax,
+        (ParamFloat<params_id::FW_WR_P>)_param_fw_wr_p,
 
-        (ParamFloat<px4::params::FW_Y_RMAX>)_param_fw_y_rmax
+        (ParamFloat<params_id::FW_Y_RMAX>)_param_fw_y_rmax
 
     )
 

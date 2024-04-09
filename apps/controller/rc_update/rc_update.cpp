@@ -14,6 +14,8 @@
  * @author Beat Kueng <beat-kueng@gmx.net>
  */
 
+#define LOG_TAG "rc_update"
+
 #include "rc_update.h"
 
 using namespace time_literals;
@@ -41,7 +43,7 @@ static bool operator!=(const manual_control_switches_s &a, const manual_control_
 
 RCUpdate::RCUpdate() :
     ModuleParams(nullptr),
-    WorkItem(MODULE_NAME, px4::wq_configurations::hp_default) {
+    WorkItem(MODULE_NAME, wq_configurations::hp_default) {
     // initialize parameter handles
     for (unsigned i = 0; i < RC_MAX_CHAN_COUNT; i++) {
         char nbuf[16];
@@ -87,13 +89,13 @@ RCUpdate::~RCUpdate() {
     perf_free(_valid_data_interval_perf);
 }
 
-bool RCUpdate::init() {
+int RCUpdate::init() {
     if (!_input_rc_sub.registerCallback()) {
         PX4_ERR("callback registration failed");
-        return false;
+        return -1;
     }
 
-    return true;
+    return 0;
 }
 
 void RCUpdate::parameters_updated() {
@@ -241,7 +243,7 @@ void RCUpdate::rc_parameter_map_poll(bool forced) {
 
             /* Set the handle by index if the index is set, otherwise use the id */
             if (_rc_parameter_map.param_index[i] >= 0) {
-                _parameter_handles.rc_param[i] = param_for_used_index((unsigned)_rc_parameter_map.param_index[i]);
+                _parameter_handles.rc_param[i] = /*param_for_used_index*/ ((unsigned)_rc_parameter_map.param_index[i]);
 
             } else {
                 _parameter_handles.rc_param[i] = param_find(&_rc_parameter_map.param_id[i * (rc_parameter_map_s::PARAM_ID_LEN + 1)]);
@@ -648,26 +650,28 @@ void RCUpdate::UpdateManualControlInput(const hrt_abstime &timestamp_sample) {
     _last_manual_control_input_publish = manual_control_input.timestamp;
 }
 
-int RCUpdate::task_spawn(int argc, char *argv[]) {
+RCUpdate *RCUpdate::instantiate(int argc, char *argv[]) {
     RCUpdate *instance = new RCUpdate();
 
-    if (instance) {
-        _object.store(instance);
-        _task_id = task_id_is_work_queue;
+    // if (instance) {
+    //     _object.store(instance);
+    //     _task_id = task_id_is_work_queue;
 
-        if (instance->init()) {
-            return PX4_OK;
-        }
+    //     if (instance->init()) {
+    //         return PX4_OK;
+    //     }
 
-    } else {
-        PX4_ERR("alloc failed");
-    }
+    // } else {
+    //     PX4_ERR("alloc failed");
+    // }
 
-    delete instance;
-    _object.store(nullptr);
-    _task_id = -1;
+    // delete instance;
+    // _object.store(nullptr);
+    // _task_id = -1;
 
-    return PX4_ERROR;
+    // return PX4_ERROR;
+
+    return instance;
 }
 
 int RCUpdate::print_status() {

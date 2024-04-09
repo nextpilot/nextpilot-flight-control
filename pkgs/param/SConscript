@@ -15,7 +15,7 @@ def gen_global_params():
     src_path = set()
     for root, dirs, files in os.walk(prj_root):
         for file in files:
-            if file.endswith("_params.c") and "rtos" not in root:
+            if file.endswith("params.c") and "rtos" not in root:
                 src_path.add(root)
 
     # 生成parameters.xml文件

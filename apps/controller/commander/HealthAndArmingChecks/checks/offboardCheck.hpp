@@ -26,5 +26,5 @@ private:
     uORB::Subscription _offboard_control_mode_sub{ORB_ID(offboard_control_mode)};
 
     DEFINE_PARAMETERS_CUSTOM_PARENT(HealthAndArmingCheckBase,
-                                    (ParamFloat<px4::params::COM_OF_LOSS_T>)_param_com_of_loss_t);
+                                    (ParamFloat<params_id::COM_OF_LOSS_T>)_param_com_of_loss_t);
 };

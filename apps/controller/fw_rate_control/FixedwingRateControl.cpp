@@ -19,7 +19,7 @@ using math::radians;
 
 FixedwingRateControl::FixedwingRateControl(bool vtol) :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::nav_and_controllers),
+    WorkItemScheduled(MODULE_NAME, wq_configurations::nav_and_controllers),
     _actuator_controls_status_pub(vtol ? ORB_ID(actuator_controls_status_1) : ORB_ID(actuator_controls_status_0)),
     _vehicle_torque_setpoint_pub(vtol ? ORB_ID(vehicle_torque_setpoint_virtual_fw) : ORB_ID(vehicle_torque_setpoint)),
     _vehicle_thrust_setpoint_pub(vtol ? ORB_ID(vehicle_thrust_setpoint_virtual_fw) : ORB_ID(vehicle_thrust_setpoint)),
@@ -467,7 +467,7 @@ void FixedwingRateControl::updateActuatorControlsStatus(float dt) {
     }
 }
 
-int FixedwingRateControl::task_spawn(int argc, char *argv[]) {
+int FixedwingRateControl::instantiate(int argc, char *argv[]) {
     bool vtol = false;
 
     if (argc > 1) {

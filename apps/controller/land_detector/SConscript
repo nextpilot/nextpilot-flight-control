@@ -4,12 +4,12 @@ from building import *
 
 objs = []
 
-if GetDepend(["PKG_USING_MC_HOVER_THRUST_ESTIMATOR"]):
+if GetDepend(["FCS_USING_LAND_DETECTOR"]):
     cwd = GetCurrentDir()
     inc = []
     src = Glob("*.cpp", exclude="*_test.cpp")
 
-    objs = DefineGroup("fcs/mc_hover_thrust_estimator", src, depend=[""])
+    objs = DefineGroup("fcs/land_detector", src, depend=[""])
 else:
     pass
 

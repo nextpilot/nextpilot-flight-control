@@ -11,43 +11,28 @@
 #pragma once
 
 #include "nextpilot.h"
-// #include <drivers/drv_hrt.h>
-// #include <lib/hysteresis/hysteresis.h>
-// #include <lib/perf/perf_counter.h>
-// #include <px4_platform_common/defines.h>
-// #include <px4_platform_common/module.h>
-// #include <px4_platform_common/module_params.h>
-// #include <px4_platform_common/posix.h>
-// #include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
-// #include <uORB/topics/action_request.h>
-// #include <uORB/topics/landing_gear.h>
-// #include <uORB/topics/manual_control_switches.h>
-// #include <uORB/topics/manual_control_setpoint.h>
-// #include <uORB/topics/parameter_update.h>
-// #include <uORB/topics/vehicle_status.h>
-// #include <uORB/Publication.hpp>
-// #include <uORB/SubscriptionInterval.hpp>
-// #include <uORB/SubscriptionCallback.hpp>
 #include "ManualControlSelector.hpp"
 #include "MovingDiff.hpp"
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
-class ManualControl : public ModuleBase<ManualControl>, public ModuleParams, public px4::ScheduledWorkItem {
+class ManualControl : public ModuleCommand<ManualControl>, public ModuleParams, public WorkItemScheduled {
 public:
     ManualControl();
     ~ManualControl() override;
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    static ManualControl *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    bool init();
+    int init() override;
 
     int print_status() override;
 
@@ -87,9 +72,9 @@ private:
     };
     uORB::SubscriptionCallbackWorkItem _manual_control_switches_sub{this, ORB_ID(manual_control_switches)};
 
-    systemlib::Hysteresis _stick_arm_hysteresis{false};
-    systemlib::Hysteresis _stick_disarm_hysteresis{false};
-    systemlib::Hysteresis _button_hysteresis{false};
+    Hysteresis _stick_arm_hysteresis{false};
+    Hysteresis _stick_disarm_hysteresis{false};
+    Hysteresis _button_hysteresis{false};
 
     ManualControlSelector _selector;
     bool                  _published_invalid_once{false};
@@ -108,18 +93,18 @@ private:
     perf_counter_t _loop_interval_perf{perf_alloc(PC_INTERVAL, MODULE_NAME ": interval")};
 
     DEFINE_PARAMETERS(
-        (ParamInt<px4::params::COM_RC_IN_MODE>)_param_com_rc_in_mode,
-        (ParamFloat<px4::params::COM_RC_LOSS_T>)_param_com_rc_loss_t,
-        (ParamFloat<px4::params::COM_RC_STICK_OV>)_param_com_rc_stick_ov,
-        (ParamBool<px4::params::MAN_ARM_GESTURE>)_param_man_arm_gesture,
-        (ParamInt<px4::params::COM_RC_ARM_HYST>)_param_com_rc_arm_hyst,
-        (ParamBool<px4::params::COM_ARM_SWISBTN>)_param_com_arm_swisbtn,
-        (ParamInt<px4::params::COM_FLTMODE1>)_param_fltmode_1,
-        (ParamInt<px4::params::COM_FLTMODE2>)_param_fltmode_2,
-        (ParamInt<px4::params::COM_FLTMODE3>)_param_fltmode_3,
-        (ParamInt<px4::params::COM_FLTMODE4>)_param_fltmode_4,
-        (ParamInt<px4::params::COM_FLTMODE5>)_param_fltmode_5,
-        (ParamInt<px4::params::COM_FLTMODE6>)_param_fltmode_6)
+        (ParamInt<params_id::COM_RC_IN_MODE>)_param_com_rc_in_mode,
+        (ParamFloat<params_id::COM_RC_LOSS_T>)_param_com_rc_loss_t,
+        (ParamFloat<params_id::COM_RC_STICK_OV>)_param_com_rc_stick_ov,
+        (ParamBool<params_id::MAN_ARM_GESTURE>)_param_man_arm_gesture,
+        (ParamInt<params_id::COM_RC_ARM_HYST>)_param_com_rc_arm_hyst,
+        (ParamBool<params_id::COM_ARM_SWISBTN>)_param_com_arm_swisbtn,
+        (ParamInt<params_id::COM_FLTMODE1>)_param_fltmode_1,
+        (ParamInt<params_id::COM_FLTMODE2>)_param_fltmode_2,
+        (ParamInt<params_id::COM_FLTMODE3>)_param_fltmode_3,
+        (ParamInt<params_id::COM_FLTMODE4>)_param_fltmode_4,
+        (ParamInt<params_id::COM_FLTMODE5>)_param_fltmode_5,
+        (ParamInt<params_id::COM_FLTMODE6>)_param_fltmode_6)
 
     unsigned _image_sequence{0};
     bool     _video_recording{false}; // TODO: hopefully there is a command soon to toggle without keeping state

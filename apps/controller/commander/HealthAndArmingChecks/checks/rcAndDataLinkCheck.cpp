@@ -24,7 +24,7 @@ void RcAndDataLinkChecks::checkAndReport(const Context &context, Report &reporte
     // Check if RC is valid
     if (!manual_control_setpoint.valid || hrt_elapsed_time(&manual_control_setpoint.timestamp) > _param_com_rc_loss_t.get() * 1_s) {
         if (!reporter.failsafeFlags().manual_control_signal_lost && _last_valid_manual_control_setpoint > 0) {
-            events::send(events::ID("commander_rc_lost"), {events::Log::Critical, events::LogInternal::Info},
+            // events::send(events::ID("commander_rc_lost"), {events::Log::Critical, events::LogInternal::Info},
                          "Manual control lost");
         }
 
@@ -35,7 +35,7 @@ void RcAndDataLinkChecks::checkAndReport(const Context &context, Report &reporte
 
         if (reporter.failsafeFlags().manual_control_signal_lost && _last_valid_manual_control_setpoint > 0) {
             float elapsed = hrt_elapsed_time(&_last_valid_manual_control_setpoint) * 1e-6f;
-            events::send<float>(events::ID("commander_rc_regained"), events::Log::Info,
+            // events::send<float>(events::ID("commander_rc_regained"), events::Log::Info,
                                 "Manual control regained after {1:.1} s", elapsed);
         }
 

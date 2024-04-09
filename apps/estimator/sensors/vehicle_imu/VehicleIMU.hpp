@@ -20,9 +20,9 @@
 #include <lib/sensor_calibration/Accelerometer.hpp>
 #include <lib/sensor_calibration/Gyroscope.hpp>
 #include <px4_platform_common/log.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <uORB/PublicationMulti.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/SubscriptionMultiArray.hpp>
@@ -39,7 +39,7 @@ using namespace time_literals;
 
 namespace sensors {
 
-class VehicleIMU : public ModuleParams, public px4::ScheduledWorkItem {
+class VehicleIMU : public ModuleParams, public WorkItemScheduled {
 public:
     VehicleIMU() = delete;
     VehicleIMU(int instance, uint8_t accel_index, uint8_t gyro_index, const px4::wq_config_t &config);
@@ -174,8 +174,8 @@ private:
     perf_counter_t _gyro_generation_gap_perf{perf_alloc(PC_COUNT, MODULE_NAME ": gyro data gap")};
 
     DEFINE_PARAMETERS(
-        (ParamInt<px4::params::IMU_INTEG_RATE>)_param_imu_integ_rate,
-        (ParamBool<px4::params::SENS_IMU_AUTOCAL>)_param_sens_imu_autocal)
+        (ParamInt<params_id::IMU_INTEG_RATE>)_param_imu_integ_rate,
+        (ParamBool<params_id::SENS_IMU_AUTOCAL>)_param_sens_imu_autocal)
 };
 
 } // namespace sensors

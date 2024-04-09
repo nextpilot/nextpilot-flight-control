@@ -255,7 +255,7 @@ void EstimatorChecks::checkEstimatorStatus(const Context &context, Report &repor
                     mavlink_log_warning(reporter.mavlink_log_pub(), "GNSS data fusion stopped\t");
                 }
 
-                events::send(events::ID("check_estimator_gnss_fusion_stopped"), {events::Log::Error, events::LogInternal::Info},
+                // events::send(events::ID("check_estimator_gnss_fusion_stopped"), {events::Log::Error, events::LogInternal::Info},
                              "GNSS data fusion stopped");
 
             } else if (!_gps_was_fused && ekf_gps_fusion) {
@@ -263,7 +263,7 @@ void EstimatorChecks::checkEstimatorStatus(const Context &context, Report &repor
                     mavlink_log_info(reporter.mavlink_log_pub(), "GNSS data fusion started\t");
                 }
 
-                events::send(events::ID("check_estimator_gnss_fusion_started"), {events::Log::Info, events::LogInternal::Info},
+                // events::send(events::ID("check_estimator_gnss_fusion_started"), {events::Log::Info, events::LogInternal::Info},
                              "GNSS data fusion started");
             }
         }
@@ -666,12 +666,12 @@ void EstimatorChecks::lowPositionAccuracy(const Context &context, Report &report
              * This check can be configured via <param>COM_POS_LOW_EPH</param> parameter.
              * </profile>
              */
-            events::send(events::ID("check_estimator_low_position_accuracy"), {events::Log::Error, events::LogInternal::Info},
+            // events::send(events::ID("check_estimator_low_position_accuracy"), {events::Log::Error, events::LogInternal::Info},
                          "Local position estimate has low accuracy");
 
-            if (reporter.mavlink_log_pub()) {
-                mavlink_log_warning(reporter.mavlink_log_pub(), "Local position estimate has low accuracy\t");
-            }
+                         if (reporter.mavlink_log_pub()) {
+                             mavlink_log_warning(reporter.mavlink_log_pub(), "Local position estimate has low accuracy\t");
+                         }
         }
     }
 

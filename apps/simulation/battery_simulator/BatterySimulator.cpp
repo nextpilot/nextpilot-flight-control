@@ -12,7 +12,7 @@
 
 BatterySimulator::BatterySimulator() :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::hp_default),
+    WorkItemScheduled(MODULE_NAME, wq_configurations::hp_default),
     _battery(1, this, BATTERY_SIMLATOR_SAMPLE_INTERVAL_US, battery_status_s::BATTERY_SOURCE_POWER_MODULE) {
 }
 
@@ -141,7 +141,7 @@ void BatterySimulator::updateCommands() {
     }
 }
 
-int BatterySimulator::task_spawn(int argc, char *argv[]) {
+int BatterySimulator::instantiate(int argc, char *argv[]) {
     BatterySimulator *instance = new BatterySimulator();
 
     if (instance) {

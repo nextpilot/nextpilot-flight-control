@@ -18,7 +18,7 @@ using math::radians;
 
 FixedwingAttitudeControl::FixedwingAttitudeControl(bool vtol) :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::nav_and_controllers),
+    WorkItemScheduled(MODULE_NAME, wq_configurations::nav_and_controllers),
     _attitude_sp_pub(vtol ? ORB_ID(fw_virtual_attitude_setpoint) : ORB_ID(vehicle_attitude_setpoint)),
     _loop_perf(perf_alloc(PC_ELAPSED, MODULE_NAME ": cycle")) {
     /* fetch initial parameter values */
@@ -374,7 +374,7 @@ void FixedwingAttitudeControl::Run() {
     perf_end(_loop_perf);
 }
 
-int FixedwingAttitudeControl::task_spawn(int argc, char *argv[]) {
+int FixedwingAttitudeControl::instantiate(int argc, char *argv[]) {
     bool vtol = false;
 
     if (argc > 1) {

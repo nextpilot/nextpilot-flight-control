@@ -28,6 +28,6 @@ private:
     hrt_abstime _last_valid_manual_control_setpoint{0};
 
     DEFINE_PARAMETERS_CUSTOM_PARENT(HealthAndArmingCheckBase,
-                                    (ParamFloat<px4::params::COM_RC_LOSS_T>)_param_com_rc_loss_t,
-                                    (ParamInt<px4::params::NAV_DLL_ACT>)_param_nav_dll_act)
+                                    (ParamFloat<params_id::COM_RC_LOSS_T>)_param_com_rc_loss_t,
+                                    (ParamInt<params_id::NAV_DLL_ACT>)_param_nav_dll_act)
 };

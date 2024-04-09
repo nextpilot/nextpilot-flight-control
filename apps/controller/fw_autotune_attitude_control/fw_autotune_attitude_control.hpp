@@ -23,7 +23,7 @@
 #include <lib/system_identification/system_identification.hpp>
 #include <px4_platform_common/defines.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
+#include <px4_platform_common/module_params.hpp>
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/px4_work_queue/WorkItem.hpp>
 #include <uORB/Publication.hpp>
@@ -41,23 +41,23 @@
 
 using namespace time_literals;
 
-class FwAutotuneAttitudeControl : public ModuleBase<FwAutotuneAttitudeControl>, public ModuleParams, public px4::WorkItem {
+class FwAutotuneAttitudeControl : public ModuleCommand<FwAutotuneAttitudeControl>, public ModuleParams, public WorkItem {
 public:
     FwAutotuneAttitudeControl(bool is_vtol);
     ~FwAutotuneAttitudeControl() override;
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    static int *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    bool init();
+    int init() override;
 
-    /** @see ModuleBase::print_status() */
+    /** @see ModuleCommand::print_status() */
     int print_status() override;
 
 private:
@@ -157,25 +157,25 @@ private:
     perf_counter_t _cycle_perf{perf_alloc(PC_ELAPSED, MODULE_NAME ": cycle time")};
 
     DEFINE_PARAMETERS(
-        (ParamInt<px4::params::FW_AT_AXES>)_param_fw_at_axes,
-        (ParamBool<px4::params::FW_AT_START>)_param_fw_at_start,
-        (ParamInt<px4::params::FW_AT_MAN_AUX>)_param_fw_at_man_aux,
-        (ParamFloat<px4::params::FW_AT_SYSID_AMP>)_param_fw_at_sysid_amp,
-        (ParamInt<px4::params::FW_AT_APPLY>)_param_fw_at_apply,
+        (ParamInt<params_id::FW_AT_AXES>)_param_fw_at_axes,
+        (ParamBool<params_id::FW_AT_START>)_param_fw_at_start,
+        (ParamInt<params_id::FW_AT_MAN_AUX>)_param_fw_at_man_aux,
+        (ParamFloat<params_id::FW_AT_SYSID_AMP>)_param_fw_at_sysid_amp,
+        (ParamInt<params_id::FW_AT_APPLY>)_param_fw_at_apply,
 
-        (ParamFloat<px4::params::IMU_GYRO_CUTOFF>)_param_imu_gyro_cutoff,
+        (ParamFloat<params_id::IMU_GYRO_CUTOFF>)_param_imu_gyro_cutoff,
 
-        (ParamFloat<px4::params::FW_RR_P>)_param_fw_rr_p,
-        (ParamFloat<px4::params::FW_RR_I>)_param_fw_rr_i,
-        (ParamFloat<px4::params::FW_RR_FF>)_param_fw_rr_ff,
-        (ParamFloat<px4::params::FW_R_TC>)_param_fw_r_tc,
-        (ParamFloat<px4::params::FW_PR_P>)_param_fw_pr_p,
-        (ParamFloat<px4::params::FW_PR_I>)_param_fw_pr_i,
-        (ParamFloat<px4::params::FW_PR_FF>)_param_fw_pr_ff,
-        (ParamFloat<px4::params::FW_P_TC>)_param_fw_p_tc,
-        (ParamFloat<px4::params::FW_YR_P>)_param_fw_yr_p,
-        (ParamFloat<px4::params::FW_YR_I>)_param_fw_yr_i,
-        (ParamFloat<px4::params::FW_YR_FF>)_param_fw_yr_ff)
+        (ParamFloat<params_id::FW_RR_P>)_param_fw_rr_p,
+        (ParamFloat<params_id::FW_RR_I>)_param_fw_rr_i,
+        (ParamFloat<params_id::FW_RR_FF>)_param_fw_rr_ff,
+        (ParamFloat<params_id::FW_R_TC>)_param_fw_r_tc,
+        (ParamFloat<params_id::FW_PR_P>)_param_fw_pr_p,
+        (ParamFloat<params_id::FW_PR_I>)_param_fw_pr_i,
+        (ParamFloat<params_id::FW_PR_FF>)_param_fw_pr_ff,
+        (ParamFloat<params_id::FW_P_TC>)_param_fw_p_tc,
+        (ParamFloat<params_id::FW_YR_P>)_param_fw_yr_p,
+        (ParamFloat<params_id::FW_YR_I>)_param_fw_yr_i,
+        (ParamFloat<params_id::FW_YR_FF>)_param_fw_yr_ff)
 
     static constexpr float       _publishing_dt_s   = 100e-3f;
     static constexpr hrt_abstime _publishing_dt_hrt = 100_ms;

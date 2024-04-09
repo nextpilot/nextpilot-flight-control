@@ -23,7 +23,7 @@
 GZBridge::GZBridge(const char *world, const char *name, const char *model,
                    const char *pose_str) :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::rate_ctrl),
+    WorkItemScheduled(MODULE_NAME, wq_configurations::rate_ctrl),
     _world_name(world),
     _model_name(name),
     _model_sim(model),
@@ -167,7 +167,7 @@ int GZBridge::init() {
     return OK;
 }
 
-int GZBridge::task_spawn(int argc, char *argv[]) {
+int GZBridge::instantiate(int argc, char *argv[]) {
     const char *world_name   = "default";
     const char *model_name   = nullptr;
     const char *model_pose   = nullptr;

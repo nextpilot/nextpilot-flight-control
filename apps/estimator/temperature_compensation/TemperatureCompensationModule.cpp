@@ -21,7 +21,7 @@ using namespace temperature_compensation;
 
 TemperatureCompensationModule::TemperatureCompensationModule() :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::lp_default),
+    WorkItemScheduled(MODULE_NAME, wq_configurations::lp_default),
     _loop_perf(perf_alloc(PC_ELAPSED, "temperature_compensation")) {
     for (int i = 0; i < SENSOR_COUNT_MAX; i++) {
         _corrections.accel_temperature[i] = NAN;
@@ -239,7 +239,7 @@ void TemperatureCompensationModule::Run() {
     perf_end(_loop_perf);
 }
 
-int TemperatureCompensationModule::task_spawn(int argc, char *argv[]) {
+int TemperatureCompensationModule::instantiate(int argc, char *argv[]) {
     TemperatureCompensationModule *instance = new TemperatureCompensationModule();
 
     if (instance) {

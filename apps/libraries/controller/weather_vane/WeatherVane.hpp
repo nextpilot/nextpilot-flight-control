@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <module_params.h>
+#include <module_params.hpp>
 #include <matrix/matrix/math.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/vehicle_attitude_setpoint.h>
@@ -56,10 +56,10 @@ private:
 	bool _navigator_force_disabled{false};
 
 	DEFINE_PARAMETERS(
-		(ParamBool<px4::params::WV_EN>) _param_wv_en,
-		(ParamFloat<px4::params::WV_ROLL_MIN>) _param_wv_roll_min,
-		(ParamFloat<px4::params::WV_GAIN>) _param_wv_gain,
-		(ParamFloat<px4::params::WV_YRATE_MAX>) _param_wv_yrate_max
+		(ParamBool<params_id::WV_EN>) _param_wv_en,
+		(ParamFloat<params_id::WV_ROLL_MIN>) _param_wv_roll_min,
+		(ParamFloat<params_id::WV_GAIN>) _param_wv_gain,
+		(ParamFloat<params_id::WV_YRATE_MAX>) _param_wv_yrate_max
 	)
 
 };
