@@ -1,35 +1,12 @@
-/****************************************************************************
+/*****************************************************************
+ *     _   __             __   ____   _  __        __
+ *    / | / /___   _  __ / /_ / __ \ (_)/ /____   / /_
+ *   /  |/ // _ \ | |/_// __// /_/ // // // __ \ / __/
+ *  / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
+ * /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
  *
- *   Copyright (c) 2013-2023 PX4 Development Team. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- * 3. Neither the name PX4 nor the names of its contributors may be
- *    used to endorse or promote products derived from this software
- *    without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
- * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
- * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- *
- ****************************************************************************/
+ * Copyright All Reserved © 2015-2024 NextPilot Development Team
+ ******************************************************************/
 
 /**
  * @file fw_rate_control_params.c
@@ -383,9 +360,9 @@ PARAM_DEFINE_INT32(FW_BAT_SCALE_EN, 0);
 PARAM_DEFINE_INT32(FW_ARSP_SCALE_EN, 1);
 
 /**
-* Roll trim increment at minimum airspeed
-*
-* This increment is added to TRIM_ROLL when airspeed is FW_AIRSPD_MIN.
+ * Roll trim increment at minimum airspeed
+ *
+ * This increment is added to TRIM_ROLL when airspeed is FW_AIRSPD_MIN.
  *
  * @group FW Rate Control
  * @min -0.5
@@ -396,9 +373,9 @@ PARAM_DEFINE_INT32(FW_ARSP_SCALE_EN, 1);
 PARAM_DEFINE_FLOAT(FW_DTRIM_R_VMIN, 0.0f);
 
 /**
-* Pitch trim increment at minimum airspeed
-*
-* This increment is added to TRIM_PITCH when airspeed is FW_AIRSPD_MIN.
+ * Pitch trim increment at minimum airspeed
+ *
+ * This increment is added to TRIM_PITCH when airspeed is FW_AIRSPD_MIN.
  *
  * @group FW Rate Control
  * @min -0.5
@@ -409,9 +386,9 @@ PARAM_DEFINE_FLOAT(FW_DTRIM_R_VMIN, 0.0f);
 PARAM_DEFINE_FLOAT(FW_DTRIM_P_VMIN, 0.0f);
 
 /**
-* Yaw trim increment at minimum airspeed
-*
-* This increment is added to TRIM_YAW when airspeed is FW_AIRSPD_MIN.
+ * Yaw trim increment at minimum airspeed
+ *
+ * This increment is added to TRIM_YAW when airspeed is FW_AIRSPD_MIN.
  *
  * @group FW Rate Control
  * @min -0.5
@@ -422,9 +399,9 @@ PARAM_DEFINE_FLOAT(FW_DTRIM_P_VMIN, 0.0f);
 PARAM_DEFINE_FLOAT(FW_DTRIM_Y_VMIN, 0.0f);
 
 /**
-* Roll trim increment at maximum airspeed
-*
-* This increment is added to TRIM_ROLL when airspeed is FW_AIRSPD_MAX.
+ * Roll trim increment at maximum airspeed
+ *
+ * This increment is added to TRIM_ROLL when airspeed is FW_AIRSPD_MAX.
  *
  * @group FW Rate Control
  * @min -0.5
@@ -435,9 +412,9 @@ PARAM_DEFINE_FLOAT(FW_DTRIM_Y_VMIN, 0.0f);
 PARAM_DEFINE_FLOAT(FW_DTRIM_R_VMAX, 0.0f);
 
 /**
-* Pitch trim increment at maximum airspeed
-*
-* This increment is added to TRIM_PITCH when airspeed is FW_AIRSPD_MAX.
+ * Pitch trim increment at maximum airspeed
+ *
+ * This increment is added to TRIM_PITCH when airspeed is FW_AIRSPD_MAX.
  *
  * @group FW Rate Control
  * @min -0.5
@@ -448,9 +425,9 @@ PARAM_DEFINE_FLOAT(FW_DTRIM_R_VMAX, 0.0f);
 PARAM_DEFINE_FLOAT(FW_DTRIM_P_VMAX, 0.0f);
 
 /**
-* Yaw trim increment at maximum airspeed
-*
-* This increment is added to TRIM_YAW when airspeed is FW_AIRSPD_MAX.
+ * Yaw trim increment at maximum airspeed
+ *
+ * This increment is added to TRIM_YAW when airspeed is FW_AIRSPD_MAX.
  *
  * @group FW Rate Control
  * @min -0.5

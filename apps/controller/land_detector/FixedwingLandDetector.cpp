@@ -1,35 +1,12 @@
-/****************************************************************************
+/*****************************************************************
+ *     _   __             __   ____   _  __        __
+ *    / | / /___   _  __ / /_ / __ \ (_)/ /____   / /_
+ *   /  |/ // _ \ | |/_// __// /_/ // // // __ \ / __/
+ *  / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
+ * /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
  *
- *   Copyright (c) 2013-2021 PX4 Development Team. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- * 3. Neither the name PX4 nor the names of its contributors may be
- *    used to endorse or promote products derived from this software
- *    without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
- * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
- * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- *
- ****************************************************************************/
+ * Copyright All Reserved © 2015-2024 NextPilot Development Team
+ ******************************************************************/
 
 /**
  * @file FixedwingLandDetector.cpp
@@ -41,86 +18,78 @@
 
 #include "FixedwingLandDetector.h"
 
-namespace land_detector
-{
+namespace land_detector {
 
-FixedwingLandDetector::FixedwingLandDetector()
-{
-	// Use Trigger time when transitioning from in-air (false) to landed (true) / ground contact (true).
-	_landed_hysteresis.set_hysteresis_time_from(false, _param_lndfw_trig_time.get() * 1_s);
-	_landed_hysteresis.set_hysteresis_time_from(true, FLYING_TRIGGER_TIME_US);
+FixedwingLandDetector::FixedwingLandDetector() {
+    // Use Trigger time when transitioning from in-air (false) to landed (true) / ground contact (true).
+    _landed_hysteresis.set_hysteresis_time_from(false, _param_lndfw_trig_time.get() * 1_s);
+    _landed_hysteresis.set_hysteresis_time_from(true, FLYING_TRIGGER_TIME_US);
 }
 
-bool FixedwingLandDetector::_get_landed_state()
-{
-	// Only trigger flight conditions if we are armed.
-	if (!_armed) {
-		return true;
-	}
+bool FixedwingLandDetector::_get_landed_state() {
+    // Only trigger flight conditions if we are armed.
+    if (!_armed) {
+        return true;
+    }
 
-	bool landDetected = false;
+    bool landDetected = false;
 
-	launch_detection_status_s launch_detection_status{};
-	_launch_detection_status_sub.copy(&launch_detection_status);
+    launch_detection_status_s launch_detection_status{};
+    _launch_detection_status_sub.copy(&launch_detection_status);
 
-	// force the landed state to stay landed if we're currently in the catapult/hand-launch launch process. Detect that we are in this state
-	// by checking if the last publication of launch_detection_status is less than 0.5s old, and we're not yet in the flying state.
-	if (_landed_hysteresis.get_state() &&  hrt_elapsed_time(&launch_detection_status.timestamp) < 500_ms
-	    && launch_detection_status.launch_detection_state < launch_detection_status_s::STATE_FLYING) {
-		landDetected = true;
+    // force the landed state to stay landed if we're currently in the catapult/hand-launch launch process. Detect that we are in this state
+    // by checking if the last publication of launch_detection_status is less than 0.5s old, and we're not yet in the flying state.
+    if (_landed_hysteresis.get_state() && hrt_elapsed_time(&launch_detection_status.timestamp) < 500_ms && launch_detection_status.launch_detection_state < launch_detection_status_s::STATE_FLYING) {
+        landDetected = true;
 
-	} else if (hrt_elapsed_time(&_vehicle_local_position.timestamp) < 1_s) {
+    } else if (hrt_elapsed_time(&_vehicle_local_position.timestamp) < 1_s) {
+        // Horizontal velocity complimentary filter.
+        float val = 0.97f * _velocity_xy_filtered + 0.03f * sqrtf(_vehicle_local_position.vx * _vehicle_local_position.vx +
+                                                                  _vehicle_local_position.vy * _vehicle_local_position.vy);
 
-		// Horizontal velocity complimentary filter.
-		float val = 0.97f * _velocity_xy_filtered + 0.03f * sqrtf(_vehicle_local_position.vx * _vehicle_local_position.vx +
-				_vehicle_local_position.vy * _vehicle_local_position.vy);
+        if (PX4_ISFINITE(val)) {
+            _velocity_xy_filtered = val;
+        }
 
-		if (PX4_ISFINITE(val)) {
-			_velocity_xy_filtered = val;
-		}
+        // Vertical velocity complimentary filter.
+        val = 0.99f * _velocity_z_filtered + 0.01f * fabsf(_vehicle_local_position.vz);
 
-		// Vertical velocity complimentary filter.
-		val = 0.99f * _velocity_z_filtered + 0.01f * fabsf(_vehicle_local_position.vz);
+        if (PX4_ISFINITE(val)) {
+            _velocity_z_filtered = val;
+        }
 
-		if (PX4_ISFINITE(val)) {
-			_velocity_z_filtered = val;
-		}
+        airspeed_validated_s airspeed_validated{};
+        _airspeed_validated_sub.copy(&airspeed_validated);
 
-		airspeed_validated_s airspeed_validated{};
-		_airspeed_validated_sub.copy(&airspeed_validated);
+        bool airspeed_invalid = false;
 
-		bool airspeed_invalid = false;
+        // set _airspeed_filtered to 0 if airspeed data is invalid
+        if (!PX4_ISFINITE(airspeed_validated.true_airspeed_m_s) || hrt_elapsed_time(&airspeed_validated.timestamp) > 1_s) {
+            _airspeed_filtered = 0.0f;
+            airspeed_invalid   = true;
 
-		// set _airspeed_filtered to 0 if airspeed data is invalid
-		if (!PX4_ISFINITE(airspeed_validated.true_airspeed_m_s) || hrt_elapsed_time(&airspeed_validated.timestamp) > 1_s) {
-			_airspeed_filtered = 0.0f;
-			airspeed_invalid = true;
+        } else {
+            _airspeed_filtered = 0.95f * _airspeed_filtered + 0.05f * airspeed_validated.true_airspeed_m_s;
+        }
 
-		} else {
-			_airspeed_filtered = 0.95f * _airspeed_filtered + 0.05f * airspeed_validated.true_airspeed_m_s;
-		}
+        // A leaking lowpass prevents biases from building up, but
+        // gives a mostly correct response for short impulses.
+        const float acc_hor = matrix::Vector2f(_acceleration).norm();
+        _xy_accel_filtered  = _xy_accel_filtered * 0.8f + acc_hor * 0.18f;
 
-		// A leaking lowpass prevents biases from building up, but
-		// gives a mostly correct response for short impulses.
-		const float acc_hor = matrix::Vector2f(_acceleration).norm();
-		_xy_accel_filtered = _xy_accel_filtered * 0.8f + acc_hor * 0.18f;
+        // make groundspeed threshold tighter if airspeed is invalid
+        const float vel_xy_max_threshold = airspeed_invalid ? 0.7f * _param_lndfw_vel_xy_max.get() :
+                                                              _param_lndfw_vel_xy_max.get();
 
-		// make groundspeed threshold tighter if airspeed is invalid
-		const float vel_xy_max_threshold = airspeed_invalid ? 0.7f * _param_lndfw_vel_xy_max.get() :
-						   _param_lndfw_vel_xy_max.get();
+        // Crude land detector for fixedwing.
+        landDetected = _airspeed_filtered < _param_lndfw_airspd.get() && _velocity_xy_filtered < vel_xy_max_threshold && _velocity_z_filtered < _param_lndfw_vel_z_max.get() && _xy_accel_filtered < _param_lndfw_xyaccel_max.get();
 
-		// Crude land detector for fixedwing.
-		landDetected = _airspeed_filtered       < _param_lndfw_airspd.get()
-			       && _velocity_xy_filtered < vel_xy_max_threshold
-			       && _velocity_z_filtered  < _param_lndfw_vel_z_max.get()
-			       && _xy_accel_filtered    < _param_lndfw_xyaccel_max.get();
+    } else {
+        // Control state topic has timed out and we need to assume we're landed.
+        landDetected = true;
+    }
 
-	} else {
-		// Control state topic has timed out and we need to assume we're landed.
-		landDetected = true;
-	}
-
-	return landDetected;
+    return landDetected;
 }
 
 } // namespace land_detector

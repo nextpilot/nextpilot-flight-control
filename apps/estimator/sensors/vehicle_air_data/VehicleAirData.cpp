@@ -1,35 +1,12 @@
-/****************************************************************************
+/*****************************************************************
+ *     _   __             __   ____   _  __        __
+ *    / | / /___   _  __ / /_ / __ \ (_)/ /____   / /_
+ *   /  |/ // _ \ | |/_// __// /_/ // // // __ \ / __/
+ *  / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
+ * /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
  *
- *   Copyright (c) 2020-2022 PX4 Development Team. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- * 3. Neither the name PX4 nor the names of its contributors may be
- *    used to endorse or promote products derived from this software
- *    without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
- * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
- * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- *
- ****************************************************************************/
+ * Copyright All Reserved © 2015-2024 NextPilot Development Team
+ ******************************************************************/
 
 #include "VehicleAirData.hpp"
 
@@ -37,399 +14,373 @@
 #include <px4_platform_common/events.h>
 #include <lib/geo/geo.h>
 
-namespace sensors
-{
+namespace sensors {
 
 using namespace matrix;
 
 static constexpr uint32_t SENSOR_TIMEOUT{300_ms};
 
 VehicleAirData::VehicleAirData() :
-	ModuleParams(nullptr),
-	ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::nav_and_controllers)
-{
-	_vehicle_air_data_pub.advertise();
+    ModuleParams(nullptr),
+    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::nav_and_controllers) {
+    _vehicle_air_data_pub.advertise();
 
-	_voter.set_timeout(SENSOR_TIMEOUT);
+    _voter.set_timeout(SENSOR_TIMEOUT);
 }
 
-VehicleAirData::~VehicleAirData()
-{
-	Stop();
-	perf_free(_cycle_perf);
+VehicleAirData::~VehicleAirData() {
+    Stop();
+    perf_free(_cycle_perf);
 }
 
-bool VehicleAirData::Start()
-{
-	ScheduleNow();
-	return true;
+bool VehicleAirData::Start() {
+    ScheduleNow();
+    return true;
 }
 
-void VehicleAirData::Stop()
-{
-	Deinit();
+void VehicleAirData::Stop() {
+    Deinit();
 
-	// clear all registered callbacks
-	for (auto &sub : _sensor_sub) {
-		sub.unregisterCallback();
-	}
+    // clear all registered callbacks
+    for (auto &sub : _sensor_sub) {
+        sub.unregisterCallback();
+    }
 }
 
-void VehicleAirData::AirTemperatureUpdate()
-{
-	differential_pressure_s differential_pressure;
+void VehicleAirData::AirTemperatureUpdate() {
+    differential_pressure_s differential_pressure;
 
-	static constexpr float temperature_min_celsius = -20.f;
-	static constexpr float temperature_max_celsius = 35.f;
+    static constexpr float temperature_min_celsius = -20.f;
+    static constexpr float temperature_max_celsius = 35.f;
 
-	// update air temperature if data from differential pressure sensor is finite and not exactly 0
-	// limit the range to max 35°C to limt the error due to heated up airspeed sensors prior flight
-	if (_differential_pressure_sub.update(&differential_pressure) && PX4_ISFINITE(differential_pressure.temperature)
-	    && fabsf(differential_pressure.temperature) > FLT_EPSILON) {
-
-		_air_temperature_celsius = math::constrain(differential_pressure.temperature, temperature_min_celsius,
-					   temperature_max_celsius);
-	}
+    // update air temperature if data from differential pressure sensor is finite and not exactly 0
+    // limit the range to max 35°C to limt the error due to heated up airspeed sensors prior flight
+    if (_differential_pressure_sub.update(&differential_pressure) && PX4_ISFINITE(differential_pressure.temperature) && fabsf(differential_pressure.temperature) > FLT_EPSILON) {
+        _air_temperature_celsius = math::constrain(differential_pressure.temperature, temperature_min_celsius,
+                                                   temperature_max_celsius);
+    }
 }
 
-bool VehicleAirData::ParametersUpdate(bool force)
-{
-	// Check if parameters have changed
-	if (_parameter_update_sub.updated() || force) {
-		// clear update
-		parameter_update_s param_update;
-		_parameter_update_sub.copy(&param_update);
+bool VehicleAirData::ParametersUpdate(bool force) {
+    // Check if parameters have changed
+    if (_parameter_update_sub.updated() || force) {
+        // clear update
+        parameter_update_s param_update;
+        _parameter_update_sub.copy(&param_update);
 
-		updateParams();
+        updateParams();
 
-		// update priority
-		for (int instance = 0; instance < MAX_SENSOR_COUNT; instance++) {
+        // update priority
+        for (int instance = 0; instance < MAX_SENSOR_COUNT; instance++) {
+            const int32_t priority_old = _calibration[instance].priority();
 
-			const int32_t priority_old = _calibration[instance].priority();
+            _calibration[instance].ParametersUpdate();
 
-			_calibration[instance].ParametersUpdate();
+            const int32_t priority_new = _calibration[instance].priority();
 
-			const int32_t priority_new = _calibration[instance].priority();
+            if (priority_old != priority_new) {
+                if (_priority[instance] == priority_old) {
+                    _priority[instance] = priority_new;
 
-			if (priority_old != priority_new) {
-				if (_priority[instance] == priority_old) {
-					_priority[instance] = priority_new;
+                } else {
+                    // change relative priority to incorporate any sensor faults
+                    int priority_change = priority_new - priority_old;
+                    _priority[instance] = math::constrain(_priority[instance] + priority_change, 1, 100);
+                }
+            }
+        }
 
-				} else {
-					// change relative priority to incorporate any sensor faults
-					int priority_change = priority_new - priority_old;
-					_priority[instance] = math::constrain(_priority[instance] + priority_change, 1, 100);
-				}
-			}
-		}
+        return true;
+    }
 
-		return true;
-	}
-
-	return false;
+    return false;
 }
 
-void VehicleAirData::Run()
-{
-	perf_begin(_cycle_perf);
+void VehicleAirData::Run() {
+    perf_begin(_cycle_perf);
 
-	const hrt_abstime time_now_us = hrt_absolute_time();
+    const hrt_abstime time_now_us = hrt_absolute_time();
 
-	const bool parameter_update = ParametersUpdate();
+    const bool parameter_update = ParametersUpdate();
 
-	AirTemperatureUpdate();
+    AirTemperatureUpdate();
 
-	bool updated[MAX_SENSOR_COUNT] {};
+    bool updated[MAX_SENSOR_COUNT]{};
 
-	for (int uorb_index = 0; uorb_index < MAX_SENSOR_COUNT; uorb_index++) {
+    for (int uorb_index = 0; uorb_index < MAX_SENSOR_COUNT; uorb_index++) {
+        const bool was_advertised = _advertised[uorb_index];
 
-		const bool was_advertised = _advertised[uorb_index];
+        if (!_advertised[uorb_index]) {
+            // use data's timestamp to throttle advertisement checks
+            if ((_last_publication_timestamp[uorb_index] == 0) || (time_now_us > _last_publication_timestamp[uorb_index] + 1_s)) {
+                if (_sensor_sub[uorb_index].advertised()) {
+                    _advertised[uorb_index] = true;
 
-		if (!_advertised[uorb_index]) {
-			// use data's timestamp to throttle advertisement checks
-			if ((_last_publication_timestamp[uorb_index] == 0)
-			    || (time_now_us > _last_publication_timestamp[uorb_index] + 1_s)) {
+                } else {
+                    _last_publication_timestamp[uorb_index] = time_now_us;
+                }
+            }
+        }
 
-				if (_sensor_sub[uorb_index].advertised()) {
-					_advertised[uorb_index] = true;
+        if (_advertised[uorb_index]) {
+            sensor_baro_s report;
 
-				} else {
-					_last_publication_timestamp[uorb_index] = time_now_us;
-				}
-			}
-		}
+            while (_sensor_sub[uorb_index].update(&report)) {
+                if (_calibration[uorb_index].device_id() != report.device_id) {
+                    _calibration[uorb_index].set_device_id(report.device_id);
+                    _priority[uorb_index] = _calibration[uorb_index].priority();
+                }
 
-		if (_advertised[uorb_index]) {
-			sensor_baro_s report;
+                if (_calibration[uorb_index].enabled()) {
+                    if (!was_advertised) {
+                        if (uorb_index > 0) {
+                            /* the first always exists, but for each further sensor, add a new validator */
+                            if (!_voter.add_new_validator()) {
+                                PX4_ERR("failed to add validator for %s %i", _calibration[uorb_index].SensorString(), uorb_index);
+                            }
+                        }
 
-			while (_sensor_sub[uorb_index].update(&report)) {
+                        if (_selected_sensor_sub_index < 0) {
+                            _sensor_sub[uorb_index].registerCallback();
+                        }
 
-				if (_calibration[uorb_index].device_id() != report.device_id) {
-					_calibration[uorb_index].set_device_id(report.device_id);
-					_priority[uorb_index] = _calibration[uorb_index].priority();
-				}
+                        ParametersUpdate(true);
+                    }
 
-				if (_calibration[uorb_index].enabled()) {
+                    // pressure corrected with offset (if available)
+                    _calibration[uorb_index].SensorCorrectionsUpdate();
+                    const float pressure_corrected = _calibration[uorb_index].Correct(report.pressure);
 
-					if (!was_advertised) {
-						if (uorb_index > 0) {
-							/* the first always exists, but for each further sensor, add a new validator */
-							if (!_voter.add_new_validator()) {
-								PX4_ERR("failed to add validator for %s %i", _calibration[uorb_index].SensorString(), uorb_index);
-							}
-						}
+                    float data_array[3]{pressure_corrected, report.temperature, PressureToAltitude(pressure_corrected)};
+                    _voter.put(uorb_index, report.timestamp, data_array, report.error_count, _priority[uorb_index]);
 
-						if (_selected_sensor_sub_index < 0) {
-							_sensor_sub[uorb_index].registerCallback();
-						}
+                    _timestamp_sample_sum[uorb_index] += report.timestamp_sample;
+                    _data_sum[uorb_index] += pressure_corrected;
+                    _temperature_sum[uorb_index] += report.temperature;
+                    _data_sum_count[uorb_index]++;
 
-						ParametersUpdate(true);
-					}
+                    _last_data[uorb_index] = pressure_corrected;
 
-					// pressure corrected with offset (if available)
-					_calibration[uorb_index].SensorCorrectionsUpdate();
-					const float pressure_corrected = _calibration[uorb_index].Correct(report.pressure);
+                    updated[uorb_index] = true;
+                }
+            }
+        }
+    }
 
-					float data_array[3] {pressure_corrected, report.temperature, PressureToAltitude(pressure_corrected)};
-					_voter.put(uorb_index, report.timestamp, data_array, report.error_count, _priority[uorb_index]);
+    // check for the current best sensor
+    int best_index = 0;
+    _voter.get_best(time_now_us, &best_index);
 
-					_timestamp_sample_sum[uorb_index] += report.timestamp_sample;
-					_data_sum[uorb_index] += pressure_corrected;
-					_temperature_sum[uorb_index] += report.temperature;
-					_data_sum_count[uorb_index]++;
+    if (best_index >= 0) {
+        // handle selection change (don't process on same iteration as parameter update)
+        if ((_selected_sensor_sub_index != best_index) && !parameter_update) {
+            // clear all registered callbacks
+            for (auto &sub : _sensor_sub) {
+                sub.unregisterCallback();
+            }
 
-					_last_data[uorb_index] = pressure_corrected;
+            if (_selected_sensor_sub_index >= 0) {
+                PX4_INFO("%s switch from #%" PRId8 " -> #%d", _calibration[_selected_sensor_sub_index].SensorString(),
+                         _selected_sensor_sub_index, best_index);
+            }
 
-					updated[uorb_index] = true;
-				}
-			}
-		}
-	}
+            _selected_sensor_sub_index = best_index;
+            _sensor_sub[_selected_sensor_sub_index].registerCallback();
+        }
+    }
 
-	// check for the current best sensor
-	int best_index = 0;
-	_voter.get_best(time_now_us, &best_index);
+    // Publish
+    if (_param_sens_baro_rate.get() > 0) {
+        int interval_us = 1e6f / _param_sens_baro_rate.get();
 
-	if (best_index >= 0) {
-		// handle selection change (don't process on same iteration as parameter update)
-		if ((_selected_sensor_sub_index != best_index) && !parameter_update) {
-			// clear all registered callbacks
-			for (auto &sub : _sensor_sub) {
-				sub.unregisterCallback();
-			}
+        for (int instance = 0; instance < MAX_SENSOR_COUNT; instance++) {
+            if (updated[instance] && (_data_sum_count[instance] > 0)) {
+                const hrt_abstime timestamp_sample = _timestamp_sample_sum[instance] / _data_sum_count[instance];
 
-			if (_selected_sensor_sub_index >= 0) {
-				PX4_INFO("%s switch from #%" PRId8 " -> #%d", _calibration[_selected_sensor_sub_index].SensorString(),
-					 _selected_sensor_sub_index, best_index);
-			}
+                if (timestamp_sample >= _last_publication_timestamp[instance] + interval_us) {
+                    bool publish = (time_now_us <= timestamp_sample + 1_s);
 
-			_selected_sensor_sub_index = best_index;
-			_sensor_sub[_selected_sensor_sub_index].registerCallback();
-		}
-	}
+                    if (publish) {
+                        publish = (_selected_sensor_sub_index >= 0) && (instance == _selected_sensor_sub_index) && (_voter.get_sensor_state(_selected_sensor_sub_index) == DataValidator::ERROR_FLAG_NO_ERROR);
+                    }
 
-	// Publish
-	if (_param_sens_baro_rate.get() > 0) {
-		int interval_us = 1e6f / _param_sens_baro_rate.get();
+                    if (publish) {
+                        const float pressure_pa = _data_sum[instance] / _data_sum_count[instance];
+                        const float temperature = _temperature_sum[instance] / _data_sum_count[instance];
 
-		for (int instance = 0; instance < MAX_SENSOR_COUNT; instance++) {
-			if (updated[instance] && (_data_sum_count[instance] > 0)) {
+                        float altitude = PressureToAltitude(pressure_pa, temperature);
 
-				const hrt_abstime timestamp_sample = _timestamp_sample_sum[instance] / _data_sum_count[instance];
+                        // calculate air density
+                        float air_density = pressure_pa / (CONSTANTS_AIR_GAS_CONST * (_air_temperature_celsius -
+                                                                                      CONSTANTS_ABSOLUTE_NULL_CELSIUS));
 
-				if (timestamp_sample >= _last_publication_timestamp[instance] + interval_us) {
+                        // populate vehicle_air_data with and publish
+                        vehicle_air_data_s out{};
+                        out.timestamp_sample  = timestamp_sample;
+                        out.baro_device_id    = _calibration[instance].device_id();
+                        out.baro_alt_meter    = altitude;
+                        out.baro_temp_celcius = temperature;
+                        out.baro_pressure_pa  = pressure_pa;
+                        out.rho               = air_density;
+                        out.calibration_count = _calibration[instance].calibration_count();
+                        out.timestamp         = hrt_absolute_time();
 
-					bool publish = (time_now_us <= timestamp_sample + 1_s);
+                        _vehicle_air_data_pub.publish(out);
+                    }
 
-					if (publish) {
-						publish = (_selected_sensor_sub_index >= 0)
-							  && (instance == _selected_sensor_sub_index)
-							  && (_voter.get_sensor_state(_selected_sensor_sub_index) == DataValidator::ERROR_FLAG_NO_ERROR);
-					}
+                    _last_publication_timestamp[instance] = timestamp_sample;
 
-					if (publish) {
-						const float pressure_pa = _data_sum[instance] / _data_sum_count[instance];
-						const float temperature = _temperature_sum[instance] / _data_sum_count[instance];
+                    // reset
+                    _timestamp_sample_sum[instance] = 0;
+                    _data_sum[instance]             = 0;
+                    _temperature_sum[instance]      = 0;
+                    _data_sum_count[instance]       = 0;
+                }
+            }
+        }
+    }
 
-						float altitude = PressureToAltitude(pressure_pa, temperature);
+    if (!parameter_update) {
+        CheckFailover(time_now_us);
+    }
 
-						// calculate air density
-						float air_density = pressure_pa / (CONSTANTS_AIR_GAS_CONST * (_air_temperature_celsius -
-										   CONSTANTS_ABSOLUTE_NULL_CELSIUS));
+    UpdateStatus();
 
-						// populate vehicle_air_data with and publish
-						vehicle_air_data_s out{};
-						out.timestamp_sample = timestamp_sample;
-						out.baro_device_id = _calibration[instance].device_id();
-						out.baro_alt_meter = altitude;
-						out.baro_temp_celcius = temperature;
-						out.baro_pressure_pa = pressure_pa;
-						out.rho = air_density;
-						out.calibration_count = _calibration[instance].calibration_count();
-						out.timestamp = hrt_absolute_time();
+    // reschedule timeout
+    ScheduleDelayed(50_ms);
 
-						_vehicle_air_data_pub.publish(out);
-					}
-
-					_last_publication_timestamp[instance] = timestamp_sample;
-
-					// reset
-					_timestamp_sample_sum[instance] = 0;
-					_data_sum[instance] = 0;
-					_temperature_sum[instance] = 0;
-					_data_sum_count[instance] = 0;
-				}
-			}
-		}
-	}
-
-	if (!parameter_update) {
-		CheckFailover(time_now_us);
-	}
-
-	UpdateStatus();
-
-	// reschedule timeout
-	ScheduleDelayed(50_ms);
-
-	perf_end(_cycle_perf);
+    perf_end(_cycle_perf);
 }
 
-float VehicleAirData::PressureToAltitude(float pressure_pa, float temperature) const
-{
-	// calculate altitude using the hypsometric equation
-	static constexpr float T1 = 15.f - CONSTANTS_ABSOLUTE_NULL_CELSIUS; // temperature at base height in Kelvin
-	static constexpr float a = -6.5f / 1000.f; // temperature gradient in degrees per metre
+float VehicleAirData::PressureToAltitude(float pressure_pa, float temperature) const {
+    // calculate altitude using the hypsometric equation
+    static constexpr float T1 = 15.f - CONSTANTS_ABSOLUTE_NULL_CELSIUS; // temperature at base height in Kelvin
+    static constexpr float a  = -6.5f / 1000.f;                         // temperature gradient in degrees per metre
 
-	// current pressure at MSL in kPa (QNH in hPa)
-	const float p1 = _param_sens_baro_qnh.get() * 0.1f;
+    // current pressure at MSL in kPa (QNH in hPa)
+    const float p1 = _param_sens_baro_qnh.get() * 0.1f;
 
-	// measured pressure in kPa
-	const float p = pressure_pa * 0.001f;
+    // measured pressure in kPa
+    const float p = pressure_pa * 0.001f;
 
-	/*
-	 * Solve:
-	 *
-	 *     /        -(aR / g)     \
-	 *    | (p / p1)          . T1 | - T1
-	 *     \                      /
-	 * h = -------------------------------  + h1
-	 *                   a
-	 */
-	float altitude = (((powf((p / p1), (-(a * CONSTANTS_AIR_GAS_CONST) / CONSTANTS_ONE_G))) * T1) - T1) / a;
+    /*
+     * Solve:
+     *
+     *     /        -(aR / g)     \
+     *    | (p / p1)          . T1 | - T1
+     *     \                      /
+     * h = -------------------------------  + h1
+     *                   a
+     */
+    float altitude = (((powf((p / p1), (-(a * CONSTANTS_AIR_GAS_CONST) / CONSTANTS_ONE_G))) * T1) - T1) / a;
 
-	return altitude;
+    return altitude;
 }
 
-void VehicleAirData::CheckFailover(const hrt_abstime &time_now_us)
-{
-	// check failover and report (save failover report for a cycle where parameters didn't update)
-	if (_last_failover_count != _voter.failover_count()) {
-		uint32_t flags = _voter.failover_state();
-		int failover_index = _voter.failover_index();
+void VehicleAirData::CheckFailover(const hrt_abstime &time_now_us) {
+    // check failover and report (save failover report for a cycle where parameters didn't update)
+    if (_last_failover_count != _voter.failover_count()) {
+        uint32_t flags          = _voter.failover_state();
+        int      failover_index = _voter.failover_index();
 
-		if (flags != DataValidator::ERROR_FLAG_NO_ERROR) {
-			if (failover_index >= 0 && failover_index < MAX_SENSOR_COUNT) {
+        if (flags != DataValidator::ERROR_FLAG_NO_ERROR) {
+            if (failover_index >= 0 && failover_index < MAX_SENSOR_COUNT) {
+                if (time_now_us > _last_error_message + 3_s) {
+                    mavlink_log_emergency(&_mavlink_log_pub, "%s #%i failed: %s%s%s%s%s!\t",
+                                          _calibration[failover_index].SensorString(),
+                                          failover_index,
+                                          ((flags & DataValidator::ERROR_FLAG_NO_DATA) ? " OFF" : ""),
+                                          ((flags & DataValidator::ERROR_FLAG_STALE_DATA) ? " STALE" : ""),
+                                          ((flags & DataValidator::ERROR_FLAG_TIMEOUT) ? " TIMEOUT" : ""),
+                                          ((flags & DataValidator::ERROR_FLAG_HIGH_ERRCOUNT) ? " ERR CNT" : ""),
+                                          ((flags & DataValidator::ERROR_FLAG_HIGH_ERRDENSITY) ? " ERR DNST" : ""));
 
-				if (time_now_us > _last_error_message + 3_s) {
-					mavlink_log_emergency(&_mavlink_log_pub, "%s #%i failed: %s%s%s%s%s!\t",
-							      _calibration[failover_index].SensorString(),
-							      failover_index,
-							      ((flags & DataValidator::ERROR_FLAG_NO_DATA) ? " OFF" : ""),
-							      ((flags & DataValidator::ERROR_FLAG_STALE_DATA) ? " STALE" : ""),
-							      ((flags & DataValidator::ERROR_FLAG_TIMEOUT) ? " TIMEOUT" : ""),
-							      ((flags & DataValidator::ERROR_FLAG_HIGH_ERRCOUNT) ? " ERR CNT" : ""),
-							      ((flags & DataValidator::ERROR_FLAG_HIGH_ERRDENSITY) ? " ERR DNST" : ""));
+                    events::px4::enums::sensor_failover_reason_t failover_reason{};
 
-					events::px4::enums::sensor_failover_reason_t failover_reason{};
+                    if (flags & DataValidator::ERROR_FLAG_NO_DATA) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::no_data; }
 
-					if (flags & DataValidator::ERROR_FLAG_NO_DATA) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::no_data; }
+                    if (flags & DataValidator::ERROR_FLAG_STALE_DATA) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::stale_data; }
 
-					if (flags & DataValidator::ERROR_FLAG_STALE_DATA) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::stale_data; }
+                    if (flags & DataValidator::ERROR_FLAG_TIMEOUT) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::timeout; }
 
-					if (flags & DataValidator::ERROR_FLAG_TIMEOUT) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::timeout; }
+                    if (flags & DataValidator::ERROR_FLAG_HIGH_ERRCOUNT) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::high_error_count; }
 
-					if (flags & DataValidator::ERROR_FLAG_HIGH_ERRCOUNT) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::high_error_count; }
+                    if (flags & DataValidator::ERROR_FLAG_HIGH_ERRDENSITY) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::high_error_density; }
 
-					if (flags & DataValidator::ERROR_FLAG_HIGH_ERRDENSITY) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::high_error_density; }
+                    /* EVENT
+                     * @description
+                     * Land immediately and check the system.
+                     */
+                    events::send<uint8_t, events::px4::enums::sensor_failover_reason_t>(
+                        events::ID("sensor_failover_baro"), events::Log::Emergency, "Baro sensor #{1} failure: {2}", failover_index,
+                        failover_reason);
 
-					/* EVENT
-					 * @description
-					 * Land immediately and check the system.
-					 */
-					events::send<uint8_t, events::px4::enums::sensor_failover_reason_t>(
-						events::ID("sensor_failover_baro"), events::Log::Emergency, "Baro sensor #{1} failure: {2}", failover_index,
-						failover_reason);
+                    _last_error_message = time_now_us;
+                }
 
-					_last_error_message = time_now_us;
-				}
+                // reduce priority of failed sensor to the minimum
+                _priority[failover_index] = 1;
+            }
+        }
 
-				// reduce priority of failed sensor to the minimum
-				_priority[failover_index] = 1;
-			}
-		}
-
-		_last_failover_count = _voter.failover_count();
-	}
+        _last_failover_count = _voter.failover_count();
+    }
 }
 
-void VehicleAirData::UpdateStatus()
-{
-	if (_selected_sensor_sub_index >= 0) {
-		sensors_status_s sensors_status{};
-		sensors_status.device_id_primary = _calibration[_selected_sensor_sub_index].device_id();
+void VehicleAirData::UpdateStatus() {
+    if (_selected_sensor_sub_index >= 0) {
+        sensors_status_s sensors_status{};
+        sensors_status.device_id_primary = _calibration[_selected_sensor_sub_index].device_id();
 
-		float mean{};
-		int sensor_count = 0;
+        float mean{};
+        int   sensor_count = 0;
 
-		for (int sensor_index = 0; sensor_index < MAX_SENSOR_COUNT; sensor_index++) {
-			if ((_calibration[sensor_index].device_id() != 0) && (_calibration[sensor_index].enabled())) {
-				sensor_count++;
-				mean += _last_data[sensor_index];
-			}
-		}
+        for (int sensor_index = 0; sensor_index < MAX_SENSOR_COUNT; sensor_index++) {
+            if ((_calibration[sensor_index].device_id() != 0) && (_calibration[sensor_index].enabled())) {
+                sensor_count++;
+                mean += _last_data[sensor_index];
+            }
+        }
 
-		if (sensor_count > 0) {
-			mean /= sensor_count;
-		}
+        if (sensor_count > 0) {
+            mean /= sensor_count;
+        }
 
-		for (int sensor_index = 0; sensor_index < MAX_SENSOR_COUNT; sensor_index++) {
-			if (_calibration[sensor_index].device_id() != 0) {
+        for (int sensor_index = 0; sensor_index < MAX_SENSOR_COUNT; sensor_index++) {
+            if (_calibration[sensor_index].device_id() != 0) {
+                _sensor_diff[sensor_index] = 0.95f * _sensor_diff[sensor_index] + 0.05f * (_last_data[sensor_index] - mean);
 
-				_sensor_diff[sensor_index] = 0.95f * _sensor_diff[sensor_index] + 0.05f * (_last_data[sensor_index] - mean);
+                sensors_status.device_ids[sensor_index]    = _calibration[sensor_index].device_id();
+                sensors_status.inconsistency[sensor_index] = _sensor_diff[sensor_index];
+                sensors_status.healthy[sensor_index]       = (_voter.get_sensor_state(sensor_index) == DataValidator::ERROR_FLAG_NO_ERROR);
+                sensors_status.priority[sensor_index]      = _voter.get_sensor_priority(sensor_index);
+                sensors_status.enabled[sensor_index]       = _calibration[sensor_index].enabled();
+                sensors_status.external[sensor_index]      = _calibration[sensor_index].external();
 
-				sensors_status.device_ids[sensor_index] = _calibration[sensor_index].device_id();
-				sensors_status.inconsistency[sensor_index] = _sensor_diff[sensor_index];
-				sensors_status.healthy[sensor_index] = (_voter.get_sensor_state(sensor_index) == DataValidator::ERROR_FLAG_NO_ERROR);
-				sensors_status.priority[sensor_index] = _voter.get_sensor_priority(sensor_index);
-				sensors_status.enabled[sensor_index] = _calibration[sensor_index].enabled();
-				sensors_status.external[sensor_index] = _calibration[sensor_index].external();
+            } else {
+                sensors_status.inconsistency[sensor_index] = NAN;
+            }
+        }
 
-			} else {
-				sensors_status.inconsistency[sensor_index] = NAN;
-			}
-		}
-
-		sensors_status.timestamp = hrt_absolute_time();
-		_sensors_status_baro_pub.publish(sensors_status);
-	}
+        sensors_status.timestamp = hrt_absolute_time();
+        _sensors_status_baro_pub.publish(sensors_status);
+    }
 }
 
-void VehicleAirData::PrintStatus()
-{
-	if (_selected_sensor_sub_index >= 0) {
-		PX4_INFO_RAW("[vehicle_air_data] selected %s: %" PRIu32 " (%" PRId8 ")\n",
-			     _calibration[_selected_sensor_sub_index].SensorString(),
-			     _calibration[_selected_sensor_sub_index].device_id(), _selected_sensor_sub_index);
-	}
+void VehicleAirData::PrintStatus() {
+    if (_selected_sensor_sub_index >= 0) {
+        PX4_INFO_RAW("[vehicle_air_data] selected %s: %" PRIu32 " (%" PRId8 ")\n",
+                     _calibration[_selected_sensor_sub_index].SensorString(),
+                     _calibration[_selected_sensor_sub_index].device_id(), _selected_sensor_sub_index);
+    }
 
-	_voter.print();
+    _voter.print();
 
-	for (int i = 0; i < MAX_SENSOR_COUNT; i++) {
-		if (_advertised[i] && (_priority[i] > 0)) {
-			_calibration[i].PrintStatus();
-		}
-	}
+    for (int i = 0; i < MAX_SENSOR_COUNT; i++) {
+        if (_advertised[i] && (_priority[i] > 0)) {
+            _calibration[i].PrintStatus();
+        }
+    }
 }
 
 }; // namespace sensors

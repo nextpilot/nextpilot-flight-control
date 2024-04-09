@@ -1,4 +1,4 @@
-menuconfig MODULES_MANUAL_CONTROL
+menuconfig FCS_USING_MANUAL_CONTROL
 	bool "manual_control"
 	default n
 	---help---

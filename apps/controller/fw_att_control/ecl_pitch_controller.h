@@ -1,35 +1,12 @@
-/****************************************************************************
+/*****************************************************************
+ *     _   __             __   ____   _  __        __
+ *    / | / /___   _  __ / /_ / __ \ (_)/ /____   / /_
+ *   /  |/ // _ \ | |/_// __// /_/ // // // __ \ / __/
+ *  / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
+ * /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
  *
- *   Copyright (c) 2020-2022 PX4 Development Team. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- * 3. Neither the name PX4 nor the names of its contributors may be
- *    used to endorse or promote products derived from this software
- *    without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
- * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
- * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- *
- ****************************************************************************/
+ * Copyright All Reserved © 2015-2024 NextPilot Development Team
+ ******************************************************************/
 
 /**
  * @file ecl_pitch_controller.h
@@ -53,35 +30,31 @@
 
 #include "ecl_controller.h"
 
-class ECL_PitchController :
-	public ECL_Controller
-{
+class ECL_PitchController : public ECL_Controller {
 public:
-	ECL_PitchController() = default;
-	~ECL_PitchController() = default;
+    ECL_PitchController()  = default;
+    ~ECL_PitchController() = default;
 
-	/**
-	 * @brief Calculates both euler and body pitch rate setpoints.
-	 *
-	 * @param dt Time step [s]
-	 * @param ctrl_data Various control inputs (attitude, body rates, attitdue stepoints, euler rate setpoints, current speeed)
-	 * @return Pitch body rate setpoint [rad/s]
-	 */
-	float control_attitude(const float dt, const ECL_ControlData &ctl_data) override;
+    /**
+     * @brief Calculates both euler and body pitch rate setpoints.
+     *
+     * @param dt Time step [s]
+     * @param ctrl_data Various control inputs (attitude, body rates, attitdue stepoints, euler rate setpoints, current speeed)
+     * @return Pitch body rate setpoint [rad/s]
+     */
+    float control_attitude(const float dt, const ECL_ControlData &ctl_data) override;
 
-	/* Additional Setters */
-	void set_max_rate_pos(float max_rate_pos)
-	{
-		_max_rate = max_rate_pos;
-	}
+    /* Additional Setters */
+    void set_max_rate_pos(float max_rate_pos) {
+        _max_rate = max_rate_pos;
+    }
 
-	void set_max_rate_neg(float max_rate_neg)
-	{
-		_max_rate_neg = max_rate_neg;
-	}
+    void set_max_rate_neg(float max_rate_neg) {
+        _max_rate_neg = max_rate_neg;
+    }
 
 protected:
-	float _max_rate_neg{0.0f};
+    float _max_rate_neg{0.0f};
 };
 
 #endif // ECL_PITCH_CONTROLLER_H

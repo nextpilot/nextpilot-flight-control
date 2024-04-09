@@ -1,35 +1,12 @@
-/****************************************************************************
+/*****************************************************************
+ *     _   __             __   ____   _  __        __
+ *    / | / /___   _  __ / /_ / __ \ (_)/ /____   / /_
+ *   /  |/ // _ \ | |/_// __// /_/ // // // __ \ / __/
+ *  / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
+ * /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
  *
- *   Copyright (c) 2015-2016 PX4 Development Team. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- * 3. Neither the name PX4 nor the names of its contributors may be
- *    used to endorse or promote products derived from this software
- *    without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
- * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
- * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- *
- ****************************************************************************/
+ * Copyright All Reserved © 2015-2024 NextPilot Development Team
+ ******************************************************************/
 
 /*
 
@@ -105,92 +82,88 @@ Author: Siddharth Bharat Purohit
 #define PF_DEBUG(fmt, ...)
 #endif
 
-template<int _forder>
-class polyfitter
-{
+template <int _forder>
+class polyfitter {
 public:
-	polyfitter() {}
+    polyfitter() {
+    }
 
-	void update(double x, double y)
-	{
-		update_VTV(x);
-		update_VTY(x, y);
-	}
+    void update(double x, double y) {
+        update_VTV(x);
+        update_VTY(x, y);
+    }
 
-	bool fit(double res[])
-	{
-		//Do inverse of VTV
-		matrix::SquareMatrix<double, _forder> IVTV;
+    bool fit(double res[]) {
+        // Do inverse of VTV
+        matrix::SquareMatrix<double, _forder> IVTV;
 
-		IVTV = _VTV.I();
+        IVTV = _VTV.I();
 
-		for (int i = 0; i < _forder; i++) {
-			for (int j = 0; j < _forder; j++) {
-				PF_DEBUG("%.10f ", (double)IVTV(i, j));
-			}
+        for (int i = 0; i < _forder; i++) {
+            for (int j = 0; j < _forder; j++) {
+                PF_DEBUG("%.10f ", (double)IVTV(i, j));
+            }
 
-			PF_DEBUG("\n");
-		}
+            PF_DEBUG("\n");
+        }
 
-		for (int i = 0; i < _forder; i++) {
-			res[i] = 0.0;
+        for (int i = 0; i < _forder; i++) {
+            res[i] = 0.0;
 
-			for (int j = 0; j < _forder; j++) {
-				res[i] += IVTV(i, j) * (double)_VTY(j);
-			}
+            for (int j = 0; j < _forder; j++) {
+                res[i] += IVTV(i, j) * (double)_VTY(j);
+            }
 
-			PF_DEBUG("%.10f ", res[i]);
-		}
+            PF_DEBUG("%.10f ", res[i]);
+        }
 
-		return true;
-	}
+        return true;
+    }
 
 private:
-	matrix::SquareMatrix<double, _forder> _VTV;
-	matrix::Vector<double, _forder> _VTY;
+    matrix::SquareMatrix<double, _forder> _VTV;
+    matrix::Vector<double, _forder>       _VTY;
 
-	void update_VTY(double x, double y)
-	{
-		double temp = 1.0;
-		PF_DEBUG("O %.6f\n", (double)x);
+    void update_VTY(double x, double y) {
+        double temp = 1.0;
+        PF_DEBUG("O %.6f\n", (double)x);
 
-		for (int i = _forder - 1; i >= 0; i--) {
-			_VTY(i) += y * temp;
-			temp *= x;
-			PF_DEBUG("%.6f ", (double)_VTY(i));
-		}
+        for (int i = _forder - 1; i >= 0; i--) {
+            _VTY(i) += y * temp;
+            temp *= x;
+            PF_DEBUG("%.6f ", (double)_VTY(i));
+        }
 
-		PF_DEBUG("\n");
-	}
+        PF_DEBUG("\n");
+    }
 
-	void update_VTV(double x)
-	{
-		double temp = 1.0;
-		int8_t z;
+    void update_VTV(double x) {
+        double temp = 1.0;
+        int8_t z;
 
-		for (int i = 0; i < _forder; i++) {
-			for (int j = 0; j < _forder; j++) {
-				PF_DEBUG("%.10f ", (double)_VTV(i, j));
-			}
+        for (int i = 0; i < _forder; i++) {
+            for (int j = 0; j < _forder; j++) {
+                PF_DEBUG("%.10f ", (double)_VTV(i, j));
+            }
 
-			PF_DEBUG("\n");
-		}
+            PF_DEBUG("\n");
+        }
 
-		for (int i = 2 * _forder - 2; i >= 0; i--) {
-			if (i < _forder) {
-				z = 0.0f;
+        for (int i = 2 * _forder - 2; i >= 0; i--) {
+            if (i < _forder) {
+                z = 0.0f;
 
-			} else {
-				z = i - _forder + 1;
-			}
+            } else {
+                z = i - _forder + 1;
+            }
 
-			for (int j = i - z; j >= z; j--) {
-				int row = j;
-				int col = i - j;
-				_VTV(row, col) += (double)temp;
-			}
+            for (int j = i - z; j >= z; j--) {
+                int row = j;
+                int col = i - j;
+                _VTV(row, col) += (double)temp;
+            }
 
-			temp *= x;
-		}
-	}
+            temp *= x;
+        }
+    }
 };
