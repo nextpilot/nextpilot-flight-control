@@ -9,6 +9,7 @@
  ******************************************************************/
 
 #define LOG_TAG "param.interface"
+#define LOG_LVL LOG_LVL_INFO
 
 #include <rtthread.h>
 #include <rtdbg.h>

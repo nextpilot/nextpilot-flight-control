@@ -18,35 +18,20 @@
 
 #pragma once
 
-#include <drivers/drv_hrt.h>
-#include <lib/hysteresis/hysteresis.h>
-#include <lib/perf/perf_counter.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/px4_work_queue/WorkItem.hpp>
-#include <uORB/Publication.hpp>
-#include <uORB/Subscription.hpp>
-#include <uORB/SubscriptionCallback.hpp>
-#include <uORB/topics/hover_thrust_estimate.h>
-#include <uORB/topics/parameter_update.h>
-#include <uORB/topics/vehicle_land_detected.h>
-#include <uORB/topics/vehicle_local_position.h>
-#include <uORB/topics/vehicle_local_position_setpoint.h>
-#include <uORB/topics/vehicle_status.h>
-
+#include "nextpilot.h"
 #include "zero_order_hover_thrust_ekf.hpp"
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
-class MulticopterHoverThrustEstimator : public ModuleBase<MulticopterHoverThrustEstimator>, public ModuleParams, public px4::WorkItem {
+class MulticopterHoverThrustEstimator : public ModuleCommand<MulticopterHoverThrustEstimator>, public ModuleParams, public WorkItem {
 public:
     MulticopterHoverThrustEstimator();
     ~MulticopterHoverThrustEstimator() override;
 
     /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    static MulticopterHoverThrustEstimator *instantiate(int argc, char *argv[]);
 
     /** @see ModuleBase */
     static int custom_command(int argc, char *argv[]);
@@ -54,7 +39,7 @@ public:
     /** @see ModuleBase */
     static int print_usage(const char *reason = nullptr);
 
-    bool init();
+    int init() override;
 
     /** @see ModuleBase::print_status() */
     int print_status() override;
@@ -88,16 +73,16 @@ private:
 
     bool _valid{false};
 
-    systemlib::Hysteresis _valid_hysteresis{false};
+    Hysteresis _valid_hysteresis{false};
 
     perf_counter_t _cycle_perf{perf_alloc(PC_ELAPSED, MODULE_NAME ": cycle time")};
 
     DEFINE_PARAMETERS(
-        (ParamFloat<px4::params::HTE_HT_NOISE>)_param_hte_ht_noise,
-        (ParamFloat<px4::params::HTE_ACC_GATE>)_param_hte_acc_gate,
-        (ParamFloat<px4::params::HTE_HT_ERR_INIT>)_param_hte_ht_err_init,
-        (ParamFloat<px4::params::HTE_THR_RANGE>)_param_hte_thr_range,
-        (ParamFloat<px4::params::HTE_VXY_THR>)_param_hte_vxy_thr,
-        (ParamFloat<px4::params::HTE_VZ_THR>)_param_hte_vz_thr,
-        (ParamFloat<px4::params::MPC_THR_HOVER>)_param_mpc_thr_hover)
+        (ParamFloat<params_id::HTE_HT_NOISE>)_param_hte_ht_noise,
+        (ParamFloat<params_id::HTE_ACC_GATE>)_param_hte_acc_gate,
+        (ParamFloat<params_id::HTE_HT_ERR_INIT>)_param_hte_ht_err_init,
+        (ParamFloat<params_id::HTE_THR_RANGE>)_param_hte_thr_range,
+        (ParamFloat<params_id::HTE_VXY_THR>)_param_hte_vxy_thr,
+        (ParamFloat<params_id::HTE_VZ_THR>)_param_hte_vz_thr,
+        (ParamFloat<params_id::MPC_THR_HOVER>)_param_mpc_thr_hover)
 };

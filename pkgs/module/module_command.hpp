@@ -71,13 +71,13 @@ public:
      */
 
     static int start_command(int argc, char *argv[]) {
-        for (int idx = 0; idx < argc; idx++) {
-            LOG_RAW("%s ", argv[idx]);
-        }
+        // for (int idx = 0; idx < argc; idx++) {
+        //     LOG_RAW("%s ", argv[idx]);
+        // }
 
-        if (argc > 0) {
-            LOG_RAW("\n");
-        }
+        // if (argc > 0) {
+        //     LOG_RAW("\n");
+        // }
 
         // 获取实例个数
         int count = 0;

@@ -508,6 +508,14 @@ public:
         unregister_callback();
     };
 
+    bool registerCallback() {
+        return register_callback();
+    }
+
+    void unregisterCallback() {
+        unregister_callback();
+    }
+
     bool register_callback() {
         if (!_registered) {
             if (get_node() && get_node()->register_callback(this)) {

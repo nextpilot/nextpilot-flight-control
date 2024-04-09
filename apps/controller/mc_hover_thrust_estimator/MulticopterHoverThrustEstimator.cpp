@@ -14,15 +14,16 @@
  * @author Mathieu Bresciani 	<brescianimathieu@gmail.com>
  */
 
-#include "MulticopterHoverThrustEstimator.hpp"
+#define LOG_TAG "mc_hover_thrust_est"
 
+#include "MulticopterHoverThrustEstimator.hpp"
 #include <mathlib/mathlib.h>
 
 using namespace time_literals;
 
 MulticopterHoverThrustEstimator::MulticopterHoverThrustEstimator() :
     ModuleParams(nullptr),
-    WorkItem(MODULE_NAME, px4::wq_configurations::nav_and_controllers) {
+    WorkItem(MODULE_NAME, wq_configurations::nav_and_controllers) {
     _valid_hysteresis.set_hysteresis_time_from(false, 2_s);
     updateParams();
     reset();
@@ -32,13 +33,13 @@ MulticopterHoverThrustEstimator::~MulticopterHoverThrustEstimator() {
     perf_free(_cycle_perf);
 }
 
-bool MulticopterHoverThrustEstimator::init() {
+int MulticopterHoverThrustEstimator::init() {
     if (!_vehicle_local_position_sub.registerCallback()) {
         PX4_ERR("callback registration failed");
-        return false;
+        return -1;
     }
 
-    return true;
+    return 0;
 }
 
 void MulticopterHoverThrustEstimator::reset() {
@@ -221,26 +222,27 @@ void MulticopterHoverThrustEstimator::publishInvalidStatus() {
     _hover_thrust_ekf_pub.publish(status_msg);
 }
 
-int MulticopterHoverThrustEstimator::task_spawn(int argc, char *argv[]) {
+MulticopterHoverThrustEstimator *MulticopterHoverThrustEstimator::instantiate(int argc, char *argv[]) {
     MulticopterHoverThrustEstimator *instance = new MulticopterHoverThrustEstimator();
 
-    if (instance) {
-        _object.store(instance);
-        _task_id = task_id_is_work_queue;
+    // if (instance) {
+    //     _object.store(instance);
+    //     _task_id = task_id_is_work_queue;
 
-        if (instance->init()) {
-            return PX4_OK;
-        }
+    //     if (instance->init()) {
+    //         return PX4_OK;
+    //     }
 
-    } else {
-        PX4_ERR("alloc failed");
-    }
+    // } else {
+    //     PX4_ERR("alloc failed");
+    // }
 
-    delete instance;
-    _object.store(nullptr);
-    _task_id = -1;
+    // delete instance;
+    // _object.store(nullptr);
+    // _task_id = -1;
 
-    return PX4_ERROR;
+    // return PX4_ERROR;
+    return instance;
 }
 
 int MulticopterHoverThrustEstimator::custom_command(int argc, char *argv[]) {
@@ -274,3 +276,11 @@ int MulticopterHoverThrustEstimator::print_usage(const char *reason) {
 extern "C" __EXPORT int mc_hover_thrust_estimator_main(int argc, char *argv[]) {
     return MulticopterHoverThrustEstimator::main(argc, argv);
 }
+MSH_CMD_EXPORT_ALIAS(mc_hover_thrust_estimator_main, mc_hover_est, mc hover thrust estimator);
+
+int mc_hover_thrust_estimator_start() {
+    const char *argv[] = {"mc_rate_control", "start"};
+    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    return MulticopterHoverThrustEstimator::main(argc, (char **)argv);
+}
+INIT_APP_EXPORT(mc_hover_thrust_estimator_start);

@@ -20,7 +20,7 @@
 
 #include <hrtimer.h>
 
-namespace systemlib
+namespace nextpilot
 {
 
 class Hysteresis
@@ -53,4 +53,4 @@ private:
 	bool _requested_state;
 };
 
-} // namespace systemlib
+} // namespace nextpilot

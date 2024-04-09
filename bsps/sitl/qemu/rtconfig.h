@@ -25,6 +25,7 @@
 /* Nextpilot Controller Config */
 
 #define FCS_USING_MC_ATT_CONTROL
+#define PKG_USING_MC_HOVER_THRUST_ESTIMATOR
 #define FCS_USING_MC_RATE_CONTROL
 /* end of Nextpilot Controller Config */
 
@@ -45,8 +46,11 @@
 #define PKG_USING_CIRCUIT_BREAKER
 #define PKG_USING_ROTATION
 #define PKG_USING_GEO
-#define PKG_USING_SYSTERESIS
+#define PKG_USING_HYSTERESIS
 /* end of Controller Libraries Config */
+
+/* Peripheral Libraries Config */
+
 /* end of Nextpilot Libraries Config */
 
 /* Nextpilot Peripheral Config */

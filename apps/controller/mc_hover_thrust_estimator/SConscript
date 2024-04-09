@@ -1,0 +1,16 @@
+import os
+import sys
+from building import *
+
+objs = []
+
+if GetDepend(["PKG_USING_MC_HOVER_THRUST_ESTIMATOR"]):
+    cwd = GetCurrentDir()
+    inc = []
+    src = Glob("*.cpp", exclude="*_test.cpp", strings=True)
+
+    objs = DefineGroup("fcs/mc_rate_control", src, depend=[""])
+else:
+    pass
+
+Return("objs")

@@ -24,9 +24,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-
 #include <hrtimer.h>
-
 #include <mathlib/mathlib.h>
 #include <matrix/matrix/math.hpp>
 

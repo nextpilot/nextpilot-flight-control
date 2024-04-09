@@ -14,6 +14,8 @@
  * @author Mathieu Bresciani 	<brescianimathieu@gmail.com>
  */
 
+#define LOG_TAG "hover_thrust_ekf"
+
 #include "zero_order_hover_thrust_ekf.hpp"
 
 using matrix::sign;

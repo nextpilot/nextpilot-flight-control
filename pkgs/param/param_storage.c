@@ -9,6 +9,7 @@
  ******************************************************************/
 
 #define LOG_TAG "param.storage"
+#define LOG_LVL LOG_LVL_INFO
 
 #include <stdbool.h>
 #include <rtdbg.h>

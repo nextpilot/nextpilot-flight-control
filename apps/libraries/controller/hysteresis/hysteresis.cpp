@@ -16,7 +16,7 @@
 
 #include "hysteresis.h"
 
-namespace systemlib
+namespace nextpilot
 {
 
 void
@@ -66,4 +66,4 @@ Hysteresis::update(const hrt_abstime &now_us)
 	}
 }
 
-} // namespace systemlib
+} // namespace nextpilot

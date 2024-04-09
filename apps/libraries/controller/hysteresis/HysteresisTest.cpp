@@ -23,13 +23,13 @@ static constexpr hrt_abstime SOME_START_TIME = 1558359616134000llu;
 
 TEST(Hysteresis, InitFalse)
 {
-	systemlib::Hysteresis hysteresis(false);
+	nextpilot::Hysteresis hysteresis(false);
 	EXPECT_FALSE(hysteresis.get_state());
 }
 
 TEST(Hysteresis, InitTrue)
 {
-	systemlib::Hysteresis hysteresis(true);
+	nextpilot::Hysteresis hysteresis(true);
 	EXPECT_TRUE(hysteresis.get_state());
 }
 
@@ -38,7 +38,7 @@ TEST(Hysteresis, Zero)
 	hrt_abstime time_us = SOME_START_TIME;
 
 	// Default is 0 hysteresis.
-	systemlib::Hysteresis hysteresis(false);
+	nextpilot::Hysteresis hysteresis(false);
 	EXPECT_FALSE(hysteresis.get_state());
 
 	// Change and see result immediately.
@@ -59,7 +59,7 @@ TEST(Hysteresis, ChangeAfterTime)
 {
 	hrt_abstime time_us = SOME_START_TIME;
 
-	systemlib::Hysteresis hysteresis(false);
+	nextpilot::Hysteresis hysteresis(false);
 	hysteresis.set_hysteresis_time_from(false, 5000);
 	hysteresis.set_hysteresis_time_from(true, 3000);
 
@@ -88,7 +88,7 @@ TEST(Hysteresis, HysteresisChanged)
 {
 	hrt_abstime time_us = SOME_START_TIME;
 
-	systemlib::Hysteresis hysteresis(false);
+	nextpilot::Hysteresis hysteresis(false);
 	hysteresis.set_hysteresis_time_from(true, 2000);
 	hysteresis.set_hysteresis_time_from(false, 5000);
 
@@ -120,7 +120,7 @@ TEST(Hysteresis, ChangeAfterMultipleSets)
 {
 	hrt_abstime time_us = SOME_START_TIME;
 
-	systemlib::Hysteresis hysteresis(false);
+	nextpilot::Hysteresis hysteresis(false);
 	hysteresis.set_hysteresis_time_from(true, 5000);
 	hysteresis.set_hysteresis_time_from(false, 5000);
 
@@ -149,7 +149,7 @@ TEST(Hysteresis, TakeChangeBack)
 {
 	hrt_abstime time_us = SOME_START_TIME;
 
-	systemlib::Hysteresis hysteresis(false);
+	nextpilot::Hysteresis hysteresis(false);
 	hysteresis.set_hysteresis_time_from(false, 5000);
 
 	// Change to true.

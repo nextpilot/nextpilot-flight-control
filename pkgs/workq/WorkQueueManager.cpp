@@ -237,7 +237,7 @@ static void WorkQueueManagerEntry(void *param) {
 
             if (tid) {
                 rt_thread_startup(tid);
-                LOG_I("starting: %s, priority: %d, stack: %zu bytes", wq->name, sched_priority, stacksize);
+                LOG_I("starting %s, priority: %d, stack: %zu bytes", wq->name, sched_priority, stacksize);
 
             } else {
                 LOG_E("fail to create thread for %s", wq->name);

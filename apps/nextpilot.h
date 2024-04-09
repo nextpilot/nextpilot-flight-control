@@ -131,6 +131,14 @@
 #include "circuit_breaker.h"
 #endif // PKG_USING_CIRCUIT_BREAKER
 
+#ifdef PKG_USING_HYSTERESIS
+#include "hysteresis.h"
+#endif // PKG_USING_HYSTERESIS
+
+#ifdef PKG_USING_GEO
+#include "geo.h"
+#endif // PKG_USING_GEO
+
 // scope
 #ifdef PKG_USING_SCOPE
 #endif // PKG_USING_SCOPE
