@@ -53,8 +53,13 @@ def gen_global_params():
 if GetDepend(["PKG_USING_PARAM"]):
     gen_global_params()
 
-    src = Glob("*.cpp") + Glob("*.c")
+    src = [
+        "param_interface.c",
+        "param_storage.c",
+        "param.c",
+    ]
     inc = [cwd, os.path.join(cwd, "wrapper")]
+
     objs += DefineGroup("pkg/param", src, depend=[""], CPPPATH=inc)
 
     for d in os.listdir(cwd):

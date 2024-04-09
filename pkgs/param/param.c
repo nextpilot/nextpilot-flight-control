@@ -460,4 +460,4 @@ int param_main(int argc, char *argv[]) {
     return 1;
 }
 
-MSH_CMD_EXPORT_ALIAS(param_main, param, );
+MSH_CMD_EXPORT_ALIAS(param_main, param, param manager);

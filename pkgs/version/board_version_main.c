@@ -62,7 +62,7 @@ int show_version_info(void) {
 }
 INIT_EXPORT(show_version_info, "3.1");
 
-static int version_main(int argc, char *argv[]) {
+static int board_version_main(int argc, char *argv[]) {
     return show_version_info();
 }
-MSH_CMD_EXPORT_ALIAS(version_main, ver, version);
+MSH_CMD_EXPORT_ALIAS(board_version_main, ver, show version info);

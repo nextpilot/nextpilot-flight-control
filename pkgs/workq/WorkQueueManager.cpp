@@ -396,9 +396,14 @@ static int work_queue_main(int argc, char *argv[]) {
 
     return 0;
 }
-MSH_CMD_EXPORT(work_queue_main, workq);
+MSH_CMD_EXPORT_ALIAS(work_queue_main, workq, work queue manager);
 
-int work_queue_start() {
+static int work_queue_status() {
+    nextpilot::WorkQueueManagerStatus();
+}
+MSH_CMD_EXPORT_ALIAS(work_queue_status, list_wq, list work manager);
+
+static int work_queue_start() {
     nextpilot::WorkQueueManagerStart();
     return 0;
 }
