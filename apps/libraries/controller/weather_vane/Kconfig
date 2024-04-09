@@ -1,0 +1,7 @@
+menuconfig PKG_USING_WEATHER_VANE
+    bool "weather_vane: Weathervane controller"
+    select PKG_USING_MATRIX
+    select PKG_USING_MATHLIB
+    select PKG_USING_UORB
+
+    default n

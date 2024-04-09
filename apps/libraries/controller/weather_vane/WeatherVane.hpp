@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <px4_platform_common/module_params.h>
+#include <module_params.h>
 #include <matrix/matrix/math.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/vehicle_attitude_setpoint.h>

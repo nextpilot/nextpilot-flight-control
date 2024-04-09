@@ -1,0 +1,5 @@
+menuconfig PKG_USING_MOTION_PLANNING
+    bool "motion_planning: generates setpoints for a smooth trajectory to position waypoints"
+    select PKG_USING_MATRIX
+
+    default n

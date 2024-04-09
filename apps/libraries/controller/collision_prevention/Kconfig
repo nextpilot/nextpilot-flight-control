@@ -1,0 +1,7 @@
+menuconfig PKG_USING_COLLISION_PREVENTION
+    bool "collision: a CollisionPrevention controller"
+    select PKG_USING_MATRIX
+    select PKG_USING_MATHLIB
+    select PKUG_USING_UORB
+
+    default n

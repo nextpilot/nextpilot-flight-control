@@ -1,0 +1,6 @@
+menuconfig PKG_USING_TECS
+    bool "tecs: Total Energy Control System for fixed-wing"
+    select PKG_USING_MATRIX
+    select PKG_USING_GEO
+
+    default n

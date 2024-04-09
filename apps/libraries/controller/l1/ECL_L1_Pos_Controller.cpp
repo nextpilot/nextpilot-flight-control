@@ -16,11 +16,8 @@
  */
 
 #include "ECL_L1_Pos_Controller.hpp"
-
-#include <lib/geo/geo.h>
-
-#include <px4_platform_common/defines.h>
-
+#include <geo/geo.h>
+#include <defines.h>
 #include <float.h>
 
 using matrix::Vector2f;

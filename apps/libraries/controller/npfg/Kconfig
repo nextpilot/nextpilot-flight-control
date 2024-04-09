@@ -1,0 +1,5 @@
+menuconfig PKG_USING_BEZIER
+    bool "bezier: N-order Bezier library designed for time-aware trajectory tracking"
+    select PKG_USING_MATRIX
+
+    default n

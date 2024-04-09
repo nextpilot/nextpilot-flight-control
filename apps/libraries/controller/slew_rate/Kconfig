@@ -1,0 +1,6 @@
+menuconfig PKG_USING_SLEW_RATE
+    bool "slew_rate: limit the rate of change of a value with a maximum slew rate."
+    select PKG_USING_MATRIX
+    select PKG_USING_MATHLIB
+
+    default n

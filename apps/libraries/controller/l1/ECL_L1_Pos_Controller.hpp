@@ -38,7 +38,7 @@
 #define ECL_L1_POS_CONTROLLER_H
 
 #include <matrix/math.hpp>
-#include <lib/mathlib/mathlib.h>
+#include <mathlib/mathlib.h>
 
 /**
  * L1 Nonlinear Guidance Logic
