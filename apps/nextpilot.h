@@ -127,9 +127,9 @@
 #endif // PKG_USING_MATRIX
 
 // Circuit breaker
-#ifdef LIB_USING_CIRCUIT_BREAKER
+#ifdef PKG_USING_CIRCUIT_BREAKER
 #include "circuit_breaker.h"
-#endif // LIB_USING_CIRCUIT_BREAKER
+#endif // PKG_USING_CIRCUIT_BREAKER
 
 // scope
 #ifdef PKG_USING_SCOPE

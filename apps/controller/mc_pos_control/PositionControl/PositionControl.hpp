@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <lib/mathlib/mathlib.h>
+#include <mathlib/mathlib.h>
 #include <matrix/matrix/math.hpp>
 #include <uORB/topics/trajectory_setpoint.h>
 #include <uORB/topics/vehicle_attitude_setpoint.h>

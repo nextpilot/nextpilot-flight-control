@@ -14,7 +14,7 @@
 
 #include "Takeoff.hpp"
 #include <mathlib/mathlib.h>
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 
 void TakeoffHandling::generateInitialRampValue(float velocity_p_gain) {
     velocity_p_gain       = math::max(velocity_p_gain, 0.01f);

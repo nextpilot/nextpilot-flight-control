@@ -25,10 +25,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
-#include <lib/mathlib/mathlib.h>
-#include <lib/matrix/matrix/math.hpp>
+#include <mathlib/mathlib.h>
+#include <matrix/matrix/math.hpp>
 
 static constexpr float CONSTANTS_ONE_G = 9.80665f;						// m/s^2
 

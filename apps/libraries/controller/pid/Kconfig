@@ -1,0 +1,3 @@
+menuconfig PKG_USING_PID
+    bool "pid: Definition of generic PID controller"
+    default n

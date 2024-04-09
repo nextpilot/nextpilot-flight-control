@@ -16,8 +16,8 @@
 
 #pragma once
 
-#include <lib/hysteresis/hysteresis.h>
-#include <drivers/drv_hrt.h>
+#include <hysteresis/hysteresis.h>
+#include <hrtimer.h>
 #include <uORB/topics/takeoff_status.h>
 
 using namespace time_literals;

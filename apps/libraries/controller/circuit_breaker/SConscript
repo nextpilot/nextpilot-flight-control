@@ -4,7 +4,7 @@ from building import *
 
 objs = []
 
-if GetDepend(["LIB_USING_CIRCUIT_BREAKER"]):
+if GetDepend(["PKG_USING_CIRCUIT_BREAKER"]):
     cwd = GetCurrentDir()
     src = ["circuit_breaker.cpp", "circuit_breaker_params.c"]
     inc = [cwd]

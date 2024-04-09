@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 namespace systemlib
 {

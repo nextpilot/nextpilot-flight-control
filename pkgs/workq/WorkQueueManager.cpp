@@ -400,6 +400,7 @@ MSH_CMD_EXPORT_ALIAS(work_queue_main, workq, work queue manager);
 
 static int work_queue_status() {
     nextpilot::WorkQueueManagerStatus();
+    return 0;
 }
 MSH_CMD_EXPORT_ALIAS(work_queue_status, list_wq, list work manager);
 

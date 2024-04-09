@@ -16,7 +16,7 @@
 #include "ControlMath.hpp"
 #include <float.h>
 #include <mathlib/mathlib.h>
-#include <px4_platform_common/defines.h>
+#include <defines.h>
 #include <geo/geo.h>
 
 using namespace matrix;

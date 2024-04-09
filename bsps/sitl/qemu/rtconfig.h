@@ -42,7 +42,10 @@
 
 /* Controller Libraries Config */
 
-#define LIB_USING_CIRCUIT_BREAKER
+#define PKG_USING_CIRCUIT_BREAKER
+#define PKG_USING_ROTATION
+#define PKG_USING_GEO
+#define PKG_USING_SYSTERESIS
 /* end of Controller Libraries Config */
 /* end of Nextpilot Libraries Config */
 

@@ -1,0 +1,4 @@
+menuconfig PKG_USING_ROTATION
+    bool "rotation: a Vector rotation library"
+    select PKG_USING_MATRIX
+    default n

@@ -1,0 +1,4 @@
+menuconfig PKG_USING_SYSTERESIS
+    bool "Hysteresis: Hysteresis of a boolean value"
+    select PKG_USING_HRTIMER
+    default n
