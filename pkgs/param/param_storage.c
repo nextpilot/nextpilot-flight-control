@@ -279,5 +279,4 @@ static int param_storage_init() {
 
     return 0;
 }
-
-INIT_APP_EXPORT(param_storage_init);
+INIT_EXPORT(param_storage_init, "5.2");

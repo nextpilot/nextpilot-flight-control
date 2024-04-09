@@ -115,7 +115,7 @@ int param_find_internal(const char *name, bool mark_used) {
         if (api) {
             idx = api->ops->find(name, mark_used);
             if (idx != PARAM_INVALID) {
-                LOG_D("find %s ok", name);
+                LOG_D("find param %s", name);
                 return idx + offset;
             }
 
@@ -205,7 +205,7 @@ int param_set_internal(param_t idx, const param_value_t *val, bool mark_saved, b
     int ret = api->ops->set_value(idx, val, mark_saved);
 
     if (ret == 0) {
-        LOG_D("set param %s ok", param_get_name(idx));
+        LOG_D("set param %s", param_get_name(idx));
 
         if (notify) {
             param_notify_autosave();
@@ -305,7 +305,7 @@ int param_reset_internal(param_t idx, bool notify) {
 
     int ret = api->ops->reset(idx, false);
 
-    // LOG_D("reset param %s ok", param_get_name(idx));
+    // LOG_D("reset param %s", param_get_name(idx));
 
     if (ret == 0 && notify) {
         param_notify_changes();
@@ -329,7 +329,7 @@ void param_reset_all_internal(bool notify) {
         param_reset_internal(i, false);
     }
 
-    LOG_I("reset all params ok");
+    LOG_I("reset all params");
 
     // 重置结束之后发送param_update消息
     if (notify) {
