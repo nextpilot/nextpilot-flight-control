@@ -290,7 +290,7 @@ def get_command_option():
             EXEC_PATH = os.getenv("RTT_EXEC_PATH")
         else:
             EXEC_PATH = "UNKNOWN"
-        EXEC_PATH = os.path.normpath(EXEC_PATH)
+        EXEC_PATH = os.path.normpath(EXEC_PATH).replace("\\", "/")
 
     __options__["CROSS_TOOL"] = CROSS_TOOL
     __options__["EXEC_PATH"] = EXEC_PATH
