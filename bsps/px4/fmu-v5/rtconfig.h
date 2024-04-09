@@ -530,8 +530,8 @@
 
 /* math packages */
 
-#define LIB_USING_MATHLIB
-#define LIB_USING_MATRIX
+#define PKG_USING_MATHLIB
+#define PKG_USING_MATRIX
 #define LIB_USING_ROTATION
 
 /* controller packages */

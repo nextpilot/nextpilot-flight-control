@@ -24,17 +24,20 @@
 
 /* Nextpilot Controller Config */
 
-#define FCS_MC_RATE_CONTROL
+#define FCS_USING_MC_ATT_CONTROL
+#define FCS_USING_MC_RATE_CONTROL
 /* end of Nextpilot Controller Config */
 
 /* Nextpilot Estimator Config */
+
+/* end of Nextpilot Estimator Config */
 
 /* Nextpilot Libraries Config */
 
 /* Common Libraries Config */
 
-#define LIB_USING_MATHLIB
-#define LIB_USING_MATRIX
+#define PKG_USING_MATHLIB
+#define PKG_USING_MATRIX
 /* end of Common Libraries Config */
 
 /* Controller Libraries Config */
@@ -46,6 +49,8 @@
 /* Nextpilot Peripheral Config */
 
 /* Nextpilot Simulation Config */
+
+/* end of Nextpilot Simulation Config */
 
 /* Nextpilot Telemetry Config */
 

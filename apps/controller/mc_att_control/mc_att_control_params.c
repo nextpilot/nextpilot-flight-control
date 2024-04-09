@@ -1,35 +1,12 @@
-/****************************************************************************
+/*****************************************************************
+ *     _   __             __   ____   _  __        __
+ *    / | / /___   _  __ / /_ / __ \ (_)/ /____   / /_
+ *   /  |/ // _ \ | |/_// __// /_/ // // // __ \ / __/
+ *  / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
+ * /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
  *
- *   Copyright (c) 2013-2015 PX4 Development Team. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- * 3. Neither the name PX4 nor the names of its contributors may be
- *    used to endorse or promote products derived from this software
- *    without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
- * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
- * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- *
- ****************************************************************************/
+ * Copyright All Reserved © 2015-2024 NextPilot Development Team
+ ******************************************************************/
 
 /**
  * @file mc_att_control_params.c
@@ -158,3 +135,21 @@ PARAM_DEFINE_FLOAT(MC_YAWRATE_MAX, 200.0f);
  * @group Multicopter Position Control
  */
 PARAM_DEFINE_FLOAT(MC_MAN_TILT_TAU, 0.0f);
+
+/**
+ * Multicopter air-mode
+ *
+ * The air-mode enables the mixer to increase the total thrust of the multirotor
+ * in order to keep attitude and rate control even at low and high throttle.
+ *
+ * This function should be disabled during tuning as it will help the controller
+ * to diverge if the closed-loop is unstable (i.e. the vehicle is not tuned yet).
+ *
+ * Enabling air-mode for yaw requires the use of an arming switch.
+ *
+ * @value 0 Disabled
+ * @value 1 Roll/Pitch
+ * @value 2 Roll/Pitch/Yaw
+ * @group Mixer Output
+ */
+PARAM_DEFINE_INT32(MC_AIRMODE, 0);

@@ -4,7 +4,7 @@ from building import *
 
 objs = []
 
-if GetDepend(["LIB_USING_MATHLIB"]):
+if GetDepend(["PKG_USING_MATHLIB"]):
     cwd = GetCurrentDir()
     src = []
 

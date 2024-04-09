@@ -1,8 +1,8 @@
-menuconfig FCS_MC_RATE_CONTROL
+menuconfig FCS_USING_MC_RATE_CONTROL
 	bool "mc_rate_control"
 	select PKG_USING_UORB
 	select PKG_USING_PARAM
-	select LIB_USING_MATHLIB
+	select PKG_USING_MATHLIB
 	select LIB_USING_MAXTRIX
 	default n
 	---help---
