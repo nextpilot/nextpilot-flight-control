@@ -1,0 +1,184 @@
+// auto-generated from events.h.jinja
+
+{# low-level template without use of STL suitable for autopilot use #}
+
+#pragma once
+
+#include <stdint.h>
+#include <string.h>
+
+#include <libevents_definitions.h>
+
+namespace events
+{
+static constexpr int MAX_ARGUMENTS_SIZE = {{ config.max_arguments_size }}; ///< maximum number of bytes for all arguments
+
+static_assert(MAX_ARGUMENTS_SIZE <= sizeof(EventType::arguments), "Argument size mismatch");
+
+enum class LogLevel : uint8_t {
+	Emergency = 0,
+	Alert = 1,
+	Critical = 2,
+	Error = 3,
+	Warning = 4,
+	Notice = 5,
+	Info = 6,
+	Debug = 7,
+	Protocol = 8,
+	Disabled = 9,
+
+	Count
+};
+
+{# internal log level: same definition but different type to avoid mixups #}
+enum class LogLevelInternal : uint8_t {
+	Emergency = 0,
+	Alert = 1,
+	Critical = 2,
+	Error = 3,
+	Warning = 4,
+	Notice = 5,
+	Info = 6,
+	Debug = 7,
+	Protocol = 8,
+	Disabled = 9,
+
+	Count
+};
+
+{# for convenience #}
+using Log = LogLevel;
+using LogInternal = LogLevelInternal;
+
+struct LogLevels {
+	LogLevels() {}
+	LogLevels(Log external_level) : external(external_level), internal((LogInternal)external_level) {}
+	LogLevels(Log external_level, LogInternal internal_level)
+		: external(external_level), internal(internal_level) {}
+
+	Log external{Log::Info};
+	LogInternal internal{LogInternal::Info};
+};
+
+static inline LogInternal internalLogLevel(uint8_t log_levels) {
+	return (LogInternal)(log_levels >> 4);
+}
+
+static inline Log externalLogLevel(uint8_t log_levels) {
+	return (Log)(log_levels & 0xF);
+}
+
+{# all enums first #}
+{% for component_id in events.components -%}
+{% set component = events.components[component_id] -%}
+{% if "enums" in component -%}
+namespace {{ component.namespace }} // component id: {{ component_id }}
+{
+namespace enums
+{
+
+{% for enum_name in component.enums -%}
+{% set enum = component.enums[enum_name] -%}
+{% if enum.description -%}
+/**
+ {{ enum.description }}
+*/
+{% endif -%}
+enum class {{ enum_name }} : {{ enum.type }} {
+{%- set values = [] -%}
+{%- for value in enum.entries -%}
+{% set entry = enum.entries[value] %}
+{%- if values.append(value|int) %}{% endif %}
+	{{ entry.name }} = {{ value }}, ///< {{ entry.description }}
+{%- endfor %}
+
+	_max = {{ values|max }}
+};
+
+{# convenience methods #}
+{% if enum.is_bitfield -%}
+static inline {{ enum_name }} operator|({{ enum_name }} a, {{ enum_name }} b)
+{
+	return static_cast<{{ enum_name }}>(static_cast<{{ enum.type }}>(a) | static_cast<{{ enum.type }}>(b));
+}
+
+static inline bool operator&({{ enum_name }} a, {{ enum_name }} b)
+{
+	return static_cast<{{ enum.type }}>(a) & static_cast<{{ enum.type }}>(b);
+}
+{% endif -%}
+
+{% endfor %}
+} // namespace enums
+} // namespace {{ component.namespace }}
+{% endif %}
+{% endfor %}
+
+
+{% for component_id in events.components -%}
+{% set component = events.components[component_id] -%}
+namespace {{ component.namespace }} // component id: {{ component_id }}
+{
+
+{% for group_name in component.event_groups -%}
+{%- set event_group = component.event_groups[group_name] -%}
+// Event group {{ group_name }}
+
+{% for event_sub_id in event_group.events -%}
+{% set event = event_group.events[event_sub_id] -%}
+/**
+ * Create event '{{ event.name }}'.
+ * Message: {{ event.message }}
+ */
+static inline EventType create_{{ event.name }}(const LogLevels &log_levels
+{%- for arg in event.arguments -%}
+, {{ arg.type | cpp_namespace }} {{ arg.name }}
+{%- endfor -%}
+)
+{
+	EventType event{};
+	event.id = {{ event.id }};
+	event.log_levels = ((uint8_t)log_levels.internal << 4) | (uint8_t)log_levels.external;
+{%- set ns = namespace(offset=0) -%}
+{% for arg in event.arguments %}
+	memcpy(event.arguments+{{ ns.offset }}, &{{ arg.name }}, sizeof({{ arg.type | cpp_namespace}}));
+	{%- set ns.offset = ns.offset + constants.base_types[arg.base_type].size -%}
+{%- endfor %}
+	return event;
+}
+
+/**
+ * Decode event '{{ event.name }}'.
+ * Message: {{ event.message }}
+ */
+static inline void decode_{{ event.name }}(const EventType &event
+{%- for arg in event.arguments -%}
+, {{ arg.type | cpp_namespace }} &{{ arg.name }}
+{%- endfor -%}
+)
+{
+{%- set ns = namespace(offset=0) -%}
+{% for arg in event.arguments %}
+	memcpy(&{{ arg.name }}, event.arguments+{{ ns.offset }}, sizeof({{ arg.type | cpp_namespace}}));
+	{%- set ns.offset = ns.offset + constants.base_types[arg.base_type].size -%}
+{%- endfor %}
+}
+{% endfor %}
+{% endfor %}
+
+{# Enum containing all event ID's for current namespace #}
+enum class event_id_t : uint32_t {
+{%- for group_name in component.event_groups -%}
+{%- set event_group = component.event_groups[group_name] -%}
+{% for event_sub_id in event_group.events -%}
+{% set event = event_group.events[event_sub_id] %}
+	{{ event.name }} = {{ event.id }},
+{%- endfor -%}
+{% endfor %}
+};
+
+} // namespace {{ component.namespace }}
+{% endfor %}
+
+} // namespace events
+

@@ -1,5 +1,7 @@
-menuconfig MODULES_MC_AUTOTUNE_ATTITUDE_CONTROL
+menuconfig PKG_MC_AUTOTUNE_ATTITUDE_CONTROL
 	bool "mc_autotune_attitude_control"
+	select PKG_USING_PID_DESIGN
+	select PKG_USING_SYSTEM_IDENTIFICATION
 	default n
 	---help---
 		Enable support for mc_autotune_attitude_control

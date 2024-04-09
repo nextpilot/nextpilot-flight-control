@@ -24,8 +24,11 @@
 
 /* Nextpilot Controller Config */
 
+#define FCS_USING_MANUAL_CONTROL
 #define FCS_USING_MC_ATT_CONTROL
+#define PKG_MC_AUTOTUNE_ATTITUDE_CONTROL
 #define PKG_USING_MC_HOVER_THRUST_ESTIMATOR
+#define FCS_USING_MC_POS_CONTROL
 #define FCS_USING_MC_RATE_CONTROL
 /* end of Nextpilot Controller Config */
 
@@ -47,6 +50,8 @@
 #define PKG_USING_ROTATION
 #define PKG_USING_GEO
 #define PKG_USING_HYSTERESIS
+#define PKG_USING_PID_DESIGN
+#define PKG_USING_SYSTEM_IDENTIFICATION
 /* end of Controller Libraries Config */
 
 /* Peripheral Libraries Config */

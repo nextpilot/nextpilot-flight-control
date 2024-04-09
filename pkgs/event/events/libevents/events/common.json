@@ -1,0 +1,231 @@
+{
+    "version": 2,
+    "translation": {
+        "items": {
+            "components": {
+                "items": {
+                    "*": {
+                        "items": {
+                            "enums": {
+                                "items": {
+                                    "*": {
+                                        "items": {
+                                            "entries": {
+                                                "items": {
+                                                    "*": {
+                                                        "translate": [
+                                                            "description"
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "event_groups": {
+                                "items": {
+                                    "*": {
+                                        "items": {
+                                            "events": {
+                                                "items": {
+                                                    "*": {
+                                                        "translate": [
+                                                            "message",
+                                                            "description"
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "0": {
+            "namespace": "common",
+            "enums": {
+                "calibration_type_t": {
+                    "type": "uint16_t",
+                    "description": "Calibration type",
+                    "is_bitfield": true,
+                    "entries": {
+                        "1": {
+                            "name": "accel",
+                            "description": "Accelerometer"
+                        },
+                        "2": {
+                            "name": "mag",
+                            "description": "Magnetometer"
+                        },
+                        "4": {
+                            "name": "gyro",
+                            "description": "Gyroscope"
+                        },
+                        "8": {
+                            "name": "level",
+                            "description": "Level"
+                        },
+                        "16": {
+                            "name": "airspeed",
+                            "description": "Airspeed"
+                        },
+                        "32": {
+                            "name": "rc",
+                            "description": "RC"
+                        }
+                    }
+                },
+                "calibration_sides_t": {
+                    "type": "uint8_t",
+                    "description": "Calibration Sides Bitfield",
+                    "is_bitfield": true,
+                    "entries": {
+                        "1": {
+                            "name": "tail_down",
+                            "description": "Tail Down"
+                        },
+                        "2": {
+                            "name": "nose_down",
+                            "description": "Nose Down"
+                        },
+                        "4": {
+                            "name": "left_side_down",
+                            "description": "Left Side Down"
+                        },
+                        "8": {
+                            "name": "right_side_down",
+                            "description": "Right Side Down"
+                        },
+                        "16": {
+                            "name": "upside_down",
+                            "description": "Upside Down"
+                        },
+                        "32": {
+                            "name": "down",
+                            "description": "Down"
+                        }
+                    }
+                },
+                "calibration_action_t": {
+                    "type": "uint8_t",
+                    "description": "Calibration Action/next step",
+                    "entries": {
+                        "0": {
+                            "name": "already_completed",
+                            "description": "Side already completed, switch to one of the remaining sides"
+                        },
+                        "1": {
+                            "name": "next_orientation",
+                            "description": "Switch to next orientation"
+                        },
+                        "2": {
+                            "name": "rotate",
+                            "description": "Rotate as shown"
+                        },
+                        "3": {
+                            "name": "hold_still",
+                            "description": "Hold still"
+                        }
+                    }
+                },
+                "calibration_result_t": {
+                    "type": "uint8_t",
+                    "description": "Calibration Result",
+                    "entries": {
+                        "0": {
+                            "name": "success",
+                            "description": "Success"
+                        },
+                        "1": {
+                            "name": "failed",
+                            "description": "Failed"
+                        },
+                        "2": {
+                            "name": "aborted",
+                            "description": "Aborted"
+                        }
+                    }
+                }
+            },
+            "event_groups": {
+                "default": {
+                    "events": {}
+                },
+                "calibration": {
+                    "events": {
+                        "1100": {
+                            "name": "cal_progress",
+                            "message": "Calibration progress: {2}%",
+                            "arguments": [
+                                {
+                                    "type": "uint8_t",
+                                    "name": "proto_ver",
+                                    "description": "Protocol version (set to 1)"
+                                },
+                                {
+                                    "type": "int8_t",
+                                    "name": "progress",
+                                    "description": "Current progress in %"
+                                },
+                                {
+                                    "type": "calibration_type_t",
+                                    "name": "calibration_type"
+                                },
+                                {
+                                    "type": "calibration_sides_t",
+                                    "name": "required_sides",
+                                    "description": "Sides still left to be done"
+                                }
+                            ]
+                        },
+                        "1101": {
+                            "name": "cal_orientation_detected",
+                            "message": "Orientation detected: {1}",
+                            "arguments": [
+                                {
+                                    "type": "calibration_sides_t",
+                                    "name": "orientation"
+                                },
+                                {
+                                    "type": "calibration_action_t",
+                                    "name": "action"
+                                }
+                            ]
+                        },
+                        "1102": {
+                            "name": "cal_orientation_done",
+                            "message": "Orientation Complete: {1}, next step: {2}",
+                            "arguments": [
+                                {
+                                    "type": "calibration_sides_t",
+                                    "name": "orientation"
+                                },
+                                {
+                                    "type": "calibration_action_t",
+                                    "name": "action"
+                                }
+                            ]
+                        },
+                        "1103": {
+                            "name": "cal_done",
+                            "message": "Calibration Complete: {1}",
+                            "arguments": [
+                                {
+                                    "type": "calibration_result_t",
+                                    "name": "result"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

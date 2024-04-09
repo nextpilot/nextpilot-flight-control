@@ -1,0 +1,414 @@
+{
+    "version": 2,
+    "translation": {
+        "items": {
+            "components": {
+                "items": {
+                    "*": {
+                        "items": {
+                            "enums": {
+                                "items": {
+                                    "*": {
+                                        "items": {
+                                            "entries": {
+                                                "items": {
+                                                    "*": {
+                                                        "translate": [
+                                                            "description"
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "event_groups": {
+                                "items": {
+                                    "*": {
+                                        "items": {
+                                            "events": {
+                                                "items": {
+                                                    "*": {
+                                                        "translate": [
+                                                            "message",
+                                                            "description"
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "1": {
+            "namespace": "test",
+            "event_groups": {
+                "default": {
+                    "events": {
+                        "2306236": {
+                            "name": "test1",
+                            "message": "Test"
+                        },
+                        "2307445": {
+                            "name": "test2",
+                            "message": "Arguments: {1} {2} {3} {4} {5:.2}",
+                            "description": "<unknown>content\\<</unknown>test\n\\<\\{\\}<param>PARAM</param><a>www.test.com</a>",
+                            "arguments": [
+                                {
+                                    "type": "int8_t",
+                                    "name": "a"
+                                },
+                                {
+                                    "type": "int16_t",
+                                    "name": "b"
+                                },
+                                {
+                                    "type": "int32_t",
+                                    "name": "c"
+                                },
+                                {
+                                    "type": "int64_t",
+                                    "name": "d"
+                                },
+                                {
+                                    "type": "float",
+                                    "name": "e"
+                                }
+                            ]
+                        },
+                        "2307042": {
+                            "name": "test3",
+                            "message": "Arguments: {1} {2:.1} {3} {4} {5}",
+                            "description": "<a href=\"www.test.com/a/b/c?x=1\">url</a>\n<profile name=\"!normal\">keep this. <param>P</param></profile>\n\n <profile name=\"!dev\">remove this</profile>",
+                            "arguments": [
+                                {
+                                    "type": "uint8_t",
+                                    "name": "a"
+                                },
+                                {
+                                    "type": "float",
+                                    "name": "b"
+                                },
+                                {
+                                    "type": "uint16_t",
+                                    "name": "c"
+                                },
+                                {
+                                    "type": "uint32_t",
+                                    "name": "d"
+                                },
+                                {
+                                    "type": "uint64_t",
+                                    "name": "e"
+                                }
+                            ]
+                        },
+                        "2307043": {
+                            "name": "test4",
+                            "message": "Bitfield value: {1}",
+                            "arguments": [
+                                {
+                                    "type": "test2::enum_bitfield_t",
+                                    "name": "a"
+                                }
+                            ]
+                        },
+                        "2307044": {
+                            "name": "test5",
+                            "message": "Testing units: {1m}",
+                            "description": "{1:.3m_v} {1C}\n{2:.6m^2}\n{3m}\n{4m/s}",
+                            "arguments": [
+                                {
+                                    "type": "float",
+                                    "name": "a"
+                                },
+                                {
+                                    "type": "float",
+                                    "name": "b"
+                                },
+                                {
+                                    "type": "int8_t",
+                                    "name": "c"
+                                },
+                                {
+                                    "type": "uint64_t",
+                                    "name": "d"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "custom_group": {
+                    "events": {
+                        "1531103": {
+                            "name": "test_enum",
+                            "message": "Event using enums. Enum values: {1}, {2}",
+                            "arguments": [
+                                {
+                                    "type": "test2::enum_t",
+                                    "name": "enum1"
+                                },
+                                {
+                                    "type": "test2::enum_t",
+                                    "name": "enum2"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "0": {
+            "namespace": "test2",
+            "event_groups": {
+                "arming_check": {
+                    "events": {
+                        "1802995": {
+                            "name": "check_airspeed_too_high",
+                            "message": "Airspeed too high",
+                            "description": "Check the airspeed calibration and the pitot",
+                            "arguments": [
+                                {
+                                    "type": "navigation_mode_group_t",
+                                    "name": "modes"
+                                },
+                                {
+                                    "type": "uint8_t",
+                                    "name": "health_component_index"
+                                },
+                                {
+                                    "type": "float",
+                                    "name": "arg0"
+                                },
+                                {
+                                    "type": "float",
+                                    "name": "arg1"
+                                }
+                            ]
+                        },
+                        "11047904": {
+                            "name": "arming_check_summary",
+                            "message": "Arming check summary event",
+                            "type": "summary",
+                            "arguments": [
+                                {
+                                    "type": "uint8_t",
+                                    "name": "chunk_idx"
+                                },
+                                {
+                                    "type": "test2::health_component_t",
+                                    "name": "error"
+                                },
+                                {
+                                    "type": "test2::health_component_t",
+                                    "name": "warning"
+                                },
+                                {
+                                    "type": "test2::navigation_mode_group_t",
+                                    "name": "can_arm"
+                                },
+                                {
+                                    "type": "test2::navigation_mode_group_t",
+                                    "name": "can_run"
+                                }
+                            ]
+                        },
+                        "16716537": {
+                            "name": "check_mag_not_calibrated",
+                            "message": "Compass {3} uncalibrated",
+                            "arguments": [
+                                {
+                                    "type": "navigation_mode_group_t",
+                                    "name": "modes"
+                                },
+                                {
+                                    "type": "uint8_t",
+                                    "name": "health_component_index"
+                                },
+                                {
+                                    "type": "uint8_t",
+                                    "name": "arg0"
+                                }
+                            ]
+                        },
+                        "10011251": {
+                            "name": "check_modes_global_pos",
+                            "message": "No valid global position estimate",
+                            "arguments": [
+                                {
+                                    "type": "navigation_mode_group_t",
+                                    "name": "modes"
+                                },
+                                {
+                                    "type": "uint8_t",
+                                    "name": "health_component_index"
+                                }
+                            ]
+                        },
+                        "12689900": {
+                            "name": "check_modes_local_alt",
+                            "message": "No valid altitude estimate",
+                            "arguments": [
+                                {
+                                    "type": "navigation_mode_group_t",
+                                    "name": "modes"
+                                },
+                                {
+                                    "type": "uint8_t",
+                                    "name": "health_component_index"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "health": {
+                    "events": {
+                        "1058956": {
+                            "name": "check_cpuload_too_high",
+                            "message": "CPU load too high: {3:.1}%",
+                            "arguments": [
+                                {
+                                    "type": "navigation_mode_group_t",
+                                    "name": "modes"
+                                },
+                                {
+                                    "type": "uint8_t",
+                                    "name": "health_component_index"
+                                },
+                                {
+                                    "type": "float",
+                                    "name": "arg0"
+                                }
+                            ]
+                        },
+                        "1914663": {
+                            "name": "health_summary_test",
+                            "message": "Health report summary event",
+                            "type": "summary",
+                            "arguments": [
+                                {
+                                    "type": "uint8_t",
+                                    "name": "chunk_idx"
+                                },
+                                {
+                                    "type": "test2::health_component_t",
+                                    "name": "is_present"
+                                },
+                                {
+                                    "type": "test2::health_component_t",
+                                    "name": "error"
+                                },
+                                {
+                                    "type": "test2::health_component_t",
+                                    "name": "warning"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "enums": {
+                "enum_t": {
+                    "type": "uint64_t",
+                    "description": "Enum description",
+                    "entries": {
+                        "0": {
+                            "name": "zero",
+                            "description": "Zero value"
+                        },
+                        "1": {
+                            "name": "one",
+                            "description": "One value"
+                        },
+                        "4611686018427387904": {
+                            "name": "large",
+                            "description": "Large value"
+                        }
+                    }
+                },
+                "enum_bitfield_t": {
+                    "type": "uint8_t",
+                    "is_bitfield": true,
+                    "separator": "/ ",
+                    "entries": {
+                        "1": {
+                            "name": "bit1",
+                            "description": "Bit 1"
+                        },
+                        "2": {
+                            "name": "bit2",
+                            "description": "Bit 2"
+                        },
+                        "4": {
+                            "name": "bit3",
+                            "description": "Bit 3"
+                        },
+                        "8": {
+                            "name": "bit4",
+                            "description": "Bit 4"
+                        }
+                    }
+                },
+                "navigation_mode_group_t": {
+                    "type": "uint32_t",
+                    "description": "Navigation/flight mode group bits. All modes within a group share the same arming checks.",
+                    "is_bitfield": true,
+                    "entries": {
+                        "1": {
+                            "name": "manual",
+                            "description": "Fully manual mode (w/o any controller support)"
+                        },
+                        "2": {
+                            "name": "altctl",
+                            "description": "Altitude mode"
+                        },
+                        "4": {
+                            "name": "posctl",
+                            "description": "Position mode"
+                        },
+                        "8": {
+                            "name": "mission",
+                            "description": "Mission mode"
+                        },
+                        "32": {
+                            "name": "rtl",
+                            "description": "RTL"
+                        }
+                    }
+                },
+                "health_component_t": {
+                    "type": "uint32_t",
+                    "description": "Bitfield for subsystems & components",
+                    "is_bitfield": true,
+                    "entries": {
+                        "1": {
+                            "name": "none",
+                            "description": "None",
+                            "comment": "Not assigned to any component"
+                        },
+                        "2": {
+                            "name": "absolute_pressure",
+                            "description": "Absolute pressure"
+                        },
+                        "4": {
+                            "name": "differential_pressure",
+                            "description": "Differential pressure"
+                        },
+                        "8": {
+                            "name": "gps",
+                            "description": "GPS"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

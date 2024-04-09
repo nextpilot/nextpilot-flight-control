@@ -1,0 +1,710 @@
+{
+    "version": 2,
+    "translation": {
+        "items": {
+            "components": {
+                "items": {
+                    "*": {
+                        "items": {
+                            "enums": {
+                                "items": {
+                                    "*": {
+                                        "items": {
+                                            "entries": {
+                                                "items": {
+                                                    "*": {
+                                                        "translate": [ "description" ]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "event_groups": {
+                                "items": {
+                                    "*": {
+                                        "items": {
+                                            "events": {
+                                                "items": {
+                                                    "*": {
+                                                        "translate": [ "message", "description" ]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "1": {
+            "namespace": "px4",
+            "enums": {
+                "navigation_mode_group_t": {
+                    "type": "uint32_t",
+                    "description": "Navigation/flight mode group bits. All modes within a group share the same arming checks. For now we directly map group == mode.",
+                    "is_bitfield": true,
+                    "entries": {
+                        "1": {
+                            "name": "manual",
+                            "description": "Fully manual mode (w/o any controller support)"
+                        },
+                        "2": {
+                            "name": "altctl",
+                            "description": "Altitude mode"
+                        },
+                        "4": {
+                            "name": "posctl",
+                            "description": "Position mode"
+                        },
+                        "8": {
+                            "name": "mission",
+                            "description": "Mission mode"
+                        },
+                        "16": {
+                            "name": "loiter",
+                            "description": "Loiter"
+                        },
+                        "32": {
+                            "name": "rtl",
+                            "description": "RTL"
+                        },
+                        "1024": {
+                            "name": "acro",
+                            "description": "Acro"
+                        },
+                        "16384": {
+                            "name": "offboard",
+                            "description": "Offboard"
+                        },
+                        "32768": {
+                            "name": "stab",
+                            "description": "Stabilized"
+                        },
+                        "131072": {
+                            "name": "takeoff",
+                            "description": "Takeoff"
+                        },
+                        "262144": {
+                            "name": "land",
+                            "description": "Land"
+                        },
+                        "524288": {
+                            "name": "follow_target",
+                            "description": "Follow Target"
+                        },
+                        "1048576": {
+                            "name": "precland",
+                            "description": "Precision Land"
+                        },
+                        "2097152": {
+                            "name": "orbit",
+                            "description": "Orbit"
+                        },
+                        "4194304": {
+                            "name": "vtol_takeoff",
+                            "description": "VTOL Takeoff"
+                        }
+                    }
+                },
+                "health_component_t": {
+                    "type": "uint32_t",
+                    "description": "Bitfield for subsystems & components",
+                    "is_bitfield": true,
+                    "entries": {
+                        "1": {
+                            "name": "none",
+                            "description": "None",
+                            "comment": "Not assigned to any component"
+                        },
+                        "2": {
+                            "name": "absolute_pressure",
+                            "description": "Absolute pressure"
+                        },
+                        "4": {
+                            "name": "differential_pressure",
+                            "description": "Differential pressure"
+                        },
+                        "8": {
+                            "name": "gps",
+                            "description": "GPS"
+                        },
+                        "16": {
+                            "name": "optical_flow",
+                            "description": "Optical flow"
+                        },
+                        "32": {
+                            "name": "vision_position",
+                            "description": "Vision position estimate"
+                        },
+                        "64": {
+                            "name": "distance_sensor",
+                            "description": "Distance sensor"
+                        },
+                        "128": {
+                            "name": "remote_control",
+                            "description": "Remote Control (RC or Joystick)"
+                        },
+                        "256": {
+                            "name": "motors_escs",
+                            "description": "Motors/ESCs"
+                        },
+                        "512": {
+                            "name": "utm",
+                            "description": "UTM"
+                        },
+                        "1024": {
+                            "name": "logging",
+                            "description": "Logging"
+                        },
+                        "2048": {
+                            "name": "battery",
+                            "description": "Battery"
+                        },
+                        "4096": {
+                            "name": "communication_links",
+                            "description": "Communication links"
+                        },
+                        "8192": {
+                            "name": "rate_controller",
+                            "description": "Rate controller"
+                        },
+                        "16384": {
+                            "name": "attitude_controller",
+                            "description": "Attitude controller"
+                        },
+                        "32768": {
+                            "name": "position_controller",
+                            "description": "Position controller"
+                        },
+                        "65536": {
+                            "name": "attitude_estimate",
+                            "description": "Attitude estimate"
+                        },
+                        "131072": {
+                            "name": "local_position_estimate",
+                            "description": "Local position estimate"
+                        },
+                        "262144": {
+                            "name": "mission",
+                            "description": "Mission"
+                        },
+                        "524288": {
+                            "name": "avoidance",
+                            "description": "Avoidance"
+                        },
+                        "1048576": {
+                            "name": "system",
+                            "description": "System",
+                            "comment": "e.g. CPU or RAM"
+                        },
+                        "2097152": {
+                            "name": "camera",
+                            "description": "Camera"
+                        },
+                        "4194304": {
+                            "name": "gimbal",
+                            "description": "Gimbal"
+                        },
+                        "8388608": {
+                            "name": "payload",
+                            "description": "Payload"
+                        },
+                        "16777216": {
+                            "name": "global_position_estimate",
+                            "description": "Global position estimate"
+                        },
+                        "33554432": {
+                            "name": "storage",
+                            "description": "Storage",
+                            "comment": "e.g. SD card or FRAM"
+                        },
+                        "67108864": {
+                            "name": "parachute",
+                            "description": "Parachute"
+                        },
+                        "134217728": {
+                            "name": "magnetometer",
+                            "description": "Magnetometer"
+                        },
+                        "268435456": {
+                            "name": "accel",
+                            "description": "Accelerometer"
+                        },
+                        "536870912": {
+                            "name": "gyro",
+                            "description": "Gyroscope"
+                        }
+                    }
+                },
+                "sensor_type_t": {
+                    "type": "uint8_t",
+                    "description": "Sensor type for failover reporting",
+                    "entries": {
+                        "0": {
+                            "name": "accel",
+                            "description": "Accelerometer"
+                        },
+                        "1": {
+                            "name": "gyro",
+                            "description": "Gyroscope"
+                        },
+                        "2": {
+                            "name": "mag",
+                            "description": "Magnetometer"
+                        }
+                    }
+                },
+                "sensor_failover_reason_t": {
+                    "type": "uint16_t",
+                    "description": "Bitfield for sensor failover reason",
+                    "is_bitfield": true,
+                    "entries": {
+                        "1": {
+                            "name": "no_data",
+                            "description": "No data"
+                        },
+                        "2": {
+                            "name": "stale_data",
+                            "description": "Stale data"
+                        },
+                        "4": {
+                            "name": "timeout",
+                            "description": "Timeout"
+                        },
+                        "8": {
+                            "name": "high_error_count",
+                            "description": "High Error Count"
+                        },
+                        "16": {
+                            "name": "high_error_density",
+                            "description": "High Error Density"
+                        }
+                    }
+                },
+                "arming_state_t": {
+                    "type": "uint8_t",
+                    "description": "State of the main arming state machine",
+                    "entries": {
+                        "0": {
+                            "name": "init",
+                            "description": "Init"
+                        },
+                        "1": {
+                            "name": "standby",
+                            "description": "Standby"
+                        },
+                        "2": {
+                            "name": "armed",
+                            "description": "Armed"
+                        },
+                        "3": {
+                            "name": "standby_error",
+                            "description": "Standby Error"
+                        },
+                        "4": {
+                            "name": "shutdown",
+                            "description": "Shutdown"
+                        },
+                        "5": {
+                            "name": "inair_restore",
+                            "description": "In-air Restore"
+                        }
+                    }
+                },
+                "failsafe_cause_t": {
+                    "type": "uint8_t",
+                    "description": "Cause for entering failsafe",
+                    "entries": {
+                        "0": {
+                            "name": "generic",
+                            "description": ""
+                        },
+                        "1": {
+                            "name": "manual_control_loss",
+                            "description": "manual control loss"
+                        },
+                        "2": {
+                            "name": "gcs_connection_loss",
+                            "description": "GCS connection loss"
+                        },
+                        "3": {
+                            "name": "low_battery_level",
+                            "description": "low battery level"
+                        },
+                        "4": {
+                            "name": "critical_battery_level",
+                            "description": "critical battery level"
+                        },
+                        "5": {
+                            "name": "emergency_battery_level",
+                            "description": "emergency battery level"
+                        }
+                    }
+                },
+                "failsafe_action_t": {
+                    "type": "uint8_t",
+                    "description": "failsafe action",
+                    "entries": {
+                        "0": {
+                            "name": "none",
+                            "description": ""
+                        },
+                        "1": {
+                            "name": "warn",
+                            "description": "warning"
+                        },
+                        "2": {
+                            "name": "fallback_posctrl",
+                            "description": "fallback to position control"
+                        },
+                        "3": {
+                            "name": "fallback_altctrl",
+                            "description": "fallback to altitude control"
+                        },
+                        "4": {
+                            "name": "fallback_stabilized",
+                            "description": "fallback to stabilized"
+                        },
+                        "5": {
+                            "name": "hold",
+                            "description": "hold"
+                        },
+                        "6": {
+                            "name": "rtl",
+                            "description": "RTL"
+                        },
+                        "7": {
+                            "name": "land",
+                            "description": "land"
+                        },
+                        "8": {
+                            "name": "descend",
+                            "description": "descend"
+                        },
+                        "9": {
+                            "name": "disarm",
+                            "description": "disarm"
+                        },
+                        "10": {
+                            "name": "terminate",
+                            "description": "terminate"
+                        }
+                    }
+                },
+                "arm_disarm_reason_t": {
+                    "type": "uint8_t",
+                    "description": "Reason for arming/disarming",
+                    "entries": {
+                        "0": {
+                            "name": "transition_to_standby",
+                            "description": "Transition to standby"
+                        },
+                        "1": {
+                            "name": "rc_stick",
+                            "description": "RC"
+                        },
+                        "2": {
+                            "name": "rc_switch",
+                            "description": "RC (switch)"
+                        },
+                        "3": {
+                            "name": "command_internal",
+                            "description": "internal command"
+                        },
+                        "4": {
+                            "name": "command_external",
+                            "description": "external command"
+                        },
+                        "5": {
+                            "name": "mission_start",
+                            "description": "mission start"
+                        },
+                        "6": {
+                            "name": "auto_disarm_land",
+                            "description": "landing"
+                        },
+                        "7": {
+                            "name": "auto_disarm_preflight",
+                            "description": "auto preflight disarming"
+                        },
+                        "8": {
+                            "name": "kill_switch",
+                            "description": "kill switch"
+                        },
+                        "9": {
+                            "name": "lockdown",
+                            "description": "lockdown"
+                        },
+                        "10": {
+                            "name": "failure_detector",
+                            "description": "failure detector"
+                        },
+                        "11": {
+                            "name": "shutdown",
+                            "description": "shutdown request"
+                        },
+                        "12": {
+                            "name": "unit_test",
+                            "description": "unit tests"
+                        },
+                        "13": {
+                            "name": "rc_button",
+                            "description": "RC (button)"
+                        },
+                        "14": {
+                            "name": "failsafe",
+                            "description": "failsafe"
+                        }
+                    }
+                },
+                "navigation_mode_t": {
+                    "type": "uint8_t",
+                    "description": "Flight mode",
+                    "entries": {
+                        "0": {
+                            "name": "manual",
+                            "description": "Manual"
+                        },
+                        "1": {
+                            "name": "altctl",
+                            "description": "Altitude control"
+                        },
+                        "2": {
+                            "name": "posctl",
+                            "description": "Position control"
+                        },
+                        "3": {
+                            "name": "auto_mission",
+                            "description": "Mission"
+                        },
+                        "4": {
+                            "name": "auto_loiter",
+                            "description": "Hold"
+                        },
+                        "5": {
+                            "name": "auto_rtl",
+                            "description": "RTL"
+                        },
+                        "6": {
+                            "name": "acro",
+                            "description": "Acro"
+                        },
+                        "7": {
+                            "name": "offboard",
+                            "description": "Offboard"
+                        },
+                        "8": {
+                            "name": "stab",
+                            "description": "Stabilized"
+                        },
+                        "10": {
+                            "name": "auto_takeoff",
+                            "description": "Takeoff"
+                        },
+                        "11": {
+                            "name": "auto_land",
+                            "description": "Land"
+                        },
+                        "12": {
+                            "name": "auto_follow_target",
+                            "description": "Follow Target"
+                        },
+                        "13": {
+                            "name": "auto_precland",
+                            "description": "Precision Landing"
+                        },
+                        "14": {
+                            "name": "orbit",
+                            "description": "Orbit"
+                        },
+                        "15": {
+                            "name": "auto_vtol_takeoff",
+                            "description": "Vtol Takeoff"
+                        },
+                        "255": {
+                            "name": "unknown",
+                            "description": "[Unknown]"
+                        }
+                    }
+                },
+                "battery_fault_reason_t": {
+                    "type": "uint8_t",
+                    "description": "Reason for battery fault",
+                    "entries": {
+                        "0": {
+                            "name": "deep_discharge",
+                            "description": "Battery has deep discharged"
+                        },
+                        "1": {
+                            "name": "voltage_spikes",
+                            "description": "Battery detected voltage spikes"
+                        },
+                        "2": {
+                            "name": "cell_fail",
+                            "description": "One or more battery cells have failed"
+                        },
+                        "3": {
+                            "name": "over_current",
+                            "description": "Battery reported over-current"
+                        },
+                        "4": {
+                            "name": "fault_temperature",
+                            "description": "Battery has reached a critical temperature which can result in a critical failure"
+                        },
+                        "5": {
+                            "name": "under_temperature",
+                            "description": "Battery temperature is below operating range"
+                        },
+                        "6": {
+                            "name": "incompatible_voltage",
+                            "description": "Vehicle voltage is not compatible with battery one"
+                        },
+                        "7": {
+                            "name": "incompatible_firmware",
+                            "description": "Battery firmware is not compatible with current autopilot firmware"
+                        },
+                        "8": {
+                            "name": "incompatible_model",
+                            "description": "Battery model is not supported by the system"
+                        },
+                        "9": {
+                            "name": "hardware_fault",
+                            "description": "Battery reported an hardware problem"
+                        },
+                        "10": {
+                            "name": "over_temperature",
+                            "description": "Battery is over-heating"
+                        }
+                    }
+                },
+                "battery_mode_t": {
+                    "type": "uint8_t",
+                    "description": "Smart battery modes of operation",
+                    "entries": {
+                        "0": {
+                            "name": "unknown",
+                            "description": "unknown"
+                        },
+                        "1": {
+                            "name": "autodischarging",
+                            "description": "auto discharging towards storage level"
+                        },
+                        "2": {
+                            "name": "hotswap",
+                            "description": "hot-swap"
+                        }
+                    }
+                },
+                "esc_fault_reason_t": {
+                    "type": "uint8_t",
+                    "description": "Bitfield for ESC failure reason",
+                    "entries": {
+                        "0": {
+                            "name": "over_current",
+                            "description": "detected over current"
+                        },
+                        "1": {
+                            "name": "over_voltage",
+                            "description": "detected over voltage"
+                        },
+                        "2": {
+                            "name": "motor_over_temp",
+                            "description": "Motor has reached a critical temperature"
+                        },
+                        "3": {
+                            "name": "over_rpm",
+                            "description": "Motor RPM is exceeding the limits"
+                        },
+                        "4": {
+                            "name": "inconsistent_cmd",
+                            "description": "received an invalid control command"
+                        },
+                        "5": {
+                            "name": "motor_stuck",
+                            "description": "Motor stalled"
+                        },
+                        "6": {
+                            "name": "failure_generic",
+                            "description": "detected a generic hardware failure"
+                        },
+                        "7": {
+                            "name": "motor_warn_temp",
+                            "description": "Motor is over-heating"
+                        },
+                        "8": {
+                            "name": "esc_warn_temp",
+                            "description": "is over-heating"
+                        },
+                        "9": {
+                            "name": "esc_over_temp",
+                            "description": "reached a critical temperature"
+                        }
+                    }
+                },
+                "suggested_action_t": {
+                    "type": "uint8_t",
+                    "description": "Suggested actions for the user in case of a safety critical event is triggered",
+                    "entries": {
+                        "0": {
+                            "name": "none",
+                            "description": ""
+                        },
+                        "1": {
+                            "name": "land",
+                            "description": "Land now!"
+                        },
+                        "2": {
+                            "name": "reduce_throttle",
+                            "description": "Reduce throttle!"
+                        }
+                    }
+                },
+                "geofence_violation_reason_t": {
+                    "type": "uint8_t",
+                    "description": "Reason for geofence violation",
+                    "entries": {
+                        "0": {
+                            "name": "dist_to_home_exceeded",
+                            "description": "maximum distance to home exceeded"
+                        },
+                        "1": {
+                            "name": "max_altitude_exceeded",
+                            "description": "maximum altitude exceeded"
+                        },
+                        "2": {
+                            "name": "fence_violation",
+                            "description": "approaching or outside geofence"
+                        }
+                    }
+                }
+            },
+            "navigation_mode_groups": {
+                "groups": {
+                    "0": [65536],
+                    "1": [131072],
+                    "2": [196608],
+                    "3": [67371008],
+                    "4": [50593792],
+                    "5": [84148224],
+                    "10": [327680],
+                    "14": [393216],
+                    "15": [458752],
+                    "17": [33816576],
+                    "18": [100925440],
+                    "19": [134479872],
+                    "20": [151257088],
+                    "21": [16973824],
+                    "22": [168034304]
+                }
+            },
+            "supported_protocols": [ "health_and_arming_check" ]
+        }
+    }
+}

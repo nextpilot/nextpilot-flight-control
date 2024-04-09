@@ -1,0 +1,50 @@
+
+*~
+.context
+.cproject
+.project
+.settings
+.swp
+.~lock.*
+*.orig
+
+*.tmp
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+*.pyc
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+.DS_Store
+.vscode
+/build*
+
+# CLion ignores
+.idea
+cmake-build-*/
+

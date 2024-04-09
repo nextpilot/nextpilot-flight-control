@@ -11,8 +11,8 @@
 #include "ManualControl.hpp"
 
 #include <px4_platform_common/events.h>
-#include <lib/systemlib/mavlink_log.h>
-#include <uORB/topics/vehicle_command.h>
+// #include <lib/systemlib/mavlink_log.h>
+// #include <uORB/topics/vehicle_command.h>
 
 ManualControl::ManualControl() :
     ModuleParams(nullptr),

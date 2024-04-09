@@ -16,36 +16,39 @@
 
 #pragma once
 
-#include <drivers/drv_hrt.h>
-#include <lib/perf/perf_counter.h>
-#include <lib/pid_design/pid_design.hpp>
-#include <lib/system_identification/system_identification.hpp>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/px4_work_queue/WorkItem.hpp>
-#include <uORB/Publication.hpp>
-#include <uORB/Subscription.hpp>
-#include <uORB/SubscriptionCallback.hpp>
-#include <uORB/topics/actuator_controls_status.h>
-#include <uORB/topics/manual_control_setpoint.h>
-#include <uORB/topics/parameter_update.h>
-#include <uORB/topics/autotune_attitude_control_status.h>
-#include <uORB/topics/vehicle_angular_velocity.h>
-#include <uORB/topics/vehicle_status.h>
-#include <uORB/topics/vehicle_torque_setpoint.h>
-#include <mathlib/mathlib.h>
+#include "nextpilot.h"
+
+#include <pid_design/pid_design.hpp>
+#include <system_identification/system_identification.hpp>
+
+// #include <px4_platform_common/defines.h>
+// #include <px4_platform_common/module.h>
+// #include <px4_platform_common/module_params.h>
+// #include <px4_platform_common/posix.h>
+// #include <px4_platform_common/px4_work_queue/WorkItem.hpp>
+// #include <uORB/Publication.hpp>
+// #include <uORB/Subscription.hpp>
+// #include <uORB/SubscriptionCallback.hpp>
+// #include <uORB/topics/actuator_controls_status.h>
+// #include <uORB/topics/manual_control_setpoint.h>
+// #include <uORB/topics/parameter_update.h>
+// #include <uORB/topics/autotune_attitude_control_status.h>
+// #include <uORB/topics/vehicle_angular_velocity.h>
+// #include <uORB/topics/vehicle_status.h>
+// #include <uORB/topics/vehicle_torque_setpoint.h>
+// #include <mathlib/mathlib.h>
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
-class McAutotuneAttitudeControl : public ModuleBase<McAutotuneAttitudeControl>, public ModuleParams, public px4::WorkItem {
+class McAutotuneAttitudeControl : public ModuleCommand<McAutotuneAttitudeControl>, public ModuleParams, public WorkItem {
 public:
     McAutotuneAttitudeControl();
     ~McAutotuneAttitudeControl() override;
 
     /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    static McAutotuneAttitudeControl *instantiate(int argc, char *argv[]);
 
     /** @see ModuleBase */
     static int custom_command(int argc, char *argv[]);
@@ -53,7 +56,7 @@ public:
     /** @see ModuleBase */
     static int print_usage(const char *reason = nullptr);
 
-    bool init();
+    int init() override;
 
     /** @see ModuleBase::print_status() */
     int print_status() override;
@@ -152,28 +155,29 @@ private:
     perf_counter_t _cycle_perf{perf_alloc(PC_ELAPSED, MODULE_NAME ": cycle time")};
 
     DEFINE_PARAMETERS(
-        (ParamBool<px4::params::MC_AT_START>)_param_mc_at_start,
-        (ParamFloat<px4::params::MC_AT_SYSID_AMP>)_param_mc_at_sysid_amp,
-        (ParamInt<px4::params::MC_AT_APPLY>)_param_mc_at_apply,
-        (ParamFloat<px4::params::MC_AT_RISE_TIME>)_param_mc_at_rise_time,
+        (ParamBool<params_id::MC_AT_START>)_param_mc_at_start,
+        (ParamFloat<params_id::MC_AT_SYSID_AMP>)_param_mc_at_sysid_amp,
+        (ParamInt<params_id::MC_AT_APPLY>)_param_mc_at_apply,
+        (ParamFloat<params_id::MC_AT_RISE_TIME>)_param_mc_at_rise_time,
 
-        (ParamFloat<px4::params::IMU_GYRO_CUTOFF>)_param_imu_gyro_cutoff,
+        //(ParamFloat<params_id::IMU_GYRO_CUTOFF>)_param_imu_gyro_cutoff,
+        (ParamFloat<params_id::MC_ROLLRATE_P>)_param_imu_gyro_cutoff,
 
-        (ParamFloat<px4::params::MC_ROLLRATE_P>)_param_mc_rollrate_p,
-        (ParamFloat<px4::params::MC_ROLLRATE_K>)_param_mc_rollrate_k,
-        (ParamFloat<px4::params::MC_ROLLRATE_I>)_param_mc_rollrate_i,
-        (ParamFloat<px4::params::MC_ROLLRATE_D>)_param_mc_rollrate_d,
-        (ParamFloat<px4::params::MC_ROLL_P>)_param_mc_roll_p,
-        (ParamFloat<px4::params::MC_PITCHRATE_P>)_param_mc_pitchrate_p,
-        (ParamFloat<px4::params::MC_PITCHRATE_K>)_param_mc_pitchrate_k,
-        (ParamFloat<px4::params::MC_PITCHRATE_I>)_param_mc_pitchrate_i,
-        (ParamFloat<px4::params::MC_PITCHRATE_D>)_param_mc_pitchrate_d,
-        (ParamFloat<px4::params::MC_PITCH_P>)_param_mc_pitch_p,
-        (ParamFloat<px4::params::MC_YAWRATE_P>)_param_mc_yawrate_p,
-        (ParamFloat<px4::params::MC_YAWRATE_K>)_param_mc_yawrate_k,
-        (ParamFloat<px4::params::MC_YAWRATE_I>)_param_mc_yawrate_i,
-        (ParamFloat<px4::params::MC_YAWRATE_D>)_param_mc_yawrate_d,
-        (ParamFloat<px4::params::MC_YAW_P>)_param_mc_yaw_p)
+        (ParamFloat<params_id::MC_ROLLRATE_P>)_param_mc_rollrate_p,
+        (ParamFloat<params_id::MC_ROLLRATE_K>)_param_mc_rollrate_k,
+        (ParamFloat<params_id::MC_ROLLRATE_I>)_param_mc_rollrate_i,
+        (ParamFloat<params_id::MC_ROLLRATE_D>)_param_mc_rollrate_d,
+        (ParamFloat<params_id::MC_ROLL_P>)_param_mc_roll_p,
+        (ParamFloat<params_id::MC_PITCHRATE_P>)_param_mc_pitchrate_p,
+        (ParamFloat<params_id::MC_PITCHRATE_K>)_param_mc_pitchrate_k,
+        (ParamFloat<params_id::MC_PITCHRATE_I>)_param_mc_pitchrate_i,
+        (ParamFloat<params_id::MC_PITCHRATE_D>)_param_mc_pitchrate_d,
+        (ParamFloat<params_id::MC_PITCH_P>)_param_mc_pitch_p,
+        (ParamFloat<params_id::MC_YAWRATE_P>)_param_mc_yawrate_p,
+        (ParamFloat<params_id::MC_YAWRATE_K>)_param_mc_yawrate_k,
+        (ParamFloat<params_id::MC_YAWRATE_I>)_param_mc_yawrate_i,
+        (ParamFloat<params_id::MC_YAWRATE_D>)_param_mc_yawrate_d,
+        (ParamFloat<params_id::MC_YAW_P>)_param_mc_yaw_p)
 
     static constexpr float       _publishing_dt_s   = 100e-3f;
     static constexpr hrt_abstime _publishing_dt_hrt = 100_ms;

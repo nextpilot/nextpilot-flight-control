@@ -1,0 +1,232 @@
+{
+    "$id": "https://mavlink.io/events.schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "description": "Schema for event definitions",
+    "type": "object",
+    "properties": {
+        "version": {
+            "description": "Version number for the format of this file. Future versions need to be backwards compatible (i.e. existing parsers can parse newer versions).",
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 2
+        },
+        "translation": {
+            "type": "object",
+            "description": "This needs to match exactly with the content of schema.translation.json"
+        },
+        "components": {
+            "type": "object",
+            "description": "The object key is an 8 Bit Component ID, used as highest 8 bits in the event ID. This is typically equal to the MAVLink component ID, but does not have to be.",
+            "patternProperties": {
+                "^[0-9]+$": {
+                    "type": "object",
+                    "properties": {
+                        "namespace": {
+                            "description": "Namespace, name of the component, e.g. 'camera'.",
+                            "type": "string",
+                            "pattern": "^[a-z][a-z0-9_]*$"
+                        },
+                        "enums": {
+                            "type": "object",
+                            "description": "The object key is the enum name.",
+                            "patternProperties": {
+                                "^[a-zA-Z][a-zA-Z0-9_]*_t$": {
+                                    "type": "object",
+                                    "properties": {
+                                        "type": {
+                                            "description": "Enum type.",
+                                            "type": "string",
+                                            "enum": [
+                                                "uint8_t",
+                                                "int8_t",
+                                                "uint16_t",
+                                                "int16_t",
+                                                "uint32_t",
+                                                "int32_t",
+                                                "uint64_t",
+                                                "int64_t"
+                                            ]
+                                        },
+                                        "description": {
+                                            "description": "Enum description.",
+                                            "type": "string",
+                                            "pattern": "^[^\n]*$"
+                                        },
+                                        "is_bitfield": {
+                                            "description": "Set to true if this enum is a bitfield.",
+                                            "type": "boolean"
+                                        },
+                                        "separator": {
+                                            "description": "Optional separator for multiple entries if is_bitfield is set. The default is '|'",
+                                            "type": "string"
+                                        },
+                                        "entries": {
+                                            "type": "object",
+                                            "description": "The object key is the value.",
+                                            "patternProperties": {
+                                                "^[0-9]+$": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "name": {
+                                                            "description": "Enum entry.",
+                                                            "type": "string",
+                                                            "pattern": "^[a-z][a-z0-9_]*$"
+                                                        },
+                                                        "description": {
+                                                            "description": "Enum entry description.",
+                                                            "type": "string",
+                                                            "pattern": "^[^\n]*$"
+                                                        },
+                                                        "comment": {
+                                                            "description": "Comment, not used by anything.",
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "name",
+                                                        "description"
+                                                    ],
+                                                    "additionalProperties": false
+                                                }
+                                            },
+                                            "additionalProperties": false
+                                        }
+                                    },
+                                    "required": [
+                                        "type"
+                                    ],
+                                    "additionalProperties": false
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "event_groups": {
+                            "type": "object",
+                            "description": "The object key is the Event group name.",
+                            "patternProperties": {
+                                "^[a-z][a-z0-9_]*$": {
+                                    "type": "object",
+                                    "properties": {
+                                        "events": {
+                                            "type": "object",
+                                            "description": "The object key is the lower 24 bits of the event ID.",
+                                            "patternProperties": {
+                                                "^[0-9]+$": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "name": {
+                                                            "description": "Event name.",
+                                                            "type": "string",
+                                                            "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+                                                        },
+                                                        "message": {
+                                                            "description": "Short single-line message.",
+                                                            "type": "string",
+                                                            "pattern": "^[^\n]{1,120}$"
+                                                        },
+                                                        "description": {
+                                                            "description": "Detailed description.",
+                                                            "type": "string"
+                                                        },
+                                                        "type": {
+                                                            "description": "Optional, specifies a type within an event group (valid values depend on event group).",
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "summary",
+                                                                "append_health_and_arming_messages"
+                                                            ]
+                                                        },
+                                                        "instance_arg_index": {
+                                                            "description": "Optional, specifies an event argument index which defines the instance. The argument must be int. For example a sensor (IMU, battery, ...) event with multiple sensor instances.",
+                                                            "type": "integer"
+                                                        },
+                                                        "arguments": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "name": {
+                                                                        "description": "Argument name.",
+                                                                        "type": "string",
+                                                                        "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+                                                                    },
+                                                                    "type": {
+                                                                        "description": "Argument type. Either basic type or an enum.",
+                                                                        "type": "string"
+                                                                    },
+                                                                    "description": {
+                                                                        "description": "Argument description.",
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "type",
+                                                                    "name"
+                                                                ],
+                                                                "additionalProperties": false
+                                                            }
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "name",
+                                                        "message"
+                                                    ],
+                                                    "additionalProperties": false
+                                                }
+                                            },
+                                            "additionalProperties": false
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "supported_protocols": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "pattern": "^(calibration|health_and_arming_check)$",
+                                "comment": "Optional list of supported protocols."
+                            }
+                        },
+                        "navigation_mode_groups": {
+                            "type": "object",
+                            "description": "Mapping from navigation modes (custom_mode in mavlink) to groups (i.e. a group contains a set of modes)",
+                            "properties": {
+                                "groups": {
+                                    "type": "object",
+                                    "patternProperties": {
+                                        "^[0-9]+$": {
+                                            "description": "mode index, starting with 0",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "integer",
+                                                "description": "Navigation mode (custom_mode)"
+                                            }
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            },
+                            "required": [
+                                "groups"
+                            ],
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": [
+                        "namespace"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "required": [
+        "version",
+        "components"
+    ],
+    "additionalProperties": false
+}

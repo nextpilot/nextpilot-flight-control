@@ -1,0 +1,3 @@
+menuconfig PKG_USING_PID_DESIGN
+    bool "pid_design: Helper functions to design PID controllers using identified models"
+    default n

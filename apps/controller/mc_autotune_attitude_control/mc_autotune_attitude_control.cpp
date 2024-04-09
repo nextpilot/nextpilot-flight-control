@@ -20,7 +20,7 @@ using namespace matrix;
 
 McAutotuneAttitudeControl::McAutotuneAttitudeControl() :
     ModuleParams(nullptr),
-    WorkItem(MODULE_NAME, px4::wq_configurations::hp_default) {
+    WorkItem(MODULE_NAME, wq_configurations::hp_default) {
     _autotune_attitude_control_status_pub.advertise();
     reset();
 }
@@ -29,15 +29,15 @@ McAutotuneAttitudeControl::~McAutotuneAttitudeControl() {
     perf_free(_cycle_perf);
 }
 
-bool McAutotuneAttitudeControl::init() {
+int McAutotuneAttitudeControl::init() {
     if (!_parameter_update_sub.registerCallback()) {
         PX4_ERR("callback registration failed");
-        return false;
+        return -1;
     }
 
     _signal_filter.setParameters(_publishing_dt_s, .2f); // runs in the slow publishing loop
 
-    return true;
+    return 0;
 }
 
 void McAutotuneAttitudeControl::reset() {
@@ -560,26 +560,27 @@ const Vector3f McAutotuneAttitudeControl::getIdentificationSignal() {
     return rate_sp;
 }
 
-int McAutotuneAttitudeControl::task_spawn(int argc, char *argv[]) {
+McAutotuneAttitudeControl *McAutotuneAttitudeControl::instantiate(int argc, char *argv[]) {
     McAutotuneAttitudeControl *instance = new McAutotuneAttitudeControl();
 
-    if (instance) {
-        _object.store(instance);
-        _task_id = task_id_is_work_queue;
+    // if (instance) {
+    //     _object.store(instance);
+    //     _task_id = task_id_is_work_queue;
 
-        if (instance->init()) {
-            return PX4_OK;
-        }
+    //     if (instance->init()) {
+    //         return PX4_OK;
+    //     }
 
-    } else {
-        PX4_ERR("alloc failed");
-    }
+    // } else {
+    //     PX4_ERR("alloc failed");
+    // }
 
-    delete instance;
-    _object.store(nullptr);
-    _task_id = -1;
+    // delete instance;
+    // _object.store(nullptr);
+    // _task_id = -1;
 
-    return PX4_ERROR;
+    // return PX4_ERROR;
+    return instance;
 }
 
 int McAutotuneAttitudeControl::custom_command(int argc, char *argv[]) {

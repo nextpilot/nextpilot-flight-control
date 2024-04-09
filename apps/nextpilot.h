@@ -13,7 +13,7 @@
 
 // c标准库
 // #ifndef __cplusplus
-#include <ctype.h>
+// #include <ctype.h>
 #include <float.h>
 #include <math.h>
 #include <stdbool.h>
