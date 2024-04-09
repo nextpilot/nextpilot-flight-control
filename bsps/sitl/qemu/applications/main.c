@@ -12,9 +12,8 @@
 #include <stdio.h>
 #include <rtthread.h>
 
-int main(void)
-{
-    rt_kprintf("Hello RT-Thread!\n");
+int main(void) {
+    // rt_kprintf("Hello RT-Thread!\n");
 
     return 0;
 }

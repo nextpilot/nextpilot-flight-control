@@ -8,6 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "WorkQueue"
+
 #include <rtthread.h>
 #include <WorkQueue.hpp>
 #include <WorkItem.hpp>
@@ -29,14 +31,14 @@ WorkQueue::WorkQueue(const wq_config_t &config) :
 
 WorkQueue::~WorkQueue() {
     // 这时候lock是什么意思？？不是只是用来锁定_q的吗，但是这里没有操作_q呀
-    work_lock();
+    // work_lock();
 
     // Synchronize with ::Detach
     rt_sem_take(&_exit_lock, RT_WAITING_FOREVER);
     rt_sem_detach(&_exit_lock);
 
     rt_sem_detach(&_process_lock);
-    work_unlock();
+    // work_unlock();
 
 #ifndef __RTTHREAD__
     rt_sem_detach(&_qlock);
@@ -46,15 +48,15 @@ WorkQueue::~WorkQueue() {
 bool WorkQueue::Attach(WorkItem *item) {
     // 这时候lock是什么意思？？不是只是用来锁定_q的吗，但是这里没有操作_q呀
     // 且_work_item_list自带mutex_lock的
-    work_lock();
+    // work_lock();
 
     if (!should_exit()) {
         _work_item_list.add(item);
-        work_unlock();
+        // work_unlock();
         return true;
     }
 
-    work_unlock();
+    // work_unlock();
 
     return false;
 }
@@ -62,7 +64,7 @@ bool WorkQueue::Attach(WorkItem *item) {
 void WorkQueue::Detach(WorkItem *item) {
     bool exiting = false;
     // 这时候lock是什么意思？？不是只是用来锁定_q的吗，但是这里没有操作_q呀
-    work_lock();
+    // work_lock();
 
     _work_item_list.remove(item);
 
@@ -78,7 +80,7 @@ void WorkQueue::Detach(WorkItem *item) {
         SignalWorkerThread();
     }
 
-    work_unlock();
+    // work_unlock();
 
     // In case someone is deleting this wq already, signal
     // that it is now allowed

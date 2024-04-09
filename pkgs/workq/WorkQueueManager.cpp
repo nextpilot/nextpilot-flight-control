@@ -8,7 +8,7 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#define LOG_TAG "workqueue.manager"
+#define LOG_TAG "WorkQueueManager"
 
 #include <rtthread.h>
 #include <rtdbg.h>
@@ -202,9 +202,6 @@ static void WorkQueueRunnerEntry(void *param) {
 }
 
 static void WorkQueueManagerEntry(void *param) {
-    _wq_manager_wqs_list     = new BlockingList<WorkQueue *>();
-    _wq_manager_create_queue = new BlockingQueue<const wq_config_t *, 1>();
-
     while (!_wq_manager_should_exit.load()) {
         // create new work queues as needed
         const wq_config_t *wq = _wq_manager_create_queue->pop();
@@ -251,13 +248,17 @@ static void WorkQueueManagerEntry(void *param) {
 
 int WorkQueueManagerStart() {
     if (_wq_manager_should_exit.load() && (_wq_manager_create_queue == nullptr)) {
-        _wq_manager_should_exit.store(false);
+        _wq_manager_wqs_list     = new BlockingList<WorkQueue *>();
+        _wq_manager_create_queue = new BlockingQueue<const wq_config_t *, 1>();
 
-        rt_thread_t tid = rt_thread_create("wq:manager",
-                                           WorkQueueManagerEntry, nullptr, 1024, 10, 5);
+        if (!_wq_manager_wqs_list || !_wq_manager_create_queue) {
+            LOG_E("create wqs_list and wqs_queue fail");
+            return -1;
+        }
+
+        rt_thread_t tid = rt_thread_create("wq:manager", WorkQueueManagerEntry, nullptr, 1024, 10, 5);
 
         if (!tid) {
-            _wq_manager_should_exit.store(true);
             LOG_E("create wq:manager thread fail");
             return -1;
         }
@@ -266,6 +267,8 @@ int WorkQueueManagerStart() {
             LOG_E("startup wq:manager thread fail");
             return -1;
         }
+
+        _wq_manager_should_exit.store(false);
 
         LOG_I("init ok");
         return RT_EOK;
@@ -399,4 +402,5 @@ int work_queue_start() {
     nextpilot::WorkQueueManagerStart();
     return 0;
 }
-INIT_APP_EXPORT(work_queue_start);
+// 这里需要注意，C++全局变量是在INIT_COMPONENT_EXPORT阶段初始化的
+INIT_EXPORT(work_queue_start, "5.0");

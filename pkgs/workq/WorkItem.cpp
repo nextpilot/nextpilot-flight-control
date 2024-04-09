@@ -8,6 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "WorkItem"
+
 #include <WorkItem.hpp>
 #include <WorkQueue.hpp>
 #include <WorkQueueManager.hpp>
