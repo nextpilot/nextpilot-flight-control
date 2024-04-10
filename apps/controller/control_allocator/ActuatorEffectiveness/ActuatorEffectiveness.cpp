@@ -8,10 +8,13 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include "ActuatorEffectiveness.hpp"
-#include "../ControlAllocation/ControlAllocation.hpp"
+#define LOG_TAG "ActuatorEffectiveness"
 
-#include <px4_platform_common/log.h>
+#include "ActuatorEffectiveness.hpp"
+#include "ControlAllocation/ControlAllocation.hpp"
+#include <rtdbg.h>
+
+// #include <px4_platform_common/log.h>
 
 int ActuatorEffectiveness::Configuration::addActuator(ActuatorType type, const matrix::Vector3f &torque,
                                                       const matrix::Vector3f &thrust) {

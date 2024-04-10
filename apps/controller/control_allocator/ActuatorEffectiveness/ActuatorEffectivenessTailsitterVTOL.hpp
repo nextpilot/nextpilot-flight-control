@@ -19,10 +19,10 @@
 #include "ActuatorEffectiveness.hpp"
 #include "ActuatorEffectivenessRotors.hpp"
 #include "ActuatorEffectivenessControlSurfaces.hpp"
-
 #include <uORB/topics/normalized_unsigned_setpoint.h>
-
 #include <uORB/uORBSubscription.hpp>
+
+using namespace nextpilot;
 
 class ActuatorEffectivenessTailsitterVTOL : public ModuleParams, public ActuatorEffectiveness {
 public:

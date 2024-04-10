@@ -16,6 +16,8 @@
 
 #include <uORB/topics/normalized_unsigned_setpoint.h>
 
+using namespace nextpilot;
+
 class ActuatorEffectivenessFixedWing : public ModuleParams, public ActuatorEffectiveness {
 public:
     ActuatorEffectivenessFixedWing(ModuleParams *parent);

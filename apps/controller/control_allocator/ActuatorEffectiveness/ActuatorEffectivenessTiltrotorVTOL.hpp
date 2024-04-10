@@ -22,11 +22,11 @@
 #include "ActuatorEffectivenessRotors.hpp"
 #include "ActuatorEffectivenessControlSurfaces.hpp"
 #include "ActuatorEffectivenessTilts.hpp"
-
 #include <uORB/topics/normalized_unsigned_setpoint.h>
 #include <uORB/topics/tiltrotor_extra_controls.h>
-
 #include <uORB/uORBSubscription.hpp>
+
+using namespace nextpilot;
 
 class ActuatorEffectivenessTiltrotorVTOL : public ModuleParams, public ActuatorEffectiveness {
 public:

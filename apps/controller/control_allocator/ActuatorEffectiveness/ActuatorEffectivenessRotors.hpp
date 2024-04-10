@@ -19,10 +19,9 @@
 #pragma once
 
 #include "ActuatorEffectiveness.hpp"
-
 #include <module_params.hpp>
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionInterval.hpp>
+#include <uORB/uORBSubscription.hpp>
 
 class ActuatorEffectivenessTilts;
 

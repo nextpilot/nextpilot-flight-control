@@ -59,6 +59,8 @@ private:
     void send_photo_command();
     void send_video_command();
 
+    orb_advert_t _mavlink_log_pub = nullptr;
+
     uORB::Publication<manual_control_setpoint_s> _manual_control_setpoint_pub{ORB_ID(manual_control_setpoint)};
 
     uORB::SubscriptionInterval _parameter_update_sub{ORB_ID(parameter_update), 1_s};

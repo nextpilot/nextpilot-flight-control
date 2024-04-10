@@ -35,16 +35,15 @@
 #include <ControlAllocationPseudoInverse.hpp>
 #include <ControlAllocationSequentialDesaturation.hpp>
 
-#include <lib/matrix/matrix/math.hpp>
-#include <lib/perf/perf_counter.h>
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/module.h>
+#include <matrix/matrix/math.hpp>
+#include <mathlib/mathlib.h>
+#include <perf/perf_counter.h>
+#include <module_command.hpp>
 #include <module_params.hpp>
-#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
+#include <WorkItemScheduled.hpp>
 #include <uORB/uORBPublication.hpp>
-#include <uORB/PublicationMulti.hpp>
+#include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionCallback.hpp>
 #include <uORB/topics/actuator_motors.h>
 #include <uORB/topics/actuator_servos.h>
 #include <uORB/topics/actuator_servos_trim.h>
@@ -55,6 +54,8 @@
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/failure_detector_status.h>
 
+using namespace nextpilot::global_params;
+using namespace nextpilot;
 class ControlAllocator : public ModuleCommand<ControlAllocator>, public ModuleParams, public WorkItemScheduled {
 public:
     static constexpr int NUM_ACTUATORS = ControlAllocation::NUM_ACTUATORS;
@@ -70,7 +71,7 @@ public:
     virtual ~ControlAllocator();
 
     /** @see ModuleCommand */
-    static int *instantiate(int argc, char *argv[]);
+    static ControlAllocator *instantiate(int argc, char *argv[]);
 
     /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);

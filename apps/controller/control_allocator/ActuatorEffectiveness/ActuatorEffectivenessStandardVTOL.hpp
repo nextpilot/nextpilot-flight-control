@@ -21,8 +21,9 @@
 #include "ActuatorEffectiveness.hpp"
 #include "ActuatorEffectivenessRotors.hpp"
 #include "ActuatorEffectivenessControlSurfaces.hpp"
-
 #include <uORB/topics/normalized_unsigned_setpoint.h>
+
+using namespace nextpilot;
 
 class ActuatorEffectivenessStandardVTOL : public ModuleParams, public ActuatorEffectiveness {
 public:

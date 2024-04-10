@@ -62,22 +62,22 @@ ControlAllocator::~ControlAllocator() {
     perf_free(_loop_perf);
 }
 
-bool ControlAllocator::init() {
+int ControlAllocator::init() {
     if (!_vehicle_torque_setpoint_sub.registerCallback()) {
         PX4_ERR("callback registration failed");
-        return false;
+        return -1;
     }
 
     if (!_vehicle_thrust_setpoint_sub.registerCallback()) {
         PX4_ERR("callback registration failed");
-        return false;
+        return -1;
     }
 
 #ifndef ENABLE_LOCKSTEP_SCHEDULER // Backup schedule would interfere with lockstep
     ScheduleDelayed(50_ms);
 #endif
 
-    return true;
+    return 0;
 }
 
 void ControlAllocator::parameters_updated() {
@@ -693,26 +693,27 @@ void ControlAllocator::check_for_motor_failures() {
     }
 }
 
-int ControlAllocator::instantiate(int argc, char *argv[]) {
+ControlAllocator *ControlAllocator::instantiate(int argc, char *argv[]) {
     ControlAllocator *instance = new ControlAllocator();
 
-    if (instance) {
-        _object.store(instance);
-        _task_id = task_id_is_work_queue;
+    // if (instance) {
+    //     _object.store(instance);
+    //     _task_id = task_id_is_work_queue;
 
-        if (instance->init()) {
-            return PX4_OK;
-        }
+    //     if (instance->init()) {
+    //         return PX4_OK;
+    //     }
 
-    } else {
-        PX4_ERR("alloc failed");
-    }
+    // } else {
+    //     PX4_ERR("alloc failed");
+    // }
 
-    delete instance;
-    _object.store(nullptr);
-    _task_id = -1;
+    // delete instance;
+    // _object.store(nullptr);
+    // _task_id = -1;
 
-    return PX4_ERROR;
+    // return PX4_ERROR;
+    return instance;
 }
 
 int ControlAllocator::print_status() {

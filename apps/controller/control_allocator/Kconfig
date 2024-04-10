@@ -1,4 +1,4 @@
-menuconfig PKG_USING_CONTROL_ALLOCATOR
+menuconfig FCS_USING_CONTROL_ALLOCATOR
 	bool "control_allocator"
 	default n
 	---help---

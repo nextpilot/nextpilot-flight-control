@@ -8,8 +8,6 @@ objs = []
 cwd = GetCurrentDir()
 
 
-generated_params_dir = Dir("#/build").abspath
-
 # 工程根目录
 prj_root = os.path.abspath(os.path.join(cwd, "../../"))
 
@@ -32,7 +30,7 @@ for root, dirs, files in os.walk(prj_root):
 #     os.path.join(prj_root, "tools/module_config/generate_serial_config.py"),
 #     # --verbose,
 #     "--params-file",
-#     os.path.join(generated_params_dir, "serial_params.c"),
+#     File("#/build/serial_params.c").abspath
 #     "--serial-ports",
 #     "-config-files",
 # ] + modules_config_file
@@ -46,7 +44,7 @@ cmd = [
     os.path.join(prj_root, "tools/module_config/generate_module_params.py"),
     # --verbose,
     "--params-file",
-    os.path.join(generated_params_dir, "module_params.c"),
+    File("#/build/module_params.c").abspath,
     "--board",
     "nextpilot",
     # "--timer-config", "xxxx",
@@ -56,6 +54,7 @@ cmd = [
 subprocess.call(cmd)
 
 # 由于xxx_params.c生成parameters.xml文件
+params_source_dir.add(Dir("#/build").abspath)
 cmd = [
     sys.executable,
     os.path.join(cwd, "tools/process_params.py"),
@@ -90,7 +89,12 @@ subprocess.call(cmd)
 #
 ###########################################################
 
-inc = [cwd, os.path.join(cwd, "interface"), os.path.join(cwd, "storage"), os.path.join(cwd, "wrapper")]
+inc = [
+    cwd,
+    os.path.join(cwd, "interface"),
+    os.path.join(cwd, "storage"),
+    os.path.join(cwd, "wrapper"),
+]
 src = [
     "param_interface.c",
     "param_storage.c",

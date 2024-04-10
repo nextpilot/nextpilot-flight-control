@@ -9,7 +9,7 @@
  ******************************************************************/
 
 #include "ActuatorEffectivenessHelicopter.hpp"
-#include <lib/mathlib/mathlib.h>
+#include <mathlib/mathlib.h>
 
 using namespace matrix;
 using namespace time_literals;

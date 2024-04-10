@@ -12,7 +12,6 @@
 
 #include "ActuatorEffectiveness.hpp"
 #include "ActuatorEffectivenessRotors.hpp"
-
 #include <module_params.hpp>
 
 class ActuatorEffectivenessTilts : public ModuleParams, public ActuatorEffectiveness {

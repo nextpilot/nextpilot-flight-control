@@ -21,8 +21,9 @@
 #pragma once
 
 #include "ControlAllocationPseudoInverse.hpp"
-
 #include <module_params.hpp>
+
+using namespace nextpilot::global_params;
 
 class ControlAllocationSequentialDesaturation : public ControlAllocationPseudoInverse, public ModuleParams {
 public:

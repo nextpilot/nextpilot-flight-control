@@ -8,9 +8,10 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include <px4_platform_common/log.h>
+// #include <px4_platform_common/log.h>
 
 #include "ActuatorEffectivenessControlSurfaces.hpp"
+#include <rtdbg.h>
 
 using namespace matrix;
 

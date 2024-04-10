@@ -10,8 +10,9 @@
 
 #include "ActuatorEffectivenessTilts.hpp"
 
-#include <px4_platform_common/log.h>
-#include <lib/mathlib/mathlib.h>
+// #include <px4_platform_common/log.h>
+#include <mathlib/mathlib.h>
+#include <rtdbg.h>
 
 using namespace matrix;
 

@@ -422,9 +422,8 @@ void FwAutotuneAttitudeControl::updateStateMachine(hrt_abstime now) {
             if (_param_fw_at_man_aux.get() && _aux_switch_en) {
                 break;
             }
-
-            orb_advert_t mavlink_log_pub = nullptr;
-            mavlink_log_info(&mavlink_log_pub, "Autotune returned to idle");
+            // orb_advert_t mavlink_log_pub = nullptr;
+            mavlink_log_info(&_mavlink_log_pub, "Autotune returned to idle");
             _state = state::idle;
             _param_fw_at_start.set(false);
             _param_fw_at_start.commit();
@@ -437,8 +436,8 @@ void FwAutotuneAttitudeControl::updateStateMachine(hrt_abstime now) {
     // the identification sequence is aborted immediately
     if (_state != state::wait_for_disarm && _state != state::idle && _state != state::fail && _state != state::complete) {
         if (now - _state_start_time > 20_s || (_param_fw_at_man_aux.get() && !_aux_switch_en) || _start_flight_mode != _nav_state) {
-            orb_advert_t mavlink_log_pub = nullptr;
-            mavlink_log_critical(&mavlink_log_pub, "Autotune aborted before finishing");
+            // orb_advert_t mavlink_log_pub = nullptr;
+            mavlink_log_critical(&_mavlink_log_pub, "Autotune aborted before finishing");
             _state            = state::fail;
             _state_start_time = now;
         }

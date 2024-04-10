@@ -11,12 +11,12 @@
 #pragma once
 
 #include "ActuatorEffectiveness.hpp"
-
 #include <module_params.hpp>
-
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/manual_control_switches.h>
+
+using namespace nextpilot;
 
 class ActuatorEffectivenessHelicopter : public ModuleParams, public ActuatorEffectiveness {
 public:

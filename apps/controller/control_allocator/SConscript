@@ -4,14 +4,18 @@ from building import *
 
 cwd = GetCurrentDir()
 
-inc = []
+inc = [
+    cwd,
+    os.path.join(cwd, "ControlAllocation"),
+    os.path.join(cwd, "ActuatorEffectiveness"),
+]
 
 src = (
     Glob("*.cpp", exclude="*_test.cpp")
-    + Glob("ControlAllocation/*.cpp", exclude="*Test.cpp")
-    + Glob("ActuatorEffectiveness/*.cpp", exclude="*Test.cpp")
+    + Glob("ControlAllocation/*.cpp", exclude="ControlAllocation/*Test.cpp")
+    + Glob("ActuatorEffectiveness/*.cpp", exclude="ActuatorEffectiveness/*Test.cpp")
 )
 
-objs = DefineGroup("fcs/control_allocator", src, depend=["PKG_USING_CONTROL_ALLOCATOR"])
+objs = DefineGroup("fcs/control_allocator", src, depend=["FCS_USING_CONTROL_ALLOCATOR"], CPPPATH=inc)
 
 Return("objs")

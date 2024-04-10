@@ -17,8 +17,8 @@
  */
 
 #include "ActuatorEffectivenessRotors.hpp"
-
 #include "ActuatorEffectivenessTilts.hpp"
+#include <mathlib/mathlib.h>
 
 using namespace matrix;
 
