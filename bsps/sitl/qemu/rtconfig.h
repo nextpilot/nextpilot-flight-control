@@ -75,6 +75,12 @@
 
 /* end of Nextpilot Simulation Config */
 
+/* Nextpilot Storage Config */
+
+#define SYS_USING_DATAMAN
+#define DATAMAN_DEFAULT_FILE_PATH "/dataman.bin"
+/* end of Nextpilot Storage Config */
+
 /* Nextpilot Telemetry Config */
 
 /* end of Nextpilot Firmware Config */

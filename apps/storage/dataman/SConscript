@@ -1,0 +1,15 @@
+import os
+import sys
+from building import *
+
+
+cwd = GetCurrentDir()
+
+
+inc = [cwd]
+src = ["dataman.cpp"]
+
+objs = DefineGroup("log/dataman", src, depend=["SYS_USING_DATAMAN"])
+
+
+Return("objs")

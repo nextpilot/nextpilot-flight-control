@@ -3,7 +3,6 @@ menuconfig SYS_USING_DATAMAN
     default n
 
 if SYS_USING_DATAMAN
-
     config DATAMAN_DEFAULT_FILE_PATH
         string "dataman save path"
         # default "/mnt/norflash/dataman.bin" if RT_USING_QSPI

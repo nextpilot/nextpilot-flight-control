@@ -97,7 +97,7 @@
 
 // getopt
 #ifdef PKG_USING_GETOPT
-#include "getopt.h"
+#include "getopt/getopt.h"
 #endif // PKG_USING_GETOPT
 
 // perf

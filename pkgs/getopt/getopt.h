@@ -16,16 +16,14 @@
  * Thread safe version of getopt
  */
 
-#pragma once
-
-#define __EXPORT
-#define __BEGIN_DECLS
-#define __END_DECLS
-
-__BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif //__cplusplus
 
 int getopt(int argc, char *argv[], const char *options, int *myoptind, const char **myoptarg);
 
-__END_DECLS
+#ifdef __cplusplus
+}
+#endif //__cplusplus
 
 #endif // __GETOPT_H__

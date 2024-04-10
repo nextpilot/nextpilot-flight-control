@@ -16,7 +16,7 @@
 #pragma once
 
 #include <string.h>
-#include <navigator/navigation.h>
+#include "navigation.h"
 #include <uORB/topics/mission.h>
 
 #ifdef __cplusplus

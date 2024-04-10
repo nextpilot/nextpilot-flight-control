@@ -18,17 +18,21 @@
  * @author David Sidrane
  */
 
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/module.h>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/tasks.h>
-#include <px4_platform_common/getopt.h>
-#include <hrtimer.h>
-#include <lib/parameters/param.h>
-#include <lib/perf/perf_counter.h>
-#include <stdlib.h>
+#define LOG_TAG        "dataman"
+#define PX4_STORAGEDIR ""
 
+// #include <px4_platform_common/px4_config.h>
+// #include <px4_platform_common/defines.h>
+// #include <px4_platform_common/module.h>
+// #include <px4_platform_common/posix.h>
+// #include <px4_platform_common/tasks.h>
+// #include <px4_platform_common/getopt.h>
+// #include <hrtimer.h>
+// #include <lib/parameters/param.h>
+// #include <lib/perf/perf_counter.h>
+// #include <stdlib.h>
+
+#include "nextpilot.h"
 #include "dataman.h"
 
 __BEGIN_DECLS
@@ -57,7 +61,7 @@ typedef struct dm_operations_t {
     int (*clear)(dm_item_t item);
     int (*initialize)(unsigned max_offset);
     void (*shutdown)();
-    int (*wait)(px4_sem_t *sem);
+    rt_err_t (*wait)(struct rt_semaphore *sem, rt_int32_t time);
 } dm_operations_t;
 
 static constexpr dm_operations_t dm_file_operations = {
@@ -66,7 +70,7 @@ static constexpr dm_operations_t dm_file_operations = {
     .clear      = _file_clear,
     .initialize = _file_initialize,
     .shutdown   = _file_shutdown,
-    .wait       = px4_sem_wait,
+    .wait       = rt_sem_take,
 };
 
 static constexpr dm_operations_t dm_ram_operations = {
@@ -75,7 +79,7 @@ static constexpr dm_operations_t dm_ram_operations = {
     .clear      = _ram_clear,
     .initialize = _ram_initialize,
     .shutdown   = _ram_shutdown,
-    .wait       = px4_sem_wait,
+    .wait       = rt_sem_take,
 };
 
 static const dm_operations_t *g_dm_ops;
@@ -104,11 +108,11 @@ typedef enum {
 
 /** Work task work item */
 typedef struct {
-    sq_entry_t    link; /**< list linkage */
-    px4_sem_t     wait_sem;
-    unsigned char first;
-    unsigned char func;
-    ssize_t       result;
+    sq_entry_t          link; /**< list linkage */
+    struct rt_semaphore wait_sem;
+    unsigned char       first;
+    unsigned char       func;
+    ssize_t             result;
     union {
         struct {
             dm_item_t   item;
@@ -157,9 +161,9 @@ static constexpr size_t g_per_item_size[DM_KEY_NUM_KEYS] = {
 static unsigned int g_key_offsets[DM_KEY_NUM_KEYS];
 
 /* Item type lock mutexes */
-static px4_sem_t *g_item_locks[DM_KEY_NUM_KEYS];
-static px4_sem_t  g_sys_state_mutex_mission;
-static px4_sem_t  g_sys_state_mutex_fence;
+static struct rt_semaphore *g_item_locks[DM_KEY_NUM_KEYS];
+static struct rt_semaphore  g_sys_state_mutex_mission;
+static struct rt_semaphore  g_sys_state_mutex_fence;
 
 static perf_counter_t _dm_read_perf{nullptr};
 static perf_counter_t _dm_write_perf{nullptr};
@@ -178,39 +182,39 @@ static enum {
 /* The data manager work queues */
 
 typedef struct {
-    sq_queue_t q;        /* Nuttx queue */
-    px4_sem_t  mutex;    /* Mutual exclusion on work queue adds and deletes */
-    unsigned   size;     /* Current size of queue */
-    unsigned   max_size; /* Maximum queue size reached */
+    sq_queue_t          q;        /* Nuttx queue */
+    struct rt_semaphore mutex;    /* Mutual exclusion on work queue adds and deletes */
+    unsigned            size;     /* Current size of queue */
+    unsigned            max_size; /* Maximum queue size reached */
 } work_q_t;
 
 static work_q_t g_free_q; /* queue of free work items. So that we don't always need to call malloc and free*/
 static work_q_t g_work_q; /* pending work items. To be consumed by worker thread */
 
-static px4_sem_t g_work_queued_sema; /* To notify worker thread a work item has been queued */
-static px4_sem_t g_init_sema;
+static struct rt_semaphore g_work_queued_sema; /* To notify worker thread a work item has been queued */
+static struct rt_semaphore g_init_sema;
 
 static bool g_task_should_exit; /**< if true, dataman task should exit */
 
 static void init_q(work_q_t *q) {
-    sq_init(&(q->q));                /* Initialize the NuttX queue structure */
-    px4_sem_init(&(q->mutex), 1, 1); /* Queue is initially unlocked */
-    q->size = q->max_size = 0;       /* Queue is initially empty */
+    sq_init(&(q->q));                                         /* Initialize the NuttX queue structure */
+    rt_sem_init(&(q->mutex), "q_mutex", 1, RT_IPC_FLAG_PRIO); /* Queue is initially unlocked */
+    q->size = q->max_size = 0;                                /* Queue is initially empty */
 }
 
 static inline void
 destroy_q(work_q_t *q) {
-    px4_sem_destroy(&(q->mutex)); /* Destroy the queue lock */
+    rt_sem_detach(&(q->mutex)); /* Destroy the queue lock */
 }
 
 static inline void
 lock_queue(work_q_t *q) {
-    px4_sem_wait(&(q->mutex)); /* Acquire the queue lock */
+    rt_sem_take(&(q->mutex), RT_WAITING_FOREVER); /* Acquire the queue lock */
 }
 
 static inline void
 unlock_queue(work_q_t *q) {
-    px4_sem_post(&(q->mutex)); /* Release the queue lock */
+    rt_sem_release(&(q->mutex)); /* Release the queue lock */
 }
 
 static work_q_item_t *
@@ -252,11 +256,11 @@ create_work_item() {
 
     /* If we got one then lock the item*/
     if (item) {
-        px4_sem_init(&item->wait_sem, 1, 0); /* Caller will wait on this... initially locked */
+        rt_sem_init(&item->wait_sem, "item_wait", 0, RT_IPC_FLAG_PRIO); /* Caller will wait on this... initially locked */
 
         /* item->wait_sem use case is a signal */
 
-        px4_sem_setprotocol(&item->wait_sem, SEM_PRIO_NONE);
+        // px4_sem_setprotocol(&item->wait_sem, SEM_PRIO_NONE);
     }
 
     /* return the item pointer, or nullptr if all failed */
@@ -267,7 +271,7 @@ create_work_item() {
 
 static inline void
 destroy_work_item(work_q_item_t *item) {
-    px4_sem_destroy(&item->wait_sem); /* Destroy the item lock */
+    rt_sem_detach(&item->wait_sem); /* Destroy the item lock */
     /* Return the item to the free item queue for later reuse */
     lock_queue(&g_free_q);
     sq_addfirst(&item->link, &(g_free_q.q));
@@ -309,10 +313,10 @@ enqueue_work_item_and_wait_for_result(work_q_item_t *item) {
     unlock_queue(&g_work_q);
 
     /* tell the work thread that work is available */
-    px4_sem_post(&g_work_queued_sema);
+    rt_sem_release(&g_work_queued_sema);
 
     /* wait for the result */
-    px4_sem_wait(&item->wait_sem);
+    rt_sem_take(&item->wait_sem, RT_WAITING_FOREVER);
 
     int result = item->result;
 
@@ -681,18 +685,18 @@ _file_initialize(unsigned max_offset) {
     }
 
     /* Open or create the data manager file */
-    dm_operations_data.file.fd = open(k_data_manager_device_path, O_RDWR | O_CREAT | O_BINARY, PX4_O_MODE_666);
+    dm_operations_data.file.fd = open(k_data_manager_device_path, O_RDWR | O_CREAT | O_BINARY);
 
     if (dm_operations_data.file.fd < 0) {
         PX4_WARN("Could not open data manager file %s", k_data_manager_device_path);
-        px4_sem_post(&g_init_sema); /* Don't want to hang startup */
+        rt_sem_release(&g_init_sema); /* Don't want to hang startup */
         return -1;
     }
 
     if ((unsigned)lseek(dm_operations_data.file.fd, max_offset, SEEK_SET) != max_offset) {
         close(dm_operations_data.file.fd);
         PX4_WARN("Could not seek data manager file %s", k_data_manager_device_path);
-        px4_sem_post(&g_init_sema); /* Don't want to hang startup */
+        rt_sem_release(&g_init_sema); /* Don't want to hang startup */
         return -1;
     }
 
@@ -718,7 +722,7 @@ _ram_initialize(unsigned max_offset) {
 
     if (dm_operations_data.ram.data == nullptr) {
         PX4_WARN("Could not allocate %u bytes of memory", max_offset);
-        px4_sem_post(&g_init_sema); /* Don't want to hang startup */
+        rt_sem_release(&g_init_sema); /* Don't want to hang startup */
         return -1;
     }
 
@@ -840,7 +844,7 @@ dm_lock(dm_item_t item) {
     }
 
     if (g_item_locks[item]) {
-        return px4_sem_wait(g_item_locks[item]);
+        return rt_sem_take(g_item_locks[item], RT_WAITING_FOREVER);
     }
 
     errno = EINVAL;
@@ -861,7 +865,7 @@ dm_trylock(dm_item_t item) {
     }
 
     if (g_item_locks[item]) {
-        return px4_sem_trywait(g_item_locks[item]);
+        return rt_sem_trytake(g_item_locks[item]);
     }
 
     errno = EINVAL;
@@ -881,12 +885,12 @@ dm_unlock(dm_item_t item) {
     }
 
     if (g_item_locks[item]) {
-        px4_sem_post(g_item_locks[item]);
+        rt_sem_release(g_item_locks[item]);
     }
 }
 
-static int
-task_main(int argc, char *argv[]) {
+static void
+task_main(void *param) {
     /* Dataman can use disk or RAM */
     switch (backend) {
     case BACKEND_FILE:
@@ -899,7 +903,7 @@ task_main(int argc, char *argv[]) {
 
     default:
         PX4_WARN("No valid backend set.");
-        return -1;
+        return;
     }
 
     work_q_item_t *work;
@@ -919,8 +923,8 @@ task_main(int argc, char *argv[]) {
     }
 
     /* Initialize the item type locks, for now only DM_KEY_MISSION_STATE & DM_KEY_FENCE_POINTS supports locking */
-    px4_sem_init(&g_sys_state_mutex_mission, 1, 1); /* Initially unlocked */
-    px4_sem_init(&g_sys_state_mutex_fence, 1, 1);   /* Initially unlocked */
+    rt_sem_init(&g_sys_state_mutex_mission, "g_sys_mission", 1, RT_IPC_FLAG_PRIO); /* Initially unlocked */
+    rt_sem_init(&g_sys_state_mutex_fence, "g_sys_fence", 1, RT_IPC_FLAG_PRIO);     /* Initially unlocked */
 
     for (unsigned i = 0; i < DM_KEY_NUM_KEYS; i++) {
         g_item_locks[i] = nullptr;
@@ -934,11 +938,11 @@ task_main(int argc, char *argv[]) {
     init_q(&g_work_q);
     init_q(&g_free_q);
 
-    px4_sem_init(&g_work_queued_sema, 1, 0);
+    rt_sem_init(&g_work_queued_sema, "g_workq_sema", 0, RT_IPC_FLAG_PRIO);
 
     /* g_work_queued_sema use case is a signal */
 
-    px4_sem_setprotocol(&g_work_queued_sema, SEM_PRIO_NONE);
+    // px4_sem_setprotocol(&g_work_queued_sema, SEM_PRIO_NONE);
 
     _dm_read_perf  = perf_alloc(PC_ELAPSED, MODULE_NAME ": read");
     _dm_write_perf = perf_alloc(PC_ELAPSED, MODULE_NAME ": write");
@@ -965,14 +969,14 @@ task_main(int argc, char *argv[]) {
     }
 
     /* Tell startup that the worker thread has completed its initialization */
-    px4_sem_post(&g_init_sema);
+    rt_sem_release(&g_init_sema);
 
     /* Start the endless loop, waiting for then processing work requests */
     while (true) {
         /* do we need to exit ??? */
         if (!g_task_should_exit) {
             /* wait for work */
-            g_dm_ops->wait(&g_work_queued_sema);
+            g_dm_ops->wait(&g_work_queued_sema, RT_WAITING_FOREVER);
         }
 
         /* Empty the work queue */
@@ -1002,7 +1006,7 @@ task_main(int argc, char *argv[]) {
             }
 
             /* Inform the caller that work is done */
-            px4_sem_post(&work->wait_sem);
+            rt_sem_release(&work->wait_sem);
         }
 
         /* time to go???? */
@@ -1028,9 +1032,9 @@ end:
     backend = BACKEND_NONE;
     destroy_q(&g_work_q);
     destroy_q(&g_free_q);
-    px4_sem_destroy(&g_work_queued_sema);
-    px4_sem_destroy(&g_sys_state_mutex_mission);
-    px4_sem_destroy(&g_sys_state_mutex_fence);
+    rt_sem_detach(&g_work_queued_sema);
+    rt_sem_detach(&g_sys_state_mutex_mission);
+    rt_sem_detach(&g_sys_state_mutex_fence);
 
     perf_free(_dm_read_perf);
     _dm_read_perf = nullptr;
@@ -1038,31 +1042,33 @@ end:
     perf_free(_dm_write_perf);
     _dm_write_perf = nullptr;
 
-    return 0;
+    return;
 }
 
 static int
 start() {
-    int task;
-
-    px4_sem_init(&g_init_sema, 1, 0);
+    rt_sem_init(&g_init_sema, "g_init_sema", 0, RT_IPC_FLAG_PRIO);
 
     /* g_init_sema use case is a signal */
 
-    px4_sem_setprotocol(&g_init_sema, SEM_PRIO_NONE);
+    // px4_sem_setprotocol(&g_init_sema, SEM_PRIO_NONE);
+
+    rt_thread_t task = rt_thread_create("dataman", task_main, nullptr, 1024, 20, 10);
 
     /* start the worker thread with low priority for disk IO */
-    if ((task = px4_task_spawn_cmd("dataman", SCHED_DEFAULT, SCHED_PRIORITY_DEFAULT - 10,
-                                   PX4_STACK_ADJUSTED(TASK_STACK_SIZE), task_main,
-                                   nullptr)) < 0) {
-        px4_sem_destroy(&g_init_sema);
+    if (!task) {
+        rt_sem_detach(&g_init_sema);
         PX4_ERR("task start failed");
         return -1;
     }
 
+    if (rt_thread_startup(task) != 0) {
+        return -1;
+    }
+
     /* wait for the thread to actually initialize */
-    px4_sem_wait(&g_init_sema);
-    px4_sem_destroy(&g_init_sema);
+    rt_sem_take(&g_init_sema, RT_WAITING_FOREVER);
+    rt_sem_detach(&g_init_sema);
 
     return 0;
 }
@@ -1082,7 +1088,7 @@ static void
 stop() {
     /* Tell the worker task to shut down */
     g_task_should_exit = true;
-    px4_sem_post(&g_work_queued_sema);
+    rt_sem_release(&g_work_queued_sema);
 }
 
 static void
@@ -1145,7 +1151,7 @@ int dataman_main(int argc, char *argv[]) {
 
         /* jump over start and look at options first */
 
-        while ((ch = px4_getopt(argc, argv, "f:r", &dmoptind, &dmoptarg)) != EOF) {
+        while ((ch = getopt(argc, argv, "f:r", &dmoptind, &dmoptarg)) != EOF) {
             switch (ch) {
             case 'f':
                 if (backend_check()) {
@@ -1153,7 +1159,7 @@ int dataman_main(int argc, char *argv[]) {
                 }
 
                 backend                    = BACKEND_FILE;
-                k_data_manager_device_path = strdup(dmoptarg);
+                k_data_manager_device_path = rt_strdup(dmoptarg);
                 PX4_INFO("dataman file set to: %s", k_data_manager_device_path);
                 break;
 
@@ -1174,7 +1180,7 @@ int dataman_main(int argc, char *argv[]) {
 
         if (backend == BACKEND_NONE) {
             backend                    = BACKEND_FILE;
-            k_data_manager_device_path = strdup(default_device_path);
+            k_data_manager_device_path = rt_strdup(default_device_path);
         }
 
         start();
@@ -1211,3 +1217,4 @@ int dataman_main(int argc, char *argv[]) {
 
     return 0;
 }
+MSH_CMD_EXPORT_ALIAS(dataman_main, dataman, dataman);
