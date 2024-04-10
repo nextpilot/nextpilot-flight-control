@@ -664,3 +664,13 @@ int FwAutotuneAttitudeControl::print_usage(const char *reason) {
 extern "C" __EXPORT int fw_autotune_attitude_control_main(int argc, char *argv[]) {
     return FwAutotuneAttitudeControl::main(argc, argv);
 }
+MSH_CMD_EXPORT_ALIAS(fw_autotune_attitude_control_main, fw_autotune, fw autotune attitude control);
+
+int fw_autotune_attitude_control_start() {
+    int32_t type = param_get_int32((param_t)params_id::SYS_VEHICLE_TYPE);
+
+    const char *argv[] = {"fw_autotune", "start", (type == 2) ? "vtol" : ""};
+    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    return FwAutotuneAttitudeControl::main(argc, (char **)argv);
+}
+INIT_APP_EXPORT(fw_autotune_attitude_control_start);

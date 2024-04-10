@@ -1,0 +1,6 @@
+menuconfig PKG_USING_CONTROLLIB
+    bool "controllib: geo / math functions to perform geodesic calculations"
+    select PKG_USING_MATRIX
+    select PKG_USING_MATHLIB
+    select PKG_USING_HRTIMER
+    default n

@@ -2852,3 +2852,13 @@ fw_pos_control is the fixed-wing position controller.
 extern "C" __EXPORT int fw_pos_control_main(int argc, char *argv[]) {
     return FixedwingPositionControl::main(argc, argv);
 }
+MSH_CMD_EXPORT_ALIAS(fw_pos_control_main, fw_pos_control, fw pos control);
+
+int fw_pos_control_start() {
+    int32_t type = param_get_int32((param_t)params_id::SYS_VEHICLE_TYPE);
+
+    const char *argv[] = {"fw_pos_control", "start", (type == 2) ? "vtol" : ""};
+    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    return FixedwingPositionControl::main(argc, (char **)argv);
+}
+INIT_APP_EXPORT(fw_pos_control_start);

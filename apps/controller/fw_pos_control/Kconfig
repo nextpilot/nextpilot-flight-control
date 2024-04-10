@@ -1,5 +1,9 @@
 menuconfig FCS_UISNG_FW_POS_CONTROL
 	bool "fw_pos_control"
+    select PKG_USING_NPFG
+	select PKG_USING_TECS
+	select PKG_USING_SLEW_RATE
+
 	default n
 	---help---
 		Enable support for fw_pos_control

@@ -45,6 +45,7 @@ Navigator *g_navigator;
 
 Navigator::Navigator() :
     ModuleParams(nullptr),
+    ModuleThread(LOG_TAG, 4096, 15, 2000),
     _loop_perf(perf_alloc(PC_ELAPSED, "navigator")),
     _geofence(this),
     _gf_breach_avoidance(this),
@@ -1035,8 +1036,7 @@ Navigator *Navigator::instantiate(int argc, char *argv[]) {
 }
 
 int Navigator::print_status() {
-    PX4_INFO("Running");
-
+    LOG_RAW("Running\n");
     _geofence.printStatus();
     return 0;
 }
@@ -1471,5 +1471,4 @@ int navigator_start() {
     int         argc   = sizeof(argv) / sizeof(argv[0]);
     return Navigator::main(argc, (char **)argv);
 }
-
 INIT_APP_EXPORT(navigator_start);

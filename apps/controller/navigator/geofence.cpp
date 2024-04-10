@@ -571,7 +571,7 @@ void Geofence::printStatus() {
         }
     }
 
-    PX4_INFO("Geofence: %i inclusion, %i exclusion polygons, %i inclusion, %i exclusion circles, %i total vertices",
-             num_inclusion_polygons, num_exclusion_polygons, num_inclusion_circles, num_exclusion_circles,
-             total_num_vertices);
+    LOG_RAW("Geofence: %i inclusion, %i exclusion polygons, %i inclusion, %i exclusion circles, %i total vertices\n",
+            num_inclusion_polygons, num_exclusion_polygons, num_inclusion_circles, num_exclusion_circles,
+            total_num_vertices);
 }

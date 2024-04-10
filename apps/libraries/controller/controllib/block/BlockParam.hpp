@@ -18,9 +18,9 @@
 
 #include "Block.hpp"
 
-#include <containers/List.hpp>
-#include <px4_platform_common/defines.h>
-#include <parameters/param.h>
+#include <containers/IntrusiveList.hpp>
+#include <defines.h>
+#include <param.h>
 
 namespace control
 {
@@ -40,7 +40,7 @@ public:
 	virtual ~BlockParamBase() = default;
 
 	virtual bool update() = 0;
-	const char *getName() const { return param_name(_handle); }
+	const char *getName() const { return param_get_name(_handle); }
 
 protected:
 	param_t _handle{PARAM_INVALID};

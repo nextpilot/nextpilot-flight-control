@@ -435,3 +435,13 @@ fw_att_control is the fixed wing attitude controller.
 extern "C" __EXPORT int fw_att_control_main(int argc, char *argv[]) {
     return FixedwingAttitudeControl::main(argc, argv);
 }
+MSH_CMD_EXPORT_ALIAS(fw_att_control_main, fw_att_control, fw att control);
+
+int fw_att_control_start() {
+    int32_t type = param_get_int32((param_t)params_id::SYS_VEHICLE_TYPE);
+
+    const char *argv[] = {"fw_att_control", "start", (type == 2) ? "vtol" : ""};
+    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    return FixedwingAttitudeControl::main(argc, (char **)argv);
+}
+INIT_APP_EXPORT(fw_att_control_start);

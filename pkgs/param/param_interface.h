@@ -38,6 +38,12 @@ extern "C" {
 int param_interface_register(param_interface_t *api);
 
 /**
+ * Notify the system about parameter changes. Can be used for example after several calls to
+ * param_set_no_notification() to avoid unnecessary system notifications.
+ */
+void param_notify_changes();
+
+/**
  * Return the total number of parameters.
  *
  * @return		The number of parameters.

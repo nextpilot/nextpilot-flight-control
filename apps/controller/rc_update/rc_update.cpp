@@ -726,3 +726,11 @@ To reduce control latency, the module is scheduled on input_rc publications.
 extern "C" __EXPORT int rc_update_main(int argc, char *argv[]) {
     return rc_update::RCUpdate::main(argc, argv);
 }
+MSH_CMD_EXPORT_ALIAS(rc_update_main, rc_update, rc update);
+
+extern "C" __EXPORT int rc_update_start() {
+    const char *argv[] = {"rc_update", "start"};
+    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    return rc_update::RCUpdate::main(argc, (char **)argv);
+}
+INIT_APP_EXPORT(rc_update_start);

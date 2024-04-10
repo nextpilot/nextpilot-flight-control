@@ -21,6 +21,7 @@
 #include <uORB/topics/takeoff_status.h>
 
 using namespace time_literals;
+using namespace nextpilot;
 
 enum class TakeoffState {
     disarmed          = takeoff_status_s::TAKEOFF_STATE_DISARMED,

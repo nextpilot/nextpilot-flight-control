@@ -1,5 +1,7 @@
 menuconfig FCS_USING_FW_RATE_CONTROL
 	bool "fw_rate_control"
+	select PKG_USING_SLEW_RATE
+	select PKG_USING_RATE_CONTROL
 	default n
 	---help---
 		Enable support for fw_att_control

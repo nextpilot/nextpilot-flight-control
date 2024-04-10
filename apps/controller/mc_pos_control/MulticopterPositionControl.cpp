@@ -8,12 +8,12 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include "MulticopterPositionControl.hpp"
+#define LOG_TAG "mc_pos_control"
 
-#include <float.h>
-#include <lib/mathlib/mathlib.h>
-#include <lib/matrix/matrix/math.hpp>
-#include <px4_platform_common/events.h>
+#include <mathlib/mathlib.h>
+#include <matrix/matrix/math.hpp>
+// #include <px4_platform_common/events.h>
+#include "MulticopterPositionControl.hpp"
 #include "PositionControl/ControlMath.hpp"
 
 using namespace matrix;
@@ -35,16 +35,16 @@ MulticopterPositionControl::~MulticopterPositionControl() {
     perf_free(_cycle_perf);
 }
 
-bool MulticopterPositionControl::init() {
+int MulticopterPositionControl::init() {
     if (!_local_pos_sub.registerCallback()) {
         PX4_ERR("callback registration failed");
-        return false;
+        return -1;
     }
 
     _time_stamp_last_loop = hrt_absolute_time();
     ScheduleNow();
 
-    return true;
+    return 0;
 }
 
 void MulticopterPositionControl::parameters_update(bool force) {
@@ -120,7 +120,7 @@ void MulticopterPositionControl::parameters_update(bool force) {
              * @description <param>MPC_TILTMAX_AIR</param> is set to {1:.0}.
              */
             // events::send<float>(events::ID("mc_pos_ctrl_tilt_set"), events::Log::Warning,
-                                "Maximum tilt limit has been constrained to a safe value", MAX_SAFE_TILT_DEG);
+            // "Maximum tilt limit has been constrained to a safe value", MAX_SAFE_TILT_DEG);
         }
 
         if (_param_mpc_tiltmax_lnd.get() > _param_mpc_tiltmax_air.get()) {
@@ -131,7 +131,7 @@ void MulticopterPositionControl::parameters_update(bool force) {
              * @description <param>MPC_TILTMAX_LND</param> is set to {1:.0}.
              */
             // events::send<float>(events::ID("mc_pos_ctrl_land_tilt_set"), events::Log::Warning,
-                                "Land tilt limit has been constrained by maximum tilt", _param_mpc_tiltmax_air.get());
+            // "Land tilt limit has been constrained by maximum tilt", _param_mpc_tiltmax_air.get());
         }
 
         _control.setPositionGains(Vector3f(_param_mpc_xy_p.get(), _param_mpc_xy_p.get(), _param_mpc_z_p.get()));
@@ -150,7 +150,7 @@ void MulticopterPositionControl::parameters_update(bool force) {
              * @description <param>MPC_XY_CRUISE</param> is set to {1:.0}.
              */
             // events::send<float>(events::ID("mc_pos_ctrl_cruise_set"), events::Log::Warning,
-                                "Cruise speed has been constrained by maximum speed", _param_mpc_xy_vel_max.get());
+            // "Cruise speed has been constrained by maximum speed", _param_mpc_xy_vel_max.get());
         }
 
         if (_param_mpc_vel_manual.get() > _param_mpc_xy_vel_max.get()) {
@@ -161,7 +161,7 @@ void MulticopterPositionControl::parameters_update(bool force) {
              * @description <param>MPC_VEL_MANUAL</param> is set to {1:.0}.
              */
             // events::send<float>(events::ID("mc_pos_ctrl_man_vel_set"), events::Log::Warning,
-                                "Manual speed has been constrained by maximum speed", _param_mpc_xy_vel_max.get());
+            // "Manual speed has been constrained by maximum speed", _param_mpc_xy_vel_max.get());
         }
 
         if (_param_mpc_vel_man_back.get() > _param_mpc_vel_manual.get()) {
@@ -172,7 +172,7 @@ void MulticopterPositionControl::parameters_update(bool force) {
              * @description <param>MPC_VEL_MAN_BACK</param> is set to {1:.0}.
              */
             // events::send<float>(events::ID("mc_pos_ctrl_man_vel_back_set"), events::Log::Warning,
-                                "Manual backward speed has been constrained by forward speed", _param_mpc_vel_manual.get());
+            // "Manual backward speed has been constrained by forward speed", _param_mpc_vel_manual.get());
         }
 
         if (_param_mpc_vel_man_side.get() > _param_mpc_vel_manual.get()) {
@@ -183,7 +183,7 @@ void MulticopterPositionControl::parameters_update(bool force) {
              * @description <param>MPC_VEL_MAN_SIDE</param> is set to {1:.0}.
              */
             // events::send<float>(events::ID("mc_pos_ctrl_man_vel_side_set"), events::Log::Warning,
-                                "Manual sideways speed has been constrained by forward speed", _param_mpc_vel_manual.get());
+            // "Manual sideways speed has been constrained by forward speed", _param_mpc_vel_manual.get());
         }
 
         if (_param_mpc_z_v_auto_up.get() > _param_mpc_z_vel_max_up.get()) {
@@ -194,7 +194,7 @@ void MulticopterPositionControl::parameters_update(bool force) {
              * @description <param>MPC_Z_V_AUTO_UP</param> is set to {1:.0}.
              */
             // events::send<float>(events::ID("mc_pos_ctrl_up_vel_set"), events::Log::Warning,
-                                "Ascent speed has been constrained by max speed", _param_mpc_z_vel_max_up.get());
+            // "Ascent speed has been constrained by max speed", _param_mpc_z_vel_max_up.get());
         }
 
         if (_param_mpc_z_v_auto_dn.get() > _param_mpc_z_vel_max_dn.get()) {
@@ -205,7 +205,7 @@ void MulticopterPositionControl::parameters_update(bool force) {
              * @description <param>MPC_Z_V_AUTO_DN</param> is set to {1:.0}.
              */
             // events::send<float>(events::ID("mc_pos_ctrl_down_vel_set"), events::Log::Warning,
-                                "Descent speed has been constrained by max speed", _param_mpc_z_vel_max_dn.get());
+            // "Descent speed has been constrained by max speed", _param_mpc_z_vel_max_dn.get());
         }
 
         if (_param_mpc_thr_hover.get() > _param_mpc_thr_max.get() ||
@@ -218,7 +218,7 @@ void MulticopterPositionControl::parameters_update(bool force) {
              * @description <param>MPC_THR_HOVER</param> is set to {1:.0}.
              */
             // events::send<float>(events::ID("mc_pos_ctrl_hover_thrust_set"), events::Log::Warning,
-                                "Hover thrust has been constrained by min/max thrust", _param_mpc_thr_hover.get());
+            // "Hover thrust has been constrained by min/max thrust", _param_mpc_thr_hover.get());
         }
 
         if (!_param_mpc_use_hte.get() || !_hover_thrust_initialized) {
@@ -584,7 +584,7 @@ trajectory_setpoint_s MulticopterPositionControl::generateFailsafeSetpoint(const
     return failsafe_setpoint;
 }
 
-int MulticopterPositionControl::instantiate(int argc, char *argv[]) {
+MulticopterPositionControl *MulticopterPositionControl::instantiate(int argc, char *argv[]) {
     bool vtol = false;
 
     if (argc > 1) {
@@ -595,23 +595,25 @@ int MulticopterPositionControl::instantiate(int argc, char *argv[]) {
 
     MulticopterPositionControl *instance = new MulticopterPositionControl(vtol);
 
-    if (instance) {
-        _object.store(instance);
-        _task_id = task_id_is_work_queue;
+    // if (instance) {
+    //     _object.store(instance);
+    //     _task_id = task_id_is_work_queue;
 
-        if (instance->init()) {
-            return PX4_OK;
-        }
+    //     if (instance->init()) {
+    //         return PX4_OK;
+    //     }
 
-    } else {
-        PX4_ERR("alloc failed");
-    }
+    // } else {
+    //     PX4_ERR("alloc failed");
+    // }
 
-    delete instance;
-    _object.store(nullptr);
-    _task_id = -1;
+    // delete instance;
+    // _object.store(nullptr);
+    // _task_id = -1;
 
-    return PX4_ERROR;
+    // return PX4_ERROR;
+
+    return instance;
 }
 
 int MulticopterPositionControl::custom_command(int argc, char *argv[]) {
@@ -645,3 +647,13 @@ logging.
 extern "C" __EXPORT int mc_pos_control_main(int argc, char *argv[]) {
     return MulticopterPositionControl::main(argc, argv);
 }
+MSH_CMD_EXPORT_ALIAS(mc_pos_control_main, mc_pos_control, mc pos control);
+
+int mc_pos_control_start() {
+    int32_t type = param_get_int32((param_t)params_id::SYS_VEHICLE_TYPE);
+
+    const char *argv[] = {"mc_pos_control", "start", (type == 2) ? "vtol" : ""};
+    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    return MulticopterPositionControl::main(argc, (char **)argv);
+}
+INIT_APP_EXPORT(mc_pos_control_start);

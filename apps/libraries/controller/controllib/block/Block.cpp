@@ -14,13 +14,13 @@
  * Controller library code
  */
 
+#define LOG_TAG "block"
+
 #include "Block.hpp"
 #include "BlockParam.hpp"
-
 #include <cstdio>
 #include <cstring>
-
-#include <px4_platform_common/log.h>
+#include <rtdbg.h>
 
 namespace control
 {

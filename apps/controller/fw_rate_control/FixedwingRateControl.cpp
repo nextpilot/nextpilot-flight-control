@@ -527,3 +527,13 @@ fw_rate_control is the fixed-wing rate controller.
 extern "C" __EXPORT int fw_rate_control_main(int argc, char *argv[]) {
     return FixedwingRateControl::main(argc, argv);
 }
+MSH_CMD_EXPORT_ALIAS(fw_rate_control_main, fw_rate_control, fw rate control);
+
+int fw_rate_control_start() {
+    int32_t type = param_get_int32((param_t)params_id::SYS_VEHICLE_TYPE);
+
+    const char *argv[] = {"fw_rate_control", "start", (type == 2) ? "vtol" : ""};
+    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    return FixedwingRateControl::main(argc, (char **)argv);
+}
+INIT_APP_EXPORT(fw_rate_control_start);

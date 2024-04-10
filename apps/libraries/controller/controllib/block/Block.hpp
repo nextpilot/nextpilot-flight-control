@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <containers/List.hpp>
+#include <containers/IntrusiveList.hpp>
 #include <controllib/block/BlockParam.hpp>
 #include <cstdint>
 

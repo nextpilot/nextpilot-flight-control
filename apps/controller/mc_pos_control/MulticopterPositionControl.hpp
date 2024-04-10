@@ -14,33 +14,33 @@
 
 #pragma once
 
+#include "nextpilot.h"
 #include "PositionControl/PositionControl.hpp"
 #include "Takeoff/Takeoff.hpp"
-
-#include <hrtimer.h>
-#include <lib/controllib/blocks.hpp>
-#include <lib/perf/perf_counter.h>
-#include <lib/slew_rate/SlewRateYaw.hpp>
-#include <lib/systemlib/mavlink_log.h>
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/module.h>
-#include <module_params.hpp>
-#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/tasks.h>
-#include <uORB/uORBPublication.hpp>
-#include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionCallback.hpp>
-#include <uORB/topics/hover_thrust_estimate.h>
-#include <uORB/topics/parameter_update.h>
-#include <uORB/topics/trajectory_setpoint.h>
-#include <uORB/topics/vehicle_attitude_setpoint.h>
-#include <uORB/topics/vehicle_constraints.h>
-#include <uORB/topics/vehicle_control_mode.h>
-#include <uORB/topics/vehicle_land_detected.h>
-#include <uORB/topics/vehicle_local_position.h>
-#include <uORB/topics/vehicle_local_position_setpoint.h>
+// #include <hrtimer.h>
+#include <controllib/blocks.hpp>
+// #include <lib/perf/perf_counter.h>
+#include <slew_rate/SlewRateYaw.hpp>
+// #include <lib/systemlib/mavlink_log.h>
+// #include <px4_platform_common/px4_config.h>
+// #include <px4_platform_common/defines.h>
+// #include <px4_platform_common/module.h>
+// #include <module_params.hpp>
+// #include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
+// #include <px4_platform_common/posix.h>
+// #include <px4_platform_common/tasks.h>
+// #include <uORB/uORBPublication.hpp>
+// #include <uORB/uORBSubscription.hpp>
+// #include <uORB/SubscriptionCallback.hpp>
+// #include <uORB/topics/hover_thrust_estimate.h>
+// #include <uORB/topics/parameter_update.h>
+// #include <uORB/topics/trajectory_setpoint.h>
+// #include <uORB/topics/vehicle_attitude_setpoint.h>
+// #include <uORB/topics/vehicle_constraints.h>
+// #include <uORB/topics/vehicle_control_mode.h>
+// #include <uORB/topics/vehicle_land_detected.h>
+// #include <uORB/topics/vehicle_local_position.h>
+// #include <uORB/topics/vehicle_local_position_setpoint.h>
 
 using namespace time_literals;
 
@@ -50,7 +50,7 @@ public:
     ~MulticopterPositionControl() override;
 
     /** @see ModuleCommand */
-    static int *instantiate(int argc, char *argv[]);
+    static MulticopterPositionControl *instantiate(int argc, char *argv[]);
 
     /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);

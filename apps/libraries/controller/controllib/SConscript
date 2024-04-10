@@ -1,0 +1,15 @@
+import os
+import rtconfig
+from building import *
+
+
+cwd = GetCurrentDir()
+
+
+inc = [cwd]
+src = Glob("*.cpp") + Glob("block/*.cpp")
+
+objs = DefineGroup("lib/control", src, depend=["PKG_USING_CONTROLLIB"], CPPPATH=inc)
+
+
+Return("objs")

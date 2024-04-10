@@ -16,17 +16,15 @@
 
 #pragma once
 
-#include <px4_platform_common/defines.h>
+#include <defines.h>
 #include <assert.h>
 #include <time.h>
 #include <stdlib.h>
 #include <math.h>
 #include <mathlib/math/test/test.hpp>
 #include <mathlib/math/filter/LowPassFilter2p.hpp>
-
 #include "block/Block.hpp"
 #include "block/BlockParam.hpp"
-
 #include "matrix/math.hpp"
 
 namespace control

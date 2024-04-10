@@ -18,7 +18,7 @@
 
 #include "BlockLowPass.hpp"
 
-#include <px4_platform_common/defines.h>
+#include <defines.h>
 #include <math.h>
 
 #include "block/Block.hpp"
