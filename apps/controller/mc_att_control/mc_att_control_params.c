@@ -152,4 +152,4 @@ PARAM_DEFINE_FLOAT(MC_MAN_TILT_TAU, 0.0f);
  * @value 2 Roll/Pitch/Yaw
  * @group Mixer Output
  */
-PARAM_DEFINE_INT32(MC_AIRMODE, 0);
+// PARAM_DEFINE_INT32(MC_AIRMODE, 0);

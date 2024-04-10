@@ -8,50 +8,87 @@ objs = []
 cwd = GetCurrentDir()
 
 
-def gen_global_params():
-    # 工程根目录
-    prj_root = os.path.abspath(os.path.join(cwd, "../../"))
-    # 搜索包含*_params.c文件的目录
-    src_path = set()
-    for root, dirs, files in os.walk(prj_root):
-        for file in files:
+generated_params_dir = Dir("#/build").abspath
 
-            if (file.endswith("params.c") or file.endswith("parameters.c")) and "rtos" not in root:
-                src_path.add(root)
+# 工程根目录
+prj_root = os.path.abspath(os.path.join(cwd, "../../"))
 
-    # 生成parameters.xml文件
-    cmd = [
-        sys.executable,
-        os.path.join(cwd, "tools/process_params.py"),
-        "--xml",
-        File("#/build/parameters.xml").abspath,
-        "--json",
-        File("#/build/paramters.json").abspath,
-        "--compress",
-        "--inject-xml",
-        os.path.join(cwd, "tools/parameters_injected.xml"),
-        "--board",
-        "nextpilot",
-        # --verbose
-        "--src-path",
-    ] + list(src_path)
+# 搜索包含*_params.c文件的目录
+params_source_dir = set()
 
-    subprocess.call(cmd)
+# 搜索名称module.yaml的文件
+modules_config_file = set()
 
-    # 生成parameters.hpp文件
-    cmd = [
-        sys.executable,
-        os.path.join(cwd, "tools/generate_params.py"),
-        "--xml",
-        File("#/build/parameters.xml").abspath,
-        "--dest",
-        os.path.join(cwd, "interface"),
-    ]
+for root, dirs, files in os.walk(prj_root):
+    for file in files:
+        if file == "module.yaml":
+            modules_config_file.add(os.path.join(root, file))
+        if (file.endswith("params.c") or file.endswith("parameters.c")) and "rtos" not in root:
+            params_source_dir.add(root)
 
-    subprocess.call(cmd)
+# Generating serial_params.c from modules.yaml
+# cmd = [
+#     sys.executable,
+#     os.path.join(prj_root, "tools/module_config/generate_serial_config.py"),
+#     # --verbose,
+#     "--params-file",
+#     os.path.join(generated_params_dir, "serial_params.c"),
+#     "--serial-ports",
+#     "-config-files",
+# ] + modules_config_file
+
+# subprocess.call(cmd)
 
 
-gen_global_params()
+# Generating module_params.c from modules.yaml
+cmd = [
+    sys.executable,
+    os.path.join(prj_root, "tools/module_config/generate_module_params.py"),
+    # --verbose,
+    "--params-file",
+    os.path.join(generated_params_dir, "module_params.c"),
+    "--board",
+    "nextpilot",
+    # "--timer-config", "xxxx",
+    "--config-files",
+] + list(modules_config_file)
+
+subprocess.call(cmd)
+
+# 由于xxx_params.c生成parameters.xml文件
+cmd = [
+    sys.executable,
+    os.path.join(cwd, "tools/process_params.py"),
+    "--xml",
+    File("#/build/parameters.xml").abspath,
+    "--json",
+    File("#/build/paramters.json").abspath,
+    "--compress",
+    "--inject-xml",
+    os.path.join(cwd, "tools/parameters_injected.xml"),
+    "--board",
+    "nextpilot",
+    # --verbose
+    "--src-path",
+] + list(params_source_dir)
+
+subprocess.call(cmd)
+
+# 由parameters.xml生成parameters.hpp文件
+cmd = [
+    sys.executable,
+    os.path.join(cwd, "tools/generate_params.py"),
+    "--xml",
+    File("#/build/parameters.xml").abspath,
+    "--dest",
+    os.path.join(cwd, "interface"),
+]
+
+subprocess.call(cmd)
+
+###########################################################
+#
+###########################################################
 
 inc = [cwd, os.path.join(cwd, "interface"), os.path.join(cwd, "storage"), os.path.join(cwd, "wrapper")]
 src = [

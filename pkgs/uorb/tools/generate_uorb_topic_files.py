@@ -82,7 +82,10 @@ def get_topics(filename):
     """
     Get TOPICS names from a "# TOPICS" line
     """
-    ofile = open(filename, "r")
+    if sys.version_info > (3, 0):
+        ofile = open(filename, "r", encoding="utf-8")
+    else:
+        ofile = open(filename, "r")
     text = ofile.read()
     result = []
     for each_line in text.split("\n"):
