@@ -1,0 +1,49 @@
+import os
+import sys
+from building import *
+
+cwd = GetCurrentDir()
+
+generated_events_nextpilot_file = os.path.join(cwd, "events.json")
+generated_events_common_enums_file = os.path.join(cwd, "common_with_enums.json")
+generated_all_events_file = os.path.join(cwd, "events_all.json")
+
+# Generating event json file from source
+cmd = [
+    sys.executable,
+    os.path.join(cwd, "tools/process_events.py"),
+    "--json",
+    generated_events_nextpilot_file,
+]
+
+# Generating combined event json file
+cmd = [
+    sys.executable,
+    os.path.join(cwd, "libevents/scripts/combine.py"),
+    generated_events_nextpilot_file,
+    generated_events_common_enums_file,
+    "--output",
+    generated_all_events_file,
+]
+
+cmd = [
+    sys.executable,
+    os.path.join(cwd, "libevents/scripts/validate.py"),
+    generated_all_events_file,
+]
+
+# combine common.json with our enums for the code generation
+
+
+cmd = [
+    sys.executable,
+    os.path.join(cwd, "tools/compress.py"),
+    generated_all_events_file,
+]
+
+src = ["events.cpp"]
+inc = []
+
+objs = DefineGroup("pkg/events", src, depend=["PKG_USING_EVENTS"])
+
+Return("objs")

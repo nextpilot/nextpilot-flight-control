@@ -2,8 +2,7 @@ from building import *
 
 src = ["getopt.c"]
 inc = []
-CPPDEFINES = []
 
-objs = DefineGroup("pkg/common", src, depend=["PKG_USING_GETOPT"], CPPDEFINES=CPPDEFINES)
+objs = DefineGroup("pkg/getopt", src, depend=["PKG_USING_GETOPT"])
 
 Return("objs")
