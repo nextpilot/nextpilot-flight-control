@@ -27,9 +27,9 @@
 #include "ModeUtil/conversions.hpp"
 
 /* PX4 headers */
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <drivers/drv_tone_alarm.h>
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 #include <mathlib/mathlib.h>
 #include <px4_platform_common/events.h>
 #include <px4_platform_common/px4_config.h>

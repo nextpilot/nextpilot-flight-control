@@ -2,20 +2,13 @@ import os
 import rtconfig
 from building import *
 
-objs = []
 
-if GetDepend(["PKG_USING_ROTATION"]):
-    cwd = GetCurrentDir()
-    src = ["rotation.cpp"]
-    inc = [cwd]
+cwd = GetCurrentDir()
 
-    objs += DefineGroup("lib/rotation", src, depend=[""], CPPPATH=inc)
+inc = [cwd]
+src = ["rotation.cpp"]
 
-    for d in os.listdir(cwd):
-        path = os.path.join(cwd, d)
-        if os.path.isfile(os.path.join(path, "SConscript")):
-            objs += SConscript(os.path.join(d, "SConscript"))
-else:
-    objs = []
+objs = DefineGroup("lib/rotation", src, depend=["PKG_USING_ROTATION"], CPPPATH=inc)
+
 
 Return("objs")

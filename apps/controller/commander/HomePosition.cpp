@@ -10,7 +10,7 @@
 
 #include "HomePosition.hpp"
 
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 #include "commander_helper.h"
 
 using namespace time_literals;

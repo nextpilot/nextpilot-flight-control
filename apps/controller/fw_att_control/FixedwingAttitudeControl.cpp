@@ -8,6 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "fw_att_control"
+
 #include "FixedwingAttitudeControl.hpp"
 
 using namespace time_literals;
@@ -29,13 +31,13 @@ FixedwingAttitudeControl::~FixedwingAttitudeControl() {
     perf_free(_loop_perf);
 }
 
-bool FixedwingAttitudeControl::init() {
+int FixedwingAttitudeControl::init() {
     if (!_att_sub.registerCallback()) {
         PX4_ERR("callback registration failed");
-        return false;
+        return -1;
     }
 
-    return true;
+    return 0;
 }
 
 void FixedwingAttitudeControl::parameters_update() {
@@ -374,7 +376,7 @@ void FixedwingAttitudeControl::Run() {
     perf_end(_loop_perf);
 }
 
-int FixedwingAttitudeControl::instantiate(int argc, char *argv[]) {
+FixedwingAttitudeControl *FixedwingAttitudeControl::instantiate(int argc, char *argv[]) {
     bool vtol = false;
 
     if (argc > 1) {
@@ -385,23 +387,25 @@ int FixedwingAttitudeControl::instantiate(int argc, char *argv[]) {
 
     FixedwingAttitudeControl *instance = new FixedwingAttitudeControl(vtol);
 
-    if (instance) {
-        _object.store(instance);
-        _task_id = task_id_is_work_queue;
+    // if (instance) {
+    //     _object.store(instance);
+    //     _task_id = task_id_is_work_queue;
 
-        if (instance->init()) {
-            return PX4_OK;
-        }
+    //     if (instance->init()) {
+    //         return PX4_OK;
+    //     }
 
-    } else {
-        PX4_ERR("alloc failed");
-    }
+    // } else {
+    //     PX4_ERR("alloc failed");
+    // }
 
-    delete instance;
-    _object.store(nullptr);
-    _task_id = -1;
+    // delete instance;
+    // _object.store(nullptr);
+    // _task_id = -1;
 
-    return PX4_ERROR;
+    // return PX4_ERROR;
+
+    return instance;
 }
 
 int FixedwingAttitudeControl::custom_command(int argc, char *argv[]) {

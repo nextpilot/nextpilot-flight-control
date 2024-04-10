@@ -19,7 +19,7 @@
 #include "DataValidator.hpp"
 
 #include <px4_platform_common/log.h>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 void DataValidator::put(uint64_t timestamp, float val, uint32_t error_count_in, uint8_t priority_in) {
     float data[dimensions] = {val}; // sets the first value and all others to 0

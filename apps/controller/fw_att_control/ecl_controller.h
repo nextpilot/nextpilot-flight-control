@@ -25,8 +25,8 @@
 
 #pragma once
 
-#include <drivers/drv_hrt.h>
-#include <px4_log.h>
+#include <hrtimer.h>
+// #include <px4_log.h>
 
 struct ECL_ControlData {
     float roll;

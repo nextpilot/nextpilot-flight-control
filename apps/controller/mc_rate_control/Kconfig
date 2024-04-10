@@ -3,7 +3,8 @@ menuconfig FCS_USING_MC_RATE_CONTROL
 	select PKG_USING_UORB
 	select PKG_USING_PARAM
 	select PKG_USING_MATHLIB
-	select LIB_USING_MAXTRIX
+	select PKG_USING_MATRIX
+	select PKG_USING_RATE_CONTROL
 	default n
 	---help---
 		Enable support for mc_rate_control

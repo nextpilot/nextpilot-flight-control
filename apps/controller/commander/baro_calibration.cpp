@@ -23,9 +23,9 @@
 #include <px4_platform_common/defines.h>
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/time.h>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <matrix/math.hpp>
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 #include <lib/sensor_calibration/Barometer.hpp>
 #include <lib/sensor_calibration/Utilities.hpp>
 #include <lib/systemlib/mavlink_log.h>

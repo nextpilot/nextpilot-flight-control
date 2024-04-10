@@ -14,13 +14,13 @@
 
 #pragma once
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <lib/matrix/matrix/math.hpp>
 #include <px4_platform_common/defines.h>
 #include <uORB/topics/sensor_gps.h>
 
 #include <float.h>
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 #include <lib/mathlib/mathlib.h>
 
 using matrix::Vector2f;

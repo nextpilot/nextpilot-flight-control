@@ -17,7 +17,7 @@
 #include <lib/systemlib/mavlink_log.h>
 #include <mathlib/mathlib.h>
 #include <px4_platform_common/events.h>
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 
 using namespace matrix;
 

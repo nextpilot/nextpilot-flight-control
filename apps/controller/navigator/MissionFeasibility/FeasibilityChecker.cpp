@@ -14,7 +14,7 @@
 #include <drivers/drv_pwm_output.h>
 #include "../mission_block.h"
 #include <lib/mathlib/mathlib.h>
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 
 FeasibilityChecker::FeasibilityChecker() :
     ModuleParams(nullptr) {

@@ -8,6 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "fw_rate_control"
+
 #include "FixedwingRateControl.hpp"
 
 using namespace time_literals;
@@ -36,13 +38,13 @@ FixedwingRateControl::~FixedwingRateControl() {
     perf_free(_loop_perf);
 }
 
-bool FixedwingRateControl::init() {
+int FixedwingRateControl::init() {
     if (!_vehicle_angular_velocity_sub.registerCallback()) {
         PX4_ERR("callback registration failed");
-        return false;
+        return -1;
     }
 
-    return true;
+    return 0;
 }
 
 int FixedwingRateControl::parameters_update() {
@@ -467,7 +469,7 @@ void FixedwingRateControl::updateActuatorControlsStatus(float dt) {
     }
 }
 
-int FixedwingRateControl::instantiate(int argc, char *argv[]) {
+FixedwingRateControl *FixedwingRateControl::instantiate(int argc, char *argv[]) {
     bool vtol = false;
 
     if (argc > 1) {
@@ -478,23 +480,24 @@ int FixedwingRateControl::instantiate(int argc, char *argv[]) {
 
     FixedwingRateControl *instance = new FixedwingRateControl(vtol);
 
-    if (instance) {
-        _object.store(instance);
-        _task_id = task_id_is_work_queue;
+    // if (instance) {
+    //     _object.store(instance);
+    //     _task_id = task_id_is_work_queue;
 
-        if (instance->init()) {
-            return PX4_OK;
-        }
+    //     if (instance->init()) {
+    //         return PX4_OK;
+    //     }
 
-    } else {
-        PX4_ERR("alloc failed");
-    }
+    // } else {
+    //     PX4_ERR("alloc failed");
+    // }
 
-    delete instance;
-    _object.store(nullptr);
-    _task_id = -1;
+    // delete instance;
+    // _object.store(nullptr);
+    // _task_id = -1;
 
-    return PX4_ERROR;
+    // return PX4_ERROR;
+    return instance;
 }
 
 int FixedwingRateControl::custom_command(int argc, char *argv[]) {

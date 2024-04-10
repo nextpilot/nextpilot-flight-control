@@ -17,7 +17,7 @@
 #include <containers/Array.hpp>
 #include "util.h"
 #include <px4_platform_common/defines.h>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <version/version.h>
 #include <parameters/param.h>
 #include <px4_platform_common/printload.h>

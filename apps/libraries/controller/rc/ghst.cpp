@@ -29,7 +29,7 @@
 #define GHST_VERBOSE(...)
 #endif
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <termios.h>
 #include <string.h>
 #include <unistd.h>

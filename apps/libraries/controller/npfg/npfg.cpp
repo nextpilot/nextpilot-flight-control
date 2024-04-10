@@ -17,8 +17,8 @@
  */
 
 #include "npfg.hpp"
-#include <lib/geo/geo.h>
-#include <px4_platform_common/defines.h>
+#include <geo.h>
+#include <defines.h>
 #include <float.h>
 
 using matrix::Vector2d;

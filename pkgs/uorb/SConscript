@@ -36,22 +36,14 @@ def gen_uorb_msgs():
     subprocess.call(cmd, cwd=msg_path)
 
 
-objs = []
+# 生成uorb消息h/cpp
+gen_uorb_msgs()
 
-if GetDepend(["PKG_USING_UORB"]):
+inc = [cwd]
+src = Glob("*.cpp") + Glob("topics/*.cpp")
 
-    gen_uorb_msgs()
 
-    src = Glob("*.cpp") + Glob("topics/*.cpp")
-    inc = [cwd]
+objs = DefineGroup("pkg/uorb", src, depend=["PKG_USING_UORB"], CPPPATH=inc)
 
-    objs += DefineGroup("pkg/uorb", src, depend=[""], CPPPATH=inc)
-
-    for d in os.listdir(cwd):
-        path = os.path.join(cwd, d)
-        if os.path.isfile(os.path.join(path, "SConscript")):
-            objs += SConscript(os.path.join(d, "SConscript"))
-else:
-    objs = []
 
 Return("objs")

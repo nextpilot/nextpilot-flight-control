@@ -26,7 +26,7 @@
 #include <float.h>
 
 #include <containers/LockGuard.hpp>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <lib/mathlib/mathlib.h>
 #include <lib/perf/perf_counter.h>
 #include <lib/systemlib/mavlink_log.h>

@@ -29,7 +29,7 @@
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/wind.h>
 #include <matrix/math.hpp>
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 
 class Navigator;
 

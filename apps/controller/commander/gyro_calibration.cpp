@@ -25,7 +25,7 @@
 #include <px4_platform_common/defines.h>
 #include <px4_platform_common/time.h>
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <lib/mathlib/math/filter/MedianFilter.hpp>
 #include <lib/mathlib/mathlib.h>
 #include <lib/parameters/param.h>

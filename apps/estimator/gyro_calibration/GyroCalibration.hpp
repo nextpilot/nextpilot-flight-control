@@ -15,7 +15,7 @@
 #include <px4_platform_common/module_params.hpp>
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <lib/mathlib/math/WelfordMeanVector.hpp>
 #include <lib/perf/perf_counter.h>
 #include <lib/sensor_calibration/Gyroscope.hpp>

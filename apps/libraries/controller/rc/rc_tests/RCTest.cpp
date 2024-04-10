@@ -6,7 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 #define DSM_DEBUG
 #include <lib/rc/sbus.h>
@@ -525,4 +525,3 @@ bool RCTest::sumdTest()
 
 
 ut_declare_test_c(rc_tests_main, RCTest)
-

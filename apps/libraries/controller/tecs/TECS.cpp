@@ -13,12 +13,12 @@
  * @author Paul Riseborough
  */
 
+#define LOG_TAG "TECS"
+
+#include <rtdbg.h>
 #include "TECS.hpp"
-
-#include <lib/geo/geo.h>
-
-#include <px4_platform_common/defines.h>
-
+#include <geo/geo.h>
+#include <defines.h>
 #include "matrix/Matrix.hpp"
 #include "matrix/Vector2.hpp"
 

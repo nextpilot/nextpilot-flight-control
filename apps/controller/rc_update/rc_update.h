@@ -24,7 +24,7 @@
 // #include <px4_platform_common/module_params.hpp>
 // #include <px4_platform_common/posix.h>
 // #include <px4_platform_common/px4_work_queue/WorkItem.hpp>
-// #include <drivers/drv_hrt.h>
+// #include <hrtimer.h>
 // #include <lib/hysteresis/hysteresis.h>
 // #include <lib/mathlib/mathlib.h>
 // #include <lib/perf/perf_counter.h>

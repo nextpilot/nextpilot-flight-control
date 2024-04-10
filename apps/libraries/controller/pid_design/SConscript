@@ -2,20 +2,12 @@ import os
 import rtconfig
 from building import *
 
-objs = []
+cwd = GetCurrentDir()
 
-if GetDepend(["PKG_USING_PID_DESIGN"]):
-    cwd = GetCurrentDir()
-    src = []
-    inc = [cwd]
+inc = [cwd]
+src = []
 
-    objs += DefineGroup("lib/control", src, depend=[""], CPPPATH=inc)
+objs = DefineGroup("lib/control", src, depend=["PKG_USING_PID_DESIGN"], CPPPATH=inc)
 
-    for d in os.listdir(cwd):
-        path = os.path.join(cwd, d)
-        if os.path.isfile(os.path.join(path, "SConscript")):
-            objs += SConscript(os.path.join(d, "SConscript"))
-else:
-    objs = []
 
 Return("objs")

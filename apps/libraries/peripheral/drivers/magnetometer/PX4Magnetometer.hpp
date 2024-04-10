@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <lib/conversion/rotation.h>
 #include <uORB/PublicationMulti.hpp>
 #include <uORB/topics/sensor_mag.h>

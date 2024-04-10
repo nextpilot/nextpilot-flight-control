@@ -2,19 +2,13 @@ import os
 import rtconfig
 from building import *
 
-objs = []
 
-if GetDepend([""]):
-    cwd = GetCurrentDir()
-    src = []
-    inc = [cwd]
-    objs += DefineGroup("pkg/include", src, depend=[""], CPPPATH=inc)
+cwd = GetCurrentDir()
 
-    for d in os.listdir(cwd):
-        path = os.path.join(cwd, d)
-        if os.path.isfile(os.path.join(path, "SConscript")):
-            objs += SConscript(os.path.join(d, "SConscript"))
-else:
-    objs = []
+inc = [cwd]
+src = []
+
+objs = DefineGroup("pkg/include", src, depend=[""], CPPPATH=inc)
+
 
 Return("objs")

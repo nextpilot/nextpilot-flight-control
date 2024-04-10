@@ -3,6 +3,7 @@ import rtconfig
 from building import *
 
 cwd = GetCurrentDir()
+
 inc = [cwd]
 src = []
 

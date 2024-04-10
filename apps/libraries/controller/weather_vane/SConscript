@@ -2,20 +2,14 @@ import os
 import rtconfig
 from building import *
 
-objs = []
 
-if GetDepend(["PKG_USING_WEATHER_VANE"]):
-    cwd = GetCurrentDir()
-    src = ["WeatherVane.cpp"]
-    inc = [cwd]
+cwd = GetCurrentDir()
 
-    objs += DefineGroup("lib/control", src, depend=[""], CPPPATH=inc)
+inc = [cwd]
+src = ["WeatherVane.cpp"]
 
-    for d in os.listdir(cwd):
-        path = os.path.join(cwd, d)
-        if os.path.isfile(os.path.join(path, "SConscript")):
-            objs += SConscript(os.path.join(d, "SConscript"))
-else:
-    objs = []
+
+objs = DefineGroup("lib/control", src, depend=["PKG_USING_WEATHER_VANE"], CPPPATH=inc)
+
 
 Return("objs")

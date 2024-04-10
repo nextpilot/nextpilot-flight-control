@@ -2,15 +2,13 @@ import os
 import sys
 from building import *
 
-objs = []
 
-if GetDepend(["FCS_USING_LAND_DETECTOR"]):
-    cwd = GetCurrentDir()
-    inc = []
-    src = Glob("*.cpp", exclude="*_test.cpp")
+cwd = GetCurrentDir()
 
-    objs = DefineGroup("fcs/land_detector", src, depend=[""])
-else:
-    pass
+inc = []
+src = Glob("*.cpp", exclude="*_test.cpp")
+
+objs = DefineGroup("fcs/land_detector", src, depend=["FCS_USING_LAND_DETECTOR"])
+
 
 Return("objs")

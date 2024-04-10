@@ -21,8 +21,8 @@
 #include <ctype.h>
 
 #include <dataman/dataman.h>
-#include <drivers/drv_hrt.h>
-#include <lib/geo/geo.h>
+#include <hrtimer.h>
+#include <geo/geo.h>
 #include <systemlib/mavlink_log.h>
 #include <px4_platform_common/events.h>
 

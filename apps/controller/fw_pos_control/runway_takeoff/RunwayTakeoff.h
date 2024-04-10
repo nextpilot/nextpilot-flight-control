@@ -22,10 +22,12 @@
 #include <stdint.h>
 #include <math.h>
 
-#include <drivers/drv_hrt.h>
-#include <px4_platform_common/module_params.hpp>
+#include <hrtimer.h>
+#include <module_params.hpp>
 #include <mathlib/mathlib.h>
 #include <matrix/math.hpp>
+
+using namespace nextpilot::global_params;
 
 namespace runwaytakeoff {
 

@@ -1,0 +1,3 @@
+menuconfig PKG_USING_RATE_CONTROL
+    bool "rate_control: PID 3 axis angular rate / angular velocity control"
+    default n

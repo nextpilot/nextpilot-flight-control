@@ -1,5 +1,5 @@
-menuconfig PKG_USING_BEZIER
-    bool "bezier: N-order Bezier library designed for time-aware trajectory tracking"
+menuconfig PKG_USING_NPFG
+    bool "npfg: Lateral-directional nonlinear path following guidance logic with excess wind handling"
     select PKG_USING_MATRIX
 
     default n

@@ -10,41 +10,42 @@
 
 #pragma once
 
-#include <lib/rate_control/rate_control.hpp>
+#include "nextpilot.h"
+#include <rate_control/rate_control.hpp>
 
-#include <drivers/drv_hrt.h>
-#include <lib/mathlib/mathlib.h>
-#include <lib/parameters/param.h>
-#include <lib/perf/perf_counter.h>
-#include <lib/slew_rate/SlewRate.hpp>
-#include <matrix/math.hpp>
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.hpp>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/tasks.h>
-#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
-#include <uORB/Publication.hpp>
-#include <uORB/PublicationMulti.hpp>
-#include <uORB/Subscription.hpp>
-#include <uORB/SubscriptionMultiArray.hpp>
-#include <uORB/SubscriptionCallback.hpp>
-#include <uORB/topics/actuator_controls_status.h>
-#include <uORB/topics/airspeed_validated.h>
-#include <uORB/topics/battery_status.h>
-#include <uORB/topics/control_allocator_status.h>
-#include <uORB/topics/manual_control_setpoint.h>
-#include <uORB/topics/normalized_unsigned_setpoint.h>
-#include <uORB/topics/parameter_update.h>
-#include <uORB/topics/rate_ctrl_status.h>
-#include <uORB/topics/vehicle_angular_velocity.h>
-#include <uORB/topics/vehicle_control_mode.h>
-#include <uORB/topics/vehicle_land_detected.h>
-#include <uORB/topics/vehicle_rates_setpoint.h>
-#include <uORB/topics/vehicle_status.h>
-#include <uORB/topics/vehicle_thrust_setpoint.h>
-#include <uORB/topics/vehicle_torque_setpoint.h>
+// #include <hrtimer.h>
+// #include <lib/mathlib/mathlib.h>
+// #include <lib/parameters/param.h>
+// #include <lib/perf/perf_counter.h>
+#include <slew_rate/SlewRate.hpp>
+// #include <matrix/math.hpp>
+// #include <px4_platform_common/px4_config.h>
+// #include <px4_platform_common/defines.h>
+// #include <px4_platform_common/module.h>
+// #include <px4_platform_common/module_params.hpp>
+// #include <px4_platform_common/posix.h>
+// #include <px4_platform_common/tasks.h>
+// #include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
+// #include <uORB/Publication.hpp>
+// #include <uORB/PublicationMulti.hpp>
+// #include <uORB/Subscription.hpp>
+// #include <uORB/SubscriptionMultiArray.hpp>
+// #include <uORB/SubscriptionCallback.hpp>
+// #include <uORB/topics/actuator_controls_status.h>
+// #include <uORB/topics/airspeed_validated.h>
+// #include <uORB/topics/battery_status.h>
+// #include <uORB/topics/control_allocator_status.h>
+// #include <uORB/topics/manual_control_setpoint.h>
+// #include <uORB/topics/normalized_unsigned_setpoint.h>
+// #include <uORB/topics/parameter_update.h>
+// #include <uORB/topics/rate_ctrl_status.h>
+// #include <uORB/topics/vehicle_angular_velocity.h>
+// #include <uORB/topics/vehicle_control_mode.h>
+// #include <uORB/topics/vehicle_land_detected.h>
+// #include <uORB/topics/vehicle_rates_setpoint.h>
+// #include <uORB/topics/vehicle_status.h>
+// #include <uORB/topics/vehicle_thrust_setpoint.h>
+// #include <uORB/topics/vehicle_torque_setpoint.h>
 
 using matrix::Eulerf;
 using matrix::Quatf;
@@ -59,7 +60,7 @@ public:
     ~FixedwingRateControl() override;
 
     /** @see ModuleCommand */
-    static int *instantiate(int argc, char *argv[]);
+    static FixedwingRateControl *instantiate(int argc, char *argv[]);
 
     /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
@@ -67,7 +68,7 @@ public:
     /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    bool init();
+    int init() override;
 
 private:
     void Run() override;

@@ -2,20 +2,13 @@ import os
 import rtconfig
 from building import *
 
-objs = []
 
-if GetDepend(["PKG_USING_SYSTEM_IDENTIFICATION"]):
-    cwd = GetCurrentDir()
-    src = Glob("*.cpp", exclude="*_test.cpp")
-    inc = [cwd]
+cwd = GetCurrentDir()
 
-    objs += DefineGroup("lib/control", src, depend=[""], CPPPATH=inc)
+src = Glob("*.cpp", exclude="*_test.cpp")
+inc = [cwd]
 
-    for d in os.listdir(cwd):
-        path = os.path.join(cwd, d)
-        if os.path.isfile(os.path.join(path, "SConscript")):
-            objs += SConscript(os.path.join(d, "SConscript"))
-else:
-    objs = []
+objs = DefineGroup("lib/control", src, depend=["PKG_USING_SYSTEM_IDENTIFICATION"], CPPPATH=inc)
+
 
 Return("objs")

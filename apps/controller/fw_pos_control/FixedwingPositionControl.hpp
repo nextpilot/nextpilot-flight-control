@@ -26,51 +26,51 @@
 #include "launchdetection/LaunchDetector.h"
 #include "runway_takeoff/RunwayTakeoff.h"
 
-#include <float.h>
-
-#include <drivers/drv_hrt.h>
-#include <lib/geo/geo.h>
-#include <lib/npfg/npfg.hpp>
-#include <lib/tecs/TECS.hpp>
-#include <lib/mathlib/mathlib.h>
-#include <lib/perf/perf_counter.h>
-#include <lib/slew_rate/SlewRate.hpp>
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.hpp>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/px4_work_queue/WorkItem.hpp>
-#include <uORB/Publication.hpp>
-#include <uORB/PublicationMulti.hpp>
-#include <uORB/Subscription.hpp>
-#include <uORB/SubscriptionCallback.hpp>
-#include <uORB/topics/airspeed_validated.h>
-#include <uORB/topics/landing_gear.h>
-#include <uORB/topics/launch_detection_status.h>
-#include <uORB/topics/manual_control_setpoint.h>
-#include <uORB/topics/normalized_unsigned_setpoint.h>
-#include <uORB/topics/npfg_status.h>
-#include <uORB/topics/parameter_update.h>
-#include <uORB/topics/position_controller_landing_status.h>
-#include <uORB/topics/position_controller_status.h>
-#include <uORB/topics/position_setpoint_triplet.h>
-#include <uORB/topics/tecs_status.h>
-#include <uORB/topics/trajectory_setpoint.h>
-#include <uORB/topics/vehicle_air_data.h>
-#include <uORB/topics/vehicle_angular_velocity.h>
-#include <uORB/topics/vehicle_attitude.h>
-#include <uORB/topics/vehicle_attitude_setpoint.h>
-#include <uORB/topics/vehicle_command.h>
-#include <uORB/topics/vehicle_control_mode.h>
-#include <uORB/topics/vehicle_global_position.h>
-#include <uORB/topics/vehicle_land_detected.h>
-#include <uORB/topics/vehicle_local_position.h>
-#include <uORB/topics/vehicle_local_position_setpoint.h>
-#include <uORB/topics/vehicle_status.h>
-#include <uORB/topics/wind.h>
-#include <uORB/topics/orbit_status.h>
-#include <uORB/uORB.h>
+#include "nextpilot.h"
+// #include <float.h>
+// #include <hrtimer.h>
+// #include <geo/geo.h>
+#include <npfg/npfg.hpp>
+#include <tecs/TECS.hpp>
+// #include <lib/mathlib/mathlib.h>
+// #include <lib/perf/perf_counter.h>
+#include <slew_rate/SlewRate.hpp>
+// #include <px4_platform_common/px4_config.h>
+// #include <px4_platform_common/defines.h>
+// #include <px4_platform_common/module.h>
+// #include <px4_platform_common/module_params.hpp>
+// #include <px4_platform_common/posix.h>
+// #include <px4_platform_common/px4_work_queue/WorkItem.hpp>
+// #include <uORB/Publication.hpp>
+// #include <uORB/PublicationMulti.hpp>
+// #include <uORB/Subscription.hpp>
+// #include <uORB/SubscriptionCallback.hpp>
+// #include <uORB/topics/airspeed_validated.h>
+// #include <uORB/topics/landing_gear.h>
+// #include <uORB/topics/launch_detection_status.h>
+// #include <uORB/topics/manual_control_setpoint.h>
+// #include <uORB/topics/normalized_unsigned_setpoint.h>
+// #include <uORB/topics/npfg_status.h>
+// #include <uORB/topics/parameter_update.h>
+// #include <uORB/topics/position_controller_landing_status.h>
+// #include <uORB/topics/position_controller_status.h>
+// #include <uORB/topics/position_setpoint_triplet.h>
+// #include <uORB/topics/tecs_status.h>
+// #include <uORB/topics/trajectory_setpoint.h>
+// #include <uORB/topics/vehicle_air_data.h>
+// #include <uORB/topics/vehicle_angular_velocity.h>
+// #include <uORB/topics/vehicle_attitude.h>
+// #include <uORB/topics/vehicle_attitude_setpoint.h>
+// #include <uORB/topics/vehicle_command.h>
+// #include <uORB/topics/vehicle_control_mode.h>
+// #include <uORB/topics/vehicle_global_position.h>
+// #include <uORB/topics/vehicle_land_detected.h>
+// #include <uORB/topics/vehicle_local_position.h>
+// #include <uORB/topics/vehicle_local_position_setpoint.h>
+// #include <uORB/topics/vehicle_status.h>
+// #include <uORB/topics/wind.h>
+// #include <uORB/topics/orbit_status.h>
+// #include <uORB/uORB.h>
 
 using namespace launchdetection;
 using namespace runwaytakeoff;
@@ -148,7 +148,7 @@ public:
     ~FixedwingPositionControl() override;
 
     /** @see ModuleCommand */
-    static int *instantiate(int argc, char *argv[]);
+    static FixedwingPositionControl *instantiate(int argc, char *argv[]);
 
     /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);

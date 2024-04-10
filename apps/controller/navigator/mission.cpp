@@ -26,16 +26,16 @@
 #include "navigator.h"
 
 #include <string.h>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <dataman/dataman.h>
 #include <systemlib/mavlink_log.h>
 #include <systemlib/err.h>
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 #include <navigator/navigation.h>
 #include <uORB/uORB.h>
 #include <uORB/topics/mission.h>
 #include <uORB/topics/mission_result.h>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <px4_platform_common/events.h>
 
 using namespace time_literals;

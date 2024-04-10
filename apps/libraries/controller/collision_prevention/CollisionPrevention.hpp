@@ -21,7 +21,7 @@
 #include <float.h>
 
 #include <commander/px4_custom_mode.h>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <mathlib/mathlib.h>
 #include <matrix/matrix/math.hpp>
 #include <px4_platform_common/module_params.hpp>

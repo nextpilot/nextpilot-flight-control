@@ -1,0 +1,13 @@
+import os
+import rtconfig
+from building import *
+
+cwd = GetCurrentDir()
+
+inc = [cwd]
+src = ["rate_control.cpp"]
+
+objs = DefineGroup("lib/control", src, depend=["PKG_USING_RATE_CONTROL"], CPPPATH=inc)
+
+
+Return("objs")

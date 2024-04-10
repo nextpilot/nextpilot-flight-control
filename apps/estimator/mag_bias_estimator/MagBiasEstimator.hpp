@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <lib/field_sensor_bias_estimator/FieldSensorBiasEstimator.hpp>
 #include <lib/mathlib/mathlib.h>
 #include <lib/perf/perf_counter.h>

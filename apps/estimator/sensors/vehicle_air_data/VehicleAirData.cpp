@@ -12,7 +12,7 @@
 
 #include <px4_platform_common/log.h>
 #include <px4_platform_common/events.h>
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 
 namespace sensors {
 

@@ -17,7 +17,7 @@
 #include "PositionControl/PositionControl.hpp"
 #include "Takeoff/Takeoff.hpp"
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <lib/controllib/blocks.hpp>
 #include <lib/perf/perf_counter.h>
 #include <lib/slew_rate/SlewRateYaw.hpp>

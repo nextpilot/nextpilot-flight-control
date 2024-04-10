@@ -13,7 +13,7 @@
 #include "FlightTask.hpp"
 #include "FlightTasks_generated.hpp"
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <px4_platform_common/module.h>
 #include <px4_platform_common/module_params.hpp>
 #include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>

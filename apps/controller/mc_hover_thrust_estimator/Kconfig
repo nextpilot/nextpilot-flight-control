@@ -1,4 +1,4 @@
-menuconfig PKG_USING_MC_HOVER_THRUST_ESTIMATOR
+menuconfig FCS_USING_MC_HOVER_THRUST_ESTIMATOR
 	bool "mc_hover_thrust_estimator"
 	default n
 	---help---

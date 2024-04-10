@@ -20,10 +20,10 @@
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/time.h>
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <drivers/drv_tone_alarm.h>
 
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 #include <lib/mathlib/mathlib.h>
 #include <lib/systemlib/mavlink_log.h>
 #include <matrix/math.hpp>

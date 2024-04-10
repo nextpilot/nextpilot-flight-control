@@ -25,9 +25,9 @@
 #include <uORB/topics/parameter_update.h>
 #include <uORB/PublicationMulti.hpp>
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <lib/mathlib/math/filter/AlphaFilter.hpp>
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 #include <mathlib/mathlib.h>
 #include <px4_platform_common/module_params.hpp>
 #include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>

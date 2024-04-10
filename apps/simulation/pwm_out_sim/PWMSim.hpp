@@ -11,7 +11,7 @@
 #pragma once
 
 #include <drivers/device/device.h>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <drivers/drv_pwm_output.h>
 #include <lib/mixer_module/mixer_module.hpp>
 #include <px4_platform_common/px4_config.h>

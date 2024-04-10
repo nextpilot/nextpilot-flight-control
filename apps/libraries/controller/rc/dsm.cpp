@@ -30,7 +30,7 @@
 #include "dsm.h"
 #include "spektrum_rssi.h"
 #include "common_rc.h"
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 #include <include/containers/Bitset.hpp>
 

@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 #include <mathlib/mathlib.h>
 #include <matrix/math.hpp>

@@ -21,7 +21,7 @@
 
 #include <px4_platform_common/events.h>
 #include <px4_platform_common/module_params.hpp>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <mathlib/mathlib.h>
 #include <matrix/math.hpp>
 #include <uORB/Publication.hpp>

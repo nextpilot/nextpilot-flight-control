@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <uORB/Publication.hpp>
 
 // The order of these cannot change since the calibration calculations depend on them in this order

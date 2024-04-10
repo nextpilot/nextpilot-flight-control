@@ -38,8 +38,8 @@
 
 #include <matrix/matrix/math.hpp> // matrix, vectors, dcm, quaterions
 #include <conversion/rotation.h>  // math::radians,
-#include <lib/geo/geo.h>          // to get the physical constants
-#include <drivers/drv_hrt.h>      // to get the real time
+#include <geo/geo.h>              // to get the physical constants
+#include <hrtimer.h>              // to get the real time
 #include <lib/drivers/accelerometer/PX4Accelerometer.hpp>
 #include <lib/drivers/gyroscope/PX4Gyroscope.hpp>
 #include <lib/perf/perf_counter.h>

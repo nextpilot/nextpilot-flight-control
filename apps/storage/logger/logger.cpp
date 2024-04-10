@@ -27,7 +27,7 @@
 #include <uORB/topics/vehicle_command_ack.h>
 #include <uORB/topics/battery_status.h>
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <mathlib/math/Limits.hpp>
 #include <px4_platform/cpuload.h>
 #include <px4_platform_common/getopt.h>

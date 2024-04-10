@@ -26,7 +26,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <systemlib/err.h>
 
 #include "LandingTargetEstimator.h"

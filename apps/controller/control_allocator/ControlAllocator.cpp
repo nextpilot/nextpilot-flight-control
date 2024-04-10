@@ -18,7 +18,7 @@
 
 #include "ControlAllocator.hpp"
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <circuit_breaker/circuit_breaker.h>
 #include <mathlib/math/Limits.hpp>
 #include <mathlib/math/Functions.hpp>

@@ -26,8 +26,8 @@
 #include <sys/stat.h>
 
 #include <dataman/dataman.h>
-#include <drivers/drv_hrt.h>
-#include <lib/geo/geo.h>
+#include <hrtimer.h>
+#include <geo/geo.h>
 #include <lib/adsb/AdsbConflict.h>
 #include <lib/mathlib/mathlib.h>
 #include <px4_platform_common/px4_config.h>

@@ -10,7 +10,7 @@
 
 #include "GyroFFT.hpp"
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <mathlib/math/Limits.hpp>
 #include <mathlib/math/Functions.hpp>
 

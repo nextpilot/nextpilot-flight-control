@@ -10,7 +10,7 @@
 
 #include "AirspeedValidator.hpp"
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <lib/wind_estimator/WindEstimator.hpp>
 #include <matrix/math.hpp>
 #include <parameters/param.h>

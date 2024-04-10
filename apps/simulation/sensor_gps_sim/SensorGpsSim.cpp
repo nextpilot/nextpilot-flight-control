@@ -12,7 +12,7 @@
 
 #include <drivers/drv_sensor.h>
 #include <lib/drivers/device/Device.hpp>
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 
 using namespace matrix;
 

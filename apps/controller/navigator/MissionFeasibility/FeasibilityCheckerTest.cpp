@@ -10,7 +10,7 @@
 
 #include <gtest/gtest.h>
 #include "FeasibilityChecker.hpp"
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 
 // to run: make tests TESTFILTER=FeasibilityChecker
 class FeasibilityCheckerTest : public ::testing::Test {

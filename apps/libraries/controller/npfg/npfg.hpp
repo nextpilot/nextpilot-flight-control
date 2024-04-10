@@ -38,7 +38,7 @@
 #define NPFG_H_
 
 #include <matrix/math.hpp>
-#include <lib/mathlib/mathlib.h>
+#include <mathlib/mathlib.h>
 
 /*
  * NPFG

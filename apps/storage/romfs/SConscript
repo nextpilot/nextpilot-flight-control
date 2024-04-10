@@ -3,21 +3,18 @@ import sys
 from building import *
 
 
-objs = []
+cwd = GetCurrentDir()
 
-if GetDepend(["SYS_USING_ROMFS"]):
-    cwd = GetCurrentDir()
-    # 生成romfs.c文件
-    mkromfs = os.path.abspath(os.path.join(cwd, r"../../../rtos/rt-thread/tools/mkromfs.py"))
-    rootpath = os.path.abspath(os.path.join(cwd, "root"))
+# 生成romfs.c文件
+mkromfs = os.path.abspath(os.path.join(cwd, r"../../../rtos/rt-thread/tools/mkromfs.py"))
+rootpath = os.path.abspath(os.path.join(cwd, "root"))
+pycmd = os.path.basename(sys.executable)
+os.system("%s %s %s romfs.c" % (pycmd, mkromfs, rootpath))
 
-    pycmd = os.path.basename(sys.executable)
+inc = []
+src = ["romfs.c", "romfs_mnt.c"]
 
-    os.system("%s %s %s romfs.c" % (pycmd, mkromfs, rootpath))
+objs = DefineGroup("rtt/Filesystem", src, depend=["SYS_USING_ROMFS"])
 
-    src = ["romfs.c", "romfs_mnt.c"]
-    objs = DefineGroup("rtt/Filesystem", src, depend=[""])
-else:
-    pass
 
 Return("objs")

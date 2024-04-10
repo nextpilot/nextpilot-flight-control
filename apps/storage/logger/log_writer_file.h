@@ -14,7 +14,7 @@
 #include <px4_platform_common/atomic.h>
 #include <stdint.h>
 #include <pthread.h>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <perf/perf_counter.h>
 #include <px4_platform_common/crypto.h>
 

@@ -1,0 +1,17 @@
+import os
+import sys
+from building import *
+
+cwd = GetCurrentDir()
+
+inc = []
+
+src = (
+    Glob("*.cpp", exclude="*_test.cpp")
+    + Glob("ControlAllocation/*.cpp", exclude="*Test.cpp")
+    + Glob("ActuatorEffectiveness/*.cpp", exclude="*Test.cpp")
+)
+
+objs = DefineGroup("fcs/control_allocator", src, depend=["PKG_USING_CONTROL_ALLOCATOR"])
+
+Return("objs")

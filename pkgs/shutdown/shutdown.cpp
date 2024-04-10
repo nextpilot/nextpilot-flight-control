@@ -19,7 +19,7 @@
 // #include <platform_common/workqueue.h>
 // #include <platform_common/shutdown.h>
 // #include <platform_common/tasks.h>
-// #include <drivers/drv_hrt.h>
+// #include <hrtimer.h>
 #include <rtdbg.h>
 
 #ifndef MODULE_NAME

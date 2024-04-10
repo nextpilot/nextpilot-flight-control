@@ -2,15 +2,12 @@ import os
 import sys
 from building import *
 
-objs = []
 
-if GetDepend(["FCS_USING_MANUAL_CONTROL"]):
-    cwd = GetCurrentDir()
-    inc = []
-    src = ["ManualControl.cpp", "ManualControlSelector.cpp"]
+cwd = GetCurrentDir()
 
-    objs = DefineGroup("fcs/manual_control", src, depend=[""])
-else:
-    pass
+inc = []
+src = ["ManualControl.cpp", "ManualControlSelector.cpp"]
+
+objs = DefineGroup("fcs/manual_control", src, depend=["FCS_USING_MANUAL_CONTROL"])
 
 Return("objs")

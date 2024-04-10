@@ -12,7 +12,7 @@
 
 #include <uORB/Subscription.hpp>
 
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 #include <lib/mathlib/mathlib.h>
 
 #include <px4_platform_common/getopt.h>

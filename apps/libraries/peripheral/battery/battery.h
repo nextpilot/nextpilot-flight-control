@@ -27,7 +27,7 @@
 #include <px4_platform_common/module_params.hpp>
 #include <matrix/math.hpp>
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <lib/parameters/param.h>
 #include <lib/mathlib/math/filter/AlphaFilter.hpp>
 #include <uORB/PublicationMulti.hpp>

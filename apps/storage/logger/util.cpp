@@ -19,7 +19,7 @@
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/sensor_gps.h>
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <px4_platform_common/events.h>
 #include <px4_platform_common/log.h>
 #include <px4_platform_common/time.h>

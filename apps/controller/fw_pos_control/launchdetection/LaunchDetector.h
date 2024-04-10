@@ -18,8 +18,10 @@
 #ifndef LAUNCHDETECTOR_H
 #define LAUNCHDETECTOR_H
 
-#include <px4_platform_common/module_params.hpp>
+#include <module_params.hpp>
 #include <uORB/topics/launch_detection_status.h>
+
+using namespace nextpilot::global_params;
 
 namespace launchdetection {
 
@@ -54,7 +56,7 @@ public:
      *
      * @return uint (aligned with launch_detection_status_s::launch_detection_state)
      */
-    uint getLaunchDetected() const;
+    uint8_t getLaunchDetected() const;
 
     /**
      * @brief Forces state of launch detection state machine to STATE_FLYING.
@@ -82,7 +84,7 @@ private:
     /**
      * Current state of the launch detection state machine [launch_detection_status_s::launch_detection_state]
      */
-    uint state_{launch_detection_status_s::STATE_WAITING_FOR_LAUNCH};
+    uint8_t state_{launch_detection_status_s::STATE_WAITING_FOR_LAUNCH};
 
     DEFINE_PARAMETERS(
         (ParamFloat<params_id::FW_LAUN_AC_THLD>)param_fw_laun_ac_thld_,

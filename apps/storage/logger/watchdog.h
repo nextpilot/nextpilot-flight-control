@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 #ifdef __PX4_NUTTX
 #include <nuttx/sched.h>

@@ -25,7 +25,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <math.h>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/differential_pressure.h>
 #include <systemlib/mavlink_log.h>

@@ -15,7 +15,8 @@ def gen_global_params():
     src_path = set()
     for root, dirs, files in os.walk(prj_root):
         for file in files:
-            if file.endswith("params.c") and "rtos" not in root:
+
+            if (file.endswith("params.c") or file.endswith("parameters.c")) and "rtos" not in root:
                 src_path.add(root)
 
     # 生成parameters.xml文件
@@ -50,24 +51,32 @@ def gen_global_params():
     subprocess.call(cmd)
 
 
-if GetDepend(["PKG_USING_PARAM"]):
-    gen_global_params()
+gen_global_params()
 
-    src = [
-        "param_interface.c",
-        "param_storage.c",
-        "param.c",
-    ]
-    inc = [cwd, os.path.join(cwd, "wrapper")]
+inc = [cwd, os.path.join(cwd, "interface"), os.path.join(cwd, "storage"), os.path.join(cwd, "wrapper")]
+src = [
+    "param_interface.c",
+    "param_storage.c",
+    "param.c",
+]
 
-    objs += DefineGroup("pkg/param", src, depend=[""], CPPPATH=inc)
+if GetDepend(["PARAM_USING_STORAGE_FILE"]):
+    src += ["storage/param_storage_file.c"]
 
-    for d in os.listdir(cwd):
-        path = os.path.join(cwd, d)
-        if os.path.isfile(os.path.join(path, "SConscript")):
-            objs += SConscript(os.path.join(d, "SConscript"))
-else:
-    objs = []
+if GetDepend(["PARAM_USING_STORAGE_FM25V02"]):
+    src += ["storage/param_storage_fm25v02.c"]
+
+if GetDepend(["PARAM_USING_GLOBAL_AUTOGEN"]):
+    src += ["interface/param_global_autogen.cpp"]
+
+if GetDepend(["PARAM_USING_LINKER_SECTION"]):
+    src += ["interface/param_linker_section.cpp"]
+
+if GetDepend(["PARAM_USING_SIMULINK_CAPI"]):
+    src += ["interface/param_simulink_capi.cpp"]
+
+
+objs = DefineGroup("pkg/param", src, depend=["PKG_USING_PARAM"], CPPPATH=inc)
 
 
 Return("objs")

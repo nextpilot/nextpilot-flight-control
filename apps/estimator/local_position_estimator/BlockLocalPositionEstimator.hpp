@@ -1,11 +1,11 @@
 #pragma once
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <px4_platform_common/module.h>
 #include <px4_platform_common/module_params.hpp>
 #include <px4_platform_common/posix.h>
 #include <lib/controllib/blocks.hpp>
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 #include <lib/mathlib/mathlib.h>
 #include <matrix/Matrix.hpp>
 

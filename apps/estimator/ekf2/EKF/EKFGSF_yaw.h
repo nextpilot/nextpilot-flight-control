@@ -11,7 +11,7 @@
 #ifndef EKF_EKFGSF_YAW_H
 #define EKF_EKFGSF_YAW_H
 
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 #include <matrix/math.hpp>
 #include <mathlib/mathlib.h>
 

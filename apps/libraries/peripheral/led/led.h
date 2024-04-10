@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <drivers/drv_led.h>
 #include <px4_platform_common/module_params.hpp>
 #include <lib/parameters/param.h>

@@ -14,7 +14,7 @@
 #include <motion_planning/VelocitySmoothing.hpp>
 
 #include <matrix/matrix/math.hpp>
-#include <px4_defines.h>
+// #include <px4_defines.h>
 
 using matrix::Vector2f;
 using matrix::Vector3f;

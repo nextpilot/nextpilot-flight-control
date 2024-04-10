@@ -24,7 +24,7 @@
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/tasks.h>
 #include <px4_platform_common/getopt.h>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <lib/parameters/param.h>
 #include <lib/perf/perf_counter.h>
 #include <stdlib.h>

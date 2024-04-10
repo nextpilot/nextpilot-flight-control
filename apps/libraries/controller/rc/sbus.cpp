@@ -26,7 +26,7 @@
 
 #include "sbus.h"
 #include "common_rc.h"
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <lib/mathlib/mathlib.h>
 
 using namespace time_literals;

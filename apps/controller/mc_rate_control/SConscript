@@ -2,15 +2,12 @@ import os
 import sys
 from building import *
 
-objs = []
 
-if GetDepend(["FCS_USING_MC_RATE_CONTROL"]):
-    cwd = GetCurrentDir()
-    inc = []
-    src = Glob("*.cpp") + Glob("rate_control/rate_control.cpp")
+cwd = GetCurrentDir()
 
-    objs = DefineGroup("fcs/mc_rate_control", src, depend=[""])
-else:
-    pass
+inc = []
+src = Glob("*.cpp")
+
+objs = DefineGroup("fcs/mc_rate_control", src, depend=["FCS_USING_MC_RATE_CONTROL"])
 
 Return("objs")

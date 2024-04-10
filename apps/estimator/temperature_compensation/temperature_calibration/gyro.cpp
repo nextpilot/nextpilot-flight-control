@@ -19,7 +19,7 @@
 #include <mathlib/mathlib.h>
 #include <uORB/topics/sensor_gyro.h>
 #include "gyro.h"
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 TemperatureCalibrationGyro::TemperatureCalibrationGyro(float min_temperature_rise, float min_start_temperature,
                                                        float max_start_temperature, int gyro_subs[], int num_gyros) :

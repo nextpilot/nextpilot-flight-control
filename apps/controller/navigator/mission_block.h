@@ -21,7 +21,7 @@
 #include "navigator_mode.h"
 #include "navigation.h"
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <systemlib/mavlink_log.h>
 #include <uORB/Publication.hpp>
 #include <uORB/topics/mission.h>

@@ -19,7 +19,7 @@
 #include <px4_platform_common/module_params.hpp>
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 #include <uORB/PublicationMulti.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/SubscriptionInterval.hpp>

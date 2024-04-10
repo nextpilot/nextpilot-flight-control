@@ -24,7 +24,7 @@
 #include "navigator.h"
 
 #include <drivers/drv_pwm_output.h>
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 #include <lib/mathlib/mathlib.h>
 #include <systemlib/mavlink_log.h>
 #include <uORB/Subscription.hpp>

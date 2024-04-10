@@ -16,28 +16,29 @@
 
 #pragma once
 
-#include <drivers/drv_hrt.h>
-#include <lib/mathlib/math/filter/AlphaFilter.hpp>
-#include <lib/perf/perf_counter.h>
-#include <lib/pid_design/pid_design.hpp>
-#include <lib/system_identification/system_identification.hpp>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.hpp>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/px4_work_queue/WorkItem.hpp>
-#include <uORB/Publication.hpp>
-#include <uORB/Subscription.hpp>
-#include <uORB/SubscriptionCallback.hpp>
-#include <uORB/topics/actuator_controls_status.h>
-#include <uORB/topics/manual_control_setpoint.h>
-#include <uORB/topics/parameter_update.h>
-#include <uORB/topics/autotune_attitude_control_status.h>
-#include <uORB/topics/vehicle_angular_velocity.h>
-#include <uORB/topics/vehicle_status.h>
-#include <uORB/topics/vehicle_torque_setpoint.h>
-#include <mathlib/mathlib.h>
-#include <lib/systemlib/mavlink_log.h>
+#include "nextpilot.h"
+// #include <hrtimer.h>
+// #include <lib/mathlib/math/filter/AlphaFilter.hpp>
+// #include <lib/perf/perf_counter.h>
+#include <pid_design/pid_design.hpp>
+#include <system_identification/system_identification.hpp>
+// #include <px4_platform_common/defines.h>
+// #include <px4_platform_common/module.h>
+// #include <px4_platform_common/module_params.hpp>
+// #include <px4_platform_common/posix.h>
+// #include <px4_platform_common/px4_work_queue/WorkItem.hpp>
+// #include <uORB/Publication.hpp>
+// #include <uORB/Subscription.hpp>
+// #include <uORB/SubscriptionCallback.hpp>
+// #include <uORB/topics/actuator_controls_status.h>
+// #include <uORB/topics/manual_control_setpoint.h>
+// #include <uORB/topics/parameter_update.h>
+// #include <uORB/topics/autotune_attitude_control_status.h>
+// #include <uORB/topics/vehicle_angular_velocity.h>
+// #include <uORB/topics/vehicle_status.h>
+// #include <uORB/topics/vehicle_torque_setpoint.h>
+// #include <mathlib/mathlib.h>
+// #include <lib/systemlib/mavlink_log.h>
 
 using namespace time_literals;
 
@@ -47,7 +48,7 @@ public:
     ~FwAutotuneAttitudeControl() override;
 
     /** @see ModuleCommand */
-    static int *instantiate(int argc, char *argv[]);
+    static FwAutotuneAttitudeControl *instantiate(int argc, char *argv[]);
 
     /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);

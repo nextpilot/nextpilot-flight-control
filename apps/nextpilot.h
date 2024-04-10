@@ -110,6 +110,7 @@
 #if defined(__cplusplus)
 #include "module_command.hpp"
 #include "module_params.hpp"
+using namespace nextpilot::global_params;
 #endif //__cplusplus
 
 // mathlib
@@ -123,7 +124,7 @@
 #endif // PKG_USING_MATHLIB
 
 // matrix
-#if defined(PKG_USING_MATRIX) && defined(cplusplus)
+#if defined(PKG_USING_MATRIX) && defined(__cplusplus)
 #include "matrix/math.hpp"
 #endif // PKG_USING_MATRIX
 
@@ -143,5 +144,9 @@
 // scope
 #ifdef PKG_USING_SCOPE
 #endif // PKG_USING_SCOPE
+
+#ifdef __cplusplus
+using namespace nextpilot;
+#endif //__cplusplus
 
 #endif // __NEXTPILOT_H__

@@ -24,7 +24,7 @@
 #include <px4_platform_common/defines.h>
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/time.h>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <drivers/drv_tone_alarm.h>
 #include <matrix/math.hpp>
 #include <lib/sensor_calibration/Magnetometer.hpp>

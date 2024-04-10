@@ -16,8 +16,8 @@
 
 #include "LaunchDetector.h"
 
-#include <px4_platform_common/log.h>
-#include <px4_platform_common/events.h>
+// #include <px4_platform_common/log.h>
+// #include <px4_platform_common/events.h>
 
 namespace launchdetection {
 
@@ -41,13 +41,13 @@ void LaunchDetector::update(const float dt, const float accel_x) {
                 if (param_fw_laun_mot_del_.get() > 0.f) {
                     state_ = launch_detection_status_s::STATE_LAUNCH_DETECTED_DISABLED_MOTOR;
                     // events::send<float>(events::ID("launch_detection_wait_for_throttle"), {events::Log::Info, events::LogInternal::Info},
-                                        "Launch detected: enablecontrol, waiting {1:.1}s until full throttle", (double)param_fw_laun_mot_del_.get());
+                    // "Launch detected: enablecontrol, waiting {1:.1}s until full throttle", (double)param_fw_laun_mot_del_.get());
 
                 } else {
                     /* No motor delay set: go directly to enablemotors state */
                     state_ = launch_detection_status_s::STATE_FLYING;
                     // events::send(events::ID("launch_detection_no_motor_delay"), {events::Log::Info, events::LogInternal::Info},
-                                 "Launch detected: enable motors (no motor delay)");
+                    //"Launch detected: enable motors (no motor delay)");
                 }
             }
 
@@ -64,8 +64,8 @@ void LaunchDetector::update(const float dt, const float accel_x) {
 
         if (motor_delay_counter_ > param_fw_laun_mot_del_.get()) {
             // events::send(events::ID("launch_detection_enable_motors"), {events::Log::Info, events::LogInternal::Info},
-                         "Launch detected: enable motors");
-                         state_ = launch_detection_status_s::STATE_FLYING;
+            // "Launch detected: enable motors");
+            state_ = launch_detection_status_s::STATE_FLYING;
         }
 
         info_delay_counter_s_ = kInfoDelay; // reset counter
@@ -78,7 +78,7 @@ void LaunchDetector::update(const float dt, const float accel_x) {
     }
 }
 
-uint LaunchDetector::getLaunchDetected() const {
+uint8_t LaunchDetector::getLaunchDetected() const {
     return state_;
 }
 

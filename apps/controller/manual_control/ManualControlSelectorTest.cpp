@@ -10,7 +10,7 @@
 
 #include "ManualControlSelector.hpp"
 #include <gtest/gtest.h>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 using namespace time_literals;
 

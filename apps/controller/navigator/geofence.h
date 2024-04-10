@@ -21,8 +21,8 @@
 
 #include <lib/mathlib/mathlib.h>
 #include <px4_platform_common/module_params.hpp>
-#include <drivers/drv_hrt.h>
-#include <lib/geo/geo.h>
+#include <hrtimer.h>
+#include <geo/geo.h>
 #include <px4_platform_common/defines.h>
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/home_position.h>

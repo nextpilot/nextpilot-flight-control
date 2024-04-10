@@ -21,7 +21,7 @@
 #include <uORB/SubscriptionInterval.hpp>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/vehicle_status.h>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 using namespace time_literals;
 

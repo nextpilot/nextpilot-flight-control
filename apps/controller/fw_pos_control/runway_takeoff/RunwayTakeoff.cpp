@@ -21,7 +21,7 @@
 
 #include "RunwayTakeoff.h"
 #include <mathlib/mathlib.h>
-#include <px4_platform_common/events.h>
+// #include <events.h>
 
 using namespace time_literals;
 
@@ -55,7 +55,7 @@ void RunwayTakeoff::update(const hrt_abstime &time_now, const float takeoff_airs
             takeoff_time_  = time_now;
             takeoff_state_ = RunwayTakeoffState::CLIMBOUT;
             // events::send(events::ID("runway_takeoff_reached_airspeed"), events::Log::Info,
-                         "Takeoff airspeed reached, climbout");
+            // "Takeoff airspeed reached, climbout");
         }
 
         break;

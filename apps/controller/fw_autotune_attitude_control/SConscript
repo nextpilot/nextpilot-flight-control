@@ -1,0 +1,12 @@
+import os
+import sys
+from building import *
+
+cwd = GetCurrentDir()
+
+inc = []
+src = Glob("*.cpp", exclude="*_test.cpp")
+
+objs = DefineGroup("fcs/fw_autotune_attitude_control", src, depend=["FCS_USING_FW_AUTOTUNE_ATTITUDE_CONTROL"])
+
+Return("objs")

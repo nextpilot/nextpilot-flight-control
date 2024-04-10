@@ -20,7 +20,7 @@
 #include "baro.h"
 #include <uORB/topics/sensor_baro.h>
 #include <mathlib/mathlib.h>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 TemperatureCalibrationBaro::TemperatureCalibrationBaro(float min_temperature_rise, float min_start_temperature,
                                                        float max_start_temperature) :

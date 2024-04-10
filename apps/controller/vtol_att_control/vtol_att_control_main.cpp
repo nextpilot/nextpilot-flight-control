@@ -23,6 +23,9 @@
  * @author Andreas Antener 	<andreas@uaventure.com>
  *
  */
+
+#define LOG_TAG "vtol_att_control"
+
 #include "vtol_att_control_main.h"
 // #include <px4_platform_common/events.h>
 // #include <systemlib/mavlink_log.h>

@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include <px4_defines.h>
+// #include <px4_defines.h>
 
 #include <matrix/math.hpp>
 #include <mathlib/mathlib.h>

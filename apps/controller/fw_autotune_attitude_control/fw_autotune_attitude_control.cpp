@@ -14,6 +14,8 @@
  * @author Mathieu Bresciani <mathieu@auterion.com>
  */
 
+#define LOG_TAG "fw_autotune"
+
 #include "fw_autotune_attitude_control.hpp"
 
 using namespace matrix;
@@ -31,20 +33,20 @@ FwAutotuneAttitudeControl::~FwAutotuneAttitudeControl() {
     perf_free(_cycle_perf);
 }
 
-bool FwAutotuneAttitudeControl::init() {
+int FwAutotuneAttitudeControl::init() {
     if (!_parameter_update_sub.registerCallback()) {
         PX4_ERR("callback registration failed");
-        return false;
+        return -1;
     }
 
     _signal_filter.setParameters(_publishing_dt_s, .2f); // runs in the slow publishing loop
 
     if (!_vehicle_torque_setpoint_sub.registerCallback()) {
         PX4_ERR("callback registration failed");
-        return false;
+        return -1;
     }
 
-    return true;
+    return 0;
 }
 
 void FwAutotuneAttitudeControl::reset() {
@@ -599,7 +601,7 @@ const Vector3f FwAutotuneAttitudeControl::getIdentificationSignal() {
     return rate_sp;
 }
 
-int FwAutotuneAttitudeControl::instantiate(int argc, char *argv[]) {
+FwAutotuneAttitudeControl *FwAutotuneAttitudeControl::instantiate(int argc, char *argv[]) {
     bool is_vtol = false;
 
     if (argc > 1) {
@@ -610,23 +612,24 @@ int FwAutotuneAttitudeControl::instantiate(int argc, char *argv[]) {
 
     FwAutotuneAttitudeControl *instance = new FwAutotuneAttitudeControl(is_vtol);
 
-    if (instance) {
-        _object.store(instance);
-        _task_id = task_id_is_work_queue;
+    // if (instance) {
+    //     _object.store(instance);
+    //     _task_id = task_id_is_work_queue;
 
-        if (instance->init()) {
-            return PX4_OK;
-        }
+    //     if (instance->init()) {
+    //         return PX4_OK;
+    //     }
 
-    } else {
-        PX4_ERR("alloc failed");
-    }
+    // } else {
+    //     PX4_ERR("alloc failed");
+    // }
 
-    delete instance;
-    _object.store(nullptr);
-    _task_id = -1;
+    // delete instance;
+    // _object.store(nullptr);
+    // _task_id = -1;
 
-    return PX4_ERROR;
+    // return PX4_ERROR;
+    return instance;
 }
 
 int FwAutotuneAttitudeControl::custom_command(int argc, char *argv[]) {

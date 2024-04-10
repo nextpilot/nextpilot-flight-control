@@ -15,9 +15,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <uORB/Publication.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/transponder_report.h>

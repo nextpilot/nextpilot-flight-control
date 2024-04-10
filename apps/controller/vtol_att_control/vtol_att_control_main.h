@@ -26,8 +26,8 @@
 
 #pragma once
 #include "nextpilot.h"
-// #include <drivers/drv_hrt.h>
-// #include <lib/geo/geo.h>
+// #include <hrtimer.h>
+// #include <geo/geo.h>
 // #include <lib/mathlib/mathlib.h>
 // #include <lib/perf/perf_counter.h>
 // #include <matrix/math.hpp>

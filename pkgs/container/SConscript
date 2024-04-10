@@ -3,24 +3,12 @@ import rtconfig
 from building import *
 
 
-objs = []
+cwd = GetCurrentDir()
 
-# if GetDepend(["PKG_USING_CONTAINER"]):
-if GetDepend([""]):
-    cwd = GetCurrentDir()
+inc = [cwd]
+src = Glob("*.c") + Glob("*.cpp")
 
-    # 添加当前文件夹下的代码
-    src = Glob("*.c") + Glob("*.cpp")
-    inc = [cwd]
+objs = DefineGroup("pkg/container", src, depend=["PKG_USING_CONTAINER"], CPPPATH=inc)
 
-    objs += DefineGroup("pkg/container", src, depend=[""], CPPPATH=inc)
-
-    for d in os.listdir(cwd):
-        path = os.path.join(cwd, d)
-        if os.path.isfile(os.path.join(path, "SConscript")):
-            # print(os.path.join(d, 'SConscript'))
-            objs += SConscript(os.path.join(d, "SConscript"))
-else:
-    objs = []
 
 Return("objs")

@@ -17,9 +17,9 @@
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/time.h>
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <lib/mathlib/mathlib.h>
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 #include <matrix/math.hpp>
 #include <lib/conversion/rotation.h>
 #include <lib/parameters/param.h>
