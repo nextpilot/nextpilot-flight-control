@@ -10,13 +10,13 @@
 
 #pragma once
 
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/atomic.h>
+#include <defines.h>
+#include <atomic.h>
 #include <stdint.h>
 #include <pthread.h>
 #include <hrtimer.h>
 #include <perf/perf_counter.h>
-#include <px4_platform_common/crypto.h>
+// #include <px4_platform_common/crypto.h>
 
 namespace px4 {
 namespace logger {

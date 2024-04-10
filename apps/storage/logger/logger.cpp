@@ -8,8 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/console_buffer.h>
+// #include <px4_platform_common/px4_config.h>
+// #include <px4_platform_common/console_buffer.h>
 #include "logged_topics.h"
 #include "logger.h"
 #include "messages.h"

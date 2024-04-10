@@ -1,0 +1,13 @@
+import os
+import sys
+from building import *
+
+cwd = GetCurrentDir()
+
+inc = [cwd]
+src = Glob("*.cpp")
+
+objs = DefineGroup("log/logger", src, depend=["SYS_USING_LOGGER"])
+
+
+Return("objs")
