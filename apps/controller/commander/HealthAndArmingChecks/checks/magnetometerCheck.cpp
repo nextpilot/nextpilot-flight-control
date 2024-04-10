@@ -10,7 +10,7 @@
 
 #include "magnetometerCheck.hpp"
 
-#include <lib/sensor_calibration/Utilities.hpp>
+#include <sensor_calibration/Utilities.hpp>
 
 using namespace time_literals;
 

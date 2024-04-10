@@ -19,19 +19,20 @@
 #include "nextpilot.h"
 
 // #include <px4_platform_common/px4_config.h>
-// #include <px4_platform_common/defines.h>
-// #include <px4_platform_common/module.h>
-// #include <module_params.hpp>
+
+// #include <defines.h>
+// #include <module/module_command.hpp>
+// #include <module/module_params.hpp>
 // #include <px4_platform_common/posix.h>
 // #include <px4_platform_common/px4_work_queue/WorkItem.hpp>
 // #include <hrtimer.h>
-// #include <lib/hysteresis/hysteresis.h>
-// #include <lib/mathlib/mathlib.h>
-// #include <lib/perf/perf_counter.h>
+// #include <hysteresis/hysteresis.h>
+// #include <mathlib/mathlib.h>
+// #include <perf/perf_counter.h>
 // #include <uORB/uORBPublication.hpp>
-// #include <uORB/PublicationMulti.hpp>
+// #include <uORB/uORBPublication.hpp>
 // #include <uORB/uORBSubscription.hpp>
-// #include <uORB/SubscriptionCallback.hpp>
+// #include <uORB/uORBSubscription.hpp>
 // #include <uORB/topics/manual_control_setpoint.h>
 // #include <uORB/topics/manual_control_switches.h>
 // #include <uORB/topics/input_rc.h>

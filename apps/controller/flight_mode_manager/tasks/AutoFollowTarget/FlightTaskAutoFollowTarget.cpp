@@ -19,7 +19,7 @@
 
 #include "FlightTaskAutoFollowTarget.hpp"
 #include <mathlib/mathlib.h>
-#include <lib/matrix/matrix/math.hpp>
+#include <matrix/matrix/math.hpp>
 #include <float.h>
 
 using matrix::Vector2f;

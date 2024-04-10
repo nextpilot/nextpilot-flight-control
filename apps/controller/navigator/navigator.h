@@ -31,9 +31,9 @@
 #include "GeofenceBreachAvoidance/geofence_breach_avoidance.h"
 #include <adsb/AdsbConflict.h>
 #include "nextpilot.h"
-// #include <lib/perf/perf_counter.h>
-// #include <px4_platform_common/module.h>
-// #include <module_params.hpp>
+// #include <perf/perf_counter.h>
+// #include <module/module_command.hpp>
+// #include <module/module_params.hpp>
 // #include <uORB/uORBPublication.hpp>
 // #include <uORB/uORBSubscription.hpp>
 // #include <uORB/SubscriptionInterval.hpp>

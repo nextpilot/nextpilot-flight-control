@@ -19,13 +19,12 @@
 #include "HealthAndArmingChecks/HealthAndArmingChecks.hpp"
 #include "HomePosition.hpp"
 #include "UserModeIntention.hpp"
-
-#include <lib/controllib/blocks.hpp>
-#include <lib/hysteresis/hysteresis.h>
-#include <lib/mathlib/mathlib.h>
-#include <lib/perf/perf_counter.h>
-#include <px4_platform_common/module.h>
-#include <module_params.hpp>
+#include <controllib/blocks.hpp>
+#include <hysteresis/hysteresis.h>
+#include <mathlib/mathlib.h>
+#include <perf/perf_counter.h>
+#include <module/module_command.hpp>
+#include <module/module_params.hpp>
 
 // publications
 #include <uORB/uORBPublication.hpp>
@@ -39,7 +38,7 @@
 // subscriptions
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/SubscriptionInterval.hpp>
-#include <uORB/SubscriptionMultiArray.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/action_request.h>
 #include <uORB/topics/airspeed.h>
 #include <uORB/topics/battery_status.h>

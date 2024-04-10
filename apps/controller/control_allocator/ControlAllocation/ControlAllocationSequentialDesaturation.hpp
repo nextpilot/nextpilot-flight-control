@@ -21,7 +21,7 @@
 #pragma once
 
 #include "ControlAllocationPseudoInverse.hpp"
-#include <module_params.hpp>
+#include <module/module_params.hpp>
 
 using namespace nextpilot::global_params;
 

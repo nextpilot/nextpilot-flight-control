@@ -1,0 +1,21 @@
+import os
+import sys
+from building import *
+
+cwd = GetCurrentDir()
+
+inc = []
+src = (
+    Glob("*.cpp", exclude="*_test.cpp")
+    + Glob("Arming/ArmAuthorization/ArmAuthorization.cpp")
+    + Glob("Arming/ArmStateMachine/ArmStateMachine.cpp")
+    + Glob("failsafe/*.cpp", exclude="failsafe/*_test.cpp")
+    + Glob("failure_detector/*.cpp")
+    + Glob("HealthAndArmingChecks/*.cpp", exclude="HealthAndArmingChecks/*Test.cpp")
+    + Glob("HealthAndArmingChecks/checks/*.cpp")
+    + Glob("ModeUtil/*.cpp")
+)
+
+objs = DefineGroup("fcs/commander", src, depend=["FCS_USING_COMMANDER"])
+
+Return("objs")

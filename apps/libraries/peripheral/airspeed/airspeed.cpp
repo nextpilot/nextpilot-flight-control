@@ -18,7 +18,7 @@
 
 #include "airspeed.h"
 
-#include <px4_platform_common/defines.h>
+#include <defines.h>
 #include <geo/geo.h>
 
 float calc_IAS_corrected(enum AIRSPEED_COMPENSATION_MODEL pmodel, enum AIRSPEED_SENSOR_MODEL smodel,

@@ -10,9 +10,9 @@
 
 #include "VehicleGPSPosition.hpp"
 
-#include <px4_platform_common/log.h>
+#include <rtdbg.h>
 #include <geo/geo.h>
-#include <lib/mathlib/mathlib.h>
+#include <mathlib/mathlib.h>
 
 namespace sensors {
 VehicleGPSPosition::VehicleGPSPosition() :

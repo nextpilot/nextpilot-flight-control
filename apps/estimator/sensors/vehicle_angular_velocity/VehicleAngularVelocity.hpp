@@ -11,19 +11,18 @@
 #pragma once
 
 #include <containers/Bitset.hpp>
-#include <lib/sensor_calibration/Gyroscope.hpp>
-#include <lib/mathlib/math/Limits.hpp>
-#include <lib/matrix/matrix/math.hpp>
-#include <lib/mathlib/math/filter/AlphaFilter.hpp>
-#include <lib/mathlib/math/filter/LowPassFilter2p.hpp>
-#include <lib/mathlib/math/filter/NotchFilter.hpp>
-#include <px4_platform_common/log.h>
-#include <module_params.hpp>
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
+#include <sensor_calibration/Gyroscope.hpp>
+#include <mathlib/math/Limits.hpp>
+#include <matrix/matrix/math.hpp>
+#include <mathlib/math/filter/AlphaFilter.hpp>
+#include <mathlib/math/filter/LowPassFilter2p.hpp>
+#include <mathlib/math/filter/NotchFilter.hpp>
+#include <rtdbg.h>
+#include <module/module_params.hpp>
+// #include <px4_platform_common/px4_config.h>
+#include <workq/WorkItemScheduled.hpp>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionCallback.hpp>
 #include <uORB/topics/esc_status.h>
 #include <uORB/topics/estimator_selector_status.h>
 #include <uORB/topics/estimator_sensor_bias.h>

@@ -16,9 +16,10 @@
 
 #include "voted_sensors_update.h"
 
-#include <lib/sensor_calibration/Utilities.hpp>
+#include <sensor_calibration/Utilities.hpp>
 #include <geo/geo.h>
-#include <lib/systemlib/mavlink_log.h>
+#include <mavlink_log.h>
+
 #include <uORB/uORBSubscription.hpp>
 
 using namespace sensors;

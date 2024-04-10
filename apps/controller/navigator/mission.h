@@ -31,7 +31,7 @@
 
 #include <dataman/dataman.h>
 #include <hrtimer.h>
-#include <module_params.hpp>
+#include <module/module_params.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/home_position.h>
 #include <uORB/topics/mission.h>

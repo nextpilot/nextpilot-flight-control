@@ -12,7 +12,7 @@
 
 #include <uORB/topics/vehicle_status.h>
 #include "HealthAndArmingChecks/HealthAndArmingChecks.hpp"
-#include <module_params.hpp>
+#include <module/module_params.hpp>
 
 class UserModeIntention : ModuleParams {
 public:

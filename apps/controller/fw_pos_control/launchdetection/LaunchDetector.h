@@ -18,7 +18,7 @@
 #ifndef LAUNCHDETECTOR_H
 #define LAUNCHDETECTOR_H
 
-#include <module_params.hpp>
+#include <module/module_params.hpp>
 #include <uORB/topics/launch_detection_status.h>
 
 using namespace nextpilot::global_params;

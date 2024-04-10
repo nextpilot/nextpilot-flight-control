@@ -17,7 +17,7 @@
 #include <uORB/topics/vehicle_global_position.h>
 #include <uORB/topics/vehicle_land_detected.h>
 #include <uORB/uORBSubscription.hpp>
-#include <module_params.hpp>
+#include <module/module_params.hpp>
 
 using namespace nextpilot::global_params;
 using namespace nextpilot;

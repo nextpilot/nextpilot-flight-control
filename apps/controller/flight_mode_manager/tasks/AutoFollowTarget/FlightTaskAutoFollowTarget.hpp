@@ -23,7 +23,7 @@
 #include "follow_target_estimator/TargetEstimator.hpp"
 #include "Sticks.hpp"
 
-#include <parameters/param.h>
+#include <param/param.h>
 #include <mathlib/mathlib.h>
 
 #include <uORB/uORBSubscription.hpp>
@@ -33,8 +33,8 @@
 #include <uORB/topics/gimbal_manager_set_attitude.h>
 #include <uORB/topics/vehicle_command.h>
 
-#include <lib/mathlib/math/filter/second_order_reference_model.hpp>
-#include <lib/matrix/matrix/helper_functions.hpp>
+#include <mathlib/math/filter/second_order_reference_model.hpp>
+#include <matrix/matrix/helper_functions.hpp>
 #include <motion_planning/VelocitySmoothing.hpp>
 
 // << Follow Target Behavior related constants >>

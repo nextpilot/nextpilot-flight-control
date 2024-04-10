@@ -9,8 +9,7 @@
  ******************************************************************/
 
 #include "StickYaw.hpp"
-
-#include <px4_platform_common/defines.h>
+#include <defines.h>
 
 StickYaw::StickYaw(ModuleParams *parent) :
     ModuleParams(parent) {

@@ -23,7 +23,7 @@
 #include <uORB/topics/vehicle_global_position.h>
 #include <uORB/topics/sensor_gps.h>
 
-#include <lib/hysteresis/hysteresis.h>
+#include <hysteresis/hysteresis.h>
 
 using namespace time_literals;
 

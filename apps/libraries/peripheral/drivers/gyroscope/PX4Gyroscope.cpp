@@ -11,8 +11,8 @@
 
 #include "PX4Gyroscope.hpp"
 
-#include <lib/drivers/device/Device.hpp>
-#include <lib/parameters/param.h>
+#include <drivers/device/Device.hpp>
+#include <param/param.h>
 
 using namespace time_literals;
 

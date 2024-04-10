@@ -18,8 +18,8 @@
 
 #pragma once
 
-#include <px4_platform_common/defines.h>
-#include <module_params.hpp>
+#include <defines.h>
+#include <module/module_params.hpp>
 #include <commander/px4_custom_mode.h>
 #include <hrtimer.h>
 
@@ -32,7 +32,7 @@
 #include <uORB/topics/vehicle_trajectory_waypoint.h>
 #include <uORB/topics/position_setpoint.h>
 
-#include <lib/hysteresis/hysteresis.h>
+#include <hysteresis/hysteresis.h>
 
 #include <matrix/matrix/math.hpp>
 

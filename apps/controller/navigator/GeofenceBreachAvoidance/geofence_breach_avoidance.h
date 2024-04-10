@@ -9,7 +9,7 @@
  ******************************************************************/
 
 #include <mathlib/mathlib.h>
-#include <module_params.hpp>
+#include <module/module_params.hpp>
 #include "../geofence.h"
 #include <defines.h>
 

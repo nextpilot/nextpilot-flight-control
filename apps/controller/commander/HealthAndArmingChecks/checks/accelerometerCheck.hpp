@@ -13,10 +13,10 @@
 #include "../Common.hpp"
 
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionMultiArray.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/estimator_status.h>
 #include <uORB/topics/sensor_accel.h>
-#include <lib/sensor_calibration/Accelerometer.hpp>
+#include <sensor_calibration/Accelerometer.hpp>
 
 class AccelerometerChecks : public HealthAndArmingCheckBase {
 public:

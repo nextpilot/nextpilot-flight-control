@@ -10,10 +10,11 @@
 
 #pragma once
 
-#include <lib/conversion/rotation.h>
-#include <lib/matrix/matrix/math.hpp>
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/log.h>
+#include <conversion/rotation.h>
+
+#include <matrix/matrix/math.hpp>
+//#include <px4_platform_common/px4_config.h>
+#include <rtdbg.h>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/sensor_correction.h>
 

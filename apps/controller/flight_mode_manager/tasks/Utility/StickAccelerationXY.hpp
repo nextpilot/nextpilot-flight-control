@@ -16,12 +16,11 @@
 
 #pragma once
 
-#include <module_params.hpp>
-#include <lib/mathlib/math/filter/AlphaFilter.hpp>
+#include <module/module_params.hpp>
+#include <mathlib/math/filter/AlphaFilter.hpp>
 #include <matrix/math.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/takeoff_status.h>
-
 #include "SlewRate.hpp"
 
 class StickAccelerationXY : public ModuleParams {

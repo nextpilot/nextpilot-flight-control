@@ -10,8 +10,7 @@
 
 #include "VehicleAcceleration.hpp"
 
-#include <px4_platform_common/log.h>
-
+#include <rtdbg.h>
 #include <uORB/topics/vehicle_imu_status.h>
 
 using namespace matrix;

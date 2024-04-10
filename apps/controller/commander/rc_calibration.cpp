@@ -16,7 +16,7 @@
 #include <px4_platform_common/events.h>
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/time.h>
-#include <px4_platform_common/defines.h>
+#include <defines.h>
 
 #include "rc_calibration.h"
 #include "commander_helper.h"
@@ -24,7 +24,7 @@
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/manual_control_setpoint.h>
 #include <mavlink_log.h>
-#include <parameters/param.h>
+#include <param/param.h>
 #include <systemlib/err.h>
 
 int do_trim_calibration(orb_advert_t *mavlink_log_pub) {

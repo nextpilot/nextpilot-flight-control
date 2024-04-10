@@ -13,10 +13,10 @@
 #include "../Common.hpp"
 
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionMultiArray.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/sensor_baro.h>
 #include <uORB/topics/estimator_status.h>
-#include <lib/sensor_calibration/Barometer.hpp>
+#include <sensor_calibration/Barometer.hpp>
 
 class BaroChecks : public HealthAndArmingCheckBase {
 public:

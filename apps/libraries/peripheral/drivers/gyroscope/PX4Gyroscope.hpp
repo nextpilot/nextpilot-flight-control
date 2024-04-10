@@ -11,8 +11,9 @@
 #pragma once
 
 #include <hrtimer.h>
-#include <lib/conversion/rotation.h>
-#include <uORB/PublicationMulti.hpp>
+#include <conversion/rotation.h>
+
+#include <uORB/uORBPublication.hpp>
 #include <uORB/topics/sensor_gyro.h>
 #include <uORB/topics/sensor_gyro_fifo.h>
 

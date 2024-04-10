@@ -10,7 +10,7 @@
 
 #include "VehicleAirData.hpp"
 
-#include <px4_platform_common/log.h>
+#include <rtdbg.h>
 #include <px4_platform_common/events.h>
 #include <geo/geo.h>
 

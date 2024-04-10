@@ -10,8 +10,8 @@
 
 #pragma once
 
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/log.h>
+//#include <px4_platform_common/px4_config.h>
+#include <rtdbg.h>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/sensor_correction.h>
 

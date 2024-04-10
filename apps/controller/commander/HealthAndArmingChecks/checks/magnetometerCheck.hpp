@@ -13,11 +13,11 @@
 #include "../Common.hpp"
 
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionMultiArray.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/sensor_preflight_mag.h>
 #include <uORB/topics/sensor_mag.h>
 #include <uORB/topics/estimator_status.h>
-#include <lib/sensor_calibration/Magnetometer.hpp>
+#include <sensor_calibration/Magnetometer.hpp>
 
 class MagnetometerChecks : public HealthAndArmingCheckBase {
 public:

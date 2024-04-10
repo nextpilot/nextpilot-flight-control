@@ -22,7 +22,7 @@
 #include <px4_platform_common/events.h>
 #include <px4_platform_common/log.h>
 #include <px4_platform_common/shutdown.h>
-#include <parameters/param.h>
+#include <param/param.h>
 
 using namespace time_literals;
 

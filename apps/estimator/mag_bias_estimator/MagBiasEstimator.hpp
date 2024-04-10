@@ -11,18 +11,18 @@
 #pragma once
 
 #include <hrtimer.h>
-#include <lib/field_sensor_bias_estimator/FieldSensorBiasEstimator.hpp>
-#include <lib/mathlib/mathlib.h>
-#include <lib/perf/perf_counter.h>
-#include <lib/sensor_calibration/Magnetometer.hpp>
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/module.h>
-#include <module_params.hpp>
-#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
+#include <field_sensor_bias_estimator/FieldSensorBiasEstimator.hpp>
+#include <mathlib/mathlib.h>
+#include <perf/perf_counter.h>
+#include <sensor_calibration/Magnetometer.hpp>
+// #include <px4_platform_common/px4_config.h>
+#include <defines.h>
+#include <module/module_command.hpp>
+#include <module/module_params.hpp>
+#include <workq/WorkItemScheduled.hpp>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionMultiArray.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/magnetometer_bias_estimate.h>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/sensor_mag.h>

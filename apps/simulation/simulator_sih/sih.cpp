@@ -20,11 +20,10 @@
 #include "aero.hpp"
 #include "sih.hpp"
 
-#include <px4_platform_common/getopt.h>
-#include <px4_platform_common/log.h>
-
+#include <getopt/getopt.h>
+#include <rtdbg.h>
 #include <drivers/drv_pwm_output.h> // to get PWM flags
-#include <lib/drivers/device/Device.hpp>
+#include <drivers/device/Device.hpp>
 
 using namespace math;
 using namespace matrix;

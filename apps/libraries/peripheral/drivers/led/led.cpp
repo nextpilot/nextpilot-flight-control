@@ -14,9 +14,9 @@
  * LED driver to control the onboard LED(s) via ioctl interface.
  */
 
-#include <px4_platform_common/log.h>
-#include <px4_platform_common/px4_config.h>
-#include <lib/cdev/CDev.hpp>
+#include <rtdbg.h>
+//#include <px4_platform_common/px4_config.h>
+#include <cdev/CDev.hpp>
 #include <drivers/drv_board_led.h>
 #include <stdio.h>
 

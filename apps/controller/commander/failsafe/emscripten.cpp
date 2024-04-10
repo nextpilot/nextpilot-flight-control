@@ -9,7 +9,7 @@
  ******************************************************************/
 
 #define PARAM_IMPLEMENTATION
-#include <parameters/param.h>
+#include <param/param.h>
 
 #include "failsafe.h"
 #include "../ModeUtil/mode_requirements.hpp"

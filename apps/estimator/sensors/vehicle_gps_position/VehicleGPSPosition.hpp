@@ -10,16 +10,16 @@
 
 #pragma once
 
-#include <lib/mathlib/math/Limits.hpp>
-#include <lib/matrix/matrix/math.hpp>
-#include <lib/perf/perf_counter.h>
-#include <px4_platform_common/log.h>
-#include <module_params.hpp>
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
+#include <mathlib/math/Limits.hpp>
+#include <matrix/matrix/math.hpp>
+#include <perf/perf_counter.h>
+#include <rtdbg.h>
+#include <module/module_params.hpp>
+// #include <px4_platform_common/px4_config.h>
+#include <workq/WorkItemScheduled.hpp>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionCallback.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/sensor_gps.h>
 

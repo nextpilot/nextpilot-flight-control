@@ -17,7 +17,7 @@
 #define _SYSTEMLIB_PERF_COUNTER_H value
 
 #include <stdint.h>
-// #include <px4_platform_common/defines.h>
+// #include <defines.h>
 
 typedef struct latency_info {
     uint16_t bucket;

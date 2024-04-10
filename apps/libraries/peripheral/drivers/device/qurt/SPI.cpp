@@ -20,7 +20,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
-#include <px4_platform_common/px4_config.h>
+//#include <px4_platform_common/px4_config.h>
 #include <px4_platform_common/i2c_spi_buses.h>
 
 static int (*register_interrupt_callback_func)(int (*)(int, void *, void *), void *arg) = NULL;

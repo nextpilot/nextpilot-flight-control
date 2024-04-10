@@ -20,15 +20,14 @@
 
 #include <pid_design/pid_design.hpp>
 #include <system_identification/system_identification.hpp>
-
-// #include <px4_platform_common/defines.h>
-// #include <px4_platform_common/module.h>
-// #include <module_params.hpp>
+// #include <defines.h>
+// #include <module/module_command.hpp>
+// #include <module/module_params.hpp>
 // #include <px4_platform_common/posix.h>
 // #include <px4_platform_common/px4_work_queue/WorkItem.hpp>
 // #include <uORB/uORBPublication.hpp>
 // #include <uORB/uORBSubscription.hpp>
-// #include <uORB/SubscriptionCallback.hpp>
+// #include <uORB/uORBSubscription.hpp>
 // #include <uORB/topics/actuator_controls_status.h>
 // #include <uORB/topics/manual_control_setpoint.h>
 // #include <uORB/topics/parameter_update.h>

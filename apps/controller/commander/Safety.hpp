@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <uORB/SubscriptionMultiArray.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/topics/button_event.h>
 

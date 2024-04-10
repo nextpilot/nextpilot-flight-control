@@ -14,7 +14,8 @@
 
 #include "FlightTaskOrbit.hpp"
 
-#include <lib/systemlib/mavlink_log.h>
+#include <mavlink_log.h>
+
 #include <mathlib/mathlib.h>
 #include <px4_platform_common/events.h>
 #include <geo/geo.h>

@@ -18,14 +18,14 @@
  * @author Beat Küng <beat-kueng@gmx.net>
  */
 
-#include <lib/sensor_calibration/Utilities.hpp>
-#include <px4_platform_common/getopt.h>
-#include <px4_platform_common/module.h>
-#include <module_params.hpp>
+#include <sensor_calibration/Utilities.hpp>
+#include <getopt/getopt.h>
+#include <module/module_command.hpp>
+#include <module/module_params.hpp>
 #include <uORB/uORBPublication.hpp>
-#include <uORB/PublicationMulti.hpp>
+#include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionCallback.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include "voted_sensors_update.h"
 #include "vehicle_imu/VehicleIMU.hpp"
 
@@ -36,7 +36,7 @@
 #if defined(CONFIG_SENSORS_VEHICLE_AIRSPEED)
 #include <drivers/drv_sensor.h>
 #include <drivers/drv_adc.h>
-#include <lib/airspeed/airspeed.h>
+#include <airspeed/airspeed.h>
 #include <uORB/topics/airspeed.h>
 #include <uORB/topics/differential_pressure.h>
 #include <uORB/topics/vehicle_air_data.h>
@@ -57,7 +57,7 @@
 
 #if defined(CONFIG_SENSORS_VEHICLE_MAGNETOMETER)
 #include "vehicle_magnetometer/VehicleMagnetometer.hpp"
-#include <lib/sensor_calibration/Magnetometer.hpp>
+#include <sensor_calibration/Magnetometer.hpp>
 #include <uORB/topics/sensor_mag.h>
 #endif // CONFIG_SENSORS_VEHICLE_MAGNETOMETER
 

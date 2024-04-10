@@ -10,10 +10,10 @@
 
 #include "failsafe.h"
 
-#include <px4_platform_common/log.h>
+#include <rtdbg.h>
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/battery_status.h>
-#include <lib/circuit_breaker/circuit_breaker.h>
+#include <circuit_breaker/circuit_breaker.h>
 
 using namespace time_literals;
 

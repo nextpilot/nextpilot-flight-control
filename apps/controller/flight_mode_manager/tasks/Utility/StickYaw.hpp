@@ -16,8 +16,8 @@
 
 #pragma once
 
-#include <lib/mathlib/math/filter/AlphaFilter.hpp>
-#include <module_params.hpp>
+#include <mathlib/math/filter/AlphaFilter.hpp>
+#include <module/module_params.hpp>
 
 class StickYaw : public ModuleParams {
 public:

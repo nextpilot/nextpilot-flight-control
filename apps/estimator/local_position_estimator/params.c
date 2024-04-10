@@ -1,4 +1,4 @@
-#include <parameters/param.h>
+#include <param/param.h>
 
 // 16 is max name length
 
@@ -148,7 +148,6 @@ PARAM_DEFINE_FLOAT(LPE_BAR_Z, 3.0f);
  * @decimal 2
  */
 PARAM_DEFINE_FLOAT(LPE_GPS_DELAY, 0.29f);
-
 
 /**
  * Minimum GPS xy standard deviation, uses reported EPH if greater.

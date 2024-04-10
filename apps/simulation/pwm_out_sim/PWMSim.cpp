@@ -11,7 +11,7 @@
 #include "PWMSim.hpp"
 
 #include <mathlib/mathlib.h>
-#include <px4_platform_common/getopt.h>
+#include <getopt/getopt.h>
 
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/parameter_update.h>

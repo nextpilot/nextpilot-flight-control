@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include <module_params.hpp>
+#include <module/module_params.hpp>
 #include <hrtimer.h>
 #include <matrix/matrix/math.hpp>
 #include <uORB/uORBSubscription.hpp>
@@ -182,11 +182,11 @@ protected:
      * TODO: add the delta values to all the handlers
      */
     void         _checkEkfResetCounters();
-    virtual void _ekfResetHandlerPositionXY(const matrix::Vector2f &delta_xy) {};
-    virtual void _ekfResetHandlerVelocityXY(const matrix::Vector2f &delta_vxy) {};
-    virtual void _ekfResetHandlerPositionZ(float delta_z) {};
-    virtual void _ekfResetHandlerVelocityZ(float delta_vz) {};
-    virtual void _ekfResetHandlerHeading(float delta_psi) {};
+    virtual void _ekfResetHandlerPositionXY(const matrix::Vector2f &delta_xy){};
+    virtual void _ekfResetHandlerVelocityXY(const matrix::Vector2f &delta_vxy){};
+    virtual void _ekfResetHandlerPositionZ(float delta_z){};
+    virtual void _ekfResetHandlerVelocityZ(float delta_vz){};
+    virtual void _ekfResetHandlerHeading(float delta_psi){};
 
     MapProjection _geo_projection{};
     float         _global_local_alt0{NAN};

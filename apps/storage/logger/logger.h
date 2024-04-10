@@ -16,15 +16,15 @@
 #include "watchdog.h"
 #include <containers/Array.hpp>
 #include "util.h"
-#include <px4_platform_common/defines.h>
+#include <defines.h>
 #include <hrtimer.h>
 #include <version/version.h>
-#include <parameters/param.h>
+#include <param/param.h>
 #include <px4_platform_common/printload.h>
-#include <px4_platform_common/module.h>
-#include <module_params.hpp>
+#include <module/module_command.hpp>
+#include <module/module_params.hpp>
 
-#include <uORB/PublicationMulti.hpp>
+#include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/SubscriptionInterval.hpp>
 #include <uORB/topics/logger_status.h>

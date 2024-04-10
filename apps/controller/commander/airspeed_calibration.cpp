@@ -17,10 +17,9 @@
 #include "calibration_messages.h"
 #include "calibration_routines.h"
 #include "commander_helper.h"
-
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/time.h>
+#include <defines.h>
+// #include <px4_platform_common/posix.h>
+// #include <px4_platform_common/time.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -29,8 +28,8 @@
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/differential_pressure.h>
 #include <mavlink_log.h>
-#include <parameters/param.h>
-#include <systemlib/err.h>
+#include <param/param.h>
+// #include <systemlib/err.h>
 
 using namespace time_literals;
 

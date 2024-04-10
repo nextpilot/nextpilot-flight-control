@@ -18,8 +18,7 @@
 
 #include "DataValidatorGroup.hpp"
 
-#include <px4_platform_common/log.h>
-
+#include <rtdbg.h>
 #include <float.h>
 
 DataValidatorGroup::DataValidatorGroup(unsigned siblings) {

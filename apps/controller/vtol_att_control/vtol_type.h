@@ -22,7 +22,7 @@
 
 #include <hrtimer.h>
 #include <mathlib/mathlib.h>
-#include <module_params.hpp>
+#include <module/module_params.hpp>
 
 using namespace nextpilot::global_params;
 

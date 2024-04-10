@@ -194,6 +194,10 @@ public:
         return false;
     }
 
+    bool ChangeInstance(uint8_t instance) {
+        return change_instance(instance);
+    }
+
     /**
      * Change subscription instance
      * @param instance The new multi-Subscription instance
@@ -547,6 +551,10 @@ public:
         }
 
         _registered = false;
+    }
+
+    bool ChangeInstance(uint8_t instance) {
+        return change_instance(instance);
     }
 
     /**

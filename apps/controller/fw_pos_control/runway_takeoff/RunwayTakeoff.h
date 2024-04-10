@@ -23,7 +23,7 @@
 #include <math.h>
 
 #include <hrtimer.h>
-#include <module_params.hpp>
+#include <module/module_params.hpp>
 #include <mathlib/mathlib.h>
 #include <matrix/math.hpp>
 

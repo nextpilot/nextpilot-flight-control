@@ -17,8 +17,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
-
-#include <px4_platform_common/defines.h>
+#include <defines.h>
 
 #include "test.hpp"
 

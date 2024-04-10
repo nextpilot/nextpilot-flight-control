@@ -14,13 +14,13 @@
 #include "GZMixingInterfaceServo.hpp"
 
 #include <px4_platform_common/atomic.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/module.h>
-#include <module_params.hpp>
+#include <defines.h>
+#include <module/module_command.hpp>
+#include <module/module_params.hpp>
 #include <px4_platform_common/posix.h>
-#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
+#include <workq/WorkItemScheduled.hpp>
 #include <geo/geo.h>
-#include <uORB/PublicationMulti.hpp>
+#include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/SubscriptionInterval.hpp>
 #include <uORB/topics/parameter_update.h>

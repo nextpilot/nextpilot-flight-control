@@ -19,7 +19,7 @@
 
 #include <float.h>
 #include <mathlib/mathlib.h>
-#include <module_params.hpp>
+#include <module/module_params.hpp>
 #include <hrtimer.h>
 #include <geo/geo.h>
 #include <defines.h>

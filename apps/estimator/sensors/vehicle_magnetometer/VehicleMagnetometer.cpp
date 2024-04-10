@@ -10,10 +10,10 @@
 
 #include "VehicleMagnetometer.hpp"
 
-#include <px4_platform_common/log.h>
+#include <rtdbg.h>
 #include <px4_platform_common/events.h>
 #include <geo/geo.h>
-#include <lib/sensor_calibration/Utilities.hpp>
+#include <sensor_calibration/Utilities.hpp>
 
 namespace sensors {
 

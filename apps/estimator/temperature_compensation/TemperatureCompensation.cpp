@@ -17,10 +17,9 @@
  */
 
 #include "TemperatureCompensation.h"
-#include <parameters/param.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/log.h>
-
+#include <param/param.h>
+#include <defines.h>
+#include <rtdbg.h>
 namespace temperature_compensation {
 
 int TemperatureCompensation::initialize_parameter_handles(ParameterHandles &parameter_handles) {

@@ -22,7 +22,7 @@
 #if defined(CONFIG_I2C)
 
 #include <px4_platform_common/time.h>
-#include <px4_platform_common/px4_config.h>
+//#include <px4_platform_common/px4_config.h>
 #include <px4_platform_common/i2c_spi_buses.h>
 
 namespace device

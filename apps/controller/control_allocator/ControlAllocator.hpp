@@ -39,7 +39,7 @@
 #include <mathlib/mathlib.h>
 #include <perf/perf_counter.h>
 #include <module_command.hpp>
-#include <module_params.hpp>
+#include <module/module_params.hpp>
 #include <WorkItemScheduled.hpp>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBPublication.hpp>

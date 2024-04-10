@@ -9,7 +9,7 @@
  ******************************************************************/
 
 #include "airspeedCheck.hpp"
-#include <lib/circuit_breaker/circuit_breaker.h>
+#include <circuit_breaker/circuit_breaker.h>
 
 using namespace time_literals;
 

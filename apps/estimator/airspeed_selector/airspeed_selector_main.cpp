@@ -11,20 +11,20 @@
 #include "AirspeedValidator.hpp"
 
 #include <hrtimer.h>
-#include <lib/wind_estimator/WindEstimator.hpp>
+#include <wind_estimator/WindEstimator.hpp>
 #include <matrix/math.hpp>
-#include <parameters/param.h>
+#include <param/param.h>
 #include <perf/perf_counter.h>
 #include <px4_platform_common/events.h>
-#include <px4_platform_common/module.h>
-#include <module_params.hpp>
-#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
-#include <lib/airspeed/airspeed.h>
-#include <lib/systemlib/mavlink_log.h>
+#include <module/module_command.hpp>
+#include <module/module_params.hpp>
+#include <workq/WorkItemScheduled.hpp>
+#include <airspeed/airspeed.h>
+#include <mavlink_log.h>
 
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/SubscriptionInterval.hpp>
-#include <uORB/SubscriptionMultiArray.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/airspeed.h>
 #include <uORB/topics/airspeed_validated.h>
 #include <uORB/topics/estimator_selector_status.h>

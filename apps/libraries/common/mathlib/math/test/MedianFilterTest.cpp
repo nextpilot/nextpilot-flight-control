@@ -17,7 +17,7 @@
 #include <matrix/matrix/math.hpp>
 #include <mathlib/mathlib.h>
 
-#include <lib/mathlib/math/filter/MedianFilter.hpp>
+#include <mathlib/math/filter/MedianFilter.hpp>
 
 using namespace math;
 using matrix::Vector3f;

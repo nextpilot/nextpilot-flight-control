@@ -19,11 +19,11 @@
 #pragma once
 
 #include "FlightTaskManualAltitudeSmoothVel.hpp"
-#include <uORB/PublicationMulti.hpp>
+#include <uORB/uORBPublication.hpp>
 #include <uORB/topics/orbit_status.h>
-#include <lib/slew_rate/SlewRateYaw.hpp>
-#include <lib/motion_planning/PositionSmoothing.hpp>
-#include <lib/motion_planning/VelocitySmoothing.hpp>
+#include <slew_rate/SlewRateYaw.hpp>
+#include <motion_planning/PositionSmoothing.hpp>
+#include <motion_planning/VelocitySmoothing.hpp>
 
 class FlightTaskOrbit : public FlightTaskManualAltitudeSmoothVel {
 public:

@@ -11,7 +11,7 @@
 #include "systemCheck.hpp"
 
 #include "../../Arming/ArmAuthorization/ArmAuthorization.h"
-#include <lib/circuit_breaker/circuit_breaker.h>
+#include <circuit_breaker/circuit_breaker.h>
 #include <uORB/topics/vehicle_command_ack.h>
 
 void SystemChecks::checkAndReport(const Context &context, Report &reporter) {

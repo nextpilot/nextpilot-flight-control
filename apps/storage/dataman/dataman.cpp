@@ -22,14 +22,14 @@
 #define PX4_STORAGEDIR ""
 
 // #include <px4_platform_common/px4_config.h>
-// #include <px4_platform_common/defines.h>
-// #include <px4_platform_common/module.h>
+// #include <defines.h>
+// #include <module/module_command.hpp>
 // #include <px4_platform_common/posix.h>
 // #include <px4_platform_common/tasks.h>
-// #include <px4_platform_common/getopt.h>
+// #include <getopt/getopt.h>
 // #include <hrtimer.h>
-// #include <lib/parameters/param.h>
-// #include <lib/perf/perf_counter.h>
+// #include <param/param.h>
+// #include <perf/perf_counter.h>
 // #include <stdlib.h>
 
 #include "nextpilot.h"

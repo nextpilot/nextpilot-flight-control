@@ -37,7 +37,7 @@
 
 #pragma once
 
-#include <lib/mathlib/mathlib.h>
+#include <mathlib/mathlib.h>
 #include <matrix/math.hpp>
 #include <uORB/topics/sensor_combined.h>
 #include <uORB/topics/sensor_gps.h>

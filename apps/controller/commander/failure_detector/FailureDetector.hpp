@@ -20,11 +20,11 @@
 
 #pragma once
 
-#include <lib/hysteresis/hysteresis.h>
-#include <lib/mathlib/mathlib.h>
-#include <lib/mathlib/math/filter/AlphaFilter.hpp>
+#include <hysteresis/hysteresis.h>
+#include <mathlib/mathlib.h>
+#include <mathlib/math/filter/AlphaFilter.hpp>
 #include <matrix/matrix/math.hpp>
-#include <module_params.hpp>
+#include <module/module_params.hpp>
 
 // subscriptions
 #include <uORB/uORBSubscription.hpp>
@@ -40,6 +40,9 @@
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/esc_status.h>
 #include <uORB/topics/pwm_input.h>
+
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 union failure_detector_status_u {
     struct {

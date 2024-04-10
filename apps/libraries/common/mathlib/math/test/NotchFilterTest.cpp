@@ -15,8 +15,7 @@
 
 #include <gtest/gtest.h>
 #include <matrix/matrix/math.hpp>
-
-#include <lib/mathlib/math/filter/NotchFilter.hpp>
+#include <mathlib/math/filter/NotchFilter.hpp>
 
 using namespace math;
 using matrix::Vector3f;

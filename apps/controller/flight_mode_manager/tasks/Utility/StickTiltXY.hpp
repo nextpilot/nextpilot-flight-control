@@ -16,9 +16,9 @@
 
 #pragma once
 
-#include <lib/mathlib/math/filter/AlphaFilter.hpp>
+#include <mathlib/math/filter/AlphaFilter.hpp>
 #include <matrix/math.hpp>
-#include <module_params.hpp>
+#include <module/module_params.hpp>
 
 class StickTiltXY : public ModuleParams {
 public:

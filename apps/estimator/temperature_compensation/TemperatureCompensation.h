@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <parameters/param.h>
+#include <param/param.h>
 #include <mathlib/mathlib.h>
 #include <matrix/math.hpp>
 

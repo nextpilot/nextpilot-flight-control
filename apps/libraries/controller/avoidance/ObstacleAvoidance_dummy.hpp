@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include <px4_platform_common/defines.h>
+#include <defines.h>
 #include <commander/px4_custom_mode.h>
 
 

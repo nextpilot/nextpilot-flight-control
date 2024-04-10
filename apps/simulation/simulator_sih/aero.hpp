@@ -38,7 +38,7 @@
 
 #include <matrix/matrix/math.hpp> // matrix, vectors, dcm, quaterions
 #include <conversion/rotation.h>  // math::radians,
-// #include <lib/mathlib/mathlib.h>
+// #include <mathlib/mathlib.h>
 #include <math.h>
 
 // class Aerodynamic Segment ------------------------------------------------------------------------

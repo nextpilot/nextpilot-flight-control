@@ -22,7 +22,7 @@
 
 #include "pid.h"
 #include <math.h>
-#include <px4_platform_common/defines.h>
+#include <defines.h>
 
 #define SIGMA 0.000001f
 

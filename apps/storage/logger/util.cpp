@@ -21,7 +21,7 @@
 
 #include <hrtimer.h>
 #include <px4_platform_common/events.h>
-#include <px4_platform_common/log.h>
+#include <rtdbg.h>
 #include <px4_platform_common/time.h>
 #include <mavlink_log.h>
 

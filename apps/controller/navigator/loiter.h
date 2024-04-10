@@ -19,7 +19,7 @@
 
 #include "navigator_mode.h"
 #include "mission_block.h"
-#include <module_params.hpp>
+#include <module/module_params.hpp>
 
 class Loiter : public MissionBlock, public ModuleParams {
 public:

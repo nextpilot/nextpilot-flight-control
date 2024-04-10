@@ -17,7 +17,7 @@
 #pragma once
 
 #include "../geofence.h"
-#include <lib/mathlib/mathlib.h>
+#include <mathlib/mathlib.h>
 
 class FakeGeofence : public Geofence {
 public:

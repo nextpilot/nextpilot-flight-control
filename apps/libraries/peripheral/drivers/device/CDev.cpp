@@ -18,7 +18,7 @@
 
 #include <cstring>
 
-#include <px4_platform_common/log.h>
+#include <rtdbg.h>
 #include <px4_platform_common/posix.h>
 
 namespace device

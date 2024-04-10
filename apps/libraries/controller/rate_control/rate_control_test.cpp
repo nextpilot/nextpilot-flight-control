@@ -9,7 +9,7 @@
  ******************************************************************/
 
 #include <gtest/gtest.h>
-#include <lib/rate_control/rate_control.hpp>
+#include <rate_control/rate_control.hpp>
 
 using namespace matrix;
 

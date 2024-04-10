@@ -15,7 +15,7 @@
  * @author Lorenz Meier <lm@inf.ethz.ch>
  */
 
-#include <px4_platform_common/defines.h>
+#include <defines.h>
 #include <px4_platform_common/events.h>
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/time.h>
@@ -24,12 +24,13 @@
 #include <drivers/drv_tone_alarm.h>
 
 #include <geo/geo.h>
-#include <lib/mathlib/mathlib.h>
-#include <lib/systemlib/mavlink_log.h>
+#include <mathlib/mathlib.h>
+#include <mavlink_log.h>
+
 #include <matrix/math.hpp>
 
 #include <uORB/uORBPublication.hpp>
-#include <uORB/SubscriptionBlocking.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/vehicle_acceleration.h>
 #include <uORB/topics/vehicle_command.h>
 #include <uORB/topics/vehicle_command_ack.h>

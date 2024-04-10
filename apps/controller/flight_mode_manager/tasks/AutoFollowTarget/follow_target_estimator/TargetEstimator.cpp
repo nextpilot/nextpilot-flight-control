@@ -16,9 +16,8 @@
 #include "TargetEstimator.hpp"
 
 #include <mathlib/mathlib.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/log.h>
-
+#include <defines.h>
+#include <rtdbg.h>
 using matrix::Vector2f;
 using matrix::Vector3f;
 using matrix::Vector3;

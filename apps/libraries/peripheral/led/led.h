@@ -20,9 +20,9 @@
 
 #include <hrtimer.h>
 #include <drivers/drv_led.h>
-#include <module_params.hpp>
-#include <lib/parameters/param.h>
-#include <lib/perf/perf_counter.h>
+#include <module/module_params.hpp>
+#include <param/param.h>
+#include <perf/perf_counter.h>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/SubscriptionInterval.hpp>
 #include <uORB/topics/led_control.h>

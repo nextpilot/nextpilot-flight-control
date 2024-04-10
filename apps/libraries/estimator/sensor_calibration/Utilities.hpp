@@ -10,11 +10,12 @@
 
 #pragma once
 
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/log.h>
-#include <lib/conversion/rotation.h>
-#include <lib/mathlib/mathlib.h>
-#include <lib/parameters/param.h>
+//#include <px4_platform_common/px4_config.h>
+#include <rtdbg.h>
+#include <conversion/rotation.h>
+
+#include <mathlib/mathlib.h>
+#include <param/param.h>
 #include <matrix/math.hpp>
 
 namespace calibration

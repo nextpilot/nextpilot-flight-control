@@ -16,7 +16,7 @@
 #pragma once
 
 #include <airspeed/airspeed.h>
-#include <lib/wind_estimator/WindEstimator.hpp>
+#include <wind_estimator/WindEstimator.hpp>
 #include <uORB/topics/airspeed_wind.h>
 
 using matrix::Dcmf;

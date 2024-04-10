@@ -10,11 +10,11 @@
 
 #pragma once
 
-#include <lib/mixer_module/mixer_module.hpp>
+#include <mixer_module/mixer_module.hpp>
 
 #include <gz/transport.hh>
 
-#include <uORB/PublicationMulti.hpp>
+#include <uORB/uORBPublication.hpp>
 #include <uORB/topics/esc_status.h>
 
 // GZBridge mixing class for ESCs.

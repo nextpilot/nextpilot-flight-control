@@ -11,7 +11,7 @@
 #include "SensorGpsSim.hpp"
 
 #include <drivers/drv_sensor.h>
-#include <lib/drivers/device/Device.hpp>
+#include <drivers/device/Device.hpp>
 #include <geo/geo.h>
 
 using namespace matrix;

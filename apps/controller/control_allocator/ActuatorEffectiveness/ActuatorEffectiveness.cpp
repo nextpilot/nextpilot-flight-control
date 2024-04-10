@@ -14,8 +14,6 @@
 #include "ControlAllocation/ControlAllocation.hpp"
 #include <rtdbg.h>
 
-// #include <px4_platform_common/log.h>
-
 int ActuatorEffectiveness::Configuration::addActuator(ActuatorType type, const matrix::Vector3f &torque,
                                                       const matrix::Vector3f &thrust) {
     int actuator_idx = num_actuators_matrix[selected_matrix];

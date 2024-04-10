@@ -20,17 +20,17 @@
 
 #include <hrtimer.h>
 #include <geo/geo.h>
-#include <lib/world_magnetic_model/geo_mag_declination.h>
-#include <lib/mathlib/mathlib.h>
-#include <lib/parameters/param.h>
+#include <world_magnetic_model/geo_mag_declination.h>
+#include <mathlib/mathlib.h>
+#include <param/param.h>
 #include <matrix/math.hpp>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/module.h>
-#include <module_params.hpp>
+#include <defines.h>
+#include <module/module_command.hpp>
+#include <module/module_params.hpp>
 #include <px4_platform_common/posix.h>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionCallback.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/sensor_combined.h>
 #include <uORB/topics/vehicle_attitude.h>

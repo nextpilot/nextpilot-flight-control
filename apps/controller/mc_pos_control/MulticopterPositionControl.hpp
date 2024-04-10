@@ -19,19 +19,21 @@
 #include "Takeoff/Takeoff.hpp"
 // #include <hrtimer.h>
 #include <controllib/blocks.hpp>
-// #include <lib/perf/perf_counter.h>
+// #include <perf/perf_counter.h>
 #include <slew_rate/SlewRateYaw.hpp>
-// #include <lib/systemlib/mavlink_log.h>
+// #include <mavlink_log.h>
+
 // #include <px4_platform_common/px4_config.h>
-// #include <px4_platform_common/defines.h>
-// #include <px4_platform_common/module.h>
-// #include <module_params.hpp>
-// #include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
+
+// #include <defines.h>
+// #include <module/module_command.hpp>
+// #include <module/module_params.hpp>
+// #include <workq/WorkItemScheduled.hpp>
 // #include <px4_platform_common/posix.h>
 // #include <px4_platform_common/tasks.h>
 // #include <uORB/uORBPublication.hpp>
 // #include <uORB/uORBSubscription.hpp>
-// #include <uORB/SubscriptionCallback.hpp>
+// #include <uORB/uORBSubscription.hpp>
 // #include <uORB/topics/hover_thrust_estimate.h>
 // #include <uORB/topics/parameter_update.h>
 // #include <uORB/topics/trajectory_setpoint.h>

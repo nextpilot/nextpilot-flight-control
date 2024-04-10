@@ -10,7 +10,7 @@
 
 #include "PX4Rangefinder.hpp"
 
-#include <lib/drivers/device/Device.hpp>
+#include <drivers/device/Device.hpp>
 
 PX4Rangefinder::PX4Rangefinder(const uint32_t device_id, const uint8_t device_orientation)
 {

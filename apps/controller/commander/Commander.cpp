@@ -32,8 +32,9 @@
 #include <geo/geo.h>
 #include <mathlib/mathlib.h>
 #include <px4_platform_common/events.h>
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/defines.h>
+// #include <px4_platform_common/px4_config.h>
+
+#include <defines.h>
 #include <px4_platform_common/external_reset_lockout.h>
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/shutdown.h>

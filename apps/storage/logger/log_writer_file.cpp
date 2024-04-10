@@ -18,7 +18,7 @@
 #include <mathlib/mathlib.h>
 // #include <px4_platform_common/posix.h>
 // #include <px4_platform_common/crypto.h>
-// #include <px4_platform_common/log.h>
+// #include <rtdbg.h>
 #ifdef __PX4_NUTTX
 #include <systemlib/hardfault_log.h>
 #endif /* __PX4_NUTTX */
@@ -542,7 +542,8 @@ const char *log_type_str(LogType type) {
 
 LogWriterFile::LogFileBuffer::LogFileBuffer(size_t log_buffer_size, perf_counter_t perf_write,
                                             perf_counter_t perf_fsync) :
-    _buffer_size(log_buffer_size), _perf_write(perf_write), _perf_fsync(perf_fsync) {
+    _buffer_size(log_buffer_size),
+    _perf_write(perf_write), _perf_fsync(perf_fsync) {
 }
 
 LogWriterFile::LogFileBuffer::~LogFileBuffer() {

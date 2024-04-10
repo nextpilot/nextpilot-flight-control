@@ -8,12 +8,13 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/log.h>
-#include <lib/conversion/rotation.h>
-#include <lib/drivers/device/Device.hpp>
-#include <lib/mathlib/mathlib.h>
-#include <lib/parameters/param.h>
+//#include <px4_platform_common/px4_config.h>
+#include <rtdbg.h>
+#include <conversion/rotation.h>
+
+#include <drivers/device/Device.hpp>
+#include <mathlib/mathlib.h>
+#include <param/param.h>
 
 #if defined(CONFIG_I2C)
 # include <px4_platform_common/i2c.h>

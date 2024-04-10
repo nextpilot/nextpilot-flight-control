@@ -13,7 +13,7 @@
 #include <stdint.h>
 
 #include <matrix/matrix/math.hpp>
-#include <px4_platform_common/defines.h>
+#include <defines.h>
 
 struct sphere_params {
     matrix::Vector3f offset, diag{1.f, 1.f, 1.f}, offdiag;

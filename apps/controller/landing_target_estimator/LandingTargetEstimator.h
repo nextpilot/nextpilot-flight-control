@@ -21,7 +21,7 @@
 
 #include <px4_platform_common/workqueue.h>
 #include <hrtimer.h>
-#include <parameters/param.h>
+#include <param/param.h>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/SubscriptionInterval.hpp>
@@ -35,7 +35,8 @@
 #include <matrix/math.hpp>
 #include <mathlib/mathlib.h>
 #include <matrix/Matrix.hpp>
-#include <lib/conversion/rotation.h>
+#include <conversion/rotation.h>
+
 #include "KalmanFilter.h"
 
 using namespace time_literals;

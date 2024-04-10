@@ -11,8 +11,7 @@
 #pragma once
 
 #include "ActuatorEffectiveness.hpp"
-
-#include <module_params.hpp>
+#include <module/module_params.hpp>
 #include <slew_rate/SlewRate.hpp>
 
 static constexpr float kFlapSlewRate     = 0.5f; // slew rate for normalized flaps setpoint [1/s]

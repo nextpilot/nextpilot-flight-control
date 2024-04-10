@@ -9,6 +9,7 @@
  ******************************************************************/
 
 // #include <px4_platform_common/px4_config.h>
+
 // #include <px4_platform_common/console_buffer.h>
 #include "logged_topics.h"
 #include "logger.h"
@@ -30,9 +31,9 @@
 #include <hrtimer.h>
 #include <mathlib/math/Limits.hpp>
 #include <px4_platform/cpuload.h>
-#include <px4_platform_common/getopt.h>
+#include <getopt/getopt.h>
 #include <px4_platform_common/events.h>
-#include <px4_platform_common/log.h>
+#include <rtdbg.h>
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/sem.h>
 #include <px4_platform_common/shutdown.h>

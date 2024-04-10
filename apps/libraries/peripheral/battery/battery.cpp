@@ -20,7 +20,7 @@
 #include "battery.h"
 #include <mathlib/mathlib.h>
 #include <cstring>
-#include <px4_platform_common/defines.h>
+#include <defines.h>
 
 using namespace time_literals;
 

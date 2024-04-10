@@ -23,18 +23,18 @@
 #include <uORB/topics/manual_control_setpoint.h>
 #include <uORB/topics/vehicle_status.h>
 #include <geo/geo.h>
-#include <lib/weather_vane/WeatherVane.hpp>
-#include <lib/mathlib/math/filter/AlphaFilter.hpp>
-#include <lib/motion_planning/PositionSmoothing.hpp>
+#include <weather_vane/WeatherVane.hpp>
+#include <mathlib/math/filter/AlphaFilter.hpp>
+#include <motion_planning/PositionSmoothing.hpp>
 #include "Sticks.hpp"
 #include "StickAccelerationXY.hpp"
 #include "StickYaw.hpp"
 
 // TODO: make this switchable in the board config, like a module
 #if CONSTRAINED_FLASH
-#include <lib/avoidance/ObstacleAvoidance_dummy.hpp>
+#include <avoidance/ObstacleAvoidance_dummy.hpp>
 #else
-#include <lib/avoidance/ObstacleAvoidance.hpp>
+#include <avoidance/ObstacleAvoidance.hpp>
 #endif
 
 /**

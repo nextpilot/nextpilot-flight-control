@@ -13,9 +13,9 @@
 #include <drivers/device/device.h>
 #include <hrtimer.h>
 #include <drivers/drv_pwm_output.h>
-#include <lib/mixer_module/mixer_module.hpp>
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/module.h>
+#include <mixer_module/mixer_module.hpp>
+// #include <px4_platform_common/px4_config.h>
+#include <module/module_command.hpp>
 #include <px4_platform_common/tasks.h>
 #include <px4_platform_common/time.h>
 #include <uORB/topics/parameter_update.h>

@@ -21,22 +21,24 @@
 #include "calibration_messages.h"
 #include "factory_calibration_storage.h"
 
-#include <px4_platform_common/defines.h>
+#include <defines.h>
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/time.h>
 #include <hrtimer.h>
 #include <drivers/drv_tone_alarm.h>
 #include <matrix/math.hpp>
-#include <lib/sensor_calibration/Magnetometer.hpp>
-#include <lib/sensor_calibration/Utilities.hpp>
-#include <lib/conversion/rotation.h>
-#include <lib/world_magnetic_model/geo_mag_declination.h>
-#include <lib/systemlib/mavlink_log.h>
-#include <lib/parameters/param.h>
-#include <lib/systemlib/err.h>
+#include <sensor_calibration/Magnetometer.hpp>
+#include <sensor_calibration/Utilities.hpp>
+#include <conversion/rotation.h>
+
+#include <world_magnetic_model/geo_mag_declination.h>
+#include <mavlink_log.h>
+
+#include <param/param.h>
+#include <systemlib/err.h>
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionBlocking.hpp>
-#include <uORB/SubscriptionMultiArray.hpp>
+#include <uORB/uORBSubscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/sensor_mag.h>
 #include <uORB/topics/sensor_gyro.h>
 #include <uORB/topics/vehicle_attitude.h>

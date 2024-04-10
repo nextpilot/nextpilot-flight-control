@@ -12,7 +12,7 @@
 
 #include "Common.hpp"
 
-#include <module_params.hpp>
+#include <module/module_params.hpp>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/topics/health_report.h>
 #include <uORB/topics/failsafe_flags.h>

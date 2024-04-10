@@ -10,8 +10,7 @@
 
 #include "VehicleOpticalFlow.hpp"
 
-#include <px4_platform_common/log.h>
-
+#include <rtdbg.h>
 namespace sensors {
 
 using namespace matrix;

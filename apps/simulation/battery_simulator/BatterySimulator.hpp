@@ -10,12 +10,12 @@
 
 #pragma once
 
-#include <lib/battery/battery.h>
-#include <lib/perf/perf_counter.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/module.h>
-#include <module_params.hpp>
-#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
+#include <battery/battery.h>
+#include <perf/perf_counter.h>
+#include <defines.h>
+#include <module_command.h>
+#include <module/module_params.hpp>
+#include <pWorkItemScheduled.hpp>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/SubscriptionInterval.hpp>

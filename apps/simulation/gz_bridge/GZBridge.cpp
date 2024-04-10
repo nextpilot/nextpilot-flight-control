@@ -13,9 +13,9 @@
 #include <uORB/uORBSubscription.hpp>
 
 #include <geo/geo.h>
-#include <lib/mathlib/mathlib.h>
+#include <mathlib/mathlib.h>
 
-#include <px4_platform_common/getopt.h>
+#include <getopt/getopt.h>
 
 #include <iostream>
 #include <string>

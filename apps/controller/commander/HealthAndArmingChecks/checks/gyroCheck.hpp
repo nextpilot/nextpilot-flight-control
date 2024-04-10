@@ -13,10 +13,10 @@
 #include "../Common.hpp"
 
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionMultiArray.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/estimator_status.h>
 #include <uORB/topics/sensor_gyro.h>
-#include <lib/sensor_calibration/Gyroscope.hpp>
+#include <sensor_calibration/Gyroscope.hpp>
 
 class GyroChecks : public HealthAndArmingCheckBase {
 public:

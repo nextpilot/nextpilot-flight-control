@@ -10,7 +10,7 @@
 
 #include <gtest/gtest.h>
 #include <random>
-#include <lib/matrix/matrix/math.hpp>
+#include <matrix/matrix/math.hpp>
 #include "WelfordMean.hpp"
 
 using namespace math;

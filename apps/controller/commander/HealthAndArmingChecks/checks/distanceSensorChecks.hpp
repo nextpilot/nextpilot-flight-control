@@ -13,7 +13,7 @@
 #include "../Common.hpp"
 
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionMultiArray.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/distance_sensor.h>
 
 class DistanceSensorChecks : public HealthAndArmingCheckBase {

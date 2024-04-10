@@ -1,17 +1,17 @@
 #pragma once
 
 #include <hrtimer.h>
-#include <px4_platform_common/module.h>
-#include <module_params.hpp>
+#include <module/module_command.hpp>
+#include <module/module_params.hpp>
 #include <px4_platform_common/posix.h>
-#include <lib/controllib/blocks.hpp>
+#include <controllib/blocks.hpp>
 #include <geo/geo.h>
-#include <lib/mathlib/mathlib.h>
+#include <mathlib/mathlib.h>
 #include <matrix/Matrix.hpp>
 
 // uORB Subscriptions
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionCallback.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/vehicle_command.h>
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/actuator_armed.h>

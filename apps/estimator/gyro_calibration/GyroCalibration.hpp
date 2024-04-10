@@ -10,18 +10,18 @@
 
 #pragma once
 
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/module.h>
-#include <module_params.hpp>
+#include <defines.h>
+#include <module/module_command.hpp>
+#include <module/module_params.hpp>
 #include <px4_platform_common/posix.h>
-#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
+#include <workq/WorkItemScheduled.hpp>
 #include <hrtimer.h>
-#include <lib/mathlib/math/WelfordMeanVector.hpp>
-#include <lib/perf/perf_counter.h>
-#include <lib/sensor_calibration/Gyroscope.hpp>
+#include <mathlib/math/WelfordMeanVector.hpp>
+#include <perf/perf_counter.h>
+#include <sensor_calibration/Gyroscope.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/SubscriptionInterval.hpp>
-#include <uORB/SubscriptionMultiArray.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/sensor_accel.h>
 #include <uORB/topics/sensor_gyro.h>

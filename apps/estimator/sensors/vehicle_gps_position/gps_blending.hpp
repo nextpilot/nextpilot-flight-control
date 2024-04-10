@@ -15,13 +15,13 @@
 #pragma once
 
 #include <hrtimer.h>
-#include <lib/matrix/matrix/math.hpp>
-#include <px4_platform_common/defines.h>
+#include <matrix/matrix/math.hpp>
+#include <defines.h>
 #include <uORB/topics/sensor_gps.h>
 
 #include <float.h>
 #include <geo/geo.h>
-#include <lib/mathlib/mathlib.h>
+#include <mathlib/mathlib.h>
 
 using matrix::Vector2f;
 using math::constrain;

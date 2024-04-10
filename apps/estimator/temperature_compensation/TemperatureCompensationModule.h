@@ -11,16 +11,16 @@
 #pragma once
 
 #include <hrtimer.h>
-#include <lib/mathlib/mathlib.h>
-#include <lib/parameters/param.h>
-#include <lib/perf/perf_counter.h>
+#include <mathlib/mathlib.h>
+#include <param/param.h>
+#include <perf/perf_counter.h>
 #include <px4_platform_common/atomic.h>
-#include <px4_platform_common/getopt.h>
-#include <px4_platform_common/module.h>
-#include <module_params.hpp>
+#include <getopt/getopt.h>
+#include <module/module_command.hpp>
+#include <module/module_params.hpp>
 #include <px4_platform_common/posix.h>
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
+// #include <px4_platform_common/px4_config.h>
+#include <workq/WorkItemScheduled.hpp>
 #include <px4_platform_common/tasks.h>
 #include <px4_platform_common/time.h>
 #include <uORB/uORBPublication.hpp>

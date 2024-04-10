@@ -24,6 +24,7 @@
 
 /* Nextpilot Controller Config */
 
+#define FCS_USING_COMMANDER
 #define FCS_USING_CONTROL_ALLOCATOR
 #define FCS_USING_FW_ATT_CONTROL
 #define FCS_USING_FW_AUTOTUNE_ATTITUDE_CONTROL
@@ -69,6 +70,11 @@
 #define PKG_USING_SYSTEM_IDENTIFICATION
 #define PKG_USING_TECS
 /* end of Controller Libraries Config */
+
+/* Estimator Libraries Config */
+
+#define PKG_USING_SENSOR_CALIBRATION
+/* end of Estimator Libraries Config */
 
 /* Peripheral Libraries Config */
 

@@ -9,10 +9,8 @@
  ******************************************************************/
 
 #include "Accelerometer.hpp"
-
 #include "Utilities.hpp"
-
-#include <lib/parameters/param.h>
+#include <param/param.h>
 
 using namespace matrix;
 using namespace time_literals;

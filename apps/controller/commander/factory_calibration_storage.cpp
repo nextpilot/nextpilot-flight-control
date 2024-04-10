@@ -12,7 +12,7 @@
 #include <fcntl.h>
 #include <string.h>
 
-#include <lib/parameters/param.h>
+#include <param/param.h>
 #include <px4_platform_common/log.h>
 
 #include "factory_calibration_storage.h"

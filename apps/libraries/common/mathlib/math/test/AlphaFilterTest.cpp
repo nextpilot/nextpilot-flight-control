@@ -40,8 +40,7 @@
 #include <gtest/gtest.h>
 #include <cmath>
 #include <matrix/math.hpp>
-
-#include <lib/mathlib/math/filter/AlphaFilter.hpp>
+#include <mathlib/math/filter/AlphaFilter.hpp>
 
 using matrix::Vector3f;
 

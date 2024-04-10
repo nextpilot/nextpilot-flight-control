@@ -16,8 +16,8 @@
  *
  */
 
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/defines.h>
+// #include <px4_platform_common/px4_config.h>
+#include <defines.h>
 #include <hrtimer.h>
 
 #include "LandingTargetEstimator.h"

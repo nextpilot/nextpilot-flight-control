@@ -14,7 +14,7 @@
 
 #include <uORB/topics/vehicle_status.h>
 #include <px4_platform_common/events.h>
-#include <px4_platform_common/log.h>
+#include <rtdbg.h>
 #include <mavlink_log.h>
 
 using failsafe_action_t = events::px4::enums::failsafe_action_t;

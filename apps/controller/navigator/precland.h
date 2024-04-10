@@ -19,7 +19,7 @@
 
 #include <matrix/math.hpp>
 #include <geo/geo.h>
-#include <module_params.hpp>
+#include <module/module_params.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/landing_target_pose.h>
 #include "navigator_mode.h"

@@ -17,9 +17,9 @@
 #define TC_DEBUG(fmt, ...)
 #endif
 
-#include <px4_platform_common/log.h>
+#include <rtdbg.h>
 #include <mathlib/mathlib.h>
-#include <lib/parameters/param.h>
+#include <param/param.h>
 
 #include "polyfit.hpp"
 

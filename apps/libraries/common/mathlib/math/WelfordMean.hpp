@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <lib/mathlib/mathlib.h>
+#include <mathlib/mathlib.h>
 
 namespace math
 {

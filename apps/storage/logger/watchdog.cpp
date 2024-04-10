@@ -10,7 +10,7 @@
 
 #include "watchdog.h"
 
-#include <px4_platform_common/log.h>
+#include <rtdbg.h>
 #include <px4_platform_common/tasks.h>
 
 #if defined(__PX4_NUTTX) && !defined(CONFIG_SCHED_INSTRUMENTATION)

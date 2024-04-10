@@ -13,7 +13,7 @@
 #include "../Common.hpp"
 
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionMultiArray.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/battery_status.h>
 #include <uORB/topics/rtl_time_estimate.h>
 

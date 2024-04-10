@@ -20,7 +20,7 @@
 #include <uORB/topics/sensor_gyro.h>
 #include <mathlib/mathlib.h>
 #include <px4_platform_common/atomic.h>
-#include <px4_platform_common/log.h>
+#include <rtdbg.h>
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/tasks.h>
 #include <hrtimer.h>

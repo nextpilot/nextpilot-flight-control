@@ -11,7 +11,7 @@
 
 #include "PX4Magnetometer.hpp"
 
-#include <lib/drivers/device/Device.hpp>
+#include <drivers/device/Device.hpp>
 
 PX4Magnetometer::PX4Magnetometer(uint32_t device_id, enum Rotation rotation) :
 	_device_id{device_id},

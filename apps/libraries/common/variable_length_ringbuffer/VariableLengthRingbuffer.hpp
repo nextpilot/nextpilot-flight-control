@@ -13,7 +13,7 @@
 #pragma once
 
 #include <stdint.h>
-#include <lib/ringbuffer/Ringbuffer.hpp>
+#include <ringbuffer/Ringbuffer.hpp>
 
 
 // FIFO ringbuffer implementation for packets of variable length.

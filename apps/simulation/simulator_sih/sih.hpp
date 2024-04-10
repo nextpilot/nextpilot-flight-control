@@ -32,17 +32,17 @@
 
 #pragma once
 
-#include <px4_platform_common/module.h>
-#include <module_params.hpp>
+#include <module/module_command.hpp>
+#include <module/module_params.hpp>
 #include <px4_platform_common/posix.h>
 
 #include <matrix/matrix/math.hpp> // matrix, vectors, dcm, quaterions
 #include <conversion/rotation.h>  // math::radians,
 #include <geo/geo.h>              // to get the physical constants
 #include <hrtimer.h>              // to get the real time
-#include <lib/drivers/accelerometer/PX4Accelerometer.hpp>
-#include <lib/drivers/gyroscope/PX4Gyroscope.hpp>
-#include <lib/perf/perf_counter.h>
+#include <drivers/accelerometer/PX4Accelerometer.hpp>
+#include <drivers/gyroscope/PX4Gyroscope.hpp>
+#include <perf/perf_counter.h>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/SubscriptionInterval.hpp>

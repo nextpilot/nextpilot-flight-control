@@ -19,22 +19,21 @@
 
 #pragma once
 
-#include <float.h>
-#include <math.h>
 #include "nextpilot.h"
 
-// #include <lib/hysteresis/hysteresis.h>
-// #include <lib/perf/perf_counter.h>
-// #include <px4_platform_common/defines.h>
-// #include <px4_platform_common/module.h>
-// #include <px4_platform_common/module.h>
-// #include <module_params.hpp>
-// #include <module_params.hpp>
+// #include <hysteresis/hysteresis.h>
+// #include <perf/perf_counter.h>
+// #include <defines.h>
+// #include <module/module_command.hpp>
+// #include <module/module_command.hpp>
+// #include <module/module_params.hpp>
+// #include <module/module_params.hpp>
 // #include <px4_platform_common/px4_config.h>
-// #include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
+
+// #include <workq/WorkItemScheduled.hpp>
 // #include <uORB/uORBPublication.hpp>
 // #include <uORB/uORBSubscription.hpp>
-// #include <uORB/SubscriptionCallback.hpp>
+// #include <uORB/uORBSubscription.hpp>
 // #include <uORB/topics/actuator_armed.h>
 // #include <uORB/topics/parameter_update.h>
 // #include <uORB/topics/sensor_selection.h>
@@ -78,12 +77,12 @@ protected:
     /**
      * Updates parameters.
      */
-    virtual void _update_params() {};
+    virtual void _update_params(){};
 
     /**
      * Updates subscribed uORB topics.
      */
-    virtual void _update_topics() {};
+    virtual void _update_topics(){};
 
     /**
      * @return true if UAV is in a landed state.

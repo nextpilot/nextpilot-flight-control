@@ -17,8 +17,8 @@
 
 #pragma once
 
-#include <lib/collision_prevention/CollisionPrevention.hpp>
-#include <lib/weather_vane/WeatherVane.hpp>
+#include <collision_prevention/CollisionPrevention.hpp>
+#include <weather_vane/WeatherVane.hpp>
 #include "FlightTaskManualAltitude.hpp"
 
 class FlightTaskManualPosition : public FlightTaskManualAltitude {

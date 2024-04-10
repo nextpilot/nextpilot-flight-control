@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <module_params.hpp>
+#include <module/module_params.hpp>
 #include <matrix/matrix/math.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/vehicle_attitude_setpoint.h>
