@@ -162,7 +162,7 @@ void TemperatureCalibration::task_main() {
 
         if (ret < 0) {
             // Poll error, sleep and try again
-            px4_usleep(10000);
+            usleep(10000);
             continue;
 
         } else if (ret == 0) {

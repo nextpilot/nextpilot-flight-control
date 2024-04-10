@@ -649,6 +649,10 @@ public:
         }
     }
 
+    bool updatedBlocking(uint32_t timeout_us = 0) {
+        return updated_blocking(timeout_us);
+    }
+
     /**
      * Block until updated.
      * @param timeout_us The requested timeout in microseconds, or 0 to wait indefinitely.

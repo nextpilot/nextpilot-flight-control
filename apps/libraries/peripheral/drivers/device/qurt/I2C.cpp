@@ -133,7 +133,7 @@ I2C::transfer(const uint8_t *send, const unsigned send_len, uint8_t *recv, const
 
 			if (ret != PX4_ERROR) { break; }
 
-			px4_usleep(1000);
+			usleep(1000);
 
 		} while (retry_count++ < _retries);
 	}

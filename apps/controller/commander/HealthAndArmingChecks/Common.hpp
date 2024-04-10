@@ -10,15 +10,14 @@
 
 #pragma once
 
-#include <px4_platform_common/events.h>
-#include <px4_platform_common/log.h>
+// #include <event/events.h>
+#include <rtdbg.h>
 #include <module/module_params.hpp>
 #include <uORB/topics/health_report.h>
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/failsafe_flags.h>
 #include <mavlink_log.h>
 #include <hrtimer.h>
-
 #include <stdint.h>
 #include <limits.h>
 

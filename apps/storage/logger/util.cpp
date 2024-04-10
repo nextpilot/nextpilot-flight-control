@@ -20,7 +20,7 @@
 #include <uORB/topics/sensor_gps.h>
 
 #include <hrtimer.h>
-#include <px4_platform_common/events.h>
+// #include <event/events.h>
 #include <rtdbg.h>
 #include <px4_platform_common/time.h>
 #include <mavlink_log.h>

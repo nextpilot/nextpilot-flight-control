@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include <px4_platform_common/events.h>
+// #include <event/events.h>
 #include <uORB/topics/vehicle_status.h>
 
 #include <stdint.h>

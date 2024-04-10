@@ -101,7 +101,7 @@ int qurt_uart_read(int fd, char *buf, size_t len, uint32_t timeout_us)
 			if (read_len > 0) { break; }
 
 			interval_counter--;
-			px4_usleep(UART_READ_POLL_INTERVAL_US);
+			usleep(UART_READ_POLL_INTERVAL_US);
 		} while (interval_counter);
 
 		// if (read_len <= 0) PX4_INFO("Warning, UART read timed out");

@@ -122,7 +122,7 @@ int do_baro_calibration(orb_advert_t *mavlink_log_pub) {
             }
         }
 
-        px4_usleep(100_ms);
+        usleep(100_ms);
     }
 
     float gps_altitude = NAN;

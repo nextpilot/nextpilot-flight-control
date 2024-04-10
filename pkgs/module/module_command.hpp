@@ -297,7 +297,7 @@ protected:
         // int i = 0;
 
         // do {
-        //     px4_usleep(2000);
+        //     usleep(2000);
 
         // } while (!_object.load() && ++i < timeout_ms / 2);
 

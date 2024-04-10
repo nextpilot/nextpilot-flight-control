@@ -12,7 +12,7 @@
 
 #include "../../HealthAndArmingChecks/HealthAndArmingChecks.hpp"
 #include <hrtimer.h>
-#include <px4_platform_common/events.h>
+// #include <event/events.h>
 #include <uORB/topics/actuator_armed.h>
 #include <uORB/topics/vehicle_control_mode.h>
 #include <uORB/topics/vehicle_status.h>

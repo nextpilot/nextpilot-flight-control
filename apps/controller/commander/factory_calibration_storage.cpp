@@ -13,7 +13,7 @@
 #include <string.h>
 
 #include <param/param.h>
-#include <px4_platform_common/log.h>
+#include <rtdbg.h>
 
 #include "factory_calibration_storage.h"
 

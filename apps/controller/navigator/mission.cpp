@@ -36,7 +36,7 @@
 #include <uORB/topics/mission.h>
 #include <uORB/topics/mission_result.h>
 #include <hrtimer.h>
-// #include <px4_platform_common/events.h>
+// #include <event/events.h>
 
 using namespace time_literals;
 

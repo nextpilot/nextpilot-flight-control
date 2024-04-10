@@ -31,12 +31,13 @@
 #include <param/param.h>
 // #include <systemlib/err.h>
 
+using namespace nextpilot;
 using namespace time_literals;
 
 static const char *sensor_name = "airspeed";
 
 static void feedback_calibration_failed(orb_advert_t *mavlink_log_pub) {
-    px4_sleep(5);
+    rt_thread_mdelay(5000);
     calibration_log_critical(mavlink_log_pub, CAL_QGC_FAILED_MSG, sensor_name);
 }
 
@@ -55,7 +56,7 @@ int do_airspeed_calibration(orb_advert_t *mavlink_log_pub) {
     float diff_pres_offset = 0.0f;
 
     calibration_log_critical(mavlink_log_pub, "[cal] Ensure sensor is not measuring wind");
-    px4_usleep(500 * 1000);
+    usleep(500 * 1000);
 
     uORB::SubscriptionData<differential_pressure_s> diff_pres_sub{ORB_ID(differential_pressure)};
 
@@ -80,7 +81,7 @@ int do_airspeed_calibration(orb_advert_t *mavlink_log_pub) {
             return PX4_ERROR;
         }
 
-        px4_usleep(10000);
+        usleep(10000);
     }
 
     diff_pres_offset = diff_pres_offset / calibration_count;
@@ -107,7 +108,7 @@ int do_airspeed_calibration(orb_advert_t *mavlink_log_pub) {
     calibration_log_info(mavlink_log_pub, "[cal] Offset of %d Pascal", (int)diff_pres_offset);
 
     /* wait 500 ms to ensure parameter propagated through the system */
-    px4_usleep(500 * 1000);
+    usleep(500 * 1000);
 
     calibration_log_critical(mavlink_log_pub, "[cal] Blow into front of pitot without touching");
 
@@ -176,7 +177,7 @@ int do_airspeed_calibration(orb_advert_t *mavlink_log_pub) {
             return PX4_ERROR;
         }
 
-        px4_usleep(10000);
+        usleep(10000);
     }
 
     if (calibration_counter == maxcount) {
@@ -190,7 +191,7 @@ int do_airspeed_calibration(orb_advert_t *mavlink_log_pub) {
     tune_neutral(true);
 
     // This give a chance for the log messages to go out of the queue before someone else stomps on then
-    px4_usleep(200000);
+    usleep(200000);
 
     return result;
 }

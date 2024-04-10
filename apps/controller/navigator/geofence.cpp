@@ -17,14 +17,12 @@
  */
 #include "geofence.h"
 #include "navigator.h"
-
 #include <ctype.h>
-
 #include <dataman/dataman.h>
 #include <hrtimer.h>
 #include <geo/geo.h>
 #include <mavlink_log.h>
-// #include <px4_platform_common/events.h>
+// #include <event/events.h>
 
 #include "navigator.h"
 

@@ -11,9 +11,8 @@
 #include "framework.h"
 #define DEFINE_GET_PX4_CUSTOM_MODE
 #include "../px4_custom_mode.h"
-
 #include <uORB/topics/vehicle_status.h>
-#include <px4_platform_common/events.h>
+// #include <event/events.h>
 #include <rtdbg.h>
 #include <mavlink_log.h>
 

@@ -19,16 +19,14 @@
 
 #include "mission_feasibility_checker.h"
 #include "MissionFeasibility/FeasibilityChecker.hpp"
-
 #include "mission_block.h"
 #include "navigator.h"
-
 // #include <drivers/drv_pwm_output.h>
 #include <geo/geo.h>
 #include <mathlib/mathlib.h>
 #include <mavlink_log.h>
 #include <uORB/uORBSubscription.hpp>
-// #include <px4_platform_common/events.h>
+// #include <event/events.h>
 
 bool MissionFeasibilityChecker::checkMissionFeasible(const mission_s &mission) {
     // Reset warning flag

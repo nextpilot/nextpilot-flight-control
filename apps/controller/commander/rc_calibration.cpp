@@ -13,7 +13,7 @@
  * Remote Control calibration routine
  */
 
-#include <px4_platform_common/events.h>
+// #include <event/events.h>
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/time.h>
 #include <defines.h>
@@ -29,7 +29,7 @@
 
 int do_trim_calibration(orb_advert_t *mavlink_log_pub) {
     uORB::Subscription manual_control_setpoint_sub{ORB_ID(manual_control_setpoint)};
-    px4_usleep(400000);
+    usleep(400000);
     manual_control_setpoint_s manual_control_setpoint{};
     bool                      changed = manual_control_setpoint_sub.updated();
 

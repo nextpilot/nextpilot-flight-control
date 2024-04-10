@@ -31,22 +31,19 @@
 #include <drivers/drv_tone_alarm.h>
 #include <geo/geo.h>
 #include <mathlib/mathlib.h>
-#include <px4_platform_common/events.h>
+// #include <event/events.h>
 // #include <px4_platform_common/px4_config.h>
-
 #include <defines.h>
-#include <px4_platform_common/external_reset_lockout.h>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/shutdown.h>
-#include <px4_platform_common/tasks.h>
-#include <px4_platform_common/time.h>
+// #include <px4_platform_common/external_reset_lockout.h>
+// #include <px4_platform_common/posix.h>
+// #include <px4_platform_common/shutdown.h>
+// #include <px4_platform_common/tasks.h>
+// #include <px4_platform_common/time.h>
 #include <mavlink_log.h>
-
 #include <math.h>
 #include <float.h>
 #include <cstring>
 #include <matrix/math.hpp>
-
 #include <uORB/topics/mavlink_log.h>
 #include <uORB/topics/tune_control.h>
 
@@ -168,7 +165,7 @@ static bool wait_for_vehicle_command_reply(const uint32_t                       
             }
         }
 
-        px4_usleep(10000);
+        usleep(10000);
     }
 
     return false;
@@ -1051,7 +1048,7 @@ bool Commander::handle_command(const vehicle_command_s &cmd) {
             // 1: Reboot autopilot
             answer_command(cmd, vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED);
 
-            while (1) { px4_usleep(1); }
+            while (1) { usleep(1); }
 
 #endif // CONFIG_BOARDCTL_RESET
 
@@ -1061,7 +1058,7 @@ bool Commander::handle_command(const vehicle_command_s &cmd) {
             // 2: Shutdown autopilot
             answer_command(cmd, vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED);
 
-            while (1) { px4_usleep(1); }
+            while (1) { usleep(1); }
 
 #endif // BOARD_HAS_POWER_CONTROL
 
@@ -1071,7 +1068,7 @@ bool Commander::handle_command(const vehicle_command_s &cmd) {
             // 3: Reboot autopilot and keep it in the bootloader until upgraded.
             answer_command(cmd, vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED);
 
-            while (1) { px4_usleep(1); }
+            while (1) { usleep(1); }
 
 #endif // CONFIG_BOARDCTL_RESET
 
@@ -1723,7 +1720,7 @@ void Commander::run() {
 
         // sleep if there are no vehicle_commands or action_requests to process
         if (!_vehicle_command_sub.updated() && !_action_request_sub.updated()) {
-            px4_usleep(COMMANDER_MONITORING_INTERVAL);
+            usleep(COMMANDER_MONITORING_INTERVAL);
         }
     }
 
@@ -1819,7 +1816,7 @@ void Commander::handlePowerButtonState() {
         if (_power_button_state_sub.copy(&button_state)) {
             if (button_state.event == power_button_state_s::PWR_BUTTON_STATE_REQUEST_SHUTDOWN) {
                 if (shutdownIfAllowed() && (px4_shutdown_request() == 0)) {
-                    while (1) { px4_usleep(1); }
+                    while (1) { usleep(1); }
                 }
             }
         }
@@ -2545,7 +2542,7 @@ void Commander::battery_status_check() {
                 // events::send(events::ID("commander_low_bat_shutdown"), {events::Log::Emergency, events::LogInternal::Warning},
                              "Dangerously low battery! Shutting system down");
 
-                             while (1) { px4_usleep(1); }
+                             while (1) { usleep(1); }
 
             } else {
                 mavlink_log_critical(&_mavlink_log_pub, "System does not support shutdown\t");

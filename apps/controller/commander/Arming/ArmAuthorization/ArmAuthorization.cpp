@@ -42,11 +42,13 @@
 #include <uORB/uORBPublication.hpp>
 #include <uORB/topics/vehicle_command.h>
 #include <uORB/topics/vehicle_command_ack.h>
+#include <inttypes.h>
 
 using namespace time_literals;
+using namespace nextpilot;
 
 static orb_advert_t *mavlink_log_pub;
-static int           command_ack_sub = -1;
+static orb_subscr_t  command_ack_sub = nullptr;
 
 static hrt_abstime auth_timeout;
 static hrt_abstime auth_req_time;
@@ -129,7 +131,7 @@ static uint8_t _auth_method_arm_req_check() {
         }
 
         /* 0.5ms */
-        px4_usleep(500);
+        usleep(500);
         now = hrt_absolute_time();
     }
 

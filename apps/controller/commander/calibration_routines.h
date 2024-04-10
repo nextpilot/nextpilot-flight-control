@@ -67,17 +67,17 @@ bool calibrate_cancel_check(orb_advert_t *mavlink_log_pub, const hrt_abstime &ca
 #define calibration_log_info(_pub, _text, ...)        \
     do {                                              \
         mavlink_log_info(_pub, _text, ##__VA_ARGS__); \
-        px4_usleep(10000);                            \
+        usleep(10000);                                \
     } while (0);
 
 #define calibration_log_critical(_pub, _text, ...)        \
     do {                                                  \
         mavlink_log_critical(_pub, _text, ##__VA_ARGS__); \
-        px4_usleep(10000);                                \
+        usleep(10000);                                    \
     } while (0);
 
 #define calibration_log_emergency(_pub, _text, ...)        \
     do {                                                   \
         mavlink_log_emergency(_pub, _text, ##__VA_ARGS__); \
-        px4_usleep(10000);                                 \
+        usleep(10000);                                     \
     } while (0);

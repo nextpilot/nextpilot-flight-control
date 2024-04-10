@@ -33,7 +33,7 @@
 // #include <px4_platform_common/px4_config.h>
 
 // #include <defines.h>
-// #include <px4_platform_common/events.h>
+// #include <event/events.h>
 // #include <px4_platform_common/posix.h>
 // #include <px4_platform_common/tasks.h>
 #include <mavlink_log.h>
@@ -155,7 +155,7 @@ void Navigator::Run() {
         // } else if (pret < 0) {
         //     /* this is undesirable but not much we can do - might want to flag unhappy status */
         //     PX4_ERR("poll error %d, %d", pret, errno);
-        //     px4_usleep(10000);
+        //     usleep(10000);
         //     continue;
         // }
 

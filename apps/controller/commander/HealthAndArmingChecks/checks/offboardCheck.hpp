@@ -11,9 +11,11 @@
 #pragma once
 
 #include "../Common.hpp"
-
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/offboard_control_mode.h>
+
+using namespace nextpilot::global_params;
+using namespace nextpilot;
 
 class OffboardChecks : public HealthAndArmingCheckBase {
 public:

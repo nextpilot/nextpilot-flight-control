@@ -9,8 +9,7 @@
  ******************************************************************/
 
 #include "batteryCheck.hpp"
-
-#include <px4_platform_common/events.h>
+// #include <event/events.h>
 
 using namespace time_literals;
 

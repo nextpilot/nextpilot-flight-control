@@ -82,7 +82,7 @@ int do_esc_calibration(orb_advert_t *mavlink_log_pub) {
 
     calibration_log_info(mavlink_log_pub, CAL_QGC_STARTED_MSG, "esc");
 
-    px4_usleep(10_ms);
+    usleep(10_ms);
 
     // 2 Set motors to high
     set_motor_actuators(actuator_test_pub, 1.f, false);
@@ -113,13 +113,13 @@ int do_esc_calibration(orb_advert_t *mavlink_log_pub) {
             break;
         }
 
-        px4_usleep(50_ms);
+        usleep(50_ms);
     }
 
     // 4 Wait for ESCs to measure high signal
     if (!calibration_failed) {
         calibration_log_info(mavlink_log_pub, "[cal] Battery connected");
-        px4_usleep(3_s);
+        usleep(3_s);
     }
 
     // 5 Set motors to low
@@ -129,7 +129,7 @@ int do_esc_calibration(orb_advert_t *mavlink_log_pub) {
 
     // 6 Wait for ESCs to measure low signal
     if (!calibration_failed) {
-        px4_usleep(5_s);
+        usleep(5_s);
     }
 
     // 7 release control

@@ -15,7 +15,7 @@
 #include <matrix/math.hpp>
 #include <param/param.h>
 #include <perf/perf_counter.h>
-#include <px4_platform_common/events.h>
+// #include <event/events.h>
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
 #include <workq/WorkItemScheduled.hpp>

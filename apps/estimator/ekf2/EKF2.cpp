@@ -8,7 +8,7 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include <px4_platform_common/events.h>
+// #include <event/events.h>
 #include "EKF2.hpp"
 
 using namespace time_literals;
@@ -2533,20 +2533,20 @@ int EKF2::instantiate(int argc, char *argv[]) {
 
                             } else {
                                 PX4_ERR("alloc and init failed imu: %" PRIu8 " mag:%" PRIu8, imu, mag);
-                                px4_usleep(100000);
+                                usleep(100000);
                                 break;
                             }
                         }
 
                     } else {
-                        px4_usleep(1000); // give the sensors extra time to start
+                        usleep(1000); // give the sensors extra time to start
                         break;
                     }
                 }
             }
 
             if (multi_instances_allocated < multi_instances) {
-                px4_usleep(10000);
+                usleep(10000);
             }
         }
 
@@ -2672,7 +2672,7 @@ extern "C" __EXPORT int ekf2_main(int argc, char *argv[]) {
 
                 if (inst) {
                     inst->request_stop();
-                    px4_usleep(20000); // 20 ms
+                    usleep(20000); // 20 ms
                     delete inst;
                     _objects[instance].store(nullptr);
                 }
@@ -2701,7 +2701,7 @@ extern "C" __EXPORT int ekf2_main(int argc, char *argv[]) {
                     PX4_INFO("stopping ekf2 instance %d", i);
                     was_running = true;
                     inst->request_stop();
-                    px4_usleep(20000); // 20 ms
+                    usleep(20000); // 20 ms
                     delete inst;
                     _objects[i].store(nullptr);
                 }
