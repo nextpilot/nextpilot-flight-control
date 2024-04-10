@@ -1,5 +1,5 @@
 #include "BlockLocalPositionEstimator.hpp"
-#include <systemlib/mavlink_log.h>
+#include <mavlink_log.h>
 #include <fcntl.h>
 #include <systemlib/err.h>
 #include <matrix/math.hpp>

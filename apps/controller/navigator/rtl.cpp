@@ -20,8 +20,7 @@
 #include "rtl.h"
 #include "navigator.h"
 #include <dataman/dataman.h>
-#include <px4_platform_common/events.h>
-
+// #include <event/events.h>
 #include <geo/geo.h>
 
 static constexpr float DELAY_SIGMA = 0.01f;
@@ -203,8 +202,8 @@ void RTL::find_RTL_destination() {
         default:
             mavlink_log_critical(_navigator->get_mavlink_log_pub(), "RTL: unsupported MAV_FRAME\t");
             // events::send<uint8_t>(events::ID("rtl_unsupported_mav_frame"), events::Log::Error, "RTL: unsupported MAV_FRAME ({1})",
-                                  closest_safe_point.frame);
-                                  break;
+            // closest_safe_point.frame);
+            break;
         }
     }
 
@@ -338,9 +337,9 @@ void RTL::set_rtl_item() {
         mavlink_log_info(_navigator->get_mavlink_log_pub(), "RTL: climb to %d m (%d m above destination)\t",
                          (int)ceilf(_rtl_alt), (int)ceilf(_rtl_alt - _destination.alt));
         // events::send<int32_t, int32_t>(events::ID("rtl_climb_to"), events::Log::Info,
-                                       "RTL: climb to {1m_v} ({2m_v} above destination)",
-                                       (int32_t)ceilf(_rtl_alt), (int32_t)ceilf(_rtl_alt - _destination.alt));
-                                       break;
+        // "RTL: climb to {1m_v} ({2m_v} above destination)",
+        // (int32_t)ceilf(_rtl_alt), (int32_t)ceilf(_rtl_alt - _destination.alt));
+        break;
     }
 
     case RTL_STATE_RETURN: {
@@ -380,10 +379,10 @@ void RTL::set_rtl_item() {
         mavlink_log_info(_navigator->get_mavlink_log_pub(), "RTL: return at %d m (%d m above destination)\t",
                          (int)ceilf(_mission_item.altitude), (int)ceilf(_mission_item.altitude - _destination.alt));
         // events::send<int32_t, int32_t>(events::ID("rtl_return_at"), events::Log::Info,
-                                       "RTL: return at {1m_v} ({2m_v} above destination)",
-                                       (int32_t)ceilf(_mission_item.altitude), (int32_t)ceilf(_mission_item.altitude - _destination.alt));
+        // "RTL: return at {1m_v} ({2m_v} above destination)",
+        // (int32_t)ceilf(_mission_item.altitude), (int32_t)ceilf(_mission_item.altitude - _destination.alt));
 
-                                       break;
+        break;
     }
 
     case RTL_STATE_DESCEND: {
@@ -418,9 +417,9 @@ void RTL::set_rtl_item() {
         mavlink_log_info(_navigator->get_mavlink_log_pub(), "RTL: descend to %d m (%d m above destination)\t",
                          (int)ceilf(_mission_item.altitude), (int)ceilf(_mission_item.altitude - _destination.alt));
         // events::send<int32_t, int32_t>(events::ID("rtl_descend_to"), events::Log::Info,
-                                       "RTL: descend to {1m_v} ({2m_v} above destination)",
-                                       (int32_t)ceilf(_mission_item.altitude), (int32_t)ceilf(_mission_item.altitude - _destination.alt));
-                                       break;
+        // "RTL: descend to {1m_v} ({2m_v} above destination)",
+        // (int32_t)ceilf(_mission_item.altitude), (int32_t)ceilf(_mission_item.altitude - _destination.alt));
+        break;
     }
 
     case RTL_STATE_LOITER: {

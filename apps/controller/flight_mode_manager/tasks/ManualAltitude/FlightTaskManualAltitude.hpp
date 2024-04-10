@@ -21,7 +21,7 @@
 #include "Sticks.hpp"
 #include "StickTiltXY.hpp"
 #include "StickYaw.hpp"
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 
 class FlightTaskManualAltitude : public FlightTask {
 public:

@@ -22,13 +22,13 @@
 // #include <px4_platform_common/px4_config.h>
 // #include <px4_platform_common/defines.h>
 // #include <px4_platform_common/module.h>
-// #include <px4_platform_common/module_params.hpp>
+// #include <module_params.hpp>
 // #include <px4_platform_common/posix.h>
 // #include <px4_platform_common/tasks.h>
 // #include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
-// #include <uORB/Publication.hpp>
+// #include <uORB/uORBPublication.hpp>
 // #include <uORB/PublicationMulti.hpp>
-// #include <uORB/Subscription.hpp>
+// #include <uORB/uORBSubscription.hpp>
 // #include <uORB/SubscriptionMultiArray.hpp>
 // #include <uORB/SubscriptionCallback.hpp>
 // #include <uORB/topics/actuator_controls_status.h>

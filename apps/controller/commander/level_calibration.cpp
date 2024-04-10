@@ -24,9 +24,9 @@
 #include <lib/conversion/rotation.h>
 #include <lib/parameters/param.h>
 #include <systemlib/err.h>
-#include <systemlib/mavlink_log.h>
+#include <mavlink_log.h>
 #include <uORB/topics/vehicle_attitude.h>
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/SubscriptionBlocking.hpp>
 
 using namespace time_literals;

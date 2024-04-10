@@ -12,7 +12,7 @@
 
 #include "Common.hpp"
 #include <uORB/topics/event.h>
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 
 #include <stdint.h>
 

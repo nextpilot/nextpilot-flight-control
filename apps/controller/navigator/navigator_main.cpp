@@ -20,22 +20,22 @@
  * @author Thomas Gubler <thomasgubler@gmail.com>
  */
 
-#include "navigator.h"
+#define LOG_TAG "navigator"
 
+#include "navigator.h"
 #include <float.h>
 #include <sys/stat.h>
-
 #include <dataman/dataman.h>
 #include <hrtimer.h>
 #include <geo/geo.h>
-#include <lib/adsb/AdsbConflict.h>
-#include <lib/mathlib/mathlib.h>
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/events.h>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/tasks.h>
-#include <systemlib/mavlink_log.h>
+#include <adsb/AdsbConflict.h>
+#include <mathlib/mathlib.h>
+// #include <px4_platform_common/px4_config.h>
+// #include <px4_platform_common/defines.h>
+// #include <px4_platform_common/events.h>
+// #include <px4_platform_common/posix.h>
+// #include <px4_platform_common/tasks.h>
+#include <mavlink_log.h>
 
 using namespace time_literals;
 
@@ -115,7 +115,7 @@ void Navigator::params_update() {
     _mission.set_payload_deployment_timeout(_param_mis_payload_delivery_timeout.get());
 }
 
-void Navigator::run() {
+void Navigator::Run() {
     bool have_geofence_position_data = false;
 
     /* Try to load the geofence:
@@ -130,31 +130,41 @@ void Navigator::run() {
     params_update();
 
     /* wakeup source(s) */
-    px4_pollfd_struct_t fds[3]{};
+    // px4_pollfd_struct_t fds[3]{};
 
     /* Setup of loop */
-    fds[0].fd     = _local_pos_sub;
-    fds[0].events = POLLIN;
-    fds[1].fd     = _vehicle_status_sub;
-    fds[1].events = POLLIN;
-    fds[2].fd     = _mission_sub;
-    fds[2].events = POLLIN;
+    // fds[0].fd     = _local_pos_sub;
+    // fds[0].events = POLLIN;
+    // fds[1].fd     = _vehicle_status_sub;
+    // fds[1].events = POLLIN;
+    // fds[2].fd     = _mission_sub;
+    // fds[2].events = POLLIN;
 
     /* rate-limit position subscription to 20 Hz / 50 ms */
     orb_set_interval(_local_pos_sub, 50);
 
     while (!should_exit()) {
         /* wait for up to 1000ms for data */
-        int pret = px4_poll(&fds[0], (sizeof(fds) / sizeof(fds[0])), 1000);
+        // int pret = px4_poll(&fds[0], (sizeof(fds) / sizeof(fds[0])), 1000);
 
-        if (pret == 0) {
-            /* Let the loop run anyway, don't do `continue` here. */
+        // if (pret == 0) {
+        //     /* Let the loop run anyway, don't do `continue` here. */
 
-        } else if (pret < 0) {
-            /* this is undesirable but not much we can do - might want to flag unhappy status */
-            PX4_ERR("poll error %d, %d", pret, errno);
-            px4_usleep(10000);
-            continue;
+        // } else if (pret < 0) {
+        //     /* this is undesirable but not much we can do - might want to flag unhappy status */
+        //     PX4_ERR("poll error %d, %d", pret, errno);
+        //     px4_usleep(10000);
+        //     continue;
+        // }
+
+        bool local_pos_updated      = false;
+        bool vehicle_status_updated = false;
+        bool mission_updated        = false;
+        orb_check(_local_pos_sub, &local_pos_updated);
+        orb_check(_vehicle_status_sub, &vehicle_status_updated);
+        orb_check(_mission_sub, &mission_updated);
+        if (!local_pos_updated && !vehicle_status_updated && !mission_updated) {
+            rt_thread_mdelay(10);
         }
 
         perf_begin(_loop_perf);
@@ -162,7 +172,7 @@ void Navigator::run() {
         orb_copy(ORB_ID(vehicle_local_position), _local_pos_sub, &_local_pos);
         orb_copy(ORB_ID(vehicle_status), _vehicle_status_sub, &_vstatus);
 
-        if (fds[2].revents & POLLIN) {
+        if (/*fds[2].revents & POLLIN*/ mission_updated) {
             // copy mission to clear any update
             mission_s mission;
             orb_copy(ORB_ID(mission), _mission_sub, &mission);
@@ -336,7 +346,7 @@ void Navigator::run() {
                 } else {
                     mavlink_log_critical(&_mavlink_log_pub, "Reposition is outside geofence\t");
                     // events::send(events::ID("navigator_reposition_outside_geofence"), {events::Log::Error, events::LogInternal::Info},
-                                 "Reposition is outside geofence");
+                    // "Reposition is outside geofence");
                 }
 
                 // CMD_DO_REPOSITION is acknowledged by commander
@@ -417,7 +427,7 @@ void Navigator::run() {
                 } else {
                     mavlink_log_critical(&_mavlink_log_pub, "Altitude change is outside geofence\t");
                     // events::send(events::ID("navigator_change_altitude_outside_geofence"), {events::Log::Error, events::LogInternal::Info},
-                                 "Altitude change is outside geofence");
+                    // "Altitude change is outside geofence");
                 }
 
                 // DO_CHANGE_ALTITUDE is acknowledged by commander
@@ -655,7 +665,7 @@ void Navigator::run() {
                     if (rtl_activated_now) {
                         mavlink_log_info(get_mavlink_log_pub(), "RTL to Mission landing, continue landing\t");
                         // events::send(events::ID("rtl_land_at_mission_continue_landing"), events::Log::Info,
-                                     "RTL to Mission landing, continue landing");
+                        // "RTL to Mission landing, continue landing");
                     }
 
                     if (_navigation_mode != &_mission) {
@@ -694,7 +704,7 @@ void Navigator::run() {
                     if (rtl_activated_now) {
                         mavlink_log_info(get_mavlink_log_pub(), "RTL Mission activated, continue mission\t");
                         // events::send(events::ID("navigator_rtl_mission_activated"), events::Log::Info,
-                                     "RTL Mission activated, continue mission");
+                        // "RTL Mission activated, continue mission");
                     }
 
                     navigation_mode_new = &_mission;
@@ -718,7 +728,7 @@ void Navigator::run() {
                         if (rtl_activated_now) {
                             mavlink_log_info(get_mavlink_log_pub(), "RTL Mission activated, fly mission in reverse\t");
                             // events::send(events::ID("navigator_rtl_mission_activated_rev"), events::Log::Info,
-                                         "RTL Mission activated, fly mission in reverse");
+                            // "RTL Mission activated, fly mission in reverse");
                         }
 
                         navigation_mode_new = &_mission;
@@ -727,7 +737,7 @@ void Navigator::run() {
                         if (rtl_activated_now) {
                             mavlink_log_info(get_mavlink_log_pub(), "RTL Mission activated, fly to home\t");
                             // events::send(events::ID("navigator_rtl_mission_activated_home"), events::Log::Info,
-                                         "RTL Mission activated, fly to home");
+                            // "RTL Mission activated, fly to home");
                         }
 
                         navigation_mode_new = &_rtl;
@@ -829,7 +839,7 @@ void Navigator::run() {
                 publish_vehicle_cmd(&vcmd);
                 mavlink_log_info(&_mavlink_log_pub, "Transition to hover mode and descend.\t");
                 // events::send(events::ID("navigator_transition_descend"), events::Log::Critical,
-                             "Transition to hover mode and descend");
+                // "Transition to hover mode and descend");
             }
         }
 
@@ -933,16 +943,16 @@ void Navigator::geofence_breach_check(bool &have_geofence_position_data) {
             /* inform other apps via the mission result */
             _geofence_result.primary_geofence_breached = true;
 
-            using geofence_violation_reason_t = events::px4::enums::geofence_violation_reason_t;
+            // using geofence_violation_reason_t = events::px4::enums::geofence_violation_reason_t;
 
             if (gf_violation_type.flags.fence_violation) {
-                _geofence_result.geofence_violation_reason = (uint8_t)geofence_violation_reason_t::fence_violation;
+                // _geofence_result.geofence_violation_reason = (uint8_t)geofence_violation_reason_t::fence_violation;
 
             } else if (gf_violation_type.flags.max_altitude_exceeded) {
-                _geofence_result.geofence_violation_reason = (uint8_t)geofence_violation_reason_t::max_altitude_exceeded;
+                // _geofence_result.geofence_violation_reason = (uint8_t)geofence_violation_reason_t::max_altitude_exceeded;
 
             } else if (gf_violation_type.flags.dist_to_home_exceeded) {
-                _geofence_result.geofence_violation_reason = (uint8_t)geofence_violation_reason_t::dist_to_home_exceeded;
+                // _geofence_result.geofence_violation_reason = (uint8_t)geofence_violation_reason_t::dist_to_home_exceeded;
             }
 
             /* Issue a warning about the geofence violation once and only if we are armed */
@@ -998,21 +1008,21 @@ void Navigator::geofence_breach_check(bool &have_geofence_position_data) {
     }
 }
 
-int Navigator::instantiate(int argc, char *argv[]) {
-    _task_id = px4_task_spawn_cmd("navigator",
-                                  SCHED_DEFAULT,
-                                  SCHED_PRIORITY_NAVIGATION,
-                                  PX4_STACK_ADJUSTED(1952),
-                                  (px4_main_t)&run_trampoline,
-                                  (char *const *)argv);
+// int Navigator::task_spawn(int argc, char *argv[]) {
+//     _task_id = px4_task_spawn_cmd("navigator",
+//                                   SCHED_DEFAULT,
+//                                   SCHED_PRIORITY_NAVIGATION,
+//                                   PX4_STACK_ADJUSTED(1952),
+//                                   (px4_main_t)&run_trampoline,
+//                                   (char *const *)argv);
 
-    if (_task_id < 0) {
-        _task_id = -1;
-        return -errno;
-    }
+//     if (_task_id < 0) {
+//         _task_id = -1;
+//         return -errno;
+//     }
 
-    return 0;
-}
+//     return 0;
+// }
 
 Navigator *Navigator::instantiate(int argc, char *argv[]) {
     Navigator *instance = new Navigator();
@@ -1279,7 +1289,7 @@ void Navigator::set_mission_failure_heading_timeout() {
         set_mission_result_updated();
         mavlink_log_critical(&_mavlink_log_pub, "unable to reach heading within timeout\t");
         // events::send(events::ID("navigator_mission_failure_heading"), events::Log::Critical,
-                     "Mission failure: unable to reach heading within timeout");
+        // "Mission failure: unable to reach heading within timeout");
     }
 }
 
@@ -1454,3 +1464,12 @@ controller.
 extern "C" __EXPORT int navigator_main(int argc, char *argv[]) {
     return Navigator::main(argc, argv);
 }
+MSH_CMD_EXPORT_ALIAS(navigator_main, navigator, navigator);
+
+int navigator_start() {
+    const char *argv[] = {"navigator", "start"};
+    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    return Navigator::main(argc, (char **)argv);
+}
+
+INIT_APP_EXPORT(navigator_start);

@@ -12,14 +12,14 @@
 
 #include <px4_platform_common/defines.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.hpp>
+#include <module_params.hpp>
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <hrtimer.h>
 #include <lib/mathlib/math/WelfordMeanVector.hpp>
 #include <lib/perf/perf_counter.h>
 #include <lib/sensor_calibration/Gyroscope.hpp>
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/SubscriptionInterval.hpp>
 #include <uORB/SubscriptionMultiArray.hpp>
 #include <uORB/topics/parameter_update.h>

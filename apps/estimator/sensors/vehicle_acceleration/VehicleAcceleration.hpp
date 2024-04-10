@@ -15,11 +15,11 @@
 #include <lib/matrix/matrix/math.hpp>
 #include <lib/mathlib/math/filter/LowPassFilter2p.hpp>
 #include <px4_platform_common/log.h>
-#include <px4_platform_common/module_params.hpp>
+#include <module_params.hpp>
 #include <px4_platform_common/px4_config.h>
 #include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
-#include <uORB/Publication.hpp>
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBPublication.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/SubscriptionCallback.hpp>
 #include <uORB/topics/estimator_selector_status.h>
 #include <uORB/topics/estimator_sensor_bias.h>

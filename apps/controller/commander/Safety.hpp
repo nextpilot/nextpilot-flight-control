@@ -15,7 +15,7 @@
 #pragma once
 
 #include <uORB/SubscriptionMultiArray.hpp>
-#include <uORB/Publication.hpp>
+#include <uORB/uORBPublication.hpp>
 #include <uORB/topics/button_event.h>
 
 class Safety {

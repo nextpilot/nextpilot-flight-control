@@ -12,7 +12,7 @@
 
 #include "../Common.hpp"
 
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/geofence_result.h>
 
 class GeofenceChecks : public HealthAndArmingCheckBase {

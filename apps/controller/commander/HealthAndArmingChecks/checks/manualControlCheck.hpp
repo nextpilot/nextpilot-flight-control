@@ -12,7 +12,7 @@
 
 #include "../Common.hpp"
 
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/manual_control_switches.h>
 
 class ManualControlChecks : public HealthAndArmingCheckBase {

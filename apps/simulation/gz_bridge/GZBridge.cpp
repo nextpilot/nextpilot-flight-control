@@ -10,7 +10,7 @@
 
 #include "GZBridge.hpp"
 
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 
 #include <geo/geo.h>
 #include <lib/mathlib/mathlib.h>

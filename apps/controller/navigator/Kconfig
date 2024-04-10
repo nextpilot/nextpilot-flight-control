@@ -1,5 +1,7 @@
 menuconfig FCS_USING_NAVIGATOR
 	bool "navigator"
+	select SYS_USING_DATAMAN
+	select PKG_USING_ADSB
 	default n
 	---help---
 		Enable support for navigator

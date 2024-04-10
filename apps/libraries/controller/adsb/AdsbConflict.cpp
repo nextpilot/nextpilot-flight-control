@@ -13,9 +13,7 @@
 
 #include "AdsbConflict.h"
 #include "geo/geo.h"
-
 #include <uORB/topics/transponder_report.h>
-
 #include <float.h>
 
 
@@ -141,13 +139,13 @@ bool AdsbConflict::handle_traffic_conflict()
 
 	//convert UAS_id byte array to char array for User Warning
 	for (int i = 0; i < 5; i++) {
-		snprintf(&uas_id[i * 2], sizeof(uas_id) - i * 2, "%02x", _transponder_report.uas_id[PX4_GUID_BYTE_LENGTH - 5 + i]);
+		// snprintf(&uas_id[i * 2], sizeof(uas_id) - i * 2, "%02x", _transponder_report.uas_id[PX4_GUID_BYTE_LENGTH - 5 + i]);
 	}
 
 	uint64_t uas_id_int = 0;
 
 	for (int i = 0; i < 8; i++) {
-		uas_id_int |= (uint64_t)(_transponder_report.uas_id[PX4_GUID_BYTE_LENGTH - i - 1]) << (i * 8);
+		// uas_id_int |= (uint64_t)(_transponder_report.uas_id[PX4_GUID_BYTE_LENGTH - i - 1]) << (i * 8);
 	}
 
 
@@ -173,7 +171,7 @@ bool AdsbConflict::handle_traffic_conflict()
 					     _transponder_report.callsign : uas_id);
 
 			// events::send<uint64_t>(events::ID("navigator_traffic_resolved"), events::Log::Critical, "Traffic Conflict Resolved",
-					       uas_id_int);
+					       // uas_id_int);
 
 		}
 		break;
@@ -244,7 +242,7 @@ bool AdsbConflict::send_traffic_warning(int traffic_direction, int traffic_seper
 			 * - Direction: {3} degrees
 			 */
 			// events::send<uint64_t, int32_t, int16_t>(events::ID("navigator_traffic"), events::Log::Critical, "Traffic alert",
-					uas_id_int, traffic_seperation, traffic_direction);
+					// uas_id_int, traffic_seperation, traffic_direction);
 			break;
 		}
 
@@ -260,8 +258,8 @@ bool AdsbConflict::send_traffic_warning(int traffic_direction, int traffic_seper
 			 * - Direction: {3} degrees
 			 */
 			// events::send<uint64_t, int32_t, int16_t>(events::ID("navigator_traffic_rtl"), events::Log::Critical,
-					"Traffic alert, returning home",
-					uas_id_int, traffic_seperation, traffic_direction);
+					//"Traffic alert, returning home",
+					// uas_id_int, traffic_seperation, traffic_direction);
 
 			return true;
 
@@ -280,8 +278,8 @@ bool AdsbConflict::send_traffic_warning(int traffic_direction, int traffic_seper
 			 * - Direction: {3} degrees
 			 */
 			// events::send<uint64_t, int32_t, int16_t>(events::ID("navigator_traffic_land"), events::Log::Critical,
-					"Traffic alert, landing",
-					uas_id_int, traffic_seperation, traffic_direction);
+					// "Traffic alert, landing",
+					// uas_id_int, traffic_seperation, traffic_direction);
 
 			return true;
 
@@ -301,8 +299,8 @@ bool AdsbConflict::send_traffic_warning(int traffic_direction, int traffic_seper
 			 * - Direction: {3} degrees
 			 */
 			// events::send<uint64_t, int32_t, int16_t>(events::ID("navigator_traffic_hold"), events::Log::Critical,
-					"Traffic alert, holding position",
-					uas_id_int, traffic_seperation, traffic_direction);
+					// "Traffic alert, holding position",
+					// uas_id_int, traffic_seperation, traffic_direction);
 
 			return true;
 
@@ -349,9 +347,10 @@ void AdsbConflict::fake_traffic(const char *callsign, float distance, float dire
 	tr.squawk = 6667;
 
 #ifndef BOARD_HAS_NO_UUID
-	px4_guid_t px4_guid;
-	board_get_px4_guid(px4_guid);
-	memcpy(tr.uas_id, px4_guid, sizeof(px4_guid_t)); //simulate own GUID
+	//TODO: 从board_version获取uuid
+	// px4_guid_t px4_guid;
+	// board_get_px4_guid(px4_guid);
+	// memcpy(tr.uas_id, px4_guid, sizeof(px4_guid_t)); //simulate own GUID
 #else
 
 	for (int i = 0; i < PX4_GUID_BYTE_LENGTH ; i++) {

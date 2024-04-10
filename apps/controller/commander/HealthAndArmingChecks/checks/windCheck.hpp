@@ -12,7 +12,7 @@
 
 #include "../Common.hpp"
 
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/wind.h>
 
 class WindChecks : public HealthAndArmingCheckBase {

@@ -110,6 +110,7 @@
 #if defined(__cplusplus)
 #include "module_command.hpp"
 #include "module_params.hpp"
+#include "module_thread.hpp"
 using namespace nextpilot::global_params;
 #endif //__cplusplus
 

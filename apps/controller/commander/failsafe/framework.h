@@ -12,7 +12,7 @@
 
 #include <uORB/topics/failsafe_flags.h>
 #include <hrtimer.h>
-#include <px4_platform_common/module_params.hpp>
+#include <module_params.hpp>
 
 #include <cstddef>
 

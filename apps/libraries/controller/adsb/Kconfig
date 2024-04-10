@@ -1,0 +1,7 @@
+menuconfig PKG_USING_ADSB
+    bool "ads-b: ADS-B Conflict"
+    select PKG_USING_MATRIX
+    select PKG_USING_MATHLIB
+    select PKG_USING_UORB
+
+    default n

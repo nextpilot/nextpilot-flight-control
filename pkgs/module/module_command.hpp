@@ -243,15 +243,15 @@ public:
      * @brief Main loop method for modules running in their own thread. Called from run_trampoline().
      *        This method must return when should_exit() returns true.
      */
-    virtual void run() {
-    }
+    // virtual void run() {
+    // }
 
     /**
      * @brief Returns the status of the module.
      * @return Returns true if the module is running, false otherwise.
      */
     static bool is_running(int inst = 0) {
-        return _object[inst].load != nullptr;
+        return _object[inst].load() != nullptr;
     }
 
 protected:
@@ -312,7 +312,7 @@ protected:
     /**
      * @brief Get the module's object instance, (this is null if it's not running).
      */
-    static T *get_instacne(int inst = 0) {
+    static T *get_instance(int inst = 0) {
         return (T *)_object[inst].load();
     }
 

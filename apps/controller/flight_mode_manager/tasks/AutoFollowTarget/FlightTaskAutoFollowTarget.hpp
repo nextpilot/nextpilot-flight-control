@@ -26,8 +26,8 @@
 #include <parameters/param.h>
 #include <mathlib/mathlib.h>
 
-#include <uORB/Subscription.hpp>
-#include <uORB/Publication.hpp>
+#include <uORB/uORBSubscription.hpp>
+#include <uORB/uORBPublication.hpp>
 #include <uORB/topics/follow_target_status.h>
 #include <uORB/topics/follow_target_estimator.h>
 #include <uORB/topics/gimbal_manager_set_attitude.h>

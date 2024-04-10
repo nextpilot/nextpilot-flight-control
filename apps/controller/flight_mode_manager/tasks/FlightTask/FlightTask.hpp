@@ -18,10 +18,10 @@
 
 #pragma once
 
-#include <px4_platform_common/module_params.hpp>
+#include <module_params.hpp>
 #include <hrtimer.h>
 #include <matrix/matrix/math.hpp>
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/landing_gear.h>
 #include <uORB/topics/trajectory_setpoint.h>
 #include <uORB/topics/vehicle_local_position.h>

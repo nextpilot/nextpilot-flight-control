@@ -17,14 +17,14 @@
 #include <px4_platform_common/atomic.h>
 #include <px4_platform_common/getopt.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.hpp>
+#include <module_params.hpp>
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/px4_config.h>
 #include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <px4_platform_common/tasks.h>
 #include <px4_platform_common/time.h>
-#include <uORB/Publication.hpp>
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBPublication.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/SubscriptionInterval.hpp>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/sensor_accel.h>

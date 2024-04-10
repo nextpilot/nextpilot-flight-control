@@ -35,4 +35,6 @@
 #define PX4_ISFINITE rt_isfinite
 #endif // PX4_ISFINITE
 
+#define PX4_STORAGEDIR ""
+
 #endif // __NEXTPILOT_PX4DEF_H__

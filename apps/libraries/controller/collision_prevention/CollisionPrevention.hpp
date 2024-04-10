@@ -24,10 +24,10 @@
 #include <hrtimer.h>
 #include <mathlib/mathlib.h>
 #include <matrix/matrix/math.hpp>
-#include <px4_platform_common/module_params.hpp>
-#include <systemlib/mavlink_log.h>
-#include <uORB/Publication.hpp>
-#include <uORB/Subscription.hpp>
+#include <module_params.hpp>
+#include <mavlink_log.h>
+#include <uORB/uORBPublication.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/SubscriptionMultiArray.hpp>
 #include <uORB/topics/collision_constraints.h>
 #include <uORB/topics/distance_sensor.h>

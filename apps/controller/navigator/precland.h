@@ -19,12 +19,14 @@
 
 #include <matrix/math.hpp>
 #include <geo/geo.h>
-#include <px4_platform_common/module_params.hpp>
-#include <uORB/Subscription.hpp>
+#include <module_params.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/landing_target_pose.h>
-
 #include "navigator_mode.h"
 #include "mission_block.h"
+
+using namespace nextpilot::global_params;
+using namespace nextpilot;
 
 enum class PrecLandState {
     Start,              // Starting state

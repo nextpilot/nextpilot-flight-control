@@ -35,6 +35,7 @@
 #define FCS_USING_MC_HOVER_THRUST_ESTIMATOR
 #define FCS_USING_MC_POS_CONTROL
 #define FCS_USING_MC_RATE_CONTROL
+#define FCS_USING_NAVIGATOR
 #define FCS_USING_RC_UPDATE
 #define FCS_USING_VTOL_ATT_CONTROL
 /* end of Nextpilot Controller Config */
@@ -53,6 +54,7 @@
 
 /* Controller Libraries Config */
 
+#define PKG_USING_ADSB
 #define PKG_USING_CIRCUIT_BREAKER
 #define PKG_USING_ROTATION
 #define PKG_USING_GEO

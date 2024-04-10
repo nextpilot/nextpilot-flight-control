@@ -19,7 +19,7 @@
 #include <lib/sensor_calibration/Utilities.hpp>
 #include <geo/geo.h>
 #include <lib/systemlib/mavlink_log.h>
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 
 using namespace sensors;
 using namespace matrix;

@@ -14,7 +14,7 @@
 #pragma once
 
 #include <hrtimer.h>
-#include <uORB/Publication.hpp>
+#include <uORB/uORBPublication.hpp>
 
 // The order of these cannot change since the calibration calculations depend on them in this order
 enum detect_orientation_return {

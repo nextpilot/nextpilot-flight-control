@@ -39,7 +39,7 @@
 #include <px4_platform_common/shutdown.h>
 #include <px4_platform_common/tasks.h>
 #include <px4_platform_common/time.h>
-#include <systemlib/mavlink_log.h>
+#include <mavlink_log.h>
 
 #include <math.h>
 #include <float.h>

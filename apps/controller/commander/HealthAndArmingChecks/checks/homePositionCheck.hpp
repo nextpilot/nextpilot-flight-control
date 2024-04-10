@@ -12,7 +12,7 @@
 
 #include "../Common.hpp"
 
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/home_position.h>
 
 class HomePositionChecks : public HealthAndArmingCheckBase {

@@ -24,8 +24,8 @@
 #include <math.h>
 #include <fcntl.h>
 
-#include <systemlib/err.h>
-#include <systemlib/mavlink_log.h>
+// #include <systemlib/err.h>
+#include <mavlink_log.h>
 
 #include <uORB/uORB.h>
 #include <uORB/topics/position_setpoint_triplet.h>

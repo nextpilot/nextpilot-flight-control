@@ -21,10 +21,10 @@
 #include <lib/sensor_calibration/Utilities.hpp>
 #include <px4_platform_common/getopt.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.hpp>
-#include <uORB/Publication.hpp>
+#include <module_params.hpp>
+#include <uORB/uORBPublication.hpp>
 #include <uORB/PublicationMulti.hpp>
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/SubscriptionCallback.hpp>
 #include "voted_sensors_update.h"
 #include "vehicle_imu/VehicleIMU.hpp"

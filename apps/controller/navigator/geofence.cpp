@@ -23,8 +23,8 @@
 #include <dataman/dataman.h>
 #include <hrtimer.h>
 #include <geo/geo.h>
-#include <systemlib/mavlink_log.h>
-#include <px4_platform_common/events.h>
+#include <mavlink_log.h>
+// #include <px4_platform_common/events.h>
 
 #include "navigator.h"
 
@@ -228,9 +228,9 @@ bool Geofence::isCloserThanMaxDistToHome(double lat, double lon, float altitude)
                 mavlink_log_critical(_navigator->get_mavlink_log_pub(), "Maximum distance from home reached (%.5f)\t",
                                      (double)max_horizontal_distance);
                 // events::send<float>(events::ID("navigator_geofence_max_dist_from_home"), {events::Log::Critical, events::LogInternal::Warning},
-                                    "Geofence: maximum distance from home reached ({1:.0m})",
-                                    max_horizontal_distance);
-                                    _last_horizontal_range_warning = hrt_absolute_time();
+                // "Geofence: maximum distance from home reached ({1:.0m})",
+                // max_horizontal_distance);
+                _last_horizontal_range_warning = hrt_absolute_time();
             }
 
             inside_fence = false;
@@ -254,9 +254,9 @@ bool Geofence::isBelowMaxAltitude(float altitude) {
                 mavlink_log_critical(_navigator->get_mavlink_log_pub(), "Maximum altitude above home reached (%.5f)\t",
                                      (double)max_vertical_distance);
                 // events::send<float>(events::ID("navigator_geofence_max_alt_from_home"), {events::Log::Critical, events::LogInternal::Warning},
-                                    "Geofence: maximum altitude above home reached ({1:.0m_v})",
-                                    max_vertical_distance);
-                                    _last_vertical_range_warning = hrt_absolute_time();
+                // "Geofence: maximum altitude above home reached ({1:.0m_v})",
+                // max_vertical_distance);
+                _last_vertical_range_warning = hrt_absolute_time();
             }
 
             inside_fence = false;

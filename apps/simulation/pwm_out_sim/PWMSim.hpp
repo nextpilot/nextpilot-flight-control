@@ -19,7 +19,7 @@
 #include <px4_platform_common/tasks.h>
 #include <px4_platform_common/time.h>
 #include <uORB/topics/parameter_update.h>
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 
 #if defined(CONFIG_ARCH_BOARD_PX4_SITL)
 #define PARAM_PREFIX "PWM_MAIN"

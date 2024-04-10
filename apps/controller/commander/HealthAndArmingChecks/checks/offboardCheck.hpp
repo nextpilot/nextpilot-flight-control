@@ -12,7 +12,7 @@
 
 #include "../Common.hpp"
 
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/offboard_control_mode.h>
 
 class OffboardChecks : public HealthAndArmingCheckBase {

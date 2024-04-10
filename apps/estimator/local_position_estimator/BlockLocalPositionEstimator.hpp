@@ -2,7 +2,7 @@
 
 #include <hrtimer.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.hpp>
+#include <module_params.hpp>
 #include <px4_platform_common/posix.h>
 #include <lib/controllib/blocks.hpp>
 #include <geo/geo.h>
@@ -10,7 +10,7 @@
 #include <matrix/Matrix.hpp>
 
 // uORB Subscriptions
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/SubscriptionCallback.hpp>
 #include <uORB/topics/vehicle_command.h>
 #include <uORB/topics/vehicle_status.h>
@@ -30,7 +30,7 @@
 #include <uORB/topics/vehicle_odometry.h>
 
 // uORB Publications
-#include <uORB/Publication.hpp>
+#include <uORB/uORBPublication.hpp>
 #include <uORB/topics/vehicle_local_position.h>
 #include <uORB/topics/vehicle_global_position.h>
 #include <uORB/topics/estimator_states.h>

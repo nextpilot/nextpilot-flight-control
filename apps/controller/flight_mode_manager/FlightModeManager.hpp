@@ -15,12 +15,12 @@
 
 #include <hrtimer.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.hpp>
+#include <module_params.hpp>
 #include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/SubscriptionCallback.hpp>
-#include <uORB/Publication.hpp>
+#include <uORB/uORBPublication.hpp>
 #include <uORB/topics/landing_gear.h>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/takeoff_status.h>

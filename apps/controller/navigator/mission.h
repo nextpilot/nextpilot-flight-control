@@ -31,8 +31,8 @@
 
 #include <dataman/dataman.h>
 #include <hrtimer.h>
-#include <px4_platform_common/module_params.hpp>
-#include <uORB/Subscription.hpp>
+#include <module_params.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/home_position.h>
 #include <uORB/topics/mission.h>
 #include <uORB/topics/mission_result.h>
@@ -42,6 +42,9 @@
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/vehicle_roi.h>
 #include <uORB/uORB.h>
+
+using namespace nextpilot::global_params;
+using namespace nextpilot;
 
 class Navigator;
 

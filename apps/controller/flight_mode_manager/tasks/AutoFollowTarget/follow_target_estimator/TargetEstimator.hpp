@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/SubscriptionInterval.hpp>
 #include <uORB/SubscriptionCallback.hpp>
 #include <uORB/topics/follow_target.h>
@@ -29,7 +29,7 @@
 #include <lib/mathlib/math/filter/AlphaFilter.hpp>
 #include <geo/geo.h>
 #include <mathlib/mathlib.h>
-#include <px4_platform_common/module_params.hpp>
+#include <module_params.hpp>
 #include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 
 static constexpr float GPS_MESSAGE_STALE_TIMEOUT_MS =

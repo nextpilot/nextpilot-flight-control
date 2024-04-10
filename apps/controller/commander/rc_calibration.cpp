@@ -21,9 +21,9 @@
 #include "rc_calibration.h"
 #include "commander_helper.h"
 
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/manual_control_setpoint.h>
-#include <systemlib/mavlink_log.h>
+#include <mavlink_log.h>
 #include <parameters/param.h>
 #include <systemlib/err.h>
 

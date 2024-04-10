@@ -18,18 +18,21 @@
 
 #pragma once
 
-#include <px4_platform_common/module_params.hpp>
+#include <module_params.hpp>
 
 #include "navigator_mode.h"
 #include "mission_block.h"
 
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/home_position.h>
 #include <uORB/topics/rtl_time_estimate.h>
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/wind.h>
 #include <matrix/math.hpp>
 #include <geo/geo.h>
+
+using namespace nextpilot::global_params;
+using namespace nextpilot;
 
 class Navigator;
 

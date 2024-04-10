@@ -18,19 +18,21 @@
 #pragma once
 
 #include <float.h>
-
-#include <lib/mathlib/mathlib.h>
-#include <px4_platform_common/module_params.hpp>
+#include <mathlib/mathlib.h>
+#include <module_params.hpp>
 #include <hrtimer.h>
 #include <geo/geo.h>
-#include <px4_platform_common/defines.h>
-#include <uORB/Subscription.hpp>
+#include <defines.h>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/home_position.h>
 #include <uORB/topics/vehicle_global_position.h>
 #include <uORB/topics/sensor_gps.h>
 #include <uORB/topics/vehicle_air_data.h>
 
 #define GEOFENCE_FILENAME PX4_STORAGEDIR "/etc/geofence.txt"
+
+using namespace nextpilot::global_params;
+using namespace nextpilot;
 
 class Navigator;
 

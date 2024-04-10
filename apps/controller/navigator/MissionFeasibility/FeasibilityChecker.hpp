@@ -16,8 +16,11 @@
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/vehicle_global_position.h>
 #include <uORB/topics/vehicle_land_detected.h>
-#include <uORB/Subscription.hpp>
-#include <px4_platform_common/module_params.hpp>
+#include <uORB/uORBSubscription.hpp>
+#include <module_params.hpp>
+
+using namespace nextpilot::global_params;
+using namespace nextpilot;
 
 class FeasibilityChecker : public ModuleParams {
 public:

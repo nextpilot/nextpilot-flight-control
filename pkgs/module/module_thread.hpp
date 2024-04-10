@@ -16,23 +16,8 @@
 
 class ModuleThread {
 public:
-    ModuleThread(const char *name = "Unkown", rt_uint32_t stack_size = 1024, rt_uint8_t priority = 20, rt_uint32_t max_tick = 10) :
+    ModuleThread(const char *name = LOG_TAG, rt_uint32_t stack_size = 1024, rt_uint8_t priority = 20, rt_uint32_t max_tick = 10) :
         _name{name}, _stack_size{stack_size}, _priority{priority}, _max_tick{max_tick} {
-        _tid = rt_thread_create(_name, RunEntry, this, stack_size, priority, max_tick);
-
-        if (!_tid) {
-            LOG_E("create thread fail");
-            return;
-        }
-
-        if (rt_thread_startup(_tid) != 0) {
-            LOG_E("startup thread fail");
-            rt_thread_delete(_tid);
-            _tid = nullptr;
-            return;
-        }
-
-        LOG_D("create/startup thread ok");
     }
 
     virtual ~ModuleThread() {
@@ -48,6 +33,21 @@ public:
     }
 
     virtual int init() {
+        _tid = rt_thread_create(_name, RunEntry, this, _stack_size, _priority, _max_tick);
+
+        if (!_tid) {
+            LOG_E("create thread fail");
+            return -1;
+        }
+
+        if (rt_thread_startup(_tid) != 0) {
+            LOG_E("startup thread fail");
+            rt_thread_delete(_tid);
+            _tid = nullptr;
+            return -1;
+        }
+
+        LOG_D("create/startup thread ok");
         return 0;
     }
 

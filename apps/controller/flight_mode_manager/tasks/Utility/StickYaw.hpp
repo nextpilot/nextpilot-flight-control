@@ -17,7 +17,7 @@
 #pragma once
 
 #include <lib/mathlib/math/filter/AlphaFilter.hpp>
-#include <px4_platform_common/module_params.hpp>
+#include <module_params.hpp>
 
 class StickYaw : public ModuleParams {
 public:

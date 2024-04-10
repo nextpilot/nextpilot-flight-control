@@ -12,7 +12,7 @@
 
 #include "ActuatorEffectiveness.hpp"
 
-#include <px4_platform_common/module_params.hpp>
+#include <module_params.hpp>
 #include <lib/slew_rate/SlewRate.hpp>
 
 static constexpr float kFlapSlewRate     = 0.5f; // slew rate for normalized flaps setpoint [1/s]

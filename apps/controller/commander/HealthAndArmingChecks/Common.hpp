@@ -12,11 +12,11 @@
 
 #include <px4_platform_common/events.h>
 #include <px4_platform_common/log.h>
-#include <px4_platform_common/module_params.hpp>
+#include <module_params.hpp>
 #include <uORB/topics/health_report.h>
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/failsafe_flags.h>
-#include <systemlib/mavlink_log.h>
+#include <mavlink_log.h>
 #include <hrtimer.h>
 
 #include <stdint.h>

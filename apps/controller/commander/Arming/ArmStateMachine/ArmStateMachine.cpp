@@ -10,7 +10,7 @@
 
 #include "ArmStateMachine.hpp"
 
-#include <systemlib/mavlink_log.h>
+#include <mavlink_log.h>
 
 constexpr bool
     ArmStateMachine::arming_transitions[vehicle_status_s::ARMING_STATE_MAX][vehicle_status_s::ARMING_STATE_MAX];

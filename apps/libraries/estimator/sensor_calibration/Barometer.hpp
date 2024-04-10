@@ -12,7 +12,7 @@
 
 #include <px4_platform_common/px4_config.h>
 #include <px4_platform_common/log.h>
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/sensor_correction.h>
 
 namespace calibration

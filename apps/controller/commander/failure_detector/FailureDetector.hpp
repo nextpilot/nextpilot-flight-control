@@ -24,11 +24,11 @@
 #include <lib/mathlib/mathlib.h>
 #include <lib/mathlib/math/filter/AlphaFilter.hpp>
 #include <matrix/matrix/math.hpp>
-#include <px4_platform_common/module_params.hpp>
+#include <module_params.hpp>
 
 // subscriptions
-#include <uORB/Subscription.hpp>
-#include <uORB/Publication.hpp>
+#include <uORB/uORBSubscription.hpp>
+#include <uORB/uORBPublication.hpp>
 #include <uORB/topics/actuator_motors.h>
 #include <uORB/topics/sensor_selection.h>
 #include <uORB/topics/vehicle_attitude_setpoint.h>

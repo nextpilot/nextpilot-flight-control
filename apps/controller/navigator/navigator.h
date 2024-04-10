@@ -27,54 +27,50 @@
 #include "rtl.h"
 #include "takeoff.h"
 #include "vtol_takeoff.h"
-
 #include "navigation.h"
-
 #include "GeofenceBreachAvoidance/geofence_breach_avoidance.h"
-
-#include <lib/adsb/AdsbConflict.h>
-#include <lib/perf/perf_counter.h>
-#include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.hpp>
-#include <uORB/Publication.hpp>
-#include <uORB/Subscription.hpp>
-#include <uORB/SubscriptionInterval.hpp>
-#include <uORB/topics/geofence_result.h>
-#include <uORB/topics/home_position.h>
-#include <uORB/topics/mission.h>
-#include <uORB/topics/mission_result.h>
-#include <uORB/topics/parameter_update.h>
-#include <uORB/topics/position_controller_landing_status.h>
-#include <uORB/topics/position_controller_status.h>
-#include <uORB/topics/position_setpoint_triplet.h>
-#include <uORB/topics/transponder_report.h>
-#include <uORB/topics/vehicle_command.h>
-#include <uORB/topics/vehicle_command_ack.h>
-#include <uORB/topics/vehicle_global_position.h>
-#include <uORB/topics/sensor_gps.h>
-#include <uORB/topics/vehicle_land_detected.h>
-#include <uORB/topics/vehicle_local_position.h>
-#include <uORB/topics/vehicle_status.h>
-#include <uORB/topics/mode_completed.h>
-#include <uORB/uORB.h>
+#include <adsb/AdsbConflict.h>
+#include "nextpilot.h"
+// #include <lib/perf/perf_counter.h>
+// #include <px4_platform_common/module.h>
+// #include <module_params.hpp>
+// #include <uORB/uORBPublication.hpp>
+// #include <uORB/uORBSubscription.hpp>
+// #include <uORB/SubscriptionInterval.hpp>
+// #include <uORB/topics/geofence_result.h>
+// #include <uORB/topics/home_position.h>
+// #include <uORB/topics/mission.h>
+// #include <uORB/topics/mission_result.h>
+// #include <uORB/topics/parameter_update.h>
+// #include <uORB/topics/position_controller_landing_status.h>
+// #include <uORB/topics/position_controller_status.h>
+// #include <uORB/topics/position_setpoint_triplet.h>
+// #include <uORB/topics/transponder_report.h>
+// #include <uORB/topics/vehicle_command.h>
+// #include <uORB/topics/vehicle_command_ack.h>
+// #include <uORB/topics/vehicle_global_position.h>
+// #include <uORB/topics/sensor_gps.h>
+// #include <uORB/topics/vehicle_land_detected.h>
+// #include <uORB/topics/vehicle_local_position.h>
+// #include <uORB/topics/vehicle_status.h>
+// #include <uORB/topics/mode_completed.h>
+// #include <uORB/uORB.h>
 
 using namespace time_literals;
+using namespace nextpilot::global_params;
 
 /**
  * Number of navigation modes that need on_active/on_inactive calls
  */
 #define NAVIGATOR_MODE_ARRAY_SIZE 8
 
-class Navigator : public ModuleCommand<Navigator>, public ModuleParams {
+class Navigator : public ModuleCommand<Navigator>, public ModuleParams, public ModuleThread {
 public:
     Navigator();
     ~Navigator() override;
 
     Navigator(const Navigator &)           = delete;
     Navigator operator=(const Navigator &) = delete;
-
-    /** @see ModuleCommand */
-    static int *instantiate(int argc, char *argv[]);
 
     /** @see ModuleCommand */
     static Navigator *instantiate(int argc, char *argv[]);
@@ -86,7 +82,11 @@ public:
     static int print_usage(const char *reason = nullptr);
 
     /** @see ModuleCommand::run() */
-    void run() override;
+    void Run() override;
+
+    int init() override {
+        return ModuleThread::init();
+    }
 
     /** @see ModuleCommand::print_status() */
     int print_status() override;
@@ -374,9 +374,9 @@ public:
     void mode_completed(uint8_t nav_state, uint8_t result = mode_completed_s::RESULT_SUCCESS);
 
 private:
-    int _local_pos_sub{-1};
-    int _mission_sub{-1};
-    int _vehicle_status_sub{-1};
+    orb_subscr_t _local_pos_sub{nullptr};
+    orb_subscr_t _mission_sub{nullptr};
+    orb_subscr_t _vehicle_status_sub{nullptr};
 
     uORB::SubscriptionData<position_controller_status_s> _position_controller_status_sub{ORB_ID(position_controller_status)};
 

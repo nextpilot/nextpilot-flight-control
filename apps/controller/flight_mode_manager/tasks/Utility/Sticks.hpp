@@ -18,9 +18,9 @@
 
 #pragma once
 
-#include <px4_platform_common/module_params.hpp>
+#include <module_params.hpp>
 #include <matrix/matrix/math.hpp>
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/manual_control_setpoint.h>
 #include <uORB/topics/failsafe_flags.h>
 

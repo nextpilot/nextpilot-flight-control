@@ -13,7 +13,7 @@
 #include <mathlib/mathlib.h>
 #include <px4_platform_common/getopt.h>
 
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/parameter_update.h>
 
 #include <px4_platform_common/sem.hpp>

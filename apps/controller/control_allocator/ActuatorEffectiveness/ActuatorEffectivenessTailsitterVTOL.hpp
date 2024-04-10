@@ -22,7 +22,7 @@
 
 #include <uORB/topics/normalized_unsigned_setpoint.h>
 
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 
 class ActuatorEffectivenessTailsitterVTOL : public ModuleParams, public ActuatorEffectiveness {
 public:

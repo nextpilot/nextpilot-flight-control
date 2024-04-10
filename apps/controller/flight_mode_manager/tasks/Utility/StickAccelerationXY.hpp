@@ -16,10 +16,10 @@
 
 #pragma once
 
-#include <px4_platform_common/module_params.hpp>
+#include <module_params.hpp>
 #include <lib/mathlib/math/filter/AlphaFilter.hpp>
 #include <matrix/math.hpp>
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/takeoff_status.h>
 
 #include "SlewRate.hpp"

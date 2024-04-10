@@ -32,7 +32,7 @@
 #include <lib/sensor_calibration/Gyroscope.hpp>
 #include <lib/sensor_calibration/Utilities.hpp>
 #include <lib/systemlib/mavlink_log.h>
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/SubscriptionBlocking.hpp>
 #include <uORB/topics/sensor_gyro.h>
 

@@ -12,7 +12,7 @@
 
 #include "../Common.hpp"
 
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/vtol_vehicle_status.h>
 
 class VtolChecks : public HealthAndArmingCheckBase {

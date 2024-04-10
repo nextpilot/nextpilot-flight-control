@@ -12,7 +12,7 @@
 
 #include "../Common.hpp"
 
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/airspeed_validated.h>
 
 class AirspeedChecks : public HealthAndArmingCheckBase {

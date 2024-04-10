@@ -28,15 +28,15 @@
 #include <string.h>
 #include <hrtimer.h>
 #include <dataman/dataman.h>
-#include <systemlib/mavlink_log.h>
-#include <systemlib/err.h>
+#include <mavlink_log.h>
+// #include <systemlib/err.h>
 #include <geo/geo.h>
-#include <navigator/navigation.h>
+#include "navigation.h"
 #include <uORB/uORB.h>
 #include <uORB/topics/mission.h>
 #include <uORB/topics/mission_result.h>
 #include <hrtimer.h>
-#include <px4_platform_common/events.h>
+// #include <px4_platform_common/events.h>
 
 using namespace time_literals;
 
@@ -682,12 +682,12 @@ void Mission::set_mission_items() {
                 /* landed, refusing to take off without a mission */
                 mavlink_log_critical(_navigator->get_mavlink_log_pub(), "No valid mission available, refusing takeoff\t");
                 // events::send(events::ID("mission_not_valid_refuse"), {events::Log::Error, events::LogInternal::Disabled},
-                             "No valid mission available, refusing takeoff");
+                // "No valid mission available, refusing takeoff");
 
             } else {
                 mavlink_log_critical(_navigator->get_mavlink_log_pub(), "No valid mission available, loitering\t");
                 // events::send(events::ID("mission_not_valid_loiter"), {events::Log::Error, events::LogInternal::Disabled},
-                             "No valid mission available, loitering");
+                // "No valid mission available, loitering");
             }
 
             user_feedback_done = true;
@@ -733,17 +733,17 @@ void Mission::set_mission_items() {
                 mavlink_log_info(_navigator->get_mavlink_log_pub(), "Takeoff to %.1f meters above home\t",
                                  (double)(takeoff_alt - _navigator->get_home_position()->alt));
                 // events::send<float>(events::ID("mission_takeoff_to"), events::Log::Info,
-                                    "Takeoff to {1:.1m_v} above home", takeoff_alt - _navigator->get_home_position()->alt);
+                // "Takeoff to {1:.1m_v} above home", takeoff_alt - _navigator->get_home_position()->alt);
 
-                                    _mission_item.nav_cmd = NAV_CMD_TAKEOFF;
-                                    _mission_item.lat     = _navigator->get_global_position()->lat;
-                                    _mission_item.lon     = _navigator->get_global_position()->lon;
-                                    /* hold heading for takeoff items */
-                                    _mission_item.yaw                  = _navigator->get_local_position()->heading;
-                                    _mission_item.altitude             = takeoff_alt;
-                                    _mission_item.altitude_is_relative = false;
-                                    _mission_item.autocontinue         = true;
-                                    _mission_item.time_inside          = 0.0f;
+                _mission_item.nav_cmd = NAV_CMD_TAKEOFF;
+                _mission_item.lat     = _navigator->get_global_position()->lat;
+                _mission_item.lon     = _navigator->get_global_position()->lon;
+                /* hold heading for takeoff items */
+                _mission_item.yaw                  = _navigator->get_local_position()->heading;
+                _mission_item.altitude             = takeoff_alt;
+                _mission_item.altitude_is_relative = false;
+                _mission_item.autocontinue         = true;
+                _mission_item.time_inside          = 0.0f;
 
             } else if (_mission_item.nav_cmd == NAV_CMD_TAKEOFF && _work_item_type == WORK_ITEM_TYPE_DEFAULT && new_work_item_type == WORK_ITEM_TYPE_DEFAULT && _navigator->get_vstatus()->vehicle_type == vehicle_status_s::VEHICLE_TYPE_ROTARY_WING) {
                 /* if there is no need to do a takeoff but we have a takeoff item, treat is as waypoint */
@@ -955,7 +955,7 @@ void Mission::set_mission_items() {
                 mavlink_log_critical(_navigator->get_mavlink_log_pub(),
                                      "MissionReverse: Got a non-position mission item, ignoring it\t");
                 // events::send(events::ID("mission_ignore_non_position_item"), events::Log::Info,
-                             "MissionReverse: Got a non-position mission item, ignoring it");
+                // "MissionReverse: Got a non-position mission item, ignoring it");
             }
 
             break;
@@ -1340,28 +1340,28 @@ void Mission::do_abort_landing() {
     mavlink_log_info(_navigator->get_mavlink_log_pub(), "Holding at %d m above landing waypoint.\t",
                      (int)(alt_sp - alt_landing));
     // events::send<float>(events::ID("mission_holding_above_landing"), events::Log::Info,
-                        "Holding at {1:.0m_v} above landing waypoint", alt_sp - alt_landing);
+    // "Holding at {1:.0m_v} above landing waypoint", alt_sp - alt_landing);
 
-                        // reset mission index to start of landing
-                        if (_land_start_available) {
-                            _current_mission_index = get_land_start_index();
+    // reset mission index to start of landing
+    if (_land_start_available) {
+        _current_mission_index = get_land_start_index();
 
-                        } else {
-                            // move mission index back (landing approach point)
-                            _current_mission_index -= 1;
-                        }
+    } else {
+        // move mission index back (landing approach point)
+        _current_mission_index -= 1;
+    }
 
-                        // send reposition cmd to get out of mission
-                        vehicle_command_s vcmd = {};
+    // send reposition cmd to get out of mission
+    vehicle_command_s vcmd = {};
 
-                        vcmd.command = vehicle_command_s::VEHICLE_CMD_DO_REPOSITION;
-                        vcmd.param1  = -1;
-                        vcmd.param2  = 1;
-                        vcmd.param5  = _mission_item.lat;
-                        vcmd.param6  = _mission_item.lon;
-                        vcmd.param7  = alt_sp;
+    vcmd.command = vehicle_command_s::VEHICLE_CMD_DO_REPOSITION;
+    vcmd.param1  = -1;
+    vcmd.param2  = 1;
+    vcmd.param5  = _mission_item.lat;
+    vcmd.param6  = _mission_item.lon;
+    vcmd.param7  = alt_sp;
 
-                        _navigator->publish_vehicle_cmd(&vcmd);
+    _navigator->publish_vehicle_cmd(&vcmd);
 }
 
 bool Mission::prepare_mission_items(struct mission_item_s *mission_item,
@@ -1433,7 +1433,7 @@ bool Mission::read_mission_item(int offset, struct mission_item_s *mission_item)
                                      "Mission item index out of bound, index: %d, max: %" PRIu16 ".\t",
                                      *mission_index_ptr, _mission.count);
                 // events::send<uint16_t, uint16_t>(events::ID("mission_index_out_of_bound"), events::Log::Error,
-                                                 "Mission item index out of bound, index: {1}, max: {2}", *mission_index_ptr, _mission.count);
+                // "Mission item index out of bound, index: {1}, max: {2}", *mission_index_ptr, _mission.count);
             }
 
             return false;
@@ -1449,8 +1449,8 @@ bool Mission::read_mission_item(int offset, struct mission_item_s *mission_item)
             /* not supposed to happen unless the datamanager can't access the SD card, etc. */
             mavlink_log_critical(_navigator->get_mavlink_log_pub(), "Waypoint could not be read.\t");
             // events::send<uint16_t>(events::ID("mission_failed_to_read_wp"), events::Log::Error,
-                                   "Waypoint {1} could not be read from storage", *mission_index_ptr);
-                                   return false;
+            // "Waypoint {1} could not be read from storage", *mission_index_ptr);
+            return false;
         }
 
         /* check for DO_JUMP item, and whether it hasn't not already been repeated enough times */
@@ -1469,8 +1469,8 @@ bool Mission::read_mission_item(int offset, struct mission_item_s *mission_item)
                         /* not supposed to happen unless the datamanager can't access the dataman */
                         mavlink_log_critical(_navigator->get_mavlink_log_pub(), "DO JUMP waypoint could not be written.\t");
                         // events::send(events::ID("mission_failed_to_write_do_jump"), events::Log::Error,
-                                     "DO JUMP waypoint could not be written");
-                                     return false;
+                        // "DO JUMP waypoint could not be written");
+                        return false;
                     }
 
                     report_do_jump_mission_changed(*mission_index_ptr, mission_item_tmp.do_jump_repeat_count);
@@ -1484,7 +1484,7 @@ bool Mission::read_mission_item(int offset, struct mission_item_s *mission_item)
                 if (offset == 0 && execute_jumps) {
                     mavlink_log_info(_navigator->get_mavlink_log_pub(), "DO JUMP repetitions completed.\t");
                     // events::send(events::ID("mission_do_jump_rep_completed"), events::Log::Info,
-                                 "DO JUMP repetitions completed");
+                    // "DO JUMP repetitions completed");
                 }
 
                 /* no more DO_JUMPS, therefore just try to continue with next mission item */

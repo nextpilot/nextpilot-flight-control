@@ -1,0 +1,15 @@
+import os
+import rtconfig
+from building import *
+
+
+cwd = GetCurrentDir()
+
+inc = [cwd]
+src = ["AdsbConflict.cpp"]
+
+
+objs = DefineGroup("lib/control", src, depend=["PKG_USING_ADSB"], CPPPATH=inc)
+
+
+Return("objs")

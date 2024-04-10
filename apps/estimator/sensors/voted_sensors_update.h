@@ -20,12 +20,12 @@
 #include "data_validator/DataValidatorGroup.hpp"
 
 #include <px4_platform_common/events.h>
-#include <px4_platform_common/module_params.hpp>
+#include <module_params.hpp>
 #include <hrtimer.h>
 #include <mathlib/mathlib.h>
 #include <matrix/math.hpp>
-#include <uORB/Publication.hpp>
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBPublication.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/SubscriptionMultiArray.hpp>
 #include <uORB/SubscriptionCallback.hpp>
 #include <uORB/topics/sensor_accel.h>

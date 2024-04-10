@@ -12,7 +12,7 @@
 
 #include <px4_platform_common/atomic.h>
 #include <px4_platform_common/posix.h>
-#include <systemlib/mavlink_log.h>
+#include <mavlink_log.h>
 #include <uORB/uORB.h>
 
 /**

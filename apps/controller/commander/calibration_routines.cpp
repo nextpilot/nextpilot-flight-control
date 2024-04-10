@@ -28,7 +28,7 @@
 #include <lib/systemlib/mavlink_log.h>
 #include <matrix/math.hpp>
 
-#include <uORB/Publication.hpp>
+#include <uORB/uORBPublication.hpp>
 #include <uORB/SubscriptionBlocking.hpp>
 #include <uORB/topics/vehicle_acceleration.h>
 #include <uORB/topics/vehicle_command.h>

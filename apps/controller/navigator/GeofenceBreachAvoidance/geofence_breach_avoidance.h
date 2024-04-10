@@ -8,10 +8,10 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include <lib/mathlib/mathlib.h>
-#include <px4_platform_common/module_params.hpp>
+#include <mathlib/mathlib.h>
+#include <module_params.hpp>
 #include "../geofence.h"
-#include <px4_platform_common/defines.h>
+#include <defines.h>
 
 class Geofence;
 

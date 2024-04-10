@@ -23,12 +23,12 @@
 #include "mission_block.h"
 #include "navigator.h"
 
-#include <drivers/drv_pwm_output.h>
+// #include <drivers/drv_pwm_output.h>
 #include <geo/geo.h>
-#include <lib/mathlib/mathlib.h>
-#include <systemlib/mavlink_log.h>
-#include <uORB/Subscription.hpp>
-#include <px4_platform_common/events.h>
+#include <mathlib/mathlib.h>
+#include <mavlink_log.h>
+#include <uORB/uORBSubscription.hpp>
+// #include <px4_platform_common/events.h>
 
 bool MissionFeasibilityChecker::checkMissionFeasible(const mission_s &mission) {
     // Reset warning flag
@@ -80,8 +80,8 @@ bool MissionFeasibilityChecker::checkGeofence(const mission_s &mission, float ho
     if (_navigator->get_geofence().isHomeRequired() && !home_valid) {
         mavlink_log_critical(_navigator->get_mavlink_log_pub(), "Geofence requires valid home position\t");
         // events::send(events::ID("navigator_mis_geofence_no_home"), {events::Log::Error, events::LogInternal::Info},
-                     "Geofence requires a valid home position");
-                     return false;
+        // "Geofence requires a valid home position");
+        return false;
     }
 
     /* Check if all mission items are inside the geofence (if we have a valid geofence) */
@@ -98,8 +98,8 @@ bool MissionFeasibilityChecker::checkGeofence(const mission_s &mission, float ho
             if (missionitem.altitude_is_relative && !home_valid) {
                 mavlink_log_critical(_navigator->get_mavlink_log_pub(), "Geofence requires valid home position\t");
                 // events::send(events::ID("navigator_mis_geofence_no_home2"), {events::Log::Error, events::LogInternal::Info},
-                             "Geofence requires a valid home position");
-                             return false;
+                // "Geofence requires a valid home position");
+                return false;
             }
 
             // Geofence function checks against home altitude amsl
@@ -108,9 +108,9 @@ bool MissionFeasibilityChecker::checkGeofence(const mission_s &mission, float ho
             if (MissionBlock::item_contains_position(missionitem) && !_navigator->get_geofence().check(missionitem)) {
                 mavlink_log_critical(_navigator->get_mavlink_log_pub(), "Geofence violation for waypoint %zu\t", i + 1);
                 // events::send<int16_t>(events::ID("navigator_mis_geofence_violation"), {events::Log::Error, events::LogInternal::Info},
-                                      "Geofence violation for waypoint {1}",
-                                      i + 1);
-                                      return false;
+                // "Geofence violation for waypoint {1}",
+                // i + 1);
+                return false;
             }
         }
     }

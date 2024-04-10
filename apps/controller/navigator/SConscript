@@ -5,7 +5,11 @@ from building import *
 cwd = GetCurrentDir()
 
 inc = []
-src = Glob("*.cpp") + Glob("FeasibilityChecker.cpp") + Glob("GeofenceBreachAvoidance/geofence_breach_avoidance.cpp")
+src = (
+    Glob("*.cpp")
+    + Glob("MissionFeasibility/FeasibilityChecker.cpp")
+    + Glob("GeofenceBreachAvoidance/geofence_breach_avoidance.cpp")
+)
 
 objs = DefineGroup("fcs/navigator", src, depend=["FCS_USING_NAVIGATOR"])
 

@@ -26,7 +26,7 @@
 #include <uORB/topics/normalized_unsigned_setpoint.h>
 #include <uORB/topics/tiltrotor_extra_controls.h>
 
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 
 class ActuatorEffectivenessTiltrotorVTOL : public ModuleParams, public ActuatorEffectiveness {
 public:

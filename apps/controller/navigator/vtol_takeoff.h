@@ -18,10 +18,11 @@
 
 #include "navigator_mode.h"
 #include "mission_block.h"
+#include <mathlib/mathlib.h>
+#include <module_params.hpp>
 
-#include <lib/mathlib/mathlib.h>
+using namespace nextpilot::global_params;
 
-#include <px4_platform_common/module_params.hpp>
 class VtolTakeoff : public MissionBlock, public ModuleParams {
 public:
     VtolTakeoff(Navigator *navigator);

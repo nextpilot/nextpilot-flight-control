@@ -24,14 +24,14 @@
 
 #include <board_config.h>
 #include <px4_platform_common/board_common.h>
-#include <px4_platform_common/module_params.hpp>
+#include <module_params.hpp>
 #include <matrix/math.hpp>
 
 #include <hrtimer.h>
 #include <lib/parameters/param.h>
 #include <lib/mathlib/math/filter/AlphaFilter.hpp>
 #include <uORB/PublicationMulti.hpp>
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/battery_status.h>
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/vehicle_thrust_setpoint.h>

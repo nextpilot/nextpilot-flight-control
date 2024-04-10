@@ -18,16 +18,13 @@
 #include <geo/geo.h>
 
 #include <hrtimer.h>
-#include <uORB/Publication.hpp>
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBPublication.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/transponder_report.h>
 #include <uORB/topics/vehicle_command.h>
-
-#include <systemlib/mavlink_log.h>
-#include <px4_platform_common/events.h>
-
-#include <px4_platform_common/board_common.h>
-
+#include <mavlink_log.h>
+// #include <px4_platform_common/events.h>
+// #include <px4_platform_common/board_common.h>
 #include <containers/Array.hpp>
 
 using namespace time_literals;
@@ -54,8 +51,8 @@ struct traffic_data_s {
 };
 
 struct traffic_buffer_s {
-	px4::Array<uint32_t, NAVIGATOR_MAX_TRAFFIC> icao_address {};
-	px4::Array<hrt_abstime, NAVIGATOR_MAX_TRAFFIC> timestamp {};
+	nextpilot::container::Array<uint32_t, NAVIGATOR_MAX_TRAFFIC> icao_address {};
+	nextpilot::container::Array<hrt_abstime, NAVIGATOR_MAX_TRAFFIC> timestamp {};
 };
 
 struct conflict_detection_params_s {
