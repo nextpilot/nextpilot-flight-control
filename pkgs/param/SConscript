@@ -51,7 +51,8 @@ cmd = [
     "--config-files",
 ] + list(modules_config_file)
 
-subprocess.call(cmd)
+if sys.version_info > (3, 0):
+    subprocess.call(cmd)
 
 # 由于xxx_params.c生成parameters.xml文件
 params_source_dir.add(Dir("#/build").abspath)

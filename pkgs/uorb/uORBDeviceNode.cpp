@@ -212,6 +212,7 @@ bool DeviceNode::register_callback(SubscriptionCallback *callback_sub) {
 
         // prevent duplicate registrations
         for (auto existing_callbacks : _callbacks) {
+            rt_kprintf("%x\n", existing_callbacks);
             if (callback_sub == existing_callbacks) {
                 rt_exit_critical();
                 return true;

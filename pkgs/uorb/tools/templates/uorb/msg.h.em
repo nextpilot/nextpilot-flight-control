@@ -37,15 +37,15 @@ from generate_uorb_topic_helper import * # this is in Tools/
 uorb_struct = '%s_s'%name_snake_case
 uorb_struct_upper = name_snake_case.upper()
 }@
-
+@
 #pragma once
 
 @##############################
 @# Generic Includes
 @##############################
-
+@
 #include <uORB.h>
-
+@
 @##############################
 @# Includes for dependencies
 @##############################
@@ -64,8 +64,8 @@ for field in spec.parsed_fields():
 #ifndef __cplusplus
 @[for constant in spec.constants]@
 #define @(uorb_struct_upper)_@(constant.name) @(int(constant.val))
-@[end for]
-#endif
+@[end for]@
+#endif // __cplusplus
 
 @##############################
 @# Main struct of message
@@ -88,8 +88,8 @@ struct __EXPORT @(uorb_struct) {
 @#public:
 #else
 struct @(uorb_struct) {
-#endif
-@print_parsed_fields()
+#endif // __cplusplus
+@print_parsed_fields()@
 
 #ifdef __cplusplus
 @# Constants again c++-ified
@@ -103,8 +103,8 @@ for constant in spec.constants:
         raise Exception("Type {0} not supported, add to to template file!".format(type_name))
 
     print('\tstatic constexpr %s %s = %s;'%(type_nfc, constant.name, int(constant.val)))
-}
-#endif
+}@
+#endif // __cplusplus
 };
 
 #ifdef __cplusplus
@@ -113,13 +113,13 @@ namespace nextpilot {
 		using @(spec.short_name) = @(uorb_struct);
 	} // namespace msg
 } // namespace nextpilot
-#endif
+#endif // __cplusplus
 
 /* register this as object request broker structure */
 @[for topic in topics]@
 ORB_DECLARE(@topic);
-@[end for]
+@[end for]@
 
 #ifdef __cplusplus
 void print_message(const orb_metadata *meta, const @uorb_struct& message);
-#endif
+#endif // __cplusplus

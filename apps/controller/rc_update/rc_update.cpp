@@ -15,6 +15,7 @@
  */
 
 #define LOG_TAG "rc_update"
+#define LOG_LVL LOG_LVL_INFO
 
 #include "rc_update.h"
 

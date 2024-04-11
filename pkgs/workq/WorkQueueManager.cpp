@@ -219,7 +219,7 @@ static void WorkQueueManagerEntry(void *param) {
             const size_t       stacksize_adj = math::max((int)PTHREAD_STACK_MIN, PX4_STACK_ADJUSTED(wq->stacksize));
             const size_t       stacksize     = (stacksize_adj + page_size - (stacksize_adj % page_size));
 #else
-            const size_t stacksize = 2048;
+            const size_t stacksize = wq->stacksize;
 #endif
 
             // priority

@@ -2,6 +2,7 @@ menuconfig PKG_USING_AVOIDANCE
     bool "avoidance: inject the setpoints of an obstacle avoidance system"
     select PKG_USING_MATRIX
     select PKG_USING_MATHLIB
-    select PKUG_USING_UORB
+    select PKG_USING_UORB
+    select PKG_USING_BEZIER
 
     default n

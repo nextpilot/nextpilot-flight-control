@@ -57,6 +57,6 @@ for root, dirs, files in os.walk(cwd):
 
 inc = list(set(inc))
 
-objs = DefineGroup("fcs/flight_mode_manager", src, depend=[""], LOCAL_CPPPATH=inc)
+objs = DefineGroup("fcs/flight_mode_manager", src, depend=["FCS_USING_FLIGHT_MODE_MANAGER"], LOCAL_CPPPATH=inc)
 
 Return("objs")

@@ -1,5 +1,10 @@
 menuconfig FCS_USING_FLIGHT_MODE_MANAGER
 	bool "flight_mode_manager"
+	select PKG_USING_MOTION_PLANNING
+	select PKG_USING_SLEW_RATE
+	select PKG_USING_WEATHER_VANE
+	select PKG_USING_AVOIDANCE
+	select PKG_USING_COLLISION_PREVENTION
 	default n
 	---help---
 		Enable support for flight_mode_manager

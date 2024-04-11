@@ -27,6 +27,9 @@
 #include <uORB/topics/vehicle_control_mode.h>
 #include <uORB/topics/vehicle_status.h>
 
+using namespace nextpilot::global_params;
+using namespace nextpilot;
+
 class WeatherVane : public ModuleParams
 {
 public:

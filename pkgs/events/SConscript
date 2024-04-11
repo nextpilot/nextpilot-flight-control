@@ -22,7 +22,8 @@ cmd = [
     generated_events_from_source_file,
     "--src-path",
 ] + list(all_src_files)
-subprocess.call(cmd)
+if sys.version_info > (3, 0):
+    subprocess.call(cmd)
 
 # combine common.json with our enums for the code generation
 cmd = [
@@ -33,7 +34,8 @@ cmd = [
     "--output",
     generated_events_common_enums_file,
 ]
-subprocess.call(cmd)
+if sys.version_info > (3, 0):
+    subprocess.call(cmd)
 
 # Generating combined event json file
 cmd = [
@@ -44,7 +46,8 @@ cmd = [
     "--output",
     generated_events_combined_all_file,
 ]
-subprocess.call(cmd)
+if sys.version_info > (3, 0):
+    subprocess.call(cmd)
 
 
 # 检验合并的events_all.json文件
@@ -53,7 +56,8 @@ cmd = [
     os.path.join(cwd, "libevents/scripts/validate.py"),
     generated_events_combined_all_file,
 ]
-subprocess.call(cmd)
+if sys.version_info > (3, 0):
+    subprocess.call(cmd)
 
 # 创建压缩文件
 # cmd = [
@@ -73,11 +77,8 @@ cmd = [
     cwd,
     generated_events_common_enums_file,
 ]
-subprocess.call(cmd)
-
-##################################################
-#
-##################################################
+if sys.version_info > (3, 0):
+    subprocess.call(cmd)
 
 
 inc = [cwd]

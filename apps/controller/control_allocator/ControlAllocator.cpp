@@ -16,8 +16,9 @@
  * @author Julien Lecoeur <julien.lecoeur@gmail.com>
  */
 
-#include "ControlAllocator.hpp"
+#define LOG_TAG "control_allocator"
 
+#include "ControlAllocator.hpp"
 #include <hrtimer.h>
 #include <circuit_breaker/circuit_breaker.h>
 #include <mathlib/math/Limits.hpp>
@@ -802,3 +803,11 @@ extern "C" __EXPORT int control_allocator_main(int argc, char *argv[]);
 int control_allocator_main(int argc, char *argv[]) {
     return ControlAllocator::main(argc, argv);
 }
+MSH_CMD_EXPORT_ALIAS(control_allocator_main, control_allocator, control allocator);
+
+int control_allocator_start() {
+    const char *argv[] = {"control_allocator", "start"};
+    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    return ControlAllocator::main(argc, (char **)argv);
+}
+INIT_APP_EXPORT(control_allocator_start);
