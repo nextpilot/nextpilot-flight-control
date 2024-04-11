@@ -15,6 +15,8 @@
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/sensor_correction.h>
 
+using namespace nextpilot;
+
 namespace calibration
 {
 class Barometer

@@ -10,7 +10,7 @@
 
 #pragma once
 
-// #include <event/events.h>
+// #include <events/events.h>
 #include <uORB/topics/vehicle_status.h>
 
 #include <stdint.h>

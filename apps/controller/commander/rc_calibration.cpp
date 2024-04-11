@@ -13,19 +13,17 @@
  * Remote Control calibration routine
  */
 
-// #include <event/events.h>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/time.h>
+// #include <events/events.h>
+// #include <px4_platform_common/posix.h>
+// #include <px4_platform_common/time.h>
 #include <defines.h>
-
 #include "rc_calibration.h"
 #include "commander_helper.h"
-
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/manual_control_setpoint.h>
 #include <mavlink_log.h>
 #include <param/param.h>
-#include <systemlib/err.h>
+// #include <systemlib/err.h>
 
 int do_trim_calibration(orb_advert_t *mavlink_log_pub) {
     uORB::Subscription manual_control_setpoint_sub{ORB_ID(manual_control_setpoint)};
@@ -35,9 +33,9 @@ int do_trim_calibration(orb_advert_t *mavlink_log_pub) {
 
     if (!changed) {
         mavlink_log_critical(mavlink_log_pub, "no inputs, aborting\t");
-        // events::send(events::ID("commander_cal_no_inputs"), {events::Log::Error, events::LogInternal::Info},
+        events::send(events::ID("commander_cal_no_inputs"), {events::Log::Error, events::LogInternal::Info},
                      "No inputs, aborting RC trim calibration");
-                     return PX4_ERROR;
+        return PX4_ERROR;
     }
 
     manual_control_setpoint_sub.copy(&manual_control_setpoint);
@@ -74,13 +72,13 @@ int do_trim_calibration(orb_advert_t *mavlink_log_pub) {
 
     if (p1r != 0 || p2r != 0 || p3r != 0) {
         mavlink_log_critical(mavlink_log_pub, "TRIM: PARAM SET FAIL\t");
-        // events::send(events::ID("commander_cal_trim_param_set_failed"), events::Log::Critical,
+        events::send(events::ID("commander_cal_trim_param_set_failed"), events::Log::Critical,
                      "RC trim calibration: failed to set parameters");
-                     return PX4_ERROR;
+        return PX4_ERROR;
     }
 
     mavlink_log_info(mavlink_log_pub, "trim cal done\t");
-    // events::send(events::ID("commander_cal_trim_done"), events::Log::Info, "RC trim calibration completed");
+    events::send(events::ID("commander_cal_trim_done"), events::Log::Info, "RC trim calibration completed");
 
     return PX4_OK;
 }

@@ -39,10 +39,10 @@ void WindChecks::checkAndReport(const Context &context, Report &reporter) {
                                                events::Log::Warning, "Wind speed is above limit ({1:.1m/s})", wind.norm());
 
         } else if (_param_com_wind_warn.get() > FLT_EPSILON && wind.longerThan(_param_com_wind_warn.get()) && warning_timeout_passed && context.status().nav_state != vehicle_status_s::NAVIGATION_STATE_AUTO_RTL && context.status().nav_state != vehicle_status_s::NAVIGATION_STATE_AUTO_LAND) {
-            // events::send<float>(events::ID("check_high_wind_warning"),
+            events::send<float>(events::ID("check_high_wind_warning"),
                                 {events::Log::Warning, events::LogInternal::Info},
                                 "High wind speed detected ({1:.1m/s}), landing advised", wind.norm());
-                                _last_wind_warning = now;
+            _last_wind_warning = now;
         }
     }
 }

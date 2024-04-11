@@ -12,6 +12,9 @@
 
 #include "../Common.hpp"
 
+using namespace nextpilot;
+using namespace nextpilot::global_params;
+
 class FlightTimeChecks : public HealthAndArmingCheckBase {
 public:
     FlightTimeChecks()  = default;

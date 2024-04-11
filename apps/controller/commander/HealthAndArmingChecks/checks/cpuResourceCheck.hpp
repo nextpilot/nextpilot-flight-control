@@ -11,9 +11,11 @@
 #pragma once
 
 #include "../Common.hpp"
-
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/cpuload.h>
+
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class CpuResourceChecks : public HealthAndArmingCheckBase {
 public:

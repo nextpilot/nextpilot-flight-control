@@ -55,7 +55,7 @@ void FlightTimeChecks::checkAndReport(const Context &context, Report &reporter) 
                  * @description
                  * Maximal flight time warning (less than 1min remaining)
                  */
-                // events::send<int16_t>(events::ID("commander_max_flight_time_warning_seconds"), events::Log::Warning,
+                events::send<int16_t>(events::ID("commander_max_flight_time_warning_seconds"), events::Log::Warning,
                                       "Approaching max flight time (system will RTL in {1} seconds)", floored_remaining_flight_time_sec);
 
             } else if ((floored_remaining_flight_time_sec % 60) == 0 && floored_remaining_flight_time_sec >= 60 && floored_remaining_flight_time_sec != _last_flight_time_warning_sec) {
@@ -70,7 +70,7 @@ void FlightTimeChecks::checkAndReport(const Context &context, Report &reporter) 
                  * @description
                  * Maximal flight time warning (more than 1min remaining)
                  */
-                // events::send<int16_t>(events::ID("commander_max_flight_time_warning_minutes"), events::Log::Warning,
+                events::send<int16_t>(events::ID("commander_max_flight_time_warning_minutes"), events::Log::Warning,
                                       "Approaching max flight time (system will RTL in {1} minutes)", floored_remaining_flight_time_min);
             }
 

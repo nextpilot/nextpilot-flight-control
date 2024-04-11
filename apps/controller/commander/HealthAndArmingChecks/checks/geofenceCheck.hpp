@@ -11,9 +11,10 @@
 #pragma once
 
 #include "../Common.hpp"
-
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/geofence_result.h>
+
+using namespace nextpilot;
 
 class GeofenceChecks : public HealthAndArmingCheckBase {
 public:

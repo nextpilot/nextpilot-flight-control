@@ -12,7 +12,7 @@
 #define __MAVLINK_VASPRINTF_H__
 
 #include <rtdbg.h>
-
+#include <inttypes.h>
 #ifdef PKG_USING_HRTIMER
 #include "hrtimer.h"
 #endif // PKG_USING_HRTIMER

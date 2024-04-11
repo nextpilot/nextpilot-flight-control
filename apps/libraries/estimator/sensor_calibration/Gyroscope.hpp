@@ -11,13 +11,13 @@
 #pragma once
 
 #include <conversion/rotation.h>
-
 #include <matrix/matrix/math.hpp>
 //#include <px4_platform_common/px4_config.h>
 #include <rtdbg.h>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/sensor_correction.h>
 
+using namespace nextpilot;
 namespace calibration
 {
 class Gyroscope

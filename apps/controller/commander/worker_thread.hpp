@@ -10,8 +10,8 @@
 
 #pragma once
 
-#include <px4_platform_common/atomic.h>
-#include <px4_platform_common/posix.h>
+#include <atomic/atomic.h>
+// #include <px4_platform_common/posix.h>
 #include <mavlink_log.h>
 #include <uORB/uORB.h>
 

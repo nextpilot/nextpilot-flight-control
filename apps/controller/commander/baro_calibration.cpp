@@ -15,22 +15,19 @@
  */
 
 #include "baro_calibration.h"
-
 #include "commander_helper.h"
 #include "calibration_routines.h"
 #include "calibration_messages.h"
-
 #include <defines.h>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/time.h>
+// #include <px4_platform_common/posix.h>
+// #include <px4_platform_common/time.h>
 #include <hrtimer.h>
 #include <matrix/math.hpp>
 #include <geo/geo.h>
 #include <sensor_calibration/Barometer.hpp>
 #include <sensor_calibration/Utilities.hpp>
 #include <mavlink_log.h>
-
-#include <systemlib/err.h>
+// #include <systemlib/err.h>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/sensor_baro.h>

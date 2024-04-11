@@ -89,7 +89,7 @@ transition_result_t ArmStateMachine::arming_state_transition(vehicle_status_s   
             // FIXME: this catch-all does not provide helpful information to the user
             mavlink_log_critical(mavlink_log_pub, "Transition denied: %s to %s\t",
                                  getArmStateName(_arm_state), getArmStateName(new_arming_state));
-            // events::send<events::px4::enums::arming_state_t, events::px4::enums::arming_state_t>(
+            events::send<events::px4::enums::arming_state_t, events::px4::enums::arming_state_t>(
                 events::ID("commander_transition_denied"), events::Log::Critical,
                 "Arming state transition denied: {1} to {2}",
                 getArmStateEvent(_arm_state), getArmStateEvent(new_arming_state));

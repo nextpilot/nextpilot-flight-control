@@ -11,13 +11,14 @@
 #pragma once
 
 #include "../Common.hpp"
-
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/estimator_status.h>
 #include <uORB/topics/sensor_accel.h>
 #include <sensor_calibration/Accelerometer.hpp>
 
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 class AccelerometerChecks : public HealthAndArmingCheckBase {
 public:
     AccelerometerChecks()  = default;

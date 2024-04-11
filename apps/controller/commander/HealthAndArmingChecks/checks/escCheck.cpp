@@ -9,7 +9,7 @@
  ******************************************************************/
 
 #include "escCheck.hpp"
-// #include <event/events.h>
+// #include <events/events.h>
 #include <uORB/topics/actuator_motors.h>
 
 using namespace time_literals;

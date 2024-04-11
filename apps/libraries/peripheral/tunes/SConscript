@@ -1,0 +1,13 @@
+import os
+import rtconfig
+from building import *
+
+cwd = GetCurrentDir()
+
+inc = [cwd]
+src = Glob("*.cpp")
+
+objs = DefineGroup("lib/control", src, depend=["PKG_USING_TUNES"], CPPPATH=inc)
+
+
+Return("objs")

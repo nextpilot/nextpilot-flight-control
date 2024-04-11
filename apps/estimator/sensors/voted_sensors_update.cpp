@@ -294,11 +294,11 @@ bool VotedSensorsUpdate::checkFailover(SensorData &sensor, const char *sensor_na
                      * @description
                      * Land immediately and check the system.
                      */
-                    // events::send<events::px4::enums::sensor_type_t, uint8_t, events::px4::enums::sensor_failover_reason_t>(
+                    events::send<events::px4::enums::sensor_type_t, uint8_t, events::px4::enums::sensor_failover_reason_t>(
                         events::ID("sensor_failover"), events::Log::Emergency, "{1} sensor #{2} failure: {3}", sensor_type, failover_index,
                         failover_reason);
 
-                        _last_error_message = now;
+                    _last_error_message = now;
                 }
 
                 // reduce priority of failed sensor to the minimum

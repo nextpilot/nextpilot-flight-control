@@ -11,7 +11,7 @@
 #define LOG_TAG "fw_pos_control"
 
 #include "FixedwingPositionControl.hpp"
-// #include <event/events.h>
+// #include <events/events.h>
 
 using math::constrain;
 using math::max;
@@ -127,9 +127,9 @@ int FixedwingPositionControl::parameters_update() {
          * - <param>FW_AIRSPD_MAX</param>: {1:.1}
          * - <param>FW_AIRSPD_MIN</param>: {2:.1}
          */
-        // events::send<float, float>(events::ID("fixedwing_position_control_conf_invalid_airspeed"), events::Log::Error,
-        // "Invalid configuration: Airspeed max smaller than min",
-        // _param_fw_airspd_max.get(), _param_fw_airspd_min.get());
+        events::send<float, float>(events::ID("fixedwing_position_control_conf_invalid_airspeed"), events::Log::Error,
+                                   "Invalid configuration: Airspeed max smaller than min",
+                                   _param_fw_airspd_max.get(), _param_fw_airspd_min.get());
         check_ret = PX4_ERROR;
     }
 
@@ -139,9 +139,9 @@ int FixedwingPositionControl::parameters_update() {
          * - <param>FW_AIRSPD_MAX</param>: {1:.1}
          * - <param>FW_AIRSPD_MIN</param>: {2:.1}
          */
-        // events::send<float, float>(events::ID("fixedwing_position_control_conf_invalid_airspeed_bounds"), events::Log::Error,
-        // "Invalid configuration: Airspeed max \\< 5 m/s or min \\> 100 m/s",
-        // _param_fw_airspd_max.get(), _param_fw_airspd_min.get());
+        events::send<float, float>(events::ID("fixedwing_position_control_conf_invalid_airspeed_bounds"), events::Log::Error,
+                                   "Invalid configuration: Airspeed max \\< 5 m/s or min \\> 100 m/s",
+                                   _param_fw_airspd_max.get(), _param_fw_airspd_min.get());
         check_ret = PX4_ERROR;
     }
 
@@ -153,10 +153,10 @@ int FixedwingPositionControl::parameters_update() {
          * - <param>FW_AIRSPD_MIN</param>: {2:.1}
          * - <param>FW_AIRSPD_TRIM</param>: {3:.1}
          */
-        // events::send<float, float, float>(events::ID("fixedwing_position_control_conf_invalid_trim_bounds"),
-        // events::Log::Error,
-        // "Invalid configuration: Airspeed trim out of min or max bounds",
-        // _param_fw_airspd_max.get(), _param_fw_airspd_min.get(), _param_fw_airspd_trim.get());
+        events::send<float, float, float>(events::ID("fixedwing_position_control_conf_invalid_trim_bounds"),
+                                          events::Log::Error,
+                                          "Invalid configuration: Airspeed trim out of min or max bounds",
+                                          _param_fw_airspd_max.get(), _param_fw_airspd_min.get(), _param_fw_airspd_trim.get());
         check_ret = PX4_ERROR;
     }
 
@@ -166,9 +166,9 @@ int FixedwingPositionControl::parameters_update() {
          * - <param>FW_AIRSPD_MIN</param>: {1:.1}
          * - <param>FW_AIRSPD_STALL</param>: {2:.1}
          */
-        // events::send<float, float>(events::ID("fixedwing_position_control_conf_invalid_stall"), events::Log::Error,
-        // "Invalid configuration: FW_AIRSPD_STALL higher FW_AIRSPD_MIN",
-        // _param_fw_airspd_min.get(), _param_fw_airspd_stall.get());
+        events::send<float, float>(events::ID("fixedwing_position_control_conf_invalid_stall"), events::Log::Error,
+                                   "Invalid configuration: FW_AIRSPD_STALL higher FW_AIRSPD_MIN",
+                                   _param_fw_airspd_min.get(), _param_fw_airspd_stall.get());
         check_ret = PX4_ERROR;
     }
 

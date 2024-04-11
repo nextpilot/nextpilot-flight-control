@@ -11,11 +11,13 @@
 #pragma once
 
 #include "../Common.hpp"
-
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/battery_status.h>
 #include <uORB/topics/rtl_time_estimate.h>
+
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class BatteryChecks : public HealthAndArmingCheckBase {
 public:

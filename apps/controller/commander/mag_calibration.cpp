@@ -20,22 +20,19 @@
 #include "lm_fit.hpp"
 #include "calibration_messages.h"
 #include "factory_calibration_storage.h"
-
 #include <defines.h>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/time.h>
+// #include <px4_platform_common/posix.h>
+// #include <px4_platform_common/time.h>
 #include <hrtimer.h>
 #include <drivers/drv_tone_alarm.h>
 #include <matrix/math.hpp>
 #include <sensor_calibration/Magnetometer.hpp>
 #include <sensor_calibration/Utilities.hpp>
 #include <conversion/rotation.h>
-
 #include <world_magnetic_model/geo_mag_declination.h>
 #include <mavlink_log.h>
-
 #include <param/param.h>
-#include <systemlib/err.h>
+// #include <systemlib/err.h>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>

@@ -11,9 +11,11 @@
 #pragma once
 
 #include "../Common.hpp"
-
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/input_rc.h>
+
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class RcCalibrationChecks : public HealthAndArmingCheckBase {
 public:

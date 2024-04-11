@@ -36,7 +36,7 @@
 #include <uORB/topics/mission.h>
 #include <uORB/topics/mission_result.h>
 #include <hrtimer.h>
-// #include <event/events.h>
+// #include <events/events.h>
 
 using namespace time_literals;
 
@@ -1547,7 +1547,7 @@ void Mission::save_mission_state() {
         /* EVENT
          * @description No mission or storage failure
          */
-        // events::send(events::ID("mission_invalid_mission_state"), events::Log::Error, "Invalid mission state");
+        events::send(events::ID("mission_invalid_mission_state"), events::Log::Error, "Invalid mission state");
 
         /* write modified state only if changed */
         if (dm_write(DM_KEY_MISSION_STATE, 0, &mission_state, sizeof(mission_s)) != sizeof(mission_s)) {

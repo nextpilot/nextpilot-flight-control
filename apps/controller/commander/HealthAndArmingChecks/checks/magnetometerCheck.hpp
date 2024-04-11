@@ -11,13 +11,14 @@
 #pragma once
 
 #include "../Common.hpp"
-
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/sensor_preflight_mag.h>
 #include <uORB/topics/sensor_mag.h>
 #include <uORB/topics/estimator_status.h>
 #include <sensor_calibration/Magnetometer.hpp>
+
+using namespace nextpilot::global_params;
 
 class MagnetometerChecks : public HealthAndArmingCheckBase {
 public:

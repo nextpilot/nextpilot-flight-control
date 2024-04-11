@@ -11,9 +11,11 @@
 #pragma once
 
 #include "../Common.hpp"
-
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/actuator_armed.h>
+
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class SystemChecks : public HealthAndArmingCheckBase {
 public:

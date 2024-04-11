@@ -170,8 +170,8 @@ bool AdsbConflict::handle_traffic_conflict()
 					     _transponder_report.flags & transponder_report_s::PX4_ADSB_FLAGS_VALID_CALLSIGN ?
 					     _transponder_report.callsign : uas_id);
 
-			// events::send<uint64_t>(events::ID("navigator_traffic_resolved"), events::Log::Critical, "Traffic Conflict Resolved",
-					       // uas_id_int);
+			events::send<uint64_t>(events::ID("navigator_traffic_resolved"), events::Log::Critical, "Traffic Conflict Resolved",
+					       uas_id_int);
 
 		}
 		break;
@@ -241,8 +241,8 @@ bool AdsbConflict::send_traffic_warning(int traffic_direction, int traffic_seper
 			 * - Distance: {2m}
 			 * - Direction: {3} degrees
 			 */
-			// events::send<uint64_t, int32_t, int16_t>(events::ID("navigator_traffic"), events::Log::Critical, "Traffic alert",
-					// uas_id_int, traffic_seperation, traffic_direction);
+			events::send<uint64_t, int32_t, int16_t>(events::ID("navigator_traffic"), events::Log::Critical, "Traffic alert",
+					uas_id_int, traffic_seperation, traffic_direction);
 			break;
 		}
 
@@ -257,9 +257,9 @@ bool AdsbConflict::send_traffic_warning(int traffic_direction, int traffic_seper
 			 * - Distance: {2m}
 			 * - Direction: {3} degrees
 			 */
-			// events::send<uint64_t, int32_t, int16_t>(events::ID("navigator_traffic_rtl"), events::Log::Critical,
-					//"Traffic alert, returning home",
-					// uas_id_int, traffic_seperation, traffic_direction);
+			events::send<uint64_t, int32_t, int16_t>(events::ID("navigator_traffic_rtl"), events::Log::Critical,
+					"Traffic alert, returning home",
+					uas_id_int, traffic_seperation, traffic_direction);
 
 			return true;
 
@@ -277,9 +277,9 @@ bool AdsbConflict::send_traffic_warning(int traffic_direction, int traffic_seper
 			 * - Distance: {2m}
 			 * - Direction: {3} degrees
 			 */
-			// events::send<uint64_t, int32_t, int16_t>(events::ID("navigator_traffic_land"), events::Log::Critical,
-					// "Traffic alert, landing",
-					// uas_id_int, traffic_seperation, traffic_direction);
+			events::send<uint64_t, int32_t, int16_t>(events::ID("navigator_traffic_land"), events::Log::Critical,
+					"Traffic alert, landing",
+					uas_id_int, traffic_seperation, traffic_direction);
 
 			return true;
 
@@ -298,9 +298,9 @@ bool AdsbConflict::send_traffic_warning(int traffic_direction, int traffic_seper
 			 * - Distance: {2m}
 			 * - Direction: {3} degrees
 			 */
-			// events::send<uint64_t, int32_t, int16_t>(events::ID("navigator_traffic_hold"), events::Log::Critical,
-					// "Traffic alert, holding position",
-					// uas_id_int, traffic_seperation, traffic_direction);
+			events::send<uint64_t, int32_t, int16_t>(events::ID("navigator_traffic_hold"), events::Log::Critical,
+					"Traffic alert, holding position",
+					uas_id_int, traffic_seperation, traffic_direction);
 
 			return true;
 

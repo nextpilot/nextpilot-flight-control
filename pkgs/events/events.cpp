@@ -9,10 +9,8 @@
  ******************************************************************/
 
 #include <pthread.h>
-
 #include <hrtimer.h>
-#include <px4_platform_common/posix.h>
-// #include <event/events.h>
+#include <events/events.h>
 #include <uORB/uORB.h>
 
 static orb_advert_t    orb_event_pub       = nullptr;

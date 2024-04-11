@@ -11,10 +11,12 @@
 #pragma once
 
 #include "../Common.hpp"
-
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/distance_sensor.h>
+
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class DistanceSensorChecks : public HealthAndArmingCheckBase {
 public:

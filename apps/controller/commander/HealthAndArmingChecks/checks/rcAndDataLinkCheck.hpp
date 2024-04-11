@@ -11,9 +11,11 @@
 #pragma once
 
 #include "../Common.hpp"
-
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/manual_control_setpoint.h>
+
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class RcAndDataLinkChecks : public HealthAndArmingCheckBase {
 public:

@@ -10,7 +10,7 @@
 
 #pragma once
 
-// #include <event/events.h>
+#include <events/events.h>
 #include <rtdbg.h>
 #include <module/module_params.hpp>
 #include <uORB/topics/health_report.h>
@@ -28,6 +28,8 @@
 #endif
 
 using namespace time_literals;
+using namespace nextpilot::global_params;
+using namespace nextpilot;
 
 class HealthAndArmingChecks;
 

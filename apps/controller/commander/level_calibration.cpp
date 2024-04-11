@@ -12,22 +12,18 @@
 #include "calibration_messages.h"
 #include "calibration_routines.h"
 #include "commander_helper.h"
-
 #include <defines.h>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/time.h>
-
+// #include <px4_platform_common/posix.h>
+// #include <px4_platform_common/time.h>
 #include <hrtimer.h>
 #include <mathlib/mathlib.h>
 #include <geo/geo.h>
 #include <matrix/math.hpp>
 #include <conversion/rotation.h>
-
 #include <param/param.h>
-#include <systemlib/err.h>
+// #include <systemlib/err.h>
 #include <mavlink_log.h>
 #include <uORB/topics/vehicle_attitude.h>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 
 using namespace time_literals;

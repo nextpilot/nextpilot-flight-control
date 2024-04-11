@@ -15,7 +15,7 @@
 #include <matrix/math.hpp>
 #include <param/param.h>
 #include <perf/perf_counter.h>
-// #include <event/events.h>
+// #include <events/events.h>
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
 #include <workq/WorkItemScheduled.hpp>
@@ -212,12 +212,12 @@ void AirspeedModule::init() {
 
         if (_number_of_airspeed_sensors == 0) {
             mavlink_log_info(&_mavlink_log_pub, "No airspeed sensor detected. Switch to non-airspeed mode.\t");
-            // events::send(events::ID("airspeed_selector_switch"), events::Log::Info,
+            events::send(events::ID("airspeed_selector_switch"), events::Log::Info,
                          "No airspeed sensor detected, switching to non-airspeed mode");
 
         } else {
             mavlink_log_info(&_mavlink_log_pub, "Primary airspeed index bigger than number connected sensors. Take last sensor.\t");
-            // events::send(events::ID("airspeed_selector_prim_too_high"), events::Log::Info,
+            events::send(events::ID("airspeed_selector_prim_too_high"), events::Log::Info,
                          "Primary airspeed index bigger than number connected sensors, taking last sensor");
         }
 
@@ -553,22 +553,22 @@ void AirspeedModule::select_airspeed_and_publish() {
         _number_of_airspeed_sensors > 0) {
         if (_vehicle_status.arming_state != vehicle_status_s::ARMING_STATE_ARMED && _prev_airspeed_index > 0) {
             mavlink_log_critical(&_mavlink_log_pub, "Airspeed sensor failure detected. Check connection and reboot.\t");
-            // events::send(events::ID("airspeed_selector_sensor_failure_disarmed"), events::Log::Critical,
+            events::send(events::ID("airspeed_selector_sensor_failure_disarmed"), events::Log::Critical,
                          "Airspeed sensor failure detected. Check connection and reboot");
 
         } else if (_prev_airspeed_index > 0) {
             mavlink_log_critical(&_mavlink_log_pub, "Airspeed sensor failure detected. Return to launch (RTL) is advised.\t");
-            // events::send(events::ID("airspeed_selector_sensor_failure"), events::Log::Critical,
+            events::send(events::ID("airspeed_selector_sensor_failure"), events::Log::Critical,
                          "Airspeed sensor failure detected. Return to launch (RTL) is advised");
 
         } else if (_prev_airspeed_index == 0 && _valid_airspeed_index == -1) {
             mavlink_log_info(&_mavlink_log_pub, "Airspeed estimation invalid\t");
-            // events::send(events::ID("airspeed_selector_estimation_invalid"), events::Log::Error,
+            events::send(events::ID("airspeed_selector_estimation_invalid"), events::Log::Error,
                          "Airspeed estimation invalid");
 
         } else if (_prev_airspeed_index == -1 && _valid_airspeed_index == 0) {
             mavlink_log_info(&_mavlink_log_pub, "Airspeed estimation valid\t");
-            // events::send(events::ID("airspeed_selector_estimation_valid"), events::Log::Info,
+            events::send(events::ID("airspeed_selector_estimation_valid"), events::Log::Info,
                          "Airspeed estimation valid");
 
         } else {
@@ -577,7 +577,7 @@ void AirspeedModule::select_airspeed_and_publish() {
             /* EVENT
              * @description Previously selected sensor index: {1}, current sensor index: {2}.
              */
-            // events::send<uint8_t, uint8_t>(events::ID("airspeed_selector_estimation_regain"), events::Log::Info,
+            events::send<uint8_t, uint8_t>(events::ID("airspeed_selector_estimation_regain"), events::Log::Info,
                                            "Airspeed sensor healthy, start using again", _prev_airspeed_index,
                                            _valid_airspeed_index);
         }

@@ -13,10 +13,10 @@
 #include <uORB/topics/failsafe_flags.h>
 #include <hrtimer.h>
 #include <module/module_params.hpp>
-
 #include <cstddef>
 
 using namespace time_literals;
+using namespace nextpilot::global_params;
 
 #define CHECK_FAILSAFE(status_flags, flag_name, options) \
     checkFailsafe((int)offsetof(failsafe_flags_s, flag_name), lastStatusFlags().flag_name, status_flags.flag_name, options)

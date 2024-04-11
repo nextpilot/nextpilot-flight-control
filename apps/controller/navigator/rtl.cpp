@@ -20,7 +20,7 @@
 #include "rtl.h"
 #include "navigator.h"
 #include <dataman/dataman.h>
-// #include <event/events.h>
+// #include <events/events.h>
 #include <geo/geo.h>
 
 static constexpr float DELAY_SIGMA = 0.01f;

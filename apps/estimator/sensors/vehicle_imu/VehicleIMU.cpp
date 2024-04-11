@@ -11,7 +11,7 @@
 #include "VehicleIMU.hpp"
 
 #include <rtdbg.h>
-// #include <event/events.h>
+// #include <events/events.h>
 #include <sensor_calibration/Utilities.hpp>
 #include <mavlink_log.h>
 
@@ -339,10 +339,10 @@ bool VehicleIMU::UpdateAccel() {
                      * @description Land now, and check the vehicle setup.
                      * Clipping can lead to fly-aways.
                      */
-                    // events::send<uint8_t>(events::ID("vehicle_imu_accel_clipping"), events::Log::Critical,
+                    events::send<uint8_t>(events::ID("vehicle_imu_accel_clipping"), events::Log::Critical,
                                           "Accel {1} clipping, not safe to fly!", _instance);
-                                          _last_accel_clipping_notify_time        = accel.timestamp_sample;
-                                          _last_accel_clipping_notify_total_count = clipping_total;
+                    _last_accel_clipping_notify_time        = accel.timestamp_sample;
+                    _last_accel_clipping_notify_total_count = clipping_total;
                 }
             }
         }
@@ -466,10 +466,10 @@ bool VehicleIMU::UpdateGyro() {
                      * @description Land now, and check the vehicle setup.
                      * Clipping can lead to fly-aways.
                      */
-                    // events::send<uint8_t>(events::ID("vehicle_imu_gyro_clipping"), events::Log::Critical,
+                    events::send<uint8_t>(events::ID("vehicle_imu_gyro_clipping"), events::Log::Critical,
                                           "Gyro {1} clipping, not safe to fly!", _instance);
-                                          _last_gyro_clipping_notify_time        = gyro.timestamp_sample;
-                                          _last_gyro_clipping_notify_total_count = clipping_total;
+                    _last_gyro_clipping_notify_time        = gyro.timestamp_sample;
+                    _last_gyro_clipping_notify_total_count = clipping_total;
                 }
             }
         }

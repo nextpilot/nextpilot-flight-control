@@ -11,9 +11,11 @@
 #pragma once
 
 #include "../Common.hpp"
-
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/esc_status.h>
+
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class EscChecks : public HealthAndArmingCheckBase {
 public:

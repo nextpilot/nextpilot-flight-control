@@ -1,0 +1,3 @@
+menuconfig PKG_USING_EVENTS
+    bool "events: a protocol to send events based on an ID to inform other components"
+    default n

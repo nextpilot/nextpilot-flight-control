@@ -12,6 +12,9 @@
 
 #include "../Common.hpp"
 
+using namespace nextpilot;
+using namespace nextpilot::global_params;
+
 class ParachuteChecks : public HealthAndArmingCheckBase {
 public:
     ParachuteChecks()  = default;

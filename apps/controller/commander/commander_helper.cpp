@@ -19,7 +19,7 @@
  */
 
 #include <defines.h>
-#include <px4_platform_common/posix.h>
+// #include <px4_platform_common/posix.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <stdint.h>
@@ -27,17 +27,15 @@
 #include <fcntl.h>
 #include <math.h>
 #include <string.h>
-
 #include <uORB/uORB.h>
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/vehicle_control_mode.h>
 #include <uORB/topics/led_control.h>
 #include <uORB/topics/tune_control.h>
-#include <systemlib/err.h>
+// #include <systemlib/err.h>
 #include <param/param.h>
 #include <hrtimer.h>
 #include <drivers/drv_tone_alarm.h>
-
 #include "commander_helper.h"
 
 #define VEHICLE_TYPE_FIXED_WING                1

@@ -16,29 +16,25 @@
  */
 
 #include <defines.h>
-// #include <event/events.h>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/time.h>
-
+#include <events/events.h>
+// #include <px4_platform_common/posix.h>
+// #include <px4_platform_common/time.h>
 #include <hrtimer.h>
 #include <drivers/drv_tone_alarm.h>
-
 #include <geo/geo.h>
 #include <mathlib/mathlib.h>
 #include <mavlink_log.h>
-
 #include <matrix/math.hpp>
-
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/vehicle_acceleration.h>
 #include <uORB/topics/vehicle_command.h>
 #include <uORB/topics/vehicle_command_ack.h>
-
 #include "calibration_routines.h"
 #include "calibration_messages.h"
 #include "commander_helper.h"
 
+using namespace nextpilot;
 using namespace time_literals;
 
 enum detect_orientation_return detect_orientation(orb_advert_t *mavlink_log_pub, bool lenient_still_position) {
@@ -316,10 +312,10 @@ bool calibrate_cancel_check(orb_advert_t *mavlink_log_pub, const hrt_abstime &ca
                 } else {
                     command_ack.result = vehicle_command_ack_s::VEHICLE_CMD_RESULT_DENIED;
                     mavlink_log_critical(mavlink_log_pub, "command denied during calibration: %" PRIu32 "\t", cmd.command);
-                    // events::send<uint32_t>(events::ID("commander_cal_cmd_denied"), {events::Log::Error, events::LogInternal::Info},
+                    events::send<uint32_t>(events::ID("commander_cal_cmd_denied"), {events::Log::Error, events::LogInternal::Info},
                                            "Command denied during calibration: {1}", cmd.command);
-                                           tune_negative(true);
-                                           ret = false;
+                    tune_negative(true);
+                    ret = false;
                 }
 
                 command_ack.command          = cmd.command;

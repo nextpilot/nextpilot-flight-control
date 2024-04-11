@@ -27,7 +27,7 @@
 #define LOG_TAG "vtol_att_control"
 
 #include "vtol_att_control_main.h"
-// #include <event/events.h>
+// #include <events/events.h>
 // #include <mavlink_log.h>
 // #include <uORB/uORBPublication.hpp>
 

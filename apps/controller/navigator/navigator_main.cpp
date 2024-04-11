@@ -33,7 +33,7 @@
 // #include <px4_platform_common/px4_config.h>
 
 // #include <defines.h>
-// #include <event/events.h>
+// #include <events/events.h>
 // #include <px4_platform_common/posix.h>
 // #include <px4_platform_common/tasks.h>
 #include <mavlink_log.h>

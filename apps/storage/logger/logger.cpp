@@ -32,7 +32,7 @@
 #include <mathlib/math/Limits.hpp>
 #include <px4_platform/cpuload.h>
 #include <getopt/getopt.h>
-// #include <event/events.h>
+// #include <events/events.h>
 #include <rtdbg.h>
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/sem.h>

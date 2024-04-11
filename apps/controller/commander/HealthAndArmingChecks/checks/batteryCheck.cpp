@@ -9,7 +9,7 @@
  ******************************************************************/
 
 #include "batteryCheck.hpp"
-// #include <event/events.h>
+// #include <events/events.h>
 
 using namespace time_literals;
 

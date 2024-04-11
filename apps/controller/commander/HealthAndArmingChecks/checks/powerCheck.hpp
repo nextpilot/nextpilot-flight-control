@@ -11,9 +11,11 @@
 #pragma once
 
 #include "../Common.hpp"
-
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/system_power.h>
+
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class PowerChecks : public HealthAndArmingCheckBase {
 public:

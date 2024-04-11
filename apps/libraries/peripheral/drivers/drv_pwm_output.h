@@ -19,7 +19,7 @@
 
 #include <stdint.h>
 #include <sys/ioctl.h>
-#include <board_config.h>
+#include <board.h>
 
 #include "drv_orb_dev.h"
 

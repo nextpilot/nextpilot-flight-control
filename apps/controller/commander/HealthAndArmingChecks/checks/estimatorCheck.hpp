@@ -11,7 +11,6 @@
 #pragma once
 
 #include "../Common.hpp"
-
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/estimator_selector_status.h>
 #include <uORB/topics/estimator_sensor_bias.h>
@@ -22,10 +21,11 @@
 #include <uORB/topics/vehicle_local_position.h>
 #include <uORB/topics/vehicle_global_position.h>
 #include <uORB/topics/sensor_gps.h>
-
 #include <hysteresis/hysteresis.h>
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class EstimatorChecks : public HealthAndArmingCheckBase {
 public:

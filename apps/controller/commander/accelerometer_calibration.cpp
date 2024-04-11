@@ -102,11 +102,9 @@
 #include "calibration_routines.h"
 #include "commander_helper.h"
 #include "factory_calibration_storage.h"
-
 #include <defines.h>
 // #include <px4_platform_common/posix.h>
 // #include <px4_platform_common/time.h>
-
 #include <hrtimer.h>
 #include <sensor_calibration/Accelerometer.hpp>
 #include <sensor_calibration/Utilities.hpp>
@@ -117,8 +115,6 @@
 #include <param/param.h>
 // #include <systemlib/err.h>
 #include <mavlink_log.h>
-#include <uORB/uORBSubscription.hpp>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/sensor_accel.h>
 #include <uORB/topics/vehicle_attitude.h>

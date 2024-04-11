@@ -16,7 +16,7 @@
 
 #include "LaunchDetector.h"
 #include <rtdbg.h>
-// #include <event/events.h>
+// #include <events/events.h>
 
 namespace launchdetection {
 

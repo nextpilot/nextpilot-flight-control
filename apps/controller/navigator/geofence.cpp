@@ -22,7 +22,7 @@
 #include <hrtimer.h>
 #include <geo/geo.h>
 #include <mavlink_log.h>
-// #include <event/events.h>
+// #include <events/events.h>
 
 #include "navigator.h"
 

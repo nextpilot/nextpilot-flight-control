@@ -12,7 +12,7 @@
 
 #include <mathlib/mathlib.h>
 #include <matrix/matrix/math.hpp>
-// #include <event/events.h>
+// #include <events/events.h>
 #include "MulticopterPositionControl.hpp"
 #include "PositionControl/ControlMath.hpp"
 
@@ -119,8 +119,8 @@ void MulticopterPositionControl::parameters_update(bool force) {
             /* EVENT
              * @description <param>MPC_TILTMAX_AIR</param> is set to {1:.0}.
              */
-            // events::send<float>(events::ID("mc_pos_ctrl_tilt_set"), events::Log::Warning,
-            // "Maximum tilt limit has been constrained to a safe value", MAX_SAFE_TILT_DEG);
+            events::send<float>(events::ID("mc_pos_ctrl_tilt_set"), events::Log::Warning,
+                                "Maximum tilt limit has been constrained to a safe value", MAX_SAFE_TILT_DEG);
         }
 
         if (_param_mpc_tiltmax_lnd.get() > _param_mpc_tiltmax_air.get()) {
@@ -130,8 +130,8 @@ void MulticopterPositionControl::parameters_update(bool force) {
             /* EVENT
              * @description <param>MPC_TILTMAX_LND</param> is set to {1:.0}.
              */
-            // events::send<float>(events::ID("mc_pos_ctrl_land_tilt_set"), events::Log::Warning,
-            // "Land tilt limit has been constrained by maximum tilt", _param_mpc_tiltmax_air.get());
+            events::send<float>(events::ID("mc_pos_ctrl_land_tilt_set"), events::Log::Warning,
+                                "Land tilt limit has been constrained by maximum tilt", _param_mpc_tiltmax_air.get());
         }
 
         _control.setPositionGains(Vector3f(_param_mpc_xy_p.get(), _param_mpc_xy_p.get(), _param_mpc_z_p.get()));
@@ -149,8 +149,8 @@ void MulticopterPositionControl::parameters_update(bool force) {
             /* EVENT
              * @description <param>MPC_XY_CRUISE</param> is set to {1:.0}.
              */
-            // events::send<float>(events::ID("mc_pos_ctrl_cruise_set"), events::Log::Warning,
-            // "Cruise speed has been constrained by maximum speed", _param_mpc_xy_vel_max.get());
+            events::send<float>(events::ID("mc_pos_ctrl_cruise_set"), events::Log::Warning,
+                                "Cruise speed has been constrained by maximum speed", _param_mpc_xy_vel_max.get());
         }
 
         if (_param_mpc_vel_manual.get() > _param_mpc_xy_vel_max.get()) {
@@ -160,8 +160,8 @@ void MulticopterPositionControl::parameters_update(bool force) {
             /* EVENT
              * @description <param>MPC_VEL_MANUAL</param> is set to {1:.0}.
              */
-            // events::send<float>(events::ID("mc_pos_ctrl_man_vel_set"), events::Log::Warning,
-            // "Manual speed has been constrained by maximum speed", _param_mpc_xy_vel_max.get());
+            events::send<float>(events::ID("mc_pos_ctrl_man_vel_set"), events::Log::Warning,
+                                "Manual speed has been constrained by maximum speed", _param_mpc_xy_vel_max.get());
         }
 
         if (_param_mpc_vel_man_back.get() > _param_mpc_vel_manual.get()) {
@@ -171,8 +171,8 @@ void MulticopterPositionControl::parameters_update(bool force) {
             /* EVENT
              * @description <param>MPC_VEL_MAN_BACK</param> is set to {1:.0}.
              */
-            // events::send<float>(events::ID("mc_pos_ctrl_man_vel_back_set"), events::Log::Warning,
-            // "Manual backward speed has been constrained by forward speed", _param_mpc_vel_manual.get());
+            events::send<float>(events::ID("mc_pos_ctrl_man_vel_back_set"), events::Log::Warning,
+                                "Manual backward speed has been constrained by forward speed", _param_mpc_vel_manual.get());
         }
 
         if (_param_mpc_vel_man_side.get() > _param_mpc_vel_manual.get()) {
@@ -182,8 +182,8 @@ void MulticopterPositionControl::parameters_update(bool force) {
             /* EVENT
              * @description <param>MPC_VEL_MAN_SIDE</param> is set to {1:.0}.
              */
-            // events::send<float>(events::ID("mc_pos_ctrl_man_vel_side_set"), events::Log::Warning,
-            // "Manual sideways speed has been constrained by forward speed", _param_mpc_vel_manual.get());
+            events::send<float>(events::ID("mc_pos_ctrl_man_vel_side_set"), events::Log::Warning,
+                                "Manual sideways speed has been constrained by forward speed", _param_mpc_vel_manual.get());
         }
 
         if (_param_mpc_z_v_auto_up.get() > _param_mpc_z_vel_max_up.get()) {
@@ -193,8 +193,8 @@ void MulticopterPositionControl::parameters_update(bool force) {
             /* EVENT
              * @description <param>MPC_Z_V_AUTO_UP</param> is set to {1:.0}.
              */
-            // events::send<float>(events::ID("mc_pos_ctrl_up_vel_set"), events::Log::Warning,
-            // "Ascent speed has been constrained by max speed", _param_mpc_z_vel_max_up.get());
+            events::send<float>(events::ID("mc_pos_ctrl_up_vel_set"), events::Log::Warning,
+                                "Ascent speed has been constrained by max speed", _param_mpc_z_vel_max_up.get());
         }
 
         if (_param_mpc_z_v_auto_dn.get() > _param_mpc_z_vel_max_dn.get()) {
@@ -204,8 +204,8 @@ void MulticopterPositionControl::parameters_update(bool force) {
             /* EVENT
              * @description <param>MPC_Z_V_AUTO_DN</param> is set to {1:.0}.
              */
-            // events::send<float>(events::ID("mc_pos_ctrl_down_vel_set"), events::Log::Warning,
-            // "Descent speed has been constrained by max speed", _param_mpc_z_vel_max_dn.get());
+            events::send<float>(events::ID("mc_pos_ctrl_down_vel_set"), events::Log::Warning,
+                                "Descent speed has been constrained by max speed", _param_mpc_z_vel_max_dn.get());
         }
 
         if (_param_mpc_thr_hover.get() > _param_mpc_thr_max.get() ||
@@ -217,8 +217,8 @@ void MulticopterPositionControl::parameters_update(bool force) {
             /* EVENT
              * @description <param>MPC_THR_HOVER</param> is set to {1:.0}.
              */
-            // events::send<float>(events::ID("mc_pos_ctrl_hover_thrust_set"), events::Log::Warning,
-            // "Hover thrust has been constrained by min/max thrust", _param_mpc_thr_hover.get());
+            events::send<float>(events::ID("mc_pos_ctrl_hover_thrust_set"), events::Log::Warning,
+                                "Hover thrust has been constrained by min/max thrust", _param_mpc_thr_hover.get());
         }
 
         if (!_param_mpc_use_hte.get() || !_hover_thrust_initialized) {

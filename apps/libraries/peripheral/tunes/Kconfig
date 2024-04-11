@@ -1,0 +1,5 @@
+menuconfig PKG_USING_TUNES
+    bool "tunes: Library for parsing tunes from melody-strings or dedicated tune messages"
+    select PKG_USING_UORB
+    select PKG_USING_CIRCUIT_BREAKER
+    default n

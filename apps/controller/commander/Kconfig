@@ -1,6 +1,8 @@
 menuconfig FCS_USING_COMMANDER
 	bool "commander"
 	select PKG_USING_SENSOR_CALIBRATION
+	select PKG_USING_EVENTS
+	select PKG_USING_TUNES
 	default n
 	---help---
 		Enable support for commander

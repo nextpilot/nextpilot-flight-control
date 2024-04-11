@@ -11,7 +11,7 @@
 #include "VehicleAirData.hpp"
 
 #include <rtdbg.h>
-// #include <event/events.h>
+// #include <events/events.h>
 #include <geo/geo.h>
 
 namespace sensors {
@@ -311,11 +311,11 @@ void VehicleAirData::CheckFailover(const hrt_abstime &time_now_us) {
                      * @description
                      * Land immediately and check the system.
                      */
-                    // events::send<uint8_t, events::px4::enums::sensor_failover_reason_t>(
+                    events::send<uint8_t, events::px4::enums::sensor_failover_reason_t>(
                         events::ID("sensor_failover_baro"), events::Log::Emergency, "Baro sensor #{1} failure: {2}", failover_index,
                         failover_reason);
 
-                        _last_error_message = time_now_us;
+                    _last_error_message = time_now_us;
                 }
 
                 // reduce priority of failed sensor to the minimum

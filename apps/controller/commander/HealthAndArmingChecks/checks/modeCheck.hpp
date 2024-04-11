@@ -11,8 +11,10 @@
 #pragma once
 
 #include "../Common.hpp"
-
 #include <uORB/uORBSubscription.hpp>
+
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class ModeChecks : public HealthAndArmingCheckBase {
 public:

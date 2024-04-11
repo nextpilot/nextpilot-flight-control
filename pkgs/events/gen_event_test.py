@@ -1,13 +1,12 @@
 import os
 import sys
 import subprocess
-from building import *
 
-cwd = GetCurrentDir()
+cwd = os.getcwd()
 
-generated_events_from_source_file = File("#/build/events_from_source.json").abspath
-generated_events_common_enums_file = File("#build/events_common_with_enums.json").abspath
-generated_events_combined_all_file = File("#/build/events_combined_all.json").abspath
+generated_events_from_source_file = os.path.join(cwd, "events_from_source.json")
+generated_events_common_enums_file = os.path.join(cwd, "events_common_with_enums.json")
+generated_events_combined_all_file = os.path.join(cwd, "events_combined_all.json")
 
 all_src_files = {
     os.path.join(cwd, "../../apps"),
@@ -22,7 +21,9 @@ cmd = [
     generated_events_from_source_file,
     "--src-path",
 ] + list(all_src_files)
-subprocess.call(cmd)
+
+subprocess.run(cmd)
+
 
 # combine common.json with our enums for the code generation
 cmd = [
@@ -33,7 +34,9 @@ cmd = [
     "--output",
     generated_events_common_enums_file,
 ]
-subprocess.call(cmd)
+
+subprocess.run(cmd)
+
 
 # Generating combined event json file
 cmd = [
@@ -44,7 +47,8 @@ cmd = [
     "--output",
     generated_events_combined_all_file,
 ]
-subprocess.call(cmd)
+
+subprocess.run(cmd)
 
 
 # 检验合并的events_all.json文件
@@ -53,7 +57,6 @@ cmd = [
     os.path.join(cwd, "libevents/scripts/validate.py"),
     generated_events_combined_all_file,
 ]
-subprocess.call(cmd)
 
 # 创建压缩文件
 # cmd = [
@@ -61,7 +64,8 @@ subprocess.call(cmd)
 #     os.path.join(cwd, "../../tools/compress.py"),
 #     generated_events_combined_all_file,
 # ]
-# subprocess.call(cmd)
+
+# subprocess.run(cmd)
 
 # Generating event header file
 cmd = [
@@ -73,16 +77,9 @@ cmd = [
     cwd,
     generated_events_common_enums_file,
 ]
-subprocess.call(cmd)
+print("22222222222222222222")
 
-##################################################
-#
-##################################################
+subprocess.run(cmd)
 
 
-inc = [cwd]
-src = ["events.cpp"]
-
-objs = DefineGroup("pkg/events", src, depend=["PKG_USING_EVENTS"], CPPPATH=inc)
-
-Return("objs")
+exit(0)

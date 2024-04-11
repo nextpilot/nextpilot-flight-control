@@ -13,7 +13,6 @@
 //#include <px4_platform_common/px4_config.h>
 #include <rtdbg.h>
 #include <conversion/rotation.h>
-
 #include <mathlib/mathlib.h>
 #include <param/param.h>
 #include <matrix/math.hpp>

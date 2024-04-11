@@ -212,11 +212,11 @@ bool Report::report(bool is_armed, bool force) {
      * @type summary
      * @group arming_check
      */
-    // events::send<uint8_t, events::px4::enums::health_component_t, events::px4::enums::health_component_t,
-    events::px4::enums::navigation_mode_group_t, events::px4::enums::navigation_mode_group_t > (events::ID("commander_arming_check_summary"), events::Log::Protocol,
-                                                                                                "Arming check summary event", 0, current_results.arming_checks.error, current_results.arming_checks.warning,
-                                                                                                (navigation_mode_group_t)current_results.arming_checks.can_arm,
-                                                                                                (navigation_mode_group_t)current_results.arming_checks.can_run);
+    events::send<uint8_t, events::px4::enums::health_component_t, events::px4::enums::health_component_t,
+                 events::px4::enums::navigation_mode_group_t, events::px4::enums::navigation_mode_group_t>(events::ID("commander_arming_check_summary"), events::Log::Protocol,
+                                                                                                           "Arming check summary event", 0, current_results.arming_checks.error, current_results.arming_checks.warning,
+                                                                                                           (navigation_mode_group_t)current_results.arming_checks.can_arm,
+                                                                                                           (navigation_mode_group_t)current_results.arming_checks.can_run);
 
     // send all events
     int               offset = 0;
@@ -228,7 +228,7 @@ bool Report::report(bool is_armed, bool force) {
         event.log_levels = header->log_levels;
         memcpy(event.arguments, _event_buffer + offset + sizeof(EventBufferHeader), header->size);
         memset(event.arguments + header->size, 0, sizeof(event.arguments) - header->size);
-        // events::send(event);
+        events::send(event);
         offset += sizeof(EventBufferHeader) + header->size;
 #ifdef CONSOLE_PRINT_ARMING_CHECK_EVENT
         const char *message;
@@ -246,10 +246,10 @@ bool Report::report(bool is_armed, bool force) {
      * @type summary
      * @group health
      */
-    // events::send<uint8_t, events::px4::enums::health_component_t, events::px4::enums::health_component_t,
-    events::px4::enums::health_component_t > (events::ID("commander_health_summary"),
-                                              events::Log::Protocol,
-                                              "Health report summary event", 0, current_results.health.is_present,
-                                              current_results.health.error, current_results.health.warning);
+    events::send<uint8_t, events::px4::enums::health_component_t, events::px4::enums::health_component_t,
+                 events::px4::enums::health_component_t>(events::ID("commander_health_summary"),
+                                                         events::Log::Protocol,
+                                                         "Health report summary event", 0, current_results.health.is_present,
+                                                         current_results.health.error, current_results.health.warning);
     return true;
 }

@@ -12,6 +12,9 @@
 
 #include "../Common.hpp"
 
+using namespace nextpilot;
+using namespace nextpilot::global_params;
+
 class SdCardChecks : public HealthAndArmingCheckBase {
 public:
     SdCardChecks()  = default;

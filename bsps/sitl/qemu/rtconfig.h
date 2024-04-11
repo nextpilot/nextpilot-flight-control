@@ -78,6 +78,8 @@
 
 /* Peripheral Libraries Config */
 
+#define PKG_USING_TUNES
+/* end of Peripheral Libraries Config */
 /* end of Nextpilot Libraries Config */
 
 /* Nextpilot Peripheral Config */
@@ -99,6 +101,7 @@
 /* Nextpilot Packages Config */
 
 #define PKG_USING_CONTAINER
+#define PKG_USING_EVENTS
 #define PKG_USING_GETOPT
 #define PKG_USING_HRTIMER
 #define PKG_USING_HRTIMER_V1

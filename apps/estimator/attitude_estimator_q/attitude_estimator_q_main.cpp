@@ -27,7 +27,7 @@
 #include <defines.h>
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
-#include <px4_platform_common/posix.h>
+// #include <px4_platform_common/posix.h>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>

@@ -22,8 +22,7 @@
 #endif
 
 #include <events/events_generated.h>
-#include <libevents_definitions.h>
-
+#include <events/libevents_definitions.h>
 #include <stdint.h>
 
 namespace events {

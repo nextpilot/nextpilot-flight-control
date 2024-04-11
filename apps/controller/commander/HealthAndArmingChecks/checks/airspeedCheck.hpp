@@ -11,9 +11,11 @@
 #pragma once
 
 #include "../Common.hpp"
-
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/airspeed_validated.h>
+
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class AirspeedChecks : public HealthAndArmingCheckBase {
 public:
