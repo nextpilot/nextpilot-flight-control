@@ -21,7 +21,7 @@
 #include "sih.hpp"
 
 #include <getopt/getopt.h>
-#include <rtdbg.h>
+#include <ulog/log.h>
 #include <drivers/drv_pwm_output.h> // to get PWM flags
 #include <drivers/device/Device.hpp>
 

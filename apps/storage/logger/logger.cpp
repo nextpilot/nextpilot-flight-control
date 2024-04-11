@@ -33,7 +33,7 @@
 #include <px4_platform/cpuload.h>
 #include <getopt/getopt.h>
 // #include <events/events.h>
-#include <rtdbg.h>
+#include <ulog/log.h>
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/sem.h>
 #include <px4_platform_common/shutdown.h>

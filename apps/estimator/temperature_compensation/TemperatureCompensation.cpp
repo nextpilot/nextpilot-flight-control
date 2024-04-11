@@ -19,7 +19,7 @@
 #include "TemperatureCompensation.h"
 #include <param/param.h>
 #include <defines.h>
-#include <rtdbg.h>
+#include <ulog/log.h>
 namespace temperature_compensation {
 
 int TemperatureCompensation::initialize_parameter_handles(ParameterHandles &parameter_handles) {

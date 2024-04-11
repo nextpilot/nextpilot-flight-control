@@ -23,6 +23,8 @@ static constexpr float kHomePositionGPSRequiredEPH     = 5.f;
 static constexpr float kHomePositionGPSRequiredEPV     = 10.f;
 static constexpr float kHomePositionGPSRequiredEVH     = 1.f;
 
+using namespace nextpilot;
+
 class HomePosition {
 public:
     HomePosition(const failsafe_flags_s &failsafe_flags);

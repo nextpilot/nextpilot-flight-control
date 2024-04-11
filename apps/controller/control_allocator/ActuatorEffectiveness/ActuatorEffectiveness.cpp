@@ -12,7 +12,7 @@
 
 #include "ActuatorEffectiveness.hpp"
 #include "ControlAllocation/ControlAllocation.hpp"
-#include <rtdbg.h>
+#include <ulog/log.h>
 
 int ActuatorEffectiveness::Configuration::addActuator(ActuatorType type, const matrix::Vector3f &torque,
                                                       const matrix::Vector3f &thrust) {

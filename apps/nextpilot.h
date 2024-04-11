@@ -50,18 +50,18 @@
 
 // queue
 #ifdef PKG_USING_QUEUE
-#include "queue.h"
+#include "queue/queue.h"
 #endif // PKG_USING_QUEUE
 
 #ifdef PKG_USING_CONTAINER
-#include "container.h"
+#include "containers/container.h"
 #endif // PKG_USING_CONTAINER
 
 #ifdef PKG_USING_LIBCRC
-#include "crc8.h"
-#include "crc16.h"
-#include "crc32.h"
-#include "crc64.h"
+#include "libcrc/crc8.h"
+#include "libcrc/crc16.h"
+#include "libcrc/crc32.h"
+#include "libcrc/crc64.h"
 #endif // PKG_USING_LIBCRC
 
 // hrtimer
@@ -71,24 +71,24 @@
 
 // uorb
 #ifdef PKG_USING_UORB
-#include "uORB.h"
+#include "uORB/uORB.h"
 #ifdef __cplusplus
-#include "uORBPublication.hpp"
-#include "uORBSubscription.hpp"
-#include "topics/uORBTopics.hpp"
+#include "uORB/uORBPublication.hpp"
+#include "uORB/uORBSubscription.hpp"
+#include "uORB/topics/uORBTopics.hpp"
 #endif //__cplusplus
 #endif // PKG_USING_UORB
 
 // param
 #ifdef PKG_USING_PARAM
-#include "param.h"
+#include "param/param.h"
 #endif // PKG_USING_PARAM
 
 // workq
 #ifdef PKG_USING_WORKQUEUE
-#include "WorkItem.hpp"
-#include "WorkItemScheduled.hpp"
-#include "WorkItemSingleShot.hpp"
+#include "workq/WorkItem.hpp"
+#include "workq/WorkItemScheduled.hpp"
+#include "workq/WorkItemSingleShot.hpp"
 #endif // PKG_USING_WORKQUEUE
 
 #ifdef PKG_USING_BOARD_VERSION
@@ -102,26 +102,26 @@
 
 // perf
 #ifdef PKG_USING_PERF
-#include "perf_counter.h"
+#include "perf/perf_counter.h"
 #endif // PKG_USING_PERF
 
 // module
-#include "module_usage.h"
+#include "module/module_usage.h"
 #if defined(__cplusplus)
-#include "module_command.hpp"
-#include "module_params.hpp"
-#include "module_thread.hpp"
+#include "module/module_command.hpp"
+#include "module/module_params.hpp"
+#include "module/module_thread.hpp"
 using namespace nextpilot::global_params;
 #endif //__cplusplus
 
 // mathlib
 #if defined(PKG_USING_MATHLIB) && defined(__cplusplus)
-#include "mathlib.h"
-#include "math/filter/AlphaFilter.hpp"
-#include "math/filter/LowPassFilter2p.hpp"
-#include "math/filter/MedianFilter.hpp"
-#include "math/filter/NotchFilter.hpp"
-#include "math/filter/second_order_reference_model.hpp"
+#include "mathlib/mathlib.h"
+#include "mathlib/math/filter/AlphaFilter.hpp"
+#include "mathlib/math/filter/LowPassFilter2p.hpp"
+#include "mathlib/math/filter/MedianFilter.hpp"
+#include "mathlib/math/filter/NotchFilter.hpp"
+#include "mathlib/math/filter/second_order_reference_model.hpp"
 #endif // PKG_USING_MATHLIB
 
 // matrix
@@ -131,16 +131,20 @@ using namespace nextpilot::global_params;
 
 // Circuit breaker
 #ifdef PKG_USING_CIRCUIT_BREAKER
-#include "circuit_breaker.h"
+#include "circuit_breaker/circuit_breaker.h"
 #endif // PKG_USING_CIRCUIT_BREAKER
 
 #ifdef PKG_USING_HYSTERESIS
-#include "hysteresis.h"
+#include "hysteresis/hysteresis.h"
 #endif // PKG_USING_HYSTERESIS
 
 #ifdef PKG_USING_GEO
-#include "geo.h"
+#include "geo/geo.h"
 #endif // PKG_USING_GEO
+
+#ifdef PKG_USING_EVENTS
+#include "events/events.h"
+#endif // PKG_USING_EVENTS
 
 // scope
 #ifdef PKG_USING_SCOPE
@@ -148,6 +152,7 @@ using namespace nextpilot::global_params;
 
 #ifdef __cplusplus
 using namespace nextpilot;
+using namespace nextpilot::global_params;
 #endif //__cplusplus
 
 #endif // __NEXTPILOT_H__

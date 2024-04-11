@@ -20,7 +20,7 @@
 #include <perf/perf_counter.h>
 #include <mavlink_log.h>
 
-#include <rtdbg.h>
+#include <ulog/log.h>
 #include <module/module_params.hpp>
 // #include <px4_platform_common/px4_config.h>
 #include <workq/WorkItemScheduled.hpp>

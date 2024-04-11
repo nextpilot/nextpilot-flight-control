@@ -25,6 +25,7 @@
 #include <perf/perf_counter.h>
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
+#include <module/module_thread.hpp>
 
 // publications
 #include <uORB/uORBPublication.hpp>
@@ -36,8 +37,6 @@
 #include <uORB/topics/vehicle_status.h>
 
 // subscriptions
-#include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionInterval.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/action_request.h>
 #include <uORB/topics/airspeed.h>
@@ -61,17 +60,13 @@
 #include <uORB/topics/vtol_vehicle_status.h>
 
 using math::constrain;
-using systemlib::Hysteresis;
-
+using nextpilot::Hysteresis;
 using namespace time_literals;
 
-class Commander : public ModuleCommand<Commander>, public ModuleParams {
+class Commander : public ModuleCommand<Commander>, public ModuleParams, public ModuleThread {
 public:
     Commander();
     ~Commander();
-
-    /** @see ModuleCommand */
-    static int *instantiate(int argc, char *argv[]);
 
     /** @see ModuleCommand */
     static Commander *instantiate(int argc, char *argv[]);
@@ -83,10 +78,14 @@ public:
     static int print_usage(const char *reason = nullptr);
 
     /** @see ModuleCommand::run() */
-    void run() override;
+    void Run() override;
 
     /** @see ModuleCommand::print_status() */
     int print_status() override;
+
+    int init() override {
+        return ModuleThread::init();
+    }
 
     void enable_hil();
 

@@ -12,9 +12,10 @@
 #define DEFINE_GET_PX4_CUSTOM_MODE
 #include "../px4_custom_mode.h"
 #include <uORB/topics/vehicle_status.h>
-// #include <events/events.h>
-#include <rtdbg.h>
+#include <events/events.h>
+#include <ulog/log.h>
 #include <mavlink_log.h>
+#include <defines.h>
 
 using failsafe_action_t = events::px4::enums::failsafe_action_t;
 using failsafe_cause_t  = events::px4::enums::failsafe_cause_t;

@@ -11,7 +11,10 @@
 #pragma once
 
 #include <events/events.h>
-#include <rtdbg.h>
+#include <ulog/log.h>
+#include <defines.h>
+#include <matrix/math.hpp>
+#include <mathlib/mathlib.h>
 #include <module/module_params.hpp>
 #include <uORB/topics/health_report.h>
 #include <uORB/topics/vehicle_status.h>

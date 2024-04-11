@@ -13,7 +13,7 @@
  * Remote Control calibration routine
  */
 
-// #include <events/events.h>
+#include <events/events.h>
 // #include <px4_platform_common/posix.h>
 // #include <px4_platform_common/time.h>
 #include <defines.h>
@@ -25,6 +25,7 @@
 #include <param/param.h>
 // #include <systemlib/err.h>
 
+using namespace nextpilot;
 int do_trim_calibration(orb_advert_t *mavlink_log_pub) {
     uORB::Subscription manual_control_setpoint_sub{ORB_ID(manual_control_setpoint)};
     usleep(400000);

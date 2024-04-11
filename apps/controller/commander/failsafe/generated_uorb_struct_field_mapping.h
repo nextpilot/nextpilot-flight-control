@@ -1,0 +1,27 @@
+#define UORB_STRUCT_FIELD_MAPPING \
+   .property("angular_velocity_invalid", &px4::msg::FailsafeFlags::angular_velocity_invalid) \
+   .property("attitude_invalid", &px4::msg::FailsafeFlags::attitude_invalid) \
+   .property("local_altitude_invalid", &px4::msg::FailsafeFlags::local_altitude_invalid) \
+   .property("local_position_invalid", &px4::msg::FailsafeFlags::local_position_invalid) \
+   .property("local_position_invalid_relaxed", &px4::msg::FailsafeFlags::local_position_invalid_relaxed) \
+   .property("local_velocity_invalid", &px4::msg::FailsafeFlags::local_velocity_invalid) \
+   .property("global_position_invalid", &px4::msg::FailsafeFlags::global_position_invalid) \
+   .property("auto_mission_missing", &px4::msg::FailsafeFlags::auto_mission_missing) \
+   .property("offboard_control_signal_lost", &px4::msg::FailsafeFlags::offboard_control_signal_lost) \
+   .property("home_position_invalid", &px4::msg::FailsafeFlags::home_position_invalid) \
+   .property("manual_control_signal_lost", &px4::msg::FailsafeFlags::manual_control_signal_lost) \
+   .property("gcs_connection_lost", &px4::msg::FailsafeFlags::gcs_connection_lost) \
+   .property("battery_warning", &px4::msg::FailsafeFlags::battery_warning) \
+   .property("battery_low_remaining_time", &px4::msg::FailsafeFlags::battery_low_remaining_time) \
+   .property("battery_unhealthy", &px4::msg::FailsafeFlags::battery_unhealthy) \
+   .property("primary_geofence_breached", &px4::msg::FailsafeFlags::primary_geofence_breached) \
+   .property("mission_failure", &px4::msg::FailsafeFlags::mission_failure) \
+   .property("vtol_fixed_wing_system_failure", &px4::msg::FailsafeFlags::vtol_fixed_wing_system_failure) \
+   .property("wind_limit_exceeded", &px4::msg::FailsafeFlags::wind_limit_exceeded) \
+   .property("flight_time_limit_exceeded", &px4::msg::FailsafeFlags::flight_time_limit_exceeded) \
+   .property("local_position_accuracy_low", &px4::msg::FailsafeFlags::local_position_accuracy_low) \
+   .property("fd_critical_failure", &px4::msg::FailsafeFlags::fd_critical_failure) \
+   .property("fd_esc_arming_failure", &px4::msg::FailsafeFlags::fd_esc_arming_failure) \
+   .property("fd_imbalanced_prop", &px4::msg::FailsafeFlags::fd_imbalanced_prop) \
+   .property("fd_motor_failure", &px4::msg::FailsafeFlags::fd_motor_failure) \
+

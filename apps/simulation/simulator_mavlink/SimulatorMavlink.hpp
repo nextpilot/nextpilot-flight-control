@@ -23,13 +23,13 @@
 #include <drivers/magnetometer/PX4Magnetometer.hpp>
 #include <geo/geo.h>
 #include <perf/perf_counter.h>
-#include <px4_platform_common/atomic.h>
+#include <atomic/atomic.hpp>
 #include <px4_platform_common/bitmask.h>
 #include <module/module_params.hpp>
 #include <px4_platform_common/posix.h>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionInterval.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/actuator_outputs.h>
 #include <uORB/topics/battery_status.h>
 #include <uORB/topics/differential_pressure.h>

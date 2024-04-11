@@ -12,7 +12,7 @@
 #define LOG_LVL LOG_LVL_INFO
 
 #include <rtthread.h>
-#include <rtdbg.h>
+#include <ulog/log.h>
 
 #ifdef RT_USING_DFS_ROMFS
 #include <dfs_romfs.h>

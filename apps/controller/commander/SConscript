@@ -1,15 +1,29 @@
 import os
 import sys
+import subprocess
 from building import *
 
 cwd = GetCurrentDir()
+
+
+# Extracting info from failsafe flags msg file
+# cmd = [
+#     sys.executable,
+#     os.path.join(cwd, "failsafe/parse_flags_from_msg.py"),
+#     os.path.join(cwd, "../../../msgs/uorb_msgs/FailsafeFlags.msg"),
+#     os.path.join(cwd, "failsafe/generated_uorb_struct_field_mapping.h"),
+#     os.path.join(cwd, "failsafe/emscripten_template.html"),
+#     os.path.join(cwd, "failsafe/failsafe_html_template.html"),
+# ]
+# subprocess.call(cmd)
+
 
 inc = []
 src = (
     Glob("*.cpp", exclude="*_test.cpp")
     + Glob("Arming/ArmAuthorization/ArmAuthorization.cpp")
     + Glob("Arming/ArmStateMachine/ArmStateMachine.cpp")
-    + Glob("failsafe/*.cpp", exclude="failsafe/*_test.cpp")
+    + ["failsafe/failsafe.cpp", "failsafe/framework.cpp"]
     + Glob("failure_detector/*.cpp")
     + Glob("HealthAndArmingChecks/*.cpp", exclude="HealthAndArmingChecks/*Test.cpp")
     + Glob("HealthAndArmingChecks/checks/*.cpp")

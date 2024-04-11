@@ -22,10 +22,9 @@
 /*
  * Includes here should only cover the needs of the framework definitions.
  */
-#include <rtdbg.h>
+#include <ulog/log.h>
 //#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/posix.h>
-
+// #include <px4_platform_common/posix.h>
 #include <drivers/drv_sensor.h>
 
 #define DEVICE_LOG(FMT, ...) PX4_LOG_NAMED(_name, FMT, ##__VA_ARGS__)

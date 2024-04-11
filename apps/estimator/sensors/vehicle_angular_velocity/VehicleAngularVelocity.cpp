@@ -10,7 +10,7 @@
 
 #include "VehicleAngularVelocity.hpp"
 
-#include <rtdbg.h>
+#include <ulog/log.h>
 #include <uORB/topics/vehicle_imu_status.h>
 
 using namespace matrix;

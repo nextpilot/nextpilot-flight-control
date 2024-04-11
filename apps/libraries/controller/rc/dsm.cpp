@@ -19,7 +19,7 @@
 //#include <px4_platform_common/px4_config.h>
 #include <board_config.h>
 #include <defines.h>
-#include <rtdbg.h>
+#include <ulog/log.h>
 #include <fcntl.h>
 #include <math.h>
 #include <unistd.h>

@@ -10,7 +10,7 @@
 
 #include "VehicleGPSPosition.hpp"
 
-#include <rtdbg.h>
+#include <ulog/log.h>
 #include <geo/geo.h>
 #include <mathlib/mathlib.h>
 

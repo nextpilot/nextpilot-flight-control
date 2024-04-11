@@ -17,7 +17,7 @@
 #pragma once
 
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionInterval.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/follow_target.h>
 #include <uORB/topics/vehicle_local_position.h>

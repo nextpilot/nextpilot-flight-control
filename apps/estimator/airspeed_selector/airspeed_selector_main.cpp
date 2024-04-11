@@ -23,7 +23,7 @@
 #include <mavlink_log.h>
 
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionInterval.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/airspeed.h>
 #include <uORB/topics/airspeed_validated.h>

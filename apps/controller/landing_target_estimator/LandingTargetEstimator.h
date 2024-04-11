@@ -24,7 +24,7 @@
 #include <param/param.h>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionInterval.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/vehicle_acceleration.h>
 #include <uORB/topics/vehicle_attitude.h>
 #include <uORB/topics/vehicle_local_position.h>

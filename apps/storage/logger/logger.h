@@ -26,7 +26,7 @@
 
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionInterval.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/logger_status.h>
 #include <uORB/topics/log_message.h>
 #include <uORB/topics/manual_control_setpoint.h>

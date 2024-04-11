@@ -18,7 +18,7 @@
 #include <pWorkItemScheduled.hpp>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionInterval.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/battery_status.h>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/vehicle_status.h>

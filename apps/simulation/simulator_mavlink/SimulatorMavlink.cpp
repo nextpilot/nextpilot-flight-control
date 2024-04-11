@@ -10,7 +10,7 @@
 
 #include "SimulatorMavlink.hpp"
 
-#include <rtdbg.h>
+#include <ulog/log.h>
 #include <px4_platform_common/time.h>
 #include <px4_platform_common/tasks.h>
 #include <geo/geo.h>

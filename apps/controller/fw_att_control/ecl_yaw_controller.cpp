@@ -17,7 +17,7 @@
 
 #define LOG_TAG "ecl_yaw"
 
-#include <rtdbg.h>
+#include <ulog/log.h>
 #include "ecl_yaw_controller.h"
 #include <float.h>
 #include <geo/geo.h>

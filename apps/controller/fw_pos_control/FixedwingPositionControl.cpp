@@ -11,7 +11,7 @@
 #define LOG_TAG "fw_pos_control"
 
 #include "FixedwingPositionControl.hpp"
-// #include <events/events.h>
+#include <events/events.h>
 
 using math::constrain;
 using math::max;

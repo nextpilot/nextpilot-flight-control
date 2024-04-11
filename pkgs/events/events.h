@@ -15,7 +15,7 @@
 // Helpful for debugging and to ensure the system is not spammed with events.
 // It does not print arguments.
 #if 0
-#include <rtdbg.h>
+#include <ulog/log.h>
 #define CONSOLE_PRINT_EVENT(log_level, id, str) PX4_INFO_RAW("Event 0x%08" PRIx32 ": %s\n", id, str)
 #else
 #define CONSOLE_PRINT_EVENT(log_level, id, str)

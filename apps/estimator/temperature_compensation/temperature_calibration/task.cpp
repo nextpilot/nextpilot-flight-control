@@ -19,8 +19,8 @@
 #include <uORB/uORBPublication.hpp>
 #include <uORB/topics/sensor_gyro.h>
 #include <mathlib/mathlib.h>
-#include <px4_platform_common/atomic.h>
-#include <rtdbg.h>
+#include <atomic/atomic.hpp>
+#include <ulog/log.h>
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/tasks.h>
 #include <hrtimer.h>

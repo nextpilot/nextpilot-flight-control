@@ -10,7 +10,7 @@
 
 #include "VehicleMagnetometer.hpp"
 
-#include <rtdbg.h>
+#include <ulog/log.h>
 // #include <events/events.h>
 #include <geo/geo.h>
 #include <sensor_calibration/Utilities.hpp>

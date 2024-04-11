@@ -10,11 +10,9 @@
 
 #define PARAM_IMPLEMENTATION
 #include <param/param.h>
-
 #include "failsafe.h"
 #include "../ModeUtil/mode_requirements.hpp"
 #include <uORB/topics/vehicle_status.h>
-
 #include <emscripten/emscripten.h>
 #include <emscripten/bind.h>
 #include <emscripten/html5.h>

@@ -13,7 +13,7 @@
 
 #include <rtthread.h>
 #include <stdint.h>
-#include <rtdbg.h>
+#include <ulog/log.h>
 
 // class instance for primary driver of each class
 enum CLASS_DEVICE {

@@ -24,7 +24,6 @@
 #include <param/param.h>
 #include <perf/perf_counter.h>
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionInterval.hpp>
 #include <uORB/topics/led_control.h>
 #include <uORB/topics/parameter_update.h>
 

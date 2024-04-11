@@ -10,10 +10,11 @@
 
 #pragma once
 
-#include <atomic/atomic.h>
+#include <atomic/atomic.hpp>
 // #include <px4_platform_common/posix.h>
 #include <mavlink_log.h>
 #include <uORB/uORB.h>
+#include <pthread.h>
 
 /**
  * @class WorkerThread
@@ -70,11 +71,11 @@ private:
     static void *threadEntryTrampoline(void *arg);
     void         threadEntry();
 
-    px4::atomic_int _state{(int)State::Idle};
-    pthread_t       _thread_handle{};
-    int             _ret_value{};
-    Request         _request;
-    orb_advert_t    _mavlink_log_pub{nullptr};
+    atomic_int   _state{(int)State::Idle};
+    pthread_t    _thread_handle{};
+    int          _ret_value{};
+    Request      _request;
+    orb_advert_t _mavlink_log_pub{nullptr};
 
     // extra arguments
     float _heading_radians;

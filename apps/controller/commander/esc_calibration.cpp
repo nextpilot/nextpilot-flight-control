@@ -31,6 +31,7 @@
 #include <param/param.h>
 
 using namespace time_literals;
+using namespace nextpilot;
 
 bool check_battery_disconnected(orb_advert_t *mavlink_log_pub) {
     uORB::SubscriptionData<battery_status_s> battery_status_sub{ORB_ID(battery_status)};

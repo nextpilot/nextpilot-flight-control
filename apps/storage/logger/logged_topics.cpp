@@ -12,7 +12,7 @@
 #include "messages.h"
 
 #include <param.h>
-#include <rtdbg.h>
+#include <ulog/log.h>
 // #include <px4_platform_common/px4_config.h>
 #include <uORB/topics/uORBTopics.hpp>
 

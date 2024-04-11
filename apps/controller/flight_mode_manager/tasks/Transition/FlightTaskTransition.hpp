@@ -18,7 +18,7 @@
 
 #include "FlightTask.hpp"
 #include <mathlib/math/filter/AlphaFilter.hpp>
-#include <uORB/SubscriptionInterval.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/vehicle_status.h>
 #include <hrtimer.h>

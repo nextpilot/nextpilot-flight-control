@@ -18,7 +18,7 @@
 
 #include "DataValidator.hpp"
 
-#include <rtdbg.h>
+#include <ulog/log.h>
 #include <hrtimer.h>
 
 void DataValidator::put(uint64_t timestamp, float val, uint32_t error_count_in, uint8_t priority_in) {

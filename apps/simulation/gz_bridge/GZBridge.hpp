@@ -13,7 +13,7 @@
 #include "GZMixingInterfaceESC.hpp"
 #include "GZMixingInterfaceServo.hpp"
 
-#include <px4_platform_common/atomic.h>
+#include <atomic/atomic.hpp>
 #include <defines.h>
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
@@ -22,7 +22,7 @@
 #include <geo/geo.h>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionInterval.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/differential_pressure.h>
 #include <uORB/topics/sensor_accel.h>

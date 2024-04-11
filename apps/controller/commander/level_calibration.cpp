@@ -28,6 +28,7 @@
 
 using namespace time_literals;
 using namespace matrix;
+using namespace nextpilot;
 using math::radians;
 
 int do_level_calibration(orb_advert_t *mavlink_log_pub) {

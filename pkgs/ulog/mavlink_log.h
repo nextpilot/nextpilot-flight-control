@@ -8,8 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#ifndef __MAVLINK_VASPRINTF_H__
-#define __MAVLINK_VASPRINTF_H__
+#ifndef __MAVLINK_LOG_H__
+#define __MAVLINK_LOG_H__
 
 #include <rtdbg.h>
 #include <inttypes.h>
@@ -127,4 +127,4 @@ void mavlink_vasprintf(uint8_t severity, orb_advert_t *mavlink_log_pub, const ch
         LOG_W(_text, ##__VA_ARGS__);                                        \
     } while (0);
 
-#endif // __MAVLINK_VASPRINTF_H__
+#endif // __MAVLINK_LOG_H__

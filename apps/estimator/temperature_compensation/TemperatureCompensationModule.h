@@ -14,7 +14,7 @@
 #include <mathlib/mathlib.h>
 #include <param/param.h>
 #include <perf/perf_counter.h>
-#include <px4_platform_common/atomic.h>
+#include <atomic/atomic.hpp>
 #include <getopt/getopt.h>
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
@@ -25,7 +25,7 @@
 #include <px4_platform_common/time.h>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/SubscriptionInterval.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/sensor_accel.h>
 #include <uORB/topics/sensor_baro.h>

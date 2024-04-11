@@ -1503,7 +1503,7 @@ void Commander::updateParameters() {
     }
 }
 
-void Commander::run() {
+void Commander::Run() {
     /* initialize */
     led_init();
     buzzer_init();
@@ -1714,7 +1714,8 @@ void Commander::run() {
 
         arm_auth_update(hrt_absolute_time(), params_updated);
 
-        px4_indicate_external_reset_lockout(LockoutComponent::Commander, _arm_state_machine.isArmed());
+        // TODO:
+        // px4_indicate_external_reset_lockout(LockoutComponent::Commander, _arm_state_machine.isArmed());
 
         perf_end(_loop_perf);
 
@@ -2254,11 +2255,13 @@ void Commander::control_status_leds(bool changed, const uint8_t battery_warning)
     if (overload) {
         if (time_now_us >= _led_overload_toggle + 50_ms) {
             _led_overload_toggle = time_now_us;
-            BOARD_OVERLOAD_LED_TOGGLE();
+            // TODO:
+            //  BOARD_OVERLOAD_LED_TOGGLE();
         }
 
     } else {
-        BOARD_OVERLOAD_LED_OFF();
+        // TODO:
+        // BOARD_OVERLOAD_LED_OFF();
     }
 }
 
@@ -2325,27 +2328,27 @@ void Commander::answer_command(const vehicle_command_s &cmd, uint8_t result) {
     _vehicle_command_ack_pub.publish(command_ack);
 }
 
-int Commander::instantiate(int argc, char *argv[]) {
-    _task_id = px4_task_spawn_cmd("commander",
-                                  SCHED_DEFAULT,
-                                  SCHED_PRIORITY_DEFAULT + 40,
-                                  3250,
-                                  (px4_main_t)&run_trampoline,
-                                  (char *const *)argv);
+// int Commander::task_spawn(int argc, char *argv[]) {
+//     _task_id = px4_task_spawn_cmd("commander",
+//                                   SCHED_DEFAULT,
+//                                   SCHED_PRIORITY_DEFAULT + 40,
+//                                   3250,
+//                                   (px4_main_t)&run_trampoline,
+//                                   (char *const *)argv);
 
-    if (_task_id < 0) {
-        _task_id = -1;
-        return -errno;
-    }
+//     if (_task_id < 0) {
+//         _task_id = -1;
+//         return -errno;
+//     }
 
-    // wait until task is up & running
-    if (wait_until_running() < 0) {
-        _task_id = -1;
-        return -1;
-    }
+//     // wait until task is up & running
+//     if (wait_until_running() < 0) {
+//         _task_id = -1;
+//         return -1;
+//     }
 
-    return 0;
-}
+//     return 0;
+// }
 
 Commander *Commander::instantiate(int argc, char *argv[]) {
     Commander *instance = new Commander();

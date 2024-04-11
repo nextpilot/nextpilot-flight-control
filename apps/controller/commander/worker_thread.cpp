@@ -18,10 +18,10 @@
 #include "level_calibration.h"
 #include "mag_calibration.h"
 #include "rc_calibration.h"
-
-// #include <events/events.h>
-#include <rtdbg.h>
-#include <px4_platform_common/shutdown.h>
+#include <events/events.h>
+#include <ulog/log.h>
+#include <defines.h>
+// #include <px4_platform_common/shutdown.h>
 #include <param/param.h>
 
 using namespace time_literals;
@@ -47,13 +47,13 @@ void WorkerThread::startTask(Request request) {
     /* initialize low priority thread */
     pthread_attr_t low_prio_attr;
     pthread_attr_init(&low_prio_attr);
-    pthread_attr_setstacksize(&low_prio_attr, PX4_STACK_ADJUSTED(4804));
+    pthread_attr_setstacksize(&low_prio_attr, 2048 /*PX4_STACK_ADJUSTED(4804)*/);
 
     struct sched_param param;
     pthread_attr_getschedparam(&low_prio_attr, &param);
 
     /* low priority */
-    param.sched_priority = SCHED_PRIORITY_DEFAULT - 50;
+    param.sched_priority = 20; // SCHED_PRIORITY_DEFAULT - 50;
     pthread_attr_setschedparam(&low_prio_attr, &param);
 
     int ret = pthread_create(&_thread_handle, &low_prio_attr, &threadEntryTrampoline, this);
@@ -76,7 +76,7 @@ void *WorkerThread::threadEntryTrampoline(void *arg) {
 }
 
 void WorkerThread::threadEntry() {
-    px4_prctl(PR_SET_NAME, "commander_low_prio", px4_getpid());
+    // px4_prctl(PR_SET_NAME, "commander_low_prio", px4_getpid());
 
     switch (_request) {
     case Request::GyroCalibration:

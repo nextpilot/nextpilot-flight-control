@@ -15,7 +15,7 @@
 
 #define LOG_TAG "TECS"
 
-#include <rtdbg.h>
+#include <ulog/log.h>
 #include "TECS.hpp"
 #include <geo/geo.h>
 #include <defines.h>

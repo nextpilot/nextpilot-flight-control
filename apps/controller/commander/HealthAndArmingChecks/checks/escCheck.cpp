@@ -9,7 +9,7 @@
  ******************************************************************/
 
 #include "escCheck.hpp"
-// #include <events/events.h>
+#include <events/events.h>
 #include <uORB/topics/actuator_motors.h>
 
 using namespace time_literals;
@@ -92,7 +92,7 @@ void EscChecks::checkEscStatus(const Context &context, Report &reporter, const e
                      */
                     reporter.healthFailure<uint8_t>(required_modes, health_component_t::motors_escs, events::ID("check_escs_offline"),
                                                     events::Log::Critical, "ESC {1} offline", motor_index);
-                    snprintf(esc_fail_msg + strlen(esc_fail_msg), sizeof(esc_fail_msg) - strlen(esc_fail_msg), "ESC%d ", motor_index);
+                    rt_snprintf(esc_fail_msg + strlen(esc_fail_msg), sizeof(esc_fail_msg) - strlen(esc_fail_msg), "ESC%d ", motor_index);
                     esc_fail_msg[sizeof(esc_fail_msg) - 1] = '\0';
                 }
             }

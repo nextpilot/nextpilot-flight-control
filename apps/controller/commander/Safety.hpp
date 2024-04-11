@@ -18,6 +18,8 @@
 #include <uORB/uORBPublication.hpp>
 #include <uORB/topics/button_event.h>
 
+using namespace nextpilot;
+
 class Safety {
 public:
     Safety();

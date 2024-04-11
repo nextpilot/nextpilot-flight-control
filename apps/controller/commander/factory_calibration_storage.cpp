@@ -8,13 +8,13 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#include <defines.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <string.h>
-
+#include <sys/unistd.h>
 #include <param/param.h>
-#include <rtdbg.h>
-
+#include <ulog/log.h>
 #include "factory_calibration_storage.h"
 
 static const char *CALIBRATION_STORAGE = "/fs/mtd_caldata";
@@ -36,7 +36,7 @@ int FactoryCalibrationStorage::open() {
         return 0;
     }
 
-    int ret = ::access(CALIBRATION_STORAGE, R_OK | W_OK);
+    int ret = access(CALIBRATION_STORAGE, R_OK | W_OK);
 
     if (ret != 0) {
         return -errno;
@@ -52,7 +52,7 @@ int FactoryCalibrationStorage::store() {
         return 0;
     }
 
-    int ret = param_export(CALIBRATION_STORAGE, filter_calibration_params);
+    int ret = param_export_internal(CALIBRATION_STORAGE, filter_calibration_params);
 
     if (ret != 0) {
         PX4_ERR("param export failed (%i)", ret);
