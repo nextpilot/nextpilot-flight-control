@@ -20,9 +20,13 @@
 
 #include <module/module_params.hpp>
 #include <matrix/matrix/math.hpp>
+#include <mathlib/mathlib.h>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/manual_control_setpoint.h>
 #include <uORB/topics/failsafe_flags.h>
+
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class Sticks : public ModuleParams {
 public:

@@ -1,0 +1,62 @@
+import os
+import sys
+import subprocess
+from building import *
+
+cwd = GetCurrentDir()
+
+# add core flight tasks to list
+flight_tasks_all = [
+    "Auto",
+    "Descend",
+    "Failsafe",
+    "ManualAcceleration",
+    "ManualAltitude",
+    "ManualAltitudeSmoothVel",
+    "ManualPosition",
+    "ManualPositionSmoothVel",
+    "Transition",
+    "AutoFollowTarget",
+    "Orbit",
+]
+
+# set the files to be generated
+files_to_generate = [
+    "FlightTasks_generated.hpp",
+    "FlightTasks_generated.cpp",
+]
+
+# generate the files using the python script and template
+cmd = (
+    [
+        sys.executable,
+        os.path.join(cwd, "generate_flight_tasks.py"),
+        "-i",
+        os.path.join(cwd, "Templates"),
+        "-o",
+        cwd,
+    ]
+    + ["-t"]
+    + flight_tasks_all
+    + ["-f"]
+    + files_to_generate
+)
+
+subprocess.call(cmd)
+
+
+inc = [cwd]
+src = []
+
+for root, dirs, files in os.walk(cwd):
+    for file in files:
+        if file.endswith(".cpp"):
+            src += [os.path.relpath(os.path.join(root, file), cwd)]
+        if file.endswith(".hpp"):
+            inc += [os.path.dirname(os.path.join(root, file))]
+
+inc = list(set(inc))
+
+objs = DefineGroup("fcs/flight_mode_manager", src, depend=[""], LOCAL_CPPPATH=inc)
+
+Return("objs")

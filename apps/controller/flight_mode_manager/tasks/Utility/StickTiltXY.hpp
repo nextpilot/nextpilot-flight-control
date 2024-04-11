@@ -20,6 +20,9 @@
 #include <matrix/math.hpp>
 #include <module/module_params.hpp>
 
+using namespace nextpilot;
+using namespace nextpilot::global_params;
+
 class StickTiltXY : public ModuleParams {
 public:
     StickTiltXY(ModuleParams *parent);

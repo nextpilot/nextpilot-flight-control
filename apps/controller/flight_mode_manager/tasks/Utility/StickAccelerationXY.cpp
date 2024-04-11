@@ -9,7 +9,6 @@
  ******************************************************************/
 
 #include "StickAccelerationXY.hpp"
-
 #include <geo/geo.h>
 #include "Sticks.hpp"
 

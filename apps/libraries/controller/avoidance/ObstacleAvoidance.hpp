@@ -20,9 +20,8 @@
 
 #include <defines.h>
 #include <module/module_params.hpp>
-#include <commander/px4_custom_mode.h>
+#include <px4_custom_mode.h>
 #include <hrtimer.h>
-
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/position_controller_status.h>
@@ -31,9 +30,7 @@
 #include <uORB/topics/vehicle_trajectory_bezier.h>
 #include <uORB/topics/vehicle_trajectory_waypoint.h>
 #include <uORB/topics/position_setpoint.h>
-
 #include <hysteresis/hysteresis.h>
-
 #include <matrix/matrix/math.hpp>
 
 const vehicle_trajectory_waypoint_s empty_trajectory_waypoint = {0, 0, {0, 0, 0, 0, 0, 0, 0},

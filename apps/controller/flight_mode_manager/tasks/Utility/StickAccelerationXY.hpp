@@ -23,6 +23,9 @@
 #include <uORB/topics/takeoff_status.h>
 #include "SlewRate.hpp"
 
+using namespace nextpilot;
+using namespace nextpilot::global_params;
+
 class StickAccelerationXY : public ModuleParams {
 public:
     StickAccelerationXY(ModuleParams *parent);

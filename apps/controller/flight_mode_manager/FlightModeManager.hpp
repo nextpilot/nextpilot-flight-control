@@ -12,27 +12,6 @@
 
 #include "FlightTask.hpp"
 #include "FlightTasks_generated.hpp"
-
-#include <hrtimer.h>
-#include <module/module_command.hpp>
-#include <module/module_params.hpp>
-#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
-
-#include <uORB/uORBSubscription.hpp>
-#include <uORB/uORBSubscription.hpp>
-#include <uORB/uORBPublication.hpp>
-#include <uORB/topics/landing_gear.h>
-#include <uORB/topics/parameter_update.h>
-#include <uORB/topics/takeoff_status.h>
-#include <uORB/topics/trajectory_setpoint.h>
-#include <uORB/topics/vehicle_attitude_setpoint.h>
-#include <uORB/topics/vehicle_command.h>
-#include <uORB/topics/vehicle_control_mode.h>
-#include <uORB/topics/vehicle_land_detected.h>
-#include <uORB/topics/vehicle_local_position.h>
-#include <uORB/topics/vehicle_local_position_setpoint.h>
-#include <uORB/topics/vehicle_status.h>
-
 #include <new>
 
 enum class FlightTaskError : int {
@@ -47,7 +26,7 @@ public:
     ~FlightModeManager() override;
 
     /** @see ModuleCommand */
-    static int *instantiate(int argc, char *argv[]);
+    static FlightModeManager *instantiate(int argc, char *argv[]);
 
     /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);

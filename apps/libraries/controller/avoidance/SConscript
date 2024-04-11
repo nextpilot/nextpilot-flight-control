@@ -6,9 +6,9 @@ from building import *
 cwd = GetCurrentDir()
 
 inc = [cwd]
-src = ["CollisionPrevention.cpp"]
+src = ["ObstacleAvoidance.cpp"]
 
-objs = DefineGroup("lib/control", src, depend=["PKG_USING_COLLISION_PREVENTION"], CPPPATH=inc)
+objs = DefineGroup("lib/control", src, depend=["PKG_USING_AVOIDANCE"], CPPPATH=inc)
 
 
 Return("objs")

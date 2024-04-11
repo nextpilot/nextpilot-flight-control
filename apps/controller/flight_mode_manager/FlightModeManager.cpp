@@ -9,7 +9,6 @@
  ******************************************************************/
 
 #include "FlightModeManager.hpp"
-
 #include <mathlib/mathlib.h>
 #include <matrix/matrix/math.hpp>
 
@@ -38,16 +37,16 @@ FlightModeManager::~FlightModeManager() {
     perf_free(_loop_perf);
 }
 
-bool FlightModeManager::init() {
+int FlightModeManager::init() {
     if (!_vehicle_local_position_sub.registerCallback()) {
         PX4_ERR("callback registration failed");
-        return false;
+        return -1;
     }
 
     // limit to every other vehicle_local_position update (50 Hz)
     _vehicle_local_position_sub.set_interval_us(20_ms);
     _time_stamp_last_loop = hrt_absolute_time();
-    return true;
+    return 0;
 }
 
 void FlightModeManager::Run() {
@@ -402,26 +401,27 @@ const char *FlightModeManager::errorToString(const FlightTaskError error) {
     return "This error is not mapped to a string or is unknown.";
 }
 
-int FlightModeManager::instantiate(int argc, char *argv[]) {
+FlightModeManager *FlightModeManager::instantiate(int argc, char *argv[]) {
     FlightModeManager *instance = new FlightModeManager();
 
-    if (instance) {
-        _object.store(instance);
-        _task_id = task_id_is_work_queue;
+    // if (instance) {
+    //     _object.store(instance);
+    //     _task_id = task_id_is_work_queue;
 
-        if (instance->init()) {
-            return PX4_OK;
-        }
+    //     if (instance->init()) {
+    //         return PX4_OK;
+    //     }
 
-    } else {
-        PX4_ERR("alloc failed");
-    }
+    // } else {
+    //     PX4_ERR("alloc failed");
+    // }
 
-    delete instance;
-    _object.store(nullptr);
-    _task_id = -1;
+    // delete instance;
+    // _object.store(nullptr);
+    // _task_id = -1;
 
-    return PX4_ERROR;
+    // return PX4_ERROR;
+    return instance;
 }
 
 int FlightModeManager::custom_command(int argc, char *argv[]) {

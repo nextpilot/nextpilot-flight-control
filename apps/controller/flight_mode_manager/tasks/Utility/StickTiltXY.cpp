@@ -9,7 +9,6 @@
  ******************************************************************/
 
 #include "StickTiltXY.hpp"
-
 #include <geo/geo.h>
 #include "Sticks.hpp"
 

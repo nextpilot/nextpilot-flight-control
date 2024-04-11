@@ -16,21 +16,7 @@
 
 #pragma once
 
-#include <uORB/uORBSubscription.hpp>
-#include <uORB/uORBSubscription.hpp>
-#include <uORB/uORBSubscription.hpp>
-#include <uORB/topics/follow_target.h>
-#include <uORB/topics/vehicle_local_position.h>
-#include <uORB/topics/follow_target_estimator.h>
-#include <uORB/topics/parameter_update.h>
-#include <uORB/uORBPublication.hpp>
-
-#include <hrtimer.h>
-#include <mathlib/math/filter/AlphaFilter.hpp>
-#include <geo/geo.h>
-#include <mathlib/mathlib.h>
-#include <module/module_params.hpp>
-#include <workq/WorkItemScheduled.hpp>
+#include "FlightTask.hpp"
 
 static constexpr float GPS_MESSAGE_STALE_TIMEOUT_MS =
     3000.0f; // Duration after which the connection to the target is considered lost

@@ -19,6 +19,9 @@
 #include <mathlib/math/filter/AlphaFilter.hpp>
 #include <module/module_params.hpp>
 
+using namespace nextpilot;
+using namespace nextpilot::global_params;
+
 class StickYaw : public ModuleParams {
 public:
     StickYaw(ModuleParams *parent);

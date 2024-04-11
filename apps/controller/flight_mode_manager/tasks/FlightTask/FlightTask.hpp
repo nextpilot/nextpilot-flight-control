@@ -18,20 +18,7 @@
 
 #pragma once
 
-#include <module/module_params.hpp>
-#include <hrtimer.h>
-#include <matrix/matrix/math.hpp>
-#include <uORB/uORBSubscription.hpp>
-#include <uORB/topics/landing_gear.h>
-#include <uORB/topics/trajectory_setpoint.h>
-#include <uORB/topics/vehicle_local_position.h>
-#include <uORB/topics/vehicle_local_position_setpoint.h>
-#include <uORB/topics/vehicle_command.h>
-#include <uORB/topics/vehicle_constraints.h>
-#include <uORB/topics/vehicle_attitude.h>
-#include <uORB/topics/vehicle_trajectory_waypoint.h>
-#include <uORB/topics/home_position.h>
-#include <geo/geo.h>
+#include "nextpilot.h"
 
 struct ekf_reset_counters_s {
     uint8_t xy;
@@ -182,11 +169,11 @@ protected:
      * TODO: add the delta values to all the handlers
      */
     void         _checkEkfResetCounters();
-    virtual void _ekfResetHandlerPositionXY(const matrix::Vector2f &delta_xy){};
-    virtual void _ekfResetHandlerVelocityXY(const matrix::Vector2f &delta_vxy){};
-    virtual void _ekfResetHandlerPositionZ(float delta_z){};
-    virtual void _ekfResetHandlerVelocityZ(float delta_vz){};
-    virtual void _ekfResetHandlerHeading(float delta_psi){};
+    virtual void _ekfResetHandlerPositionXY(const matrix::Vector2f &delta_xy) {};
+    virtual void _ekfResetHandlerVelocityXY(const matrix::Vector2f &delta_vxy) {};
+    virtual void _ekfResetHandlerPositionZ(float delta_z) {};
+    virtual void _ekfResetHandlerVelocityZ(float delta_vz) {};
+    virtual void _ekfResetHandlerHeading(float delta_psi) {};
 
     MapProjection _geo_projection{};
     float         _global_local_alt0{NAN};

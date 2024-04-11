@@ -14,10 +14,10 @@
  */
 
 #include "TargetEstimator.hpp"
-
 #include <mathlib/mathlib.h>
 #include <defines.h>
 #include <ulog/log.h>
+
 using matrix::Vector2f;
 using matrix::Vector3f;
 using matrix::Vector3;

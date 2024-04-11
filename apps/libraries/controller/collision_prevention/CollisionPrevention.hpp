@@ -19,15 +19,13 @@
 #pragma once
 
 #include <float.h>
-
-#include <commander/px4_custom_mode.h>
+#include <px4_custom_mode.h>
 #include <hrtimer.h>
 #include <mathlib/mathlib.h>
 #include <matrix/matrix/math.hpp>
 #include <module/module_params.hpp>
 #include <mavlink_log.h>
 #include <uORB/uORBPublication.hpp>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/collision_constraints.h>
 #include <uORB/topics/distance_sensor.h>
@@ -37,6 +35,8 @@
 #include <uORB/topics/vehicle_command.h>
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class CollisionPrevention : public ModuleParams
 {
