@@ -65,7 +65,7 @@ except ImportError as e:
 
 
 __author__ = "Sergey Belash, Thomas Gubler, Beat Kueng"
-__copyright__ = "Copyright (C) 2013-2022 PX4 Development Team."
+__copyright__ = "Copyright (C) 2013-2022 Nextpilot Development Team."
 __license__ = "BSD"
 __email__ = "thomasgubler@gmail.com"
 
