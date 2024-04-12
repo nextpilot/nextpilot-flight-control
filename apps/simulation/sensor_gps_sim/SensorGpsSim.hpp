@@ -12,6 +12,7 @@
 
 #include <perf/perf_counter.h>
 #include <defines.h>
+#include <matrix/math.hpp>
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
 #include <workq/WorkItemScheduled.hpp>
@@ -23,6 +24,8 @@
 #include <uORB/topics/vehicle_local_position.h>
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class SensorGpsSim : public ModuleCommand<SensorGpsSim>, public ModuleParams, public WorkItemScheduled {
 public:
@@ -30,7 +33,7 @@ public:
     ~SensorGpsSim() override;
 
     /** @see ModuleCommand */
-    static int *instantiate(int argc, char *argv[]);
+    static SensorGpsSim *instantiate(int argc, char *argv[]);
 
     /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);

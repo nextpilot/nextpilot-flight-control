@@ -20,9 +20,9 @@ BatterySimulator::~BatterySimulator() {
     perf_free(_loop_perf);
 }
 
-bool BatterySimulator::init() {
+int BatterySimulator::init() {
     ScheduleOnInterval(BATTERY_SIMLATOR_SAMPLE_INTERVAL_US);
-    return true;
+    return 0;
 }
 
 void BatterySimulator::Run() {
@@ -141,26 +141,28 @@ void BatterySimulator::updateCommands() {
     }
 }
 
-int BatterySimulator::instantiate(int argc, char *argv[]) {
+BatterySimulator* BatterySimulator::instantiate(int argc, char *argv[]) {
     BatterySimulator *instance = new BatterySimulator();
 
-    if (instance) {
-        _object.store(instance);
-        _task_id = task_id_is_work_queue;
+    // if (instance) {
+    //     _object.store(instance);
+    //     _task_id = task_id_is_work_queue;
 
-        if (instance->init()) {
-            return PX4_OK;
-        }
+    //     if (instance->init()) {
+    //         return PX4_OK;
+    //     }
 
-    } else {
-        PX4_ERR("alloc failed");
-    }
+    // } else {
+    //     PX4_ERR("alloc failed");
+    // }
 
-    delete instance;
-    _object.store(nullptr);
-    _task_id = -1;
+    // delete instance;
+    // _object.store(nullptr);
+    // _task_id = -1;
 
-    return PX4_ERROR;
+    // return PX4_ERROR;
+
+    return instance;
 }
 
 int BatterySimulator::custom_command(int argc, char *argv[]) {

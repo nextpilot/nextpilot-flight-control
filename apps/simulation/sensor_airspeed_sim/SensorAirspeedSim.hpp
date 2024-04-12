@@ -24,6 +24,8 @@
 #include <uORB/topics/vehicle_local_position.h>
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 static constexpr float TEMPERATURE_MSL = 288.15;   // temperature at MSL [K] (15 [C])
 static constexpr float PRESSURE_MSL    = 101325.0; // pressure at MSL [Pa]
@@ -36,7 +38,7 @@ public:
     ~SensorAirspeedSim() override;
 
     /** @see ModuleCommand */
-    static int *instantiate(int argc, char *argv[]);
+    static SensorAirspeedSim *instantiate(int argc, char *argv[]);
 
     /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);

@@ -24,6 +24,8 @@
 #include <uORB/topics/vehicle_global_position.h>
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class SensorMagSim : public ModuleCommand<SensorMagSim>, public ModuleParams, public WorkItemScheduled {
 public:
@@ -31,7 +33,7 @@ public:
     ~SensorMagSim() override;
 
     /** @see ModuleCommand */
-    static int *instantiate(int argc, char *argv[]);
+    static SensorMagSim *instantiate(int argc, char *argv[]);
 
     /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);

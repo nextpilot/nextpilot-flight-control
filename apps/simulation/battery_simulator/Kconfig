@@ -1,4 +1,4 @@
-menuconfig MODULES_SIMULATION_BATTERY_SIMULATOR
+menuconfig SIM_USING_BATTERY
 	bool "battery_simulator"
 	default n
 	---help---

@@ -15,6 +15,7 @@
 #include <rtthread.h>
 #include <rtdbg.h>
 #include <module_usage.h>
+#include <atomic/atomic.hpp>
 
 template <class T, uint8_t N = 1>
 class ModuleCommand {
@@ -35,23 +36,23 @@ public:
      */
     static int main(int argc, char *argv[]) {
         if (argc <= 1 ||
-            strcmp(argv[1], "-h") == 0 ||
-            strcmp(argv[1], "help") == 0 ||
-            strcmp(argv[1], "info") == 0 ||
-            strcmp(argv[1], "usage") == 0) {
+            rt_strcmp(argv[1], "-h") == 0 ||
+            rt_strcmp(argv[1], "help") == 0 ||
+            rt_strcmp(argv[1], "info") == 0 ||
+            rt_strcmp(argv[1], "usage") == 0) {
             return T::print_usage();
         }
 
-        if (strcmp(argv[1], "start") == 0) {
+        if (rt_strcmp(argv[1], "start") == 0) {
             // Pass the 'start' argument too, because later on px4_getopt() will ignore the first argument.
             return start_command(argc - 1, argv + 1);
         }
 
-        if (strcmp(argv[1], "status") == 0) {
+        if (rt_strcmp(argv[1], "status") == 0) {
             return status_command();
         }
 
-        if (strcmp(argv[1], "stop") == 0) {
+        if (rt_strcmp(argv[1], "stop") == 0) {
             return stop_command();
         }
 

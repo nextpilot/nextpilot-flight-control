@@ -12,9 +12,9 @@
 
 #include <hrtimer.h>
 #include <conversion/rotation.h>
-
 #include <uORB/uORBPublication.hpp>
 #include <uORB/topics/sensor_mag.h>
+using namespace nextpilot;
 
 class PX4Magnetometer
 {

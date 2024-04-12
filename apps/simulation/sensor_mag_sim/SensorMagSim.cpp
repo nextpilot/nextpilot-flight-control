@@ -113,26 +113,27 @@ void SensorMagSim::Run() {
     perf_end(_loop_perf);
 }
 
-int SensorMagSim::instantiate(int argc, char *argv[]) {
+SensorMagSim* SensorMagSim::instantiate(int argc, char *argv[]) {
     SensorMagSim *instance = new SensorMagSim();
 
-    if (instance) {
-        _object.store(instance);
-        _task_id = task_id_is_work_queue;
+    // if (instance) {
+    //     _object.store(instance);
+    //     _task_id = task_id_is_work_queue;
 
-        if (instance->init()) {
-            return PX4_OK;
-        }
+    //     if (instance->init()) {
+    //         return PX4_OK;
+    //     }
 
-    } else {
-        PX4_ERR("alloc failed");
-    }
+    // } else {
+    //     PX4_ERR("alloc failed");
+    // }
 
-    delete instance;
-    _object.store(nullptr);
-    _task_id = -1;
+    // delete instance;
+    // _object.store(nullptr);
+    // _task_id = -1;
 
-    return PX4_ERROR;
+    // return PX4_ERROR;
+    return instance;
 }
 
 int SensorMagSim::custom_command(int argc, char *argv[]) {

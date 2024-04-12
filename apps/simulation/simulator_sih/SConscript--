@@ -1,0 +1,13 @@
+import os
+import sys
+from building import *
+
+
+cwd = GetCurrentDir()
+
+inc = []
+src = Glob("*.cpp")
+
+objs = DefineGroup("sim/sih", src, depend=["SIM_USING_SIH"])
+
+Return("objs")

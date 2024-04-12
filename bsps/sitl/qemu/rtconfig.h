@@ -24,7 +24,22 @@
 
 /* Nextpilot Controller Config */
 
+#define FCS_USING_COMMANDER
 #define FCS_USING_FLIGHT_MODE_MANAGER
+#define FCS_USING_FW_ATT_CONTROL
+#define FCS_USING_FW_AUTOTUNE_ATTITUDE_CONTROL
+#define FCS_UISNG_FW_POS_CONTROL
+#define FCS_USING_FW_RATE_CONTROL
+#define FCS_USING_LAND_DETECTOR
+#define FCS_USING_MANUAL_CONTROL
+#define FCS_USING_MC_ATT_CONTROL
+#define FCS_MC_AUTOTUNE_ATTITUDE_CONTROL
+#define FCS_USING_MC_HOVER_THRUST_ESTIMATOR
+#define FCS_USING_MC_POS_CONTROL
+#define FCS_USING_MC_RATE_CONTROL
+#define FCS_USING_NAVIGATOR
+#define FCS_USING_RC_UPDATE
+#define FCS_USING_VTOL_ATT_CONTROL
 /* end of Nextpilot Controller Config */
 
 /* Nextpilot Estimator Config */
@@ -75,6 +90,13 @@
 
 /* Nextpilot Simulation Config */
 
+#define SIM_USING_BATTERY
+#define SIM_USING_PWM_OUT
+#define SIM_USING_SENSOR_AIRSPEED
+#define SIM_USING_SENSOR_BARO
+#define SIM_USING_SENSOR_GPS
+#define SIM_USING_SENSOR_MAG
+#define SIM_USING_SIH
 /* end of Nextpilot Simulation Config */
 
 /* Nextpilot Storage Config */

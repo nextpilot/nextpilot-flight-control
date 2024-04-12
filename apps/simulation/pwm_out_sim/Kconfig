@@ -1,4 +1,4 @@
-menuconfig MODULES_SIMULATION_PWM_OUT_SIM
+menuconfig SIM_USING_PWM_OUT
 	bool "pwm_out_sim"
 	default n
 	---help---

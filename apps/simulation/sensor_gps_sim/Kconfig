@@ -1,4 +1,4 @@
-menuconfig MODULES_SIMULATION_SENSOR_GPS_SIM
+menuconfig SIM_USING_SENSOR_GPS
 	bool "sensor_gps_sim"
 	default n
 	---help---

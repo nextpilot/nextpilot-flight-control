@@ -24,9 +24,9 @@ SensorBaroSim::~SensorBaroSim() {
     perf_free(_loop_perf);
 }
 
-bool SensorBaroSim::init() {
+int SensorBaroSim::init() {
     ScheduleOnInterval(50_ms); // 20 Hz
-    return true;
+    return 0;
 }
 
 float SensorBaroSim::generate_wgn() {
@@ -148,26 +148,28 @@ void SensorBaroSim::Run() {
     perf_end(_loop_perf);
 }
 
-int SensorBaroSim::instantiate(int argc, char *argv[]) {
+SensorBaroSim* SensorBaroSim::instantiate(int argc, char *argv[]) {
     SensorBaroSim *instance = new SensorBaroSim();
 
-    if (instance) {
-        _object.store(instance);
-        _task_id = task_id_is_work_queue;
+    // if (instance) {
+    //     _object.store(instance);
+    //     _task_id = task_id_is_work_queue;
 
-        if (instance->init()) {
-            return PX4_OK;
-        }
+    //     if (instance->init()) {
+    //         return PX4_OK;
+    //     }
 
-    } else {
-        PX4_ERR("alloc failed");
-    }
+    // } else {
+    //     PX4_ERR("alloc failed");
+    // }
 
-    delete instance;
-    _object.store(nullptr);
-    _task_id = -1;
+    // delete instance;
+    // _object.store(nullptr);
+    // _task_id = -1;
 
-    return PX4_ERROR;
+    // return PX4_ERROR;
+
+    return instance
 }
 
 int SensorBaroSim::custom_command(int argc, char *argv[]) {

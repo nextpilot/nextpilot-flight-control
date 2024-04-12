@@ -16,14 +16,15 @@
 #include <module/module_params.hpp>
 #include <workq/WorkItemScheduled.hpp>
 #include <uORB/uORBPublication.hpp>
-#include <uORB/uORBPublication.hpp>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/sensor_baro.h>
 #include <uORB/topics/vehicle_global_position.h>
+#include <matrix/math.hpp>
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class SensorBaroSim : public ModuleCommand<SensorBaroSim>, public ModuleParams, public WorkItemScheduled {
 public:
@@ -31,7 +32,7 @@ public:
     ~SensorBaroSim() override;
 
     /** @see ModuleCommand */
-    static int *instantiate(int argc, char *argv[]);
+    static SensorBaroSim *instantiate(int argc, char *argv[]);
 
     /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);

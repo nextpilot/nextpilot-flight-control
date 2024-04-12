@@ -1,4 +1,4 @@
-menuconfig MODULES_SIMULATION_SENSOR_MAG_SIM
+menuconfig SIM_USING_SENSOR_MAG
 	bool "sensor_mag_sim"
 	default n
 	---help---

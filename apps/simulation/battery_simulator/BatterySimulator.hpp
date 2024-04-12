@@ -13,11 +13,10 @@
 #include <battery/battery.h>
 #include <perf/perf_counter.h>
 #include <defines.h>
-#include <module_command.h>
+#include <module/module_command.hpp>
 #include <module/module_params.hpp>
-#include <pWorkItemScheduled.hpp>
+#include <WorkItemScheduled.hpp>
 #include <uORB/uORBPublication.hpp>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/battery_status.h>
 #include <uORB/topics/parameter_update.h>
@@ -26,6 +25,8 @@
 #include <uORB/topics/vehicle_command_ack.h>
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class BatterySimulator : public ModuleCommand<BatterySimulator>, public ModuleParams, public WorkItemScheduled {
 public:
@@ -33,7 +34,7 @@ public:
     ~BatterySimulator() override;
 
     /** @see ModuleCommand */
-    static int *instantiate(int argc, char *argv[]);
+    static BatterySimulator *instantiate(int argc, char *argv[]);
 
     /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);

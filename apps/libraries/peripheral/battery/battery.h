@@ -22,8 +22,8 @@
 #include <math.h>
 #include <float.h>
 
-#include <board_config.h>
-#include <px4_platform_common/board_common.h>
+// #include <board_config.h>
+// #include <px4_platform_common/board_common.h>
 #include <module/module_params.hpp>
 #include <matrix/math.hpp>
 
@@ -35,6 +35,8 @@
 #include <uORB/topics/battery_status.h>
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/vehicle_thrust_setpoint.h>
+
+using namespace nextpilot;
 
 /**
  * BatteryBase is a base class for any type of battery.
