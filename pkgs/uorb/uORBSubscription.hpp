@@ -547,7 +547,7 @@ public:
 
     void unregister_callback() {
         if (get_node()) {
-            /* Manager::unregister_callback(get_node(), this);*/
+            get_node()->unregister_callback(this);
         }
 
         _registered = false;
