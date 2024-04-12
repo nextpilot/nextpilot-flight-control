@@ -47,7 +47,6 @@
 #pragma once
 
 #include <matrix/matrix/math.hpp>
-
 #include "ActuatorEffectiveness/ActuatorEffectiveness.hpp"
 
 class ControlAllocation {

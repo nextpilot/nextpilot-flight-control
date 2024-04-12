@@ -178,7 +178,7 @@ def get_project_option():
 
 
 def gen_rtconfig_header(target="default"):
-    from menuconfig import mk_rtconfig
+    from menukconfig import mk_rtconfig
     import shutil
 
     if not target:

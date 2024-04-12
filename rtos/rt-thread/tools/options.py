@@ -123,9 +123,9 @@ def AddOptions():
                 default = False,
                 help = 'Don`t show pyconfig window')
     AddOption('--add-rtconfig',
-            dest = 'add_rtconfig',
-            type = 'string',
-            help = 'Add macro definitions and scons depend at build time. It is similar to adding macro definitions in rtconfig.h')
+	            dest = 'add_rtconfig',
+	            type = 'string',
+	            help = 'Add macro definitions and scons depend at build time. It is similar to adding macro definitions in rtconfig.h')
     AddOption('--menuconfig',
                 dest = 'menuconfig',
                 action = 'store_true',

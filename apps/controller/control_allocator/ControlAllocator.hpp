@@ -30,11 +30,9 @@
 #include <ActuatorEffectivenessCustom.hpp>
 #include <ActuatorEffectivenessUUV.hpp>
 #include <ActuatorEffectivenessHelicopter.hpp>
-
 #include <ControlAllocation.hpp>
 #include <ControlAllocationPseudoInverse.hpp>
 #include <ControlAllocationSequentialDesaturation.hpp>
-
 #include <matrix/matrix/math.hpp>
 #include <mathlib/mathlib.h>
 #include <perf/perf_counter.h>
