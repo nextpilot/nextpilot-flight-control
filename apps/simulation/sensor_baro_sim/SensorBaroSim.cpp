@@ -148,7 +148,7 @@ void SensorBaroSim::Run() {
     perf_end(_loop_perf);
 }
 
-SensorBaroSim* SensorBaroSim::instantiate(int argc, char *argv[]) {
+SensorBaroSim *SensorBaroSim::instantiate(int argc, char *argv[]) {
     SensorBaroSim *instance = new SensorBaroSim();
 
     // if (instance) {
@@ -169,7 +169,7 @@ SensorBaroSim* SensorBaroSim::instantiate(int argc, char *argv[]) {
 
     // return PX4_ERROR;
 
-    return instance
+    return instance;
 }
 
 int SensorBaroSim::custom_command(int argc, char *argv[]) {

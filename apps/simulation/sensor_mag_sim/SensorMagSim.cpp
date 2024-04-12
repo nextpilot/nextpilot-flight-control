@@ -25,9 +25,9 @@ SensorMagSim::~SensorMagSim() {
     perf_free(_loop_perf);
 }
 
-bool SensorMagSim::init() {
+int SensorMagSim::init() {
     ScheduleOnInterval(20_ms); // 50 Hz
-    return true;
+    return 0;
 }
 
 float SensorMagSim::generate_wgn() {
@@ -113,7 +113,7 @@ void SensorMagSim::Run() {
     perf_end(_loop_perf);
 }
 
-SensorMagSim* SensorMagSim::instantiate(int argc, char *argv[]) {
+SensorMagSim *SensorMagSim::instantiate(int argc, char *argv[]) {
     SensorMagSim *instance = new SensorMagSim();
 
     // if (instance) {
