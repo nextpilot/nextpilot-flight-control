@@ -8,7 +8,7 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#define LOG_TAG "flight_mode"
+#define LOG_TAG "flight_mode_manager"
 
 #include "FlightModeManager.hpp"
 #include <mathlib/mathlib.h>
@@ -465,7 +465,7 @@ and outputs setpoints for controllers.
 extern "C" __EXPORT int flight_mode_manager_main(int argc, char *argv[]) {
     return FlightModeManager::main(argc, argv);
 }
-MSH_CMD_EXPORT_ALIAS(flight_mode_manager_main, flight_mode, flight mode manager);
+MSH_CMD_EXPORT_ALIAS(flight_mode_manager_main, flight_mode_manager, flight mode manager);
 
 int flight_mode_manager_start() {
     const char *argv[] = {"flight_mode_manager", "start"};
