@@ -23,7 +23,7 @@ int mnt_init(void)
 
     if (dfs_mount("sd", "/", "elm", 0, 0) == 0)
     {
-        LOG_I("file system initialization done!\n");
+        LOG_I("file system initialization done!");
         return 0;
     }
     else
