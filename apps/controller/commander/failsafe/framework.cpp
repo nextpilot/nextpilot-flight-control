@@ -10,7 +10,7 @@
 
 #include "framework.h"
 #define DEFINE_GET_PX4_CUSTOM_MODE
-#include "../px4_custom_mode.h"
+#include "../custom_flight_mode.h"
 #include <uORB/topics/vehicle_status.h>
 #include <events/events.h>
 #include <ulog/log.h>

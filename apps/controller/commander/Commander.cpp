@@ -22,7 +22,7 @@
 #include "commander_helper.h"
 #include "esc_calibration.h"
 #define DEFINE_GET_PX4_CUSTOM_MODE
-#include "px4_custom_mode.h"
+#include "custom_flight_mode.h"
 #include "ModeUtil/control_mode.hpp"
 #include "ModeUtil/conversions.hpp"
 

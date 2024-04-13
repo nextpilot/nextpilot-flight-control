@@ -9,7 +9,7 @@
  ******************************************************************/
 
 /**
- * @file px4_custom_mode.h
+ * @file custom_flight_mode.h
  * PX4 custom flight modes
  *
  */

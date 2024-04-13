@@ -19,7 +19,7 @@
 #pragma once
 
 #include <float.h>
-#include <px4_custom_mode.h>
+#include <custom_flight_mode.h>
 #include <hrtimer.h>
 #include <mathlib/mathlib.h>
 #include <matrix/matrix/math.hpp>
