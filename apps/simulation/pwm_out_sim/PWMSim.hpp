@@ -10,14 +10,11 @@
 
 #pragma once
 
-#include <drivers/device/device.h>
+#include <device/device_id.h>
 #include <hrtimer.h>
 #include <drivers/drv_pwm_output.h>
 #include <mixer_module/mixer_module.hpp>
-// #include <px4_platform_common/px4_config.h>
 #include <module/module_command.hpp>
-#include <px4_platform_common/tasks.h>
-#include <px4_platform_common/time.h>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/uORBSubscription.hpp>
 
@@ -28,6 +25,8 @@
 #endif
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class PWMSim : public ModuleCommand<PWMSim>, public OutputModuleInterface {
 public:
@@ -35,7 +34,7 @@ public:
     ~PWMSim() override;
 
     /** @see ModuleCommand */
-    static int *instantiate(int argc, char *argv[]);
+    static PWMSim *instantiate(int argc, char *argv[]);
 
     /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);

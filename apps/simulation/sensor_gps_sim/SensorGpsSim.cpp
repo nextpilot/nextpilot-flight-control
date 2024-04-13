@@ -8,6 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "sim_gps"
+
 #include "SensorGpsSim.hpp"
 #include <device/device_id.h>
 #include <geo/geo.h>
@@ -201,3 +203,17 @@ int SensorGpsSim::print_usage(const char *reason) {
 extern "C" __EXPORT int sensor_gps_sim_main(int argc, char *argv[]) {
     return SensorGpsSim::main(argc, argv);
 }
+MSH_CMD_EXPORT_ALIAS(sensor_gps_sim_main, sim_gps, gps simulator);
+
+int sensor_gps_sim_start() {
+    int32_t hitl = param_get_int32((param_t)params_id::SYS_HITL);
+
+    if (true /*hitl == 2*/) {
+        const char *argv[] = {"sim_gps", "start"};
+        int         argc   = sizeof(argv) / sizeof(argv[0]);
+        return SensorGpsSim::main(argc, (char **)argv);
+    }
+
+    return 0;
+}
+INIT_APP_EXPORT(sensor_gps_sim_start);

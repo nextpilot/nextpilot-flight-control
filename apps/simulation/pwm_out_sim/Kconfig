@@ -1,5 +1,6 @@
 menuconfig SIM_USING_PWM_OUT
 	bool "pwm_out_sim"
+	select PKG_USING_MIXER_MODULE
 	default n
 	---help---
 		Enable support for pwm_out_sim

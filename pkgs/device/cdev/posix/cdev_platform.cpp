@@ -301,9 +301,9 @@ int px4_poll(px4_pollfd_struct_t *fds, unsigned int nfds, int timeout) {
         return -1;
     }
 
-    px4_sem_t sem;
-    int       count = 0;
-    int       ret   = -1;
+    struct rt_semaphore sem;
+    int                 count = 0;
+    int                 ret   = -1;
 
     const unsigned NAMELEN = 32;
     char           thread_name[NAMELEN]{};
@@ -319,10 +319,10 @@ int px4_poll(px4_pollfd_struct_t *fds, unsigned int nfds, int timeout) {
 
     PX4_DEBUG("Called px4_poll timeout = %d", timeout);
 
-    px4_sem_init(&sem, 0, 0);
+    rt_sem_init(&sem, "poll_lock", 0, RT_IPC_FLAG_PRIO);
 
     // sem use case is a signal
-    px4_sem_setprotocol(&sem, SEM_PRIO_NONE);
+    // px4_sem_setprotocol(&sem, SEM_PRIO_NONE);
 
     // Go through all fds and check them for a pollable state
     bool fd_pollable = false;
@@ -374,7 +374,7 @@ int px4_poll(px4_pollfd_struct_t *fds, unsigned int nfds, int timeout) {
             }
 
         } else if (timeout < 0) {
-            px4_sem_wait(&sem);
+            rt_sem_trytake(&sem);
         }
 
         // We have waited now (or not, depending on timeout),
@@ -399,7 +399,7 @@ int px4_poll(px4_pollfd_struct_t *fds, unsigned int nfds, int timeout) {
         }
     }
 
-    px4_sem_destroy(&sem);
+    rt_sem_detach(&sem);
 
     // Return the positive count if present,
     // return the negative error number if failed

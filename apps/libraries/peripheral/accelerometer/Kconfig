@@ -1,0 +1,3 @@
+menuconfig PKG_USING_ACCELEROMETER
+    bool "accelerometer"
+    default n

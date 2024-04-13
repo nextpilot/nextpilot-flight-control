@@ -1,0 +1,14 @@
+import os
+import rtconfig
+from building import *
+
+
+cwd = GetCurrentDir()
+
+inc = []
+src = Glob("*.cpp")
+
+objs = DefineGroup("lib/drivers", src, depend=["PKG_USING_ACCELEROMETER"], CPPPATH=inc)
+
+
+Return("objs")

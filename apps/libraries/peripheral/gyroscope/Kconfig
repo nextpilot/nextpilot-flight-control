@@ -1,0 +1,3 @@
+menuconfig PKG_USING_GYROSCOPE
+    bool "gyroscope"
+    default n

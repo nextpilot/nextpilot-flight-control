@@ -1,0 +1,26 @@
+import os
+import sys
+import rtconfig
+import subprocess
+from building import *
+
+
+cwd = GetCurrentDir()
+
+# Generating output_functions.hpp
+cmd = [
+    sys.executable,
+    os.path.join(cwd, "generate_function_header.py"),
+    os.path.join(cwd, "output_functions.yaml"),
+    os.path.join(cwd, "output_functions.hpp"),
+]
+
+subprocess.call(cmd)
+
+inc = []
+src = ["mixer_module.cpp", "actuator_test.cpp"]
+
+objs = DefineGroup("lib/control", src, depend=["PKG_USING_MIXER_MODULE"], CPPPATH=inc)
+
+
+Return("objs")

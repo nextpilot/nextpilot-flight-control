@@ -8,9 +8,9 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#include "functions/FunctionMotors.hpp"
 #include "actuator_test.hpp"
 
-#include "functions/FunctionMotors.hpp"
 
 using namespace time_literals;
 

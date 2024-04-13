@@ -57,7 +57,7 @@ public:
 class OutputModuleTest : public OutputModuleInterface
 {
 public:
-	OutputModuleTest() : OutputModuleInterface(MODULE_NAME, px4::wq_configurations::hp_default) {};
+	OutputModuleTest() : OutputModuleInterface(MODULE_NAME, wq_configurations::hp_default) {};
 
 	void Run() override
 	{

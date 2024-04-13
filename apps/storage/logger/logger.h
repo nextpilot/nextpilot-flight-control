@@ -73,7 +73,7 @@ public:
     };
 
     struct timer_callback_data_s {
-        px4_sem_t semaphore;
+        struct rt_semaphore semaphore;
 
         watchdog_data_t  watchdog_data;
         px4::atomic_bool watchdog_triggered{false};

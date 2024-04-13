@@ -11,12 +11,13 @@
 #pragma once
 
 #include <mixer_module/output_functions.hpp>
-
 #include <drivers/drv_pwm_output.h>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/actuator_test.h>
 #include <uORB/topics/actuator_motors.h>
 #include <uORB/topics/actuator_servos_trim.h>
-#include <uORB/Subscription.hpp>
+
+using namespace nextpilot;
 
 static_assert(actuator_test_s::FUNCTION_MOTOR1 == (int)OutputFunction::Motor1, "define mismatch");
 static_assert(actuator_test_s::MAX_NUM_MOTORS == (int)OutputFunction::MotorMax - (int)OutputFunction::Motor1 + 1,

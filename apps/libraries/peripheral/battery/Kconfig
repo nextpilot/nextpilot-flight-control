@@ -1,0 +1,3 @@
+menuconfig PKG_USING_BATTERY
+    bool "battery"
+    default n

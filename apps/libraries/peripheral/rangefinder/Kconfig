@@ -1,0 +1,3 @@
+menuconfig PKG_USING_RANGEFINDER
+    bool "rangefinder"
+    default n

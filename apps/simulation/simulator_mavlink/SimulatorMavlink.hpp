@@ -18,9 +18,9 @@
 #pragma once
 
 #include <hrtimer.h>
-#include <drivers/accelerometer/PX4Accelerometer.hpp>
-#include <drivers/gyroscope/PX4Gyroscope.hpp>
-#include <drivers/magnetometer/PX4Magnetometer.hpp>
+#include <accelerometer/PX4Accelerometer.hpp>
+#include <gyroscope/PX4Gyroscope.hpp>
+#include <magnetometer/PX4Magnetometer.hpp>
 #include <geo/geo.h>
 #include <perf/perf_counter.h>
 #include <atomic/atomic.hpp>

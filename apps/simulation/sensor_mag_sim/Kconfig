@@ -1,5 +1,7 @@
 menuconfig SIM_USING_SENSOR_MAG
 	bool "sensor_mag_sim"
+	select PKG_USING_WORLD_MAGNETIC_MODEL
+	select 	PKG_USING_MAGNETOMETER
 	default n
 	---help---
 		Enable support for sensor_mag_sim

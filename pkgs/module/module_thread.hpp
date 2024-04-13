@@ -47,7 +47,7 @@ public:
             return -1;
         }
 
-        LOG_D("create/startup thread ok");
+        // LOG_D("create/startup thread ok");
         return 0;
     }
 

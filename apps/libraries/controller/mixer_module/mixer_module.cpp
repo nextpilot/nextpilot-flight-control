@@ -8,10 +8,13 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include "mixer_module.hpp"
+#define LOG_TAG "mixer_module"
 
-#include <uORB/Publication.hpp>
+#include "mixer_module.hpp"
 #include <ulog/log.h>
+#include <rtthread.h>
+#include <mathlib/mathlib.h>
+
 using namespace time_literals;
 
 
@@ -61,7 +64,7 @@ MixingOutput::MixingOutput(const char *param_prefix, uint8_t max_num_outputs, Ou
 	_armed.force_failsafe = false;
 	_armed.in_esc_calibration_mode = false;
 
-	px4_sem_init(&_lock, 0, 1);
+	rt_sem_init(&_lock,"mxier_lock", 1, RT_IPC_FLAG_PRIO);
 
 	initParamHandles();
 
@@ -77,7 +80,7 @@ MixingOutput::MixingOutput(const char *param_prefix, uint8_t max_num_outputs, Ou
 MixingOutput::~MixingOutput()
 {
 	perf_free(_control_latency_perf);
-	px4_sem_destroy(&_lock);
+	rt_sem_detach(&_lock);
 
 	cleanupFunctions();
 
@@ -89,19 +92,19 @@ void MixingOutput::initParamHandles()
 	char param_name[17];
 
 	for (unsigned i = 0; i < _max_num_outputs; ++i) {
-		snprintf(param_name, sizeof(param_name), "%s_%s%d", _param_prefix, "FUNC", i + 1);
+		rt_snprintf(param_name, sizeof(param_name), "%s_%s%d", _param_prefix, "FUNC", i + 1);
 		_param_handles[i].function = param_find(param_name);
-		snprintf(param_name, sizeof(param_name), "%s_%s%d", _param_prefix, "DIS", i + 1);
+		rt_snprintf(param_name, sizeof(param_name), "%s_%s%d", _param_prefix, "DIS", i + 1);
 		_param_handles[i].disarmed = param_find(param_name);
-		snprintf(param_name, sizeof(param_name), "%s_%s%d", _param_prefix, "MIN", i + 1);
+		rt_snprintf(param_name, sizeof(param_name), "%s_%s%d", _param_prefix, "MIN", i + 1);
 		_param_handles[i].min = param_find(param_name);
-		snprintf(param_name, sizeof(param_name), "%s_%s%d", _param_prefix, "MAX", i + 1);
+		rt_snprintf(param_name, sizeof(param_name), "%s_%s%d", _param_prefix, "MAX", i + 1);
 		_param_handles[i].max = param_find(param_name);
-		snprintf(param_name, sizeof(param_name), "%s_%s%d", _param_prefix, "FAIL", i + 1);
+		rt_snprintf(param_name, sizeof(param_name), "%s_%s%d", _param_prefix, "FAIL", i + 1);
 		_param_handles[i].failsafe = param_find(param_name);
 	}
 
-	snprintf(param_name, sizeof(param_name), "%s_%s", _param_prefix, "REV");
+	rt_snprintf(param_name, sizeof(param_name), "%s_%s", _param_prefix, "REV");
 	_param_handle_rev_range = param_find(param_name);
 }
 
@@ -220,7 +223,7 @@ bool MixingOutput::updateSubscriptions(bool allow_wq_switch)
 		}
 
 		if (allow_wq_switch && !_wq_switched && switch_requested) {
-			if (_interface.ChangeWorkQueue(px4::wq_configurations::rate_ctrl)) {
+			if (_interface.ChangeWorkQueue(wq_configurations::rate_ctrl)) {
 				// let the new WQ handle the subscribe update
 				_wq_switched = true;
 				_interface.ScheduleNow();

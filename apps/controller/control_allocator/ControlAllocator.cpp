@@ -810,4 +810,4 @@ int control_allocator_start() {
     int         argc   = sizeof(argv) / sizeof(argv[0]);
     return ControlAllocator::main(argc, (char **)argv);
 }
-INIT_APP_EXPORT(control_allocator_start);
+// INIT_APP_EXPORT(control_allocator_start);

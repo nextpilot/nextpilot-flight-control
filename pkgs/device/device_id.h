@@ -13,6 +13,7 @@
 
 #include "device_type.h"
 #include <stdint.h>
+#include <rtthread.h>
 
 namespace nextpilot::device {
 

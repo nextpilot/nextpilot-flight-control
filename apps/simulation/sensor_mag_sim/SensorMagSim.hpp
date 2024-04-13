@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include <drivers/magnetometer/PX4Magnetometer.hpp>
+#include <magnetometer/PX4Magnetometer.hpp>
 #include <perf/perf_counter.h>
 #include <defines.h>
 #include <module/module_command.hpp>

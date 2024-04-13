@@ -1,5 +1,6 @@
 menuconfig SIM_USING_SENSOR_BARO
 	bool "sensor_baro_sim"
+	select PKG_USING_BARO
 	default n
 	---help---
 		Enable support for sensor_baro_sim

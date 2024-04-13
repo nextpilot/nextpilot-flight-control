@@ -11,7 +11,6 @@
 #pragma once
 
 #include "FunctionProviderBase.hpp"
-
 #include <uORB/topics/actuator_servos.h>
 
 /**

@@ -303,7 +303,7 @@ int CDev::close() {
 
 //             /* yes? post the notification */
 //             if (fds->revents != 0) {
-//                 px4_sem_post(fds->sem);
+//                 rt_sem_release(fds->sem);
 //             }
 //         }
 
@@ -345,7 +345,7 @@ int CDev::close() {
 //     PX4_DEBUG(" Events fds=%p %0x %0x %0x", fds, fds->revents, fds->events, events);
 
 //     if (fds->revents != 0) {
-//         px4_sem_post(fds->sem);
+//         rt_sem_release(fds->sem);
 //     }
 // }
 

@@ -5,6 +5,8 @@ menuconfig SIM_USING_SIH
 	select SIM_USING_SENSOR_BARO
 	select SIM_USING_SENSOR_GPS
 	select SIM_USING_SENSOR_MAG
+	select PKG_USING_ACCELEROMETER
+	select PKG_USING_GYROSCOPE
 	---help---
 		Enable support for simulator_sih
 

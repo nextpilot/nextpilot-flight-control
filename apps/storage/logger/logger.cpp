@@ -87,7 +87,7 @@ static void timer_callback(void *arg) {
         return;
     }
 
-    px4_sem_post(&data->semaphore);
+    rt_sem_release(&data->semaphore);
 }
 
 int logger_main(int argc, char *argv[]) {
@@ -603,9 +603,9 @@ void Logger::run() {
 
     /* init the update timer */
     struct hrt_call timer_call {};
-    px4_sem_init(&_timer_callback_data.semaphore, 0, 0);
+    rt_sem_init(&_timer_callback_data.semaphore, "callback_lock", 0, RT_IPC_FLAG_PRIO);
     /* timer_semaphore use case is a signal */
-    px4_sem_setprotocol(&_timer_callback_data.semaphore, SEM_PRIO_NONE);
+    // px4_sem_setprotocol(&_timer_callback_data.semaphore, SEM_PRIO_NONE);
 
     int polling_topic_sub = -1;
 
@@ -863,7 +863,7 @@ void Logger::run() {
              * And on linux this is quite accurate as well, but under NuttX it is not accurate,
              * because usleep() has only a granularity of CONFIG_MSEC_PER_TICK (=1ms).
              */
-            while (px4_sem_wait(&_timer_callback_data.semaphore) != 0) {}
+            rt_sem_take(&_timer_callback_data.semaphore, RT_WAITING_FOREVER)
         }
     }
 
@@ -873,7 +873,7 @@ void Logger::run() {
     stop_log_file(LogType::Mission);
 
     hrt_cancel(&timer_call);
-    px4_sem_destroy(&_timer_callback_data.semaphore);
+    rt_sem_detach(&_timer_callback_data.semaphore);
 
     // stop the writer thread
     _writer.thread_stop();

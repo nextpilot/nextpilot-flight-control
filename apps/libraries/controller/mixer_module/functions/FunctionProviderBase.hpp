@@ -11,19 +11,18 @@
 #pragma once
 
 #include <limits.h>
-
+#include <float.h>
 #include <mixer_module/output_functions.hpp>
-
-#include <uORB/Subscription.hpp>
 #include <uORB/uORBSubscription.hpp>
+#include <workq/WorkItemScheduled.hpp>
 
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+using namespace nextpilot;
 
 class FunctionProviderBase
 {
 public:
 	struct Context {
-		px4::WorkItem &work_item;
+		WorkItem &work_item;
 		const float &thrust_factor;
 	};
 

@@ -24,32 +24,32 @@
 #include "functions/FunctionParachute.hpp"
 #include "functions/FunctionServos.hpp"
 
-#include <board_config.h>
 #include <drivers/drv_pwm_output.h>
 #include <perf/perf_counter.h>
-#include <px4_platform_common/module_params.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
-#include <uORB/Publication.hpp>
+#include <module/module_params.hpp>
+#include <workq/WorkItemScheduled.hpp>
 #include <uORB/uORBPublication.hpp>
-#include <uORB/Subscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/actuator_armed.h>
 #include <uORB/topics/actuator_outputs.h>
 #include <uORB/topics/parameter_update.h>
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
+
 
 /**
  * @class OutputModuleInterface
  * Base class for an output module.
  */
-class OutputModuleInterface : public px4::ScheduledWorkItem, public ModuleParams
+class OutputModuleInterface : public WorkItemScheduled, public ModuleParams
 {
 public:
 	static constexpr int MAX_ACTUATORS = PWM_OUTPUT_MAX_CHANNELS;
 
-	OutputModuleInterface(const char *name, const px4::wq_config_t &config) :
-		px4::ScheduledWorkItem(name, config),
+	OutputModuleInterface(const char *name, const wq_config_t &config) :
+		WorkItemScheduled(name, config),
 		ModuleParams(nullptr)
 	{}
 
@@ -213,10 +213,10 @@ private:
 		param_t failsafe{PARAM_INVALID};
 	};
 
-	void lock() { do {} while (px4_sem_wait(&_lock) != 0); }
-	void unlock() { px4_sem_post(&_lock); }
+	void lock() { rt_sem_take(&_lock, RT_WAITING_FOREVER);}
+	void unlock() { rt_sem_release(&_lock); }
 
-	px4_sem_t _lock; /**< lock to protect access to work queue changes (includes ScheduleNow calls from another thread) */
+	struct rt_semaphore  _lock; /**< lock to protect access to work queue changes (includes ScheduleNow calls from another thread) */
 
 	uint16_t _failsafe_value[MAX_ACTUATORS] {};
 	uint16_t _disarmed_value[MAX_ACTUATORS] {};
@@ -272,8 +272,8 @@ private:
 
 
 	DEFINE_PARAMETERS(
-		(ParamInt<px4::params::MC_AIRMODE>) _param_mc_airmode,   ///< multicopter air-mode
-		(ParamFloat<px4::params::MOT_SLEW_MAX>) _param_mot_slew_max,
-		(ParamFloat<px4::params::THR_MDL_FAC>) _param_thr_mdl_fac ///< thrust to motor control signal modelling factor
+		(ParamInt<params_id::MC_AIRMODE>) _param_mc_airmode,   ///< multicopter air-mode
+		(ParamFloat<params_id::MOT_SLEW_MAX>) _param_mot_slew_max,
+		(ParamFloat<params_id::THR_MDL_FAC>) _param_thr_mdl_fac ///< thrust to motor control signal modelling factor
 	)
 };

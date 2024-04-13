@@ -36,15 +36,16 @@ public:
 
 private:
     void lock() {
-        do { } while (px4_sem_wait(&_lock) != 0); }
+        rt_sem_take(&_lock, RT_WAITING_FOREVER);
+    }
     void unlock() {
-        px4_sem_post(&_lock);
+        rt_sem_release(&_lock);
     }
 
-    char      _buffer[BOARD_CONSOLE_BUFFER_SIZE];
-    int       _head{0};
-    int       _tail{0};
-    px4_sem_t _lock = SEM_INITIALIZER(1);
+    char                _buffer[BOARD_CONSOLE_BUFFER_SIZE];
+    int                 _head{0};
+    int                 _tail{0};
+    struct rt_semaphore _lock = SEM_INITIALIZER(1);
 };
 
 void ConsoleBuffer::print(bool follow) {

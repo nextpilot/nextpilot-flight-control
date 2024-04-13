@@ -39,8 +39,8 @@
 #include <conversion/rotation.h> // math::radians,
 #include <geo/geo.h>             // to get the physical constants
 #include <hrtimer.h>             // to get the real time
-#include <drivers/accelerometer/PX4Accelerometer.hpp>
-#include <drivers/gyroscope/PX4Gyroscope.hpp>
+#include <accelerometer/PX4Accelerometer.hpp>
+#include <gyroscope/PX4Gyroscope.hpp>
 #include <perf/perf_counter.h>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>

@@ -15,6 +15,8 @@
  *
  */
 
+#define LOG_TAG "commander"
+
 #include "Commander.hpp"
 
 /* commander module headers */
@@ -26,24 +28,23 @@
 #include "ModeUtil/control_mode.hpp"
 #include "ModeUtil/conversions.hpp"
 
-/* PX4 headers */
+/*  headers */
 #include <hrtimer.h>
 #include <drivers/drv_tone_alarm.h>
 #include <geo/geo.h>
 #include <mathlib/mathlib.h>
-// #include <events/events.h>
-// #include <px4_platform_common/px4_config.h>
+#include <matrix/math.hpp>
+#include <events/events.h>
 #include <defines.h>
 // #include <px4_platform_common/external_reset_lockout.h>
 // #include <px4_platform_common/posix.h>
 // #include <px4_platform_common/shutdown.h>
 // #include <px4_platform_common/tasks.h>
 // #include <px4_platform_common/time.h>
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 #include <math.h>
 #include <float.h>
 #include <cstring>
-#include <matrix/math.hpp>
 #include <uORB/topics/mavlink_log.h>
 #include <uORB/topics/tune_control.h>
 
@@ -446,6 +447,7 @@ int Commander::print_status() {
 extern "C" __EXPORT int commander_main(int argc, char *argv[]) {
     return Commander::main(argc, argv);
 }
+MSH_CMD_EXPORT_ALIAS(commander_main, commander, commander);
 
 bool Commander::shutdownIfAllowed() {
     return TRANSITION_DENIED != _arm_state_machine.arming_state_transition(_vehicle_status,

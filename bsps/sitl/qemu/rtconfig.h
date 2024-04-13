@@ -66,6 +66,7 @@
 #define PKG_USING_ROTATION
 #define PKG_USING_GEO
 #define PKG_USING_HYSTERESIS
+#define PKG_USING_MIXER_MODULE
 #define PKG_USING_MOTION_PLANNING
 #define PKG_USING_NPFG
 #define PKG_USING_PID_DESIGN
@@ -79,10 +80,16 @@
 /* Estimator Libraries Config */
 
 #define PKG_USING_SENSOR_CALIBRATION
+#define PKG_USING_WORLD_MAGNETIC_MODEL
 /* end of Estimator Libraries Config */
 
 /* Peripheral Libraries Config */
 
+#define PKG_USING_ACCELEROMETER
+#define PKG_USING_AIRSPEED
+#define PKG_USING_BATTERY
+#define PKG_USING_GYROSCOPE
+#define PKG_USING_MAGNETOMETER
 #define PKG_USING_TUNES
 /* end of Peripheral Libraries Config */
 /* end of Nextpilot Libraries Config */

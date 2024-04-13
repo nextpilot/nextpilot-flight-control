@@ -36,7 +36,6 @@
 // #include <module/module_params.hpp>
 // #include <uORB/uORBPublication.hpp>
 // #include <uORB/uORBSubscription.hpp>
-// #include <uORB/uORBSubscription.hpp>
 // #include <uORB/topics/geofence_result.h>
 // #include <uORB/topics/home_position.h>
 // #include <uORB/topics/mission.h>

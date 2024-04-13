@@ -17,6 +17,8 @@
  * Coriolis g Corporation - January 2019
  */
 
+#define LOG_TAG "sih"
+
 #include "aero.hpp"
 #include "sih.hpp"
 #include <getopt/getopt.h>
@@ -29,7 +31,8 @@ using namespace matrix;
 using namespace time_literals;
 
 Sih::Sih() :
-    ModuleParams(nullptr) {
+    ModuleParams(nullptr),
+    ModuleThread(LOG_TAG, 2048, 16, 10) {
 }
 
 Sih::~Sih() {
@@ -659,3 +662,17 @@ Most of the variables are declared global in the .hpp file to avoid stack overfl
 extern "C" __EXPORT int simulator_sih_main(int argc, char *argv[]) {
     return Sih::main(argc, argv);
 }
+MSH_CMD_EXPORT_ALIAS(simulator_sih_main, sih, simulation in hardware);
+
+int simulator_sih_start() {
+    int32_t hitl = param_get_int32((param_t)params_id::SYS_HITL);
+
+    if (true /*hitl == 2*/) {
+        const char *argv[] = {"sih", "start"};
+        int         argc   = sizeof(argv) / sizeof(argv[0]);
+        return Sih::main(argc, (char **)argv);
+    }
+
+    return 0;
+}
+INIT_APP_EXPORT(simulator_sih_start);

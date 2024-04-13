@@ -8,8 +8,9 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include "SensorMagSim.hpp"
+#define LOG_TAG "sim_mag"
 
+#include "SensorMagSim.hpp"
 #include <device/device_id.h>
 #include <world_magnetic_model/geo_mag_declination.h>
 
@@ -162,3 +163,17 @@ int SensorMagSim::print_usage(const char *reason) {
 extern "C" __EXPORT int sensor_mag_sim_main(int argc, char *argv[]) {
     return SensorMagSim::main(argc, argv);
 }
+MSH_CMD_EXPORT_ALIAS(sensor_mag_sim_main, sim_mag, mag simulator);
+
+int sensor_mag_sim_start() {
+    int32_t hitl = param_get_int32((param_t)params_id::SYS_HITL);
+
+    if (true /*hitl == 2*/) {
+        const char *argv[] = {"sim_mag", "start"};
+        int         argc   = sizeof(argv) / sizeof(argv[0]);
+        return SensorMagSim::main(argc, (char **)argv);
+    }
+
+    return 0;
+}
+INIT_APP_EXPORT(sensor_mag_sim_start);

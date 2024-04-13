@@ -8,6 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "sim_baro"
+
 #include "SensorBaroSim.hpp"
 #include <device/device_id.h>
 
@@ -197,3 +199,17 @@ int SensorBaroSim::print_usage(const char *reason) {
 extern "C" __EXPORT int sensor_baro_sim_main(int argc, char *argv[]) {
     return SensorBaroSim::main(argc, argv);
 }
+MSH_CMD_EXPORT_ALIAS(sensor_baro_sim_main, sim_baro, baro simulator);
+
+int sensor_baro_sim_start() {
+    int32_t hitl = param_get_int32((param_t)params_id::SYS_HITL);
+
+    if (true /*hitl == 2*/) {
+        const char *argv[] = {"sim_baro", "start"};
+        int         argc   = sizeof(argv) / sizeof(argv[0]);
+        return SensorBaroSim::main(argc, (char **)argv);
+    }
+
+    return 0;
+}
+INIT_APP_EXPORT(sensor_baro_sim_start);

@@ -8,6 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "sim_airspeed"
+
 #include "SensorAirspeedSim.hpp"
 #include <device/device_id.h>
 #include <geo/geo.h>
@@ -168,3 +170,17 @@ int SensorAirspeedSim::print_usage(const char *reason) {
 extern "C" __EXPORT int sensor_airspeed_sim_main(int argc, char *argv[]) {
     return SensorAirspeedSim::main(argc, argv);
 }
+MSH_CMD_EXPORT_ALIAS(sensor_airspeed_sim_main, sim_airspeed, airspeed simulator);
+
+int sensor_airspeed_sim_start() {
+    int32_t hitl = param_get_int32((param_t)params_id::SYS_HITL);
+
+    if (true /*hitl == 2*/) {
+        const char *argv[] = {"sim_airspeed", "start"};
+        int         argc   = sizeof(argv) / sizeof(argv[0]);
+        return SensorAirspeedSim::main(argc, (char **)argv);
+    }
+
+    return 0;
+}
+INIT_APP_EXPORT(sensor_airspeed_sim_start);

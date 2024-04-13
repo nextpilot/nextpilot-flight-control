@@ -8,6 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "sim_battery"
+
 #include "BatterySimulator.hpp"
 
 BatterySimulator::BatterySimulator() :
@@ -141,7 +143,7 @@ void BatterySimulator::updateCommands() {
     }
 }
 
-BatterySimulator* BatterySimulator::instantiate(int argc, char *argv[]) {
+BatterySimulator *BatterySimulator::instantiate(int argc, char *argv[]) {
     BatterySimulator *instance = new BatterySimulator();
 
     // if (instance) {
@@ -191,3 +193,17 @@ int BatterySimulator::print_usage(const char *reason) {
 extern "C" __EXPORT int battery_simulator_main(int argc, char *argv[]) {
     return BatterySimulator::main(argc, argv);
 }
+MSH_CMD_EXPORT_ALIAS(battery_simulator_main, sim_battery, battery simulator);
+
+int battery_simulator_start() {
+    int32_t hitl = param_get_int32((param_t)params_id::SYS_HITL);
+
+    if (true /*hitl == 2*/) {
+        const char *argv[] = {"sim_battery", "start"};
+        int         argc   = sizeof(argv) / sizeof(argv[0]);
+        return BatterySimulator::main(argc, (char **)argv);
+    }
+
+    return 0;
+}
+INIT_APP_EXPORT(battery_simulator_start);

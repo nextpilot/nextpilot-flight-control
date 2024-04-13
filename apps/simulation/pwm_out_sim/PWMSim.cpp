@@ -9,14 +9,10 @@
  ******************************************************************/
 
 #include "PWMSim.hpp"
-
 #include <mathlib/mathlib.h>
 #include <getopt/getopt.h>
-
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/parameter_update.h>
-
-#include <px4_platform_common/sem.hpp>
 
 PWMSim::PWMSim(bool hil_mode_enabled) :
     OutputModuleInterface(MODULE_NAME, wq_configurations::hp_default) {
@@ -91,21 +87,22 @@ void PWMSim::Run() {
     _mixing_output.updateSubscriptions(true);
 }
 
-int PWMSim::instantiate(int argc, char *argv[]) {
+PWMSim *PWMSim::instantiate(int argc, char *argv[]) {
     bool hil_mode = false;
 
     int         myoptind = 1;
     int         ch;
     const char *myoptarg = nullptr;
 
-    while ((ch = px4_getopt(argc, argv, "m:", &myoptind, &myoptarg)) != EOF) {
+    while ((ch = getopt(argc, argv, "m:", &myoptind, &myoptarg)) != EOF) {
         switch (ch) {
         case 'm':
-            hil_mode = strcmp(myoptarg, "hil") == 0;
+            hil_mode = rt_strcmp(myoptarg, "hil") == 0;
             break;
 
         default:
-            return print_usage("unrecognized flag");
+            print_usage("unrecognized flag");
+            return nullptr;
         }
     }
 
@@ -113,13 +110,13 @@ int PWMSim::instantiate(int argc, char *argv[]) {
 
     if (!instance) {
         PX4_ERR("alloc failed");
-        return -1;
+        return nullptr;
     }
 
-    _object.store(instance);
-    _task_id = task_id_is_work_queue;
-    instance->ScheduleNow();
-    return 0;
+    // _object.store(instance);
+    // _task_id = task_id_is_work_queue;
+    // instance->ScheduleNow();
+    return instance;
 }
 
 int PWMSim::custom_command(int argc, char *argv[]) {
@@ -163,3 +160,17 @@ It is used in SITL and HITL.
 extern "C" __EXPORT int pwm_out_sim_main(int argc, char *argv[]) {
     return PWMSim::main(argc, argv);
 }
+MSH_CMD_EXPORT_ALIAS(pwm_out_sim_main, sim_pwm_out, pwm out simulator);
+
+int pwm_out_sim_start() {
+    int32_t hitl = param_get_int32((param_t)params_id::SYS_HITL);
+
+    if (true /*hitl == 2*/) {
+        const char *argv[] = {"sim_pwm_out", "start"};
+        int         argc   = sizeof(argv) / sizeof(argv[0]);
+        return PWMSim::main(argc, (char **)argv);
+    }
+
+    return 0;
+}
+// INIT_APP_EXPORT(pwm_out_sim_start);

@@ -1,0 +1,8 @@
+menuconfig PKG_USING_MIXER_MODULE
+    bool "mixer_module: class for an output module"
+    select PKG_USING_UORB
+    select PKG_USING_PARAM
+    select PKG_USING_MODULE
+    select PKG_USING_PERF
+    select PKG_USING_MATHLIB
+    default n

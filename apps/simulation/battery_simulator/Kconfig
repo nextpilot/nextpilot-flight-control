@@ -1,5 +1,6 @@
 menuconfig SIM_USING_BATTERY
 	bool "battery_simulator"
+	select PKG_USING_BATTERY
 	default n
 	---help---
 		Enable support for battery_simulator

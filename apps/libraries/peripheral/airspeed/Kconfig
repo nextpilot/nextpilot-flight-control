@@ -1,0 +1,3 @@
+menuconfig PKG_USING_AIRSPEED
+    bool "airpseed"
+    default n

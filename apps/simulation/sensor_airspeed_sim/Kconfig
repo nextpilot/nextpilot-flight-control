@@ -1,5 +1,6 @@
 menuconfig SIM_USING_SENSOR_AIRSPEED
 	bool "sensor_airspeed_sim"
+	select PKG_USING_AIRSPEED
 	default n
 	---help---
 		Enable support for sensor_airspeed_sim
