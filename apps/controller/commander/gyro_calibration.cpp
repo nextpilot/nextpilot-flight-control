@@ -30,7 +30,7 @@
 #include <param/param.h>
 #include <sensor_calibration/Gyroscope.hpp>
 #include <sensor_calibration/Utilities.hpp>
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/sensor_gyro.h>

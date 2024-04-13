@@ -38,7 +38,7 @@
 // #include <uORB/topics/vehicle_status.h>
 // #include <uORB/topics/vehicle_torque_setpoint.h>
 // #include <mathlib/mathlib.h>
-// #include <mavlink_log.h>
+// #include <ulog/mavlink_log.h>
 
 using namespace time_literals;
 

@@ -24,7 +24,7 @@
 #include <mathlib/mathlib.h>
 #include <matrix/matrix/math.hpp>
 #include <module/module_params.hpp>
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/collision_constraints.h>

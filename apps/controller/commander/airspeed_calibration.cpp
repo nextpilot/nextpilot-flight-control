@@ -27,7 +27,7 @@
 #include <hrtimer.h>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/differential_pressure.h>
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 #include <param/param.h>
 // #include <systemlib/err.h>
 

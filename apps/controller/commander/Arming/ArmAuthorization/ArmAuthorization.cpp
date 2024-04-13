@@ -38,7 +38,7 @@
 #include <defines.h>
 // #include <px4_platform_common/px4_config.h>
 #include <param/param.h>
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/topics/vehicle_command.h>
 #include <uORB/topics/vehicle_command_ack.h>

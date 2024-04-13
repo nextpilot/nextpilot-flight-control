@@ -13,7 +13,7 @@
  */
 
 #include "FlightTaskOrbit.hpp"
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 #include <mathlib/mathlib.h>
 #include <events/events.h>
 #include <geo/geo.h>

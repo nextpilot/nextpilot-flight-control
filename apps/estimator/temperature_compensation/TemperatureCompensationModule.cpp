@@ -15,7 +15,7 @@
 #include <uORB/uORBPublication.hpp>
 #include <uORB/topics/vehicle_command.h>
 
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 
 using namespace temperature_compensation;
 

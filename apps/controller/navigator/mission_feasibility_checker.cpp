@@ -24,7 +24,7 @@
 // #include <drivers/drv_pwm_output.h>
 #include <geo/geo.h>
 #include <mathlib/mathlib.h>
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 #include <uORB/uORBSubscription.hpp>
 // #include <events/events.h>
 

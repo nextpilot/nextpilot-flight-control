@@ -38,7 +38,7 @@
 #include <px4_platform_common/sem.h>
 #include <px4_platform_common/shutdown.h>
 #include <px4_platform_common/tasks.h>
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 #include <replay/definitions.hpp>
 #include <version/version.h>
 #include <component_information/checksums.h>

@@ -22,7 +22,7 @@
 #include <conversion/rotation.h>
 #include <param/param.h>
 // #include <systemlib/err.h>
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 #include <uORB/topics/vehicle_attitude.h>
 #include <uORB/uORBSubscription.hpp>
 

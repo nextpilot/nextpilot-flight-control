@@ -30,7 +30,7 @@
 #include <sensor_calibration/Utilities.hpp>
 #include <conversion/rotation.h>
 #include <world_magnetic_model/geo_mag_declination.h>
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 #include <param/param.h>
 // #include <systemlib/err.h>
 #include <uORB/uORBSubscription.hpp>

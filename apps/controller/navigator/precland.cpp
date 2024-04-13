@@ -25,7 +25,7 @@
 #include <fcntl.h>
 
 // #include <systemlib/err.h>
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 
 #include <uORB/uORB.h>
 #include <uORB/topics/position_setpoint_triplet.h>

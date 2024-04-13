@@ -16,7 +16,7 @@
 #include <mathlib/math/Limits.hpp>
 #include <matrix/matrix/math.hpp>
 #include <perf/perf_counter.h>
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 #include <ulog/log.h>
 #include <module/module_params.hpp>
 // #include <px4_platform_common/px4_config.h>

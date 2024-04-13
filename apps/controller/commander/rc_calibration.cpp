@@ -21,7 +21,7 @@
 #include "commander_helper.h"
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/manual_control_setpoint.h>
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 #include <param/param.h>
 // #include <systemlib/err.h>
 

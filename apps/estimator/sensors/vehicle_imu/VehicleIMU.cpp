@@ -13,7 +13,7 @@
 #include <ulog/log.h>
 // #include <events/events.h>
 #include <sensor_calibration/Utilities.hpp>
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 
 #include <float.h>
 

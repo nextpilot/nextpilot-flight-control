@@ -9,7 +9,7 @@
  ******************************************************************/
 
 #include "FeasibilityChecker.hpp"
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 // #include <events.h>
 // #include <drivers/drv_pwm_output.h>
 #include "../mission_block.h"

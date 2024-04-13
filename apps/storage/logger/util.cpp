@@ -23,7 +23,7 @@
 // #include <events/events.h>
 #include <ulog/log.h>
 #include <px4_platform_common/time.h>
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 
 #if defined(__PX4_DARWIN)
 #include <sys/param.h>

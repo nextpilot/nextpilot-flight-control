@@ -23,7 +23,7 @@
 #include <drivers/drv_tone_alarm.h>
 #include <geo/geo.h>
 #include <mathlib/mathlib.h>
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 #include <matrix/math.hpp>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>

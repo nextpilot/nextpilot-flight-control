@@ -29,7 +29,7 @@
 #include <hrtimer.h>
 #include <mathlib/mathlib.h>
 #include <perf/perf_counter.h>
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 #include <defines.h>
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>

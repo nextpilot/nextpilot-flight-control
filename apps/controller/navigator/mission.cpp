@@ -28,7 +28,7 @@
 #include <string.h>
 #include <hrtimer.h>
 #include <dataman/dataman.h>
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 // #include <systemlib/err.h>
 #include <geo/geo.h>
 #include "navigation.h"

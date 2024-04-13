@@ -19,7 +19,7 @@
 #include <uORB/topics/health_report.h>
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/failsafe_flags.h>
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 #include <hrtimer.h>
 #include <stdint.h>
 #include <limits.h>

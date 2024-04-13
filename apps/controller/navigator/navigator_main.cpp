@@ -32,7 +32,7 @@
 #include <mathlib/mathlib.h>
 #include <defines.h>
 #include <events/events.h>
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 
 using namespace time_literals;
 

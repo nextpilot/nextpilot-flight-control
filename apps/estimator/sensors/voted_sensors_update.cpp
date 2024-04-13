@@ -18,7 +18,7 @@
 
 #include <sensor_calibration/Utilities.hpp>
 #include <geo/geo.h>
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 
 #include <uORB/uORBSubscription.hpp>
 

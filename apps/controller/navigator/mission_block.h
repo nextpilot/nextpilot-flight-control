@@ -22,7 +22,7 @@
 #include "navigation.h"
 
 #include <hrtimer.h>
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/topics/mission.h>
 #include <uORB/topics/position_setpoint_triplet.h>

@@ -20,7 +20,7 @@
 #include <module/module_params.hpp>
 #include <workq/WorkItemScheduled.hpp>
 #include <airspeed/airspeed.h>
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>

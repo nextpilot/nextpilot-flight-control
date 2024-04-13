@@ -24,7 +24,7 @@
 #include <float.h>
 
 #include <geo/geo.h>
-#include <mavlink_log.h>
+#include <ulog/mavlink_log.h>
 #include <mathlib/mathlib.h>
 #include <uORB/uORB.h>
 #include <uORB/topics/vehicle_command.h>
