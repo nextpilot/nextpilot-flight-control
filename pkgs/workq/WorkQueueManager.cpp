@@ -86,13 +86,13 @@ WorkQueue *WorkQueueFindOrCreate(const wq_config_t &new_wq) {
 }
 
 const wq_config_t &device_bus_to_wq(uint32_t device_id_int) {
-    // union device::Device::DeviceId device_id;
+    // union device::DeviceId device_id;
     // device_id.devid = device_id_int;
 
-    // const device::Device::DeviceBusType bus_type = device_id.devid_s.bus_type;
+    // const device::DeviceBusType bus_type = device_id.devid_s.bus_type;
     // const uint8_t                       bus      = device_id.devid_s.bus;
 
-    // if (bus_type == device::Device::DeviceBusType_I2C) {
+    // if (bus_type == device::DeviceBusType_I2C) {
     //     switch (bus) {
     //     case 0: return wq_configurations::I2C0;
 
@@ -105,7 +105,7 @@ const wq_config_t &device_bus_to_wq(uint32_t device_id_int) {
     //     case 4: return wq_configurations::I2C4;
     //     }
 
-    // } else if (bus_type == device::Device::DeviceBusType_SPI) {
+    // } else if (bus_type == device::DeviceBusType_SPI) {
     //     switch (bus) {
     //     case 0: return wq_configurations::SPI0;
 

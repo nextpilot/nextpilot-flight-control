@@ -262,7 +262,7 @@ void orb_print_message_internal(const orb_metadata *meta, const void *data, bool
     //                     // Device ID
     //                     uint32_t device_id = *(uint32_t *)(data_ptr + previous_data_offset);
     //                     char     device_id_buffer[80];
-    //                     device::Device::device_id_print_buffer(device_id_buffer, sizeof(device_id_buffer), device_id);
+    //                     device::device_id_print_buffer(device_id_buffer, sizeof(device_id_buffer), device_id);
     //                     LOG_RAW(" (%s)", device_id_buffer);
     //                 }
 

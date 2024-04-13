@@ -19,11 +19,10 @@
 
 #include "aero.hpp"
 #include "sih.hpp"
-
 #include <getopt/getopt.h>
 #include <ulog/log.h>
 #include <drivers/drv_pwm_output.h> // to get PWM flags
-#include <drivers/device/Device.hpp>
+#include <device/device_id.h>
 
 using namespace math;
 using namespace matrix;
@@ -38,7 +37,7 @@ Sih::~Sih() {
     perf_free(_loop_interval_perf);
 }
 
-void Sih::run() {
+void Sih::Run() {
     _px4_accel.set_temperature(T1_C);
     _px4_gyro.set_temperature(T1_C);
 
@@ -101,7 +100,7 @@ void Sih::lockstep_loop() {
         _current_simulation_time_us += sim_interval_us;
         struct timespec ts;
         abstime_to_ts(&ts, _current_simulation_time_us);
-        px4_clock_settime(CLOCK_MONOTONIC, &ts);
+        clock_settime(CLOCK_MONOTONIC, &ts);
 
         perf_begin(_loop_perf);
         sensor_step();
@@ -117,7 +116,7 @@ void Sih::lockstep_loop() {
             sleep_time           = math::max(0, sim_interval_us - (int)(current_wall_time_us - pre_compute_wall_time_us));
 
         } else {
-            px4_lockstep_wait_for_components();
+            // px4_lockstep_wait_for_components();
             current_wall_time_us = micros();
             sleep_time           = math::max(0, rt_interval_us - (int)(current_wall_time_us - pre_compute_wall_time_us));
         }
@@ -129,7 +128,7 @@ void Sih::lockstep_loop() {
 #endif
 
 static void timer_callback(void *sem) {
-    px4_sem_post((px4_sem_t *)sem);
+    rt_sem_release((rt_sem_t)sem);
 }
 
 void Sih::realtime_loop() {
@@ -143,18 +142,18 @@ void Sih::realtime_loop() {
     // 200 - 2000 Hz
     int interval_us = math::constrain(int(roundf(1e6f / rate)), 500, 5000);
 
-    px4_sem_init(&_data_semaphore, 0, 0);
+    rt_sem_init(&_data_semaphore, "sih_lock", 0, RT_IPC_FLAG_PRIO);
     hrt_call_every(&_timer_call, interval_us, interval_us, timer_callback, &_data_semaphore);
 
     while (!should_exit()) {
-        px4_sem_wait(&_data_semaphore); // periodic real time wakeup
+        rt_sem_take(&_data_semaphore, RT_WAITING_FOREVER); // periodic real time wakeup
         perf_begin(_loop_perf);
         sensor_step();
         perf_end(_loop_perf);
     }
 
     hrt_cancel(&_timer_call);
-    px4_sem_destroy(&_data_semaphore);
+    rt_sem_detach(&_data_semaphore);
 }
 
 void Sih::sensor_step() {
@@ -415,11 +414,11 @@ void Sih::send_airspeed(const hrt_abstime &time_now_us) {
 }
 
 void Sih::send_dist_snsr(const hrt_abstime &time_now_us) {
-    device::Device::DeviceId device_id;
-    device_id.devid_s.bus_type = device::Device::DeviceBusType::DeviceBusType_SIMULATION;
-    device_id.devid_s.bus      = 0;
-    device_id.devid_s.address  = 0;
-    device_id.devid_s.devtype  = DRV_DIST_DEVTYPE_SIM;
+    device::DeviceId device_id;
+    device_id.devid_s.bus_type  = device::DeviceBusType::DeviceBusType_SIMULATION;
+    device_id.devid_s.bus_index = 0;
+    device_id.devid_s.address   = 0;
+    device_id.devid_s.devtype   = DRV_DIST_DEVTYPE_SIM;
 
     distance_sensor_s distance_sensor{};
     // distance_sensor.timestamp_sample = time_now_us;
@@ -594,21 +593,21 @@ int Sih::print_status() {
     return 0;
 }
 
-int Sih::instantiate(int argc, char *argv[]) {
-    _task_id = px4_task_spawn_cmd("sih",
-                                  SCHED_DEFAULT,
-                                  SCHED_PRIORITY_MAX,
-                                  1250,
-                                  (px4_main_t)&run_trampoline,
-                                  (char *const *)argv);
+// int Sih::task_spawn(int argc, char *argv[]) {
+//     _task_id = px4_task_spawn_cmd("sih",
+//                                   SCHED_DEFAULT,
+//                                   SCHED_PRIORITY_MAX,
+//                                   1250,
+//                                   (px4_main_t)&run_trampoline,
+//                                   (char *const *)argv);
 
-    if (_task_id < 0) {
-        _task_id = -1;
-        return -errno;
-    }
+//     if (_task_id < 0) {
+//         _task_id = -1;
+//         return -errno;
+//     }
 
-    return 0;
-}
+//     return 0;
+// }
 
 Sih *Sih::instantiate(int argc, char *argv[]) {
     Sih *instance = new Sih();

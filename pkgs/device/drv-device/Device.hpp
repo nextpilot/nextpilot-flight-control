@@ -23,232 +23,260 @@
  * Includes here should only cover the needs of the framework definitions.
  */
 #include <ulog/log.h>
-//#include <px4_platform_common/px4_config.h>
+// #include <px4_platform_common/px4_config.h>
 // #include <px4_platform_common/posix.h>
-#include <drivers/drv_sensor.h>
+#include <device/device_id.h>
 
-#define DEVICE_LOG(FMT, ...) PX4_LOG_NAMED(_name, FMT, ##__VA_ARGS__)
+#define DEVICE_LOG(FMT, ...)   PX4_LOG_NAMED(_name, FMT, ##__VA_ARGS__)
 #define DEVICE_DEBUG(FMT, ...) PX4_LOG_NAMED_COND(_name, _debug_enabled, FMT, ##__VA_ARGS__)
 
 /**
  * Namespace encapsulating all device framework classes, functions and data.
  */
-namespace device
-{
+namespace device {
 
 /**
  * Fundamental base class for all physical drivers (I2C, SPI).
  *
  * This class provides the basic driver template for I2C and SPI devices
  */
-class __EXPORT Device
-{
+class __EXPORT Device {
 public:
+    // no copy, assignment, move, move assignment
+    Device(const Device &)            = delete;
+    Device &operator=(const Device &) = delete;
+    Device(Device &&)                 = delete;
+    Device &operator=(Device &&)      = delete;
 
-	// no copy, assignment, move, move assignment
-	Device(const Device &) = delete;
-	Device &operator=(const Device &) = delete;
-	Device(Device &&) = delete;
-	Device &operator=(Device &&) = delete;
+    /**
+     * Destructor.
+     *
+     * Public so that anonymous devices can be destroyed.
+     */
+    virtual ~Device() = default;
 
-	/**
-	 * Destructor.
-	 *
-	 * Public so that anonymous devices can be destroyed.
-	 */
-	virtual ~Device() = default;
+    /*
+     * Direct access methods.
+     */
 
-	/*
-	 * Direct access methods.
-	 */
+    /**
+     * Initialise the driver and make it ready for use.
+     *
+     * @return	OK if the driver initialized OK, negative errno otherwise;
+     */
+    virtual int init() {
+        return PX4_OK;
+    }
 
-	/**
-	 * Initialise the driver and make it ready for use.
-	 *
-	 * @return	OK if the driver initialized OK, negative errno otherwise;
-	 */
-	virtual int	init() { return PX4_OK; }
+    /**
+     * Read directly from the device.
+     *
+     * The actual size of each unit quantity is device-specific.
+     *
+     * @param offset	The device address at which to start reading
+     * @param data		The buffer into which the read values should be placed.
+     * @param count		The number of items to read.
+     * @return		The number of items read on success, negative errno otherwise.
+     */
+    virtual int read(unsigned address, void *data, unsigned count) {
+        return -ENODEV;
+    }
 
-	/**
-	 * Read directly from the device.
-	 *
-	 * The actual size of each unit quantity is device-specific.
-	 *
-	 * @param offset	The device address at which to start reading
-	 * @param data		The buffer into which the read values should be placed.
-	 * @param count		The number of items to read.
-	 * @return		The number of items read on success, negative errno otherwise.
-	 */
-	virtual int	read(unsigned address, void *data, unsigned count) { return -ENODEV; }
+    /**
+     * Write directly to the device.
+     *
+     * The actual size of each unit quantity is device-specific.
+     *
+     * @param address	The device address at which to start writing.
+     * @param data		The buffer from which values should be read.
+     * @param count		The number of items to write.
+     * @return		The number of items written on success, negative errno otherwise.
+     */
+    virtual int write(unsigned address, void *data, unsigned count) {
+        return -ENODEV;
+    }
 
-	/**
-	 * Write directly to the device.
-	 *
-	 * The actual size of each unit quantity is device-specific.
-	 *
-	 * @param address	The device address at which to start writing.
-	 * @param data		The buffer from which values should be read.
-	 * @param count		The number of items to write.
-	 * @return		The number of items written on success, negative errno otherwise.
-	 */
-	virtual int	write(unsigned address, void *data, unsigned count) { return -ENODEV; }
+    /**
+     * Read a register from the device.
+     *
+     * @param		The register to read.
+     * @return		The value that was read.
+     */
+    virtual uint8_t read_reg(unsigned reg) {
+        return -ENODEV;
+    }
 
-	/**
-	 * Read a register from the device.
-	 *
-	 * @param		The register to read.
-	 * @return		The value that was read.
-	 */
-	virtual uint8_t read_reg(unsigned reg) { return -ENODEV; }
+    /**
+     * Write a register in the device.
+     *
+     * @param reg		The register to write.
+     * @param value		The new value to write.
+     * @return		OK on success, negative errno otherwise.
+     */
+    virtual int write_reg(unsigned reg, uint8_t value) {
+        return -ENODEV;
+    }
 
-	/**
-	 * Write a register in the device.
-	 *
-	 * @param reg		The register to write.
-	 * @param value		The new value to write.
-	 * @return		OK on success, negative errno otherwise.
-	 */
-	virtual int write_reg(unsigned reg, uint8_t value) { return -ENODEV; }
+    /**
+     * Perform a device-specific operation.
+     *
+     * @param operation	The operation to perform.
+     * @param arg		An argument to the operation.
+     * @return		Negative errno on error, OK or positive value on success.
+     */
+    virtual int ioctl(unsigned operation, unsigned &arg) {
+        return -ENODEV;
+    }
 
-	/**
-	 * Perform a device-specific operation.
-	 *
-	 * @param operation	The operation to perform.
-	 * @param arg		An argument to the operation.
-	 * @return		Negative errno on error, OK or positive value on success.
-	 */
-	virtual int	ioctl(unsigned operation, unsigned &arg) { return -ENODEV; }
+    /** Device bus types for DEVID */
+    enum DeviceBusType {
+        DeviceBusType_UNKNOWN    = 0,
+        DeviceBusType_I2C        = 1,
+        DeviceBusType_SPI        = 2,
+        DeviceBusType_UAVCAN     = 3,
+        DeviceBusType_SIMULATION = 4,
+        DeviceBusType_SERIAL     = 5,
+        DeviceBusType_MAVLINK    = 6,
+    };
 
-	/** Device bus types for DEVID */
-	enum DeviceBusType {
-		DeviceBusType_UNKNOWN = 0,
-		DeviceBusType_I2C     = 1,
-		DeviceBusType_SPI     = 2,
-		DeviceBusType_UAVCAN  = 3,
-		DeviceBusType_SIMULATION = 4,
-		DeviceBusType_SERIAL = 5,
-		DeviceBusType_MAVLINK = 6,
-	};
+    /*
+      broken out device elements. The bitfields are used to keep
+      the overall value small enough to fit in a float accurately,
+      which makes it possible to transport over the MAVLink
+      parameter protocol without loss of information.
+     */
+    struct DeviceStructure {
+        DeviceBusType bus_type : 3;
+        uint8_t       bus : 5; // which instance of the bus type
+        uint8_t       address; // address on the bus (eg. I2C address)
+        uint8_t       devtype; // device class specific device type
+    };
 
-	/*
-	  broken out device elements. The bitfields are used to keep
-	  the overall value small enough to fit in a float accurately,
-	  which makes it possible to transport over the MAVLink
-	  parameter protocol without loss of information.
-	 */
-	struct DeviceStructure {
-		DeviceBusType bus_type : 3;
-		uint8_t bus: 5;    // which instance of the bus type
-		uint8_t address;   // address on the bus (eg. I2C address)
-		uint8_t devtype;   // device class specific device type
-	};
+    union DeviceId {
+        struct DeviceStructure devid_s;
+        uint32_t               devid{0};
+    };
 
-	union DeviceId {
-		struct DeviceStructure devid_s;
-		uint32_t devid{0};
-	};
+    uint32_t get_device_id() const {
+        return _device_id.devid;
+    }
 
-	uint32_t get_device_id() const { return _device_id.devid; }
+    /**
+     * Return the bus type the device is connected to.
+     *
+     * @return The bus type
+     */
+    DeviceBusType get_device_bus_type() const {
+        return _device_id.devid_s.bus_type;
+    }
+    void set_device_bus_type(DeviceBusType bus_type) {
+        _device_id.devid_s.bus_type = bus_type;
+    }
 
-	/**
-	 * Return the bus type the device is connected to.
-	 *
-	 * @return The bus type
-	 */
-	DeviceBusType get_device_bus_type() const { return _device_id.devid_s.bus_type; }
-	void          set_device_bus_type(DeviceBusType bus_type) { _device_id.devid_s.bus_type = bus_type; }
+    static const char *get_device_bus_string(DeviceBusType bus) {
+        switch (bus) {
+        case DeviceBusType_I2C:
+            return "I2C";
 
-	static const char *get_device_bus_string(DeviceBusType bus)
-	{
-		switch (bus) {
-		case DeviceBusType_I2C:
-			return "I2C";
+        case DeviceBusType_SPI:
+            return "SPI";
 
-		case DeviceBusType_SPI:
-			return "SPI";
+        case DeviceBusType_UAVCAN:
+            return "UAVCAN";
 
-		case DeviceBusType_UAVCAN:
-			return "UAVCAN";
+        case DeviceBusType_SIMULATION:
+            return "SIMULATION";
 
-		case DeviceBusType_SIMULATION:
-			return "SIMULATION";
+        case DeviceBusType_SERIAL:
+            return "SERIAL";
 
-		case DeviceBusType_SERIAL:
-			return "SERIAL";
+        case DeviceBusType_MAVLINK:
+            return "MAVLINK";
 
-		case DeviceBusType_MAVLINK:
-			return "MAVLINK";
+        case DeviceBusType_UNKNOWN:
+        default:
+            return "UNKNOWN";
+        }
+    }
 
-		case DeviceBusType_UNKNOWN:
-		default:
-			return "UNKNOWN";
-		}
-	}
+    /**
+     * Return the bus ID the device is connected to.
+     *
+     * @return The bus ID
+     */
+    uint8_t get_device_bus() const {
+        return _device_id.devid_s.bus;
+    }
+    void set_device_bus(uint8_t bus) {
+        _device_id.devid_s.bus = bus;
+    }
 
-	/**
-	 * Return the bus ID the device is connected to.
-	 *
-	 * @return The bus ID
-	 */
-	uint8_t get_device_bus() const { return _device_id.devid_s.bus; }
-	void    set_device_bus(uint8_t bus) { _device_id.devid_s.bus = bus; }
+    /**
+     * Return the bus address of the device.
+     *
+     * @return The bus address
+     */
+    uint8_t get_device_address() const {
+        return _device_id.devid_s.address;
+    }
+    void set_device_address(int address) {
+        _device_id.devid_s.address = address;
+    }
 
-	/**
-	 * Return the bus address of the device.
-	 *
-	 * @return The bus address
-	 */
-	uint8_t	get_device_address() const { return _device_id.devid_s.address; }
-	void	set_device_address(int address) { _device_id.devid_s.address = address; }
+    /**
+     * Return the device type
+     *
+     * @return The device type
+     */
+    uint8_t get_device_type() const {
+        return _device_id.devid_s.devtype;
+    }
+    void set_device_type(uint8_t devtype) {
+        _device_id.devid_s.devtype = devtype;
+    }
 
-	/**
-	 * Return the device type
-	 *
-	 * @return The device type
-	 */
-	uint8_t	get_device_type() const { return _device_id.devid_s.devtype; }
-	void	set_device_type(uint8_t devtype) { _device_id.devid_s.devtype = devtype; }
+    /**
+     * Print decoded device id string to a buffer.
+     *
+     * @param buffer                        buffer to write to
+     * @param length                        buffer length
+     * @param id	                        The device id.
+     * @param return                        number of bytes written
+     */
+    static int device_id_print_buffer(char *buffer, int length, uint32_t id) {
+        DeviceId dev_id{};
+        dev_id.devid = id;
 
-	/**
-	 * Print decoded device id string to a buffer.
-	 *
-	 * @param buffer                        buffer to write to
-	 * @param length                        buffer length
-	 * @param id	                        The device id.
-	 * @param return                        number of bytes written
-	 */
-	static int device_id_print_buffer(char *buffer, int length, uint32_t id)
-	{
-		DeviceId dev_id{};
-		dev_id.devid = id;
+        int num_written = snprintf(buffer, length, "Type: 0x%02X, %s:%d (0x%02X)", dev_id.devid_s.devtype,
+                                   get_device_bus_string(dev_id.devid_s.bus_type), dev_id.devid_s.bus, dev_id.devid_s.address);
 
-		int num_written = snprintf(buffer, length, "Type: 0x%02X, %s:%d (0x%02X)", dev_id.devid_s.devtype,
-					   get_device_bus_string(dev_id.devid_s.bus_type), dev_id.devid_s.bus, dev_id.devid_s.address);
+        buffer[length - 1] = 0; // ensure 0-termination
 
-		buffer[length - 1] = 0; // ensure 0-termination
+        return num_written;
+    }
 
-		return num_written;
-	}
-
-	virtual bool external() const { return false; }
+    virtual bool external() const {
+        return false;
+    }
 
 protected:
-	union DeviceId	_device_id {};            	/**< device identifier information */
+    union DeviceId _device_id {}; /**< device identifier information */
 
-	const char	*_name{nullptr};		/**< driver name */
-	bool		_debug_enabled{false};		/**< if true, debug messages are printed */
+    const char *_name{nullptr};        /**< driver name */
+    bool        _debug_enabled{false}; /**< if true, debug messages are printed */
 
-	Device() = delete;
-	explicit Device(const char *name) : _name(name) {}
+    Device() = delete;
+    explicit Device(const char *name) :
+        _name(name) {
+    }
 
-	Device(uint8_t devtype, const char *name, DeviceBusType bus_type, uint8_t bus, uint8_t address) : _name(name)
-	{
-		set_device_type(devtype);
-		set_device_bus_type(bus_type);
-		set_device_bus(bus);
-		set_device_address(address);
-	}
-
+    Device(uint8_t devtype, const char *name, DeviceBusType bus_type, uint8_t bus, uint8_t address) :
+        _name(name) {
+        set_device_type(devtype);
+        set_device_bus_type(bus_type);
+        set_device_bus(bus);
+        set_device_address(address);
+    }
 };
 
 } // namespace device

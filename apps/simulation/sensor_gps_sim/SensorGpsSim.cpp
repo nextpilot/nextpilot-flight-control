@@ -9,8 +9,7 @@
  ******************************************************************/
 
 #include "SensorGpsSim.hpp"
-#include <drivers/drv_sensor.h>
-#include <drivers/device/Device.hpp>
+#include <device/device_id.h>
 #include <geo/geo.h>
 
 using namespace matrix;
@@ -91,11 +90,11 @@ void SensorGpsSim::Run() {
         Vector3f gps_vel = Vector3f{lpos.vx, lpos.vy, lpos.vz} + noiseGauss3f(0.06f, 0.077f, 0.158f);
 
         // device id
-        device::Device::DeviceId device_id;
-        device_id.devid_s.bus_type = device::Device::DeviceBusType::DeviceBusType_SIMULATION;
-        device_id.devid_s.bus      = 0;
-        device_id.devid_s.address  = 0;
-        device_id.devid_s.devtype  = DRV_GPS_DEVTYPE_SIM;
+        device::DeviceId device_id;
+        device_id.devid_s.bus_type  = device::DeviceBusType::DeviceBusType_SIMULATION;
+        device_id.devid_s.bus_index = 0;
+        device_id.devid_s.address   = 0;
+        device_id.devid_s.devtype   = DRV_GPS_DEVTYPE_SIM;
 
         sensor_gps_s sensor_gps{};
 
@@ -152,7 +151,7 @@ void SensorGpsSim::Run() {
     perf_end(_loop_perf);
 }
 
-SensorGpsSim* SensorGpsSim::instantiate(int argc, char *argv[]) {
+SensorGpsSim *SensorGpsSim::instantiate(int argc, char *argv[]) {
     SensorGpsSim *instance = new SensorGpsSim();
 
     // if (instance) {

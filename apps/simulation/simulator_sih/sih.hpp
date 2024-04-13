@@ -34,17 +34,15 @@
 
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
-// #include <px4_platform_common/posix.h>
-
-#include <matrix/matrix/math.hpp> // matrix, vectors, dcm, quaterions
-#include <conversion/rotation.h>  // math::radians,
-#include <geo/geo.h>              // to get the physical constants
-#include <hrtimer.h>              // to get the real time
+#include <module/module_thread.hpp>
+#include <matrix/math.hpp>       // matrix, vectors, dcm, quaterions
+#include <conversion/rotation.h> // math::radians,
+#include <geo/geo.h>             // to get the physical constants
+#include <hrtimer.h>             // to get the real time
 #include <drivers/accelerometer/PX4Accelerometer.hpp>
 #include <drivers/gyroscope/PX4Gyroscope.hpp>
 #include <perf/perf_counter.h>
 #include <uORB/uORBPublication.hpp>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/airspeed.h>
@@ -60,8 +58,10 @@
 #endif
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
-class Sih : public ModuleCommand<Sih>, public ModuleParams {
+class Sih : public ModuleCommand<Sih>, public ModuleParams, public ModuleThread {
 public:
     Sih();
     virtual ~Sih();
@@ -70,10 +70,11 @@ public:
     static Sih *instantiate(int argc, char *argv[]);
 
     /** @see ModuleCommand */
-    static Sih *instantiate(int argc, char *argv[]);
-
-    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
+
+    int init() override {
+        return ModuleThread::init();
+    }
 
     /** @see ModuleCommand::print_status() */
     int print_status() override;
@@ -82,7 +83,7 @@ public:
     static int print_usage(const char *reason = nullptr);
 
     /** @see ModuleCommand::run() */
-    void run() override;
+    void Run() override;
 
     static float generate_wgn(); // generate white Gaussian noise sample
 
@@ -147,8 +148,8 @@ private:
 
     void realtime_loop();
 
-    px4_sem_t _data_semaphore;
-    hrt_call  _timer_call{};
+    struct rt_semaphore _data_semaphore;
+    hrt_call            _timer_call{};
 
     perf_counter_t _loop_perf{perf_alloc(PC_ELAPSED, MODULE_NAME ": cycle")};
     perf_counter_t _loop_interval_perf{perf_alloc(PC_INTERVAL, MODULE_NAME ": cycle interval")};

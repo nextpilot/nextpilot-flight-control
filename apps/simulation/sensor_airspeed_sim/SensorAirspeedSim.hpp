@@ -12,6 +12,7 @@
 
 #include <perf/perf_counter.h>
 #include <defines.h>
+#include <matrix/math.hpp>
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
 #include <workq/WorkItemScheduled.hpp>

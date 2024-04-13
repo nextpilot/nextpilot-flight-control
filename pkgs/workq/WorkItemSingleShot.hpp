@@ -18,7 +18,7 @@ namespace nextpilot {
  * @class WorkItemSingleShot
  * Run a method on a specific work queue and wait for it to exit.
  * Example usage:
- *   WorkItemSingleShot initializer(nextpilot::device_bus_to_wq(device_id.devid), instantiate, &data);
+ *   WorkItemSingleShot initializer(device_bus_to_wq(device_id.devid), instantiate, &data);
  *   initializer.ScheduleNow();
  *   initializer.wait();
  */
@@ -26,8 +26,8 @@ class WorkItemSingleShot : public WorkItem {
 public:
     using worker_method = void (*)(void *arg);
 
-    WorkItemSingleShot(const nextpilot::wq_config_t &config, worker_method method, void *argument);
-    WorkItemSingleShot(const nextpilot::WorkItem &work_item, worker_method method, void *argument);
+    WorkItemSingleShot(const wq_config_t &config, worker_method method, void *argument);
+    WorkItemSingleShot(const WorkItem &work_item, worker_method method, void *argument);
 
     ~WorkItemSingleShot();
 

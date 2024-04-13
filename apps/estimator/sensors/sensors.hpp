@@ -34,7 +34,7 @@
 #endif // CONFIG_SENSORS_VEHICLE_ACCELERATION
 
 #if defined(CONFIG_SENSORS_VEHICLE_AIRSPEED)
-#include <drivers/drv_sensor.h>
+#include <device/device_id.h>
 #include <drivers/drv_adc.h>
 #include <airspeed/airspeed.h>
 #include <uORB/topics/airspeed.h>

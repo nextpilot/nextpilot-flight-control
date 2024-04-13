@@ -415,8 +415,8 @@ void SimulatorMavlink::handle_message_hil_gps(const mavlink_message_t *msg) {
                 _sensor_gps_pubs[i] = new uORB::PublicationMulti<sensor_gps_s>{ORB_ID(sensor_gps)};
                 _gps_ids[i]         = hil_gps.id;
 
-                device::Device::DeviceId device_id;
-                device_id.devid_s.bus_type = device::Device::DeviceBusType::DeviceBusType_SIMULATION;
+                device::DeviceId device_id;
+                device_id.devid_s.bus_type = device::DeviceBusType::DeviceBusType_SIMULATION;
                 device_id.devid_s.bus      = 0;
                 device_id.devid_s.address  = i;
                 device_id.devid_s.devtype  = DRV_GPS_DEVTYPE_SIM;
@@ -795,8 +795,8 @@ void SimulatorMavlink::handle_message_optical_flow(const mavlink_message_t *msg)
     mavlink_hil_optical_flow_t flow;
     mavlink_msg_hil_optical_flow_decode(msg, &flow);
 
-    device::Device::DeviceId device_id;
-    device_id.devid_s.bus_type = device::Device::DeviceBusType::DeviceBusType_MAVLINK;
+    device::DeviceId device_id;
+    device_id.devid_s.bus_type = device::DeviceBusType::DeviceBusType_MAVLINK;
     device_id.devid_s.bus      = 0;
     device_id.devid_s.address  = msg->sysid;
     device_id.devid_s.devtype  = DRV_FLOW_DEVTYPE_SIM;
@@ -1414,8 +1414,8 @@ int SimulatorMavlink::publish_distance_topic(const mavlink_distance_sensor_t *di
     dist.type             = dist_mavlink->type;
     dist.variance         = dist_mavlink->covariance * 1e-4f; // cm^2 to m^2
 
-    device::Device::DeviceId device_id{};
-    device_id.devid_s.bus_type = device::Device::DeviceBusType_SIMULATION;
+    device::DeviceId device_id{};
+    device_id.devid_s.bus_type = device::DeviceBusType_SIMULATION;
     device_id.devid_s.address  = dist_mavlink->id;
     device_id.devid_s.devtype  = DRV_DIST_DEVTYPE_SIM;
 

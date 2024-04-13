@@ -10,7 +10,7 @@
 
 #include "SensorMagSim.hpp"
 
-#include <drivers/drv_sensor.h>
+#include <device/device_id.h>
 #include <world_magnetic_model/geo_mag_declination.h>
 
 using namespace matrix;

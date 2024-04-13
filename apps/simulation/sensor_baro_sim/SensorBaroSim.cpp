@@ -9,8 +9,7 @@
  ******************************************************************/
 
 #include "SensorBaroSim.hpp"
-
-#include <drivers/drv_sensor.h>
+#include <device/device_id.h>
 
 using namespace matrix;
 

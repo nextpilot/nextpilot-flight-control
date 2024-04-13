@@ -9,8 +9,7 @@
  ******************************************************************/
 
 #include "PX4Rangefinder.hpp"
-
-#include <drivers/device/Device.hpp>
+#include <device/device_id.h>
 
 PX4Rangefinder::PX4Rangefinder(const uint32_t device_id, const uint8_t device_orientation)
 {
@@ -27,7 +26,7 @@ PX4Rangefinder::~PX4Rangefinder()
 void PX4Rangefinder::set_device_type(uint8_t device_type)
 {
 	// current DeviceStructure
-	union device::Device::DeviceId device_id;
+	union device::DeviceId device_id;
 	device_id.devid = _distance_sensor_pub.get().device_id;
 
 	// update to new device type

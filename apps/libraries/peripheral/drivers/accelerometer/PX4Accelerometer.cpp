@@ -10,8 +10,7 @@
 
 
 #include "PX4Accelerometer.hpp"
-
-#include <drivers/device/Device.hpp>
+#include <device/device_id.h>
 #include <param/param.h>
 
 using namespace time_literals;
@@ -62,7 +61,7 @@ PX4Accelerometer::~PX4Accelerometer()
 void PX4Accelerometer::set_device_type(uint8_t devtype)
 {
 	// current DeviceStructure
-	union device::Device::DeviceId device_id;
+	union device::DeviceId device_id;
 	device_id.devid = _device_id;
 
 	// update to new device type

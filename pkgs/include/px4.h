@@ -11,6 +11,8 @@
 #ifndef __NEXTPILOT_PX4DEF_H__
 #define __NEXTPILOT_PX4DEF_H__
 
+#include <rtdbg.h>
+
 #define PX4_INFO     LOG_I
 #define PX4_PANIC    LOG_I
 #define PX4_ERR      LOG_E

@@ -1,0 +1,14 @@
+import os
+import rtconfig
+from building import *
+
+
+cwd = GetCurrentDir()
+
+inc = [cwd]
+src = ["geo_mag_declination.cpp"]
+
+objs = DefineGroup("lib/estimator", src, depend=["PKG_USING_WORLD_MAGNETIC_MODEL"], CPPPATH=inc)
+
+
+Return("objs")

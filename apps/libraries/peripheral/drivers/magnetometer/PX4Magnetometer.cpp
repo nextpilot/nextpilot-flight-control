@@ -10,8 +10,7 @@
 
 
 #include "PX4Magnetometer.hpp"
-
-#include <drivers/device/Device.hpp>
+#include <device/device_id.h>
 
 PX4Magnetometer::PX4Magnetometer(uint32_t device_id, enum Rotation rotation) :
 	_device_id{device_id},
@@ -27,7 +26,7 @@ PX4Magnetometer::~PX4Magnetometer()
 void PX4Magnetometer::set_device_type(uint8_t devtype)
 {
 	// current DeviceStructure
-	union device::Device::DeviceId device_id;
+	union device::DeviceId device_id;
 	device_id.devid = _device_id;
 
 	// update to new device type

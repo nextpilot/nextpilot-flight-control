@@ -118,7 +118,9 @@
 			"string_view": "cpp",
 			"condition_variable": "cpp",
 			"mutex": "cpp",
-			"stdint.h": "c"
+			"stdint.h": "c",
+			"fstream": "cpp",
+			"xmemory": "cpp"
 		}
 	}
 }

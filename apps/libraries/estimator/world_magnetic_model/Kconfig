@@ -1,0 +1,3 @@
+menuconfig PKG_USING_WORLD_MAGNETIC_MODEL
+    bool "world_magnetic_model"
+    default n

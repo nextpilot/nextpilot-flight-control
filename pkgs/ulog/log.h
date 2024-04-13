@@ -11,6 +11,7 @@
 #ifndef __LOG_H__
 #define __LOG_H__
 
+#include <defines.h>
 #include <rtdbg.h>
 #include <px4.h>
 #include <inttypes.h>

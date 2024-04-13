@@ -12,11 +12,12 @@
 
 #include <hrtimer.h>
 #include <conversion/rotation.h>
-
 #include <geo/geo.h>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/topics/sensor_accel.h>
 #include <uORB/topics/sensor_accel_fifo.h>
+
+using namespace nextpilot;
 
 class PX4Accelerometer
 {

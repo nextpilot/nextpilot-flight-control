@@ -1,9 +1,9 @@
 from building import *
 
-src = ["device-new.cpp"]
+src = ["device.cpp"]
 inc = []
 CPPDEFINES = []
-
-objs = DefineGroup("pkg/common", src, depend=["PKG_USING_DEVICE"], CPPDEFINES=CPPDEFINES)
+# PKG_USING_DEVICE
+objs = DefineGroup("pkg/common", src, depend=[""], CPPDEFINES=CPPDEFINES)
 
 Return("objs")

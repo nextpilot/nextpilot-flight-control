@@ -8,13 +8,13 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-//#include <px4_platform_common/px4_config.h>
 #include <ulog/log.h>
 #include <conversion/rotation.h>
-
-#include <drivers/device/Device.hpp>
+#include <device/device_id.h>
 #include <mathlib/mathlib.h>
 #include <param/param.h>
+
+using namespace nextpilot;
 
 #if defined(CONFIG_I2C)
 # include <px4_platform_common/i2c.h>
@@ -220,41 +220,41 @@ bool DeviceExternal(uint32_t device_id)
 	bool external = true;
 
 	// decode device id to determine if external
-	union device::Device::DeviceId id {};
+	union device::DeviceId id {};
 	id.devid = device_id;
 
-	const device::Device::DeviceBusType bus_type = id.devid_s.bus_type;
+	const device::DeviceBusType bus_type = id.devid_s.bus_type;
 
 	switch (bus_type) {
-	case device::Device::DeviceBusType_I2C:
+	case device::DeviceBusType_I2C:
 #if defined(CONFIG_I2C)
 		external = px4_i2c_device_external(device_id);
 #endif // CONFIG_I2C
 		break;
 
-	case device::Device::DeviceBusType_SPI:
+	case device::DeviceBusType_SPI:
 #if defined(CONFIG_SPI)
 		external = px4_spi_bus_external(id.devid_s.bus);
 #endif // CONFIG_SPI
 		break;
 
-	case device::Device::DeviceBusType_UAVCAN:
+	case device::DeviceBusType_UAVCAN:
 		external = true;
 		break;
 
-	case device::Device::DeviceBusType_SIMULATION:
+	case device::DeviceBusType_SIMULATION:
 		external = false;
 		break;
 
-	case device::Device::DeviceBusType_SERIAL:
+	case device::DeviceBusType_SERIAL:
 		external = true;
 		break;
 
-	case device::Device::DeviceBusType_MAVLINK:
+	case device::DeviceBusType_MAVLINK:
 		external = true;
 		break;
 
-	case device::Device::DeviceBusType_UNKNOWN:
+	case device::DeviceBusType_UNKNOWN:
 		external = true;
 		break;
 	}

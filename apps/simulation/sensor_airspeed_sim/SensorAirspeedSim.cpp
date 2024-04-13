@@ -9,8 +9,7 @@
  ******************************************************************/
 
 #include "SensorAirspeedSim.hpp"
-#include <drivers/drv_sensor.h>
-#include <drivers/device/Device.hpp>
+#include <device/device_id.h>
 #include <geo/geo.h>
 
 using namespace matrix;
@@ -92,11 +91,11 @@ void SensorAirspeedSim::Run() {
             Vector3f body_velocity  = Dcmf{Quatf{attitude.q}}.transpose() * local_velocity;
 
             // device id
-            device::Device::DeviceId device_id;
-            device_id.devid_s.bus_type = device::Device::DeviceBusType::DeviceBusType_SIMULATION;
-            device_id.devid_s.bus      = 0;
-            device_id.devid_s.address  = 0;
-            device_id.devid_s.devtype  = DRV_DIFF_PRESS_DEVTYPE_SIM;
+            device::DeviceId device_id;
+            device_id.devid_s.bus_type  = device::DeviceBusType::DeviceBusType_SIMULATION;
+            device_id.devid_s.bus_index = 0;
+            device_id.devid_s.address   = 0;
+            device_id.devid_s.devtype   = DRV_DIFF_PRESS_DEVTYPE_SIM;
 
             const float alt_amsl          = gpos.alt;
             const float temperature_local = TEMPERATURE_MSL - LAPSE_RATE * alt_amsl;
@@ -120,7 +119,7 @@ void SensorAirspeedSim::Run() {
     perf_end(_loop_perf);
 }
 
-SensorAirspeedSim* SensorAirspeedSim::instantiate(int argc, char *argv[]) {
+SensorAirspeedSim *SensorAirspeedSim::instantiate(int argc, char *argv[]) {
     SensorAirspeedSim *instance = new SensorAirspeedSim();
 
     // if (instance) {
@@ -140,7 +139,7 @@ SensorAirspeedSim* SensorAirspeedSim::instantiate(int argc, char *argv[]) {
     // _task_id = -1;
 
     // return PX4_ERROR;
-return instance;
+    return instance;
 }
 
 int SensorAirspeedSim::custom_command(int argc, char *argv[]) {

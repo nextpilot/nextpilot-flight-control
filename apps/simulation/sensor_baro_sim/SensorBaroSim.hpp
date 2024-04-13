@@ -21,6 +21,7 @@
 #include <uORB/topics/sensor_baro.h>
 #include <uORB/topics/vehicle_global_position.h>
 #include <matrix/math.hpp>
+#include <mathlib/mathlib.h>
 
 using namespace time_literals;
 using namespace nextpilot;
