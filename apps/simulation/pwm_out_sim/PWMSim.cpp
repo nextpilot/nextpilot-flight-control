@@ -8,6 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "sim_pwm_out"
+
 #include "PWMSim.hpp"
 #include <mathlib/mathlib.h>
 #include <getopt/getopt.h>
@@ -173,4 +175,4 @@ int pwm_out_sim_start() {
 
     return 0;
 }
-// INIT_APP_EXPORT(pwm_out_sim_start);
+INIT_APP_EXPORT(pwm_out_sim_start);

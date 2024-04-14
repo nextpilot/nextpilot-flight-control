@@ -121,6 +121,10 @@ __EXPORT int getopt(int argc, char *argv[], const char *options, int *myoptind, 
     char  c;
     int   takesarg;
 
+    if (argc >= *myoptind) {
+        return -1;
+    }
+
     if (*myoptind == 1) {
         if (reorder(argc, argv, options) != 0) {
             *myoptind += 1;
