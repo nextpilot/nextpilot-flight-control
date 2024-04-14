@@ -21,7 +21,7 @@ for root, dirs, files in os.walk(prj_root):
     for file in files:
         if file == "module.yaml":
             modules_config_file.add(os.path.join(root, file))
-        if (file.endswith("params.c") or file.endswith("parameters.c")) and "rtos" not in root:
+        if file.endswith(".c") and "param" in file and "rtos" not in root:
             params_source_dir.add(root)
 
 # Generating serial_params.c from modules.yaml
