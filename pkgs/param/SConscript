@@ -19,7 +19,7 @@ modules_config_file = set()
 
 for root, dirs, files in os.walk(prj_root):
     for file in files:
-        if file == "module.yaml":
+        if file.endswith(".yaml") and "module" in file:
             modules_config_file.add(os.path.join(root, file))
         if file.endswith(".c") and "param" in file and "rtos" not in root:
             params_source_dir.add(root)
@@ -42,7 +42,8 @@ for root, dirs, files in os.walk(prj_root):
 cmd = [
     sys.executable,
     os.path.join(prj_root, "tools/module_config/generate_module_params.py"),
-    # --verbose,
+    # "--verbose,
+    # "--board-with-io",
     "--params-file",
     File("#/build/module_params.c").abspath,
     "--board",
