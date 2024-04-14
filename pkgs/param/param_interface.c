@@ -124,7 +124,7 @@ int param_find_internal(const char *name, bool mark_used) {
         }
     }
 
-    LOG_W("find %s fail", name);
+    // LOG_D("find %s fail", name);
     return PARAM_INVALID;
 }
 
