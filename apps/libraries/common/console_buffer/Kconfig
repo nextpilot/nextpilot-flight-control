@@ -1,0 +1,3 @@
+menuconfig PKG_USING_CONSOLE_BUFFER
+	bool "console_buffer: a simple console buffer to store the full bootup output"
+	default n

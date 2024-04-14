@@ -1,0 +1,13 @@
+import os
+import rtconfig
+from building import *
+
+
+cwd = GetCurrentDir()
+
+inc = [cwd]
+src = ["console_buffer.cpp"]
+
+objs = DefineGroup("lib/console_buffer", src, depend=["PKG_USING_CONSOLE_BUFFER"], CPPPATH=inc)
+
+Return("objs")

@@ -1,0 +1,3 @@
+menuconfig PKG_USING_RING_BUFFER
+	bool "ring_buffer: FIFO ringbuffer implementation"
+	default n
