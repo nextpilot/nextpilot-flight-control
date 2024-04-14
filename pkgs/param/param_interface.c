@@ -9,7 +9,7 @@
  ******************************************************************/
 
 #define LOG_TAG "param.interface"
-#define LOG_LVL LOG_LVL_INFO
+#define LOG_LVL LOG_LVL_DBG
 
 #include <rtthread.h>
 #include <rtdbg.h>
@@ -229,7 +229,7 @@ int param_get_internal(param_t idx, param_value_t *val, bool mark_used) {
     param_interface_t *api = param_get_whois(&idx);
 
     if (api) {
-        LOG_D("get param %s", param_get_name(idx));
+        // LOG_D("get param %s", param_get_name(idx));
         return api->ops->get_value(idx, val, mark_used);
     }
 

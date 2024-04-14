@@ -9,7 +9,7 @@
  ******************************************************************/
 
 #define LOG_TAG "param.storage"
-#define LOG_LVL LOG_LVL_INFO
+#define LOG_LVL LOG_LVL_DBG
 
 #include <stdbool.h>
 #include <rtdbg.h>
@@ -104,7 +104,7 @@ int param_export_internal(const char *devname, param_filter_func filter) {
     // 关闭设备
     dev->ops->close(dev);
 
-    LOG_I("export all params ok");
+    // LOG_I("export all params to %s", devname);
 
     return 0;
 }
@@ -158,7 +158,7 @@ int param_import_internal(const char *devname, param_filter_func filter) {
             continue;
         }
         // 更新到系统
-        param_set_internal(idx, &payload.value, true, false);
+        param_set_internal(pp, &payload.value, true, false);
         // 打印调试信息
         if (payload.type == PARAM_TYPE_INT32) {
             LOG_D("import param %s, %s, %d", payload.name, param_type_cstr(payload.type), payload.value.i32);
@@ -170,7 +170,7 @@ int param_import_internal(const char *devname, param_filter_func filter) {
     // 关闭设备
     dev->ops->close(dev);
 
-    LOG_I("import all params ok");
+    // LOG_I("import all params from %s", devname);
 
     // 提醒参数已经更新
     param_notify_autosave();
@@ -253,7 +253,7 @@ RT_WEAK void board_param_init() {
 static int param_storage_init() {
     // 从默认设备加载param
     if (param_load_default() == 0) {
-        LOG_I("load default ok");
+        LOG_I("load param from default");
     }
 
     // 加载板级参数

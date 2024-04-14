@@ -122,7 +122,7 @@ public:
         unlock_module();
 
         if (inst != -1) {
-            LOG_I("start instance #%d ok", inst);
+            LOG_I("start instance #%d", inst);
         }
 
         return 0;
