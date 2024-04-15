@@ -18,14 +18,13 @@
 #include "util.h"
 #include <defines.h>
 #include <hrtimer.h>
-#include <version/version.h>
+#include <version/board_version.h>
 #include <param/param.h>
-#include <px4_platform_common/printload.h>
+#include <cpuload/printload.h>
+#include <cpuload/cpuload.h>
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
-
 #include <uORB/uORBPublication.hpp>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/logger_status.h>
 #include <uORB/topics/log_message.h>
@@ -37,11 +36,13 @@
 extern "C" __EXPORT int logger_main(int argc, char *argv[]);
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 static constexpr hrt_abstime TRY_SUBSCRIBE_INTERVAL{20_ms}; // interval in microseconds at which we try to subscribe to a topic
 // if we haven't succeeded before
 
-namespace px4 {
+namespace nextpilot {
 namespace logger {
 
 static constexpr uint8_t MSG_ID_INVALID = UINT8_MAX;
@@ -75,17 +76,14 @@ public:
     struct timer_callback_data_s {
         struct rt_semaphore semaphore;
 
-        watchdog_data_t  watchdog_data;
-        px4::atomic_bool watchdog_triggered{false};
+        watchdog_data_t watchdog_data;
+        atomic_bool     watchdog_triggered{false};
     };
 
     Logger(LogWriter::Backend backend, size_t buffer_size, uint32_t log_interval, const char *poll_topic_name,
            LogMode log_mode, bool log_name_timestamp, float rate_factor);
 
     ~Logger();
-
-    /** @see ModuleCommand */
-    static int *instantiate(int argc, char *argv[]);
 
     /** @see ModuleCommand */
     static Logger *instantiate(int argc, char *argv[]);
@@ -97,7 +95,7 @@ public:
     static int print_usage(const char *reason = nullptr);
 
     /** @see ModuleCommand::run() */
-    void run() override;
+    void run();
 
     /** @see ModuleCommand::print_status() */
     int print_status() override;
@@ -207,7 +205,7 @@ private:
     void write_header(LogType type);
 
     /// Array to store written formats for nested definitions (only)
-    using WrittenFormats = Array<const orb_metadata *, 20>;
+    using WrittenFormats = container::Array<const orb_metadata *, 20>;
 
     void write_format(LogType type, const orb_metadata &meta, WrittenFormats &written_formats, ulog_message_format_s &msg,
                       int subscription_index, int level = 1);
@@ -381,4 +379,4 @@ private:
 };
 
 }
-} // namespace px4::logger
+} // namespace nextpilot::logger

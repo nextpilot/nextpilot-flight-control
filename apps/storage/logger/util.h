@@ -12,7 +12,6 @@
 
 #include <stdint.h>
 #include <time.h>
-
 #include <uORB/uORB.h>
 
 #ifdef __PX4_NUTTX
@@ -21,7 +20,7 @@
 #define LOG_DIR_LEN 256
 #endif
 
-namespace px4 {
+namespace nextpilot {
 namespace logger {
 namespace util {
 
@@ -60,4 +59,4 @@ bool get_log_time(struct tm *tt, int utc_offset_sec = 0, bool boot_time = false)
 
 }
 }
-} // namespace px4::logger::util
+} // namespace nextpilot::logger::util

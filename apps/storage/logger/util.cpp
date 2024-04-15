@@ -15,14 +15,12 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/sensor_gps.h>
-
 #include <hrtimer.h>
-// #include <events/events.h>
+#include <events/events.h>
 #include <ulog/log.h>
-#include <px4_platform_common/time.h>
+// #include <px4_platform_common/time.h>
 #include <ulog/mavlink_log.h>
 
 #if defined(__PX4_DARWIN)

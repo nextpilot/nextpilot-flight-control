@@ -8,11 +8,9 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-// #include <px4_platform_common/px4_config.h>
 
-#include <px4_platform_common/console_buffer.h>
+#include <console_buffer.h>
 #include <defines.h>
-#include <px4_platform_common/sem.h>
 #include <pthread.h>
 #include <string.h>
 #include <fcntl.h>
@@ -160,7 +158,7 @@ int ConsoleBuffer::read(char *buffer, int buffer_length, int *offset) {
 
 static ConsoleBuffer g_console_buffer;
 
-void px4_console_buffer_print(bool follow) {
+void console_buffer_print(bool follow) {
     g_console_buffer.print(follow);
 }
 
@@ -193,15 +191,15 @@ static const struct file_operations g_console_buffer_fops = {
 #endif
 };
 
-int px4_console_buffer_init() {
+int console_buffer_init() {
     return register_driver(CONSOLE_BUFFER_DEVICE, &g_console_buffer_fops, 0666, NULL);
 }
 
-int px4_console_buffer_size() {
+int console_buffer_size() {
     return g_console_buffer.size();
 }
 
-int px4_console_buffer_read(char *buffer, int buffer_length, int *offset) {
+int console_buffer_read(char *buffer, int buffer_length, int *offset) {
     return g_console_buffer.read(buffer, buffer_length, offset);
 }
 

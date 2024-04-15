@@ -12,10 +12,10 @@
 #include "messages.h"
 #include <hrtimer.h>
 #include <mathlib/mathlib.h>
-// #include <ulog/log.h>// #include <px4_platform_common/posix.h>
+#include <ulog/log.h>
 #include <cstring>
 
-namespace px4 {
+namespace nextpilot {
 namespace logger {
 
 LogWriterMavlink::LogWriterMavlink() {
@@ -27,13 +27,13 @@ bool LogWriterMavlink::init() {
 }
 
 LogWriterMavlink::~LogWriterMavlink() {
-    if (_ulog_stream_ack_sub >= 0) {
+    if (_ulog_stream_ack_sub) {
         orb_unsubscribe(_ulog_stream_ack_sub);
     }
 }
 
 void LogWriterMavlink::start_log() {
-    if (_ulog_stream_ack_sub == -1) {
+    if (!_ulog_stream_ack_sub) {
         _ulog_stream_ack_sub = orb_subscribe(ORB_ID(ulog_stream_ack));
     }
 
@@ -150,4 +150,4 @@ int LogWriterMavlink::publish_message() {
 }
 
 }
-} // namespace px4::logger
+} // namespace nextpilot::logger

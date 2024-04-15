@@ -10,15 +10,13 @@
 
 #include "logged_topics.h"
 #include "messages.h"
-
 #include <param.h>
 #include <ulog/log.h>
-// #include <px4_platform_common/px4_config.h>
 #include <uORB/topics/uORBTopics.hpp>
-
 #include <string.h>
+#include <stdio.h>
 
-using namespace px4::logger;
+using namespace nextpilot::logger;
 
 void LoggedTopics::add_default_topics() {
     add_topic("action_request");

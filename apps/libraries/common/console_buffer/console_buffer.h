@@ -17,7 +17,6 @@
  * to the original console.
  */
 
-// #include <px4_platform_common/px4_config.h>
 
 #define CONSOLE_BUFFER_DEVICE "/dev/console_buf"
 
@@ -29,44 +28,45 @@ __BEGIN_DECLS
  * Initialize the console buffer: register the CONSOLE_BUFFER_DEVICE
  * @return 0 on success, <0 error otherwise
  */
-int px4_console_buffer_init();
+int console_buffer_init();
 
 /**
  * Print content of the console buffer to stdout
  * @param follow if true keep waiting and print new content whenever the buffer
  *               is updated
  */
-void px4_console_buffer_print(bool follow);
+void console_buffer_print(bool follow);
 
 /**
  * Get the current used buffer size
  */
-int px4_console_buffer_size();
+int console_buffer_size();
 
 /**
  * Read (chunks) of the console buffer.
  * Note that no lock is held between reading multiple chunks, so the buffer could get
- * updated meanwhile. Use px4_console_buffer_size() to read no more than expected.
+ * updated meanwhile. Use console_buffer_size() to read no more than expected.
  * @param buffer output buffer
  * @param buffer_length output buffer length
  * @param offset input and output argument for the offset. Initially set this to -1.
  * @return number of bytes written to the buffer (or <0 on error)
  */
-int px4_console_buffer_read(char *buffer, int buffer_length, int *offset);
+int console_buffer_read(char *buffer, int buffer_length, int *offset);
 
 __END_DECLS
 
 #else
 
-static inline int px4_console_buffer_init() {
+static inline int console_buffer_init() {
     return 0;
 }
 
-static inline int px4_console_buffer_size() {
+static inline int console_buffer_size() {
     return 0;
 }
 
-static inline int px4_console_buffer_read(char *buffer, int buffer_length, int *offset) {
+static inline int console_buffer_read(char *buffer, int buffer_length, int *offset) {
     return 0;
 }
+
 #endif /* BOARD_ENABLE_CONSOLE_BUFFER */

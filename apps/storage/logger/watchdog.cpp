@@ -19,7 +19,7 @@
 
 using namespace time_literals;
 
-namespace px4 {
+namespace nextpilot {
 namespace logger {
 
 bool watchdog_update(watchdog_data_t &watchdog_data, bool semaphore_value_saturated) {
@@ -169,4 +169,4 @@ void watchdog_initialize(const pid_t pid_logger_main, const pthread_t writer_thr
 }
 
 }
-} // namespace px4::logger
+} // namespace nextpilot::logger

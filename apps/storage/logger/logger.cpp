@@ -8,13 +8,12 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-// #include <px4_platform_common/px4_config.h>
-
-// #include <px4_platform_common/console_buffer.h>
+#include <console_buffer/console_buffer.h>
+#include "defines.h"
 #include "logged_topics.h"
 #include "logger.h"
 #include "messages.h"
-
+#include <stdio.h>
 #include <dirent.h>
 #include <sys/stat.h>
 #include <errno.h>
@@ -30,17 +29,17 @@
 
 #include <hrtimer.h>
 #include <mathlib/math/Limits.hpp>
-#include <px4_platform/cpuload.h>
+#include <cpuload/cpuload.h>
 #include <getopt/getopt.h>
-// #include <events/events.h>
+#include <events/events.h>
 #include <ulog/log.h>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/sem.h>
-#include <px4_platform_common/shutdown.h>
-#include <px4_platform_common/tasks.h>
+// #include <px4_platform_common/posix.h>
+// #include <px4_platform_common/sem.h>
+#include <shutdown/shutdown.h>
+// #include <px4_platform_common/tasks.h>
 #include <ulog/mavlink_log.h>
 #include <replay/definitions.hpp>
-#include <version/version.h>
+#include <version/board_version.h>
 #include <component_information/checksums.h>
 
 // #define DBGPRINT //write status output every few seconds
@@ -57,18 +56,30 @@
 #endif /* defined(__PX4_DARWIN) */
 #endif /* defined(DBGPRINT) */
 
-using namespace px4::logger;
+using namespace nextpilot::logger;
 using namespace time_literals;
 
+RT_WEAK void lockstep_progress(int component) {
+}
+
+RT_WEAK int lockstep_register_component() {
+    return 0;
+}
+
+RT_WEAK void lockstep_unregister_component(int) {
+}
+
 /* This is used to schedule work for the logger (periodic scan for updated topics) */
-static void timer_callback(void *arg) {
+static void
+timer_callback(void *arg) {
     /* Note: we are in IRQ context here (on NuttX) */
 
     Logger::timer_callback_data_s *data = (Logger::timer_callback_data_s *)arg;
 
     int semaphore_value = 0;
 
-    px4_sem_getvalue(&data->semaphore, &semaphore_value);
+    semaphore_value = data->semaphore.value;
+    // px4_sem_getvalue(&data->semaphore, &semaphore_value);
 
     /* check the value of the semaphore: if the logger cannot keep up with running it's main loop as fast
      * as the timer_callback here increases the semaphore count, the counter would increase unbounded,
@@ -102,7 +113,7 @@ int logger_main(int argc, char *argv[]) {
     return Logger::main(argc, argv);
 }
 
-namespace px4 {
+namespace nextpilot {
 namespace logger {
 
 constexpr const char *Logger::LOG_ROOT[(int)LogType::Count];
@@ -115,19 +126,19 @@ int Logger::custom_command(int argc, char *argv[]) {
 
 #ifdef __PX4_NUTTX
 
-    if (!strcmp(argv[0], "trigger_watchdog")) {
+    if (!rt_strcmp(argv[0], "trigger_watchdog")) {
         get_instance()->trigger_watchdog_now();
         return 0;
     }
 
 #endif
 
-    if (!strcmp(argv[0], "on")) {
+    if (!rt_strcmp(argv[0], "on")) {
         get_instance()->set_arm_override(true);
         return 0;
     }
 
-    if (!strcmp(argv[0], "off")) {
+    if (!rt_strcmp(argv[0], "off")) {
         get_instance()->set_arm_override(false);
         return 0;
     }
@@ -135,21 +146,21 @@ int Logger::custom_command(int argc, char *argv[]) {
     return print_usage("unknown command");
 }
 
-int Logger::instantiate(int argc, char *argv[]) {
-    _task_id = px4_task_spawn_cmd("logger",
-                                  SCHED_DEFAULT,
-                                  SCHED_PRIORITY_LOG_CAPTURE,
-                                  PX4_STACK_ADJUSTED(3700),
-                                  (px4_main_t)&run_trampoline,
-                                  (char *const *)argv);
+// int Logger::task_spawn(int argc, char *argv[]) {
+//     _task_id = px4_task_spawn_cmd("logger",
+//                                   SCHED_DEFAULT,
+//                                   SCHED_PRIORITY_LOG_CAPTURE,
+//                                   PX4_STACK_ADJUSTED(3700),
+//                                   (px4_main_t)&run_trampoline,
+//                                   (char *const *)argv);
 
-    if (_task_id < 0) {
-        _task_id = -1;
-        return -errno;
-    }
+//     if (_task_id < 0) {
+//         _task_id = -1;
+//         return -errno;
+//     }
 
-    return 0;
-}
+//     return 0;
+// }
 
 int Logger::print_status() {
     PX4_INFO("Running in mode: %s", configured_backend_mode());
@@ -224,7 +235,7 @@ Logger *Logger::instantiate(int argc, char *argv[]) {
     int         ch;
     const char *myoptarg = nullptr;
 
-    while ((ch = px4_getopt(argc, argv, "r:b:aetfm:p:xc:", &myoptind, &myoptarg)) != EOF) {
+    while ((ch = getopt(argc, argv, "r:b:aetfm:p:xc:", &myoptind, &myoptarg)) != EOF) {
         switch (ch) {
         case 'r': {
             unsigned long r = strtoul(myoptarg, nullptr, 10);
@@ -275,13 +286,13 @@ Logger *Logger::instantiate(int argc, char *argv[]) {
             break;
 
         case 'm':
-            if (!strcmp(myoptarg, "file")) {
+            if (!rt_strcmp(myoptarg, "file")) {
                 backend = LogWriter::BackendFile;
 
-            } else if (!strcmp(myoptarg, "mavlink")) {
+            } else if (!rt_strcmp(myoptarg, "mavlink")) {
                 backend = LogWriter::BackendMavlink;
 
-            } else if (!strcmp(myoptarg, "all")) {
+            } else if (!rt_strcmp(myoptarg, "all")) {
                 backend = LogWriter::BackendAll;
 
             } else {
@@ -350,7 +361,7 @@ Logger::Logger(LogWriter::Backend backend, size_t buffer_size, uint32_t log_inte
         const orb_metadata *const *topics = orb_get_topics();
 
         for (size_t i = 0; i < orb_topics_count(); i++) {
-            if (strcmp(poll_topic_name, topics[i]->o_name) == 0) {
+            if (rt_strcmp(poll_topic_name, topics[i]->o_name) == 0) {
                 _polling_topic_meta = topics[i];
                 break;
             }
@@ -482,13 +493,14 @@ bool Logger::initialize_topics() {
         // if we are logging high-rate FIFO, reduce the logging interval & increase process priority to avoid missing samples
         PX4_INFO("Logging FIFO data: increasing task prio and logging rate");
         _log_interval = 800;
-        sched_param param{};
-        param.sched_priority = SCHED_PRIORITY_ATTITUDE_CONTROL;
-        int ret              = pthread_setschedparam(pthread_self(), SCHED_DEFAULT, &param);
+        // TODO:
+        //  sched_param param{};
+        //  param.sched_priority = SCHED_PRIORITY_ATTITUDE_CONTROL;
+        //  int ret              = pthread_setschedparam(pthread_self(), SCHED_DEFAULT, &param);
 
-        if (ret != 0) {
-            PX4_ERR("pthread_setschedparam failed (%i)", ret);
-        }
+        // if (ret != 0) {
+        //     PX4_ERR("pthread_setschedparam failed (%i)", ret);
+        // }
     }
 
     _num_excluded_optional_topic_ids = logged_topics.subscriptions().num_excluded_optional_topic_ids;
@@ -593,7 +605,7 @@ void Logger::run() {
     hrt_abstime timer_start = 0;
     uint32_t    total_bytes = 0;
 
-    px4_register_shutdown_hook(&Logger::request_stop_static);
+    register_shutdown_hook(&Logger::request_stop_static);
 
     const bool disable_boot_logging = get_disable_boot_logging();
 
@@ -607,7 +619,7 @@ void Logger::run() {
     /* timer_semaphore use case is a signal */
     // px4_sem_setprotocol(&_timer_callback_data.semaphore, SEM_PRIO_NONE);
 
-    int polling_topic_sub = -1;
+    orb_subscr_t polling_topic_sub = nullptr;
 
     if (_polling_topic_meta) {
         polling_topic_sub = orb_subscribe(_polling_topic_meta);
@@ -634,7 +646,7 @@ void Logger::run() {
     int         next_subscribe_topic_index = -1; // this is used to distribute the checks over time
 
     if (polling_topic_sub >= 0) {
-        _lockstep_component = px4_lockstep_register_component();
+        _lockstep_component = lockstep_register_component();
     }
 
     bool was_started = false;
@@ -837,23 +849,23 @@ void Logger::run() {
         update_params();
 
         // wait for next loop iteration...
-        if (polling_topic_sub >= 0) {
-            px4_lockstep_progress(_lockstep_component);
+        if (polling_topic_sub) {
+            lockstep_progress(_lockstep_component);
+            // TODO:
+            //  px4_pollfd_struct_t fds[1];
+            //  fds[0].fd     = polling_topic_sub;
+            //  fds[0].events = POLLIN;
+            //  int pret      = px4_poll(fds, 1, 20);
 
-            px4_pollfd_struct_t fds[1];
-            fds[0].fd     = polling_topic_sub;
-            fds[0].events = POLLIN;
-            int pret      = px4_poll(fds, 1, 20);
+            // if (pret < 0) {
+            //     PX4_ERR("poll failed (%i)", pret);
 
-            if (pret < 0) {
-                PX4_ERR("poll failed (%i)", pret);
-
-            } else if (pret != 0) {
-                if (fds[0].revents & POLLIN) {
-                    // need to to an orb_copy so that the next poll will not return immediately
-                    orb_copy(_polling_topic_meta, polling_topic_sub, _msg_buffer);
-                }
-            }
+            // } else if (pret != 0) {
+            //     if (fds[0].revents & POLLIN) {
+            //         // need to to an orb_copy so that the next poll will not return immediately
+            //         orb_copy(_polling_topic_meta, polling_topic_sub, _msg_buffer);
+            //     }
+            // }
 
         } else {
             /*
@@ -863,11 +875,11 @@ void Logger::run() {
              * And on linux this is quite accurate as well, but under NuttX it is not accurate,
              * because usleep() has only a granularity of CONFIG_MSEC_PER_TICK (=1ms).
              */
-            rt_sem_take(&_timer_callback_data.semaphore, RT_WAITING_FOREVER)
+            rt_sem_take(&_timer_callback_data.semaphore, RT_WAITING_FOREVER);
         }
     }
 
-    px4_lockstep_unregister_component(_lockstep_component);
+    lockstep_unregister_component(_lockstep_component);
 
     stop_log_file(LogType::Full);
     stop_log_file(LogType::Mission);
@@ -887,7 +899,7 @@ void Logger::run() {
         _mavlink_log_pub = nullptr;
     }
 
-    px4_unregister_shutdown_hook(&Logger::request_stop_static);
+    unregister_shutdown_hook(&Logger::request_stop_static);
 }
 
 void Logger::debug_print_buffer(uint32_t &total_bytes, hrt_abstime &timer_start) {
@@ -1149,7 +1161,7 @@ int Logger::create_log_dir(LogType type, tm *tt, char *log_dir, int log_dir_len)
     LogFileName &file_name = _file_name[(int)type];
 
     /* create dir on sdcard if needed */
-    int n = snprintf(log_dir, log_dir_len, "%s/", LOG_ROOT[(int)type]);
+    int n = rt_snprintf(log_dir, log_dir_len, "%s/", LOG_ROOT[(int)type]);
 
     if (n >= log_dir_len) {
         PX4_ERR("log path too long");
@@ -1176,7 +1188,7 @@ int Logger::create_log_dir(LogType type, tm *tt, char *log_dir, int log_dir_len)
         /* look for the next dir that does not exist */
         while (!file_name.has_log_dir) {
             /* format log dir: e.g. /fs/microsd/log/sess001 */
-            int n2 = snprintf(file_name.log_dir, sizeof(LogFileName::log_dir), "sess%03" PRIu16, dir_number);
+            int n2 = rt_snprintf(file_name.log_dir, sizeof(LogFileName::log_dir), "sess%03" PRIu16, dir_number);
 
             if (n2 >= (int)sizeof(LogFileName::log_dir)) {
                 PX4_ERR("log path too long (%i)", n);
@@ -1240,9 +1252,9 @@ int Logger::get_log_file_name(LogType type, char *file_name, size_t file_name_si
 
         char log_file_name_time[16] = "";
         strftime(log_file_name_time, sizeof(log_file_name_time), "%H_%M_%S", &tt);
-        snprintf(log_file_name, sizeof(LogFileName::log_file_name), "%s%s.ulg%s", log_file_name_time, replay_suffix,
-                 crypto_suffix);
-        snprintf(file_name + n, file_name_size - n, "/%s", log_file_name);
+        rt_snprintf(log_file_name, sizeof(LogFileName::log_file_name), "%s%s.ulg%s", log_file_name_time, replay_suffix,
+                    crypto_suffix);
+        rt_snprintf(file_name + n, file_name_size - n, "/%s", log_file_name);
 
         if (notify) {
             mavlink_log_info(&_mavlink_log_pub, "[logger] %s\t", file_name);
@@ -1254,7 +1266,7 @@ int Logger::get_log_file_name(LogType type, char *file_name, size_t file_name_si
             uint8_t minute = 0;
             uint8_t second = 0;
             sscanf(log_file_name_time, "%hhd_%hhd_%hhd", &hour, &minute, &second);
-            // events::send<uint16_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t>(events::ID("logger_open_file_time"),
+            events::send<uint16_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t>(events::ID("logger_open_file_time"),
                                                                                 events::Log::Info,
                                                                                 "logging: opening log file {1}-{2}-{3}/{4}_{5}_{6}.ulg", year, month, day, hour, minute, second);
         }
@@ -1271,9 +1283,9 @@ int Logger::get_log_file_name(LogType type, char *file_name, size_t file_name_si
         /* look for the next file that does not exist */
         while (file_number <= MAX_NO_LOGFILE) {
             /* format log file path: e.g. /fs/microsd/log/sess001/log001.ulg */
-            snprintf(log_file_name, sizeof(LogFileName::log_file_name), "log%03" PRIu16 "%s.ulg%s", file_number, replay_suffix,
-                     crypto_suffix);
-            snprintf(file_name + n, file_name_size - n, "/%s", log_file_name);
+            rt_snprintf(log_file_name, sizeof(LogFileName::log_file_name), "log%03" PRIu16 "%s.ulg%s", file_number, replay_suffix,
+                        crypto_suffix);
+            rt_snprintf(file_name + n, file_name_size - n, "/%s", log_file_name);
 
             if (!util::file_exist(file_name)) {
                 break;
@@ -1293,7 +1305,7 @@ int Logger::get_log_file_name(LogType type, char *file_name, size_t file_name_si
             sscanf(_file_name[(int)type].log_dir, "sess%hd", &sess);
             uint16_t index = 0;
             sscanf(log_file_name, "log%hd", &index);
-            // events::send<uint16_t, uint16_t>(events::ID("logger_open_file_sess"), events::Log::Info,
+            events::send<uint16_t, uint16_t>(events::ID("logger_open_file_sess"), events::Log::Info,
                                              "logging: opening log file sess{1}/log{2}.ulg", sess, index);
         }
     }
@@ -1306,7 +1318,7 @@ void Logger::setReplayFile(const char *file_name) {
         free(_replay_file_name);
     }
 
-    _replay_file_name = strdup(file_name);
+    _replay_file_name = rt_strdup(file_name);
 }
 
 void Logger::start_log_file(LogType type) {
@@ -1385,7 +1397,7 @@ void Logger::start_log_mavlink() {
     }
 
     // mavlink log does not work in combination with lockstep, it leads to dead-locks
-    px4_lockstep_unregister_component(_lockstep_component);
+    lockstep_unregister_component(_lockstep_component);
     _lockstep_component = -1;
 
     // initialize cpu load as early as possible to get more data
@@ -1504,7 +1516,8 @@ void Logger::print_load_callback(void *user) {
 }
 
 void Logger::initialize_load_output(PrintLoadReason reason) {
-    init_print_load(&_load);
+    // TODO:
+    // init_print_load(&_load);
 
     if (reason == PrintLoadReason::Watchdog) {
         _next_load_print = hrt_absolute_time() + 300_ms;
@@ -1539,12 +1552,12 @@ void Logger::write_load_output() {
 void Logger::write_console_output() {
     const int buffer_length = 220;
     char      buffer[buffer_length];
-    int       size   = px4_console_buffer_size();
+    int       size   = console_buffer_size();
     int       offset = -1;
     bool      first  = true;
 
     while (size > 0) {
-        int read_size = px4_console_buffer_read(buffer, buffer_length - 1, &offset);
+        int read_size = console_buffer_read(buffer, buffer_length - 1, &offset);
 
         if (read_size <= 0) { break; }
 
@@ -1583,7 +1596,7 @@ void Logger::write_format(LogType type, const orb_metadata &meta, WrittenFormats
     PX4_DEBUG("writing format for %s", meta.o_name);
 
     // Write the current format (we don't need to check if we already added it to written_formats)
-    int format_len = snprintf(msg.format, sizeof(msg.format), "%s:", meta.o_name);
+    int format_len = rt_snprintf(msg.format, sizeof(msg.format), "%s:", meta.o_name);
 
     for (int format_idx = 0; meta.o_fields[format_idx] != 0;) {
         const char *end_field = strchr(meta.o_fields + format_idx, ';');
@@ -1596,7 +1609,7 @@ void Logger::write_format(LogType type, const orb_metadata &meta, WrittenFormats
         const char *c_type = orb_get_c_type(meta.o_fields[format_idx]);
 
         if (c_type) {
-            format_len += snprintf(msg.format + format_len, sizeof(msg.format) - format_len, "%s", c_type);
+            format_len += rt_snprintf(msg.format + format_len, sizeof(msg.format) - format_len, "%s", c_type);
             ++format_idx;
         }
 
@@ -1663,7 +1676,7 @@ void Logger::write_format(LogType type, const orb_metadata &meta, WrittenFormats
             const orb_metadata        *found_topic = nullptr;
 
             for (size_t i = 0; i < orb_topics_count(); i++) {
-                if (strcmp(topics[i]->o_name, type_name) == 0) {
+                if (rt_strcmp(topics[i]->o_name, type_name) == 0) {
                     found_topic = topics[i];
                 }
             }
@@ -1772,7 +1785,7 @@ void Logger::write_info(LogType type, const char *name, const char *value) {
 
     /* construct format key (type and name) */
     size_t vlen     = strlen(value);
-    msg.key_len     = snprintf(msg.key_value_str, sizeof(msg.key_value_str), "char[%zu] %s", vlen, name);
+    msg.key_len     = rt_snprintf(msg.key_value_str, sizeof(msg.key_value_str), "char[%zu] %s", vlen, name);
     size_t msg_size = sizeof(msg) - sizeof(msg.key_value_str) + msg.key_len;
 
     /* copy string value directly to buffer */
@@ -1797,7 +1810,7 @@ void Logger::write_info_multiple(LogType type, const char *name, const char *val
 
     /* construct format key (type and name) */
     size_t vlen     = strlen(value);
-    msg.key_len     = snprintf(msg.key_value_str, sizeof(msg.key_value_str), "char[%zu] %s", vlen, name);
+    msg.key_len     = rt_snprintf(msg.key_value_str, sizeof(msg.key_value_str), "char[%zu] %s", vlen, name);
     size_t msg_size = sizeof(msg) - sizeof(msg.key_value_str) + msg.key_len;
 
     /* copy string value directly to buffer */
@@ -1842,7 +1855,7 @@ void Logger::write_info_multiple(LogType type, const char *name, int fd) {
         int       read_length       = math::min(file_size - file_offset, (off_t)sizeof(msg.key_value_str) - name_len - max_format_length);
 
         /* construct format key (type and name) */
-        msg.key_len     = snprintf(msg.key_value_str, sizeof(msg.key_value_str), "uint8_t[%i] %s", read_length, name);
+        msg.key_len     = rt_snprintf(msg.key_value_str, sizeof(msg.key_value_str), "uint8_t[%i] %s", read_length, name);
         size_t msg_size = sizeof(msg) - sizeof(msg.key_value_str) + msg.key_len;
 
         int ret = read(fd, &buffer[msg_size], read_length);
@@ -1881,7 +1894,7 @@ void Logger::write_info_template(LogType type, const char *name, T value, const 
     msg.msg_type               = static_cast<uint8_t>(ULogMessageType::INFO);
 
     /* construct format key (type and name) */
-    msg.key_len     = snprintf(msg.key_value_str, sizeof(msg.key_value_str), "%s %s", type_str, name);
+    msg.key_len     = rt_snprintf(msg.key_value_str, sizeof(msg.key_value_str), "%s %s", type_str, name);
     size_t msg_size = sizeof(msg) - sizeof(msg.key_value_str) + msg.key_len;
 
     /* copy string value directly to buffer */
@@ -1933,26 +1946,26 @@ void Logger::write_header(LogType type) {
 }
 
 void Logger::write_version(LogType type) {
-    write_info(type, "ver_sw", px4_firmware_version_string());
-    write_info(type, "ver_sw_release", px4_firmware_version());
-    uint32_t vendor_version = px4_firmware_vendor_version();
+    write_info(type, "ver_sw", get_firmware_version_string());
+    write_info(type, "ver_sw_release", get_firmware_version());
+    uint32_t vendor_version = get_firmware_vendor_version();
 
     if (vendor_version > 0) {
         write_info(type, "ver_vendor_sw_release", vendor_version);
     }
 
-    write_info(type, "ver_hw", px4_board_name());
-    const char *board_sub_type = px4_board_sub_type();
+    write_info(type, "ver_hw", get_board_name());
+    const char *board_sub_type = get_board_sub_type();
 
     if (board_sub_type && board_sub_type[0]) {
         write_info(type, "ver_hw_subtype", board_sub_type);
     }
 
     write_info(type, "sys_name", "PX4");
-    write_info(type, "sys_os_name", px4_os_name());
-    const char *os_version = px4_os_version_string();
+    write_info(type, "sys_os_name", get_os_name());
+    const char *os_version = get_os_version_string();
 
-    const char *git_branch = px4_firmware_git_branch();
+    const char *git_branch = get_firmware_git_branch();
 
     if (git_branch && git_branch[0]) {
         write_info(type, "ver_sw_branch", git_branch);
@@ -1962,28 +1975,29 @@ void Logger::write_version(LogType type) {
         write_info(type, "sys_os_ver", os_version);
     }
 
-    const char *oem_version = px4_firmware_oem_version_string();
+    const char *oem_version = get_firmware_oem_version_string();
 
     if (oem_version && oem_version[0]) {
         write_info(type, "ver_oem", oem_version);
     }
 
-    write_info(type, "sys_os_ver_release", px4_os_version());
-    write_info(type, "sys_toolchain", px4_toolchain_name());
-    write_info(type, "sys_toolchain_ver", px4_toolchain_version());
+    write_info(type, "sys_os_ver_release", get_os_version());
+    write_info(type, "sys_toolchain", get_toolchain_name());
+    write_info(type, "sys_toolchain_ver", get_toolchain_version());
 
-    const char *ecl_version = px4_ecl_lib_version_string();
+    // TODO:
+    //  const char *ecl_version = px4_ecl_lib_version_string();
 
-    if (ecl_version && ecl_version[0]) {
-        write_info(type, "sys_lib_ecl_ver", ecl_version);
-    }
+    // if (ecl_version && ecl_version[0]) {
+    //     write_info(type, "sys_lib_ecl_ver", ecl_version);
+    // }
 
     char        revision  = 'U';
     const char *chip_name = nullptr;
 
     if (board_mcu_version(&revision, &chip_name, nullptr) >= 0) {
         char mcu_ver[64];
-        snprintf(mcu_ver, sizeof(mcu_ver), "%s, rev. %c", chip_name, revision);
+        rt_snprintf(mcu_ver, sizeof(mcu_ver), "%s, rev. %c", chip_name, revision);
         write_info(type, "sys_mcu", mcu_ver);
     }
 
@@ -1993,12 +2007,13 @@ void Logger::write_version(LogType type) {
 
 #ifndef BOARD_HAS_NO_UUID
 
+    // TODO:
     /* write the UUID if enabled */
-    if (_param_sdlog_uuid.get() == 1) {
-        char px4_uuid_string[PX4_GUID_FORMAT_SIZE];
-        board_get_px4_guid_formated(px4_uuid_string, sizeof(px4_uuid_string));
-        write_info(type, "sys_uuid", px4_uuid_string);
-    }
+    // if (_param_sdlog_uuid.get() == 1) {
+    //     char px4_uuid_string[PX4_GUID_FORMAT_SIZE];
+    //     board_get_px4_guid_formated(px4_uuid_string, sizeof(px4_uuid_string));
+    //     write_info(type, "sys_uuid", px4_uuid_string);
+    // }
 
 #endif /* BOARD_HAS_NO_UUID */
 
@@ -2025,19 +2040,24 @@ void Logger::write_parameter_defaults(LogType type) {
     do {
         // skip over all parameters which are not used
         do {
-            param = param_for_index(param_idx);
+            // param = param_for_index(param_idx);
+            param = param_idx;
             ++param_idx;
-        } while (param != PARAM_INVALID && !param_used(param));
+        } while (param != PARAM_INVALID && !param_value_used(param));
 
         // save parameters which are valid AND used AND not volatile
         if (param != PARAM_INVALID) {
-            if (param_is_volatile(param)) {
+            // if (param_is_volatile(param)) {
+            //     continue;
+            // }
+
+            if (param_get_flag(param).system_required) {
                 continue;
             }
 
             // get parameter type and size
             const char  *type_str;
-            param_type_t ptype      = param_type(param);
+            param_type_t ptype      = param_get_type(param);
             size_t       value_size = 0;
 
             uint8_t default_value[math::max(sizeof(float), sizeof(int32_t))];
@@ -2062,16 +2082,16 @@ void Logger::write_parameter_defaults(LogType type) {
             }
 
             // format parameter key (type and name)
-            msg.key_len     = snprintf(msg.key_value_str, sizeof(msg.key_value_str), "%s %s", type_str, param_name(param));
+            msg.key_len     = rt_snprintf(msg.key_value_str, sizeof(msg.key_value_str), "%s %s", type_str, param_get_name(param));
             size_t msg_size = sizeof(msg) - sizeof(msg.key_value_str) + msg.key_len;
 
-            if (param_get_default_value(param, &default_value) != 0) {
+            if (param_get_default_value(param, (param_value_t *)&default_value) != 0) {
                 continue;
             }
-
-            if (param_get_system_default_value(param, &system_default_value) != 0) {
-                continue;
-            }
+            // TODO:
+            // if (param_get_system_default_value(param, &system_default_value) != 0) {
+            //     continue;
+            // }
 
             msg_size += value_size;
             msg.msg_size = msg_size - ULOG_MSG_HEADER_LEN;
@@ -2099,7 +2119,7 @@ void Logger::write_parameter_defaults(LogType type) {
                 }
             }
         }
-    } while ((param != PARAM_INVALID) && (param_idx < (int)param_count()));
+    } while ((param != PARAM_INVALID) && (param_idx < (int)param_get_count()));
 
     _writer.unlock();
     _writer.notify();
@@ -2117,15 +2137,16 @@ void Logger::write_parameters(LogType type) {
     do {
         // skip over all parameters which are not used
         do {
-            param = param_for_index(param_idx);
+            // param = param_for_index(param_idx);
+            param = param_idx;
             ++param_idx;
-        } while (param != PARAM_INVALID && !param_used(param));
+        } while (param != PARAM_INVALID && !param_value_used(param));
 
         // save parameters which are valid AND used
         if (param != PARAM_INVALID) {
             // get parameter type and size
             const char  *type_str;
-            param_type_t ptype      = param_type(param);
+            param_type_t ptype      = param_get_type(param);
             size_t       value_size = 0;
 
             switch (ptype) {
@@ -2144,7 +2165,7 @@ void Logger::write_parameters(LogType type) {
             }
 
             // format parameter key (type and name)
-            msg.key_len     = snprintf(msg.key_value_str, sizeof(msg.key_value_str), "%s %s", type_str, param_name(param));
+            msg.key_len     = rt_snprintf(msg.key_value_str, sizeof(msg.key_value_str), "%s %s", type_str, param_get_name(param));
             size_t msg_size = sizeof(msg) - sizeof(msg.key_value_str) + msg.key_len;
 
             // copy parameter value directly to buffer
@@ -2167,7 +2188,7 @@ void Logger::write_parameters(LogType type) {
 
             write_message(type, buffer, msg_size);
         }
-    } while ((param != PARAM_INVALID) && (param_idx < (int)param_count()));
+    } while ((param != PARAM_INVALID) && (param_idx < (int)param_get_count()));
 
     _writer.unlock();
     _writer.notify();
@@ -2185,15 +2206,16 @@ void Logger::write_changed_parameters(LogType type) {
     do {
         // skip over all parameters which are not used
         do {
-            param = param_for_index(param_idx);
+            // param = param_for_index(param_idx);
+            param = param_idx;
             ++param_idx;
-        } while (param != PARAM_INVALID && !param_used(param));
+        } while (param != PARAM_INVALID && !param_value_used(param));
 
         // log parameters which are valid AND used AND unsaved
         if ((param != PARAM_INVALID) && param_value_unsaved(param)) {
             // get parameter type and size
             const char  *type_str;
-            param_type_t ptype      = param_type(param);
+            param_type_t ptype      = param_get_type(param);
             size_t       value_size = 0;
 
             switch (ptype) {
@@ -2212,7 +2234,7 @@ void Logger::write_changed_parameters(LogType type) {
             }
 
             // format parameter key (type and name)
-            msg.key_len     = snprintf(msg.key_value_str, sizeof(msg.key_value_str), "%s %s", type_str, param_name(param));
+            msg.key_len     = rt_snprintf(msg.key_value_str, sizeof(msg.key_value_str), "%s %s", type_str, param_get_name(param));
             size_t msg_size = sizeof(msg) - sizeof(msg.key_value_str) + msg.key_len;
 
             // copy parameter value directly to buffer
@@ -2236,7 +2258,7 @@ void Logger::write_changed_parameters(LogType type) {
 
             write_message(type, buffer, msg_size);
         }
-    } while ((param != PARAM_INVALID) && (param_idx < (int)param_count()));
+    } while ((param != PARAM_INVALID) && (param_idx < (int)param_get_count()));
 
     _writer.unlock();
     _writer.notify();
@@ -2336,4 +2358,4 @@ $ logger on
 }
 
 }
-} // namespace px4::logger
+} // namespace nextpilot::logger

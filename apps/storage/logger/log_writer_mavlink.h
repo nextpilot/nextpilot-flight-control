@@ -15,7 +15,7 @@
 #include <uORB/topics/ulog_stream.h>
 #include <uORB/topics/ulog_stream_ack.h>
 
-namespace px4 {
+namespace nextpilot {
 namespace logger {
 
 /**
@@ -27,7 +27,7 @@ public:
     LogWriterMavlink();
     ~LogWriterMavlink();
 
-    int init() override;
+    bool init();
 
     void start_log();
 
@@ -52,10 +52,10 @@ private:
 
     ulog_stream_s                    _ulog_stream_data{};
     uORB::Publication<ulog_stream_s> _ulog_stream_pub{ORB_ID(ulog_stream)};
-    int                              _ulog_stream_ack_sub{-1};
+    orb_subscr_t                     _ulog_stream_ack_sub{nullptr};
     bool                             _need_reliable_transfer{false};
     bool                             _is_started{false};
 };
 
 }
-} // namespace px4::logger
+} // namespace nextpilot::logger

@@ -10,22 +10,21 @@
 
 #include "log_writer_file.h"
 #include "messages.h"
-
 #include <fcntl.h>
 #include <string.h>
 #include <errno.h>
-
 #include <mathlib/mathlib.h>
 // #include <px4_platform_common/posix.h>
 // #include <px4_platform_common/crypto.h>
-// #include <ulog/log.h>
+#include <ulog/log.h>
+
 #ifdef __PX4_NUTTX
 #include <systemlib/hardfault_log.h>
 #endif /* __PX4_NUTTX */
 
 using namespace time_literals;
 
-namespace px4 {
+namespace nextpilot {
 namespace logger {
 constexpr size_t LogWriterFile::_min_write_chunk;
 
@@ -184,7 +183,7 @@ void LogWriterFile::start_log(LogType type, const char *filename) {
 
     while (_buffers[(int)type].fd() >= 0) {
         unlock();
-        system_usleep(5000);
+        usleep(5000);
         lock();
     }
 
@@ -263,10 +262,10 @@ int LogWriterFile::thread_start() {
 
     sched_param param;
     /* low priority, as this is expensive disk I/O */
-    param.sched_priority = SCHED_PRIORITY_DEFAULT - 40;
+    param.sched_priority = 20;
     (void)pthread_attr_setschedparam(&thr_attr, &param);
 
-    pthread_attr_setstacksize(&thr_attr, PX4_STACK_ADJUSTED(1170));
+    pthread_attr_setstacksize(&thr_attr, 1024);
 
     int ret = pthread_create(&_thread, &thr_attr, &LogWriterFile::run_helper, this);
     pthread_attr_destroy(&thr_attr);
@@ -292,7 +291,9 @@ void LogWriterFile::thread_stop() {
 }
 
 void *LogWriterFile::run_helper(void *context) {
-    px4_prctl(PR_SET_NAME, "log_writer_file", px4_getpid());
+    // px4_prctl(PR_SET_NAME, "log_writer_file", px4_getpid());
+    rt_thread_t tid = rt_thread_self();
+    rt_strncpy(tid->parent.name, "logger_writer", RT_NAME_MAX);
 
     static_cast<LogWriterFile *>(context)->run();
     return nullptr;
@@ -597,7 +598,7 @@ size_t LogWriterFile::LogFileBuffer::get_read_ptr(void **ptr, bool *is_part) {
 }
 
 bool LogWriterFile::LogFileBuffer::start_log(const char *filename) {
-    _fd = ::open(filename, O_CREAT | O_WRONLY, PX4_O_MODE_666);
+    _fd = ::open(filename, O_CREAT | O_WRONLY | O_BINARY);
 
     if (_fd < 0) {
         PX4_ERR("Can't open log file %s, errno: %d", filename, errno);
@@ -605,7 +606,7 @@ bool LogWriterFile::LogFileBuffer::start_log(const char *filename) {
     }
 
     if (_buffer == nullptr) {
-        _buffer = (uint8_t *)px4_cache_aligned_alloc(_buffer_size);
+        _buffer = (uint8_t *)rt_malloc(_buffer_size);
 
         if (_buffer == nullptr) {
             PX4_ERR("Can't create log buffer");
@@ -663,4 +664,4 @@ void LogWriterFile::LogFileBuffer::reset() {
 }
 
 }
-} // namespace px4::logger
+} // namespace nextpilot::logger

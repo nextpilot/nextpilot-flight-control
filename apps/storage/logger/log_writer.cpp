@@ -10,7 +10,7 @@
 
 #include "log_writer.h"
 
-namespace px4 {
+namespace nextpilot {
 namespace logger {
 
 LogWriter::LogWriter(Backend configured_backend, size_t file_buffer_size) :
@@ -159,4 +159,4 @@ void LogWriter::select_write_backend(Backend sel_backend) {
 }
 
 }
-} // namespace px4::logger
+} // namespace nextpilot::logger

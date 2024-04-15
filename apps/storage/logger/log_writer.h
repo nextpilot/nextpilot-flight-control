@@ -13,7 +13,7 @@
 #include "log_writer_file.h"
 #include "log_writer_mavlink.h"
 
-namespace px4 {
+namespace nextpilot {
 namespace logger {
 
 /**
@@ -31,7 +31,7 @@ public:
     LogWriter(Backend configured_backend, size_t file_buffer_size);
     ~LogWriter();
 
-    int init() override;
+    bool init();
 
     Backend backend() const {
         return _backend;
@@ -150,4 +150,4 @@ private:
 };
 
 }
-} // namespace px4::logger
+} // namespace nextpilot::logger

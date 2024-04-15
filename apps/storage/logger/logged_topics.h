@@ -11,11 +11,10 @@
 #pragma once
 
 #include <stdint.h>
-
 #include <uORB/uORB.h>
 #include <uORB/topics/uORBTopics.hpp>
 
-namespace px4 {
+namespace nextpilot {
 namespace logger {
 
 enum class SDLogProfileMask : int32_t {
@@ -164,4 +163,4 @@ private:
 };
 
 }
-} // namespace px4::logger
+} // namespace nextpilot::logger

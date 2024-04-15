@@ -17,7 +17,7 @@
 #include <px4_platform/cpuload.h>
 #endif /* __PX4_NUTTX */
 
-namespace px4 {
+namespace nextpilot {
 namespace logger {
 
 struct watchdog_data_t {
@@ -55,4 +55,4 @@ void watchdog_initialize(const pid_t pid_logger_main, const pthread_t writer_thr
 bool watchdog_update(watchdog_data_t &watchdog_data, bool semaphore_value_saturated);
 
 }
-} // namespace px4::logger
+} // namespace nextpilot::logger

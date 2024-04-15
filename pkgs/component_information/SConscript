@@ -1,0 +1,31 @@
+import os
+import sys
+import subprocess
+import rtconfig
+from building import *
+
+cwd = GetCurrentDir()
+
+
+# cmd = [
+#     sys.executable,
+#     os.join.path(cwd, "generate_component_general.py"),
+#     File("#/component_general.json").abspath,
+#     "--compress",
+#     "${comp_metadata_types}",
+#     "--version-file ${PX4_BINARY_DIR}/src/lib/version/build_git_version.h",
+# ]
+
+# cmd = [
+#     sys.executable,
+#     os.join.path(cwd, "generate_crc.py"),
+#     File("#/component_general.json").abspath,
+# ]
+
+inc = []
+src = []
+
+objs = DefineGroup("pkg/atomic", src, depend=[""], CPPPATH=inc)
+
+
+Return("objs")
