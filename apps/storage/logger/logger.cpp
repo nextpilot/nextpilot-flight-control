@@ -336,7 +336,7 @@ Logger *Logger::instantiate(int argc, char *argv[]) {
     } else {
 #ifndef __PX4_NUTTX
         // check for replay mode
-        const char *logfile = getenv(px4::replay::ENV_FILENAME);
+        const char *logfile = getenv(nextpilot::replay::ENV_FILENAME);
 
         if (logfile) {
             logger->setReplayFile(logfile);

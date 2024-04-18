@@ -12,7 +12,7 @@
 
 #include "Replay.hpp"
 
-namespace px4 {
+namespace nextpilot {
 
 /**
  * @class ReplayEkf2
@@ -63,4 +63,4 @@ private:
     uint16_t _vehicle_visual_odometry_msg_id = msg_id_invalid;
 };
 
-} // namespace px4
+} // namespace nextpilot

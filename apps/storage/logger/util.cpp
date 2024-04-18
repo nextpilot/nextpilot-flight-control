@@ -22,6 +22,7 @@
 #include <ulog/log.h>
 // #include <px4_platform_common/time.h>
 #include <ulog/mavlink_log.h>
+#include <stdio.h>
 
 #if defined(__PX4_DARWIN)
 #include <sys/param.h>
@@ -34,7 +35,7 @@
 
 typedef decltype(statfs::f_bavail) px4_statfs_buf_f_bavail_t;
 
-namespace px4 {
+namespace nextpilot {
 namespace logger {
 namespace util {
 
@@ -63,7 +64,7 @@ bool get_log_time(struct tm *tt, int utc_offset_sec, bool boot_time) {
     if (use_clock_time) {
         /* take clock time if there's no fix (yet) */
         struct timespec ts = {};
-        px4_clock_gettime(CLOCK_REALTIME, &ts);
+        clock_gettime(CLOCK_REALTIME, &ts);
         utc_time_sec = ts.tv_sec + (ts.tv_nsec / 1e9);
 
         if (utc_time_sec < GPS_EPOCH_SECS) {
@@ -170,11 +171,11 @@ int check_free_space(const char *log_root_dir, int32_t max_log_dirs_to_keep, orb
         int  n;
 
         if (num_sess >= num_dates) {
-            n = snprintf(directory_to_delete, sizeof(directory_to_delete), "%s/sess%03u", log_root_dir, sess_idx_min);
+            n = rt_snprintf(directory_to_delete, sizeof(directory_to_delete), "%s/sess%03u", log_root_dir, sess_idx_min);
 
         } else {
-            n = snprintf(directory_to_delete, sizeof(directory_to_delete), "%s/%04u-%02u-%02u", log_root_dir, year_min, month_min,
-                         day_min);
+            n = rt_snprintf(directory_to_delete, sizeof(directory_to_delete), "%s/%04u-%02u-%02u", log_root_dir, year_min, month_min,
+                            day_min);
         }
 
         if (n >= (int)sizeof(directory_to_delete)) {
@@ -211,7 +212,7 @@ int check_free_space(const char *log_root_dir, int32_t max_log_dirs_to_keep, orb
 
 int remove_directory(const char *dir) {
     DIR           *d       = opendir(dir);
-    size_t         dir_len = strlen(dir);
+    size_t         dir_len = rt_strlen(dir);
     struct dirent *p;
     int            ret = 0;
 
@@ -228,13 +229,13 @@ int remove_directory(const char *dir) {
             continue;
         }
 
-        len = dir_len + strlen(p->d_name) + 2;
+        len = dir_len + rt_strlen(p->d_name) + 2;
         buf = new char[len];
 
         if (buf) {
             struct stat statbuf;
 
-            snprintf(buf, len, "%s/%s", dir, p->d_name);
+            rt_snprintf(buf, len, "%s/%s", dir, p->d_name);
 
             if (!stat(buf, &statbuf)) {
                 if (S_ISDIR(statbuf.st_mode)) {
@@ -262,4 +263,4 @@ int remove_directory(const char *dir) {
 
 }
 }
-} // namespace px4::logger::util
+} // namespace nextpilot::logger::util

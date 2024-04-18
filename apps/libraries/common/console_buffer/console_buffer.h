@@ -17,6 +17,10 @@
  * to the original console.
  */
 
+#pragma once
+
+#ifndef __CONSOLE_BUFFER_H__
+#define __CONSOLE_BUFFER_H__
 
 #define CONSOLE_BUFFER_DEVICE "/dev/console_buf"
 
@@ -70,3 +74,5 @@ static inline int console_buffer_read(char *buffer, int buffer_length, int *offs
 }
 
 #endif /* BOARD_ENABLE_CONSOLE_BUFFER */
+
+#endif // __CONSOLE_BUFFER_H__

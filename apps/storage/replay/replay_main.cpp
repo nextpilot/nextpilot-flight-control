@@ -10,7 +10,7 @@
 
 #include "Replay.hpp"
 
-using namespace px4;
+using namespace nextpilot;
 
 extern "C" __EXPORT int
 replay_main(int argc, char *argv[]) {

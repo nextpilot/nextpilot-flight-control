@@ -11,7 +11,7 @@
 #include "watchdog.h"
 
 #include <ulog/log.h>
-#include <px4_platform_common/tasks.h>
+// #include <px4_platform_common/tasks.h>
 
 #if defined(__PX4_NUTTX) && !defined(CONFIG_SCHED_INSTRUMENTATION)
 #error watchdog support requires CONFIG_SCHED_INSTRUMENTATION

@@ -14,13 +14,14 @@
 #include <pthread.h>
 #include <string.h>
 #include <fcntl.h>
+#include <rtthread.h>
 
 #ifdef BOARD_ENABLE_CONSOLE_BUFFER
 #ifndef BOARD_CONSOLE_BUFFER_SIZE
 #define BOARD_CONSOLE_BUFFER_SIZE (1024 * 4) // default buffer size
-#endif
+#endif // BOARD_ENABLE_CONSOLE_BUFFER
 
-static ssize_t console_buffer_write(struct file *filep, const char *buffer, size_t buflen);
+static ssize_t console_buffer_write(rt_device_t filep, const char *buffer, size_t buflen);
 
 class ConsoleBuffer {
 public:
@@ -43,7 +44,7 @@ private:
     char                _buffer[BOARD_CONSOLE_BUFFER_SIZE];
     int                 _head{0};
     int                 _tail{0};
-    struct rt_semaphore _lock = SEM_INITIALIZER(1);
+    struct rt_semaphore _lock{};
 };
 
 void ConsoleBuffer::print(bool follow) {
@@ -126,7 +127,7 @@ int ConsoleBuffer::read(char *buffer, int buffer_length, int *offset) {
             size = buffer_length;
         }
 
-        memcpy(buffer, _buffer + *offset, size);
+        rt_memcpy(buffer, _buffer + *offset, size);
 
     } else if (_tail < *offset) {
         size = BOARD_CONSOLE_BUFFER_SIZE - *offset;
@@ -135,7 +136,7 @@ int ConsoleBuffer::read(char *buffer, int buffer_length, int *offset) {
             size = buffer_length;
         }
 
-        memcpy(buffer, _buffer + *offset, size);
+        rt_memcpy(buffer, _buffer + *offset, size);
         buffer += size;
         buffer_length -= size;
 
@@ -146,7 +147,7 @@ int ConsoleBuffer::read(char *buffer, int buffer_length, int *offset) {
         }
 
         if (size_secondary > 0) {
-            memcpy(buffer, _buffer, size_secondary);
+            rt_memcpy(buffer, _buffer, size_secondary);
             size += size_secondary;
         }
     }
@@ -162,7 +163,7 @@ void console_buffer_print(bool follow) {
     g_console_buffer.print(follow);
 }
 
-ssize_t console_buffer_write(struct file *filep, const char *buffer, size_t len) {
+ssize_t console_buffer_write(rt_device_t filep, const char *buffer, size_t len) {
     g_console_buffer.write(buffer, len);
 
     // stderr still points to our original console and is available from everywhere, so we output to that.
@@ -174,25 +175,26 @@ ssize_t console_buffer_write(struct file *filep, const char *buffer, size_t len)
     return len;
 }
 
-static const struct file_operations g_console_buffer_fops = {
-    NULL,                 /* open */
-    NULL,                 /* close */
-    NULL,                 /* read */
-    console_buffer_write, /* write */
-    NULL,                 /* seek */
-    NULL                  /* ioctl */
-#ifndef CONFIG_DISABLE_POLL
-    ,
-    NULL /* poll */
-#endif
-#ifndef CONFIG_DISABLE_PSEUDOFS_OPERATIONS
-    ,
-    NULL /* unlink */
-#endif
-};
+// static const struct file_operations g_console_buffer_fops = {
+//     NULL,                 /* open */
+//     NULL,                 /* close */
+//     NULL,                 /* read */
+//     console_buffer_write, /* write */
+//     NULL,                 /* seek */
+//     NULL                  /* ioctl */
+// #ifndef CONFIG_DISABLE_POLL
+//     ,
+//     NULL /* poll */
+// #endif
+// #ifndef CONFIG_DISABLE_PSEUDOFS_OPERATIONS
+//     ,
+//     NULL /* unlink */
+// #endif
+// };
 
 int console_buffer_init() {
-    return register_driver(CONSOLE_BUFFER_DEVICE, &g_console_buffer_fops, 0666, NULL);
+    // return register_driver(CONSOLE_BUFFER_DEVICE, &g_console_buffer_fops, 0666, NULL);
+    return 0;
 }
 
 int console_buffer_size() {

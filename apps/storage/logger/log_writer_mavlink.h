@@ -12,11 +12,11 @@
 
 #include <stdint.h>
 #include <uORB/uORBPublication.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/ulog_stream.h>
 #include <uORB/topics/ulog_stream_ack.h>
 
-namespace nextpilot {
-namespace logger {
+namespace nextpilot::logger {
 
 /**
  * @class LogWriterMavlink
@@ -52,10 +52,10 @@ private:
 
     ulog_stream_s                    _ulog_stream_data{};
     uORB::Publication<ulog_stream_s> _ulog_stream_pub{ORB_ID(ulog_stream)};
-    orb_subscr_t                     _ulog_stream_ack_sub{nullptr};
-    bool                             _need_reliable_transfer{false};
-    bool                             _is_started{false};
+    // orb_subscr_t                     _ulog_stream_ack_sub{nullptr};
+    uORB::SubscriptionPolling _ulog_stream_ack_sub{ORB_ID(ulog_stream_ack)};
+    bool                      _need_reliable_transfer{false};
+    bool                      _is_started{false};
 };
 
-}
 } // namespace nextpilot::logger

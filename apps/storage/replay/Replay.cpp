@@ -46,7 +46,7 @@
 using namespace std;
 using namespace time_literals;
 
-namespace px4 {
+namespace nextpilot {
 
 char *Replay::_replay_file = nullptr;
 
@@ -1104,4 +1104,4 @@ page.
     return 0;
 }
 
-} // namespace px4
+} // namespace nextpilot

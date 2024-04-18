@@ -27,19 +27,20 @@ bool LogWriterMavlink::init() {
 }
 
 LogWriterMavlink::~LogWriterMavlink() {
-    if (_ulog_stream_ack_sub) {
-        orb_unsubscribe(_ulog_stream_ack_sub);
-    }
+    // if (_ulog_stream_ack_sub) {
+    //     orb_unsubscribe(_ulog_stream_ack_sub);
+    // }
 }
 
 void LogWriterMavlink::start_log() {
-    if (!_ulog_stream_ack_sub) {
-        _ulog_stream_ack_sub = orb_subscribe(ORB_ID(ulog_stream_ack));
-    }
+    // if (!_ulog_stream_ack_sub) {
+    //     _ulog_stream_ack_sub = orb_subscribe(ORB_ID(ulog_stream_ack));
+    // }
 
     // make sure we don't get any stale ack's by doing an orb_copy
     ulog_stream_ack_s ack;
-    orb_copy(ORB_ID(ulog_stream_ack), _ulog_stream_ack_sub, &ack);
+    // orb_copy(ORB_ID(ulog_stream_ack), _ulog_stream_ack_sub, &ack);
+    _ulog_stream_ack_sub.copy(&ack);
 
     _ulog_stream_data.msg_sequence         = 0;
     _ulog_stream_data.length               = 0;
@@ -106,24 +107,28 @@ int LogWriterMavlink::publish_message() {
     if (_need_reliable_transfer) {
         // we need to wait for an ack. Note that this blocks the main logger thread, so if a file logging
         // is already running, it will miss samples.
-        px4_pollfd_struct_t fds[1];
-        fds[0].fd            = _ulog_stream_ack_sub;
-        fds[0].events        = POLLIN;
+        // px4_pollfd_struct_t fds[1];
+        // fds[0].fd            = _ulog_stream_ack_sub;
+        // fds[0].events        = POLLIN;
         bool      got_ack    = false;
         const int timeout_ms = ulog_stream_ack_s::ACK_TIMEOUT * ulog_stream_ack_s::ACK_MAX_TRIES;
 
         hrt_abstime started = hrt_absolute_time();
 
         do {
-            int ret = px4_poll(fds, sizeof(fds) / sizeof(fds[0]), timeout_ms);
+            // int ret = px4_poll(fds, sizeof(fds) / sizeof(fds[0]), timeout_ms);
 
-            if (ret <= 0) {
-                break;
-            }
+            // if (ret <= 0) {
+            //     break;
+            // }
 
-            if (fds[0].revents & POLLIN) {
+            bool ret = true;
+            //_ulog_stream_ack_sub.poll(timeout_ms);
+
+            if (ret /*fds[0].revents & POLLIN*/) {
                 ulog_stream_ack_s ack;
-                orb_copy(ORB_ID(ulog_stream_ack), _ulog_stream_ack_sub, &ack);
+                // orb_copy(ORB_ID(ulog_stream_ack), _ulog_stream_ack_sub, &ack);
+                _ulog_stream_ack_sub.copy(&ack);
 
                 if (ack.msg_sequence == _ulog_stream_data.msg_sequence) {
                     got_ack = true;

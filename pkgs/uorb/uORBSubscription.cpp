@@ -116,9 +116,42 @@ int orb_update(orb_subscr_t handle, void *data) {
     return sub->update(data) ? 0 : -1;
 }
 
-// int orb_poll(orb_subscr_t sub, int timeout_us) {
-//     return 0;
-// }
+int orb_poll(orb_subscr_t *handle[], int len, int timeout_us) {
+    int ret = -1;
+
+    SubscriptionPolling *sub = (SubscriptionPolling *)handle;
+
+    pthread_mutex_t _mutex = PTHREAD_MUTEX_INITIALIZER;
+    pthread_cond_t  _cv    = PTHREAD_COND_INITIALIZER;
+
+    pthread_mutexattr_t attr;
+    int                 ret_attr_init  = pthread_mutexattr_init(&attr);
+    int                 ret_mutex_init = pthread_mutex_init(&_mutex, &attr);
+
+    for (int i = 0; i < len; i++) {
+        sub[i].register_callback(&_cv);
+    }
+
+    pthread_mutex_lock(&_mutex);
+    if (timeout_us == 0) {
+        // wait with no timeout
+        ret = pthread_cond_wait(&_cv, &_mutex);
+    } else {
+        // otherwise wait with timeout based on interval
+        struct timespec ts;
+        ret = pthread_cond_timedwait(&_cv, &_mutex, &ts);
+    }
+
+    for (int i = 0; i < len; i++) {
+        sub[i].unregister_callback();
+    }
+    pthread_mutex_unlock(&_mutex);
+
+    pthread_mutex_destroy(&_mutex);
+    pthread_cond_destroy(&_cv);
+
+    return ret;
+}
 
 // int orb_change_instance(orb_subscr_t handle, uint8_t instance) {
 //     // if (!sub || sub->get_instance() == instance) {

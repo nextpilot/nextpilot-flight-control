@@ -31,7 +31,7 @@
 
 #include "ReplayEkf2.hpp"
 
-namespace px4 {
+namespace nextpilot {
 
 bool ReplayEkf2::handleTopicUpdate(Subscription &sub, void *data, std::ifstream &replay_file) {
     if (sub.orb_meta == ORB_ID(ekf2_timestamps)) {
@@ -178,4 +178,4 @@ void ReplayEkf2::onExitMainLoop() {
     print_sensor_statistics(_vehicle_visual_odometry_msg_id, "vehicle_visual_odometry");
 }
 
-} // namespace px4
+} // namespace nextpilot

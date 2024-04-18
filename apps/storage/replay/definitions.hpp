@@ -10,11 +10,11 @@
 
 #pragma once
 
-namespace px4 {
+namespace nextpilot {
 namespace replay {
 
 static const char __attribute__((unused)) *ENV_FILENAME = "replay";      ///< name for getenv()
 static const char __attribute__((unused)) *ENV_MODE     = "replay_mode"; ///< name for getenv()
 
 }
-} // namespace px4::replay
+} // namespace nextpilot::replay

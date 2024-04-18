@@ -545,7 +545,7 @@ public:
         return _registered;
     }
 
-    void unregister_callback() {
+    virtual void unregister_callback() {
         if (get_node()) {
             get_node()->unregister_callback(this);
         }
@@ -598,6 +598,46 @@ protected:
 };
 
 // Subscription with callback that schedules a WorkItem
+class SubscriptionPolling : public SubscriptionCallback {
+public:
+    /**
+     * Constructor
+     *
+     * @param meta The uORB metadata (usually from the ORB_ID() macro) for the topic.
+     * @param interval_us The requested maximum update interval in microseconds.
+     * @param instance The instance for multi sub.
+     */
+    SubscriptionPolling(const orb_metadata *meta, uint32_t interval_us = 0, uint8_t instance = 0) :
+        SubscriptionCallback(meta, interval_us, instance) {
+    }
+
+    virtual ~SubscriptionPolling() {
+        unregister_callback();
+    }
+
+    void call() override {
+        if (_cv) {
+            // signal immediately if no interval, otherwise only if interval has elapsed
+            if ((_interval_us == 0) || (hrt_elapsed_time(&_last_update) >= _interval_us)) {
+                pthread_cond_signal(_cv);
+            }
+        }
+    }
+
+    bool register_callback(pthread_cond_t *cv) {
+        _cv = cv;
+        return SubscriptionCallback::register_callback();
+    }
+
+    void unregister_callback() override {
+        SubscriptionCallback::unregister_callback();
+        _cv = nullptr;
+    }
+
+private:
+    pthread_cond_t *_cv = nullptr;
+};
+
 template <typename T>
 class SubscriptionBlocking : public SubscriptionCallback {
 public:
