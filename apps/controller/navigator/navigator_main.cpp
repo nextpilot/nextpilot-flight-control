@@ -1461,6 +1461,7 @@ controller.
 extern "C" __EXPORT int navigator_main(int argc, char *argv[]) {
     return Navigator::main(argc, argv);
 }
+
 MSH_CMD_EXPORT_ALIAS(navigator_main, navigator, navigator);
 
 int navigator_start() {
@@ -1468,4 +1469,5 @@ int navigator_start() {
     int         argc   = sizeof(argv) / sizeof(argv[0]);
     return Navigator::main(argc, (char **)argv);
 }
+
 INIT_APP_EXPORT(navigator_start);

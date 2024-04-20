@@ -54,15 +54,15 @@ public:
 
     void set_mode(PrecLandMode mode) {
         _mode = mode;
-    };
+    }
 
     PrecLandMode get_mode() {
         return _mode;
-    };
+    }
 
     bool is_activated() {
         return _is_activated;
-    };
+    }
 
 private:
     void updateParams() override;
@@ -96,15 +96,15 @@ private:
     bool               _target_pose_valid{false};   /**< whether we have received a landing target position message */
     bool               _target_pose_updated{false}; /**< wether the landing target position message is updated */
 
-    MapProjection _map_ref{}; /**< class for local/global projections */
+    MapProjection _map_ref{};                       /**< class for local/global projections */
 
-    uint64_t _state_start_time{0};     /**< time when we entered current state */
-    uint64_t _last_slewrate_time{0};   /**< time when we last limited setpoint changes */
-    uint64_t _target_acquired_time{0}; /**< time when we first saw the landing target during search */
-    uint64_t _point_reached_time{0};   /**< time when we reached a setpoint */
+    uint64_t _state_start_time{0};                  /**< time when we entered current state */
+    uint64_t _last_slewrate_time{0};                /**< time when we last limited setpoint changes */
+    uint64_t _target_acquired_time{0};              /**< time when we first saw the landing target during search */
+    uint64_t _point_reached_time{0};                /**< time when we reached a setpoint */
 
-    int   _search_cnt{0};      /**< counter of how many times we had to search for the landing target */
-    float _approach_alt{0.0f}; /**< altitude at which to stay during horizontal approach */
+    int   _search_cnt{0};                           /**< counter of how many times we had to search for the landing target */
+    float _approach_alt{0.0f};                      /**< altitude at which to stay during horizontal approach */
 
     matrix::Vector2f _sp_pev;
     matrix::Vector2f _sp_pev_prev;

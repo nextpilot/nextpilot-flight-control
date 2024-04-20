@@ -120,9 +120,11 @@ public:
     void set_can_loiter_at_sp(bool can_loiter) {
         _can_loiter_at_sp = can_loiter;
     }
+
     void set_position_setpoint_triplet_updated() {
         _pos_sp_triplet_updated = true;
     }
+
     void set_mission_result_updated() {
         _mission_result_updated = true;
     }
@@ -133,27 +135,35 @@ public:
     home_position_s *get_home_position() {
         return &_home_pos;
     }
+
     mission_result_s *get_mission_result() {
         return &_mission_result;
     }
+
     position_setpoint_triplet_s *get_position_setpoint_triplet() {
         return &_pos_sp_triplet;
     }
+
     position_setpoint_triplet_s *get_reposition_triplet() {
         return &_reposition_triplet;
     }
+
     position_setpoint_triplet_s *get_takeoff_triplet() {
         return &_takeoff_triplet;
     }
+
     vehicle_global_position_s *get_global_position() {
         return &_global_pos;
     }
+
     vehicle_land_detected_s *get_land_detected() {
         return &_land_detected;
     }
+
     vehicle_local_position_s *get_local_position() {
         return &_local_pos;
     }
+
     vehicle_status_s *get_vstatus() {
         return &_vstatus;
     }
@@ -305,9 +315,11 @@ public:
     double get_mission_landing_start_lat() {
         return _mission.get_landing_start_lat();
     }
+
     double get_mission_landing_start_lon() {
         return _mission.get_landing_start_lon();
     }
+
     float get_mission_landing_start_alt() {
         return _mission.get_landing_start_alt();
     }
@@ -315,9 +327,11 @@ public:
     double get_mission_landing_lat() {
         return _mission.get_landing_lat();
     }
+
     double get_mission_landing_lon() {
         return _mission.get_landing_lon();
     }
+
     float get_mission_landing_alt() {
         return _mission.get_landing_alt();
     }
@@ -339,21 +353,27 @@ public:
     int get_loiter_min_alt() const {
         return _param_min_ltr_alt.get();
     }
+
     int get_landing_abort_min_alt() const {
         return _param_mis_lnd_abrt_alt.get();
     }
+
     float get_takeoff_min_alt() const {
         return _param_mis_takeoff_alt.get();
     }
+
     int get_takeoff_land_required() const {
         return _para_mis_takeoff_land_req.get();
     }
+
     float get_yaw_timeout() const {
         return _param_mis_yaw_tmt.get();
     }
+
     float get_yaw_threshold() const {
         return math::radians(_param_mis_yaw_err.get());
     }
+
     float get_lndmc_alt_max() const {
         return _param_lndmc_alt_max.get();
     }
@@ -400,7 +420,7 @@ private:
     orb_advert_t _mavlink_log_pub{nullptr}; /**< the uORB advert to send messages over mavlink */
 
     // Subscriptions
-    home_position_s           _home_pos{}; /**< home position for RTL */
+    home_position_s           _home_pos{};      /**< home position for RTL */
     mission_result_s          _mission_result{};
     vehicle_global_position_s _global_pos{};    /**< global vehicle position */
     sensor_gps_s              _gps_pos{};       /**< gps position */
@@ -417,9 +437,9 @@ private:
     position_setpoint_triplet_s _takeoff_triplet{};    /**< triplet for non-mission direct takeoff command */
     vehicle_roi_s               _vroi{};               /**< vehicle ROI */
 
-    perf_counter_t _loop_perf; /**< loop performance counter */
+    perf_counter_t _loop_perf;                         /**< loop performance counter */
 
-    Geofence                _geofence; /**< class that handles the geofence */
+    Geofence                _geofence;                 /**< class that handles the geofence */
     GeofenceBreachAvoidance _gf_breach_avoidance;
     hrt_abstime             _last_geofence_check = 0;
 
@@ -431,14 +451,14 @@ private:
 
     bool _shouldEngageMissionForLanding{false};
 
-    Mission      _mission;       /**< class that handles the missions */
-    Loiter       _loiter;        /**< class that handles loiter */
-    Takeoff      _takeoff;       /**< class for handling takeoff commands */
-    VtolTakeoff  _vtol_takeoff;  /**< class for handling VEHICLE_CMD_NAV_VTOL_TAKEOFF command */
-    Land         _land;          /**< class for handling land commands */
-    PrecLand     _precland;      /**< class for handling precision land commands */
-    RTL          _rtl;           /**< class that handles RTL */
-    AdsbConflict _adsb_conflict; /**< class that handles ADSB conflict avoidance */
+    Mission      _mission;                                              /**< class that handles the missions */
+    Loiter       _loiter;                                               /**< class that handles loiter */
+    Takeoff      _takeoff;                                              /**< class for handling takeoff commands */
+    VtolTakeoff  _vtol_takeoff;                                         /**< class for handling VEHICLE_CMD_NAV_VTOL_TAKEOFF command */
+    Land         _land;                                                 /**< class for handling land commands */
+    PrecLand     _precland;                                             /**< class for handling precision land commands */
+    RTL          _rtl;                                                  /**< class that handles RTL */
+    AdsbConflict _adsb_conflict;                                        /**< class that handles ADSB conflict avoidance */
 
     NavigatorMode *_navigation_mode{nullptr};                           /**< abstract pointer to current navigation mode class */
     NavigatorMode *_navigation_mode_array[NAVIGATOR_MODE_ARRAY_SIZE]{}; /**< array of navigation modes */
@@ -477,9 +497,9 @@ private:
     bool geofence_allows_position(const vehicle_global_position_s &pos);
 
     DEFINE_PARAMETERS(
-        (ParamFloat<params_id::NAV_LOITER_RAD>)_param_nav_loiter_rad, /**< loiter radius for fixedwing */
-        (ParamFloat<params_id::NAV_ACC_RAD>)_param_nav_acc_rad,       /**< acceptance for takeoff */
-        (ParamFloat<params_id::NAV_FW_ALT_RAD>)_param_nav_fw_alt_rad, /**< acceptance rad for fixedwing alt */
+        (ParamFloat<params_id::NAV_LOITER_RAD>)_param_nav_loiter_rad,      /**< loiter radius for fixedwing */
+        (ParamFloat<params_id::NAV_ACC_RAD>)_param_nav_acc_rad,            /**< acceptance for takeoff */
+        (ParamFloat<params_id::NAV_FW_ALT_RAD>)_param_nav_fw_alt_rad,      /**< acceptance rad for fixedwing alt */
         (ParamFloat<params_id::NAV_FW_ALTL_RAD>)
             _param_nav_fw_altl_rad,                                        /**< acceptance rad for fixedwing alt before landing*/
         (ParamFloat<params_id::NAV_MC_ALT_RAD>)_param_nav_mc_alt_rad,      /**< acceptance rad for multicopter alt */
@@ -488,7 +508,7 @@ private:
         (ParamFloat<params_id::NAV_TRAFF_A_HOR>)_param_nav_traff_a_hor_ct, /**< avoidance Distance Crosstrack*/
         (ParamFloat<params_id::NAV_TRAFF_A_VER>)_param_nav_traff_a_ver,    /**< avoidance Distance Vertical*/
         (ParamInt<params_id::NAV_TRAFF_COLL_T>)_param_nav_traff_collision_time,
-        (ParamFloat<params_id::NAV_MIN_LTR_ALT>)_param_min_ltr_alt, /**< minimum altitude in Loiter mode*/
+        (ParamFloat<params_id::NAV_MIN_LTR_ALT>)_param_min_ltr_alt,        /**< minimum altitude in Loiter mode*/
 
         // non-navigator parameters: Mission (MIS_*)
         (ParamFloat<params_id::MIS_TAKEOFF_ALT>)_param_mis_takeoff_alt,

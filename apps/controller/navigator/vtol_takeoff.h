@@ -38,6 +38,7 @@ public:
     void setLoiterLocation(matrix::Vector2d loiter_location) {
         _loiter_location = loiter_location;
     }
+
     void setLoiterHeight(const float height_m) {
         _loiter_height = height_m;
     }

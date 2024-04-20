@@ -125,12 +125,12 @@ void Geofence::_updateFence() {
                 polygon.fence_type    = mission_fence_point.nav_cmd;
 
                 if (is_circle_area) {
-                    polygon.circle_radius = mission_fence_point.circle_radius;
-                    current_seq += 1;
+                    polygon.circle_radius  = mission_fence_point.circle_radius;
+                    current_seq           += 1;
 
                 } else {
-                    polygon.vertex_count = mission_fence_point.vertex_count;
-                    current_seq += mission_fence_point.vertex_count;
+                    polygon.vertex_count  = mission_fence_point.vertex_count;
+                    current_seq          += mission_fence_point.vertex_count;
                 }
 
                 ++_num_polygons;
@@ -436,7 +436,9 @@ int Geofence::loadFromFile(const char *filename) {
         /* Trim leading whitespace */
         size_t textStart = 0;
 
-        while ((textStart < sizeof(line) / sizeof(char)) && isspace(line[textStart])) { textStart++; }
+        while ((textStart < sizeof(line) / sizeof(char)) && isspace(line[textStart])) {
+            textStart++;
+        }
 
         /* if the line starts with #, skip */
         if (line[textStart] == commentChar) {

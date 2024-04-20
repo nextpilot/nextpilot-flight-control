@@ -602,8 +602,8 @@ transition_result_t Commander::disarm(arm_disarm_reason_t calling_reason, bool f
     return arming_res;
 }
 
-Commander::Commander()
-    : ModuleParams(nullptr) {
+Commander::Commander() :
+    ModuleParams(nullptr) {
     _vehicle_land_detected.landed = true;
 
     _vehicle_status.system_id    = 1;

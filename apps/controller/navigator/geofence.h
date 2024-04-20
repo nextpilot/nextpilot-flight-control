@@ -121,6 +121,7 @@ public:
     int getSource() {
         return _param_gf_source.get();
     }
+
     int getGeofenceAction() {
         return _param_gf_action.get();
     }
@@ -128,9 +129,11 @@ public:
     float getMaxHorDistanceHome() {
         return _param_gf_max_hor_dist.get();
     }
+
     float getMaxVerDistanceHome() {
         return _param_gf_max_ver_dist.get();
     }
+
     bool getPredict() {
         return _param_gf_predict.get();
     }
@@ -146,6 +149,7 @@ private:
     struct PolygonInfo {
         uint16_t fence_type; ///< one of MAV_CMD_NAV_FENCE_* (can also be a circular region)
         uint16_t dataman_index;
+
         union {
             uint16_t vertex_count;
             float    circle_radius;
