@@ -8,6 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "logger"
+
 #include <console_buffer/console_buffer.h>
 #include "defines.h"
 #include "logged_topics.h"
@@ -46,15 +48,15 @@
 
 #if defined(DBGPRINT)
 // needed for mallinfo
-#if defined(__PX4_POSIX) && !defined(__PX4_DARWIN)
-#include <malloc.h>
-#endif /* __PX4_POSIX */
+#   if defined(__PX4_POSIX) && !defined(__PX4_DARWIN)
+#      include <malloc.h>
+#   endif /* __PX4_POSIX */
 
 // struct mallinfo not available on OSX?
-#if defined(__PX4_DARWIN)
-#undef DBGPRINT
-#endif /* defined(__PX4_DARWIN) */
-#endif /* defined(DBGPRINT) */
+#   if defined(__PX4_DARWIN)
+#      undef DBGPRINT
+#   endif /* defined(__PX4_DARWIN) */
+#endif    /* defined(DBGPRINT) */
 
 using namespace nextpilot::logger;
 using namespace time_literals;
@@ -70,8 +72,7 @@ RT_WEAK void lockstep_unregister_component(int) {
 }
 
 /* This is used to schedule work for the logger (periodic scan for updated topics) */
-static void
-timer_callback(void *arg) {
+static void timer_callback(void *arg) {
     /* Note: we are in IRQ context here (on NuttX) */
 
     Logger::timer_callback_data_s *data = (Logger::timer_callback_data_s *)arg;
@@ -112,6 +113,16 @@ int logger_main(int argc, char *argv[]) {
 
     return Logger::main(argc, argv);
 }
+
+MSH_CMD_EXPORT_ALIAS(logger_main, logger, logger);
+
+int logger_start() {
+    const char *argv[] = {"logger", "start"};
+    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    return logger_main(argc, (char **)argv);
+}
+
+INIT_APP_EXPORT(logger_start);
 
 namespace nextpilot {
 namespace logger {
@@ -214,8 +225,8 @@ void Logger::print_statistics(LogType type) {
         PX4_INFO("Wrote %4.2f MiB (avg %5.2f KiB/s)", (double)mebibytes, (double)(kibibytes / seconds));
     }
 
-    PX4_INFO("Since last status: dropouts: %zu (max len: %.3f s), max used buffer: %zu / %zu B",
-             stats.write_dropouts, (double)stats.max_dropout_duration, stats.high_water, _writer.get_buffer_size_file(type));
+    PX4_INFO("Since last status: dropouts: %zu (max len: %.3f s), max used buffer: %zu / %zu B", stats.write_dropouts,
+             (double)stats.max_dropout_duration, stats.high_water, _writer.get_buffer_size_file(type));
     stats.high_water           = 0;
     stats.write_dropouts       = 0;
     stats.max_dropout_duration = 0.f;
@@ -321,8 +332,7 @@ Logger *Logger::instantiate(int argc, char *argv[]) {
         return nullptr;
     }
 
-    Logger *logger = new Logger(backend, log_buffer_size, log_interval, poll_topic, log_mode, log_name_timestamp,
-                                rate_factor);
+    Logger *logger = new Logger(backend, log_buffer_size, log_interval, poll_topic, log_mode, log_name_timestamp, rate_factor);
 
 #if defined(DBGPRINT) && defined(__PX4_NUTTX)
     struct mallinfo alloc_info = mallinfo();
@@ -349,14 +359,10 @@ Logger *Logger::instantiate(int argc, char *argv[]) {
 }
 
 Logger::Logger(LogWriter::Backend backend, size_t buffer_size, uint32_t log_interval, const char *poll_topic_name,
-               LogMode log_mode, bool log_name_timestamp, float rate_factor) :
-    ModuleParams(nullptr),
-    _log_mode(log_mode),
-    _log_name_timestamp(log_name_timestamp),
-    _event_subscription(ORB_ID::event),
-    _writer(backend, buffer_size),
-    _log_interval(log_interval),
-    _rate_factor(rate_factor) {
+               LogMode log_mode, bool log_name_timestamp, float rate_factor)
+    : ModuleParams(nullptr), ModuleThread(LOG_TAG, 4096, 20, 100), _log_mode(log_mode), _log_name_timestamp(log_name_timestamp),
+      _event_subscription(ORB_ID::event), _writer(backend, buffer_size), _log_interval(log_interval),
+      _rate_factor(rate_factor) {
     if (poll_topic_name) {
         const orb_metadata *const *topics = orb_get_topics();
 
@@ -441,13 +447,17 @@ bool Logger::copy_if_updated(int sub_idx, void *buffer, bool try_to_subscribe) {
 
 const char *Logger::configured_backend_mode() const {
     switch (_writer.backend()) {
-    case LogWriter::BackendFile: return "file";
+    case LogWriter::BackendFile:
+        return "file";
 
-    case LogWriter::BackendMavlink: return "mavlink";
+    case LogWriter::BackendMavlink:
+        return "mavlink";
 
-    case LogWriter::BackendAll: return "all";
+    case LogWriter::BackendAll:
+        return "all";
 
-    default: return "several";
+    default:
+        return "several";
     }
 }
 
@@ -504,8 +514,8 @@ bool Logger::initialize_topics() {
     }
 
     _num_excluded_optional_topic_ids = logged_topics.subscriptions().num_excluded_optional_topic_ids;
-    memcpy(_excluded_optional_topic_ids, logged_topics.subscriptions().excluded_optional_topic_ids,
-           sizeof(_excluded_optional_topic_ids));
+    rt_memcpy(_excluded_optional_topic_ids, logged_topics.subscriptions().excluded_optional_topic_ids,
+              sizeof(_excluded_optional_topic_ids));
 
     delete[] (_subscriptions);
     _subscriptions = nullptr;
@@ -547,7 +557,8 @@ void Logger::run() {
         }
 
         if (util::check_free_space(LOG_ROOT[(int)LogType::Full], _param_sdlog_dirs_max.get(), _mavlink_log_pub,
-                                   _file_name[(int)LogType::Full].sess_dir_index) == 1) {
+                                   _file_name[(int)LogType::Full].sess_dir_index)
+            == 1) {
             return;
         }
     }
@@ -615,6 +626,7 @@ void Logger::run() {
 
     /* init the update timer */
     struct hrt_call timer_call {};
+
     rt_sem_init(&_timer_callback_data.semaphore, "callback_lock", 0, RT_IPC_FLAG_PRIO);
     /* timer_semaphore use case is a signal */
     // px4_sem_setprotocol(&_timer_callback_data.semaphore, SEM_PRIO_NONE);
@@ -645,7 +657,7 @@ void Logger::run() {
     hrt_abstime next_subscribe_check       = 0;
     int         next_subscribe_topic_index = -1; // this is used to distribute the checks over time
 
-    if (polling_topic_sub >= 0) {
+    if (polling_topic_sub) {
         _lockstep_component = lockstep_register_component();
     }
 
@@ -766,8 +778,8 @@ void Logger::run() {
                     _msg_buffer[1]          = (uint8_t)(write_msg_size >> 8);
                     _msg_buffer[2]          = static_cast<uint8_t>(ULogMessageType::LOGGING);
                     _msg_buffer[3]          = log_message.severity + '0';
-                    memcpy(_msg_buffer + 4, &log_message.timestamp, sizeof(ulog_message_logging_s::timestamp));
-                    strncpy((char *)(_msg_buffer + 12), message, sizeof(ulog_message_logging_s::message));
+                    rt_memcpy(_msg_buffer + 4, &log_message.timestamp, sizeof(ulog_message_logging_s::timestamp));
+                    rt_strncpy((char *)(_msg_buffer + 12), message, sizeof(ulog_message_logging_s::message));
 
                     write_message(LogType::Full, _msg_buffer, write_msg_size + ULOG_MSG_HEADER_LEN);
                 }
@@ -877,6 +889,8 @@ void Logger::run() {
              */
             rt_sem_take(&_timer_callback_data.semaphore, RT_WAITING_FOREVER);
         }
+
+        rt_thread_mdelay(_log_interval / 1000 + 1);
     }
 
     lockstep_unregister_component(_lockstep_component);
@@ -909,9 +923,9 @@ void Logger::debug_print_buffer(uint32_t &total_bytes, hrt_abstime &timer_start)
     if (deltat > 4.0) {
         struct mallinfo alloc_info = mallinfo();
         double          throughput = total_bytes / deltat;
-        PX4_INFO("%8.1f kB/s, %zu highWater,  %d dropouts, %5.3f sec max, free heap: %d",
-                 throughput / 1.e3, _statistics[0].high_water, _statistics[0].write_dropouts,
-                 (double)_statistics[0].max_dropout_duration, alloc_info.fordblks);
+        PX4_INFO("%8.1f kB/s, %zu highWater,  %d dropouts, %5.3f sec max, free heap: %d", throughput / 1.e3,
+                 _statistics[0].high_water, _statistics[0].write_dropouts, (double)_statistics[0].max_dropout_duration,
+                 alloc_info.fordblks);
 
         _statistics[0].high_water           = 0;
         _statistics[0].max_dropout_duration = 0.f;
@@ -936,9 +950,9 @@ bool Logger::handle_event_updates(uint32_t &total_bytes) {
         } else {
             // adjust sequence number
             uint16_t updated_sequence;
-            memcpy(&updated_sequence, &orb_event->event_sequence, sizeof(updated_sequence));
+            rt_memcpy(&updated_sequence, &orb_event->event_sequence, sizeof(updated_sequence));
             updated_sequence -= _event_sequence_offset;
-            memcpy(&orb_event->event_sequence, &updated_sequence, sizeof(updated_sequence));
+            rt_memcpy(&orb_event->event_sequence, &updated_sequence, sizeof(updated_sequence));
 
             size_t   msg_size       = sizeof(ulog_message_data_s) + _event_subscription.get_topic()->o_size_no_padding;
             uint16_t write_msg_size = static_cast<uint16_t>(msg_size - ULOG_MSG_HEADER_LEN);
@@ -962,9 +976,9 @@ bool Logger::handle_event_updates(uint32_t &total_bytes) {
             // mission log: only warnings or higher
             if (events::internalLogLevel(orb_event->log_levels) <= events::LogLevelInternal::Warning) {
                 if (_writer.is_started(LogType::Mission)) {
-                    memcpy(&updated_sequence, &orb_event->event_sequence, sizeof(updated_sequence));
+                    rt_memcpy(&updated_sequence, &orb_event->event_sequence, sizeof(updated_sequence));
                     updated_sequence -= _event_sequence_offset_mission;
-                    memcpy(&orb_event->event_sequence, &updated_sequence, sizeof(updated_sequence));
+                    rt_memcpy(&orb_event->event_sequence, &updated_sequence, sizeof(updated_sequence));
 
                     if (write_message(LogType::Mission, _msg_buffer, msg_size)) {
                         data_written = true;
@@ -1170,7 +1184,7 @@ int Logger::create_log_dir(LogType type, tm *tt, char *log_dir, int log_dir_len)
 
     if (tt) {
         strftime(file_name.log_dir, sizeof(LogFileName::log_dir), "%Y-%m-%d", tt);
-        strncpy(log_dir + n, file_name.log_dir, log_dir_len - n);
+        rt_strncpy(log_dir + n, file_name.log_dir, log_dir_len - n);
         int mkdir_ret = mkdir(log_dir, S_IRWXU | S_IRWXG | S_IRWXO);
 
         if (mkdir_ret != OK && errno != EEXIST) {
@@ -1182,7 +1196,7 @@ int Logger::create_log_dir(LogType type, tm *tt, char *log_dir, int log_dir_len)
         uint16_t dir_number = file_name.sess_dir_index;
 
         if (file_name.has_log_dir) {
-            strncpy(log_dir + n, file_name.log_dir, log_dir_len - n);
+            rt_strncpy(log_dir + n, file_name.log_dir, log_dir_len - n);
         }
 
         /* look for the next dir that does not exist */
@@ -1195,7 +1209,7 @@ int Logger::create_log_dir(LogType type, tm *tt, char *log_dir, int log_dir_len)
                 return -1;
             }
 
-            strncpy(log_dir + n, file_name.log_dir, log_dir_len - n);
+            rt_strncpy(log_dir + n, file_name.log_dir, log_dir_len - n);
             int mkdir_ret = mkdir(log_dir, S_IRWXU | S_IRWXG | S_IRWXO);
 
             if (mkdir_ret == 0) {
@@ -1251,7 +1265,7 @@ int Logger::get_log_file_name(LogType type, char *file_name, size_t file_name_si
         }
 
         char log_file_name_time[16] = "";
-        strftime(log_file_name_time, sizeof(log_file_name_time), "%H_%M_%S", &tt);
+        strftime(log_file_name_time, sizeof(log_file_name_time), "%Y%m%d_%H%M%S", &tt);
         rt_snprintf(log_file_name, sizeof(LogFileName::log_file_name), "%s%s.ulg%s", log_file_name_time, replay_suffix,
                     crypto_suffix);
         rt_snprintf(file_name + n, file_name_size - n, "/%s", log_file_name);
@@ -1266,9 +1280,9 @@ int Logger::get_log_file_name(LogType type, char *file_name, size_t file_name_si
             uint8_t minute = 0;
             uint8_t second = 0;
             sscanf(log_file_name_time, "%hhd_%hhd_%hhd", &hour, &minute, &second);
-            events::send<uint16_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t>(events::ID("logger_open_file_time"),
-                                                                                events::Log::Info,
-                                                                                "logging: opening log file {1}-{2}-{3}/{4}_{5}_{6}.ulg", year, month, day, hour, minute, second);
+            events::send<uint16_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t>(
+                events::ID("logger_open_file_time"), events::Log::Info, "logging: opening log file {1}-{2}-{3}/{4}_{5}_{6}.ulg",
+                year, month, day, hour, minute, second);
         }
 
     } else {
@@ -1283,8 +1297,8 @@ int Logger::get_log_file_name(LogType type, char *file_name, size_t file_name_si
         /* look for the next file that does not exist */
         while (file_number <= MAX_NO_LOGFILE) {
             /* format log file path: e.g. /fs/microsd/log/sess001/log001.ulg */
-            rt_snprintf(log_file_name, sizeof(LogFileName::log_file_name), "log%03" PRIu16 "%s.ulg%s", file_number, replay_suffix,
-                        crypto_suffix);
+            rt_snprintf(log_file_name, sizeof(LogFileName::log_file_name), "log%03" PRIu16 "%s.ulg%s", file_number,
+                        replay_suffix, crypto_suffix);
             rt_snprintf(file_name + n, file_name_size - n, "/%s", log_file_name);
 
             if (!util::file_exist(file_name)) {
@@ -1341,10 +1355,8 @@ void Logger::start_log_file(LogType type) {
     }
 
 #if defined(PX4_CRYPTO)
-    _writer.set_encryption_parameters(
-        (px4_crypto_algorithm_t)_param_sdlog_crypto_algorithm.get(),
-        _param_sdlog_crypto_key.get(),
-        _param_sdlog_crypto_exchange_key.get());
+    _writer.set_encryption_parameters((px4_crypto_algorithm_t)_param_sdlog_crypto_algorithm.get(),
+                                      _param_sdlog_crypto_key.get(), _param_sdlog_crypto_exchange_key.get());
 #endif
 
     _writer.start_log_file(type, file_name);
@@ -1510,8 +1522,7 @@ void Logger::print_load_callback(void *user) {
         break;
     }
 
-    callback_data->logger->write_info_multiple(LogType::Full, perf_name, callback_data->buffer,
-                                               callback_data->counter != 0);
+    callback_data->logger->write_info_multiple(LogType::Full, perf_name, callback_data->buffer, callback_data->counter != 0);
     ++callback_data->counter;
 }
 
@@ -1559,18 +1570,20 @@ void Logger::write_console_output() {
     while (size > 0) {
         int read_size = console_buffer_read(buffer, buffer_length - 1, &offset);
 
-        if (read_size <= 0) { break; }
+        if (read_size <= 0) {
+            break;
+        }
 
         buffer[math::min(read_size, size)] = '\0';
         write_info_multiple(LogType::Full, "boot_console_output", buffer, !first);
 
-        size -= read_size;
-        first = false;
+        size  -= read_size;
+        first  = false;
     }
 }
 
-void Logger::write_format(LogType type, const orb_metadata &meta, WrittenFormats &written_formats,
-                          ulog_message_format_s &msg, int subscription_index, int level) {
+void Logger::write_format(LogType type, const orb_metadata &meta, WrittenFormats &written_formats, ulog_message_format_s &msg,
+                          int subscription_index, int level) {
     if (level > 3) {
         // precaution: limit recursion level. If we land here it's either a bug or nested topic definitions. In the
         // latter case, increase the maximum level.
@@ -1621,7 +1634,7 @@ void Logger::write_format(LogType type, const orb_metadata &meta, WrittenFormats
             return;
         }
 
-        memcpy(msg.format + format_len, meta.o_fields + format_idx, len);
+        rt_memcpy(msg.format + format_len, meta.o_fields + format_idx, len);
         format_len += len;
         format_idx += len;
     }
@@ -1666,7 +1679,7 @@ void Logger::write_format(LogType type, const orb_metadata &meta, WrittenFormats
             break;
         }
 
-        memcpy(type_name, fmt, type_length);
+        rt_memcpy(type_name, fmt, type_length);
         type_name[type_length] = '\0';
 
         // ignore built-in types
@@ -1691,7 +1704,9 @@ void Logger::write_format(LogType type, const orb_metadata &meta, WrittenFormats
 
         fmt = strchr(fmt, ';');
 
-        if (fmt) { ++fmt; }
+        if (fmt) {
+            ++fmt;
+        }
     }
 }
 
@@ -1766,7 +1781,7 @@ void Logger::write_add_logged_msg(LogType type, LoggerSubscription &subscription
 
     int message_name_len = strlen(subscription.get_topic()->o_name);
 
-    memcpy(msg.message_name, subscription.get_topic()->o_name, message_name_len);
+    rt_memcpy(msg.message_name, subscription.get_topic()->o_name, message_name_len);
 
     size_t msg_size = sizeof(msg) - sizeof(msg.message_name) + message_name_len;
     msg.msg_size    = msg_size - ULOG_MSG_HEADER_LEN;
@@ -1790,7 +1805,7 @@ void Logger::write_info(LogType type, const char *name, const char *value) {
 
     /* copy string value directly to buffer */
     if (vlen < (sizeof(msg) - msg_size)) {
-        memcpy(&buffer[msg_size], value, vlen);
+        rt_memcpy(&buffer[msg_size], value, vlen);
         msg_size += vlen;
 
         msg.msg_size = msg_size - ULOG_MSG_HEADER_LEN;
@@ -1815,7 +1830,7 @@ void Logger::write_info_multiple(LogType type, const char *name, const char *val
 
     /* copy string value directly to buffer */
     if (vlen < (sizeof(msg) - msg_size)) {
-        memcpy(&buffer[msg_size], value, vlen);
+        rt_memcpy(&buffer[msg_size], value, vlen);
         msg_size += vlen;
 
         msg.msg_size = msg_size - ULOG_MSG_HEADER_LEN;
@@ -1861,8 +1876,8 @@ void Logger::write_info_multiple(LogType type, const char *name, int fd) {
         int ret = read(fd, &buffer[msg_size], read_length);
 
         if (ret == read_length) {
-            msg_size += read_length;
-            msg.msg_size = msg_size - ULOG_MSG_HEADER_LEN;
+            msg_size     += read_length;
+            msg.msg_size  = msg_size - ULOG_MSG_HEADER_LEN;
 
             write_message(type, buffer, msg_size);
             file_offset += ret;
@@ -1898,7 +1913,7 @@ void Logger::write_info_template(LogType type, const char *name, T value, const 
     size_t msg_size = sizeof(msg) - sizeof(msg.key_value_str) + msg.key_len;
 
     /* copy string value directly to buffer */
-    memcpy(&buffer[msg_size], &value, sizeof(T));
+    rt_memcpy(&buffer[msg_size], &value, sizeof(T));
     msg_size += sizeof(T);
 
     msg.msg_size = msg_size - ULOG_MSG_HEADER_LEN;
@@ -2093,27 +2108,27 @@ void Logger::write_parameter_defaults(LogType type) {
             //     continue;
             // }
 
-            msg_size += value_size;
-            msg.msg_size = msg_size - ULOG_MSG_HEADER_LEN;
+            msg_size     += value_size;
+            msg.msg_size  = msg_size - ULOG_MSG_HEADER_LEN;
 
             // write the system/airframe default if different from the current value
             if (memcmp(&system_default_value, &default_value, value_size) == 0) {
                 // if the system and airframe defaults are equal, we can combine them
                 if (memcmp(&value, &default_value, value_size) != 0) {
-                    memcpy(&buffer[msg_size - value_size], default_value, value_size);
+                    rt_memcpy(&buffer[msg_size - value_size], default_value, value_size);
                     msg.default_types = ulog_parameter_default_type_t::current_setup | ulog_parameter_default_type_t::system;
                     write_message(type, buffer, msg_size);
                 }
 
             } else {
                 if (memcmp(&value, &default_value, value_size) != 0) {
-                    memcpy(&buffer[msg_size - value_size], default_value, value_size);
+                    rt_memcpy(&buffer[msg_size - value_size], default_value, value_size);
                     msg.default_types = ulog_parameter_default_type_t::current_setup;
                     write_message(type, buffer, msg_size);
                 }
 
                 if (memcmp(&value, &system_default_value, value_size) != 0) {
-                    memcpy(&buffer[msg_size - value_size], system_default_value, value_size);
+                    rt_memcpy(&buffer[msg_size - value_size], system_default_value, value_size);
                     msg.default_types = ulog_parameter_default_type_t::system;
                     write_message(type, buffer, msg_size);
                 }
@@ -2344,8 +2359,9 @@ $ logger on
     PRINT_MODULE_USAGE_PARAM_FLAG('t', "Use date/time for naming log directories and files", true);
     PRINT_MODULE_USAGE_PARAM_INT('r', 280, 0, 8000, "Log rate in Hz, 0 means unlimited rate", true);
     PRINT_MODULE_USAGE_PARAM_INT('b', 12, 4, 10000, "Log buffer size in KiB", true);
-    PRINT_MODULE_USAGE_PARAM_STRING('p', nullptr, "<topic_name>",
-                                    "Poll on a topic instead of running with fixed rate (Log rate and topic intervals are ignored if this is set)", true);
+    PRINT_MODULE_USAGE_PARAM_STRING(
+        'p', nullptr, "<topic_name>",
+        "Poll on a topic instead of running with fixed rate (Log rate and topic intervals are ignored if this is set)", true);
     PRINT_MODULE_USAGE_PARAM_FLOAT('c', 1.0, 0.2, 2.0, "Log rate factor (higher is faster)", true);
     PRINT_MODULE_USAGE_COMMAND_DESCR("on", "start logging now, override arming (logger must be running)");
     PRINT_MODULE_USAGE_COMMAND_DESCR("off", "stop logging now, override arming (logger must be running)");
@@ -2357,5 +2373,5 @@ $ logger on
     return 0;
 }
 
-}
-} // namespace nextpilot::logger
+} // namespace logger
+} // namespace nextpilot

@@ -27,10 +27,8 @@ using namespace matrix;
 
 #define THROTTLE_BLENDING_DUR_S 1.0f
 
-VtolType::VtolType(VtolAttitudeControl *att_controller) :
-    ModuleParams(nullptr),
-    _attc(att_controller),
-    _common_vtol_mode(mode::ROTARY_WING) {
+VtolType::VtolType(VtolAttitudeControl *att_controller)
+    : ModuleParams(nullptr), _attc(att_controller), _common_vtol_mode(mode::ROTARY_WING) {
     _v_att                              = _attc->get_att();
     _v_att_sp                           = _attc->get_att_sp();
     _mc_virtual_att_sp                  = _attc->get_mc_virtual_att_sp();
@@ -98,7 +96,8 @@ void VtolType::update_fw_state() {
 
     // TECS didn't publish yet or the position controller didn't publish yet AFTER tecs
     // only wait on TECS we're in a mode where it is actually running
-    if ((!_tecs_running || (_tecs_running && _fw_virtual_att_sp->timestamp <= _tecs_running_ts)) && _v_control_mode->flag_control_altitude_enabled) {
+    if ((!_tecs_running || (_tecs_running && _fw_virtual_att_sp->timestamp <= _tecs_running_ts)) &&
+        _v_control_mode->flag_control_altitude_enabled) {
         waiting_on_tecs();
         _throttle_blend_start_ts = hrt_absolute_time();
 
@@ -123,7 +122,7 @@ void VtolType::update_transition_state() {
     _last_loop_ts            = t_now;
     _throttle_blend_start_ts = t_now;
 
-    _time_since_trans_start = (float)(t_now - _transition_start_timestamp) * 1e-6f;
+    _time_since_trans_start  = (float)(t_now - _transition_start_timestamp) * 1e-6f;
 
     check_quadchute_condition();
 }
@@ -143,12 +142,11 @@ float VtolType::update_and_get_backtransition_pitch_sp() {
     // get accel error, positive means decelerating too slow, need to pitch up (must reverse dec_max, as it is a positive number)
     const float accel_error_forward = dec_sp + accel_body_forward;
 
-    const float pitch_sp_new = _param_vt_b_dec_ff.get() * dec_sp + _accel_to_pitch_integ;
+    const float pitch_sp_new        = _param_vt_b_dec_ff.get() * dec_sp + _accel_to_pitch_integ;
 
-    float integrator_input = _param_vt_b_dec_i.get() * accel_error_forward;
+    float integrator_input          = _param_vt_b_dec_i.get() * accel_error_forward;
 
-    if ((pitch_sp_new >= pitch_lim && accel_error_forward > 0.0f) ||
-        (pitch_sp_new <= 0.f && accel_error_forward < 0.0f)) {
+    if ((pitch_sp_new >= pitch_lim && accel_error_forward > 0.0f) || (pitch_sp_new <= 0.f && accel_error_forward < 0.0f)) {
         integrator_input = 0.0f;
     }
 
@@ -166,14 +164,16 @@ bool VtolType::isFrontTransitionCompleted() {
 
 bool VtolType::isFrontTransitionCompletedBase() {
     // continue the transition to fw mode while monitoring airspeed for a final switch to fw mode
-    const bool airspeed_triggers_transition = PX4_ISFINITE(_airspeed_validated->calibrated_airspeed_m_s) && !_param_fw_arsp_mode.get();
-    const bool minimum_trans_time_elapsed   = _time_since_trans_start > getMinimumFrontTransitionTime();
-    const bool openloop_trans_time_elapsed  = _time_since_trans_start > getOpenLoopFrontTransitionTime();
+    const bool airspeed_triggers_transition = PX4_ISFINITE(_airspeed_validated->calibrated_airspeed_m_s) &&
+                                              !_param_fw_arsp_mode.get();
+    const bool minimum_trans_time_elapsed  = _time_since_trans_start > getMinimumFrontTransitionTime();
+    const bool openloop_trans_time_elapsed = _time_since_trans_start > getOpenLoopFrontTransitionTime();
 
-    bool transition_to_fw = false;
+    bool transition_to_fw                  = false;
 
     if (airspeed_triggers_transition) {
-        transition_to_fw = minimum_trans_time_elapsed && _airspeed_validated->calibrated_airspeed_m_s >= _param_vt_arsp_trans.get();
+        transition_to_fw = minimum_trans_time_elapsed &&
+                           _airspeed_validated->calibrated_airspeed_m_s >= _param_vt_arsp_trans.get();
 
     } else {
         transition_to_fw = openloop_trans_time_elapsed;
@@ -206,10 +206,10 @@ bool VtolType::isQuadchuteEnabled() {
         dist_to_ground = -_local_pos->z;
     }
 
-    const bool above_quadchute_altitude_limit = _param_quadchute_max_height.get() > 0 && dist_to_ground > (float)_param_quadchute_max_height.get();
+    const bool above_quadchute_altitude_limit = _param_quadchute_max_height.get() > 0 &&
+                                                dist_to_ground > (float)_param_quadchute_max_height.get();
 
-    return _v_control_mode->flag_armed &&
-           !_land_detected->landed && !above_quadchute_altitude_limit;
+    return _v_control_mode->flag_armed && !_land_detected->landed && !above_quadchute_altitude_limit;
 }
 
 bool VtolType::isMinAltBreached() {
@@ -226,9 +226,10 @@ bool VtolType::isMinAltBreached() {
 bool VtolType::isUncommandedDescent() {
     const float current_altitude = -_local_pos->z + _local_pos->ref_alt;
 
-    if (_param_vt_qc_alt_loss.get() > FLT_EPSILON && _local_pos->z_valid && _local_pos->z_global && _v_control_mode->flag_control_altitude_enabled && PX4_ISFINITE(_tecs_status->altitude_reference) && (current_altitude < _tecs_status->altitude_reference) && hrt_elapsed_time(&_tecs_status->timestamp) < 1_s) {
-        _quadchute_ref_alt = math::min(math::max(_quadchute_ref_alt, current_altitude),
-                                       _tecs_status->altitude_reference);
+    if (_param_vt_qc_alt_loss.get() > FLT_EPSILON && _local_pos->z_valid && _local_pos->z_global &&
+        _v_control_mode->flag_control_altitude_enabled && PX4_ISFINITE(_tecs_status->altitude_reference) &&
+        (current_altitude < _tecs_status->altitude_reference) && hrt_elapsed_time(&_tecs_status->timestamp) < 1_s) {
+        _quadchute_ref_alt = math::min(math::max(_quadchute_ref_alt, current_altitude), _tecs_status->altitude_reference);
 
         return (_quadchute_ref_alt - current_altitude) > _param_vt_qc_alt_loss.get();
 
@@ -243,7 +244,8 @@ bool VtolType::isFrontTransitionAltitudeLoss() {
     bool result = false;
 
     // only run if param set, altitude valid and controlled, and in transition to FW or within 5s of finishing it.
-    if (_param_vt_qc_t_alt_loss.get() > FLT_EPSILON && _local_pos->z_valid && _v_control_mode->flag_control_altitude_enabled && (_common_vtol_mode == mode::TRANSITION_TO_FW || hrt_elapsed_time(&_trans_finished_ts) < 5_s)) {
+    if (_param_vt_qc_t_alt_loss.get() > FLT_EPSILON && _local_pos->z_valid && _v_control_mode->flag_control_altitude_enabled &&
+        (_common_vtol_mode == mode::TRANSITION_TO_FW || hrt_elapsed_time(&_trans_finished_ts) < 5_s)) {
         result = _local_pos->z - _local_position_z_start_of_transition > _param_vt_qc_t_alt_loss.get();
     }
 
@@ -317,7 +319,8 @@ QuadchuteReason VtolType::getQuadchuteReason() {
 }
 
 void VtolType::handleSpecialExternalCommandQuadchute() {
-    if (_attc->get_transition_command() == vtol_vehicle_status_s::VEHICLE_VTOL_STATE_MC && _attc->get_immediate_transition() && !_quadchute_command_treated) {
+    if (_attc->get_transition_command() == vtol_vehicle_status_s::VEHICLE_VTOL_STATE_MC && _attc->get_immediate_transition() &&
+        !_quadchute_command_treated) {
         _attc->quadchute(QuadchuteReason::ExternalCommand);
         _quadchute_command_treated = true;
         _attc->reset_immediate_transition();
@@ -361,7 +364,9 @@ float VtolType::pusher_assist() {
         break;
 
     case ENABLE_WITHOUT_LAND: // disable in land mode
-        if (_attc->get_pos_sp_triplet()->current.valid && _attc->get_pos_sp_triplet()->current.type == position_setpoint_s::SETPOINT_TYPE_LAND && _v_control_mode->flag_control_auto_enabled) {
+        if (_attc->get_pos_sp_triplet()->current.valid &&
+            _attc->get_pos_sp_triplet()->current.type == position_setpoint_s::SETPOINT_TYPE_LAND &&
+            _v_control_mode->flag_control_auto_enabled) {
             return 0.0f;
         }
 
@@ -382,7 +387,9 @@ float VtolType::pusher_assist() {
         break;
 
     case ENABLE_ABOVE_MPC_LAND_ALT1_WITHOUT_LAND: // disable if below MPC_LAND_ALT1 or in land mode
-        if ((_attc->get_pos_sp_triplet()->current.valid && _attc->get_pos_sp_triplet()->current.type == position_setpoint_s::SETPOINT_TYPE_LAND && _v_control_mode->flag_control_auto_enabled) ||
+        if ((_attc->get_pos_sp_triplet()->current.valid &&
+             _attc->get_pos_sp_triplet()->current.type == position_setpoint_s::SETPOINT_TYPE_LAND &&
+             _v_control_mode->flag_control_auto_enabled) ||
             (!PX4_ISFINITE(dist_to_ground) || (dist_to_ground < _param_mpc_land_alt1.get()))) {
             return 0.0f;
         }
@@ -390,7 +397,9 @@ float VtolType::pusher_assist() {
         break;
 
     case ENABLE_ABOVE_MPC_LAND_ALT2_WITHOUT_LAND: // disable if below MPC_LAND_ALT2 or in land mode
-        if ((_attc->get_pos_sp_triplet()->current.valid && _attc->get_pos_sp_triplet()->current.type == position_setpoint_s::SETPOINT_TYPE_LAND && _v_control_mode->flag_control_auto_enabled) ||
+        if ((_attc->get_pos_sp_triplet()->current.valid &&
+             _attc->get_pos_sp_triplet()->current.type == position_setpoint_s::SETPOINT_TYPE_LAND &&
+             _v_control_mode->flag_control_auto_enabled) ||
             (!PX4_ISFINITE(dist_to_ground) || (dist_to_ground < _param_mpc_land_alt2.get()))) {
             return 0.0f;
         }
@@ -400,7 +409,8 @@ float VtolType::pusher_assist() {
 
     // if the thrust scale param is zero or the drone is not in some position or altitude control mode,
     // then the pusher-for-pitch strategy is disabled and we can return
-    if (_param_vt_fwd_thrust_sc.get() < FLT_EPSILON || !(_v_control_mode->flag_control_position_enabled || _v_control_mode->flag_control_altitude_enabled)) {
+    if (_param_vt_fwd_thrust_sc.get() < FLT_EPSILON ||
+        !(_v_control_mode->flag_control_position_enabled || _v_control_mode->flag_control_altitude_enabled)) {
         return 0.0f;
     }
 
@@ -428,11 +438,12 @@ float VtolType::pusher_assist() {
     const float pitch_setpoint = atan2f(body_z_sp(0), body_z_sp(2));
 
     // normalized pusher support throttle (standard VTOL) or tilt (tiltrotor), initialize to 0
-    float forward_thrust = 0.0f;
+    float forward_thrust     = 0.0f;
 
     float pitch_setpoint_min = math::radians(_param_vt_pitch_min.get());
 
-    if (_attc->get_pos_sp_triplet()->current.valid && _attc->get_pos_sp_triplet()->current.type == position_setpoint_s::SETPOINT_TYPE_LAND) {
+    if (_attc->get_pos_sp_triplet()->current.valid &&
+        _attc->get_pos_sp_triplet()->current.type == position_setpoint_s::SETPOINT_TYPE_LAND) {
         pitch_setpoint_min = math::radians(
             _param_vt_lnd_pitch_min.get()); // set min pitch during LAND (usually lower to generate less lift)
     }
@@ -444,7 +455,7 @@ float VtolType::pusher_assist() {
         // desired roll angle in heading frame stays the same
         const float roll_new = -asinf(body_z_sp(1));
 
-        forward_thrust = (sinf(pitch_setpoint_min) - sinf(pitch_setpoint)) * _param_vt_fwd_thrust_sc.get();
+        forward_thrust       = (sinf(pitch_setpoint_min) - sinf(pitch_setpoint)) * _param_vt_fwd_thrust_sc.get();
         // limit forward actuation to [0, 0.9]
         forward_thrust = math::constrain(forward_thrust, 0.0f, 0.9f);
 

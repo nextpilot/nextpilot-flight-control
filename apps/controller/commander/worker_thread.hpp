@@ -53,9 +53,11 @@ public:
     bool isBusy() const {
         return _state.load() != (int)State::Idle;
     }
+
     bool hasResult() const {
         return _state.load() == (int)State::Finished;
     }
+
     int getResultAndReset() {
         _state.store((int)State::Idle);
         return _ret_value;

@@ -14,12 +14,13 @@
 #include <rtdbg.h>
 #include <inttypes.h>
 #ifdef PKG_USING_HRTIMER
-#include "hrtimer.h"
+#   include "hrtimer.h"
 #endif // PKG_USING_HRTIMER
 
 #ifdef PKG_USING_UORB__
-#include "uORB.h"
-#include "topics/mavlink_log.h"
+#   include "uORB.h"
+#   include "topics/mavlink_log.h"
+
 void mavlink_vasprintf(uint8_t severity, orb_advert_t *mavlink_log_pub, const char *fmt, ...) {
     if (!fmt) {
         return;
@@ -31,11 +32,11 @@ void mavlink_vasprintf(uint8_t severity, orb_advert_t *mavlink_log_pub, const ch
 
     struct mavlink_log_s log_msg;
     log_msg.severity = severity;
-#ifdef PKG_USING_HRTIMER
+#   ifdef PKG_USING_HRTIMER
     log_msg.timestamp = hrt_absolute_time();
-#else
+#   else
     log_msg.timestamp = rt_tick_get() * 1000ULL;
-#endif // PKG_USING_HRTIMER
+#   endif // PKG_USING_HRTIMER
 
     va_list ap;
     va_start(ap, fmt);
@@ -43,11 +44,11 @@ void mavlink_vasprintf(uint8_t severity, orb_advert_t *mavlink_log_pub, const ch
     va_end(ap);
 
     if (!(*mavlink_log_pub)) {
-#ifdef __cplusplus
+#   ifdef __cplusplus
         *mavlink_log_pub = orb_advertise_queue(ORB_ID(mavlink_log), &log_msg, mavlink_log_s::ORB_QUEUE_LENGTH);
-#else
+#   else
         *mavlink_log_pub = orb_advertise_queue(ORB_ID(mavlink_log), &log_msg, MAVLINK_LOG_ORB_QUEUE_LENGTH);
-#endif //__cplusplus
+#   endif //__cplusplus
     }
 
     if (*mavlink_log_pub != nullptr) {
@@ -55,7 +56,7 @@ void mavlink_vasprintf(uint8_t severity, orb_advert_t *mavlink_log_pub, const ch
     }
 }
 #else
-#define mavlink_vasprintf(...)
+#   define mavlink_vasprintf(...)
 #endif // PKG_USING_UORB
 
 #define _MSG_PRIO_DEBUG     7

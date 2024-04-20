@@ -17,6 +17,7 @@
 class FactoryCalibrationStorage {
 public:
     FactoryCalibrationStorage();
+
     ~FactoryCalibrationStorage() {
         cleanup();
     }

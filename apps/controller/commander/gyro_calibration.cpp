@@ -191,8 +191,7 @@ int do_gyro_calibration(orb_advert_t *mavlink_log_pub) {
             /* maximum allowable calibration error */
             static constexpr float maxoff = math::radians(0.6f);
 
-            if (!worker_data.offset[0].isAllFinite() ||
-                fabsf(xdiff) > maxoff || fabsf(ydiff) > maxoff || fabsf(zdiff) > maxoff) {
+            if (!worker_data.offset[0].isAllFinite() || fabsf(xdiff) > maxoff || fabsf(ydiff) > maxoff || fabsf(zdiff) > maxoff) {
                 calibration_log_critical(mavlink_log_pub, "motion, retrying..");
                 res = PX4_ERROR;
 

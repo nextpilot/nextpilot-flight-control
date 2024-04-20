@@ -86,30 +86,33 @@ int do_level_calibration(orb_advert_t *mavlink_log_pub) {
 
             // keep min + max angles
             for (int i = 0; i < 2; ++i) {
-                if (att_euler(i) < min_angles(i)) { min_angles(i) = att_euler(i); }
+                if (att_euler(i) < min_angles(i)) {
+                    min_angles(i) = att_euler(i);
+                }
 
-                if (att_euler(i) > max_angles(i)) { max_angles(i) = att_euler(i); }
+                if (att_euler(i) > max_angles(i)) {
+                    max_angles(i) = att_euler(i);
+                }
             }
 
-            att_euler(2) = 0.f; // ignore yaw
+            att_euler(2) = 0.f;                                            // ignore yaw
 
-            att_euler = Eulerf{board_rotation_offset * Dcmf{att_euler}}; // subtract existing board rotation
-            roll_mean += att_euler.phi();
+            att_euler   = Eulerf{board_rotation_offset * Dcmf{att_euler}}; // subtract existing board rotation
+            roll_mean  += att_euler.phi();
             pitch_mean += att_euler.theta();
             ++counter;
         }
 
         // motion detection: check that (max-min angle) is within a threshold.
         // The difference is typically <0.1 deg while at rest
-        if (max_angles(0) - min_angles(0) < math::radians(0.5f) &&
-            max_angles(1) - min_angles(1) < math::radians(0.5f)) {
+        if (max_angles(0) - min_angles(0) < math::radians(0.5f) && max_angles(1) - min_angles(1) < math::radians(0.5f)) {
             had_motion = false;
         }
     }
 
     calibration_log_info(mavlink_log_pub, CAL_QGC_PROGRESS_MSG, 100);
 
-    roll_mean /= counter;
+    roll_mean  /= counter;
     pitch_mean /= counter;
 
     if (had_motion) {

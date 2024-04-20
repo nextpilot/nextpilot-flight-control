@@ -134,7 +134,8 @@ struct accel_worker_data_s {
 
 // Read specified number of accelerometer samples, calculate average and dispersion.
 static calibrate_return read_accelerometer_avg(float (&accel_avg)[MAX_ACCEL_SENS][detect_orientation_side_count][3],
-                                               unsigned orient, unsigned samples_num) {
+                                               unsigned orient,
+                                               unsigned samples_num) {
     Vector3f accel_sum[MAX_ACCEL_SENS]{};
     unsigned counts[MAX_ACCEL_SENS]{};
 
@@ -219,7 +220,8 @@ static calibrate_return accel_calibration_worker(detect_orientation_return orien
     static constexpr unsigned samples_num = 750;
     accel_worker_data_s      *worker_data = (accel_worker_data_s *)(data);
 
-    calibration_log_info(worker_data->mavlink_log_pub, "[cal] Hold still, measuring %s side",
+    calibration_log_info(worker_data->mavlink_log_pub,
+                         "[cal] Hold still, measuring %s side",
                          detect_orientation_str(orientation));
 
     read_accelerometer_avg(worker_data->accel_ref, orientation, samples_num);
@@ -280,7 +282,8 @@ static calibrate_return accel_calibration_worker(detect_orientation_return orien
         }
     }
 
-    calibration_log_info(worker_data->mavlink_log_pub, "[cal] %s side result: [%.3f %.3f %.3f]",
+    calibration_log_info(worker_data->mavlink_log_pub,
+                         "[cal] %s side result: [%.3f %.3f %.3f]",
                          detect_orientation_str(orientation),
                          (double)worker_data->accel_ref[0][orientation][0],
                          (double)worker_data->accel_ref[0][orientation][1],
@@ -327,8 +330,7 @@ int do_accel_calibration(orb_advert_t *mavlink_log_pub) {
     worker_data.mavlink_log_pub = mavlink_log_pub;
     bool data_collected[detect_orientation_side_count]{};
 
-    if (calibrate_from_orientation(mavlink_log_pub, data_collected, accel_calibration_worker, &worker_data,
-                                   false) == calibrate_return_ok) {
+    if (calibrate_from_orientation(mavlink_log_pub, data_collected, accel_calibration_worker, &worker_data, false) == calibrate_return_ok) {
         const Dcmf board_rotation   = calibration::GetBoardRotationMatrix();
         const Dcmf board_rotation_t = board_rotation.transpose();
 

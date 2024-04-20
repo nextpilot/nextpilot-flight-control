@@ -24,6 +24,7 @@
 #include <cpuload/cpuload.h>
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
+#include <module/module_thread.hpp>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/logger_status.h>
@@ -40,6 +41,7 @@ using namespace nextpilot;
 using namespace nextpilot::global_params;
 
 static constexpr hrt_abstime TRY_SUBSCRIBE_INTERVAL{20_ms}; // interval in microseconds at which we try to subscribe to a topic
+
 // if we haven't succeeded before
 
 namespace nextpilot {
@@ -50,14 +52,14 @@ static constexpr uint8_t MSG_ID_INVALID = UINT8_MAX;
 struct LoggerSubscription : public uORB::SubscriptionInterval {
     LoggerSubscription() = default;
 
-    LoggerSubscription(ORB_ID id, uint32_t interval_ms = 0, uint8_t instance = 0) :
-        uORB::SubscriptionInterval(id, interval_ms * 1000, instance) {
+    LoggerSubscription(ORB_ID id, uint32_t interval_ms = 0, uint8_t instance = 0)
+        : uORB::SubscriptionInterval(id, interval_ms * 1000, instance) {
     }
 
     uint8_t msg_id{MSG_ID_INVALID};
 };
 
-class Logger : public ModuleCommand<Logger>, public ModuleParams {
+class Logger : public ModuleCommand<Logger>, public ModuleParams, public ModuleThread {
 public:
     enum class LogMode {
         while_armed = 0,
@@ -323,12 +325,12 @@ private:
     LogMode    _log_mode;
     const bool _log_name_timestamp;
 
-    LoggerSubscription *_subscriptions{nullptr}; ///< all subscriptions for full & mission log (in front)
+    LoggerSubscription *_subscriptions{nullptr};                          ///< all subscriptions for full & mission log (in front)
     int                 _num_subscriptions{0};
     MissionSubscription _mission_subscriptions[MAX_MISSION_TOPICS_NUM]{}; ///< additional data for mission subscriptions
     int                 _num_mission_subs{0};
-    LoggerSubscription  _event_subscription;       ///< Subscription for the event topic (handled separately)
-    uint16_t            _event_sequence_offset{0}; ///< event sequence offset to account for skipped (not logged) messages
+    LoggerSubscription  _event_subscription;                              ///< Subscription for the event topic (handled separately)
+    uint16_t            _event_sequence_offset{0};                        ///< event sequence offset to account for skipped (not logged) messages
     uint16_t            _event_sequence_offset_mission{0};
 
     uint8_t _excluded_optional_topic_ids[LoggedTopics::MAX_EXCLUDED_OPTIONAL_TOPICS_NUM];
@@ -339,13 +341,13 @@ private:
     float               _rate_factor{1.0f};
     const orb_metadata *_polling_topic_meta{nullptr}; ///< if non-null, poll on this topic instead of sleeping
     orb_advert_t        _mavlink_log_pub{nullptr};
-    uint8_t             _next_topic_id{0}; ///< Logger's internal id (first topic is 0, then 1, and so on) it will assign to the next subscribed ulog topic, used for ulog_message_add_logged_s
+    uint8_t             _next_topic_id{0};            ///< Logger's internal id (first topic is 0, then 1, and so on) it will assign to the next subscribed ulog topic, used for ulog_message_add_logged_s
     char               *_replay_file_name{nullptr};
     bool                _should_stop_file_log{false}; /**< if true _next_load_print is set and file logging
                                     will be stopped after load printing (for the full log) */
-    print_load_s    _load{};                          ///< process load data
-    hrt_abstime     _next_load_print{0};              ///< timestamp when to print the process load
-    PrintLoadReason _print_load_reason{PrintLoadReason::Preflight};
+    print_load_s        _load{};                      ///< process load data
+    hrt_abstime         _next_load_print{0};          ///< timestamp when to print the process load
+    PrintLoadReason     _print_load_reason{PrintLoadReason::Preflight};
 
     uORB::PublicationMulti<logger_status_s> _logger_status_pub[(int)LogType::Count]{ORB_ID(logger_status), ORB_ID(logger_status)};
 
@@ -378,5 +380,5 @@ private:
     )
 };
 
-}
-} // namespace nextpilot::logger
+} // namespace logger
+} // namespace nextpilot

@@ -250,9 +250,7 @@ static calibrate_return mag_calibration_worker(detect_orientation_return orienta
 
     uORB::SubscriptionBlocking<sensor_gyro_s> gyro_sub{ORB_ID(sensor_gyro)};
 
-    while (fabsf(gyro_x_integral) < gyro_int_thresh_rad &&
-           fabsf(gyro_y_integral) < gyro_int_thresh_rad &&
-           fabsf(gyro_z_integral) < gyro_int_thresh_rad) {
+    while (fabsf(gyro_x_integral) < gyro_int_thresh_rad && fabsf(gyro_y_integral) < gyro_int_thresh_rad && fabsf(gyro_z_integral) < gyro_int_thresh_rad) {
         /* abort on request */
         if (calibrate_cancel_check(worker_data->mavlink_log_pub, calibration_started)) {
             result = calibrate_return_cancelled;
@@ -274,7 +272,7 @@ static calibrate_return mag_calibration_worker(detect_orientation_return orienta
             /* ensure we have a valid first timestamp */
             if (last_gyro > 0) {
                 /* integrate */
-                float delta_t = (gyro.timestamp - last_gyro) / 1e6f;
+                float delta_t    = (gyro.timestamp - last_gyro) / 1e6f;
                 gyro_x_integral += gyro.x * delta_t;
                 gyro_y_integral += gyro.y * delta_t;
                 gyro_z_integral += gyro.z * delta_t;
@@ -295,8 +293,7 @@ static calibrate_return mag_calibration_worker(detect_orientation_return orienta
     unsigned poll_errcount            = 0;
     unsigned calibration_counter_side = 0;
 
-    while (hrt_absolute_time() < calibration_deadline &&
-           calibration_counter_side < worker_data->calibration_points_perside) {
+    while (hrt_absolute_time() < calibration_deadline && calibration_counter_side < worker_data->calibration_points_perside) {
         if (calibrate_cancel_check(worker_data->mavlink_log_pub, calibration_started)) {
             result = calibrate_return_cancelled;
             break;
@@ -391,9 +388,7 @@ static calibrate_return mag_calibration_worker(detect_orientation_return orienta
 
                 calibration_counter_side++;
 
-                unsigned new_progress = progress_percentage(worker_data) +
-                                        (unsigned)((100 / worker_data->calibration_sides) * ((float)calibration_counter_side / (float)
-                                                                                                                                   worker_data->calibration_points_perside));
+                unsigned new_progress = progress_percentage(worker_data) + (unsigned)((100 / worker_data->calibration_sides) * ((float)calibration_counter_side / (float)worker_data->calibration_points_perside));
 
                 if (new_progress - worker_data->last_mag_progress > 0) {
                     // Progress indicator for side
@@ -924,8 +919,7 @@ int do_mag_calibration_quick(orb_advert_t *mavlink_log_pub, float heading_radian
         const float mag_inclination_gps = get_mag_inclination_radians(latitude, longitude);
         const float mag_strength_gps    = get_mag_strength_gauss(latitude, longitude);
 
-        const Vector3f mag_earth_pred = Dcmf(Eulerf(0, -mag_inclination_gps, mag_declination_gps)) * Vector3f(mag_strength_gps,
-                                                                                                              0, 0);
+        const Vector3f mag_earth_pred = Dcmf(Eulerf(0, -mag_inclination_gps, mag_declination_gps)) * Vector3f(mag_strength_gps, 0, 0);
 
         uORB::Subscription vehicle_attitude_sub{ORB_ID(vehicle_attitude)};
         vehicle_attitude_s attitude{};

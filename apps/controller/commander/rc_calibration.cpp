@@ -26,6 +26,7 @@
 // #include <systemlib/err.h>
 
 using namespace nextpilot;
+
 int do_trim_calibration(orb_advert_t *mavlink_log_pub) {
     uORB::Subscription manual_control_setpoint_sub{ORB_ID(manual_control_setpoint)};
     usleep(400000);

@@ -62,8 +62,8 @@ private:
     uint8_t _user_intented_nav_state{vehicle_status_s::NAVIGATION_STATE_AUTO_LOITER};   ///< Current user intended mode
     uint8_t _nav_state_after_disarming{vehicle_status_s::NAVIGATION_STATE_AUTO_LOITER}; ///< Mode that is switched into after landing/disarming
 
-    bool _ever_had_mode_change{false}; ///< true if there was ever a mode change call (also if the same mode as already set)
-    bool _had_mode_change{false};      ///< true if there was a mode change call since the last getHadModeChangeAndClear()
+    bool _ever_had_mode_change{false};                                                  ///< true if there was ever a mode change call (also if the same mode as already set)
+    bool _had_mode_change{false};                                                       ///< true if there was a mode change call since the last getHadModeChangeAndClear()
 
     DEFINE_PARAMETERS(
         (ParamInt<params_id::COM_POSCTL_NAVL>)_param_com_posctl_navl);

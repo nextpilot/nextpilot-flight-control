@@ -54,13 +54,13 @@
 #define VEHICLE_TYPE_VTOL_FIXEDROTOR           22 // VTOL standard
 #define VEHICLE_TYPE_VTOL_TAILSITTER           23
 
-#define BLINK_MSG_TIME 700000 // 3 fast blinks (in us)
+#define BLINK_MSG_TIME                         700000 // 3 fast blinks (in us)
 
 bool is_multirotor(const vehicle_status_s &current_status) {
-    return ((current_status.system_type == VEHICLE_TYPE_QUADROTOR) ||
-            (current_status.system_type == VEHICLE_TYPE_HEXAROTOR) ||
-            (current_status.system_type == VEHICLE_TYPE_OCTOROTOR) ||
-            (current_status.system_type == VEHICLE_TYPE_TRICOPTER));
+    return ((current_status.system_type == VEHICLE_TYPE_QUADROTOR)
+            || (current_status.system_type == VEHICLE_TYPE_HEXAROTOR)
+            || (current_status.system_type == VEHICLE_TYPE_OCTOROTOR)
+            || (current_status.system_type == VEHICLE_TYPE_TRICOPTER));
 }
 
 bool is_rotary_wing(const vehicle_status_s &current_status) {
@@ -68,17 +68,17 @@ bool is_rotary_wing(const vehicle_status_s &current_status) {
 }
 
 bool is_vtol(const vehicle_status_s &current_status) {
-    return (current_status.system_type == VEHICLE_TYPE_VTOL_TAILSITTER_DUOROTOR ||
-            current_status.system_type == VEHICLE_TYPE_VTOL_TAILSITTER_QUADROTOR ||
-            current_status.system_type == VEHICLE_TYPE_VTOL_TILTROTOR ||
-            current_status.system_type == VEHICLE_TYPE_VTOL_FIXEDROTOR ||
-            current_status.system_type == VEHICLE_TYPE_VTOL_TAILSITTER);
+    return (current_status.system_type == VEHICLE_TYPE_VTOL_TAILSITTER_DUOROTOR
+            || current_status.system_type == VEHICLE_TYPE_VTOL_TAILSITTER_QUADROTOR
+            || current_status.system_type == VEHICLE_TYPE_VTOL_TILTROTOR
+            || current_status.system_type == VEHICLE_TYPE_VTOL_FIXEDROTOR
+            || current_status.system_type == VEHICLE_TYPE_VTOL_TAILSITTER);
 }
 
 bool is_vtol_tailsitter(const vehicle_status_s &current_status) {
-    return (current_status.system_type == VEHICLE_TYPE_VTOL_TAILSITTER_DUOROTOR ||
-            current_status.system_type == VEHICLE_TYPE_VTOL_TAILSITTER_QUADROTOR ||
-            current_status.system_type == VEHICLE_TYPE_VTOL_TAILSITTER);
+    return (current_status.system_type == VEHICLE_TYPE_VTOL_TAILSITTER_DUOROTOR
+            || current_status.system_type == VEHICLE_TYPE_VTOL_TAILSITTER_QUADROTOR
+            || current_status.system_type == VEHICLE_TYPE_VTOL_TAILSITTER);
 }
 
 bool is_fixed_wing(const vehicle_status_s &current_status) {

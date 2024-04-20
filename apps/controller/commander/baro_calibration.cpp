@@ -52,14 +52,14 @@ static float PressureToAltitude(float pressure_pa, float temperature) {
     const float p = pressure_pa * 0.001f;
 
     /*
-     * Solve:
-     *
-     *     /        -(aR / g)     \
-     *    | (p / p1)          . T1 | - T1
-     *     \                      /
-     * h = -------------------------------  + h1
-     *                   a
-     */
+   * Solve:
+   *
+   *     /        -(aR / g)     \
+   *    | (p / p1)          . T1 | - T1
+   *     \                      /
+   * h = -------------------------------  + h1
+   *                   a
+   */
     float altitude = (((powf((p / p1), (-(a * CONSTANTS_AIR_GAS_CONST) / CONSTANTS_ONE_G))) * T1) - T1) / a;
 
     return altitude;
@@ -94,8 +94,8 @@ int do_baro_calibration(orb_advert_t *mavlink_log_pub) {
                 const float pressure_corrected = calibration[instance].Correct(sensor_baro.pressure);
 
                 timestamp_sample_sum[instance] += sensor_baro.timestamp_sample;
-                data_sum[instance] += pressure_corrected;
-                temperature_sum[instance] += sensor_baro.temperature;
+                data_sum[instance]             += pressure_corrected;
+                temperature_sum[instance]      += sensor_baro.temperature;
                 data_sum_count[instance]++;
             }
         }

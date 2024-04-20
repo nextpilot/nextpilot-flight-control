@@ -80,7 +80,8 @@ bool get_log_time(struct tm *tt, int utc_offset_sec, bool boot_time) {
     /* apply utc offset */
     utc_time_sec += utc_offset_sec;
 
-    return gmtime_r(&utc_time_sec, tt) != nullptr;
+    // return gmtime_r(&utc_time_sec, tt) != nullptr;
+    return localtime_r(&utc_time_sec, tt) != nullptr;
 }
 
 int check_free_space(const char *log_root_dir, int32_t max_log_dirs_to_keep, orb_advert_t &mavlink_log_pub,

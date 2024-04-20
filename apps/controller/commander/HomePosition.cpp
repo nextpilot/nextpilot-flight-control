@@ -15,8 +15,8 @@
 
 using namespace time_literals;
 
-HomePosition::HomePosition(const failsafe_flags_s &failsafe_flags) :
-    _failsafe_flags(failsafe_flags) {
+HomePosition::HomePosition(const failsafe_flags_s &failsafe_flags)
+    : _failsafe_flags(failsafe_flags) {
 }
 
 bool HomePosition::hasMovedFromCurrentHomeLocation() {

@@ -11,8 +11,8 @@
 #include "UserModeIntention.hpp"
 
 UserModeIntention::UserModeIntention(ModuleParams *parent, const vehicle_status_s &vehicle_status,
-                                     const HealthAndArmingChecks &health_and_arming_checks) :
-    ModuleParams(parent), _vehicle_status(vehicle_status), _health_and_arming_checks(health_and_arming_checks) {
+                                     const HealthAndArmingChecks &health_and_arming_checks)
+    : ModuleParams(parent), _vehicle_status(vehicle_status), _health_and_arming_checks(health_and_arming_checks) {
 }
 
 bool UserModeIntention::change(uint8_t user_intended_nav_state, bool allow_fallback, bool force) {

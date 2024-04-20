@@ -26,6 +26,7 @@ enum detect_orientation_return {
     ORIENTATION_RIGHTSIDE_UP,
     ORIENTATION_ERROR
 };
+
 static constexpr unsigned detect_orientation_side_count = 6;
 
 /// Wait for vehicle to become still and detect it's orientation
