@@ -21,18 +21,13 @@
 #define LOG_TAG        "dataman"
 #define PX4_STORAGEDIR ""
 
-// #include <px4_platform_common/px4_config.h>
-// #include <defines.h>
-// #include <module/module_command.hpp>
-// #include <px4_platform_common/posix.h>
-// #include <px4_platform_common/tasks.h>
-// #include <getopt/getopt.h>
-// #include <hrtimer.h>
-// #include <param/param.h>
-// #include <perf/perf_counter.h>
-// #include <stdlib.h>
-
-#include "nextpilot.h"
+#include <defines.h>
+#include <module/module_command.hpp>
+#include <getopt/getopt.h>
+#include <hrtimer.h>
+#include <param/param.h>
+#include <perf/perf_counter.h>
+#include <stdlib.h>
 #include "dataman.h"
 
 __BEGIN_DECLS
@@ -89,11 +84,13 @@ static struct {
         struct {
             int fd;
         } file;
+
         struct {
             uint8_t *data;
             uint8_t *data_end;
         } ram;
     };
+
     bool running;
     bool silence = false;
 } dm_operations_data;
@@ -113,6 +110,7 @@ typedef struct {
     unsigned char       first;
     unsigned char       func;
     ssize_t             result;
+
     union {
         struct {
             dm_item_t   item;
@@ -120,12 +118,14 @@ typedef struct {
             const void *buf;
             size_t      count;
         } write_params;
+
         struct {
             dm_item_t item;
             unsigned  index;
             void     *buf;
             size_t    count;
         } read_params;
+
         struct {
             dm_item_t item;
         } clear_params;
@@ -188,8 +188,8 @@ typedef struct {
     unsigned            max_size; /* Maximum queue size reached */
 } work_q_t;
 
-static work_q_t g_free_q; /* queue of free work items. So that we don't always need to call malloc and free*/
-static work_q_t g_work_q; /* pending work items. To be consumed by worker thread */
+static work_q_t g_free_q;                      /* queue of free work items. So that we don't always need to call malloc and free*/
+static work_q_t g_work_q;                      /* pending work items. To be consumed by worker thread */
 
 static struct rt_semaphore g_work_queued_sema; /* To notify worker thread a work item has been queued */
 static struct rt_semaphore g_init_sema;
@@ -601,7 +601,7 @@ static int _ram_clear(dm_item_t item) {
             break;
         }
 
-        buf[0] = 0;
+        buf[0]  = 0;
         offset += g_per_item_size[item];
     }
 
@@ -915,8 +915,7 @@ task_main(void *param) {
         g_key_offsets[i + 1] = g_key_offsets[i] + (g_per_item_max_index[i] * g_per_item_size[i]);
     }
 
-    unsigned max_offset = g_key_offsets[DM_KEY_NUM_KEYS - 1] + (g_per_item_max_index[DM_KEY_NUM_KEYS - 1] *
-                                                                g_per_item_size[DM_KEY_NUM_KEYS - 1]);
+    unsigned max_offset = g_key_offsets[DM_KEY_NUM_KEYS - 1] + (g_per_item_max_index[DM_KEY_NUM_KEYS - 1] * g_per_item_size[DM_KEY_NUM_KEYS - 1]);
 
     for (unsigned i = 0; i < dm_number_of_funcs; i++) {
         g_func_counts[i] = 0;
@@ -1217,4 +1216,5 @@ int dataman_main(int argc, char *argv[]) {
 
     return 0;
 }
+
 MSH_CMD_EXPORT_ALIAS(dataman_main, dataman, dataman);

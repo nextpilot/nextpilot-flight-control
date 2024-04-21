@@ -88,6 +88,7 @@
 		"RTT_Studio.Debuger.stlinkGdbServerExecutable": "C:/RT-ThreadStudio/repo/Extract/Debugger_Support_Packages/STMicroelectronics/ST-LINK_Debugger/1.6.0",
 		"RTT_Studio.Debuger.QEMU.Location": "C:/RT-ThreadStudio/repo/Extract/Debugger_Support_Packages/RealThread/QEMU/4.2.0.4",
 		"files.associations": {
+			".clang-format-ignore": "ignore",
 			"Kconfig": "kconfig",
 			"*.hpp.jinja": "jinja-cpp",
 			"random": "c",

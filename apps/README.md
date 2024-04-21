@@ -13,6 +13,6 @@
 |8|peripheral|飞控外设驱动，包括传感器、PWM、发动机、吊舱等||
 |9|simulation|虚拟飞行仿真，包括六自由度、传感器模拟、故障注入等||
 |10|telemetry|链路通信相关，包括mavlink、uavcan等||
-|11|universal|飞控框架相关，包括param、uorb、romfs、dataman、logger、relpay等||
+|11|storage|飞控参数存储，包括romfs、dataman、logger、relpay等||
 
 ## 如何新增模块
