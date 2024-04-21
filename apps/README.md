@@ -1,5 +1,7 @@
 # 飞控应用程序
 
+该文件夹存放了实现飞行控制系统所需的功能模块，包括飞行控制、组合导航、飞行仿真等。
+
 ## 当前目录结构
 
 |序号|目录|作用|说明|
@@ -13,6 +15,6 @@
 |8|peripheral|飞控外设驱动，包括传感器、PWM、发动机、吊舱等||
 |9|simulation|虚拟飞行仿真，包括六自由度、传感器模拟、故障注入等||
 |10|telemetry|链路通信相关，包括mavlink、uavcan等||
-|11|storage|飞控参数存储，包括romfs、dataman、logger、relpay等||
+|11|storage|飞控数据存储，包括romfs、dataman、logger、relpay等||
 
 ## 如何新增模块
