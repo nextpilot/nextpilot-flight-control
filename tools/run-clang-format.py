@@ -71,19 +71,12 @@ def list_files(files, recursive=False, extensions=None, exclude=None):
     for file in files:
         if recursive and os.path.isdir(file):
             for dirpath, dnames, fnames in os.walk(file):
-                fpaths = [
-                    os.path.relpath(os.path.join(dirpath, fname), os.getcwd())
-                    for fname in fnames
-                ]
+                fpaths = [os.path.relpath(os.path.join(dirpath, fname), os.getcwd()) for fname in fnames]
                 for pattern in exclude:
                     # os.walk() supports trimming down the dnames list
                     # by modifying it in-place,
                     # to avoid unnecessary directory listings.
-                    dnames[:] = [
-                        x
-                        for x in dnames
-                        if not fnmatch.fnmatch(os.path.join(dirpath, x), pattern)
-                    ]
+                    dnames[:] = [x for x in dnames if not fnmatch.fnmatch(os.path.join(dirpath, x), pattern)]
                     fpaths = [x for x in fpaths if not fnmatch.fnmatch(x, pattern)]
 
                 for f in fpaths:
@@ -173,18 +166,10 @@ def run_clang_format_diff(args, file):
 
     try:
         proc = subprocess.Popen(
-            invocation,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            universal_newlines=True,
-            **encoding_py3
+            invocation, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, **encoding_py3
         )
     except OSError as exc:
-        raise DiffError(
-            "Command '{}' failed to start: {}".format(
-                subprocess.list2cmdline(invocation), exc
-            )
-        )
+        raise DiffError("Command '{}' failed to start: {}".format(subprocess.list2cmdline(invocation), exc))
     proc_stdout = proc.stdout
     proc_stderr = proc.stderr
     if sys.version_info[0] < 3:
@@ -199,9 +184,7 @@ def run_clang_format_diff(args, file):
     proc.wait()
     if proc.returncode:
         raise DiffError(
-            "Command '{}' returned non-zero exit status {}".format(
-                subprocess.list2cmdline(invocation), proc.returncode
-            ),
+            "Command '{}' returned non-zero exit status {}".format(subprocess.list2cmdline(invocation), proc.returncode),
             errs,
         )
     if args.in_place:
@@ -265,9 +248,7 @@ def main():
     )
     parser.add_argument(
         "--extensions",
-        help="comma separated list of file extensions (default: {})".format(
-            DEFAULT_EXTENSIONS
-        ),
+        help="comma separated list of file extensions (default: {})".format(DEFAULT_EXTENSIONS),
         default=DEFAULT_EXTENSIONS,
     )
     parser.add_argument(
@@ -277,7 +258,10 @@ def main():
         help="run recursively over directories",
     )
     parser.add_argument(
-        "-d", "--dry-run", action="store_true", help="just print the list of files"
+        "-d",
+        "--dry-run",
+        action="store_true",
+        help="just print the list of files",
     )
     parser.add_argument(
         "-i",
@@ -285,7 +269,11 @@ def main():
         action="store_true",
         help="format file instead of printing differences",
     )
-    parser.add_argument("files", metavar="file", nargs="+")
+    parser.add_argument(
+        "files",
+        metavar="file",
+        nargs="+",
+    )
     parser.add_argument(
         "-q",
         "--quiet",
@@ -311,8 +299,7 @@ def main():
         metavar="PATTERN",
         action="append",
         default=[],
-        help="exclude paths matching the given glob-like pattern(s)"
-        " from recursive search",
+        help="exclude paths matching the given glob-like pattern(s)" " from recursive search",
     )
     parser.add_argument(
         "--style",
@@ -351,9 +338,7 @@ def main():
     except OSError as e:
         print_trouble(
             parser.prog,
-            "Command '{}' failed to start: {}".format(
-                subprocess.list2cmdline(version_invocation), e
-            ),
+            "Command '{}' failed to start: {}".format(subprocess.list2cmdline(version_invocation), e),
             use_colors=colored_stderr,
         )
         return ExitStatus.TROUBLE
