@@ -45,7 +45,7 @@ public:
 
     virtual rt_err_t open(rt_uint16_t oflag) {
         return 0;
-    };
+    }
 
     virtual rt_err_t control(int cmd, void *args) {
         return 0;
@@ -53,23 +53,23 @@ public:
 
     virtual rt_err_t close() {
         return 0;
-    };
+    }
 
     virtual rt_ssize_t read(rt_off_t pos, void *buffer, rt_size_t size) {
         return 0;
-    };
+    }
 
     virtual rt_ssize_t write(rt_off_t pos, const void *buffer, rt_size_t size) {
         return 0;
-    };
+    }
 
     virtual off_t seek(off_t offset, int whence) {
         return 0;
-    };
+    }
 
     virtual int ioctl(int cmd, unsigned long arg) {
         return 0;
-    };
+    }
 
     rt_err_t register_driver(const char *devname, rt_uint16_t flags) {
         rt_err_t ret = -1;
@@ -151,9 +151,11 @@ public:
 
 protected:
     // 注册设备的名称比如/dev/ist8310_1
-    const char    *_dev_name{nullptr};
+    const char *_dev_name{nullptr};
+
     union DeviceId _dev_id {};
-    bool           _registered{false};
+
+    bool _registered{false};
 
     // 驱动的名称，比如ist8310
     const char *_bus_name{nullptr};

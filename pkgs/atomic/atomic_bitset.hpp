@@ -12,7 +12,7 @@
 
 #ifdef __cplusplus
 
-#include <atomic.hpp>
+#   include <atomic.hpp>
 
 template <size_t N>
 class AtomicBitset {
@@ -26,8 +26,8 @@ public:
             uint32_t y = x.load();
 
             while (y) {
-                total += y & 1;
-                y >>= 1;
+                total  += y & 1;
+                y     >>= 1;
             }
         }
 
@@ -61,8 +61,7 @@ public:
 
 private:
     static constexpr uint8_t BITS_PER_ELEMENT = 32;
-    static constexpr size_t  ARRAY_SIZE       = ((N % BITS_PER_ELEMENT) == 0) ? (N / BITS_PER_ELEMENT) :
-                                                                                (N / BITS_PER_ELEMENT + 1);
+    static constexpr size_t  ARRAY_SIZE       = ((N % BITS_PER_ELEMENT) == 0) ? (N / BITS_PER_ELEMENT) : (N / BITS_PER_ELEMENT + 1);
     static constexpr size_t  ALLOCATED_BITS   = ARRAY_SIZE * BITS_PER_ELEMENT;
 
     size_t array_index(size_t position) const {

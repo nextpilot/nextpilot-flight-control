@@ -55,21 +55,21 @@ TEST(BoardIdentityTest, UUID32BufferOverflow) {
     char buf_12[12];
     board_get_uuid32_formated(buf_12, sizeof(buf_12), "%02x", NULL); // No separator
     EXPECT_EQ(0, strncmp(groundtruth_uuid_no_sep, buf_12, sizeof(buf_12) - 1));
-    board_get_uuid32_formated(buf_12, sizeof(buf_12), "%02x", "-"); // With separator
+    board_get_uuid32_formated(buf_12, sizeof(buf_12), "%02x", "-");  // With separator
     EXPECT_EQ(0, strncmp(groundtruth_uuid_with_sep, buf_12, sizeof(buf_12) - 1));
 
     // 33 bytes: Should be enough for UUID with no separator, but not enough for UUID with separator
     char buf_33[33];
     board_get_uuid32_formated(buf_33, sizeof(buf_33), "%02x", NULL); // No separator
     EXPECT_EQ(0, strncmp(groundtruth_uuid_no_sep, buf_33, sizeof(buf_33) - 1));
-    board_get_uuid32_formated(buf_33, sizeof(buf_33), "%02x", "-"); // With separator
+    board_get_uuid32_formated(buf_33, sizeof(buf_33), "%02x", "-");  // With separator
     EXPECT_EQ(0, strncmp(groundtruth_uuid_with_sep, buf_33, sizeof(buf_33) - 1));
 
     // 40 bytes: Should be enough for UUID for all cases
     char buf_40[40];
     board_get_uuid32_formated(buf_40, sizeof(buf_40), "%02x", NULL); // No separator
     EXPECT_EQ(0, strncmp(groundtruth_uuid_no_sep, buf_40, sizeof(buf_40) - 1));
-    board_get_uuid32_formated(buf_40, sizeof(buf_40), "%02x", "-"); // With separator
+    board_get_uuid32_formated(buf_40, sizeof(buf_40), "%02x", "-");  // With separator
     EXPECT_EQ(0, strncmp(groundtruth_uuid_with_sep, buf_40, sizeof(buf_40) - 1));
 }
 

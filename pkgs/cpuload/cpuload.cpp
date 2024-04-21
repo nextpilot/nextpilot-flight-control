@@ -23,16 +23,16 @@
 
 #if defined(__PX4_NUTTX) && defined(CONFIG_SCHED_INSTRUMENTATION)
 __BEGIN_DECLS
-#include <nuttx/sched_note.h>
+#   include <nuttx/sched_note.h>
 
 __EXPORT struct system_load_s system_load;
 
-#if defined(CONFIG_SEGGER_SYSVIEW)
-#include <nuttx/note/note_sysview.h>
-#ifndef CONFIG_SEGGER_SYSVIEW_PREFIX
-#error Systemview enabled but prefix is not
-#endif
-#endif
+#   if defined(CONFIG_SEGGER_SYSVIEW)
+#      include <nuttx/note/note_sysview.h>
+#      ifndef CONFIG_SEGGER_SYSVIEW_PREFIX
+#         error Systemview enabled but prefix is not
+#      endif
+#   endif
 
 static atomic_int cpuload_monitor_all_count{0};
 
@@ -66,15 +66,15 @@ void cpuload_initialize_once() {
 
     int static_tasks_count = 2; // there are at least 2 threads that should be initialized statically - "idle" and "init"
 
-#ifdef CONFIG_PAGING
+#   ifdef CONFIG_PAGING
     static_tasks_count++; // include paging thread in initialization
-#endif                    /* CONFIG_PAGING */
-#if CONFIG_SCHED_WORKQUEUE
+#   endif                 /* CONFIG_PAGING */
+#   if CONFIG_SCHED_WORKQUEUE
     static_tasks_count++; // include high priority work0 thread in initialization
-#endif                    /* CONFIG_SCHED_WORKQUEUE */
-#if CONFIG_SCHED_LPWORK
+#   endif                 /* CONFIG_SCHED_WORKQUEUE */
+#   if CONFIG_SCHED_LPWORK
     static_tasks_count++; // include low priority work1 thread in initialization
-#endif                    /* CONFIG_SCHED_WORKQUEUE */
+#   endif                 /* CONFIG_SCHED_WORKQUEUE */
 
     // perform static initialization of "system" threads
     for (system_load.total_count = 0; system_load.total_count < static_tasks_count; system_load.total_count++) {
@@ -104,9 +104,9 @@ void sched_note_start(FAR struct tcb_s *tcb) {
         }
     }
 
-#ifdef CONFIG_SEGGER_SYSVIEW
+#   ifdef CONFIG_SEGGER_SYSVIEW
     sysview_sched_note_start(tcb);
-#endif
+#   endif
 }
 
 void sched_note_stop(FAR struct tcb_s *tcb) {
@@ -124,9 +124,9 @@ void sched_note_stop(FAR struct tcb_s *tcb) {
         }
     }
 
-#ifdef CONFIG_SEGGER_SYSVIEW
+#   ifdef CONFIG_SEGGER_SYSVIEW
     sysview_sched_note_stop(tcb);
-#endif
+#   endif
 }
 
 void sched_note_suspend(FAR struct tcb_s *tcb) {
@@ -150,9 +150,9 @@ void sched_note_suspend(FAR struct tcb_s *tcb) {
         }
     }
 
-#ifdef CONFIG_SEGGER_SYSVIEW
+#   ifdef CONFIG_SEGGER_SYSVIEW
     sysview_sched_note_suspend(tcb);
-#endif
+#   endif
 }
 
 void sched_note_resume(FAR struct tcb_s *tcb) {
@@ -177,20 +177,20 @@ void sched_note_resume(FAR struct tcb_s *tcb) {
         }
     }
 
-#ifdef CONFIG_SEGGER_SYSVIEW
+#   ifdef CONFIG_SEGGER_SYSVIEW
     sysview_sched_note_resume(tcb);
-#endif
+#   endif
 }
 
-#ifdef CONFIG_SEGGER_SYSVIEW
+#   ifdef CONFIG_SEGGER_SYSVIEW
 
-#ifdef CONFIG_SCHED_INSTRUMENTATION_IRQHANDLER
+#      ifdef CONFIG_SCHED_INSTRUMENTATION_IRQHANDLER
 void sched_note_irqhandler(int irq, FAR void *handler, bool enter) {
     sysview_sched_note_irqhandler(irq, handler, enter);
 }
-#endif
+#      endif
 
-#ifdef CONFIG_SCHED_INSTRUMENTATION_SYSCALL
+#      ifdef CONFIG_SCHED_INSTRUMENTATION_SYSCALL
 void sched_note_syscall_enter(int nr);
 {
     sysview_sched_note_syscall_enter(nr);
@@ -200,9 +200,9 @@ void sched_note_syscall_enter(int nr);
 {
     sysview_sched_note_syscall_enter(nr);
 }
-#endif
+#      endif
 
-#endif
+#   endif
 
 __END_DECLS
 #endif // PX4_NUTTX && CONFIG_SCHED_INSTRUMENTATION

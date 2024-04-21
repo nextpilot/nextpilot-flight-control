@@ -21,37 +21,34 @@
 #include <ulog/log.h>
 #include <px4_platform_common/posix.h>
 
-namespace device
-{
+namespace device {
 
 CDev::CDev(const char *name, const char *devname) :
-	Device(name),
-	cdev::CDev(devname)
-{
+    Device(name),
+    cdev::CDev(devname) {
 }
 
-int CDev::init()
-{
-	PX4_DEBUG("CDev::init");
+int CDev::init() {
+    PX4_DEBUG("CDev::init");
 
-	// base class init first
-	int ret = Device::init();
+    // base class init first
+    int ret = Device::init();
 
-	if (ret != PX4_OK) {
-		goto out;
-	}
+    if (ret != PX4_OK) {
+        goto out;
+    }
 
-	// now register the driver
-	if (get_devname() != nullptr) {
-		ret = cdev::CDev::init();
+    // now register the driver
+    if (get_devname() != nullptr) {
+        ret = cdev::CDev::init();
 
-		if (ret != PX4_OK) {
-			goto out;
-		}
-	}
+        if (ret != PX4_OK) {
+            goto out;
+        }
+    }
 
 out:
-	return ret;
+    return ret;
 }
 
 } // namespace device

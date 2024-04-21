@@ -111,6 +111,7 @@ public:
 
     struct Iterator {
         T node;
+
         Iterator(T v) :
             node(v) {
         }
@@ -118,12 +119,15 @@ public:
         operator T() const {
             return node;
         }
+
         operator T &() {
             return node;
         }
+
         T operator*() const {
             return node;
         }
+
         Iterator &operator++() {
             if (node) {
                 node = node->next_intrusive_queue_node();
@@ -136,6 +140,7 @@ public:
     Iterator begin() {
         return Iterator(_head);
     }
+
     Iterator end() {
         return Iterator(nullptr);
     }
@@ -153,6 +158,7 @@ private:
     T next_intrusive_queue_node() const {
         return _next_intrusive_queue_node;
     }
+
     void set_next_intrusive_queue_node(T new_next) {
         _next_intrusive_queue_node = new_next;
     }

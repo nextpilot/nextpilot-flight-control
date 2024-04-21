@@ -26,6 +26,7 @@ public:
     void setSortedSibling(T sibling) {
         _sorted_list_node_sibling = sibling;
     }
+
     const T getSortedSibling() const {
         return _sorted_list_node_sibling;
     }
@@ -107,6 +108,7 @@ public:
 
     struct Iterator {
         T node;
+
         explicit Iterator(T v) :
             node(v) {
         }
@@ -114,12 +116,15 @@ public:
         operator T() const {
             return node;
         }
+
         operator T &() {
             return node;
         }
+
         const T &operator*() const {
             return node;
         }
+
         Iterator &operator++() {
             if (node) {
                 node = node->getSortedSibling();
@@ -132,6 +137,7 @@ public:
     Iterator begin() {
         return Iterator(_head);
     }
+
     Iterator end() {
         return Iterator(nullptr);
     }

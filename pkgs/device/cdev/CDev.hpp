@@ -133,7 +133,7 @@ namespace cdev : public rt_device {
          */
         virtual int ioctl(int cmd, unsigned long arg) {
             return -ENOTTY;
-        };
+        }
 
         /**
          * Perform a poll setup/teardown operation.
@@ -274,7 +274,7 @@ namespace cdev : public rt_device {
 
         // px4_pollfd_struct_t **_pollset{nullptr};
 
-        bool _registered{false}; /**< true if device name was registered */
+        bool _registered{false};      /**< true if device name was registered */
 
         uint8_t  _max_pollwaiters{0}; /**< size of the _pollset array */
         uint16_t _open_count{0};      /**< number of successful opens */

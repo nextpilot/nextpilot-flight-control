@@ -24,6 +24,7 @@ public:
     void setSibling(T sibling) {
         _list_node_sibling = sibling;
     }
+
     const T getSibling() const {
         return _list_node_sibling;
     }
@@ -95,6 +96,7 @@ public:
 
     struct Iterator {
         T node;
+
         explicit Iterator(T v) :
             node(v) {
         }
@@ -102,12 +104,15 @@ public:
         operator T() const {
             return node;
         }
+
         operator T &() {
             return node;
         }
+
         const T &operator*() const {
             return node;
         }
+
         Iterator &operator++() {
             if (node) {
                 node = node->getSibling();
@@ -120,6 +125,7 @@ public:
     Iterator begin() {
         return Iterator(getHead());
     }
+
     Iterator end() {
         return Iterator(nullptr);
     }

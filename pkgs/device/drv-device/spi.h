@@ -10,9 +10,9 @@
 #pragma once
 
 #ifdef __PX4_NUTTX
-#include "nuttx/SPI.hpp"
+#   include "nuttx/SPI.hpp"
 #elif defined(__PX4_QURT)
-#include "qurt/SPI.hpp"
+#   include "qurt/SPI.hpp"
 #else
-#include "posix/SPI.hpp"
+#   include "posix/SPI.hpp"
 #endif

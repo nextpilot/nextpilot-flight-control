@@ -24,22 +24,22 @@
 #include <drivers/drv_hrt.h>
 
 #if defined(BOARD_DMA_ALLOC_POOL_SIZE)
-#include <px4_platform/board_dma_alloc.h>
+#   include <px4_platform/board_dma_alloc.h>
 #endif /* BOARD_DMA_ALLOC_POOL_SIZE */
 
 #if defined(CONFIG_SCHED_INSTRUMENTATION)
 
-#if !defined(CONFIG_TASK_NAME_SIZE)
-#error print_load_nuttx requires CONFIG_TASK_NAME_SIZE
-#endif
+#   if !defined(CONFIG_TASK_NAME_SIZE)
+#      error print_load_nuttx requires CONFIG_TASK_NAME_SIZE
+#   endif
 
-#if !defined(CONFIG_STACK_COLORATION)
-#error print_load_nuttx requires CONFIG_STACK_COLORATION
-#endif
+#   if !defined(CONFIG_STACK_COLORATION)
+#      error print_load_nuttx requires CONFIG_STACK_COLORATION
+#   endif
 
 extern struct system_load_s system_load;
 
-#define CL "\033[K" // clear line
+#   define CL "\033[K" // clear line
 
 void init_print_load(struct print_load_s *s) {
     cpuload_monitor_start();
@@ -83,24 +83,24 @@ static constexpr const char *tstate_name(const tstate_t s) {
 
     case TSTATE_WAIT_SEM:
         return "w:sem";
-#ifndef CONFIG_DISABLE_SIGNALS
+#   ifndef CONFIG_DISABLE_SIGNALS
 
     case TSTATE_WAIT_SIG:
         return "w:sig";
-#endif
-#ifndef CONFIG_DISABLE_MQUEUE
+#   endif
+#   ifndef CONFIG_DISABLE_MQUEUE
 
     case TSTATE_WAIT_MQNOTEMPTY:
         return "w:mqe";
 
     case TSTATE_WAIT_MQNOTFULL:
         return "w:mqf";
-#endif
-#ifdef CONFIG_PAGING
+#   endif
+#   ifdef CONFIG_PAGING
 
     case TSTATE_WAIT_PAGEFILL:
         return "w:pgf";
-#endif
+#   endif
 
     default:
         return "ERROR";
@@ -109,9 +109,9 @@ static constexpr const char *tstate_name(const tstate_t s) {
 
 void print_load_buffer(char *buffer, int buffer_length, print_load_callback_f cb, void *user,
                        struct print_load_s *print_state) {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat" // NuttX uses a different printf format
-#pragma GCC diagnostic ignored "-Wformat-extra-args"
+#   pragma GCC diagnostic push
+#   pragma GCC diagnostic ignored "-Wformat" // NuttX uses a different printf format
+#   pragma GCC diagnostic ignored "-Wformat-extra-args"
 
     float idle_load = 0.f;
 
@@ -140,11 +140,11 @@ void print_load_buffer(char *buffer, int buffer_length, print_load_callback_f cb
                  "CPU(%)",
                  "USED/STACK",
                  "PRIO(BASE)",
-#if CONFIG_RR_INTERVAL > 0
+#   if CONFIG_RR_INTERVAL > 0
                  "TSLICE",
-#else
+#   else
                  "STATE",
-#endif
+#   endif
                  "FD");
 
         cb(user);
@@ -168,7 +168,7 @@ void print_load_buffer(char *buffer, int buffer_length, print_load_callback_f cb
         char     tcb_name[CONFIG_TASK_NAME_SIZE + 1];
         strncpy(tcb_name, system_load.tasks[i].tcb->name, CONFIG_TASK_NAME_SIZE + 1);
 
-#if CONFIG_ARCH_INTERRUPTSTACK > 3
+#   if CONFIG_ARCH_INTERRUPTSTACK > 3
 
         if (system_load.tasks[i].tcb->pid == 0) {
             stack_size = (CONFIG_ARCH_INTERRUPTSTACK & ~3);
@@ -178,17 +178,17 @@ void print_load_buffer(char *buffer, int buffer_length, print_load_callback_f cb
             stack_free = up_check_tcbstack_remain(system_load.tasks[i].tcb);
         }
 
-#else
+#   else
         stack_free = up_check_tcbstack_remain(system_load.tasks[i].tcb);
-#endif
+#   endif
 
-#if CONFIG_ARCH_BOARD_SIM || !defined(CONFIG_PRIORITY_INHERITANCE)
-#else
+#   if CONFIG_ARCH_BOARD_SIM || !defined(CONFIG_PRIORITY_INHERITANCE)
+#   else
         unsigned tcb_base_priority = system_load.tasks[i].tcb->base_priority;
-#endif
-#if CONFIG_RR_INTERVAL > 0
+#   endif
+#   if CONFIG_RR_INTERVAL > 0
         unsigned tcb_timeslice = system_load.tasks[i].tcb->timeslice;
-#endif
+#   endif
         tstate_t tcb_task_state     = (tstate_t)system_load.tasks[i].tcb->task_state;
         uint8_t  tcb_sched_priority = system_load.tasks[i].tcb->sched_priority;
 
@@ -212,17 +212,17 @@ void print_load_buffer(char *buffer, int buffer_length, print_load_callback_f cb
             print_state->running_count++;
             break;
 
-#ifndef CONFIG_DISABLE_SIGNALS
+#   ifndef CONFIG_DISABLE_SIGNALS
 
         case TSTATE_WAIT_SIG:
-#endif
-#ifndef CONFIG_DISABLE_MQUEUE
+#   endif
+#   ifndef CONFIG_DISABLE_MQUEUE
         case TSTATE_WAIT_MQNOTEMPTY:
         case TSTATE_WAIT_MQNOTFULL:
-#endif
-#ifdef CONFIG_PAGING
+#   endif
+#   ifdef CONFIG_PAGING
         case TSTATE_WAIT_PAGEFILL:
-#endif
+#   endif
         case TSTATE_TASK_INVALID:
         case TSTATE_TASK_INACTIVE:
         case TSTATE_WAIT_SEM:
@@ -268,19 +268,19 @@ void print_load_buffer(char *buffer, int buffer_length, print_load_callback_f cb
                                  stack_size - stack_free,
                                  stack_size,
                                  tcb_sched_priority,
-#if CONFIG_ARCH_BOARD_SIM || !defined(CONFIG_PRIORITY_INHERITANCE)
+#   if CONFIG_ARCH_BOARD_SIM || !defined(CONFIG_PRIORITY_INHERITANCE)
                                  0);
-#else
+#   else
                                  tcb_base_priority);
-#endif
-#if CONFIG_RR_INTERVAL > 0
+#   endif
+#   if CONFIG_RR_INTERVAL > 0
         /* print scheduling info with RR time slice */
         snprintf(buffer + print_len, buffer_length - print_len, " %5d %2d", tcb_timeslice, tcb_num_used_fds);
         (void)tstate_name(TSTATE_TASK_INVALID); // Stop not used warning
-#else
+#   else
         // print task state instead
         snprintf(buffer + print_len, buffer_length - print_len, " %-5s %2d", tstate_name(tcb_task_state), tcb_num_used_fds);
-#endif
+#   endif
         cb(user);
     }
 
@@ -313,7 +313,7 @@ void print_load_buffer(char *buffer, int buffer_length, print_load_callback_f cb
              (double)(sched_load * 100.f),
              (double)(idle_load * 100.f));
     cb(user);
-#if defined(BOARD_DMA_ALLOC_POOL_SIZE)
+#   if defined(BOARD_DMA_ALLOC_POOL_SIZE)
     uint16_t dma_total;
     uint16_t dma_used;
     uint16_t dma_peak_used;
@@ -326,7 +326,7 @@ void print_load_buffer(char *buffer, int buffer_length, print_load_callback_f cb
         cb(user);
     }
 
-#endif
+#   endif
     snprintf(buffer, buffer_length, "Uptime: %.3fs total, %.3fs idle",
              (double)print_state->new_time / 1e6, (double)total_runtime[0] / 1e6);
 
@@ -334,7 +334,7 @@ void print_load_buffer(char *buffer, int buffer_length, print_load_callback_f cb
 
     print_state->interval_start_time = print_state->new_time;
 
-#pragma GCC diagnostic pop
+#   pragma GCC diagnostic pop
 }
 
 struct print_load_callback_data_s {

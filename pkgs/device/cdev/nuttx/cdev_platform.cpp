@@ -21,7 +21,7 @@
 #include <sys/ioctl.h>
 
 #ifdef CONFIG_DISABLE_POLL
-#error This driver is not compatible with CONFIG_DISABLE_POLL
+#   error This driver is not compatible with CONFIG_DISABLE_POLL
 #endif
 
 namespace cdev {

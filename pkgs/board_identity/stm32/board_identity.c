@@ -30,6 +30,7 @@ typedef const uint8_t uuid_uint8_reorder_t[PX4_CPU_UUID_BYTE_LENGTH];
 
 void board_get_uuid(uuid_byte_t uuid_bytes) {
     uuid_uint8_reorder_t reorder = CPU_UUID_BYTE_FORMAT_ORDER;
+
     union {
         uuid_byte_t   b;
         uuid_uint32_t w;

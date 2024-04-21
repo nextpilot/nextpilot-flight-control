@@ -70,8 +70,8 @@ int board_get_mfguid_formated(char *format_buffer, int size) {
 }
 
 int board_get_px4_guid_formated(char *format_buffer, int size) {
-    int offset = snprintf(format_buffer, size, "%04x", soc_arch_id);
-    size -= offset;
+    int offset  = snprintf(format_buffer, size, "%04x", soc_arch_id);
+    size       -= offset;
     return board_get_mfguid_formated(&format_buffer[offset], size);
 }
 #endif

@@ -147,9 +147,9 @@ public:
      */
     struct DeviceStructure {
         DeviceBusType bus_type : 3;
-        uint8_t       bus : 5; // which instance of the bus type
-        uint8_t       address; // address on the bus (eg. I2C address)
-        uint8_t       devtype; // device class specific device type
+        uint8_t       bus      : 5; // which instance of the bus type
+        uint8_t       address;      // address on the bus (eg. I2C address)
+        uint8_t       devtype;      // device class specific device type
     };
 
     union DeviceId {
@@ -169,6 +169,7 @@ public:
     DeviceBusType get_device_bus_type() const {
         return _device_id.devid_s.bus_type;
     }
+
     void set_device_bus_type(DeviceBusType bus_type) {
         _device_id.devid_s.bus_type = bus_type;
     }
@@ -207,6 +208,7 @@ public:
     uint8_t get_device_bus() const {
         return _device_id.devid_s.bus;
     }
+
     void set_device_bus(uint8_t bus) {
         _device_id.devid_s.bus = bus;
     }
@@ -219,6 +221,7 @@ public:
     uint8_t get_device_address() const {
         return _device_id.devid_s.address;
     }
+
     void set_device_address(int address) {
         _device_id.devid_s.address = address;
     }
@@ -231,6 +234,7 @@ public:
     uint8_t get_device_type() const {
         return _device_id.devid_s.devtype;
     }
+
     void set_device_type(uint8_t devtype) {
         _device_id.devid_s.devtype = devtype;
     }
@@ -260,12 +264,13 @@ public:
     }
 
 protected:
-    union DeviceId _device_id {}; /**< device identifier information */
+    union DeviceId _device_id {};      /**< device identifier information */
 
     const char *_name{nullptr};        /**< driver name */
     bool        _debug_enabled{false}; /**< if true, debug messages are printed */
 
     Device() = delete;
+
     explicit Device(const char *name) :
         _name(name) {
     }

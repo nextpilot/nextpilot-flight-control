@@ -33,11 +33,11 @@
 #pragma once
 
 #ifdef __PX4_NUTTX
-#include "nuttx/I2C.hpp"
+#   include "nuttx/I2C.hpp"
 #elif defined(__PX4_QURT)
-#include "qurt/I2C.hpp"
+#   include "qurt/I2C.hpp"
 #else
-#include "posix/I2C.hpp"
+#   include "posix/I2C.hpp"
 #endif
 
 #include <board_config.h>

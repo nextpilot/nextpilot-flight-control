@@ -46,22 +46,26 @@ struct DeviceStructure {
     DeviceBusType bus_type : 3;
     // 总线序号
     uint8_t bus_index : 5; // which instance of the bus type
+
     // i2c地址或者片选序号
     union {
         uint8_t address;  // address on the bus (eg. I2C address)
         uint8_t selector; // chip select number
     };
+
     uint8_t devtype; // device class specific device type
 };
 
 union DeviceId {
     struct DeviceStructure devid_s;
+
     struct {
         DeviceBusType bustype : 3;
-        uint8_t       busidx : 5;
+        uint8_t       busidx  : 5;
         uint8_t       address;
         uint8_t       devtype;
     };
+
     uint32_t devid{0};
 };
 

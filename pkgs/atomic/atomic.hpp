@@ -32,12 +32,12 @@
 
 #ifdef __cplusplus
 
-#include <stdbool.h>
-#include <stdint.h>
+#   include <stdbool.h>
+#   include <stdint.h>
 
-#if defined(__PX4_NUTTX)
-#include <nuttx/irq.h>
-#endif // __PX4_NUTTX
+#   if defined(__PX4_NUTTX)
+#      include <nuttx/irq.h>
+#   endif // __PX4_NUTTX
 
 template <typename T>
 T rt_atomic_load(T *val) {
@@ -62,13 +62,14 @@ T rt_atomic_sub(T *val, T num) {
 template <typename T>
 class atomic {
 public:
-#if defined(__PX4_POSIX)
+#   if defined(__PX4_POSIX)
     // Ensure that all operations are lock-free, so that 'atomic' can be used from
     // IRQ handlers. This might not be required everywhere though.
     static_assert(__atomic_always_lock_free(sizeof(T), 0), "atomic is not lock-free for the given type T");
-#endif // __PX4_POSIX
+#   endif // __PX4_POSIX
 
     atomic() = default;
+
     explicit atomic(T value) :
         _value(value) {
     }
@@ -77,7 +78,7 @@ public:
      * Atomically read the current value
      */
     inline T load() const {
-#if defined(__PX4_NUTTX)
+#   if defined(__PX4_NUTTX)
 
         if (!__atomic_always_lock_free(sizeof(T), 0)) {
             irqstate_t flags = enter_critical_section();
@@ -86,7 +87,7 @@ public:
             return val;
 
         } else
-#endif // __PX4_NUTTX
+#   endif // __PX4_NUTTX
         {
             return __atomic_load_n(&_value, __ATOMIC_SEQ_CST);
         }
@@ -96,7 +97,7 @@ public:
      * Atomically store a value
      */
     inline void store(T value) {
-#if defined(__PX4_NUTTX)
+#   if defined(__PX4_NUTTX)
 
         if (!__atomic_always_lock_free(sizeof(T), 0)) {
             irqstate_t flags = enter_critical_section();
@@ -104,7 +105,7 @@ public:
             leave_critical_section(flags);
 
         } else
-#endif // __PX4_NUTTX
+#   endif // __PX4_NUTTX
         {
             __atomic_store(&_value, &value, __ATOMIC_SEQ_CST);
         }
@@ -115,17 +116,17 @@ public:
      * @return value prior to the addition
      */
     inline T fetch_add(T num) {
-#if defined(__PX4_NUTTX)
+#   if defined(__PX4_NUTTX)
 
         if (!__atomic_always_lock_free(sizeof(T), 0)) {
-            irqstate_t flags = enter_critical_section();
-            T          ret   = _value;
-            _value += num;
+            irqstate_t flags  = enter_critical_section();
+            T          ret    = _value;
+            _value           += num;
             leave_critical_section(flags);
             return ret;
 
         } else
-#endif // __PX4_NUTTX
+#   endif // __PX4_NUTTX
         {
             return __atomic_fetch_add(&_value, num, __ATOMIC_SEQ_CST);
         }
@@ -136,17 +137,17 @@ public:
      * @return value prior to the substraction
      */
     inline T fetch_sub(T num) {
-#if defined(__PX4_NUTTX)
+#   if defined(__PX4_NUTTX)
 
         if (!__atomic_always_lock_free(sizeof(T), 0)) {
-            irqstate_t flags = enter_critical_section();
-            T          ret   = _value;
-            _value -= num;
+            irqstate_t flags  = enter_critical_section();
+            T          ret    = _value;
+            _value           -= num;
             leave_critical_section(flags);
             return ret;
 
         } else
-#endif // __PX4_NUTTX
+#   endif // __PX4_NUTTX
         {
             return __atomic_fetch_sub(&_value, num, __ATOMIC_SEQ_CST);
         }
@@ -157,17 +158,17 @@ public:
      * @return value prior to the operation
      */
     inline T fetch_and(T num) {
-#if defined(__PX4_NUTTX)
+#   if defined(__PX4_NUTTX)
 
         if (!__atomic_always_lock_free(sizeof(T), 0)) {
-            irqstate_t flags = enter_critical_section();
-            T          val   = _value;
-            _value &= num;
+            irqstate_t flags  = enter_critical_section();
+            T          val    = _value;
+            _value           &= num;
             leave_critical_section(flags);
             return val;
 
         } else
-#endif // __PX4_NUTTX
+#   endif // __PX4_NUTTX
         {
             return __atomic_fetch_and(&_value, num, __ATOMIC_SEQ_CST);
         }
@@ -178,17 +179,17 @@ public:
      * @return value prior to the operation
      */
     inline T fetch_xor(T num) {
-#if defined(__PX4_NUTTX)
+#   if defined(__PX4_NUTTX)
 
         if (!__atomic_always_lock_free(sizeof(T), 0)) {
-            irqstate_t flags = enter_critical_section();
-            T          val   = _value;
-            _value ^= num;
+            irqstate_t flags  = enter_critical_section();
+            T          val    = _value;
+            _value           ^= num;
             leave_critical_section(flags);
             return val;
 
         } else
-#endif // __PX4_NUTTX
+#   endif // __PX4_NUTTX
         {
             return __atomic_fetch_xor(&_value, num, __ATOMIC_SEQ_CST);
         }
@@ -199,17 +200,17 @@ public:
      * @return value prior to the operation
      */
     inline T fetch_or(T num) {
-#if defined(__PX4_NUTTX)
+#   if defined(__PX4_NUTTX)
 
         if (!__atomic_always_lock_free(sizeof(T), 0)) {
-            irqstate_t flags = enter_critical_section();
-            T          val   = _value;
-            _value |= num;
+            irqstate_t flags  = enter_critical_section();
+            T          val    = _value;
+            _value           |= num;
             leave_critical_section(flags);
             return val;
 
         } else
-#endif // __PX4_NUTTX
+#   endif // __PX4_NUTTX
         {
             return __atomic_fetch_or(&_value, num, __ATOMIC_SEQ_CST);
         }
@@ -220,7 +221,7 @@ public:
      * @return value prior to the operation
      */
     inline T fetch_nand(T num) {
-#if defined(__PX4_NUTTX)
+#   if defined(__PX4_NUTTX)
 
         if (!__atomic_always_lock_free(sizeof(T), 0)) {
             irqstate_t flags = enter_critical_section();
@@ -230,7 +231,7 @@ public:
             return ret;
 
         } else
-#endif // __PX4_NUTTX
+#   endif // __PX4_NUTTX
         {
             return __atomic_fetch_nand(&_value, num, __ATOMIC_SEQ_CST);
         }
@@ -245,7 +246,7 @@ public:
      * @return If desired is written into _value then true is returned
      */
     inline bool compare_exchange(T *expected, T desired) {
-#if defined(__PX4_NUTTX)
+#   if defined(__PX4_NUTTX)
         if (!__atomic_always_lock_free(sizeof(T), 0)) {
             irqstate_t flags = enter_critical_section();
 
@@ -261,7 +262,7 @@ public:
             }
 
         } else
-#endif // __PX4_NUTTX
+#   endif // __PX4_NUTTX
         {
             return __atomic_compare_exchange(&_value, expected, &desired, false, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST);
         }

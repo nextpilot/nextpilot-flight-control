@@ -34,10 +34,10 @@
 
 /* board power button state notification */
 typedef enum board_power_button_state_notification_e {
-    PWR_BUTTON_IDEL,              /* Button went up without meeting shutdown button down time */
-    PWR_BUTTON_DOWN,              /* Button went Down */
-    PWR_BUTTON_UP,                /* Button went Up */
-    PWR_BUTTON_REQUEST_SHUT_DOWN, /* Button went up after meeting shutdown button down time */
+    PWR_BUTTON_IDEL,                       /* Button went up without meeting shutdown button down time */
+    PWR_BUTTON_DOWN,                       /* Button went Down */
+    PWR_BUTTON_UP,                         /* Button went Up */
+    PWR_BUTTON_REQUEST_SHUT_DOWN,          /* Button went up after meeting shutdown button down time */
 
     PWR_BUTTON_RESPONSE_SHUT_DOWN_PENDING, /* Response from call back board code does nothing the
                                             * expectation is that board_shutdown will be called.
@@ -54,7 +54,6 @@ typedef int (*power_button_state_notification_t)(board_power_button_state_notifi
  */
 
 typedef enum PX4_SOC_ARCH_ID_t {
-
     PX4_SOC_ARCH_ID_UNUSED = 0x0000,
 
     PX4_SOC_ARCH_ID_STM32F4      = 0x0001,

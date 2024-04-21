@@ -21,28 +21,26 @@
 
 #if defined(CONFIG_SPI)
 
-#include <nuttx/spi/spi.h>
-#include <px4_platform_common/spi.h>
+#   include <nuttx/spi/spi.h>
+#   include <px4_platform_common/spi.h>
 
 struct I2CSPIDriverConfig;
 
-namespace device __EXPORT
-{
+namespace device __EXPORT {
 
 /**
  * Abstract class for character device on SPI
  */
-class __EXPORT SPI : public CDev
-{
+class __EXPORT SPI : public CDev {
 public:
-	// no copy, assignment, move, move assignment
-	SPI(const SPI &) = delete;
-	SPI &operator=(const SPI &) = delete;
-	SPI(SPI &&) = delete;
-	SPI &operator=(SPI &&) = delete;
+    // no copy, assignment, move, move assignment
+    SPI(const SPI &)            = delete;
+    SPI &operator=(const SPI &) = delete;
+    SPI(SPI &&)                 = delete;
+    SPI &operator=(SPI &&)      = delete;
 
 protected:
-	/**
+    /**
 	 * Constructor
 	 *
 	 * @param device_type	The device type (see drv_sensor.h)
@@ -52,29 +50,31 @@ protected:
 	 * @param mode		SPI clock/data mode
 	 * @param frequency	SPI clock frequency
 	 */
-	SPI(uint8_t device_type, const char *name, int bus, uint32_t device, enum spi_mode_e mode, uint32_t frequency);
+    SPI(uint8_t device_type, const char *name, int bus, uint32_t device, enum spi_mode_e mode, uint32_t frequency);
 
-	SPI(const I2CSPIDriverConfig &config);
+    SPI(const I2CSPIDriverConfig &config);
 
-	virtual ~SPI();
+    virtual ~SPI();
 
-	/**
+    /**
 	 * Locking modes supported by the driver.
 	 */
-	enum LockMode {
-		LOCK_PREEMPTION,	/**< the default; lock against all forms of preemption. */
-		LOCK_THREADS,		/**< lock only against other threads, using SPI_LOCK */
-		LOCK_NONE		/**< perform no locking, only safe if the bus is entirely private */
-	};
+    enum LockMode {
+        LOCK_PREEMPTION, /**< the default; lock against all forms of preemption. */
+        LOCK_THREADS,    /**< lock only against other threads, using SPI_LOCK */
+        LOCK_NONE        /**< perform no locking, only safe if the bus is entirely private */
+    };
 
-	virtual int	init() override;
+    virtual int init() override;
 
-	/**
+    /**
 	 * Check for the presence of the device on the bus.
 	 */
-	virtual int	probe() { return PX4_OK; }
+    virtual int probe() {
+        return PX4_OK;
+    }
 
-	/**
+    /**
 	 * Perform a SPI transfer.
 	 *
 	 * If called from interrupt context, this interface does not lock
@@ -93,9 +93,9 @@ protected:
 	 * @return		OK if the exchange was successful, -errno
 	 *			otherwise.
 	 */
-	int		transfer(uint8_t *send, uint8_t *recv, unsigned len);
+    int transfer(uint8_t *send, uint8_t *recv, unsigned len);
 
-	/**
+    /**
 	 * Perform a SPI 16 bit transfer.
 	 *
 	 * If called from interrupt context, this interface does not lock
@@ -114,9 +114,9 @@ protected:
 	 * @return		OK if the exchange was successful, -errno
 	 *			otherwise.
 	 */
-	int		transferhword(uint16_t *send, uint16_t *recv, unsigned len);
+    int transferhword(uint16_t *send, uint16_t *recv, unsigned len);
 
-	/**
+    /**
 	 * Set the SPI bus frequency
 	 * This is used to change frequency on the fly. Some sensors
 	 * (such as the MPU6000) need a lower frequency for setup
@@ -125,10 +125,15 @@ protected:
 	 *
 	 * @param frequency	Frequency to set (Hz)
 	 */
-	void		set_frequency(uint32_t frequency) { _frequency = frequency; }
-	uint32_t	get_frequency() { return _frequency; }
+    void set_frequency(uint32_t frequency) {
+        _frequency = frequency;
+    }
 
-	/**
+    uint32_t get_frequency() {
+        return _frequency;
+    }
+
+    /**
 	 * Set the SPI bus locking mode
 	 *
 	 * This set the SPI locking mode. For devices competing with NuttX SPI
@@ -136,25 +141,28 @@ protected:
 	 *
 	 * @param mode	Locking mode
 	 */
-	void		set_lockmode(enum LockMode mode) { _locking_mode = mode; }
+    void set_lockmode(enum LockMode mode) {
+        _locking_mode = mode;
+    }
 
 private:
-	uint32_t		_device;
-	enum spi_mode_e		_mode;
-	uint32_t		_frequency;
-	struct spi_dev_s	*_dev {nullptr};
+    uint32_t          _device;
+    enum spi_mode_e   _mode;
+    uint32_t          _frequency;
+    struct spi_dev_s *_dev{nullptr};
 
-	LockMode		_locking_mode{LOCK_THREADS};	/**< selected locking mode */
+    LockMode _locking_mode{LOCK_THREADS}; /**< selected locking mode */
 
 protected:
-	int	_transfer(uint8_t *send, uint8_t *recv, unsigned len);
+    int _transfer(uint8_t *send, uint8_t *recv, unsigned len);
 
-	int	_transferhword(uint16_t *send, uint16_t *recv, unsigned len);
+    int _transferhword(uint16_t *send, uint16_t *recv, unsigned len);
 
-	bool	external() const override { return px4_spi_bus_external(get_device_bus()); }
-
+    bool external() const override {
+        return px4_spi_bus_external(get_device_bus());
+    }
 };
 
-} // namespace device
+} // namespace device __EXPORT
 
 #endif // CONFIG_SPI

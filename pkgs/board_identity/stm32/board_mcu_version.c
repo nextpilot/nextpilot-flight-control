@@ -37,8 +37,8 @@ enum MCU_REV {
 #define STM32_F4_ERRATA "This device can only utilize a maximum of 1MB flash safely!"
 
 // STM DocID018909 Rev 8 Sect 38.18 and DocID026670 Rev 5 40.6.1 (MCU device ID code)
-#define REVID_MASK 0xFFFF0000
-#define DEVID_MASK 0xFFF
+#define REVID_MASK        0xFFFF0000
+#define DEVID_MASK        0xFFF
 
 #define STM32H74xx_75xx   0x450
 #define STM32F74xxx_75xxx 0x449

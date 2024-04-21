@@ -43,19 +43,20 @@
 
 class CDevNode;
 
-class CDevExample
-{
+class CDevExample {
 public:
-	CDevExample() : _node(0) {}
+    CDevExample() :
+        _node(0) {
+    }
 
-	~CDevExample();
+    ~CDevExample();
 
-	int main();
+    int main();
 
-	static px4::AppState appState; /* track requests to terminate app */
+    static px4::AppState appState; /* track requests to terminate app */
 
 private:
-	int do_poll(int fd, int timeout, int iterations, int delayms_after_poll);
+    int do_poll(int fd, int timeout, int iterations, int delayms_after_poll);
 
-	CDevNode *_node;
+    CDevNode *_node;
 };

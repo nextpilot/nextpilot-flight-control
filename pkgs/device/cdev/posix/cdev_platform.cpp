@@ -49,6 +49,7 @@ public:
     VFile(const char *fname, mode_t mode) :
         cdev::CDev(fname) {
     }
+
     ~VFile() override = default;
 
     ssize_t write(cdev::file_t *handlep, const char *buffer, size_t buflen) override {
@@ -155,9 +156,7 @@ int px4_open(const char *path, int flags, ...) {
     int         i;
     mode_t      mode;
 
-    if (!dev && (flags & PX4_F_WRONLY) != 0 &&
-        strncmp(path, "/obj/", 5) != 0 &&
-        strncmp(path, "/dev/", 5) != 0) {
+    if (!dev && (flags & PX4_F_WRONLY) != 0 && strncmp(path, "/obj/", 5) != 0 && strncmp(path, "/dev/", 5) != 0) {
         va_list p;
         va_start(p, flags);
         mode = va_arg(p, int);
@@ -361,11 +360,11 @@ int px4_poll(px4_pollfd_struct_t *fds, unsigned int nfds, int timeout) {
             px4_clock_gettime(CLOCK_MONOTONIC, &ts);
 
             // Calculate an absolute time in the future
-            const unsigned billion = (1000 * 1000 * 1000);
-            uint64_t       nsecs   = ts.tv_nsec + ((uint64_t)timeout * 1000 * 1000);
-            ts.tv_sec += nsecs / billion;
-            nsecs -= (nsecs / billion) * billion;
-            ts.tv_nsec = nsecs;
+            const unsigned billion  = (1000 * 1000 * 1000);
+            uint64_t       nsecs    = ts.tv_nsec + ((uint64_t)timeout * 1000 * 1000);
+            ts.tv_sec              += nsecs / billion;
+            nsecs                  -= (nsecs / billion) * billion;
+            ts.tv_nsec              = nsecs;
 
             ret = px4_sem_timedwait(&sem, &ts);
 

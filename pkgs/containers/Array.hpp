@@ -52,6 +52,7 @@ public:
     T &operator[](size_t n) {
         return _items[n];
     }
+
     const T &operator[](size_t n) const {
         return _items[n];
     }
@@ -59,6 +60,7 @@ public:
     T &at(size_t n) {
         return _items[n];
     }
+
     const T &at(size_t n) const {
         return _items[n];
     }
@@ -66,9 +68,11 @@ public:
     size_t size() const {
         return _size;
     }
+
     size_t max_size() const {
         return N;
     }
+
     size_t capacity() const {
         return N;
     }
@@ -84,6 +88,7 @@ public:
     T *begin() {
         return &_items[0];
     }
+
     T *end() {
         return &_items[_size];
     }
@@ -91,6 +96,7 @@ public:
     const T *begin() const {
         return &_items[0];
     }
+
     const T *end() const {
         return &_items[_size];
     }

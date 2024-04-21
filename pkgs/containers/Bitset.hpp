@@ -23,8 +23,8 @@ public:
 
         for (auto x : _data) {
             while (x) {
-                total += x & 1;
-                x >>= 1;
+                total  += x & 1;
+                x     >>= 1;
             }
         }
 
@@ -65,6 +65,7 @@ private:
     size_t array_index(size_t position) const {
         return position / BITS_PER_ELEMENT;
     }
+
     uint8_t element_mask(size_t position) const {
         return (1 << position % BITS_PER_ELEMENT);
     }
