@@ -156,9 +156,7 @@ void timer_clear_pending(int timer)
     }
 }
 
-void abstime_to_ts(struct timespec *ts, hrt_abstime abstime)
+void rt_hw_us_delay(rt_uint32_t us)
 {
-    ts->tv_sec   = abstime / 1000000ULL;
-    abstime     -= ts->tv_sec * 1000000ULL;
-    ts->tv_nsec  = abstime * 1000ULL;
+    rt_thread_mdelay(us / 1000);
 }
