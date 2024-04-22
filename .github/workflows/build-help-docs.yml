@@ -8,7 +8,7 @@
 #  * Copyright All Reserved © 2015-2024 NextPilot Development Team
 #  ******************************************************************/
 
-name: build docs
+name: build-help-docs
 on:
   push:
     branches:
