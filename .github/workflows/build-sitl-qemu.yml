@@ -8,7 +8,7 @@
 #  * Copyright All Reserved © 2015-2024 NextPilot Development Team
 #  ******************************************************************/
 
-name: build sitl
+name: build sitl qemu
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -36,14 +36,14 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: build sitl
+    name: build sitl qemu
 
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.10
+          python-version: 3.x
 
       - name: Install System Tools
         shell: bash
