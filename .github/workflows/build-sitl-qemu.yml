@@ -65,6 +65,7 @@ jobs:
           sudo tar xjf gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2 -C /opt
           /opt/gcc-arm-none-eabi-10-2020-q4-major/bin/arm-none-eabi-gcc --version
           echo "RTT_EXEC_PATH=/opt/gcc-arm-none-eabi-10-2020-q4-major/bin" >> $GITHUB_ENV
+          echo "RTT_CC=gcc" >> $GITHUB_ENV
 
       - name: Install RTT ENV
         if: ${{ success() }}
@@ -73,6 +74,7 @@ jobs:
           pushd rtos/rt-thread
           python -c "import tools.menukconfig; tools.menukconfig.touch_env()"
           popd
+          echo "ENV_ROOT=~/.env" >> $GITHUB_ENV
 
       - name: Bsp Scons Compile
         if: ${{ success() }}
