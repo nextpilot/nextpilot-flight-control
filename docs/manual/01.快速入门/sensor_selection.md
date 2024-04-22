@@ -20,7 +20,7 @@ It also supports Real Time Kinematic (RTK) GPS Receivers, which extend GPS syste
 
 We recommend the use of an external "combined" compass/GPS module mounted as far away from the motor/ESC power supply lines as possible - typically on a pedestal or wing (for fixed-wing).
 
-![GPS + Compass](../../assets/hardware/gps/gps_compass.jpg)
+![GPS + Compass](/assets/hardware/gps/gps_compass.jpg)
 
 GPS/compass hardware options are listed in:
 
@@ -38,7 +38,7 @@ Airspeed sensors are *highly recommended* for fixed-wing and VTOL frames.
 They are so important because the autopilot does not have other means to detect stall.
 For fixed-wing flight it is the airspeed that guarantees lift not ground speed!
 
-![Digital airspeed sensor](../../assets/hardware/sensors/airspeed/digital_airspeed_sensor.jpg)
+![Digital airspeed sensor](/assets/hardware/sensors/airspeed/digital_airspeed_sensor.jpg)
 
 For more information and recommended hardware see: [Airspeed Sensors](../sensor/airspeed.md).
 
@@ -49,7 +49,7 @@ Distance sensors are used for smooth landings, object avoidance and terrain foll
 PX4 supports many affordable distance sensors, using different technologies, and supporting different ranges and features.
 For more information see: [Distance Sensors](../sensor/rangefinders.md).
 
-<img src="../../assets/hardware/sensors/lidar_lite/lidar_lite_1.png" title="lidar_lite_1" width="500px" />
+<img src="/assets/hardware/sensors/lidar_lite/lidar_lite_1.png" title="lidar_lite_1" width="500px" />
 
 ## Optical Flow
 
@@ -57,7 +57,7 @@ For more information see: [Distance Sensors](../sensor/rangefinders.md).
 PX4 blends the sensor output with information from other position sources (e.g. GPS) to provide a more accurate position lock.
 This sensor can be used indoors, when no GPS signal is available.
 
-![Image of ARK Flow optical flow sensor](../../assets/hardware/sensors/optical_flow/ark_flow.jpg)
+![Image of ARK Flow optical flow sensor](/assets/hardware/sensors/optical_flow/ark_flow.jpg)
 
 ## See Also
 

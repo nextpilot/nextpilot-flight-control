@@ -11,7 +11,7 @@ Keeping flight logs is a legal requirement in some jurisdictions.
 
 Logs can be downloaded using [QGroundControl](http://qgroundcontrol.com/): **[Analyze View > Log Download](https://docs.qgroundcontrol.com/master/en/qgc-user-guide/analyze_view/log_download.html)**.
 
-![Flight Log Download](../../assets/qgc/analyze/log_download.jpg)
+![Flight Log Download](/assets/qgc/analyze/log_download.jpg)
 
 ## Analyzing the Logs
 
@@ -24,7 +24,7 @@ After upload you'll be emailed a link to the analysis page for the log.
 There are many other great tools for visualising and analysing PX4 Logs.
 For more information see: [Flight Analysis](../dev_log/flight_log_analysis.md).
 :::
-  
+
 :::tip
 If you have a constant high-rate MAVLink connection to the vehicle (not just a telemetry link) then you can use *QGroundControl* to automatically upload logs directly to *Flight Review*.
 For more information see [Settings > MAVLink Settings > MAVLink 2 Logging (PX4 only)](https://docs.qgroundcontrol.com/master/en/qgc-user-guide/settings_view/mavlink.html#logging).

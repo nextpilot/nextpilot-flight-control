@@ -1,23 +1,24 @@
 # Position Mode (Multicopter)
 
-[<img src="../../assets/site/difficulty_easy.png" title="Easy to fly" width="30px" />](../getting_started/flight_modes.md#key_difficulty)&nbsp;[<img src="../../assets/site/remote_control.svg" title="Manual/Remote control required" width="30px" />](../getting_started/flight_modes.md#key_manual)&nbsp;[<img src="../../assets/site/position_fixed.svg" title="Position fix required (e.g. GPS)" width="30px" />](../getting_started/flight_modes.md#key_position_fixed)
+[<img src="/assets/site/difficulty_easy.png" title="Easy to fly" width="30px" />](../getting_started/flight_modes.md#key_difficulty)&nbsp;[<img src="/assets/site/remote_control.svg" title="Manual/Remote control required" width="30px" />](../getting_started/flight_modes.md#key_manual)&nbsp;[<img src="/assets/site/position_fixed.svg" title="Position fix required (e.g. GPS)" width="30px" />](../getting_started/flight_modes.md#key_position_fixed)
 
 *Position* is an easy-to-fly RC mode in which roll and pitch sticks control acceleration over ground in the vehicle's left-right and forward-back directions (similar to a car's accelerator pedal), and throttle controls speed of ascent-descent.
 When the sticks are released/centered the vehicle will actively brake, level, and be locked to a position in 3D space — compensating for wind and other forces.
 With full stick deflection the vehicle accelerates initially with [MPC_ACC_HOR_MAX](#MPC_ACC_HOR_MAX) ramping down until it reaches the final velocity [MPC_VEL_MANUAL](#MPC_VEL_MANUAL).
 
 :::tip
-Position mode is the safest manual mode for new fliers. 
+Position mode is the safest manual mode for new fliers.
 Unlike [Altitude](../flight_modes/altitude_mc.md) and [Manual/Stabilized](../flight_modes/manual_stabilized_mc.md) modes the vehicle will stop when the sticks are centered rather than continuing until slowed by wind resistance.
 :::
 
 The diagram below shows the mode behaviour visually (for a mode 2 transmitter).
 
-![MC Position Mode](../../assets/flight_modes/position_MC.png)
+![MC Position Mode](/assets/flight_modes/position_MC.png)
 
 ### Landing
 
 Landing in this mode is easy:
+
 1. Position the drone horizontally above the landing spot using the roll and pitch stick.
 1. Let go of the roll and pitch stick and give it enough time to come to a complete stop.
 1. Pull the throttle stick down gently until the vehicle touches the ground.
@@ -26,6 +27,7 @@ Landing in this mode is easy:
 
 :::warning
 While very rare on a well calibrated vehicle, sometimes there may be problems with landing.
+
 - If the vehicle does not stop moving horizontally:
   - You can still land under control in [Altitude mode](../flight_modes/altitude_mc.md).
     The approach is the same as above, except that you must manually ensure that the vehicle stays above the landing spot using the roll and pitch stick.
@@ -33,6 +35,7 @@ While very rare on a well calibrated vehicle, sometimes there may be problems wi
 - If the vehicle does not detect the ground/landing and disarm:
   - After the vehicle is on the ground switch to [Manual/Stabilized mode](../flight_modes/manual_stabilized_mc.md) keeping the throttle stick low, and manually disarm using a gesture or other command.
     Alternatively you can also use the kill switch when the vehicle is already on the ground.
+
 :::
 
 ## Technical Summary
@@ -40,17 +43,19 @@ While very rare on a well calibrated vehicle, sometimes there may be problems wi
 RC mode where roll, pitch, throttle (RPT) sticks control movement in corresponding axes/directions.
 Centered sticks level vehicle and hold it to fixed altitude and position against wind.
 
-* Centered roll, pitch, throttle sticks (within RC deadzone [MPC_HOLD_DZ](../advanced_config/parameter_reference.md#MPC_HOLD_DZ)) hold x, y, z position steady against any disturbance like wind.
-* Outside center:
-  * Roll/Pitch sticks control horizontal acceleration over ground in the vehicle's left-right and forward-back directions (respectively).
-  * Throttle stick controls speed of ascent-descent.
-  * Yaw stick controls rate of angular rotation above the horizontal plane.
-* Takeoff:
-  * When landed, the vehicle will take off if the throttle stick is raised above 62.5% percent (of the full range from bottom).
+- Centered roll, pitch, throttle sticks (within RC deadzone [MPC_HOLD_DZ](../advanced_config/parameter_reference.md#MPC_HOLD_DZ)) hold x, y, z position steady against any disturbance like wind.
+- Outside center:
+  - Roll/Pitch sticks control horizontal acceleration over ground in the vehicle's left-right and forward-back directions (respectively).
+  - Throttle stick controls speed of ascent-descent.
+  - Yaw stick controls rate of angular rotation above the horizontal plane.
+- Takeoff:
+  - When landed, the vehicle will take off if the throttle stick is raised above 62.5% percent (of the full range from bottom).
 
 :::note
-* Manual input is required (RC controller, or gamepad/thumbsticks through MAVLink).
-* This mode requires GPS.
+
+- Manual input is required (RC controller, or gamepad/thumbsticks through MAVLink).
+- This mode requires GPS.
+
 :::
 
 ### Parameters

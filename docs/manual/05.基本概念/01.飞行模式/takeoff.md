@@ -1,16 +1,18 @@
 # Takeoff Mode
 
-[<img src="../../assets/site/position_fixed.svg" title="Position fix required (e.g. GPS)" width="30px" />](../getting_started/flight_modes.md#key_position_fixed)
+[<img src="/assets/site/position_fixed.svg" title="Position fix required (e.g. GPS)" width="30px" />](../getting_started/flight_modes.md#key_position_fixed)
 
 The *Takeoff* flight mode causes the vehicle to take off to a specified height and wait for further input.
 
 :::note
+
 * This mode requires a good position estimate (e.g. from GPS).
 * The vehicle must be armed before this mode can be engaged.
 * This mode is automatic - no user intervention is *required* to control the vehicle.
 * RC control switches can be used to change flight modes on any vehicle.
 * RC stick movement in a multicopter (or VTOL in multicopter mode) will [by default](#COM_RC_OVERRIDE) change the vehicle to [Position mode](../flight_modes/position_mc.md) unless handling a critical battery failsafe.
 * The [Failure Detector](../config/safety.md#failure-detector) will automatically stop the engines if there is a problem on takeoff.
+
 :::
 
 The specific behaviour for each vehicle type is described below.
@@ -37,19 +39,18 @@ Parameter | Description
 Automatic takeoff has two modalities: *catapult/hand-launch* or *runway takeoff*.
 The mode defaults to catapult/hand launch, but can be set to runway takeoff by setting [RWTO_TKOFF](#RWTO_TKOFF) to 1.
 
-There are two ways to start an automatic takeoff on fixed-wing vehicles: either by [planning a mission takeoff](../flight_modes/mission.md#fw-mission-takeoff) and starting the mission, or by switching to the _Takeoff mode_ and arming the vehicle.
+There are two ways to start an automatic takeoff on fixed-wing vehicles: either by [planning a mission takeoff](../flight_modes/mission.md#fw-mission-takeoff) and starting the mission, or by switching to the *Takeoff mode* and arming the vehicle.
 
 In both cases, a flight path (starting point and takeoff course) and clearance altitude are defined.
 The flight path takes the vehicle's current position as starting point when the takeoff mode is first entered, and a straight line from this starting point continues in the direction of the defined course indefinitely.
 On takeoff, the aircraft will follow this line, climbing at the maximum climb rate ([FW_T_CLMB_MAX](../advanced_config/parameter_reference.md#FW_T_CLMB_MAX)) until reaching the clearance altitude.
 
-In _Takeoff mode_ (non-mission takeoffs), the course is set to the vehicle heading on arming, and the clearance altitude is set to [MIS_TAKEOFF_ALT](#MIS_TAKEOFF_ALT).
-Reaching the clearance altitude causes the vehicle to enter _Hold mode_.
+In *Takeoff mode* (non-mission takeoffs), the course is set to the vehicle heading on arming, and the clearance altitude is set to [MIS_TAKEOFF_ALT](#MIS_TAKEOFF_ALT).
+Reaching the clearance altitude causes the vehicle to enter *Hold mode*.
 
 In [Mission mode](../flight_modes/mission.md) the operator defines the takeoff course and clearance altitude in the Takeoff mission item.
 The course is defined by the line between the vehicle starting point and the mission item horizontal position, and the clearance altitude is the mission item altitude.
 Reaching the mission item altitude triggers the next mission item.
-
 
 Parameters that apply to both catapult/hand-launch as well as runway takeoffs:
 
@@ -60,8 +61,8 @@ Parameter | Description
 <a id="FW_TKO_PITCH_MIN"></a>[FW_TKO_PITCH_MIN](../advanced_config/parameter_reference.md#FW_TKO_PITCH_MIN) | This is the minimum pitch angle setpoint during the climbout phase
 <a id="FW_T_CLMB_MAX"></a>[FW_T_CLMB_MAX](../advanced_config/parameter_reference.md#FW_T_CLMB_MAX) | Maximum climb rate.
 
-
 <a id="hand_launch"></a>
+
 ### Catapult/Hand Launch
 
 In *catapult/hand-launch mode* the vehicle waits to detect launch (based on acceleration trigger).
@@ -72,12 +73,12 @@ All RC stick movement is ignored during the full takeoff sequence.
 
 To launch in this mode:
 
-- Arm the vehicle
-- Put the vehicle into *Takeoff mode*
-- Launch/throw the vehicle (firmly) directly into the wind.
+* Arm the vehicle
+* Put the vehicle into *Takeoff mode*
+* Launch/throw the vehicle (firmly) directly into the wind.
   You can also shake the vehicle first, wait till the motor spins up and throw only then
 
-The _launch detector_ is affected by the following parameters:
+The *launch detector* is affected by the following parameters:
 
 Parameter | Description
 --- | ---
@@ -85,8 +86,6 @@ Parameter | Description
 <a id="FW_LAUN_AC_THLD"></a>[FW_LAUN_AC_THLD](../advanced_config/parameter_reference.md#FW_LAUN_AC_THLD) | Acceleration threshold (acceleration in body-forward direction must be above this value)
 <a id="FW_LAUN_AC_T"></a>[FW_LAUN_AC_T](../advanced_config/parameter_reference.md#FW_LAUN_AC_T) | Trigger time (acceleration must be above threshold for this amount of seconds)
 <a id="FW_LAUN_MOT_DEL"></a>[FW_LAUN_MOT_DEL](../advanced_config/parameter_reference.md#FW_LAUN_MOT_DEL) | Delay from launch detection to motor spin up
-
-
 
 <a id="runway_launch"></a>
 
@@ -98,8 +97,8 @@ You will first need to enable the wheel controller using the parameter [FW_W_EN]
 Vehicle should be centered and aligned with runway when takeoff is initiated.
 The operator can "nudge" the vehicle while on the runway to help keeping it centered and aligned (see [RWTO_NUDGE](../advanced_config/parameter_reference.md#RWTO_NUDGE)).
 
-
 The *runway takeoff mode* has the following phases:
+
 1. **Throttle ramp**: Throttle is ramped up within [RWTO_RAMP_TIME](../advanced_config/parameter_reference.md#RWTO_RAMP_TIME) to [RWTO_MAX_THR](../advanced_config/parameter_reference.md#RWTO_MAX_THR).
 2. **Clamped to runway**: Pitch fixed, no roll and takeoff path controlled until the rotation airspeed ([RWTO_ROT_AIRSPD](../advanced_config/parameter_reference.md#RWTO_ROT_AIRSPD)) is reached. The operator is able to nudge the vehicle left/right via yaw stick.
 3. **Climbout**: Increase pitch setpoint and climb to takeoff altitude. To prevent wingstrikes, the controller will keep the roll setpoint locked to 0 when close to the ground, and then gradually allow more roll while climbing. It is based on the vehicle geometry as configured in [FW_WING_SPAN](#FW_WING_SPAN) and [FW_WING_HEIGHT](#FW_WING_HEIGHT).
@@ -125,7 +124,6 @@ Parameter | Description
 <a id="FW_WING_HEIGHT"></a>[FW_WING_HEIGHT](../advanced_config/parameter_reference.md#FW_WING_HEIGHT) | The height of the wings above ground (ground clearance). Used to prevent wingstrikes.
 <a id="RWTO_NPFG_PERIOD"></a>[RWTO_NPFG_PERIOD](../advanced_config/parameter_reference.md#RWTO_NPFG_PERIOD) | L1 period while steering on runway. Increase for less aggressive response to course errors.
 <a id="FW_FLAPS_TO_SCL"></a>[FW_FLAPS_TO_SCL](../advanced_config/parameter_reference.md#FW_FLAPS_TO_SCL) | Flaps setpoint during takeoff
-
 
 :::note
 The vehicle always respects normal FW max/min throttle settings during takeoff ([FW_THR_MIN](../advanced_config/parameter_reference.md#FW_THR_MIN), [FW_THR_MAX](../advanced_config/parameter_reference.md#FW_THR_MAX)).

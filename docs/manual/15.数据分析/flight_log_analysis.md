@@ -37,7 +37,7 @@ Key features:
 * Users can upload logs through the web interface, and then share report with others (bulk upload is supported using the [upload_log.py](https://github.com/PX4/PX4-Autopilot/blob/main/Tools/upload_log.py) script)
 * Interactive plots.
 
-![Flight Review Charts](../../assets/flight_log_analysis/flight_review/flight-review-example.png)
+![Flight Review Charts](/assets/flight_log_analysis/flight_review/flight-review-example.png)
 
 See [Log Analysis using Flight Review](../log/flight_review.md) for an introduction.
 
@@ -58,7 +58,7 @@ Key features:
 
 Source code and downloads are available on [Github](https://github.com/facontidavide/PlotJuggler).
 
-![PlotJuggler](../../assets/flight_log_analysis/plot_juggler/plotjuggler_example_view.png)
+![PlotJuggler](/assets/flight_log_analysis/plot_juggler/plotjuggler_example_view.png)
 
 See [Log Analysis using Plot Juggler](../log/plotjuggler_log_analysis.md) for an introduction.
 
@@ -134,7 +134,7 @@ Key features:
 * Supports both new and old PX4 log formats (.ulg, .px4log, .bin)
 * Allows saving plots as images.
 
-![FlightPlot Charts](../../assets/flight_log_analysis/flightplot_0.2.16.png)
+![FlightPlot Charts](/assets/flight_log_analysis/flightplot_0.2.16.png)
 
 ### PX4Tools
 
@@ -148,7 +148,7 @@ Key features:
 * iPython/ jupyter notebooks can be used to share analysis easily
 * Advanced plotting capabilities to allow detailed analysis
 
-![PX4Tools-based analysis](../../assets/flight_log_analysis/px4tools.png)
+![PX4Tools-based analysis](/assets/flight_log_analysis/px4tools.png)
 
 ### MAVGCL
 
@@ -166,7 +166,7 @@ Key features:
 * Java based. Known to work on macOS and Ubuntu.
 * And many more ...
 
-![MAVGCL](../../assets/flight_log_analysis/mavgcl/time_series.png)
+![MAVGCL](/assets/flight_log_analysis/mavgcl/time_series.png)
 
 ### Data Comets
 
@@ -174,4 +174,4 @@ Key features:
 
 You can use the online version of the tool for small log files (< 32Mb), or run it locally in order to analyze longer flights.
 
-![Data Comets](../../assets/flight_log_analysis/data_comets/data_comets_overview.gif)
+![Data Comets](/assets/flight_log_analysis/data_comets/data_comets_overview.gif)

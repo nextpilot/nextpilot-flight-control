@@ -1,4 +1,8 @@
-# NextPilot 飞行控制系统
+# NextPilot Flight Control System
+
+<p align="center">
+<img src="docs/logo.png" width="60%" >
+</p>
 
 [English](README.md) | [中文](README_zh.md) | [Español](README_es.md) | [Deutsch](README_de.md)
 
@@ -12,22 +16,36 @@ NextPilot是一款的高性能高可靠的自动驾驶仪，支持多旋翼、�
 
 ## 系统框架
 
-![](./docs/Y.开发指南/03.系统框架/architecture.png)
+![](./docs/develop/03.系统框架/architecture.png)
 
-## 支持机型
+## Supported Airframe
 
-## 硬件支持
+- Multicopters
+- fixed-wing: plane,
+- vtol,
 
-目前 NextPilot 支持 [PX4 FMUv5]() 系列开源硬件，以及 NextPilot 自主开发的飞控硬件。
+## Supported Hardware
 
-# 快速入门
+目前 NextPilot 支持 [PX4 FMUv5](https://docs.px4.io/main/en/flight_controller/cuav_v5_plus.html) 系列开源硬件，以及 NextPilot 自主开发的飞控硬件。
 
-## 使用手册
+# Manual
 
-[用户指南]() | [飞行模式]() | [飞行仿真]()
+[用户手册](https://docs.nextpilot.cn/manual) | [飞行模式](https://docs.nextpilot.cn/manual/05.%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/01.%E9%A3%9E%E8%A1%8C%E6%A8%A1%E5%BC%8F/index.html) | [飞行仿真]()
 
-## 开发指南
+# Develeop
 
-[开发环境]() | [硬件适配]()
+[开发环境](https://docs.nextpilot.cn/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/01.setup-develop-environment.html) | [硬件适配]()
 
-# 代码贡献
+# Contribution
+
+If you are interested in NextPilot and want to join in the development of NextPilot and become a code contributor, please refer to the [Code Contribution Guide](.github/CONTRIBUTING.md).
+
+# Community
+
+NextPilot is very grateful for the support from all community developers, and if you have any ideas, suggestions or questions in the process of using NextPilot, NextPilot can be reached by the following means, and we are also updating NextPilot in real time on these channels. At the same time, any questions can be feedbacked in the [NextPilot Issue](https://github.com/nextpilot/nextpilot-flight-control/issues) or [NextPilot Discussions](https://github.com/nextpilot/nextpilot-flight-control/discussions), and community members will answer them.
+
+Thanks for the following contributors!
+
+<a href="https://github.com/nextpilot/nextpilot-flight-control/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=nextpilot/nextpilot-flight-control" />
+</a>

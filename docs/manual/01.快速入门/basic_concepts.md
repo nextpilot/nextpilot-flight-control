@@ -43,7 +43,7 @@ You can use _QGroundControl_ to load (flash) PX4 firmware onto the [vehicle cont
 _QGroundControl_ runs on Windows, Android, MacOS or Linux.
 Download and install it from [here](http://qgroundcontrol.com/downloads/).
 
-![QGC Main Screen](../../assets/concepts/qgc_main_screen.jpg)
+![QGC Main Screen](/assets/concepts/qgc_main_screen.jpg)
 
 ## Flight Controller Board
 
@@ -70,7 +70,7 @@ Nextpilot uses _outputs_ to control: motor speed (e.g. via [ESC](#escs-motors)),
 The outputs may be PWM ports or DroneCAN nodes (e.g. DroneCAN [motor controllers](../dronecan/escs.md)).
 The images below show the PWM output ports for [Pixhawk 4](../flight_controller/pixhawk4.md) and [Pixhawk 4 mini](../flight_controller/pixhawk4_mini.md).
 
-![Pixhawk 4 output ports](../../assets/flight_controller/pixhawk4/pixhawk4_main_aux_ports.jpg) ![Pixhawk4 mini MAIN ports](../../assets/flight_controller/pixhawk4mini/pixhawk4mini_pwm.png)
+![Pixhawk 4 output ports](/assets/flight_controller/pixhawk4/pixhawk4_main_aux_ports.jpg) ![Pixhawk4 mini MAIN ports](/assets/flight_controller/pixhawk4mini/pixhawk4mini_pwm.png)
 
 The outputs are divided into `MAIN` and `AUX` outputs, and individually numbered (i.e. `MAINn` and `AUXn`, where `n` is 1 to usually 6 or 8).
 They might also be marked as `IO PWM Out` and `FMU PWM OUT` (or similar).
@@ -114,7 +114,7 @@ Information about batteries and battery configuration can be found in [Battery E
 
 Pilots can control a vehicle manually using either a [Radio Control (RC) System](../getting_started/rc_transmitter_receiver.md) or a [Joystick/Gamepad](../config/joystick.md) controller connected via QGroundControl.
 
-![Taranis X9D Transmitter](../../assets/hardware/transmitters/frsky_taranis_x9d_transmitter.jpg) <img src="../../assets/peripherals/joystick/micronav.jpg" alt="Photo of MicroNav, a ground controller with integrated joysticks" width="400px">
+![Taranis X9D Transmitter](/assets/hardware/transmitters/frsky_taranis_x9d_transmitter.jpg) <img src="/assets/peripherals/joystick/micronav.jpg" alt="Photo of MicroNav, a ground controller with integrated joysticks" width="400px">
 
 RC systems use a dedicated ground-based radio transmitter and vehicle-based receiver for sending control information.
 They should always be used when first tuning/testing a new frame design, or when flying racers/acrobatically (and in other cases where low latency is important).
@@ -263,7 +263,7 @@ For more information see: [Safety](../config/safety.md) (Basic Configuration).
 
 All the vehicles, boats and aircraft have a heading direction or an orientation based on their forward motion.
 
-![Frame Heading](../../assets/concepts/frame_heading.png)
+![Frame Heading](/assets/concepts/frame_heading.png)
 
 !!! note
     For a VTOL Tailsitter the heading is relative to the multirotor configuration (i.e. vehicle pose during takeoff, hovering, landing).
@@ -272,7 +272,7 @@ It is important to know the vehicle heading direction in order to align the auto
 Multicopters have a heading even when they are symmetrical from all sides!
 Usually manufacturers use a colored props or colored arms to indicate the heading.
 
-![Frame Heading TOP](../../assets/concepts/frame_heading_top.png)
+![Frame Heading TOP](/assets/concepts/frame_heading_top.png)
 
 In our illustrations we will use red coloring for the front propellers of multicopter to show heading.
 

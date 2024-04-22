@@ -1,11 +1,11 @@
 # Altitude Mode (Multicopter)
 
-[<img src="../../assets/site/difficulty_easy.png" title="Easy to fly" width="30px" />](../getting_started/flight_modes.md#key_difficulty)&nbsp;[<img src="../../assets/site/remote_control.svg" title="Manual/Remote control required" width="30px" />](../getting_started/flight_modes.md#key_manual)&nbsp;[<img src="../../assets/site/altitude_icon.svg" title="Altitude required (e.g. Baro, Rangefinder)" width="30px" />](../getting_started/flight_modes.md#altitude_only)
+[<img src="/assets/site/difficulty_easy.png" title="Easy to fly" width="30px" />](../getting_started/flight_modes.md#key_difficulty)&nbsp;[<img src="/assets/site/remote_control.svg" title="Manual/Remote control required" width="30px" />](../getting_started/flight_modes.md#key_manual)&nbsp;[<img src="/assets/site/altitude_icon.svg" title="Altitude required (e.g. Baro, Rangefinder)" width="30px" />](../getting_started/flight_modes.md#altitude_only)
 
 *Altitude mode* is a *relatively* easy-to-fly RC mode in which roll and pitch sticks control vehicle movement in the left-right and forward-back directions (relative to the "front" of the vehicle), yaw stick controls rate of rotation over the horizontal plane, and throttle controls speed of ascent-descent.
 
-When the sticks are released/centered the vehicle will level and maintain the current *altitude*. 
-If moving in the horizontal plane the vehicle will continue until any momentum is dissipated by wind resistance. 
+When the sticks are released/centered the vehicle will level and maintain the current *altitude*.
+If moving in the horizontal plane the vehicle will continue until any momentum is dissipated by wind resistance.
 If the wind blows the aircraft will drift in the direction of the wind.
 
 :::tip
@@ -14,7 +14,7 @@ If the wind blows the aircraft will drift in the direction of the wind.
 
 The diagram below shows the mode behaviour visually (for a [mode 2 transmitter](../getting_started/rc_transmitter_receiver.md#transmitter_modes)).
 
-![Altitude Control MC - Mode2 RC Controller](../../assets/flight_modes/altitude_control_mode_copter.png)
+![Altitude Control MC - Mode2 RC Controller](/assets/flight_modes/altitude_control_mode_copter.png)
 
 ## Technical Summary
 
@@ -31,9 +31,11 @@ RC/manual mode like [Manual/Stabilized (MC)](../flight_modes/manual_stabilized_m
   * When landed, the vehicle will take off if the throttle stick is raised above 62.5% percent (of the full range from bottom).
 
 :::note
+
 * Manual input is required (RC controller, or gamepad/thumbsticks through MAVLink).
 * The altitude is normally measured using a barometer, which may become inaccurate in extreme weather conditions.
   Vehicles that include a LIDAR/range sensor will be able to control altitude with greater reliability and accuracy.
+
 :::
 
 ## Parameters

@@ -14,7 +14,7 @@ These tunes are played during the boot sequence.
 #### Startup Tone
 
 <audio controls>
-  <source src="../../assets/tunes/1_startup_tone.mp3" type="audio/mpeg">
+  <source src="/assets/tunes/1_startup_tone.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 <!-- tune: 1, STARTUP -->
@@ -24,7 +24,7 @@ Your browser does not support the audio element.
 #### Error Tune
 
 <audio controls>
-  <source src="../../assets/tunes/2_error_tune.mp3" type="audio/mpeg">
+  <source src="/assets/tunes/2_error_tune.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 <!-- tune 2, ERROR_TUNE -->
@@ -38,7 +38,7 @@ Your browser does not support the audio element.
 #### Make File System
 
 <audio controls>
-  <source src="../../assets/tunes/16_make_fs.mp3" type="audio/mpeg">
+  <source src="/assets/tunes/16_make_fs.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 <!-- 14, SD_INIT (previously tune 16) -->
@@ -50,7 +50,7 @@ Your browser does not support the audio element.
 #### Format Failed
 
 <audio controls>
-  <source src="../../assets/tunes/17_format_failed.mp3" type="audio/mpeg">
+  <source src="/assets/tunes/17_format_failed.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 <!-- 15, SD_ERROR (previously 17) -->
@@ -60,7 +60,7 @@ Your browser does not support the audio element.
 #### Program PX4IO
 
 <audio controls>
-  <source src="../../assets/tunes/18_program_px4io.mp3" type="audio/mpeg">
+  <source src="/assets/tunes/18_program_px4io.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 <!-- 16, PROG_PX4IO (previously id 18) -->
@@ -70,7 +70,7 @@ Your browser does not support the audio element.
 #### Program PX4IO Success
 
 <audio controls>
-  <source src="../../assets/tunes/19_program_px4io_success.mp3" type="audio/mpeg">
+  <source src="/assets/tunes/19_program_px4io_success.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 <!-- 17, PROG_PX4IO_OK (previously tune 19) -->
@@ -80,7 +80,7 @@ Your browser does not support the audio element.
 #### Program PX4IO Fail
 
 <audio controls>
-  <source src="../../assets/tunes/20_program_px4io_fail.mp3" type="audio/mpeg">
+  <source src="/assets/tunes/20_program_px4io_fail.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 <!-- 18, PROG_PX4IO_ERR (previously tune 20) -->
@@ -98,7 +98,7 @@ These tones/tunes are emitted during normal operation.
 #### Error Tune
 
 <audio controls>
-  <source src="../../assets/tunes/2_error_tune.mp3" type="audio/mpeg">
+  <source src="/assets/tunes/2_error_tune.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 <!-- 2, ERROR_TUNE -->
@@ -108,7 +108,7 @@ Your browser does not support the audio element.
 #### Notify Positive Tone
 
 <audio controls>
-  <source src="../../assets/tunes/3_notify_positive_tone.mp3" type="audio/mpeg">
+  <source src="/assets/tunes/3_notify_positive_tone.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 <!-- 3, NOTIFY_POSITIVE -->
@@ -121,7 +121,7 @@ Your browser does not support the audio element.
 #### Notify Neutral Tone
 
 <audio controls>
-  <source src="../../assets/tunes/4_notify_neutral_tone.mp3" type="audio/mpeg">
+  <source src="/assets/tunes/4_notify_neutral_tone.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 <!-- 4, NOTIFY_NEUTRAL -->
@@ -133,7 +133,7 @@ Your browser does not support the audio element.
 #### Notify Negative Tone
 
 <audio controls>
-  <source src="../../assets/tunes/5_notify_negative_tone.mp3" type="audio/mpeg">
+  <source src="/assets/tunes/5_notify_negative_tone.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 <!-- 5, NOTIFY_NEGATIVE -->
@@ -148,7 +148,7 @@ Your browser does not support the audio element.
 #### Arming Warning
 
 <audio controls>
-  <source src="../../assets/tunes/6_arming_warning.mp3" type="audio/mpeg">
+  <source src="/assets/tunes/6_arming_warning.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 <!-- 6, ARMING_WARNING -->
@@ -158,7 +158,7 @@ Your browser does not support the audio element.
 #### Arming Failure Tune
 
 <audio controls>
-  <source src="../../assets/tunes/10_arming_failure_tune.mp3" type="audio/mpeg">
+  <source src="/assets/tunes/10_arming_failure_tune.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 <!-- 10, ARMING_FAILURE -->
@@ -168,7 +168,7 @@ Your browser does not support the audio element.
 #### Battery Warning Slow
 
 <audio controls>
-  <source src="../../assets/tunes/7_battery_warning_slow.mp3" type="audio/mpeg">
+  <source src="/assets/tunes/7_battery_warning_slow.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 <!-- 7,  BATTERY_WARNING_SLOW -->
@@ -178,7 +178,7 @@ Your browser does not support the audio element.
 #### Battery Warning Fast
 
 <audio controls>
-  <source src="../../assets/tunes/8_battery_warning_fast.mp3" type="audio/mpeg">
+  <source src="/assets/tunes/8_battery_warning_fast.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 <!-- 8, BATTERY_WARNING_FAST -->
@@ -188,7 +188,7 @@ Your browser does not support the audio element.
 #### GPS Warning Slow
 
 <audio controls>
-  <source src="../../assets/tunes/9_gps_warning_slow.mp3" type="audio/mpeg">
+  <source src="/assets/tunes/9_gps_warning_slow.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 <!-- 9,  GPS_WARNING -->
@@ -196,7 +196,7 @@ Your browser does not support the audio element.
 #### Parachute Release
 
 <audio controls>
-  <source src="../../assets/tunes/11_parachute_release.mp3" type="audio/mpeg">
+  <source src="/assets/tunes/11_parachute_release.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 <!-- 11, PARACHUTE_RELEASE -->
@@ -206,7 +206,7 @@ Your browser does not support the audio element.
 #### Single Beep
 
 <audio controls>
-  <source src="../../assets/tunes/14_single_beep.mp3" type="audio/mpeg">
+  <source src="/assets/tunes/14_single_beep.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 <!-- 12, SINGLE_BEEP (previously was id 14 -->
@@ -216,7 +216,7 @@ Your browser does not support the audio element.
 #### Home Set Tune
 
 <audio controls>
-  <source src="../../assets/tunes/15_home_set_tune.mp3" type="audio/mpeg">
+  <source src="/assets/tunes/15_home_set_tune.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 <!-- 13, HOME_SET (previously id 15) -->
@@ -226,7 +226,7 @@ Your browser does not support the audio element.
 #### Power Off Tune
 
 <audio controls>
-  <source src="../../assets/tunes/power_off_tune.mp3" type="audio/mpeg">
+  <source src="/assets/tunes/power_off_tune.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 
