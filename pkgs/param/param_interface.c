@@ -9,17 +9,17 @@
  ******************************************************************/
 
 #define LOG_TAG "param.interface"
-#define LOG_LVL LOG_LVL_DBG
+#define LOG_LVL LOG_LVL_INFO
 
 #include <rtthread.h>
 #include <rtdbg.h>
 #include "param_interface.h"
 #ifdef PKG_USING_HRTIMER
-#include <hrtimer.h>
+#   include <hrtimer.h>
 #endif // PKG_USING_HRTIMER
 #ifdef PKG_USING_UORB_
-#include <uORB.h>
-#include <topics/parameter_update.h>
+#   include <uORB.h>
+#   include <topics/parameter_update.h>
 #endif // PKG_USING_UORB_
 
 void param_notify_changes();
@@ -54,13 +54,13 @@ void param_notify_changes() {
     static uint32_t           param_instance = 0;
     struct parameter_update_s pup;
     pup.instance = param_instance++;
-#ifdef PKG_USING_HRTIMER
+#   ifdef PKG_USING_HRTIMER
     pup.timestamp = hrt_absolute_time();
-#else
+#   else
     pup.timestamp = rt_tick_get() * 1000ULL;
-#endif // PKG_USING_HRTIMER
+#   endif // PKG_USING_HRTIMER
     orb_publish(ORB_ID(parameter_update), NULL, &pup);
-#endif // PKG_USING_UORB
+#endif    // PKG_USING_UORB
     LOG_D("notify param updated");
 }
 
@@ -131,7 +131,7 @@ int param_find_internal(const char *name, bool mark_used) {
 param_t param_find(const char *name) {
     param_t idx = param_find_internal(name, true);
     if (idx == PARAM_INVALID) {
-        LOG_W("can't find %s", name);
+        // LOG_W("can't find %s", name);
     }
     return idx;
 }
@@ -355,9 +355,7 @@ void param_reset_excludes(const char *excludes[], int num_excludes) {
         for (int kk = 0; kk < num_excludes; kk++) {
             int len = rt_strlen(excludes[kk]);
 
-            if ((excludes[kk][len - 1] == '*' &&
-                 rt_strncmp(name, excludes[kk], len - 1) == 0) ||
-                rt_strcmp(name, excludes[kk]) == 0) {
+            if ((excludes[kk][len - 1] == '*' && rt_strncmp(name, excludes[kk], len - 1) == 0) || rt_strcmp(name, excludes[kk]) == 0) {
                 exclude = true;
                 break;
             }
@@ -385,9 +383,7 @@ void param_reset_specific(const char *resets[], int num_resets) {
         for (int kk = 0; kk < num_resets; kk++) {
             int len = rt_strlen(resets[kk]);
 
-            if ((resets[kk][len - 1] == '*' &&
-                 rt_strncmp(name, resets[kk], len - 1) == 0) ||
-                rt_strcmp(name, resets[kk]) == 0) {
+            if ((resets[kk][len - 1] == '*' && rt_strncmp(name, resets[kk], len - 1) == 0) || rt_strcmp(name, resets[kk]) == 0) {
                 reset = true;
                 break;
             }

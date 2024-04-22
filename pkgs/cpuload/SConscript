@@ -1,0 +1,8 @@
+from building import *
+
+src = ["printload.cpp", "cpuload.cpp"]
+inc = []
+
+objs = DefineGroup("pkg/cpuload", src, depend=["PKG_USING_CPULOAD"])
+
+Return("objs")

@@ -35,11 +35,11 @@ public:
      * @return Returns 0 iff successful, -1 otherwise.
      */
     static int main(int argc, char *argv[]) {
-        if (argc <= 1 ||
-            rt_strcmp(argv[1], "-h") == 0 ||
-            rt_strcmp(argv[1], "help") == 0 ||
-            rt_strcmp(argv[1], "info") == 0 ||
-            rt_strcmp(argv[1], "usage") == 0) {
+        if (argc <= 1
+            || rt_strcmp(argv[1], "-h") == 0
+            || rt_strcmp(argv[1], "help") == 0
+            || rt_strcmp(argv[1], "info") == 0
+            || rt_strcmp(argv[1], "usage") == 0) {
             return T::print_usage();
         }
 
@@ -122,7 +122,11 @@ public:
         unlock_module();
 
         if (inst != -1) {
-            LOG_I("start instance #%d", inst);
+            if (N > 1) {
+                LOG_I("start instance #%d", inst);
+            } else {
+                LOG_I("start ok");
+            }
         }
 
         return 0;
@@ -157,7 +161,12 @@ public:
                 // 删除实例
                 delete object;
                 _object[idx].store(nullptr);
-                LOG_I("request stop instance #%d", idx);
+
+                if (N > 1) {
+                    LOG_I("request stop instance #%d", idx);
+                } else {
+                    LOG_I("request stop");
+                }
 
                 // do {
                 //     rt_thread_mdelay(10);
@@ -189,7 +198,9 @@ public:
             T *object = _object[inst].load();
             if (object) {
                 found = true;
-                LOG_RAW("\ninstance #%d status:\n", inst);
+                if (N > 1) {
+                    LOG_RAW("\ninstance #%d status:\n", inst);
+                }
                 object->print_status();
             }
         }

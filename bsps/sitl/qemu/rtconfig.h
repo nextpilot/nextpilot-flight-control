@@ -85,12 +85,12 @@
 
 /* Peripheral Libraries Config */
 
+#define PKG_USING_BATTERY
+#define PKG_USING_TUNES
 #define PKG_USING_ACCELEROMETER
 #define PKG_USING_AIRSPEED
-#define PKG_USING_BATTERY
 #define PKG_USING_GYROSCOPE
 #define PKG_USING_MAGNETOMETER
-#define PKG_USING_TUNES
 /* end of Peripheral Libraries Config */
 /* end of Nextpilot Libraries Config */
 
@@ -112,15 +112,19 @@
 #define SYS_USING_DATAMAN
 #define DATAMAN_DEFAULT_FILE_PATH "/dataman.bin"
 #define SYS_USING_LOGGER
+#define LOGGER_FULL_LOG_ROOT_PATH "/log"
+#define LOGGER_LESS_LOG_ROOT_PATH "/mission_log"
 /* end of Nextpilot Storage Config */
 
 /* Nextpilot Telemetry Config */
 
+/* end of Nextpilot Telemetry Config */
 /* end of Nextpilot Firmware Config */
 
 /* Nextpilot Packages Config */
 
 #define PKG_USING_CONTAINER
+#define PKG_USING_CPULOAD
 #define PKG_USING_EVENTS
 #define PKG_USING_GETOPT
 #define PKG_USING_HRTIMER
@@ -132,6 +136,7 @@
 #define PARAM_DEFAULT_FILE_PATH "/param.bin"
 #define PKG_USING_PERF
 #define PKG_USING_QUEUE
+#define PKG_USING_SHUTDOWN
 
 /* ULog backend */
 
@@ -360,7 +365,7 @@
 #define ULOG_ASSERT_ENABLE
 #define ULOG_LINE_BUF_SIZE 128
 #define ULOG_USING_ASYNC_OUTPUT
-#define ULOG_ASYNC_OUTPUT_BUF_SIZE 4096
+#define ULOG_ASYNC_OUTPUT_BUF_SIZE 8192
 #define ULOG_ASYNC_OUTPUT_BY_THREAD
 #define ULOG_ASYNC_OUTPUT_THREAD_STACK 2048
 #define ULOG_ASYNC_OUTPUT_THREAD_PRIORITY 30

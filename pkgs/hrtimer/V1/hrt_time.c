@@ -12,7 +12,7 @@
 #include "board.h"
 
 #ifdef PKG_USING_PERF_COUNTER
-#include <perf_counter.h>
+#   include <perf_counter.h>
 #endif // PKG_USING_PERF_COUNTER
 
 #ifdef SOC_FAMILY_STM32
@@ -22,7 +22,7 @@ static uint64_t _timebase_us = 0;
 int hrt_abstime_init() {
     // SystemCoreClock，好像也可以使用这个变量
     // _sys_clock_freq = HAL_RCC_GetSysClockFreq();
-#ifdef RT_USING_RTC_READ_TIME_ERROR
+#   ifdef RT_USING_RTC_READ_TIME_ERROR
     rt_base_t   level;
     time_t      time = 0;
     rt_tick_t   tick;
@@ -38,10 +38,11 @@ int hrt_abstime_init() {
         }
     }
     return -1;
-#else
+#   else
     return 0;
-#endif
+#   endif
 }
+
 INIT_COMPONENT_EXPORT(hrt_abstime_init);
 #endif
 
@@ -54,12 +55,12 @@ INIT_COMPONENT_EXPORT(hrt_abstime_init);
 //
 hrt_abstime hrt_absolute_time(void) {
 #if defined(RT_USING_RTC__HAVE_BUG)
-#if defined(RT_USING_POSIX_CLOCK__HAVE_BUG)
+#   if defined(RT_USING_POSIX_CLOCK__HAVE_BUG)
     // CLOCK_REALTIME采用了rt_tick，因此其精度也是ms级别
     struct timespec ts;
     clock_gettime(CLOCK_REALTIME, &ts);
     return ts_to_abstime(&ts);
-#else
+#   else
     // gettimeofday只是实现了sec，没有实现usec
     struct timeval  now;
     struct timespec ts;
@@ -69,7 +70,7 @@ hrt_abstime hrt_absolute_time(void) {
     ts.tv_sec  = now.tv_sec;
     ts.tv_nsec = now.tv_usec * 1000;
     return ts_to_abstime(&ts);
-#endif
+#   endif
 #elif defined(RT_USING_CPUTIME__HAVE_BUG)
     // 注意clock_cpu_gettime内部是一个uint32的变量，因此精度会溢出
     struct timespec ts;
@@ -108,7 +109,7 @@ hrt_abstime hrt_absolute_time(void) {
  */
 hrt_abstime ts_to_abstime(const struct timespec *ts) {
     hrt_abstime result;
-    result = (hrt_abstime)(ts->tv_sec) * 1000000;
+    result  = (hrt_abstime)(ts->tv_sec) * 1000000;
     result += ts->tv_nsec / 1000;
     return result;
 }
@@ -137,10 +138,4 @@ void hrt_store_absolute_time(volatile hrt_abstime *t) {
     rt_enter_critical();
     *t = hrt_absolute_time();
     rt_exit_critical();
-}
-
-void abstime_to_ts(struct timespec *ts, hrt_abstime abstime) {
-    ts->tv_sec = abstime / 1000000ULL;
-    abstime -= ts->tv_sec * 1000000ULL;
-    ts->tv_nsec = abstime * 1000ULL;
 }

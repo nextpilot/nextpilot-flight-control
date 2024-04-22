@@ -18,14 +18,19 @@
 #include <string.h>
 #include <stdio.h>
 
-#include <px4_platform/cpuload.h>
-#include <px4_platform_common/log.h>
-#include <px4_platform_common/printload.h>
-#include <drivers/drv_hrt.h>
+#include "cpuload.h"
+#include <ulog/log.h>
+#include "printload.h"
+#include <hrtimer.h>
 
 #if defined(BOARD_DMA_ALLOC_POOL_SIZE)
 #   include <px4_platform/board_dma_alloc.h>
 #endif /* BOARD_DMA_ALLOC_POOL_SIZE */
+
+
+RT_WEAK void print_load_buffer(char *buffer, int buffer_length, print_load_callback_f cb, void *user,
+                               struct print_load_s *print_state) {
+}
 
 #if defined(CONFIG_SCHED_INSTRUMENTATION)
 

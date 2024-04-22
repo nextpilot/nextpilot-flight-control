@@ -8,6 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "logger.util"
+
 #include "util.h"
 
 #include <dirent.h>
@@ -20,15 +22,14 @@
 #include <hrtimer.h>
 #include <events/events.h>
 #include <ulog/log.h>
-// #include <px4_platform_common/time.h>
 #include <ulog/mavlink_log.h>
 #include <stdio.h>
 
 #if defined(__PX4_DARWIN)
-#include <sys/param.h>
-#include <sys/mount.h>
+#   include <sys/param.h>
+#   include <sys/mount.h>
 #else
-#include <sys/statfs.h>
+#   include <sys/statfs.h>
 #endif
 
 #define GPS_EPOCH_SECS ((time_t)1234567890ULL)
@@ -159,8 +160,7 @@ int check_free_space(const char *log_root_dir, int32_t max_log_dirs_to_keep, orb
             min_free_bytes = total_bytes / 10;
         }
 
-        if (num_sess + num_dates <= max_log_dirs_to_keep &&
-            statfs_buf.f_bavail >= (px4_statfs_buf_f_bavail_t)(min_free_bytes / statfs_buf.f_bsize)) {
+        if (num_sess + num_dates <= max_log_dirs_to_keep && statfs_buf.f_bavail >= (px4_statfs_buf_f_bavail_t)(min_free_bytes / statfs_buf.f_bsize)) {
             break; // enough free space and limit not reached
         }
 
@@ -262,6 +262,6 @@ int remove_directory(const char *dir) {
     return ret;
 }
 
-}
-}
-} // namespace nextpilot::logger::util
+} // namespace util
+} // namespace logger
+} // namespace nextpilot

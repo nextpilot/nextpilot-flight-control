@@ -1,0 +1,3 @@
+menuconfig PKG_USING_LED_CONTROL
+    bool "led_control: Led controller helper class, used by Led drivers"
+    default n

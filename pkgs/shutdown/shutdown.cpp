@@ -23,7 +23,7 @@
 #include <rtdbg.h>
 
 #ifndef MODULE_NAME
-#define MODULE_NAME "shutdown"
+#   define MODULE_NAME "shutdown"
 #endif
 
 #include <external_reset_lockout.h>
@@ -34,15 +34,14 @@
 #include <pthread.h>
 
 #ifdef __PX4_NUTTX
-#include <nuttx/board.h>
-#include <sys/boardctl.h>
+#   include <nuttx/board.h>
+#   include <sys/boardctl.h>
 #endif
 
 using namespace time_literals;
 
-static pthread_mutex_t shutdown_mutex =
-    PTHREAD_MUTEX_INITIALIZER; // protects access to shutdown_hooks & shutdown_lock_counter
-static uint8_t shutdown_lock_counter = 0;
+static pthread_mutex_t shutdown_mutex        = PTHREAD_MUTEX_INITIALIZER; // protects access to shutdown_hooks & shutdown_lock_counter
+static uint8_t         shutdown_lock_counter = 0;
 
 int shutdown_lock() {
     int ret = pthread_mutex_lock(&shutdown_mutex);
@@ -77,22 +76,22 @@ int shutdown_unlock() {
     return ret;
 }
 
+
 #if defined(CONFIG_SCHED_WORKQUEUE) || (!defined(CONFIG_BUILD_FLAT) && defined(CONFIG_LIBC_USRWORK))
 
 static struct work_s shutdown_work    = {};
 static uint16_t      shutdown_counter = 0; ///< count how many times the shutdown worker was executed
 
-#define SHUTDOWN_ARG_IN_PROGRESS   (1 << 0)
-#define SHUTDOWN_ARG_REBOOT        (1 << 1)
-#define SHUTDOWN_ARG_TO_BOOTLOADER (1 << 2)
+#   define SHUTDOWN_ARG_IN_PROGRESS   (1 << 0)
+#   define SHUTDOWN_ARG_REBOOT        (1 << 1)
+#   define SHUTDOWN_ARG_TO_BOOTLOADER (1 << 2)
 static uint8_t shutdown_args = 0;
 
 static constexpr int   max_shutdown_hooks                 = 1;
 static shutdown_hook_t shutdown_hooks[max_shutdown_hooks] = {};
 
-static hrt_abstime           shutdown_time_us = 0;
-static constexpr hrt_abstime shutdown_timeout_us =
-    5_s; ///< force shutdown after this time if modules do not respond in time
+static hrt_abstime           shutdown_time_us    = 0;
+static constexpr hrt_abstime shutdown_timeout_us = 5_s; ///< force shutdown after this time if modules do not respond in time
 
 int register_shutdown_hook(shutdown_hook_t hook) {
     pthread_mutex_lock(&shutdown_mutex);
@@ -147,28 +146,28 @@ static void shutdown_worker(void *arg) {
 
     if (delay_elapsed && ((done && shutdown_lock_counter == 0) || (now > (shutdown_time_us + shutdown_timeout_us)))) {
         if (shutdown_args & SHUTDOWN_ARG_REBOOT) {
-#if defined(CONFIG_BOARDCTL_RESET)
+#   if defined(CONFIG_BOARDCTL_RESET)
             LOG_I("Reboot NOW.");
             boardctl(BOARDIOC_RESET, (shutdown_args & SHUTDOWN_ARG_TO_BOOTLOADER) ? 1 : 0);
-#else
+#   else
             LOG_W("board reset not available");
-#endif
+#   endif
 
         } else {
-#if defined(BOARD_HAS_POWER_CONTROL)
+#   if defined(BOARD_HAS_POWER_CONTROL)
             LOG_I("Powering off NOW.");
-#if defined(CONFIG_BOARDCTL_POWEROFF)
+#      if defined(CONFIG_BOARDCTL_POWEROFF)
             boardctl(BOARDIOC_POWEROFF, 0);
-#else
+#      else
             board_power_off(0);
-#endif
-#elif defined(__PX4_POSIX)
+#      endif
+#   elif defined(__PX4_POSIX)
             // simply exit on posix if real shutdown (poweroff) not available
             LOG_I("Exiting NOW.");
             system_exit(0);
-#else
+#   else
             LOG_W("board shutdown not available");
-#endif
+#   endif
         }
 
         pthread_mutex_unlock(&shutdown_mutex); // must NEVER come here
@@ -179,7 +178,7 @@ static void shutdown_worker(void *arg) {
     }
 }
 
-#if defined(CONFIG_BOARDCTL_RESET)
+#   if defined(CONFIG_BOARDCTL_RESET)
 int reboot_request(bool to_bootloader, uint32_t delay_us) {
     pthread_mutex_lock(&shutdown_mutex);
 
@@ -204,9 +203,9 @@ int reboot_request(bool to_bootloader, uint32_t delay_us) {
     pthread_mutex_unlock(&shutdown_mutex);
     return 0;
 }
-#endif // CONFIG_BOARDCTL_RESET
+#   endif // CONFIG_BOARDCTL_RESET
 
-#if defined(BOARD_HAS_POWER_CONTROL) || defined(__PX4_POSIX)
+#   if defined(BOARD_HAS_POWER_CONTROL) || defined(__PX4_POSIX)
 int shutdown_request(uint32_t delay_us) {
     pthread_mutex_lock(&shutdown_mutex);
 
@@ -227,6 +226,7 @@ int shutdown_request(uint32_t delay_us) {
     pthread_mutex_unlock(&shutdown_mutex);
     return 0;
 }
-#endif // BOARD_HAS_POWER_CONTROL
 
-#endif // CONFIG_SCHED_WORKQUEUE)
+#   endif // BOARD_HAS_POWER_CONTROL
+
+#endif    // CONFIG_SCHED_WORKQUEUE

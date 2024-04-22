@@ -9,7 +9,7 @@
  ******************************************************************/
 
 #define LOG_TAG "param.storage"
-#define LOG_LVL LOG_LVL_DBG
+#define LOG_LVL LOG_LVL_INFO
 
 #include <stdbool.h>
 #include <rtdbg.h>
@@ -280,4 +280,5 @@ static int param_storage_init() {
 
     return 0;
 }
+
 INIT_EXPORT(param_storage_init, "5.2");

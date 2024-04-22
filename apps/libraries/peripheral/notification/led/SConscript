@@ -4,10 +4,10 @@ from building import *
 
 cwd = GetCurrentDir()
 
-inc = [cwd]
+inc = []
 src = Glob("*.cpp")
 
-objs = DefineGroup("lib/drivers", src, depend=["PKG_USING_TUNES"], CPPPATH=inc)
+objs = DefineGroup("lib/drivers", src, depend=["PKG_USING_LED_CONTROL"], CPPPATH=inc)
 
 
 Return("objs")

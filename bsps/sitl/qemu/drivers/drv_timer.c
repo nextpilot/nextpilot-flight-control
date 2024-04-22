@@ -155,3 +155,10 @@ void timer_clear_pending(int timer)
         TIMER_INTCLR(TIMER23_HW_BASE) = 0x01;
     }
 }
+
+void abstime_to_ts(struct timespec *ts, hrt_abstime abstime)
+{
+    ts->tv_sec   = abstime / 1000000ULL;
+    abstime     -= ts->tv_sec * 1000000ULL;
+    ts->tv_nsec  = abstime * 1000ULL;
+}

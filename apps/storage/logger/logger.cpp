@@ -35,10 +35,7 @@
 #include <getopt/getopt.h>
 #include <events/events.h>
 #include <ulog/log.h>
-// #include <px4_platform_common/posix.h>
-// #include <px4_platform_common/sem.h>
 #include <shutdown/shutdown.h>
-// #include <px4_platform_common/tasks.h>
 #include <ulog/mavlink_log.h>
 #include <replay/definitions.hpp>
 #include <version/board_version.h>
@@ -69,6 +66,14 @@ RT_WEAK int lockstep_register_component() {
 }
 
 RT_WEAK void lockstep_unregister_component(int) {
+}
+
+RT_WEAK int register_shutdown_hook(shutdown_hook_t hook) {
+    return 0;
+}
+
+RT_WEAK int unregister_shutdown_hook(shutdown_hook_t hook) {
+    return 0;
 }
 
 /* This is used to schedule work for the logger (periodic scan for updated topics) */
@@ -238,9 +243,13 @@ Logger *Logger::instantiate(int argc, char *argv[]) {
     int                log_buffer_size    = 12 * 1024;
     Logger::LogMode    log_mode           = Logger::LogMode::while_armed;
     bool               error_flag         = false;
-    bool               log_name_timestamp = false;
+    bool               log_name_timestamp = true;
     LogWriter::Backend backend            = LogWriter::BackendAll;
     const char        *poll_topic         = nullptr;
+
+    int32_t sdlog_mode = param_get_int32((param_t)params_id::SDLOG_MODE);
+    log_mode           = (Logger::LogMode)sdlog_mode;
+
 
     int         myoptind = 1;
     int         ch;
@@ -359,10 +368,11 @@ Logger *Logger::instantiate(int argc, char *argv[]) {
 }
 
 Logger::Logger(LogWriter::Backend backend, size_t buffer_size, uint32_t log_interval, const char *poll_topic_name,
-               LogMode log_mode, bool log_name_timestamp, float rate_factor)
-    : ModuleParams(nullptr), ModuleThread(LOG_TAG, 4096, 20, 100), _log_mode(log_mode), _log_name_timestamp(log_name_timestamp),
-      _event_subscription(ORB_ID::event), _writer(backend, buffer_size), _log_interval(log_interval),
-      _rate_factor(rate_factor) {
+               LogMode log_mode, bool log_name_timestamp, float rate_factor) :
+    ModuleParams(nullptr),
+    ModuleThread(LOG_TAG, 4096, 20, 100), _log_mode(log_mode), _log_name_timestamp(log_name_timestamp),
+    _event_subscription(ORB_ID::event), _writer(backend, buffer_size), _log_interval(log_interval),
+    _rate_factor(rate_factor) {
     if (poll_topic_name) {
         const orb_metadata *const *topics = orb_get_topics();
 

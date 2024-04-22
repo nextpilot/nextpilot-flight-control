@@ -1,0 +1,3 @@
+menuconfig PKG_USING_CPULOAD
+    bool "cpuload: Measurement of CPU load of each individual task"
+    default n

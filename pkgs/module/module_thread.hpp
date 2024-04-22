@@ -29,6 +29,7 @@ public:
 
     static void RunEntry(void *param) {
         ModuleThread *object = (ModuleThread *)param;
+        object->run();
         object->Run();
     }
 
@@ -52,6 +53,9 @@ public:
     }
 
     virtual void Run() {
+    }
+
+    virtual void run() {
     }
 
     bool operator<=(const ModuleThread &rhs) const {

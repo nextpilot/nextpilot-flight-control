@@ -20,6 +20,7 @@
 
 #include <stdbool.h>
 #include <inttypes.h>
+#include <defines.h>
 
 __BEGIN_DECLS
 

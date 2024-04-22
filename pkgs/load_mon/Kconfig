@@ -1,4 +1,4 @@
-menuconfig MODULES_LOAD_MON
+menuconfig PKG_USING_LOAD_MONITOR
 	bool "load_mon"
 	default n
 	---help---
