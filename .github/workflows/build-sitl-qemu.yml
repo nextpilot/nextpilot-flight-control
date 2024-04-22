@@ -1,0 +1,82 @@
+# /******************************************************************
+#  *      _   __             __   ____   _  __        __
+#  *     / | / /___   _  __ / /_ / __ \ (_)/ /____   / /_
+#  *    /  |/ // _ \ | |/_// __// /_/ // // // __ \ / __/
+#  *   / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
+#  *  /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
+#  *
+#  * Copyright All Reserved © 2015-2024 NextPilot Development Team
+#  ******************************************************************/
+
+name: build sitl
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches:
+      - master
+      - main
+    paths-ignore:
+      - docs/**
+      - "**/README.md"
+      - "**/README_zh.md"
+  pull_request:
+    branches:
+      - master
+      - main
+    paths-ignore:
+      - docs/**
+      - "**/README.md"
+      - "**/README_zh.md"
+
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: build sitl
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.10
+
+      - name: Install System Tools
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get -qq install gcc-multilib libncurses5 libncurses5-dev libncursesw5-dev
+          sudo python -m pip install --upgrade pip -qq
+          sudo python -m pip install kconfiglib -qq
+          sudo python -m pip install scons -qq
+          git config --global http.postBuffer 524288000
+          git remote -v
+          git fetch origin
+
+      - name: Install Arm ToolChains
+        if: ${{ success() }}
+        shell: bash
+        run: |
+          wget -q https://github.com/RT-Thread/toolchains-ci/releases/download/v1.3/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
+          sudo tar xjf gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2 -C /opt
+          /opt/gcc-arm-none-eabi-10-2020-q4-major/bin/arm-none-eabi-gcc --version
+          echo "RTT_EXEC_PATH=/opt/gcc-arm-none-eabi-10-2020-q4-major/bin" >> $GITHUB_ENV
+
+      - name: Install RTT ENV
+        if: ${{ success() }}
+        shell: bash
+        run: |
+          pushd rtos/rt-thread
+          python -c "import tools.menukconfig; tools.menukconfig.touch_env()"
+          popd
+
+      - name: Bsp Scons Compile
+        if: ${{ success() }}
+        shell: bash
+        run: |
+          source ~/.env/env.sh
+          scons -C bsps/sitl/qemu
