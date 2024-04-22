@@ -40,6 +40,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -59,7 +60,6 @@ jobs:
           sudo python -m pip install pyyaml -qq
           git config --global http.postBuffer 524288000
           git remote -v
-          git fetch origin
 
       - name: Install Arm ToolChains
         if: ${{ success() }}

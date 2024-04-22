@@ -28,6 +28,8 @@
 #include <param/param.h>
 #include <perf/perf_counter.h>
 #include <stdlib.h>
+#include <dfs_file.h>
+#include <unistd.h>
 #include "dataman.h"
 
 __BEGIN_DECLS

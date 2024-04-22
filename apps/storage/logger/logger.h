@@ -52,8 +52,8 @@ static constexpr uint8_t MSG_ID_INVALID = UINT8_MAX;
 struct LoggerSubscription : public uORB::SubscriptionInterval {
     LoggerSubscription() = default;
 
-    LoggerSubscription(ORB_ID id, uint32_t interval_ms = 0, uint8_t instance = 0)
-        : uORB::SubscriptionInterval(id, interval_ms * 1000, instance) {
+    LoggerSubscription(ORB_ID id, uint32_t interval_ms = 0, uint8_t instance = 0) :
+        uORB::SubscriptionInterval(id, interval_ms * 1000, instance) {
     }
 
     uint8_t msg_id{MSG_ID_INVALID};
@@ -101,6 +101,10 @@ public:
 
     /** @see ModuleCommand::print_status() */
     int print_status() override;
+
+    int init() override {
+        return ModuleThread::init();
+    }
 
     /**
      * Tell the logger that we're in replay mode. This must be called

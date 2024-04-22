@@ -57,29 +57,29 @@ private:
     static constexpr const float ETA_POLY[] = {0.0535f, -0.2688f, 0.5817f}; // 1/rad
 
     // aerodynamic and physical constants
-    static constexpr const float P0            = 101325.0f; // _pressure at sea level [N/m^2]=[Pa]
-    static constexpr const float R             = 287.04f;   // real gas constant for air [J/kg/K]
-    static constexpr const float T0_K          = 288.15f;   // _temperature at sea level [K]
-    static constexpr const float TEMP_GRADIENT = -6.5e-3f;  // _temperature gradient in degrees per metre
+    static constexpr const float P0            = 101325.0f;    // _pressure at sea level [N/m^2]=[Pa]
+    static constexpr const float R             = 287.04f;      // real gas constant for air [J/kg/K]
+    static constexpr const float T0_K          = 288.15f;      // _temperature at sea level [K]
+    static constexpr const float TEMP_GRADIENT = -6.5e-3f;     // _temperature gradient in degrees per metre
 
-    static constexpr const float KV          = M_PI_F; // total vortex lift parameter
-    static constexpr float       CD0         = 0.04f;  // no lift drag coefficient
-    static constexpr float       CD90        = 1.98f;  // 90 deg angle of attack drag coefficient
+    static constexpr const float KV          = M_PI_F;         // total vortex lift parameter
+    static constexpr float       CD0         = 0.04f;          // no lift drag coefficient
+    static constexpr float       CD90        = 1.98f;          // 90 deg angle of attack drag coefficient
     static constexpr float       AF_DOT_MAX  = M_PI_F / 2.0f;
     static constexpr float       ALPHA_BLEND = M_PI_F / 18.0f; // 10 degrees
 
     // here we make the distinction of the plate (i.e. wing, or tailplane, or fin) and the segment
     // the segment can be a portion of the wing, but the aspect ratio (AR) of the wing needs to be used
-    float            _alpha;           // angle of attack [rad]
-    float            _CL, _CD, _CM;    // aerodynamic coefficients
-    float            _CL_, _CD_, _CM_; // low aoa coeffs
-    float            _f_blend;         // blending function
-    matrix::Vector3f _p_B;             // position of the aerodynamic center of the segment from _CM in body frame [m]
-    matrix::Dcmf     _C_BS;            // dcm from segment frame to body frame
-    float            _ar;              // aspect ratio of the plate
-    float            _span;            // _span of the segment
-    float            _mac;             // mean aerodynamic chord of the segment
-    float            _alpha_0;         // zero lift angle of attack [rad]
+    float            _alpha;                       // angle of attack [rad]
+    float            _CL, _CD, _CM;                // aerodynamic coefficients
+    float            _CL_, _CD_, _CM_;             // low aoa coeffs
+    float            _f_blend;                     // blending function
+    matrix::Vector3f _p_B;                         // position of the aerodynamic center of the segment from _CM in body frame [m]
+    matrix::Dcmf     _C_BS;                        // dcm from segment frame to body frame
+    float            _ar;                          // aspect ratio of the plate
+    float            _span;                        // _span of the segment
+    float            _mac;                         // mean aerodynamic chord of the segment
+    float            _alpha_0;                     // zero lift angle of attack [rad]
     float            _kp, _kn;
     float            _ate, _ale, _afte, _afle;     // semi empirical coefficients for flat plates function of AR
     float            _tau_te, _tau_le, _fte, _fle; // leading and trailing edge functions
@@ -103,9 +103,9 @@ private:
     // float _alpha_eff_dot;	// effectie angle of attack derivative
     float _alpha_eff_old; // angle of attack [rad]
 
-    float _pressure;    // pressure in Pa at current altitude
-    float _temperature; // temperature in K at current altitude
-    float _prop_radius; // propeller radius [m], used to create the slipstream
+    float _pressure;      // pressure in Pa at current altitude
+    float _temperature;   // temperature in K at current altitude
+    float _prop_radius;   // propeller radius [m], used to create the slipstream
     // float _v_slipstream;	// slipstream velocity [m/s], computed from momentum theory
 
     matrix::Vector3f _Fa;  // aerodynamic force
@@ -220,8 +220,8 @@ public:
         aoa_coeff(_alpha, sqrtf(vxz2), def);
         _Fa = _C_BS * (0.5f * _rho * vxz2 * _span * _mac) * matrix::Vector3f(_CL * sinf(_alpha) - _CD * cosf(_alpha), 0.0f, -_CL * cosf(_alpha) - _CD * sinf(_alpha));
         _Ma = _C_BS * (0.5f * _rho * vxz2 * _span * _mac * _mac) * matrix::Vector3f(0.0f, _CM,
-                                                                                    0.0f) +
-              _p_B % _Fa; // computed at vehicle _CM
+                                                                                    0.0f)
+            + _p_B % _Fa; // computed at vehicle _CM
     }
 
     // return the air density at current altitude, must be called after update_aero()
@@ -284,11 +284,9 @@ private:
             _fte           = 1.0f;
             _fle           = 1.0f;
             _CLmax         = fCL(_alpha_max - _alpha_0) + _dCLmax;
-            _alpha_eff_max = _alf0eff - solve_alpha_eff(_kp, KV * _fle * _fle,
-                                                        _CLmax / (0.25f * (1.0f + sqrtf(_fte)) * (1.0f + sqrtf(_fte))), _alpha_max - _alpha_0);
+            _alpha_eff_max = _alf0eff - solve_alpha_eff(_kp, KV * _fle * _fle, _CLmax / (0.25f * (1.0f + sqrtf(_fte)) * (1.0f + sqrtf(_fte))), _alpha_max - _alpha_0);
             _CLmin         = fCL(_alpha_min - _alpha_0) + _dCLmax;
-            _alpha_eff_min = _alf0eff - solve_alpha_eff(_kp, KV * _fle * _fle,
-                                                        _CLmin / (0.25f * (1.0f + sqrtf(_fte)) * (1.0f + sqrtf(_fte))), _alpha_min - _alpha_0);
+            _alpha_eff_min = _alf0eff - solve_alpha_eff(_kp, KV * _fle * _fle, _CLmin / (0.25f * (1.0f + sqrtf(_fte)) * (1.0f + sqrtf(_fte))), _alpha_min - _alpha_0);
 
         } else { // this segment is a full flap
             _alpha_eff = a + def;
@@ -328,9 +326,9 @@ private:
 
     // high angle of attack coefficient based on flat plate
     void high_aoa_coeff(float a, float def = 0.0f) {
-        float mac_eff = sqrtf((_mac - _cf) * (_mac - _cf) + _cf * _cf + 2.0f * (_mac - _cf) * _cf * cosf(fabsf(def)));
-        a += asinf(_cf / mac_eff * sinf(def));
-        float cd90_eff = CD90 + 0.21f * def - 0.0426f * def * def; // this might not be accurate for lower flap chord to chord ratio
+        float mac_eff   = sqrtf((_mac - _cf) * (_mac - _cf) + _cf * _cf + 2.0f * (_mac - _cf) * _cf * cosf(fabsf(def)));
+        a              += asinf(_cf / mac_eff * sinf(def));
+        float cd90_eff  = CD90 + 0.21f * def - 0.0426f * def * def; // this might not be accurate for lower flap chord to chord ratio
         // normal coeff
         float CN = cd90_eff * sinf(a) * (1.0f / (0.56f + 0.44f * sinf(fabsf(a))) - _kn);
         // tengential coeff
@@ -378,8 +376,7 @@ private:
         float a = a0; // init the search
 
         for (int i = 0; i < 3; i++) {
-            a = a - (-Kp * sinf(a) * cosf(a) * cosf(a) - Kv * fabsf(sinf(a)) * sinf(a) * cosf(a) - dCL) /
-                        (Kv * fabsf(sinf(a)) * sinf(a) * sinf(a) - Kv * fabsf(sinf(a)) * cosf(a) * cosf(a) - Kp * cosf(a) * cosf(a) * cosf(a) + 2 * Kp * cosf(a) * sinf(a) * sinf(a) - Kv * matrix::sign(sinf(a)) * cosf(a) * cosf(a) * sinf(a));
+            a = a - (-Kp * sinf(a) * cosf(a) * cosf(a) - Kv * fabsf(sinf(a)) * sinf(a) * cosf(a) - dCL) / (Kv * fabsf(sinf(a)) * sinf(a) * sinf(a) - Kv * fabsf(sinf(a)) * cosf(a) * cosf(a) - Kp * cosf(a) * cosf(a) * cosf(a) + 2 * Kp * cosf(a) * sinf(a) * sinf(a) - Kv * matrix::sign(sinf(a)) * cosf(a) * cosf(a) * sinf(a));
         }
 
         return a;

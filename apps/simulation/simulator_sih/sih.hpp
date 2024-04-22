@@ -54,7 +54,7 @@
 #include <uORB/topics/vehicle_local_position.h>
 
 #if defined(ENABLE_LOCKSTEP_SCHEDULER)
-#include <sys/time.h>
+#   include <sys/time.h>
 #endif
 
 using namespace time_literals;
@@ -159,7 +159,7 @@ private:
     hrt_abstime _airspeed_time{0};
     hrt_abstime _dist_snsr_time{0};
 
-    bool _grounded{true}; // whether the vehicle is on the ground
+    bool _grounded{true};             // whether the vehicle is on the ground
 
     matrix::Vector3f _T_B{};          // thrust force in body frame [N]
     matrix::Vector3f _Fa_I{};         // aerodynamic force in inertial frame [N]
@@ -177,9 +177,11 @@ private:
     matrix::Vector3f _w_B_dot{};      // body rates differential
     float            _u[NB_MOTORS]{}; // thruster signals
 
-    enum class VehicleType { MC,
-                             FW,
-                             TS };
+    enum class VehicleType {
+        MC,
+        FW,
+        TS
+    };
     VehicleType _vehicle = VehicleType::MC;
 
     // aerodynamic segments for the fixedwing
