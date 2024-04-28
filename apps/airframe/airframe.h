@@ -1,9 +1,10 @@
 
 #include <stdint.h>
 
-struct airframe_param_s {
+struct param_config_s {
     const uint16_t id;
     const char    *name;
+
     const union {
         uint32_t u32;
         int32_t  i32;
@@ -12,7 +13,7 @@ struct airframe_param_s {
     } value;
 };
 
-#define PARAM_SET_INT32(_name, _val)       \
+#define PARAM_CONFIG_INT32(_name, _val)    \
     {                                      \
         .id    = nextpilot::params::_name, \
         .name  = #_name,                   \

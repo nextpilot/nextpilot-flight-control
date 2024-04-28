@@ -1,6 +1,6 @@
 
 #include "airframe.h"
-static airframe_param_s _params[] = {
+static param_config_s _params[] = {
 
-    PARAM_SET_INT32(SYS_HITL, 2),
+    PARAM_CONFIG_INT32(SYS_HITL, 2),
 };
