@@ -1,0 +1,12 @@
+import os
+import sys
+from building import *
+
+cwd = GetCurrentDir()
+
+inc = []
+src = Glob("*.cpp", exclude="*_test.cpp")
+
+objs = DefineGroup("ins/gyro_calibration", src, depend=["INS_USING_GYRO_CALIBRATION"])
+
+Return("objs")

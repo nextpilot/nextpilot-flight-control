@@ -1,0 +1,14 @@
+import os
+import rtconfig
+from building import *
+
+
+cwd = GetCurrentDir()
+
+inc = [cwd]
+src = ["terrain_estimator.cpp"]
+
+objs = DefineGroup("lib/estimator", src, depend=["PKG_USING_TERRAIN_ESTIMATOR"], CPPPATH=inc)
+
+
+Return("objs")

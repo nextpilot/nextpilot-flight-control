@@ -1,17 +1,17 @@
-menuconfig MODULES_SENSORS
+menuconfig INS_USING_SENSORS
 	bool "sensors"
 	default n
 	---help---
 		Enable support for sensors
 
-menuconfig USER_SENSORS
-	bool "sensors running as userspace module"
-	default n
-	depends on BOARD_PROTECTED && MODULES_SENSORS
-	---help---
-		Put sensors in userspace memory
+# menuconfig USER_SENSORS
+# 	bool "sensors running as userspace module"
+# 	default n
+# 	depends on BOARD_PROTECTED && INS_USING_SENSORS
+# 	---help---
+# 		Put sensors in userspace memory
 
-if MODULES_SENSORS
+if INS_USING_SENSORS
     config SENSORS_VEHICLE_AIRSPEED
         bool "Include vehicle airspeed"
         default y
@@ -40,4 +40,4 @@ if MODULES_SENSORS
         bool "Include vehicle optical flow"
         default y
 
-endif #MODULES_SENSORS
+endif #INS_USING_SENSORS

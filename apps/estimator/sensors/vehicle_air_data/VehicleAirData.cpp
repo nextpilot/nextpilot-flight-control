@@ -11,7 +11,7 @@
 #include "VehicleAirData.hpp"
 
 #include <ulog/log.h>
-// #include <events/events.h>
+#include <events/events.h>
 #include <geo/geo.h>
 
 namespace sensors {
@@ -155,8 +155,8 @@ void VehicleAirData::Run() {
                     _voter.put(uorb_index, report.timestamp, data_array, report.error_count, _priority[uorb_index]);
 
                     _timestamp_sample_sum[uorb_index] += report.timestamp_sample;
-                    _data_sum[uorb_index] += pressure_corrected;
-                    _temperature_sum[uorb_index] += report.temperature;
+                    _data_sum[uorb_index]             += pressure_corrected;
+                    _temperature_sum[uorb_index]      += report.temperature;
                     _data_sum_count[uorb_index]++;
 
                     _last_data[uorb_index] = pressure_corrected;
@@ -211,8 +211,7 @@ void VehicleAirData::Run() {
                         float altitude = PressureToAltitude(pressure_pa, temperature);
 
                         // calculate air density
-                        float air_density = pressure_pa / (CONSTANTS_AIR_GAS_CONST * (_air_temperature_celsius -
-                                                                                      CONSTANTS_ABSOLUTE_NULL_CELSIUS));
+                        float air_density = pressure_pa / (CONSTANTS_AIR_GAS_CONST * (_air_temperature_celsius - CONSTANTS_ABSOLUTE_NULL_CELSIUS));
 
                         // populate vehicle_air_data with and publish
                         vehicle_air_data_s out{};
@@ -297,15 +296,25 @@ void VehicleAirData::CheckFailover(const hrt_abstime &time_now_us) {
 
                     events::px4::enums::sensor_failover_reason_t failover_reason{};
 
-                    if (flags & DataValidator::ERROR_FLAG_NO_DATA) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::no_data; }
+                    if (flags & DataValidator::ERROR_FLAG_NO_DATA) {
+                        failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::no_data;
+                    }
 
-                    if (flags & DataValidator::ERROR_FLAG_STALE_DATA) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::stale_data; }
+                    if (flags & DataValidator::ERROR_FLAG_STALE_DATA) {
+                        failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::stale_data;
+                    }
 
-                    if (flags & DataValidator::ERROR_FLAG_TIMEOUT) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::timeout; }
+                    if (flags & DataValidator::ERROR_FLAG_TIMEOUT) {
+                        failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::timeout;
+                    }
 
-                    if (flags & DataValidator::ERROR_FLAG_HIGH_ERRCOUNT) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::high_error_count; }
+                    if (flags & DataValidator::ERROR_FLAG_HIGH_ERRCOUNT) {
+                        failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::high_error_count;
+                    }
 
-                    if (flags & DataValidator::ERROR_FLAG_HIGH_ERRDENSITY) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::high_error_density; }
+                    if (flags & DataValidator::ERROR_FLAG_HIGH_ERRDENSITY) {
+                        failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::high_error_density;
+                    }
 
                     /* EVENT
                      * @description

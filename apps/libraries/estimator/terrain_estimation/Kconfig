@@ -1,0 +1,3 @@
+menuconfig PKG_USING_TERRAIN_ESTIMATOR
+    bool "estimate distance to the ground using a laser range finder"
+    default n

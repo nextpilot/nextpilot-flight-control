@@ -1,4 +1,4 @@
-menuconfig MODULES_EKF2
+menuconfig INS_USING_EKF2
 	bool "ekf2"
 	default n
 	---help---

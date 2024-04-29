@@ -22,9 +22,6 @@
 // #include <px4_platform_common/px4_config.h>
 #include <workq/WorkItemScheduled.hpp>
 #include <uORB/uORBPublication.hpp>
-#include <uORB/uORBPublication.hpp>
-#include <uORB/uORBSubscription.hpp>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/differential_pressure.h>
 #include <uORB/topics/parameter_update.h>

@@ -1,0 +1,13 @@
+import os
+import rtconfig
+from building import *
+
+
+cwd = GetCurrentDir()
+
+inc = [cwd]
+src = []
+
+objs = DefineGroup("lib/estimator", src, depend=["PKG_USING_FIELD_SENSOR_BIAS_ESTIMATOR"], CPPPATH=inc)
+
+Return("objs")

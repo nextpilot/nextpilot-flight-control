@@ -10,5 +10,4 @@ src = Glob("*.cpp")
 
 objs = DefineGroup("lib/estimator", src, depend=["PKG_USING_SENSOR_CALIBRATION"], CPPPATH=inc)
 
-
 Return("objs")

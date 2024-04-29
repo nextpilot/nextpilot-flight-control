@@ -21,16 +21,15 @@ config PKGS_DIR
     default "../../../tools/packages"
 
 # bsp
-menu "Nextpilot Hardware Config" 
+menu "Nextpilot Hardware Config"
 orsource "*/Kconfig"
 endmenu
 
 # apps
-source "../../../*/Kconfig"
+orsource "../../../*/Kconfig"
 
 # rthread
 #source "$RTT_DIR/Kconfig"
 
 # online package
 #source "$PKGS_DIR/Kconfig"
-

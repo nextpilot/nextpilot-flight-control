@@ -1,0 +1,21 @@
+import os
+import sys
+from building import *
+
+cwd = GetCurrentDir()
+
+objs = []
+
+for d in os.listdir(cwd):
+    path = os.path.join(cwd, d)
+    if os.path.isfile(os.path.join(path, "SConscript")):
+        # print(os.path.join(d, 'SConscript'))
+        objs += SConscript(os.path.join(d, "SConscript"))
+
+
+inc = []
+src = Glob("*.cpp", exclude="*_test.cpp")
+
+objs += DefineGroup("ins/sensors", src, depend=["INS_USING_SENSORS"])
+
+Return("objs")

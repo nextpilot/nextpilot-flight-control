@@ -45,6 +45,8 @@
 
 /* Nextpilot Estimator Config */
 
+#define INS_USING_AIRSPEED_SELECTOR
+#define MODULES_MAG_BIAS_ESTIMATOR
 /* end of Nextpilot Estimator Config */
 
 /* Nextpilot Libraries Config */
@@ -80,6 +82,7 @@
 /* Estimator Libraries Config */
 
 #define PKG_USING_SENSOR_CALIBRATION
+#define PKG_USING_WIND_ESTIMATOR
 #define PKG_USING_WORLD_MAGNETIC_MODEL
 /* end of Estimator Libraries Config */
 

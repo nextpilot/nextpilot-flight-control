@@ -1,9 +1,25 @@
 import os
+import sys
 import rtconfig
 from building import *
 
-
 cwd = GetCurrentDir()
+
+# cmd = [
+#     sys.executable,
+#     os.path.join(cwd, "fetch_noaa_table.py"),
+#     r">",
+#     os.path.join(cwd, "geo_magnetic_tables.hpp"),
+# ]
+# os.system(" ".join(cmd))
+
+# cmd = [
+#     sys.executable,
+#     os.path.join(cwd, "generate_gtest.py"),
+#     ">"
+#     os.path.join(cwd, "test_geo_lookup.cpp"),
+# ]
+# os.system(" ".join(cmd))
 
 inc = [cwd]
 src = ["geo_mag_declination.cpp"]

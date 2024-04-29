@@ -1,0 +1,12 @@
+import os
+import sys
+from building import *
+
+cwd = GetCurrentDir()
+
+inc = []
+src = Glob("*.cpp", exclude="*_test.cpp")
+
+objs = DefineGroup("ins/mag_bias_estimator", src, depend=["INS_USING_MAG_BIAS_ESTIMATOR"])
+
+Return("objs")

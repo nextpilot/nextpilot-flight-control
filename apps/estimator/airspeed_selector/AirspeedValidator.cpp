@@ -57,8 +57,7 @@ void AirspeedValidator::update_wind_estimator(const uint64_t time_now_usec, floa
 }
 
 // this function returns the current states of the wind estimator to be published in the airspeed module
-airspeed_wind_s
-AirspeedValidator::get_wind_estimator_states(uint64_t timestamp) {
+airspeed_wind_s AirspeedValidator::get_wind_estimator_states(uint64_t timestamp) {
     airspeed_wind_s wind_est = {};
 
     wind_est.timestamp           = timestamp;
@@ -99,7 +98,7 @@ void AirspeedValidator::update_CAS_scale_validated(bool lpos_valid, const matrix
 
         for (int i = 0; i < SCALE_CHECK_SAMPLES; i++) {
             ground_speed_sum += _scale_check_groundspeed(i);
-            TAS_sum += _scale_check_TAS(i);
+            TAS_sum          += _scale_check_TAS(i);
         }
 
         const float TAS_to_grounspeed_error_current = ground_speed_sum - TAS_sum * _CAS_scale_validated;
@@ -222,11 +221,11 @@ void AirspeedValidator::check_load_factor(float accel_z) {
     }
 
     if (_in_fixed_wing_flight) {
-        float max_lift_ratio = fmaxf(_CAS, 0.7f) / fmaxf(_airspeed_stall, 1.0f);
-        max_lift_ratio *= max_lift_ratio;
-        _load_factor_ratio        = 0.95f * _load_factor_ratio + 0.05f * (fabsf(accel_z) / 9.81f) / max_lift_ratio;
-        _load_factor_ratio        = math::constrain(_load_factor_ratio, 0.25f, 2.0f);
-        _load_factor_check_failed = (_load_factor_ratio > 1.1f);
+        float max_lift_ratio       = fmaxf(_CAS, 0.7f) / fmaxf(_airspeed_stall, 1.0f);
+        max_lift_ratio            *= max_lift_ratio;
+        _load_factor_ratio         = 0.95f * _load_factor_ratio + 0.05f * (fabsf(accel_z) / 9.81f) / max_lift_ratio;
+        _load_factor_ratio         = math::constrain(_load_factor_ratio, 0.25f, 2.0f);
+        _load_factor_check_failed  = (_load_factor_ratio > 1.1f);
 
     } else {
         _load_factor_ratio = 0.5f; // reset if not in fixed-wing flight (and not in takeoff condition)

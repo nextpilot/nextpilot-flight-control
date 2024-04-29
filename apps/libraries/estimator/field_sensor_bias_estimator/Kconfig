@@ -1,0 +1,3 @@
+menuconfig PKG_USING_FIELD_SENSOR_BIAS_ESTIMATOR
+    bool "Estimator for the magnetometer/accelerometer bias calibration parameters to run online with the help of Gyroscope data"
+    default n

@@ -1,0 +1,9 @@
+menuconfig PKG_USING_WIND_ESTIMATOR
+    bool "wind estimaror: A wind and airspeed scale estimator"
+    select PKG_USING_MATHLIB
+    select PKG_USING_MATRIX
+    select PKG_USING_HRTIMER
+    default n
+
+if PKG_USING_WIND_ESTIMATOR
+endif

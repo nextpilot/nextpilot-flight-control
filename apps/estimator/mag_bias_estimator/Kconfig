@@ -1,4 +1,4 @@
-menuconfig MODULES_MAG_BIAS_ESTIMATOR
+menuconfig INS_USING_MAG_BIAS_ESTIMATOR
 	bool "mag_bias_estimator"
 	default n
 	---help---

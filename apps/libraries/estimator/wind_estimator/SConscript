@@ -1,0 +1,21 @@
+import os
+import sys
+import rtconfig
+from building import *
+
+cwd = GetCurrentDir()
+
+# cmd = [
+#     sys.executable,
+#     os.path.join("python", "derivation.py"),
+# ]
+# os.system(cmd)
+
+
+inc = [cwd, os.path.join(cwd, "python")]
+src = ["WindEstimator.cpp"]
+
+objs = DefineGroup("lib/estimator", src, depend=["PKG_USING_WIND_ESTIMATOR"], CPPPATH=inc)
+
+
+Return("objs")
