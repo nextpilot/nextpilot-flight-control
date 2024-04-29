@@ -25,16 +25,16 @@ MagBiasEstimator::~MagBiasEstimator() {
     perf_free(_cycle_perf);
 }
 
-int MagBiasEstimator::instantiate(int argc, char *argv[]) {
+MagBiasEstimator *MagBiasEstimator::instantiate(int argc, char *argv[]) {
     MagBiasEstimator *obj = new MagBiasEstimator();
 
     if (!obj) {
         PX4_ERR("alloc failed");
-        return -1;
+        return nullptr;
     }
 
-    _object.store(obj);
-    _task_id = task_id_is_work_queue;
+    // _object.store(obj);
+    // _task_id = task_id_is_work_queue;
 
     /* Schedule a cycle to start things. */
     obj->start();

@@ -17,7 +17,7 @@
 #include <containers/List.hpp>
 #include <uavcan/uavcan.hpp>
 #include <drivers/drv_orb_dev.h>
-#include <lib/drivers/device/Device.hpp>
+#include <drivers/device/ Device.hpp>
 #include <uORB/uORB.h>
 
 /**
@@ -106,7 +106,7 @@ protected:
      */
     virtual int init_driver(uavcan_bridge::Channel *channel) {
         return PX4_OK;
-    };
+    }
 
     uavcan_bridge::Channel *get_channel_for_node(int node_id);
 

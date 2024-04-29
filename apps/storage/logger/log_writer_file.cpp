@@ -14,7 +14,7 @@
 #include <string.h>
 #include <errno.h>
 #include <mathlib/mathlib.h>
-// #include <px4_platform_common/posix.h>
+
 // #include <px4_platform_common/crypto.h>
 #include <ulog/log.h>
 

@@ -17,9 +17,8 @@
 
 #pragma once
 
-#include <px4_platform_common/tasks.h>
-#include <px4_platform_common/sem.h>
-#include <drivers/drv_hrt.h>
+
+#include <hrtimer.h>
 
 #include <uORB/topics/vehicle_command.h>
 #include <uORB/topics/vehicle_command_ack.h>

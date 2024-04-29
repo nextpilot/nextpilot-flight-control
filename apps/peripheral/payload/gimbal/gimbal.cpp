@@ -24,8 +24,8 @@
 #include <cstdint>
 #include <stdlib.h>
 #include <string.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/tasks.h>
+#include <defines.h>
+
 
 #include "gimbal_params.h"
 #include "input_mavlink.h"
@@ -38,8 +38,8 @@
 #include <uORB/SubscriptionInterval.hpp>
 #include <uORB/topics/parameter_update.h>
 
-#include <px4_platform_common/module.h>
-#include <px4_platform_common/atomic.h>
+#include <module/module_command.hpp>
+#include <atomic/atomic.hpp>
 
 using namespace time_literals;
 using namespace gimbal;
@@ -57,6 +57,7 @@ struct ThreadData {
     InputTest  *test_input                     = nullptr;
     ControlData control_data{};
 };
+
 static ThreadData *g_thread_data = nullptr;
 
 static void usage();
@@ -143,21 +144,27 @@ static int gimbal_thread_main(int argc, char *argv[]) {
     case 0: // AUX
         thread_data.output_obj = new OutputRC(params);
 
-        if (!thread_data.output_obj) { alloc_failed = true; }
+        if (!thread_data.output_obj) {
+            alloc_failed = true;
+        }
 
         break;
 
     case 1: // MAVLink gimbal v1 protocol
         thread_data.output_obj = new OutputMavlinkV1(params);
 
-        if (!thread_data.output_obj) { alloc_failed = true; }
+        if (!thread_data.output_obj) {
+            alloc_failed = true;
+        }
 
         break;
 
     case 2: // MAVLink gimbal v2 protocol
         thread_data.output_obj = new OutputMavlinkV2(params);
 
-        if (!thread_data.output_obj) { alloc_failed = true; }
+        if (!thread_data.output_obj) {
+            alloc_failed = true;
+        }
 
         break;
 
@@ -485,27 +492,7 @@ bool initialize_params(ParameterHandles &param_handles, Parameters &params) {
     param_handles.mnt_lnd_p_min     = param_find("MNT_LND_P_MIN");
     param_handles.mnt_lnd_p_max     = param_find("MNT_LND_P_MAX");
 
-    if (param_handles.mnt_mode_in == PARAM_INVALID ||
-        param_handles.mnt_mode_out == PARAM_INVALID ||
-        param_handles.mnt_mav_sysid_v1 == PARAM_INVALID ||
-        param_handles.mnt_mav_compid_v1 == PARAM_INVALID ||
-        param_handles.mnt_man_pitch == PARAM_INVALID ||
-        param_handles.mnt_man_roll == PARAM_INVALID ||
-        param_handles.mnt_man_yaw == PARAM_INVALID ||
-        param_handles.mnt_do_stab == PARAM_INVALID ||
-        param_handles.mnt_range_pitch == PARAM_INVALID ||
-        param_handles.mnt_range_roll == PARAM_INVALID ||
-        param_handles.mnt_range_yaw == PARAM_INVALID ||
-        param_handles.mnt_off_pitch == PARAM_INVALID ||
-        param_handles.mnt_off_roll == PARAM_INVALID ||
-        param_handles.mnt_off_yaw == PARAM_INVALID ||
-        param_handles.mav_sysid == PARAM_INVALID ||
-        param_handles.mav_compid == PARAM_INVALID ||
-        param_handles.mnt_rate_pitch == PARAM_INVALID ||
-        param_handles.mnt_rate_yaw == PARAM_INVALID ||
-        param_handles.mnt_rc_in_mode == PARAM_INVALID ||
-        param_handles.mnt_lnd_p_min == PARAM_INVALID ||
-        param_handles.mnt_lnd_p_max == PARAM_INVALID) {
+    if (param_handles.mnt_mode_in == PARAM_INVALID || param_handles.mnt_mode_out == PARAM_INVALID || param_handles.mnt_mav_sysid_v1 == PARAM_INVALID || param_handles.mnt_mav_compid_v1 == PARAM_INVALID || param_handles.mnt_man_pitch == PARAM_INVALID || param_handles.mnt_man_roll == PARAM_INVALID || param_handles.mnt_man_yaw == PARAM_INVALID || param_handles.mnt_do_stab == PARAM_INVALID || param_handles.mnt_range_pitch == PARAM_INVALID || param_handles.mnt_range_roll == PARAM_INVALID || param_handles.mnt_range_yaw == PARAM_INVALID || param_handles.mnt_off_pitch == PARAM_INVALID || param_handles.mnt_off_roll == PARAM_INVALID || param_handles.mnt_off_yaw == PARAM_INVALID || param_handles.mav_sysid == PARAM_INVALID || param_handles.mav_compid == PARAM_INVALID || param_handles.mnt_rate_pitch == PARAM_INVALID || param_handles.mnt_rate_yaw == PARAM_INVALID || param_handles.mnt_rc_in_mode == PARAM_INVALID || param_handles.mnt_lnd_p_min == PARAM_INVALID || param_handles.mnt_lnd_p_max == PARAM_INVALID) {
         return false;
     }
 

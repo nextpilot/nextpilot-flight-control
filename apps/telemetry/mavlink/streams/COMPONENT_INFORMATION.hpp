@@ -12,11 +12,8 @@
 #define COMPONENT_INFORMATION_HPP
 
 #include "../mavlink_stream.h"
-
 #include <component_information/checksums.h>
-
-#include <px4_platform_common/defines.h>
-
+#include <defines.h>
 #include <sys/stat.h>
 
 class MavlinkStreamComponentInformation : public MavlinkStream {
@@ -28,6 +25,7 @@ public:
     static constexpr const char *get_name_static() {
         return "COMPONENT_INFORMATION";
     }
+
     static constexpr uint16_t get_id_static() {
         return MAVLINK_MSG_ID_COMPONENT_INFORMATION;
     }
@@ -35,6 +33,7 @@ public:
     const char *get_name() const override {
         return get_name_static();
     }
+
     uint16_t get_id() override {
         return get_id_static();
     }

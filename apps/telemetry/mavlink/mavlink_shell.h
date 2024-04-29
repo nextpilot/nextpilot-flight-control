@@ -17,8 +17,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include <px4_platform_common/tasks.h>
-#include <px4_platform_common/atomic.h>
+#include <atomic/atomic.hpp>
 
 #pragma once
 
@@ -61,6 +60,7 @@ public:
     uint8_t targetSysid() const {
         return _target_sysid.load();
     }
+
     uint8_t targetCompid() const {
         return _target_compid.load();
     }

@@ -14,7 +14,6 @@
  * Serial protocol decoder for the Futaba S.bus protocol.
  */
 
-#include <px4_platform_common/px4_config.h>
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -26,8 +25,8 @@
 
 #include "sbus.h"
 #include "common_rc.h"
-#include <drivers/drv_hrt.h>
-#include <lib/mathlib/mathlib.h>
+#include <hrtimer.h>
+#include <mathlib/mathlib.h>
 
 using namespace time_literals;
 

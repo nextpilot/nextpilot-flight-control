@@ -11,7 +11,6 @@
 #pragma once
 
 #include <atomic/atomic.hpp>
-// #include <px4_platform_common/posix.h>
 #include <ulog/mavlink_log.h>
 #include <uORB/uORB.h>
 #include <pthread.h>

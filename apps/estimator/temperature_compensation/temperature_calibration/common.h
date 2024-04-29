@@ -12,18 +12,18 @@
 
 #define TC_PRINT_DEBUG 0
 #if TC_PRINT_DEBUG
-#define TC_DEBUG(fmt, ...) printf(fmt, ##__VA_ARGS__);
+#   define TC_DEBUG(fmt, ...) printf(fmt, ##__VA_ARGS__);
 #else
-#define TC_DEBUG(fmt, ...)
+#   define TC_DEBUG(fmt, ...)
 #endif
 
 #include <ulog/log.h>
 #include <mathlib/mathlib.h>
 #include <param/param.h>
-
+#include <uORB/uORB.h>
 #include "polyfit.hpp"
 
-#define SENSOR_COUNT_MAX 3
+#define SENSOR_COUNT_MAX               3
 
 #define TC_ERROR_INITIAL_TEMP_TOO_HIGH 110 ///< starting temperature was above the configured allowed temperature
 #define TC_ERROR_COMMUNICATION         112 ///< no sensors found
@@ -140,10 +140,10 @@ protected:
     struct PerSensorData {
         float                        sensor_sample_filt[Dim + 1]; ///< last value is the temperature
         polyfitter<PolyfitOrder + 1> P[Dim];
-        unsigned                     hot_soak_sat = 0; /**< counter that increments every time the sensor temperature reduces
+        unsigned                     hot_soak_sat = 0;            /**< counter that increments every time the sensor temperature reduces
                                                         from the last reading */
-        uint32_t device_id   = 0;                      ///< ID for the sensor being calibrated
-        bool     cold_soaked = false;                  ///< true when the sensor cold soak starting temperature condition had been
+        uint32_t                     device_id    = 0;            ///< ID for the sensor being calibrated
+        bool                         cold_soaked  = false;        ///< true when the sensor cold soak starting temperature condition had been
         /// verified and the starting temperature set
         bool  hot_soaked            = false; ///< true when the sensor has achieved the specified temperature increase
         bool  tempcal_complete      = false; ///< true when the calibration has been completed
@@ -160,8 +160,8 @@ protected:
      * update a single sensor instance
      * @return 0 when done, 1 not finished yet, <0 for an error
      */
-    virtual int update_sensor_instance(PerSensorData &data, int sensor_sub) = 0;
+    virtual int update_sensor_instance(PerSensorData &data, orb_subscr_t sensor_sub) = 0;
 
-    unsigned _num_sensor_instances{0};
-    int      _sensor_subs[SENSOR_COUNT_MAX];
+    unsigned     _num_sensor_instances{0};
+    orb_subscr_t _sensor_subs[SENSOR_COUNT_MAX];
 };

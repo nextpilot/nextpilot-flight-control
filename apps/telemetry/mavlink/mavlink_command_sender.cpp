@@ -16,7 +16,7 @@
  */
 
 #include "mavlink_command_sender.h"
-#include <px4_platform_common/log.h>
+#include <ulog/log.h>
 
 #define CMD_DEBUG(FMT, ...) PX4_LOG_NAMED_COND("cmd sender", _debug_enabled, FMT, ##__VA_ARGS__)
 

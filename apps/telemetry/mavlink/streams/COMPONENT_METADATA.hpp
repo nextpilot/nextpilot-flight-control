@@ -15,7 +15,7 @@
 
 #include <component_information/checksums.h>
 
-#include <px4_platform_common/defines.h>
+#include <defines.h>
 
 #include <sys/stat.h>
 
@@ -28,6 +28,7 @@ public:
     static constexpr const char *get_name_static() {
         return "COMPONENT_METADATA";
     }
+
     static constexpr uint16_t get_id_static() {
         return MAVLINK_MSG_ID_COMPONENT_METADATA;
     }
@@ -35,6 +36,7 @@ public:
     const char *get_name() const override {
         return get_name_static();
     }
+
     uint16_t get_id() override {
         return get_id_static();
     }

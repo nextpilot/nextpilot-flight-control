@@ -21,8 +21,8 @@
 #include <mathlib/mathlib.h>
 #include <atomic/atomic.hpp>
 #include <ulog/log.h>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/tasks.h>
+
+
 #include <hrtimer.h>
 #include <drivers/drv_led.h>
 
@@ -45,6 +45,7 @@ public:
     TemperatureCalibration(bool accel, bool baro, bool gyro) :
         _accel(accel), _baro(baro), _gyro(gyro) {
     }
+
     ~TemperatureCalibration() = default;
 
     /**
@@ -70,9 +71,9 @@ private:
     bool _force_task_exit = false;
     int  _control_task    = -1; // task handle for task
 
-    const bool _accel; ///< enable accel calibration?
-    const bool _baro;  ///< enable baro calibration?
-    const bool _gyro;  ///< enable gyro calibration?
+    const bool _accel;          ///< enable accel calibration?
+    const bool _baro;           ///< enable baro calibration?
+    const bool _gyro;           ///< enable gyro calibration?
 };
 
 void TemperatureCalibration::task_main() {

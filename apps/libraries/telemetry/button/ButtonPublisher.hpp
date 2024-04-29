@@ -18,7 +18,7 @@
 #pragma once
 
 #include <drivers/drv_tone_alarm.h>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <uORB/Publication.hpp>
 #include <uORB/PublicationMulti.hpp>
 #include <uORB/Subscription.hpp>

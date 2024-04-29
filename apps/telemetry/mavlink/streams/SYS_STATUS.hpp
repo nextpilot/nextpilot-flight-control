@@ -15,7 +15,7 @@
 #include <uORB/topics/cpuload.h>
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/health_report.h>
-#include <px4_platform_common/events.h>
+#include <events/events.h>
 
 class MavlinkStreamSysStatus : public MavlinkStream {
 public:
@@ -26,6 +26,7 @@ public:
     static constexpr const char *get_name_static() {
         return "SYS_STATUS";
     }
+
     static constexpr uint16_t get_id_static() {
         return MAVLINK_MSG_ID_SYS_STATUS;
     }
@@ -33,6 +34,7 @@ public:
     const char *get_name() const override {
         return get_name_static();
     }
+
     uint16_t get_id() override {
         return get_id_static();
     }
@@ -59,9 +61,7 @@ private:
             msg.onboard_control_sensors_present |= mav_sensor;
         }
 
-        if (((health_report.arming_check_error_flags | health_report.arming_check_warning_flags |
-              health_report.health_error_flags | health_report.health_warning_flags) &
-             (uint64_t)health_component) == 0) {
+        if (((health_report.arming_check_error_flags | health_report.arming_check_warning_flags | health_report.health_error_flags | health_report.health_warning_flags) & (uint64_t)health_component) == 0) {
             msg.onboard_control_sensors_health |= mav_sensor;
         }
 
@@ -77,9 +77,7 @@ private:
             msg.onboard_control_sensors_present_extended |= mav_sensor;
         }
 
-        if (((health_report.arming_check_error_flags | health_report.arming_check_warning_flags |
-              health_report.health_error_flags | health_report.health_warning_flags) &
-             (uint64_t)health_component) == 0) {
+        if (((health_report.arming_check_error_flags | health_report.arming_check_warning_flags | health_report.health_error_flags | health_report.health_warning_flags) & (uint64_t)health_component) == 0) {
             msg.onboard_control_sensors_health_extended |= mav_sensor;
         }
 
@@ -113,8 +111,7 @@ private:
             // When the last cached battery is not connected or the current battery level is lower than the cached battery level,
             // the current battery status is replaced with the cached value
             for (int i = 0; i < _battery_status_subs.size(); i++) {
-                if (battery_status[i].connected && ((!battery_status[lowest_battery_index].connected) || (battery_status[i].remaining <
-                                                                                                          battery_status[lowest_battery_index].remaining))) {
+                if (battery_status[i].connected && ((!battery_status[lowest_battery_index].connected) || (battery_status[i].remaining < battery_status[lowest_battery_index].remaining))) {
                     lowest_battery_index = i;
                 }
             }

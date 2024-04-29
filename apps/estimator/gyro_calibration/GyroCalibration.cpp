@@ -8,6 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "gyro_cali"
+
 #include "GyroCalibration.hpp"
 
 #include <geo/geo.h>
@@ -25,9 +27,9 @@ GyroCalibration::~GyroCalibration() {
     perf_free(_calibration_updated_perf);
 }
 
-bool GyroCalibration::init() {
+int GyroCalibration::init() {
     ScheduleOnInterval(INTERVAL_US);
-    return true;
+    return 0;
 }
 
 void GyroCalibration::Run() {
@@ -241,26 +243,26 @@ void GyroCalibration::Run() {
     }
 }
 
-int GyroCalibration::instantiate(int argc, char *argv[]) {
+GyroCalibration *GyroCalibration::instantiate(int argc, char *argv[]) {
     GyroCalibration *instance = new GyroCalibration();
 
     if (instance) {
-        _object.store(instance);
-        _task_id = task_id_is_work_queue;
+        // _object.store(instance);
+        // _task_id = task_id_is_work_queue;
 
-        if (instance->init()) {
-            return PX4_OK;
-        }
-
+        // if (instance->init()) {
+        //     return PX4_OK;
+        // }
+        return instance;
     } else {
         PX4_ERR("alloc failed");
     }
 
     delete instance;
-    _object.store(nullptr);
-    _task_id = -1;
+    // _object.store(nullptr);
+    // _task_id = -1;
 
-    return PX4_ERROR;
+    return nullptr;
 }
 
 int GyroCalibration::print_status() {

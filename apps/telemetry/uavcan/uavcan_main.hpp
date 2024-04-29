@@ -19,9 +19,10 @@
 
 #pragma once
 
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/atomic.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+
+#include <atomic/atomic.hpp>
+#include <workq/ScheduledWorkItem.hpp>
+
 
 #include "actuators/esc.hpp"
 #include "actuators/hardpoint.hpp"
@@ -36,9 +37,9 @@
 #include "uavcan_driver.hpp"
 #include "uavcan_servers.hpp"
 
-#include <lib/drivers/device/Device.hpp>
-#include <lib/mixer_module/mixer_module.hpp>
-#include <lib/perf/perf_counter.h>
+#include <drivers/device/Device.hpp>
+#include <mixer_module/mixer_module.hpp>
+#include <perf/perf_counter.h>
 
 #include <uavcan/helpers/heap_based_pool_allocator.hpp>
 #include <uavcan/protocol/global_time_sync_master.hpp>
@@ -154,11 +155,14 @@ class UavcanNode : public px4::ScheduledWorkItem, public ModuleParams {
 
 public:
     typedef UAVCAN_DRIVER::CanInitHelper<RxQueueLenPerIface> CanInitHelper;
-    enum eServerAction : int { None,
-                               Start,
-                               Stop,
-                               CheckFW,
-                               Busy };
+
+    enum eServerAction : int {
+        None,
+        Start,
+        Stop,
+        CheckFW,
+        Busy
+    };
 
     UavcanNode(uavcan::ICanDriver &can_driver, uavcan::ISystemClock &system_clock);
 
@@ -177,6 +181,7 @@ public:
     static UavcanNode *instance() {
         return _instance;
     }
+
     static int getHardwareVersion(uavcan::protocol::HardwareVersion &hwver);
 
     void requestCheckAllNodesFirmwareAndUpdate() {
@@ -204,15 +209,16 @@ private:
     void set_setget_response(uavcan::protocol::param::GetSet::Response *resp) {
         _setget_response = resp;
     }
+
     void free_setget_response(void) {
         _setget_response = nullptr;
     }
 
     px4::atomic_bool _task_should_exit{false}; ///< flag to indicate to tear down the CAN driver
 
-    unsigned _output_count{0}; ///< number of actuators currently available
+    unsigned _output_count{0};                 ///< number of actuators currently available
 
-    static UavcanNode *_instance; ///< singleton pointer
+    static UavcanNode *_instance;              ///< singleton pointer
 
     uavcan_node::Allocator _pool_allocator;
 
@@ -309,12 +315,15 @@ private:
 
     uint8_t get_next_active_node_id(uint8_t base);
     uint8_t get_next_dirty_node_id(uint8_t base);
-    void    set_node_params_dirty(uint8_t node_id) {
+
+    void set_node_params_dirty(uint8_t node_id) {
         _param_dirty_bitmap[node_id >> 5] |= 1 << (node_id & 31);
     }
+
     void clear_node_params_dirty(uint8_t node_id) {
         _param_dirty_bitmap[node_id >> 5] &= ~(1 << (node_id & 31));
     }
+
     bool are_node_params_dirty(uint8_t node_id) const {
         return bool((_param_dirty_bitmap[node_id >> 5] >> (node_id & 31)) & 1);
     }

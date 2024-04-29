@@ -13,7 +13,7 @@
  */
 
 #include "accel.hpp"
-#include <lib/drivers/accelerometer/PX4Accelerometer.hpp>
+#include <drivers/accelerometer/PX4Accelerometer.hpp>
 
 const char *const UavcanAccelBridge::NAME = "accel";
 

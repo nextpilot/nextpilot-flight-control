@@ -11,9 +11,9 @@
 #ifndef HIGH_LATENCY2_HPP
 #define HIGH_LATENCY2_HPP
 
-#include <lib/geo/geo.h>
-#include <lib/mathlib/mathlib.h>
-#include <lib/matrix/matrix/math.hpp>
+#include <geo/geo.h>
+#include <mathlib/mathlib.h>
+#include <matrix/matrix/math.hpp>
 
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/airspeed.h>
@@ -34,7 +34,7 @@
 #include <uORB/topics/failsafe_flags.h>
 #include <uORB/topics/health_report.h>
 
-#include <px4_platform_common/events.h>
+#include <events/events.h>
 
 class MavlinkStreamHighLatency2 : public MavlinkStream {
 public:
@@ -45,6 +45,7 @@ public:
     static constexpr const char *get_name_static() {
         return "HIGH_LATENCY2";
     }
+
     static constexpr uint16_t get_id_static() {
         return MAVLINK_MSG_ID_HIGH_LATENCY2;
     }
@@ -52,6 +53,7 @@ public:
     const char *get_name() const override {
         return get_name_static();
     }
+
     uint16_t get_id() override {
         return get_id_static();
     }
@@ -83,6 +85,7 @@ private:
         PerBatteryData(uint8_t instance) :
             subscription(ORB_ID(battery_status), instance) {
         }
+
         uORB::Subscription subscription;
         SimpleAnalyzer     analyzer{SimpleAnalyzer::AVERAGE};
         uint64_t           timestamp{0};
@@ -98,8 +101,8 @@ private:
             mavlink_high_latency2_t msg{};
             set_default_values(msg);
 
-            bool updated = _airspeed.valid();
-            updated |= _airspeed_sp.valid();
+            bool updated  = _airspeed.valid();
+            updated      |= _airspeed_sp.valid();
 
             for (int i = 0; i < battery_status_s::MAX_INSTANCES; i++) {
                 updated |= _batteries[i].analyzer.valid();
@@ -144,7 +147,7 @@ private:
                 for (int i = 1; i < battery_status_s::MAX_INSTANCES; i++) {
                     const bool battery_connected = _batteries[i].connected && _batteries[i].analyzer.valid();
                     const bool battery_is_lowest = _batteries[i].analyzer.get_scaled(100.0f) <= _batteries[lowest].analyzer.get_scaled(
-                                                                                                    100.0f);
+                                                       100.0f);
 
                     if (battery_connected && battery_is_lowest) {
                         lowest = i;
@@ -283,9 +286,7 @@ private:
         estimator_status_s estimator_status;
 
         if (_estimator_status_sub.update(&estimator_status)) {
-            if (estimator_status.gps_check_fail_flags > 0 ||
-                estimator_status.filter_fault_flags > 0 ||
-                estimator_status.innovation_check_flags > 0) {
+            if (estimator_status.gps_check_fail_flags > 0 || estimator_status.filter_fault_flags > 0 || estimator_status.innovation_check_flags > 0) {
                 msg->failure_flags |= HL_FAILURE_FLAG_ESTIMATOR;
             }
 
@@ -385,23 +386,19 @@ private:
             health_report_s health_report;
 
             if (_health_report_sub.copy(&health_report)) {
-                if ((health_report.arming_check_error_flags | health_report.health_error_flags) & (uint64_t)
-                                                                                                      events::px4::enums::health_component_t::absolute_pressure) {
+                if ((health_report.arming_check_error_flags | health_report.health_error_flags) & (uint64_t)events::px4::enums::health_component_t::absolute_pressure) {
                     msg->failure_flags |= HL_FAILURE_FLAG_ABSOLUTE_PRESSURE;
                 }
 
-                if ((health_report.arming_check_error_flags | health_report.health_error_flags) & (uint64_t)
-                                                                                                      events::px4::enums::health_component_t::accel) {
+                if ((health_report.arming_check_error_flags | health_report.health_error_flags) & (uint64_t)events::px4::enums::health_component_t::accel) {
                     msg->failure_flags |= HL_FAILURE_FLAG_3D_ACCEL;
                 }
 
-                if ((health_report.arming_check_error_flags | health_report.health_error_flags) & (uint64_t)
-                                                                                                      events::px4::enums::health_component_t::gyro) {
+                if ((health_report.arming_check_error_flags | health_report.health_error_flags) & (uint64_t)events::px4::enums::health_component_t::gyro) {
                     msg->failure_flags |= HL_FAILURE_FLAG_3D_GYRO;
                 }
 
-                if ((health_report.arming_check_error_flags | health_report.health_error_flags) & (uint64_t)
-                                                                                                      events::px4::enums::health_component_t::magnetometer) {
+                if ((health_report.arming_check_error_flags | health_report.health_error_flags) & (uint64_t)events::px4::enums::health_component_t::magnetometer) {
                     msg->failure_flags |= HL_FAILURE_FLAG_3D_MAG;
                 }
             }
@@ -414,6 +411,7 @@ private:
             union px4_custom_mode custom_mode {
                 get_px4_custom_mode(status.nav_state)
             };
+
             msg->custom_mode = custom_mode.custom_mode_hl;
 
             return true;
@@ -449,8 +447,8 @@ private:
 
         if (_wind_sub.update(&wind)) {
             msg->wind_heading = static_cast<uint8_t>(math::degrees(matrix::wrap_2pi(atan2f(wind.windspeed_east,
-                                                                                           wind.windspeed_north))) *
-                                                     0.5f);
+                                                                                           wind.windspeed_north)))
+                                                     * 0.5f);
             return true;
         }
 

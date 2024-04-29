@@ -13,11 +13,11 @@
 #include <uavcan/uavcan.hpp>
 #include <uavcan/equipment/actuator/Status.hpp>
 #include <uavcan/equipment/actuator/ArrayCommand.hpp>
-#include <lib/perf/perf_counter.h>
+#include <perf/perf_counter.h>
 #include <uORB/PublicationMulti.hpp>
 #include <uORB/topics/actuator_outputs.h>
-#include <drivers/drv_hrt.h>
-#include <lib/mixer_module/mixer_module.hpp>
+#include <hrtimer.h>
+#include <mixer_module/mixer_module.hpp>
 
 class UavcanServoController {
 public:

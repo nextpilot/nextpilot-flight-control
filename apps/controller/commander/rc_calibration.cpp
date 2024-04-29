@@ -14,8 +14,6 @@
  */
 
 #include <events/events.h>
-// #include <px4_platform_common/posix.h>
-// #include <px4_platform_common/time.h>
 #include <defines.h>
 #include "rc_calibration.h"
 #include "commander_helper.h"

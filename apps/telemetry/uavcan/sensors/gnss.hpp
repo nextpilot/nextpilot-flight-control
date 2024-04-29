@@ -34,7 +34,7 @@
 #include <ardupilot/gnss/MovingBaselineData.hpp>
 #include <uavcan/equipment/gnss/RTCMStream.hpp>
 
-#include <lib/perf/perf_counter.h>
+#include <perf/perf_counter.h>
 
 #include "sensor_bridge.hpp"
 
@@ -106,9 +106,9 @@ private:
     hrt_abstime                                                                       _last_rtcm_injection_time{0}; ///< time of last rtcm injection
     uint8_t                                                                           _selected_rtcm_instance{0};   ///< uorb instance that is being used for RTCM corrections
 
-    bool _system_clock_set{false}; ///< Have we set the system clock at least once from GNSS data?
+    bool _system_clock_set{false};                                                                                  ///< Have we set the system clock at least once from GNSS data?
 
-    bool *_channel_using_fix2; ///< Flag for whether each channel is using Fix2 or Fix msg
+    bool *_channel_using_fix2;                                                                                      ///< Flag for whether each channel is using Fix2 or Fix msg
 
     bool _publish_rtcm_stream{false};
     bool _publish_moving_baseline_data{false};

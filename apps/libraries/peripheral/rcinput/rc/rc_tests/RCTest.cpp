@@ -6,15 +6,15 @@
 #include <string.h>
 #include <unistd.h>
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 #define DSM_DEBUG
-#include <lib/rc/sbus.h>
-#include <lib/rc/dsm.h>
-#include <lib/rc/st24.h>
-#include <lib/rc/sumd.h>
-#include <lib/rc/crsf.h>
-#include <lib/rc/ghst.hpp>
+#include <rc/sbus.h>
+#include <rc/dsm.h>
+#include <rc/st24.h>
+#include <rc/sumd.h>
+#include <rc/crsf.h>
+#include <rc/ghst.hpp>
 
 #if defined(CONFIG_ARCH_BOARD_PX4_SITL)
 #define TEST_DATA_PATH "./test_data/"
@@ -525,4 +525,3 @@ bool RCTest::sumdTest()
 
 
 ut_declare_test_c(rc_tests_main, RCTest)
-

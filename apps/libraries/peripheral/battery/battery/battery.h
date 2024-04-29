@@ -23,7 +23,6 @@
 #include <float.h>
 
 // #include <board_config.h>
-// #include <px4_platform_common/board_common.h>
 #include <module/module_params.hpp>
 #include <matrix/math.hpp>
 

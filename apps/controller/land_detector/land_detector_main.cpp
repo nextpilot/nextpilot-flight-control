@@ -19,11 +19,9 @@
 #define LOG_TAG "land_detector_main"
 
 // #include <hrtimer.h>
-// #include <px4_platform_common/px4_config.h>
 
 // #include <defines.h>
-// #include <px4_platform_common/posix.h>
-// #include <px4_platform_common/tasks.h>
+
 
 #include "FixedwingLandDetector.h"
 #include "MulticopterLandDetector.h"
@@ -85,6 +83,7 @@ int LandDetector::print_status() {
     PX4_INFO("running (%s)", _currentMode);
     return 0;
 }
+
 int LandDetector::print_usage(const char *reason) {
     if (reason != nullptr) {
         PX4_ERR("%s\n", reason);
@@ -126,6 +125,7 @@ The module runs periodically on the HP work queue.
 extern "C" __EXPORT int land_detector_main(int argc, char *argv[]) {
     return LandDetector::main(argc, argv);
 }
+
 MSH_CMD_EXPORT_ALIAS(land_detector_main, land_detector, land detector);
 
 int land_detector_start() {
@@ -139,6 +139,7 @@ int land_detector_start() {
     int         argc   = sizeof(argv) / sizeof(argv[0]);
     return LandDetector::main(argc, (char **)argv);
 }
+
 INIT_APP_EXPORT(land_detector_start);
 
 } // namespace land_detector

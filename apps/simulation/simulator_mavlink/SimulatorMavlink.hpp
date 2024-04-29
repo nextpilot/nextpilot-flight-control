@@ -26,7 +26,7 @@
 #include <atomic/atomic.hpp>
 #include <px4_platform_common/bitmask.h>
 #include <module/module_params.hpp>
-#include <px4_platform_common/posix.h>
+
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
@@ -82,8 +82,7 @@ static inline SensorSource operator&(A lhs, B rhs) {
     typedef typename std::underlying_type<SensorSource>::type underlying;
 
     return static_cast<SensorSource>(
-        static_cast<underlying>(lhs) &
-        static_cast<underlying>(rhs));
+        static_cast<underlying>(lhs) & static_cast<underlying>(rhs));
 }
 
 class SimulatorMavlink : public ModuleParams {
@@ -102,12 +101,15 @@ public:
     void set_ip(InternetProtocol ip) {
         _ip = ip;
     }
+
     void set_port(unsigned port) {
         _port = port;
     }
+
     void set_hostname(const char *hostname) {
         _hostname = hostname;
     }
+
     void set_tcp_remote_ipaddr(char *tcp_remote_ipaddr) {
         _tcp_remote_ipaddr = tcp_remote_ipaddr;
     }

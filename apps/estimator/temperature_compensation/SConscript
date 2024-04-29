@@ -7,6 +7,6 @@ cwd = GetCurrentDir()
 inc = []
 src = Glob("*.cpp", exclude="*_test.cpp") + Glob("temperature_calibration/*.cpp")
 
-objs = DefineGroup("ins/temperature_compensation", src, depend=["INS_USING_TEMPERATURE_COMPENSATION"])
+objs = DefineGroup("ins/temperature_compensation", src, depend=["_INS_USING_TEMPERATURE_COMPENSATION"])
 
 Return("objs")

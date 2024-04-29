@@ -20,11 +20,10 @@
 #include "mavlink_mission.h"
 #include "mavlink_main.h"
 
-#include <lib/geo/geo.h>
-#include <systemlib/err.h>
-#include <drivers/drv_hrt.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/events.h>
+#include <geo/geo.h>
+#include <hrtimer.h>
+#include <defines.h>
+#include <events/events.h>
 #include <mathlib/mathlib.h>
 #include <matrix/math.hpp>
 #include <navigator/navigation.h>
@@ -42,10 +41,7 @@ constexpr uint16_t MavlinkMissionManager::MAX_COUNT[];
 uint16_t           MavlinkMissionManager::_geofence_update_counter  = 0;
 uint16_t           MavlinkMissionManager::_safepoint_update_counter = 0;
 
-#define CHECK_SYSID_COMPID_MISSION(_msg) (_msg.target_system == mavlink_system.sysid &&             \
-                                          ((_msg.target_component == mavlink_system.compid) ||      \
-                                           (_msg.target_component == MAV_COMP_ID_MISSIONPLANNER) || \
-                                           (_msg.target_component == MAV_COMP_ID_ALL)))
+#define CHECK_SYSID_COMPID_MISSION(_msg) (_msg.target_system == mavlink_system.sysid && ((_msg.target_component == mavlink_system.compid) || (_msg.target_component == MAV_COMP_ID_MISSIONPLANNER) || (_msg.target_component == MAV_COMP_ID_ALL)))
 
 MavlinkMissionManager::MavlinkMissionManager(Mavlink *mavlink) :
     _mavlink(mavlink) {
@@ -271,8 +267,7 @@ void MavlinkMissionManager::send_mission_item(uint8_t sysid, uint8_t compid, uin
         mission_item.lon      = mission_fence_point.lon;
         mission_item.altitude = mission_fence_point.alt;
 
-        if (mission_fence_point.nav_cmd == MAV_CMD_NAV_FENCE_POLYGON_VERTEX_INCLUSION ||
-            mission_fence_point.nav_cmd == MAV_CMD_NAV_FENCE_POLYGON_VERTEX_EXCLUSION) {
+        if (mission_fence_point.nav_cmd == MAV_CMD_NAV_FENCE_POLYGON_VERTEX_INCLUSION || mission_fence_point.nav_cmd == MAV_CMD_NAV_FENCE_POLYGON_VERTEX_EXCLUSION) {
             mission_item.vertex_count = mission_fence_point.vertex_count;
 
         } else {
@@ -857,8 +852,7 @@ void MavlinkMissionManager::handle_mission_count(const mavlink_message_t *msg) {
             _transfer_partner_sysid  = msg->sysid;
             _transfer_partner_compid = msg->compid;
             _transfer_count          = wpc.count;
-            _transfer_dataman_id     = (_dataman_id == DM_KEY_WAYPOINTS_OFFBOARD_0 ? DM_KEY_WAYPOINTS_OFFBOARD_1 :
-                                                                                     DM_KEY_WAYPOINTS_OFFBOARD_0); // use inactive storage for transmission
+            _transfer_dataman_id     = (_dataman_id == DM_KEY_WAYPOINTS_OFFBOARD_0 ? DM_KEY_WAYPOINTS_OFFBOARD_1 : DM_KEY_WAYPOINTS_OFFBOARD_0); // use inactive storage for transmission
             _transfer_current_seq    = -1;
 
             if (_mission_type == MAV_MISSION_TYPE_FENCE) {
@@ -1014,11 +1008,7 @@ void MavlinkMissionManager::handle_mission_item_both(const mavlink_message_t *ms
         case MAV_MISSION_TYPE_MISSION: {
             // check that we don't get a wrong item (hardening against wrong client implementations, the list here
             // does not need to be complete)
-            if (mission_item.nav_cmd == MAV_CMD_NAV_FENCE_POLYGON_VERTEX_INCLUSION ||
-                mission_item.nav_cmd == MAV_CMD_NAV_FENCE_POLYGON_VERTEX_EXCLUSION ||
-                mission_item.nav_cmd == MAV_CMD_NAV_FENCE_CIRCLE_INCLUSION ||
-                mission_item.nav_cmd == MAV_CMD_NAV_FENCE_CIRCLE_EXCLUSION ||
-                mission_item.nav_cmd == MAV_CMD_NAV_RALLY_POINT) {
+            if (mission_item.nav_cmd == MAV_CMD_NAV_FENCE_POLYGON_VERTEX_INCLUSION || mission_item.nav_cmd == MAV_CMD_NAV_FENCE_POLYGON_VERTEX_EXCLUSION || mission_item.nav_cmd == MAV_CMD_NAV_FENCE_CIRCLE_INCLUSION || mission_item.nav_cmd == MAV_CMD_NAV_FENCE_CIRCLE_EXCLUSION || mission_item.nav_cmd == MAV_CMD_NAV_RALLY_POINT) {
                 check_failed = true;
 
             } else {
@@ -1042,8 +1032,7 @@ void MavlinkMissionManager::handle_mission_item_both(const mavlink_message_t *ms
             mission_fence_point.lon     = mission_item.lon;
             mission_fence_point.alt     = mission_item.altitude;
 
-            if (mission_item.nav_cmd == MAV_CMD_NAV_FENCE_POLYGON_VERTEX_INCLUSION ||
-                mission_item.nav_cmd == MAV_CMD_NAV_FENCE_POLYGON_VERTEX_EXCLUSION) {
+            if (mission_item.nav_cmd == MAV_CMD_NAV_FENCE_POLYGON_VERTEX_INCLUSION || mission_item.nav_cmd == MAV_CMD_NAV_FENCE_POLYGON_VERTEX_EXCLUSION) {
                 mission_fence_point.vertex_count = mission_item.vertex_count;
 
                 if (mission_item.vertex_count < 3) { // feasibility check
@@ -1060,7 +1049,8 @@ void MavlinkMissionManager::handle_mission_item_both(const mavlink_message_t *ms
 
             if (!check_failed) {
                 write_failed = dm_write(DM_KEY_FENCE_POINTS, wp.seq + 1, &mission_fence_point,
-                                        sizeof(mission_fence_point_s)) != sizeof(mission_fence_point_s);
+                                        sizeof(mission_fence_point_s))
+                            != sizeof(mission_fence_point_s);
             }
 
         } break;
@@ -1072,7 +1062,8 @@ void MavlinkMissionManager::handle_mission_item_both(const mavlink_message_t *ms
             mission_safe_point.alt   = mission_item.altitude;
             mission_safe_point.frame = mission_item.frame;
             write_failed             = dm_write(DM_KEY_SAFE_POINTS, wp.seq + 1, &mission_safe_point,
-                                                sizeof(mission_safe_point_s)) != sizeof(mission_safe_point_s);
+                                                sizeof(mission_safe_point_s))
+                        != sizeof(mission_safe_point_s);
         } break;
 
         default:
@@ -1165,8 +1156,7 @@ void MavlinkMissionManager::handle_mission_clear_all(const mavlink_message_t *ms
 
             switch (wpca.mission_type) {
             case MAV_MISSION_TYPE_MISSION:
-                ret = update_active_mission(_dataman_id == DM_KEY_WAYPOINTS_OFFBOARD_0 ? DM_KEY_WAYPOINTS_OFFBOARD_1 :
-                                                                                         DM_KEY_WAYPOINTS_OFFBOARD_0,
+                ret = update_active_mission(_dataman_id == DM_KEY_WAYPOINTS_OFFBOARD_0 ? DM_KEY_WAYPOINTS_OFFBOARD_1 : DM_KEY_WAYPOINTS_OFFBOARD_0,
                                             0, 0);
                 break;
 
@@ -1179,8 +1169,7 @@ void MavlinkMissionManager::handle_mission_clear_all(const mavlink_message_t *ms
                 break;
 
             case MAV_MISSION_TYPE_ALL:
-                ret = update_active_mission(_dataman_id == DM_KEY_WAYPOINTS_OFFBOARD_0 ? DM_KEY_WAYPOINTS_OFFBOARD_1 :
-                                                                                         DM_KEY_WAYPOINTS_OFFBOARD_0,
+                ret = update_active_mission(_dataman_id == DM_KEY_WAYPOINTS_OFFBOARD_0 ? DM_KEY_WAYPOINTS_OFFBOARD_1 : DM_KEY_WAYPOINTS_OFFBOARD_0,
                                             0, 0);
                 ret = update_geofence_count(0) || ret;
                 ret = update_safepoint_count(0) || ret;
@@ -1212,15 +1201,11 @@ void MavlinkMissionManager::handle_mission_clear_all(const mavlink_message_t *ms
 
 int MavlinkMissionManager::parse_mavlink_mission_item(const mavlink_mission_item_t *mavlink_mission_item,
                                                       struct mission_item_s        *mission_item) {
-    if (mavlink_mission_item->frame == MAV_FRAME_GLOBAL ||
-        mavlink_mission_item->frame == MAV_FRAME_GLOBAL_RELATIVE_ALT ||
-        (_int_mode && (mavlink_mission_item->frame == MAV_FRAME_GLOBAL_INT ||
-                       mavlink_mission_item->frame == MAV_FRAME_GLOBAL_RELATIVE_ALT_INT))) {
+    if (mavlink_mission_item->frame == MAV_FRAME_GLOBAL || mavlink_mission_item->frame == MAV_FRAME_GLOBAL_RELATIVE_ALT || (_int_mode && (mavlink_mission_item->frame == MAV_FRAME_GLOBAL_INT || mavlink_mission_item->frame == MAV_FRAME_GLOBAL_RELATIVE_ALT_INT))) {
         // This is a mission item with a global coordinate
 
         // Switch to int mode if that is what we are receiving
-        if ((mavlink_mission_item->frame == MAV_FRAME_GLOBAL_INT ||
-             mavlink_mission_item->frame == MAV_FRAME_GLOBAL_RELATIVE_ALT_INT)) {
+        if ((mavlink_mission_item->frame == MAV_FRAME_GLOBAL_INT || mavlink_mission_item->frame == MAV_FRAME_GLOBAL_RELATIVE_ALT_INT)) {
             _int_mode = true;
         }
 
@@ -1239,12 +1224,10 @@ int MavlinkMissionManager::parse_mavlink_mission_item(const mavlink_mission_item
 
         mission_item->altitude = mavlink_mission_item->z;
 
-        if (mavlink_mission_item->frame == MAV_FRAME_GLOBAL ||
-            mavlink_mission_item->frame == MAV_FRAME_GLOBAL_INT) {
+        if (mavlink_mission_item->frame == MAV_FRAME_GLOBAL || mavlink_mission_item->frame == MAV_FRAME_GLOBAL_INT) {
             mission_item->altitude_is_relative = false;
 
-        } else if (mavlink_mission_item->frame == MAV_FRAME_GLOBAL_RELATIVE_ALT ||
-                   mavlink_mission_item->frame == MAV_FRAME_GLOBAL_RELATIVE_ALT_INT) {
+        } else if (mavlink_mission_item->frame == MAV_FRAME_GLOBAL_RELATIVE_ALT || mavlink_mission_item->frame == MAV_FRAME_GLOBAL_RELATIVE_ALT_INT) {
             mission_item->altitude_is_relative = true;
         }
 

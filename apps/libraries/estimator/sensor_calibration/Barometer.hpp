@@ -10,7 +10,7 @@
 
 #pragma once
 
-//#include <px4_platform_common/px4_config.h>
+
 #include <ulog/log.h>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/sensor_correction.h>

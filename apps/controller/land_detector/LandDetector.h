@@ -28,7 +28,6 @@
 // #include <module/module_command.hpp>
 // #include <module/module_params.hpp>
 // #include <module/module_params.hpp>
-// #include <px4_platform_common/px4_config.h>
 
 // #include <workq/WorkItemScheduled.hpp>
 // #include <uORB/uORBPublication.hpp>
@@ -120,21 +119,27 @@ protected:
     virtual bool _get_in_descend() {
         return false;
     }
+
     virtual bool _get_has_low_throttle() {
         return false;
     }
+
     virtual bool _get_horizontal_movement() {
         return false;
     }
+
     virtual bool _get_vertical_movement() {
         return false;
     }
+
     virtual bool _get_rotational_movement() {
         return false;
     }
+
     virtual bool _get_close_to_ground_or_skipped_check() {
         return false;
     }
+
     virtual void _set_hysteresis_factor(const int factor) = 0;
 
     Hysteresis _freefall_hysteresis{false};
@@ -162,7 +167,7 @@ private:
     hrt_abstime             _takeoff_time{0};
     hrt_abstime             _total_flight_time{0}; ///< total vehicle flight time in microseconds
 
-    hrt_abstime _time_last_move_detect_us{0}; // timestamp of last movement detection event in microseconds
+    hrt_abstime _time_last_move_detect_us{0};      // timestamp of last movement detection event in microseconds
 
     perf_counter_t _cycle_perf{perf_alloc(PC_ELAPSED, MODULE_NAME ": cycle")};
 

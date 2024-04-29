@@ -8,11 +8,11 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include <drivers/drv_hrt.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/posix.h>
+#include <hrtimer.h>
+#include <defines.h>
 
-#include <lib/parameters/param.h>
+
+#include <parameters/param.h>
 
 // for ekf2 replay
 #include <uORB/topics/airspeed.h>

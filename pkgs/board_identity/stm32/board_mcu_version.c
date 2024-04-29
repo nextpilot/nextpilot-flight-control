@@ -13,7 +13,6 @@
  * Implementation of STM32 based SoC version API
  */
 
-// #include <px4_platform_common/px4_config.h>
 
 #include <defines.h>
 

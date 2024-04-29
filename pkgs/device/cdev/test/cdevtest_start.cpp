@@ -40,7 +40,7 @@
 #include "cdevtest_example.h"
 
 #include <px4_platform_common/app.h>
-#include <px4_platform_common/tasks.h>
+
 #include <stdio.h>
 #include <string.h>
 

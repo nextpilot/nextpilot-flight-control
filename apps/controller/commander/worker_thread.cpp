@@ -21,7 +21,7 @@
 #include <events/events.h>
 #include <ulog/log.h>
 #include <defines.h>
-// #include <px4_platform_common/shutdown.h>
+#include <shutdown/shutdown.h>
 #include <param/param.h>
 
 using namespace time_literals;

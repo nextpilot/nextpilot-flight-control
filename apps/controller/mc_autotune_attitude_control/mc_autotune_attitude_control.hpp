@@ -23,8 +23,8 @@
 // #include <defines.h>
 // #include <module/module_command.hpp>
 // #include <module/module_params.hpp>
-// #include <px4_platform_common/posix.h>
-// #include <px4_platform_common/px4_work_queue/WorkItem.hpp>
+
+#include <workq/WorkItem.hpp>
 // #include <uORB/uORBPublication.hpp>
 // #include <uORB/uORBSubscription.hpp>
 // #include <uORB/uORBSubscription.hpp>
@@ -144,7 +144,7 @@ private:
     float _filter_dt{0.01f};
     bool  _are_filters_initialized{false};
 
-    AlphaFilter<float> _signal_filter; ///< used to create a wash-out filter
+    AlphaFilter<float> _signal_filter;            ///< used to create a wash-out filter
 
     static constexpr float _model_dt_min{2e-3f};  // 2ms = 500Hz
     static constexpr float _model_dt_max{10e-3f}; // 10ms = 100Hz

@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include <px4_platform_common/log.h>
+#include <ulog/log.h>
 
 #include <uavcan/uavcan.hpp>
 #include <uavcan/protocol/debug/LogMessage.hpp>
@@ -20,6 +20,7 @@ public:
     UavcanLogMessage(uavcan::INode &node) :
         _sub_logmessage(node) {
     }
+
     ~UavcanLogMessage() = default;
 
     int init() {

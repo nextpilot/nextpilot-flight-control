@@ -16,9 +16,9 @@
 #include <dirent.h>
 #include <queue.h>
 
-#include <px4_platform_common/defines.h>
+#include <defines.h>
 #include <systemlib/err.h>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 #ifndef MAVLINK_FTP_UNIT_TEST
 #   include "mavlink_bridge_header.h"

@@ -31,11 +31,9 @@
  *
  ****************************************************************************/
 
-// #include <px4_platform_common/px4_config.h>
 
-#include <px4_platform_common/console_buffer.h>
+#include <console_buffer.h>
 #include <defines.h>
-#include <px4_platform_common/sem.h>
 #include <pthread.h>
 #include <string.h>
 #include <fcntl.h>

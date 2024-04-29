@@ -16,7 +16,6 @@
  * @author Mathieu Bresciani <brescianimathieu@gmail.com>
  */
 
-// #include <px4_platform_common/px4_config.h>
 #include <param/param.h>
 
 /**

@@ -13,14 +13,12 @@
 #include <defines.h>
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
-#include <px4_platform_common/posix.h>
+
 #include <workq/WorkItemScheduled.hpp>
 #include <hrtimer.h>
 #include <mathlib/math/WelfordMeanVector.hpp>
 #include <perf/perf_counter.h>
 #include <sensor_calibration/Gyroscope.hpp>
-#include <uORB/uORBSubscription.hpp>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/sensor_accel.h>
@@ -28,6 +26,8 @@
 #include <uORB/topics/vehicle_status.h>
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class GyroCalibration : public ModuleCommand<GyroCalibration>, public ModuleParams, public WorkItemScheduled {
 public:
@@ -35,7 +35,7 @@ public:
     ~GyroCalibration() override;
 
     /** @see ModuleCommand */
-    static int *instantiate(int argc, char *argv[]);
+    static GyroCalibration *instantiate(int argc, char *argv[]);
 
     /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);

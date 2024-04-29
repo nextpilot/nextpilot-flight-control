@@ -11,7 +11,7 @@
 #include "output_rc.h"
 
 #include <uORB/topics/gimbal_controls.h>
-#include <px4_platform_common/defines.h>
+#include <defines.h>
 #include <matrix/matrix/math.hpp>
 
 using math::constrain;
@@ -39,16 +39,13 @@ void OutputRC::update(const ControlData &control_data, bool new_setpoints, uint8
     // _angle_outputs are in radians, gimbal_controls are in [-1, 1]
     gimbal_controls_s gimbal_controls{};
     gimbal_controls.control[gimbal_controls_s::INDEX_ROLL] = constrain(
-        (_angle_outputs[0] + math::radians(_parameters.mnt_off_roll)) *
-            (1.0f / (math::radians(_parameters.mnt_range_roll / 2.0f))),
+        (_angle_outputs[0] + math::radians(_parameters.mnt_off_roll)) * (1.0f / (math::radians(_parameters.mnt_range_roll / 2.0f))),
         -1.f, 1.f);
     gimbal_controls.control[gimbal_controls_s::INDEX_PITCH] = constrain(
-        (_angle_outputs[1] + math::radians(_parameters.mnt_off_pitch)) *
-            (1.0f / (math::radians(_parameters.mnt_range_pitch / 2.0f))),
+        (_angle_outputs[1] + math::radians(_parameters.mnt_off_pitch)) * (1.0f / (math::radians(_parameters.mnt_range_pitch / 2.0f))),
         -1.f, 1.f);
     gimbal_controls.control[gimbal_controls_s::INDEX_YAW] = constrain(
-        (_angle_outputs[2] + math::radians(_parameters.mnt_off_yaw)) *
-            (1.0f / (math::radians(_parameters.mnt_range_yaw / 2.0f))),
+        (_angle_outputs[2] + math::radians(_parameters.mnt_off_yaw)) * (1.0f / (math::radians(_parameters.mnt_range_yaw / 2.0f))),
         -1.f, 1.f);
     gimbal_controls.timestamp = hrt_absolute_time();
     _gimbal_controls_pub.publish(gimbal_controls);
@@ -65,10 +62,7 @@ void OutputRC::_stream_device_attitude_status() {
     attitude_status.timestamp        = hrt_absolute_time();
     attitude_status.target_system    = 0;
     attitude_status.target_component = 0;
-    attitude_status.device_flags     = gimbal_device_attitude_status_s::DEVICE_FLAGS_NEUTRAL |
-                                   gimbal_device_attitude_status_s::DEVICE_FLAGS_ROLL_LOCK |
-                                   gimbal_device_attitude_status_s::DEVICE_FLAGS_PITCH_LOCK |
-                                   gimbal_device_attitude_status_s::DEVICE_FLAGS_YAW_LOCK;
+    attitude_status.device_flags     = gimbal_device_attitude_status_s::DEVICE_FLAGS_NEUTRAL | gimbal_device_attitude_status_s::DEVICE_FLAGS_ROLL_LOCK | gimbal_device_attitude_status_s::DEVICE_FLAGS_PITCH_LOCK | gimbal_device_attitude_status_s::DEVICE_FLAGS_YAW_LOCK;
 
     matrix::Eulerf euler(_angle_outputs[0], _angle_outputs[1], _angle_outputs[2]);
     matrix::Quatf  q(euler);

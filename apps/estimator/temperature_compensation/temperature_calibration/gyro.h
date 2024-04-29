@@ -16,7 +16,8 @@
 class TemperatureCalibrationGyro : public TemperatureCalibrationCommon<3, 3> {
 public:
     TemperatureCalibrationGyro(float min_temperature_rise, float min_start_temperature, float max_start_temperature,
-                               int gyro_subs[], int num_gyros);
+                               orb_subscr_t gyro_subs[], int num_gyros);
+
     virtual ~TemperatureCalibrationGyro() {
     }
 
@@ -26,7 +27,7 @@ public:
     int finish();
 
 private:
-    virtual int update_sensor_instance(PerSensorData &data, int sensor_sub);
+    virtual int update_sensor_instance(PerSensorData &data, orb_subscr_t sensor_sub);
 
     inline int finish_sensor_instance(PerSensorData &data, int sensor_index);
 };

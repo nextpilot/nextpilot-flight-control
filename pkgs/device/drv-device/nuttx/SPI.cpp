@@ -20,7 +20,7 @@
 #if defined(CONFIG_SPI)
 
 #   include <px4_platform_common/i2c_spi_buses.h>
-//#include <px4_platform_common/px4_config.h>
+
 #   include <nuttx/arch.h>
 
 #   ifndef CONFIG_SPI_EXCHANGE

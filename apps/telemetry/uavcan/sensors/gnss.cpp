@@ -20,10 +20,10 @@
 
 #include <cstdint>
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <systemlib/err.h>
 #include <mathlib/mathlib.h>
-#include <lib/parameters/param.h>
+#include <param/param.h>
 
 using namespace time_literals;
 
@@ -335,10 +335,9 @@ void UavcanGnssBridge::process_fixx(const uavcan::ReceivedDataStructure<FixType>
         float vel_n_sq = vel_n * vel_n;
         float vel_e_sq = vel_e * vel_e;
         report.c_variance_rad =
-            (vel_e_sq * vel_cov[0] +
-             -2 * vel_n * vel_e * vel_cov[1] + // Covariance matrix is symmetric
-             vel_n_sq * vel_cov[4]) /
-            ((vel_n_sq + vel_e_sq) * (vel_n_sq + vel_e_sq));
+            (vel_e_sq * vel_cov[0] + -2 * vel_n * vel_e * vel_cov[1] + // Covariance matrix is symmetric
+             vel_n_sq * vel_cov[4])
+            / ((vel_n_sq + vel_e_sq) * (vel_n_sq + vel_e_sq));
 
     } else {
         report.s_variance_m_s = -1.0F;
@@ -350,9 +349,7 @@ void UavcanGnssBridge::process_fixx(const uavcan::ReceivedDataStructure<FixType>
     report.vel_n_m_s     = msg.ned_velocity[0];
     report.vel_e_m_s     = msg.ned_velocity[1];
     report.vel_d_m_s     = msg.ned_velocity[2];
-    report.vel_m_s       = sqrtf(report.vel_n_m_s * report.vel_n_m_s +
-                                 report.vel_e_m_s * report.vel_e_m_s +
-                                 report.vel_d_m_s * report.vel_d_m_s);
+    report.vel_m_s       = sqrtf(report.vel_n_m_s * report.vel_n_m_s + report.vel_e_m_s * report.vel_e_m_s + report.vel_d_m_s * report.vel_d_m_s);
     report.cog_rad       = atan2f(report.vel_e_m_s, report.vel_n_m_s);
     report.vel_ned_valid = true;
 

@@ -19,11 +19,10 @@
 
 #pragma once
 
-#include <px4_platform_common/workqueue.h>
+#include <workq/workqueue.h>
 #include <hrtimer.h>
 #include <param/param.h>
 #include <uORB/uORBPublication.hpp>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/vehicle_acceleration.h>
 #include <uORB/topics/vehicle_attitude.h>

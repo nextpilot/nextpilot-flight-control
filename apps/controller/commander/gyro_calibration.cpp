@@ -14,16 +14,13 @@
  * Gyroscope calibration routine
  */
 
-// #include <px4_platform_common/px4_config.h>
 
 #include "factory_calibration_storage.h"
 #include "gyro_calibration.h"
 #include "calibration_messages.h"
 #include "calibration_routines.h"
 #include "commander_helper.h"
-// #include <px4_platform_common/posix.h>
 #include <defines.h>
-// #include <px4_platform_common/time.h>
 #include <hrtimer.h>
 #include <mathlib/math/filter/MedianFilter.hpp>
 #include <mathlib/mathlib.h>
@@ -31,7 +28,6 @@
 #include <sensor_calibration/Gyroscope.hpp>
 #include <sensor_calibration/Utilities.hpp>
 #include <ulog/mavlink_log.h>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/sensor_gyro.h>
 

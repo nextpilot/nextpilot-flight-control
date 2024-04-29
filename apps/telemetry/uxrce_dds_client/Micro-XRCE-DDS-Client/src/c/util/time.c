@@ -21,7 +21,7 @@
 #endif
 
 #define __EXPORT __attribute__ ((visibility ("default")))
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 #endif // PX4
 

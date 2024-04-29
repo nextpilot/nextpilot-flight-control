@@ -10,12 +10,12 @@
 
 #pragma once
 
-#include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
+#include <module/module_command.hpp>
+#include <module/module_params.h>
 
 #include <src/modules/uxrce_dds_client/dds_topics.h>
 
-#include <lib/timesync/Timesync.hpp>
+#include <timesync/Timesync.hpp>
 
 class UxrceddsClient : public ModuleBase<UxrceddsClient>, public ModuleParams {
 public:

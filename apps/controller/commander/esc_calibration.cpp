@@ -22,8 +22,6 @@
 #include <hrtimer.h>
 #include <drivers/drv_pwm_output.h>
 #include <defines.h>
-// #include <px4_platform_common/posix.h>
-// #include <px4_platform_common/time.h>
 #include <ulog/mavlink_log.h>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/battery_status.h>

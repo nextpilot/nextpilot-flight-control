@@ -11,12 +11,11 @@
 #ifndef EKF2SELECTOR_HPP
 #define EKF2SELECTOR_HPP
 
-// #include <px4_platform_common/px4_config.h>
 
 #include <ulog/log.h>
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
-#include <px4_platform_common/time.h>
+
 #include <hysteresis/hysteresis.h>
 #include <mathlib/mathlib.h>
 #include <workq/WorkItemScheduled.hpp>
@@ -35,9 +34,9 @@
 #include <uORB/topics/wind.h>
 
 #if CONSTRAINED_MEMORY
-#define EKF2_MAX_INSTANCES 2
+#   define EKF2_MAX_INSTANCES 2
 #else
-#define EKF2_MAX_INSTANCES 9
+#   define EKF2_MAX_INSTANCES 9
 #endif
 
 using namespace time_literals;
@@ -123,32 +122,28 @@ private:
     static constexpr float _rel_err_score_lim{1.0f}; // +- limit applied to the relative error score
     static constexpr float _rel_err_thresh{0.5f};    // the relative score difference needs to be greater than this to switch from an otherwise healthy instance
 
-    EstimatorInstance _instance[EKF2_MAX_INSTANCES]{
+    EstimatorInstance _instance[EKF2_MAX_INSTANCES] {
         {this, 0},
-        {this, 1},
+            {this, 1},
 #if EKF2_MAX_INSTANCES > 2
-        {this, 2},
-        {this, 3},
-#if EKF2_MAX_INSTANCES > 4
-        {this, 4},
-        {this, 5},
-        {this, 6},
-        {this, 7},
-        {this, 8},
+            {this, 2},
+            {this, 3},
+#   if EKF2_MAX_INSTANCES > 4
+            {this, 4},
+            {this, 5},
+            {this, 6},
+            {this, 7},
+            {this, 8},
+#   endif
 #endif
-#endif
-    };
+    }
 
-    static constexpr uint8_t IMU_STATUS_SIZE = (sizeof(sensors_status_imu_s::gyro_inconsistency_rad_s) / sizeof(
-                                                                                                             sensors_status_imu_s::gyro_inconsistency_rad_s[0]));
-    static_assert(IMU_STATUS_SIZE == sizeof(estimator_selector_status_s::accumulated_gyro_error) / sizeof(
-                                                                                                       estimator_selector_status_s::accumulated_gyro_error[0]),
+    static constexpr uint8_t IMU_STATUS_SIZE = (sizeof(sensors_status_imu_s::gyro_inconsistency_rad_s) / sizeof(sensors_status_imu_s::gyro_inconsistency_rad_s[0]));
+    static_assert(IMU_STATUS_SIZE == sizeof(estimator_selector_status_s::accumulated_gyro_error) / sizeof(estimator_selector_status_s::accumulated_gyro_error[0]),
                   "increase estimator_selector_status_s::accumulated_gyro_error size");
-    static_assert(IMU_STATUS_SIZE == sizeof(estimator_selector_status_s::accumulated_accel_error) / sizeof(
-                                                                                                        estimator_selector_status_s::accumulated_accel_error[0]),
+    static_assert(IMU_STATUS_SIZE == sizeof(estimator_selector_status_s::accumulated_accel_error) / sizeof(estimator_selector_status_s::accumulated_accel_error[0]),
                   "increase estimator_selector_status_s::accumulated_accel_error size");
-    static_assert(EKF2_MAX_INSTANCES <= sizeof(estimator_selector_status_s::combined_test_ratio) / sizeof(
-                                                                                                       estimator_selector_status_s::combined_test_ratio[0]),
+    static_assert(EKF2_MAX_INSTANCES <= sizeof(estimator_selector_status_s::combined_test_ratio) / sizeof(estimator_selector_status_s::combined_test_ratio[0]),
                   "increase estimator_selector_status_s::combined_test_ratio size");
 
     float       _accumulated_gyro_error[IMU_STATUS_SIZE]{};

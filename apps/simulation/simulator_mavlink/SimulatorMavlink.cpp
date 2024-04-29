@@ -11,8 +11,8 @@
 #include "SimulatorMavlink.hpp"
 
 #include <ulog/log.h>
-#include <px4_platform_common/time.h>
-#include <px4_platform_common/tasks.h>
+
+
 #include <geo/geo.h>
 #include <drivers/device/Device.hpp>
 #include <drivers/drv_pwm_output.h>
@@ -96,9 +96,9 @@ void SimulatorMavlink::actuator_controls_from_outputs(mavlink_hil_actuator_contr
         }
     }
 
-    msg->mode = mode_flag_custom;
-    msg->mode |= (armed) ? mode_flag_armed : 0;
-    msg->flags = 0;
+    msg->mode   = mode_flag_custom;
+    msg->mode  |= (armed) ? mode_flag_armed : 0;
+    msg->flags  = 0;
 
 #if defined(ENABLE_LOCKSTEP_SCHEDULER)
     msg->flags |= 1;
@@ -118,13 +118,12 @@ void SimulatorMavlink::send_esc_telemetry(mavlink_hil_actuator_controls_t hil_ac
             max_esc_index = i;
         }
 
-        esc_status.esc[i].actuator_function = _output_functions[i]; // TODO: this should be in pwm_sim...
+        esc_status.esc[i].actuator_function = _output_functions[i];                                                   // TODO: this should be in pwm_sim...
         esc_status.esc[i].timestamp         = esc_status.timestamp;
-        esc_status.esc[i].esc_errorcount    = 0; // TODO
+        esc_status.esc[i].esc_errorcount    = 0;                                                                      // TODO
         esc_status.esc[i].esc_voltage       = _battery_status.voltage_v;
-        esc_status.esc[i].esc_current       = armed ? 1.0f + math::abs_t(hil_act_control.controls[i]) * 15.0f :
-                                                      0.0f;                       // TODO: magic number
-        esc_status.esc[i].esc_rpm           = hil_act_control.controls[i] * 6000; // TODO: magic number
+        esc_status.esc[i].esc_current       = armed ? 1.0f + math::abs_t(hil_act_control.controls[i]) * 15.0f : 0.0f; // TODO: magic number
+        esc_status.esc[i].esc_rpm           = hil_act_control.controls[i] * 6000;                                     // TODO: magic number
         esc_status.esc[i].esc_temperature   = 20.0 + math::abs_t(hil_act_control.controls[i]) * 40.0;
     }
 
@@ -378,8 +377,8 @@ void SimulatorMavlink::handle_message_hil_gps(const mavlink_message_t *msg) {
         gps.eph = (float)hil_gps.eph * 1e-2f; // cm -> m
         gps.epv = (float)hil_gps.epv * 1e-2f; // cm -> m
 
-        gps.hdop = 0; // TODO
-        gps.vdop = 0; // TODO
+        gps.hdop = 0;                         // TODO
+        gps.vdop = 0;                         // TODO
 
         gps.noise_per_ms           = 0;
         gps.automatic_gain_control = 0;
@@ -892,9 +891,9 @@ void SimulatorMavlink::handle_message_vision_position_estimate(const mavlink_mes
     //  Row-major representation of pose 6x6 cross-covariance matrix upper right triangle
     //  (states: x, y, z, roll, pitch, yaw; first six entries are the first ROW, next five entries are the second ROW, etc.).
     //  If unknown, assign NaN value to first element in the array.
-    odom.position_variance[0] = vpe.covariance[0];  // X  row 0, col 0
-    odom.position_variance[1] = vpe.covariance[6];  // Y  row 1, col 1
-    odom.position_variance[2] = vpe.covariance[11]; // Z  row 2, col 2
+    odom.position_variance[0] = vpe.covariance[0];     // X  row 0, col 0
+    odom.position_variance[1] = vpe.covariance[6];     // Y  row 1, col 1
+    odom.position_variance[2] = vpe.covariance[11];    // Z  row 2, col 2
 
     odom.orientation_variance[0] = vpe.covariance[15]; // R  row 3, col 3
     odom.orientation_variance[1] = vpe.covariance[18]; // P  row 4, col 4
@@ -995,10 +994,10 @@ void SimulatorMavlink::request_hil_state_quaternion() {
 }
 
 void SimulatorMavlink::send_heartbeat() {
-    mavlink_heartbeat_t hb      = {};
-    mavlink_message_t   message = {};
-    hb.autopilot                = 12;
-    hb.base_mode |= (_vehicle_status.arming_state == vehicle_status_s::ARMING_STATE_ARMED) ? 128 : 0;
+    mavlink_heartbeat_t hb       = {};
+    mavlink_message_t   message  = {};
+    hb.autopilot                 = 12;
+    hb.base_mode                |= (_vehicle_status.arming_state == vehicle_status_s::ARMING_STATE_ARMED) ? 128 : 0;
     mavlink_msg_heartbeat_encode(_param_mav_sys_id.get(), _param_mav_comp_id.get(), &message, &hb);
     send_mavlink_message(message);
 }
@@ -1011,6 +1010,7 @@ void SimulatorMavlink::run() {
 #endif
 
     struct sockaddr_in _myaddr {};
+
     _myaddr.sin_family      = AF_INET;
     _myaddr.sin_addr.s_addr = htonl(INADDR_ANY);
     _myaddr.sin_port        = htons(_port);
@@ -1396,9 +1396,7 @@ void SimulatorMavlink::check_failure_injections() {
             vehicle_command_ack_s ack{};
             ack.command       = vehicle_command.command;
             ack.from_external = false;
-            ack.result        = supported ?
-                                    vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED :
-                                    vehicle_command_ack_s::VEHICLE_CMD_RESULT_UNSUPPORTED;
+            ack.result        = supported ? vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED : vehicle_command_ack_s::VEHICLE_CMD_RESULT_UNSUPPORTED;
             ack.timestamp     = hrt_absolute_time();
             _command_ack_pub.publish(ack);
         }

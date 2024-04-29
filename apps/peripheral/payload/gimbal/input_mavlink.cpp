@@ -12,9 +12,9 @@
 #include <uORB/Publication.hpp>
 #include <uORB/topics/gimbal_manager_information.h>
 #include <uORB/topics/vehicle_command_ack.h>
-#include <drivers/drv_hrt.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/posix.h>
+#include <hrtimer.h>
+#include <defines.h>
+
 #include <errno.h>
 #include <math.h>
 #include <matrix/matrix/math.hpp>
@@ -206,8 +206,7 @@ InputMavlinkCmdMount::UpdateResult
 InputMavlinkCmdMount::_process_command(ControlData &control_data, const vehicle_command_s &vehicle_command) {
     // Process only if the command is for us or for anyone (component id 0).
     const bool sysid_correct  = (vehicle_command.target_system == _parameters.mav_sysid);
-    const bool compid_correct = ((vehicle_command.target_component == _parameters.mav_compid) ||
-                                 (vehicle_command.target_component == 0));
+    const bool compid_correct = ((vehicle_command.target_component == _parameters.mav_compid) || (vehicle_command.target_component == 0));
 
     if (!sysid_correct || !compid_correct) {
         return UpdateResult::NoUpdate;
@@ -417,13 +416,7 @@ void InputMavlinkGimbalV2::_stream_gimbal_manager_information(const ControlData 
     gimbal_manager_info.timestamp = hrt_absolute_time();
 
     gimbal_manager_info.cap_flags =
-        gimbal_manager_information_s::GIMBAL_MANAGER_CAP_FLAGS_HAS_NEUTRAL |
-        gimbal_manager_information_s::GIMBAL_MANAGER_CAP_FLAGS_HAS_ROLL_LOCK |
-        gimbal_manager_information_s::GIMBAL_MANAGER_CAP_FLAGS_HAS_PITCH_AXIS |
-        gimbal_manager_information_s::GIMBAL_MANAGER_CAP_FLAGS_HAS_PITCH_LOCK |
-        gimbal_manager_information_s::GIMBAL_MANAGER_CAP_FLAGS_HAS_YAW_AXIS |
-        gimbal_manager_information_s::GIMBAL_MANAGER_CAP_FLAGS_HAS_YAW_LOCK |
-        gimbal_manager_information_s::GIMBAL_MANAGER_CAP_FLAGS_CAN_POINT_LOCATION_GLOBAL;
+        gimbal_manager_information_s::GIMBAL_MANAGER_CAP_FLAGS_HAS_NEUTRAL | gimbal_manager_information_s::GIMBAL_MANAGER_CAP_FLAGS_HAS_ROLL_LOCK | gimbal_manager_information_s::GIMBAL_MANAGER_CAP_FLAGS_HAS_PITCH_AXIS | gimbal_manager_information_s::GIMBAL_MANAGER_CAP_FLAGS_HAS_PITCH_LOCK | gimbal_manager_information_s::GIMBAL_MANAGER_CAP_FLAGS_HAS_YAW_AXIS | gimbal_manager_information_s::GIMBAL_MANAGER_CAP_FLAGS_HAS_YAW_LOCK | gimbal_manager_information_s::GIMBAL_MANAGER_CAP_FLAGS_CAN_POINT_LOCATION_GLOBAL;
 
     gimbal_manager_info.pitch_max = M_PI_F / 2;
     gimbal_manager_info.pitch_min = -M_PI_F / 2;
@@ -534,8 +527,7 @@ InputMavlinkGimbalV2::update(unsigned int timeout_ms, ControlData &control_data,
 
 InputMavlinkGimbalV2::UpdateResult InputMavlinkGimbalV2::_process_set_attitude(ControlData                         &control_data,
                                                                                const gimbal_manager_set_attitude_s &set_attitude) {
-    if (set_attitude.origin_sysid == control_data.sysid_primary_control &&
-        set_attitude.origin_compid == control_data.compid_primary_control) {
+    if (set_attitude.origin_sysid == control_data.sysid_primary_control && set_attitude.origin_compid == control_data.compid_primary_control) {
         const matrix::Quatf    q(set_attitude.q);
         const matrix::Vector3f angular_velocity(set_attitude.angular_velocity_x,
                                                 set_attitude.angular_velocity_y,
@@ -605,8 +597,7 @@ InputMavlinkGimbalV2::_process_command(ControlData &control_data, const vehicle_
     // Process only if the command is for us or for anyone (component id 0).
     const bool sysid_correct =
         (vehicle_command.target_system == _parameters.mav_sysid) || (vehicle_command.target_system == 0);
-    const bool compid_correct = ((vehicle_command.target_component == _parameters.mav_compid) ||
-                                 (vehicle_command.target_component == 0));
+    const bool compid_correct = ((vehicle_command.target_component == _parameters.mav_compid) || (vehicle_command.target_component == 0));
 
     if (!sysid_correct || !compid_correct) {
         return UpdateResult::NoUpdate;
@@ -702,8 +693,7 @@ InputMavlinkGimbalV2::_process_command(ControlData &control_data, const vehicle_
         _ack_vehicle_command(vehicle_command, vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED);
         return UpdateResult::UpdatedActive;
 
-    } else if (vehicle_command.command ==
-               vehicle_command_s::VEHICLE_CMD_DO_GIMBAL_MANAGER_CONFIGURE) {
+    } else if (vehicle_command.command == vehicle_command_s::VEHICLE_CMD_DO_GIMBAL_MANAGER_CONFIGURE) {
         const int param_sysid  = roundf(vehicle_command.param1);
         const int param_compid = roundf(vehicle_command.param2);
 
@@ -765,8 +755,7 @@ InputMavlinkGimbalV2::_process_command(ControlData &control_data, const vehicle_
 
         _ack_vehicle_command(vehicle_command, vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED);
 
-        if (new_sysid_primary_control != control_data.sysid_primary_control ||
-            new_compid_primary_control != control_data.compid_primary_control) {
+        if (new_sysid_primary_control != control_data.sysid_primary_control || new_compid_primary_control != control_data.compid_primary_control) {
             PX4_INFO("Configured primary gimbal control sysid/compid from %d/%d to %d/%d",
                      control_data.sysid_primary_control, control_data.compid_primary_control,
                      new_sysid_primary_control, new_compid_primary_control);
@@ -779,10 +768,8 @@ InputMavlinkGimbalV2::_process_command(ControlData &control_data, const vehicle_
         // TODO: support secondary control
         // TODO: support gimbal device id for multiple gimbals
 
-    } else if (vehicle_command.command ==
-               vehicle_command_s::VEHICLE_CMD_DO_GIMBAL_MANAGER_PITCHYAW) {
-        if (vehicle_command.source_system == control_data.sysid_primary_control &&
-            vehicle_command.source_component == control_data.compid_primary_control) {
+    } else if (vehicle_command.command == vehicle_command_s::VEHICLE_CMD_DO_GIMBAL_MANAGER_PITCHYAW) {
+        if (vehicle_command.source_system == control_data.sysid_primary_control && vehicle_command.source_component == control_data.compid_primary_control) {
             const matrix::Eulerf   euler(0.0f, math::radians(vehicle_command.param1),
                                          math::radians(vehicle_command.param2));
             const matrix::Quatf    q(euler);
@@ -815,21 +802,17 @@ InputMavlinkGimbalV2::_process_command(ControlData &control_data, const vehicle_
 
 InputMavlinkGimbalV2::UpdateResult InputMavlinkGimbalV2::_process_set_manual_control(ControlData                               &control_data,
                                                                                      const gimbal_manager_set_manual_control_s &set_manual_control) {
-    if (set_manual_control.origin_sysid == control_data.sysid_primary_control &&
-        set_manual_control.origin_compid == control_data.compid_primary_control) {
+    if (set_manual_control.origin_sysid == control_data.sysid_primary_control && set_manual_control.origin_compid == control_data.compid_primary_control) {
         const matrix::Quatf q =
-            (PX4_ISFINITE(set_manual_control.pitch) && PX4_ISFINITE(set_manual_control.yaw)) ?
-                matrix::Quatf(
-                    matrix::Eulerf(0.0f, set_manual_control.pitch, set_manual_control.yaw)) :
-                matrix::Quatf(NAN, NAN, NAN, NAN);
+            (PX4_ISFINITE(set_manual_control.pitch) && PX4_ISFINITE(set_manual_control.yaw)) ? matrix::Quatf(
+                matrix::Eulerf(0.0f, set_manual_control.pitch, set_manual_control.yaw))
+                                                                                             : matrix::Quatf(NAN, NAN, NAN, NAN);
 
         const matrix::Vector3f angular_velocity =
-            (PX4_ISFINITE(set_manual_control.pitch_rate) &&
-             PX4_ISFINITE(set_manual_control.yaw_rate)) ?
-                matrix::Vector3f(0.0f,
-                                 math::radians(_parameters.mnt_rate_pitch) * set_manual_control.pitch_rate,
-                                 math::radians(_parameters.mnt_rate_yaw) * set_manual_control.yaw_rate) :
-                matrix::Vector3f(NAN, NAN, NAN);
+            (PX4_ISFINITE(set_manual_control.pitch_rate) && PX4_ISFINITE(set_manual_control.yaw_rate)) ? matrix::Vector3f(0.0f,
+                                                                                                                          math::radians(_parameters.mnt_rate_pitch) * set_manual_control.pitch_rate,
+                                                                                                                          math::radians(_parameters.mnt_rate_yaw) * set_manual_control.yaw_rate)
+                                                                                                       : matrix::Vector3f(NAN, NAN, NAN);
 
         _set_control_data_from_set_attitude(control_data, set_manual_control.flags, q,
                                             angular_velocity);

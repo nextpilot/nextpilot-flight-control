@@ -30,19 +30,15 @@
 
 /*  headers */
 #include <hrtimer.h>
+#include <defines.h>
 #include <drivers/drv_tone_alarm.h>
 #include <geo/geo.h>
 #include <mathlib/mathlib.h>
 #include <matrix/math.hpp>
 #include <events/events.h>
-#include <defines.h>
-// #include <px4_platform_common/external_reset_lockout.h>
-// #include <px4_platform_common/posix.h>
-// #include <px4_platform_common/shutdown.h>
-// #include <px4_platform_common/tasks.h>
-// #include <px4_platform_common/time.h>
+// #include <shutdown/external_reset_lockout.h>
+#include <shutdown/shutdown.h>
 #include <ulog/mavlink_log.h>
-#include <math.h>
 #include <float.h>
 #include <cstring>
 #include <uORB/topics/mavlink_log.h>
@@ -62,13 +58,13 @@ typedef enum VEHICLE_MODE_FLAG {
 
 // TODO: generate
 static constexpr bool operator==(const actuator_armed_s &a, const actuator_armed_s &b) {
-    return (a.armed == b.armed &&
-            a.prearmed == b.prearmed &&
-            a.ready_to_arm == b.ready_to_arm &&
-            a.lockdown == b.lockdown &&
-            a.manual_lockdown == b.manual_lockdown &&
-            a.force_failsafe == b.force_failsafe &&
-            a.in_esc_calibration_mode == b.in_esc_calibration_mode);
+    return (a.armed == b.armed
+            && a.prearmed == b.prearmed
+            && a.ready_to_arm == b.ready_to_arm
+            && a.lockdown == b.lockdown
+            && a.manual_lockdown == b.manual_lockdown
+            && a.force_failsafe == b.force_failsafe
+            && a.in_esc_calibration_mode == b.in_esc_calibration_mode);
 }
 
 static_assert(sizeof(actuator_armed_s) == 16, "actuator_armed equality operator review");
@@ -515,8 +511,8 @@ transition_result_t Commander::arm(arm_disarm_reason_t calling_reason, bool run_
 
     if (run_preflight_checks && !_arm_state_machine.isArmed()) {
         if (_vehicle_control_mode.flag_control_manual_enabled) {
-            if (_vehicle_control_mode.flag_control_climb_rate_enabled &&
-                !_failsafe_flags.manual_control_signal_lost && _is_throttle_above_center) {
+            if (_vehicle_control_mode.flag_control_climb_rate_enabled
+                && !_failsafe_flags.manual_control_signal_lost && _is_throttle_above_center) {
                 mavlink_log_critical(&_mavlink_log_pub, "Arming denied: throttle above center\t");
                 events::send(events::ID("commander_arm_denied_throttle_center"),
                              {events::Log::Critical, events::LogInternal::Info},
@@ -1773,8 +1769,8 @@ void Commander::checkForMissionUpdate() {
 
         if (mission_result_ok) {
             /* Only evaluate mission state if home is set */
-            if (!_failsafe_flags.home_position_invalid &&
-                (prev_mission_instance_count != mission_result.instance_count)) {
+            if (!_failsafe_flags.home_position_invalid
+                && (prev_mission_instance_count != mission_result.instance_count)) {
                 if (!auto_mission_available) {
                     /* the mission is invalid */
                     tune_mission_fail(true);
@@ -1939,8 +1935,8 @@ void Commander::vtolStatusUpdate() {
             _status_changed              = true;
         }
 
-        const bool new_in_transition = _vtol_vehicle_status.vehicle_vtol_state == vtol_vehicle_status_s::VEHICLE_VTOL_STATE_TRANSITION_TO_FW ||
-                                       _vtol_vehicle_status.vehicle_vtol_state == vtol_vehicle_status_s::VEHICLE_VTOL_STATE_TRANSITION_TO_MC;
+        const bool new_in_transition = _vtol_vehicle_status.vehicle_vtol_state == vtol_vehicle_status_s::VEHICLE_VTOL_STATE_TRANSITION_TO_FW
+                                    || _vtol_vehicle_status.vehicle_vtol_state == vtol_vehicle_status_s::VEHICLE_VTOL_STATE_TRANSITION_TO_MC;
 
         if (_vehicle_status.in_transition_mode != new_in_transition) {
             _vehicle_status.in_transition_mode = new_in_transition;
@@ -1961,14 +1957,14 @@ void Commander::updateTunes() {
         set_tune(tune_control_s::TUNE_ID_ARMING_WARNING);
         _arm_tune_played = true;
 
-    } else if (!_vehicle_status.usb_connected &&
-               (_vehicle_status.hil_state != vehicle_status_s::HIL_STATE_ON) &&
-               (_battery_warning == battery_status_s::BATTERY_WARNING_CRITICAL)) {
+    } else if (!_vehicle_status.usb_connected
+               && (_vehicle_status.hil_state != vehicle_status_s::HIL_STATE_ON)
+               && (_battery_warning == battery_status_s::BATTERY_WARNING_CRITICAL)) {
         /* play tune on battery critical */
         set_tune(tune_control_s::TUNE_ID_BATTERY_WARNING_FAST);
 
-    } else if ((_vehicle_status.hil_state != vehicle_status_s::HIL_STATE_ON) &&
-               (_battery_warning == battery_status_s::BATTERY_WARNING_LOW)) {
+    } else if ((_vehicle_status.hil_state != vehicle_status_s::HIL_STATE_ON)
+               && (_battery_warning == battery_status_s::BATTERY_WARNING_LOW)) {
         /* play tune on battery warning */
         set_tune(tune_control_s::TUNE_ID_BATTERY_WARNING_SLOW);
 

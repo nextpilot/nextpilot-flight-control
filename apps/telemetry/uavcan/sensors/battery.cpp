@@ -10,9 +10,9 @@
 
 #include "battery.hpp"
 
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 #include <px4_defines.h>
-#include <px4_platform_common/log.h>
+#include <ulog/log.h>
 
 const char *const UavcanBatteryBridge::NAME = "battery";
 
@@ -141,17 +141,12 @@ void UavcanBatteryBridge::battery_aux_sub_cb(const uavcan::ReceivedDataStructure
 
     _batt_update_mod[instance] = BatteryDataType::RawAux;
 
-    _battery_status[instance].discharged_mah = (_battery_status[instance].full_charge_capacity_wh -
-                                                _battery_status[instance].remaining_capacity_wh) /
-                                               msg.nominal_voltage *
-                                               1000;
+    _battery_status[instance].discharged_mah       = (_battery_status[instance].full_charge_capacity_wh - _battery_status[instance].remaining_capacity_wh) / msg.nominal_voltage * 1000;
     _battery_status[instance].cell_count           = math::min((uint8_t)msg.voltage_cell.size(), (uint8_t)14);
     _battery_status[instance].cycle_count          = msg.cycle_count;
     _battery_status[instance].over_discharge_count = msg.over_discharge_count;
     _battery_status[instance].nominal_voltage      = msg.nominal_voltage;
-    _battery_status[instance].time_remaining_s     = math::isZero(_battery_status[instance].current_a) ? 0 :
-                                                                                                         (_battery_status[instance].remaining_capacity_wh /
-                                                                                                      _battery_status[instance].nominal_voltage / _battery_status[instance].current_a * 3600);
+    _battery_status[instance].time_remaining_s     = math::isZero(_battery_status[instance].current_a) ? 0 : (_battery_status[instance].remaining_capacity_wh / _battery_status[instance].nominal_voltage / _battery_status[instance].current_a * 3600);
     _battery_status[instance].is_powering_off      = msg.is_powering_off;
 
     for (uint8_t i = 0; i < _battery_status[instance].cell_count; i++) {
@@ -174,8 +169,8 @@ void UavcanBatteryBridge::sumDischarged(hrt_abstime timestamp, float current_a) 
     if (_last_timestamp != 0) {
         const float dt = (timestamp - _last_timestamp) / 1e6;
         // mAh since last loop: (current[A] * 1000 = [mA]) * (dt[s] / 3600 = [h])
-        _discharged_mah_loop = (current_a * 1e3f) * (dt / 3600.f);
-        _discharged_mah += _discharged_mah_loop;
+        _discharged_mah_loop  = (current_a * 1e3f) * (dt / 3600.f);
+        _discharged_mah      += _discharged_mah_loop;
     }
 
     _last_timestamp = timestamp;
@@ -205,7 +200,7 @@ void UavcanBatteryBridge::filterData(const uavcan::ReceivedDataStructure<uavcan:
     _battery_status[instance]               = _battery[instance]->getBatteryStatus();
     _battery_status[instance].temperature   = msg.temperature + CONSTANTS_ABSOLUTE_NULL_CELSIUS; // Kelvin to Celsius
     _battery_status[instance].serial_number = msg.model_instance_id;
-    _battery_status[instance].id            = msg.getSrcNodeID().get(); // overwrite zeroed index from _battery
+    _battery_status[instance].id            = msg.getSrcNodeID().get();                          // overwrite zeroed index from _battery
 
     publish(msg.getSrcNodeID().get(), &_battery_status[instance]);
 }

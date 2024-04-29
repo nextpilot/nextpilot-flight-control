@@ -19,7 +19,7 @@
 
 #include "mavlink_bridge_header.h"
 
-#include <lib/timesync/Timesync.hpp>
+#include <timesync/Timesync.hpp>
 
 class Mavlink;
 

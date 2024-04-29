@@ -11,22 +11,23 @@
 #pragma once
 
 #if defined(__PX4_NUTTX)
-#include <malloc.h>
+#   include <malloc.h>
 #endif
-#include <drivers/drv_hrt.h>
-#include <lib/perf/perf_counter.h>
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <hrtimer.h>
+#include <perf/perf_counter.h>
+
+#include <defines.h>
+#include <module/module_command.hpp>
+#include <module/module_params.h>
+#include <workq/ScheduledWorkItem.hpp>
+
 #include <px4_platform/cpuload.h>
 #include <uORB/Publication.hpp>
 #include <uORB/topics/cpuload.h>
 #include <uORB/topics/task_stack_info.h>
 
 #if defined(__PX4_LINUX)
-#include <sys/times.h>
+#   include <sys/times.h>
 #endif
 
 namespace load_mon {

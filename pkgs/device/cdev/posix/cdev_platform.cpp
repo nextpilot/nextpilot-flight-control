@@ -12,9 +12,8 @@
 
 #include "../CDev.hpp"
 
-#include <px4_platform_common/log.h>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/time.h>
+#include <ulog/log.h>
+
 
 #include <stdlib.h>
 

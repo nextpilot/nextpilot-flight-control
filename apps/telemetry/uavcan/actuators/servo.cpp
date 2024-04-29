@@ -10,7 +10,7 @@
 
 #include "servo.hpp"
 #include <systemlib/err.h>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 using namespace time_literals;
 

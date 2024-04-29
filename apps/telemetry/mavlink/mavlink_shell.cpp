@@ -16,24 +16,24 @@
  */
 
 #include "mavlink_shell.h"
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/log.h>
-#include <px4_platform_common/posix.h>
+#include <defines.h>
+#include <ulog/log.h>
+
 
 #include <unistd.h>
 #include <errno.h>
 #include <sys/ioctl.h>
 
 #ifdef __PX4_NUTTX
-#include <nshlib/nshlib.h>
+#   include <nshlib/nshlib.h>
 #endif /* __PX4_NUTTX */
 
 #ifdef __PX4_POSIX
-#include "../../../platforms/posix/src/px4/common/px4_daemon/pxh.h"
+#   include "../../../platforms/posix/src/px4/common/px4_daemon/pxh.h"
 #endif /* __PX4_POSIX */
 
 #ifdef __PX4_CYGWIN
-#include <asm/socket.h>
+#   include <asm/socket.h>
 #endif
 
 MavlinkShell::~MavlinkShell() {

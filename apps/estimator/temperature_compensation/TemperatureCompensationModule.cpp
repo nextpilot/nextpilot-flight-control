@@ -239,31 +239,32 @@ void TemperatureCompensationModule::Run() {
     perf_end(_loop_perf);
 }
 
-int TemperatureCompensationModule::instantiate(int argc, char *argv[]) {
+TemperatureCompensationModule *TemperatureCompensationModule::instantiate(int argc, char *argv[]) {
     TemperatureCompensationModule *instance = new TemperatureCompensationModule();
 
     if (instance) {
-        _object.store(instance);
-        _task_id = task_id_is_work_queue;
+        // _object.store(instance);
+        // _task_id = task_id_is_work_queue;
 
-        if (instance->init()) {
-            return PX4_OK;
-        }
+        // if (instance->init()) {
+        //     return PX4_OK;
+        // }
+        return instance;
 
     } else {
         PX4_ERR("alloc failed");
     }
 
     delete instance;
-    _object.store(nullptr);
-    _task_id = -1;
+    // _object.store(nullptr);
+    // _task_id = -1;
 
-    return PX4_ERROR;
+    return nullptr;
 }
 
-bool TemperatureCompensationModule::init() {
+int TemperatureCompensationModule::init() {
     ScheduleOnInterval(1_s);
-    return true;
+    return 0;
 }
 
 int TemperatureCompensationModule::custom_command(int argc, char *argv[]) {
@@ -276,7 +277,7 @@ int TemperatureCompensationModule::custom_command(int argc, char *argv[]) {
         int         ch;
         const char *myoptarg = nullptr;
 
-        while ((ch = px4_getopt(argc, argv, "abg", &myoptind, &myoptarg)) != EOF) {
+        while ((ch = getopt(argc, argv, "abg", &myoptind, &myoptarg)) != EOF) {
             switch (ch) {
             case 'a':
                 accel_calib = true;
@@ -303,9 +304,11 @@ int TemperatureCompensationModule::custom_command(int argc, char *argv[]) {
         if (!is_running()) {
             PX4_WARN("background task not running");
 
-            if (task_spawn(0, nullptr) != PX4_OK) {
-                return PX4_ERROR;
-            }
+            // if (task_spawn(0, nullptr) != PX4_OK) {
+            //     return PX4_ERROR;
+            // }
+
+            return 0;
         }
 
         vehicle_command_s vcmd{};

@@ -16,7 +16,7 @@
  * Decodes into the global PPM buffer and updates accordingly.
  */
 
-//#include <px4_platform_common/px4_config.h>
+
 #include <board_config.h>
 #include <defines.h>
 #include <ulog/log.h>
@@ -31,7 +31,7 @@
 #include "common_rc.h"
 #include <hrtimer.h>
 
-#include <include/containers/Bitset.hpp>
+#include <containers/Bitset.hpp>
 
 #if defined(__PX4_NUTTX)
 #include <nuttx/arch.h>

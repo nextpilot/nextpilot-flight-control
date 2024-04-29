@@ -11,8 +11,7 @@
 #ifndef MAG_CAL_REPORT_HPP
 #define MAG_CAL_REPORT_HPP
 
-#include <lib/sensor_calibration/Magnetometer.hpp>
-
+#include <sensor_calibration/Magnetometer.hpp>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/sensor_mag.h>
 
@@ -25,6 +24,7 @@ public:
     static constexpr const char *get_name_static() {
         return "MAG_CAL_REPORT";
     }
+
     static constexpr uint16_t get_id_static() {
         return MAVLINK_MSG_ID_MAG_CAL_REPORT;
     }
@@ -32,6 +32,7 @@ public:
     const char *get_name() const override {
         return get_name_static();
     }
+
     uint16_t get_id() override {
         return get_id_static();
     }

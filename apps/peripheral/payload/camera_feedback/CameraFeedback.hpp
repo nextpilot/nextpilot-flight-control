@@ -17,17 +17,16 @@
 
 #pragma once
 
-#include <lib/mathlib/mathlib.h>
-#include <lib/parameters/param.h>
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/px4_work_queue/WorkItem.hpp>
+#include <mathlib/mathlib.h>
+#include <parameters/param.h>
+
+#include <defines.h>
+#include <module/module_command.hpp>
+#include <module/module_params.h>
+
+#include <workq/WorkItem.hpp>
 #include <uORB/Publication.hpp>
 #include <uORB/Subscription.hpp>
-#include <uORB/SubscriptionCallback.hpp>
 #include <uORB/topics/camera_capture.h>
 #include <uORB/topics/camera_trigger.h>
 #include <uORB/topics/vehicle_attitude.h>

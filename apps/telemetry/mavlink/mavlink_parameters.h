@@ -24,10 +24,9 @@
 #include "mavlink_bridge_header.h"
 #include <uORB/Publication.hpp>
 #include <uORB/Subscription.hpp>
-#include <uORB/SubscriptionInterval.hpp>
 #include <uORB/topics/rc_parameter_map.h>
 #include <uORB/topics/parameter_update.h>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 #if defined(CONFIG_MAVLINK_UAVCAN_PARAMETERS)
 #   include <uORB/topics/uavcan_parameter_request.h>

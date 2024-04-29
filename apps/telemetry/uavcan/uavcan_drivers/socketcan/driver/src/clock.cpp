@@ -35,7 +35,7 @@
 
 #include <uavcan_nuttx/thread.hpp>
 #include <uavcan_nuttx/socketcan.hpp>
-#include <px4_platform_common/log.h>
+#include <ulog/log.h>
 
 namespace uavcan_socketcan
 {

@@ -65,11 +65,8 @@ Author: Siddharth Bharat Purohit
 */
 
 #pragma once
-// #include <px4_platform_common/px4_config.h>
 #include <defines.h>
-#include <px4_platform_common/tasks.h>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/time.h>
+
 
 #include <float.h>
 
@@ -77,9 +74,9 @@ Author: Siddharth Bharat Purohit
 
 #define DEBUG 0
 #if DEBUG
-#define PF_DEBUG(fmt, ...) printf(fmt, ##__VA_ARGS__);
+#   define PF_DEBUG(fmt, ...) printf(fmt, ##__VA_ARGS__);
 #else
-#define PF_DEBUG(fmt, ...)
+#   define PF_DEBUG(fmt, ...)
 #endif
 
 template <int _forder>
@@ -130,7 +127,7 @@ private:
 
         for (int i = _forder - 1; i >= 0; i--) {
             _VTY(i) += y * temp;
-            temp *= x;
+            temp    *= x;
             PF_DEBUG("%.6f ", (double)_VTY(i));
         }
 
@@ -158,8 +155,8 @@ private:
             }
 
             for (int j = i - z; j >= z; j--) {
-                int row = j;
-                int col = i - j;
+                int row         = j;
+                int col         = i - j;
                 _VTV(row, col) += (double)temp;
             }
 

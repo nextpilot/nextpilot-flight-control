@@ -16,10 +16,10 @@
  * Decodes into the global PPM buffer and updates accordingly.
  */
 
-#include <px4_platform_common/px4_config.h>
+
 #include <board_config.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/log.h>
+#include <defines.h>
+#include <ulog/log.h>
 
 #include <fcntl.h>
 #include <math.h>
@@ -30,7 +30,7 @@
 #include "dsm.h"
 #include "spektrum_rssi.h"
 #include "common_rc.h"
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 #include <include/containers/Bitset.hpp>
 

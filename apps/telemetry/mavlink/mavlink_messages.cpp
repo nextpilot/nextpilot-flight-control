@@ -22,11 +22,11 @@
 #include "mavlink_simple_analyzer.h"
 
 #include <drivers/drv_pwm_output.h>
-#include <lib/conversion/rotation.h>
-#include <lib/geo/geo.h>
-#include <lib/mathlib/mathlib.h>
-#include <lib/matrix/matrix/math.hpp>
-#include <px4_platform_common/time.h>
+#include <conversion/rotation.h>
+#include <geo/geo.h>
+#include <mathlib/mathlib.h>
+#include <matrix/matrix/math.hpp>
+
 #include <math.h>
 
 #include <uORB/Subscription.hpp>

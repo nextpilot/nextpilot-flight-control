@@ -16,7 +16,7 @@
 
 #include "beep.hpp"
 
-#include <lib/circuit_breaker/circuit_breaker.h>
+#include <circuit_breaker/circuit_breaker.h>
 
 UavcanBeepController::UavcanBeepController(uavcan::INode &node) :
     _beep_pub(node),

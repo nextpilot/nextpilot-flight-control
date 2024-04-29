@@ -14,9 +14,9 @@
 #include <errno.h>
 #include <mathlib/mathlib.h>
 #include <matrix/matrix/math.hpp>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/log.h>
+
+#include <defines.h>
+#include <ulog/log.h>
 
 namespace gimbal {
 

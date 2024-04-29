@@ -21,8 +21,6 @@
 #include "calibration_messages.h"
 #include "factory_calibration_storage.h"
 #include <defines.h>
-// #include <px4_platform_common/posix.h>
-// #include <px4_platform_common/time.h>
 #include <hrtimer.h>
 #include <drivers/drv_tone_alarm.h>
 #include <matrix/math.hpp>

@@ -8,8 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include <px4_platform_common/tasks.h>
-#include <drivers/drv_hrt.h>
+
+#include <hrtimer.h>
 
 #include <nuttx/config.h>
 
@@ -234,7 +234,7 @@ int UavcanServers::copyFw(const char *dst, const char *src) {
 
                 } else {
                     total_written += written;
-                    remaining -= written;
+                    remaining     -= written;
                 }
             } while (written > 0 && remaining > 0);
         }

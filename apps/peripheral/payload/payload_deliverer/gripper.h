@@ -8,7 +8,7 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 #include <uORB/Publication.hpp>
 #include <uORB/topics/gripper.h>

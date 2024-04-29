@@ -29,8 +29,6 @@
 
 #      include <px4_platform_common/i2c_spi_buses.h>
 
-//#include <px4_platform_common/px4_config.h>
-
 namespace device {
 
 SPI::SPI(uint8_t device_type, const char *name, int bus, uint32_t device, enum spi_mode_e mode, uint32_t frequency) :

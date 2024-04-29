@@ -29,11 +29,11 @@
 #include "tune_publisher.h"
 
 #include <geo/geo.h>
-#include <lib/drivers/accelerometer/PX4Accelerometer.hpp>
-#include <lib/drivers/gyroscope/PX4Gyroscope.hpp>
-#include <lib/drivers/magnetometer/PX4Magnetometer.hpp>
-#include <lib/systemlib/mavlink_log.h>
-#include <px4_platform_common/module_params.h>
+#include <drivers/accelerometer/PX4Accelerometer.hpp>
+#include <drivers/gyroscope/PX4Gyroscope.hpp>
+#include <drivers/magnetometer/PX4Magnetometer.hpp>
+#include <systemlib/mavlink_log.h>
+#include <module/module_params.h>
 #include <uORB/Publication.hpp>
 #include <uORB/PublicationMulti.hpp>
 #include <uORB/SubscriptionInterval.hpp>

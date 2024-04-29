@@ -19,7 +19,6 @@
 #include <cstring>
 
 #include <ulog/log.h>
-#include <px4_platform_common/posix.h>
 
 namespace device {
 

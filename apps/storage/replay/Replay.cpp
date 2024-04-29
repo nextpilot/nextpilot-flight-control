@@ -17,13 +17,12 @@
  * @author Beat Kueng
  */
 
-#include <drivers/drv_hrt.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/tasks.h>
-#include <px4_platform_common/time.h>
-#include <px4_platform_common/shutdown.h>
-#include <lib/parameters/param.h>
+#include <hrtimer.h>
+#include <defines.h>
+
+
+#include <shutdown/shutdown.h>
+#include <param/param.h>
 
 #include <cstring>
 #include <float.h>
@@ -313,13 +312,13 @@ string Replay::parseOrbFields(const string &fields) {
         const char *c_type = orb_get_c_type(fields[format_idx]);
 
         if (c_type) {
-            string str_type = c_type;
-            ret += str_type;
+            string str_type  = c_type;
+            ret             += str_type;
             ++format_idx;
         }
 
-        int len = end_field - (fields.c_str() + format_idx) + 1;
-        ret += fields.substr(format_idx, len);
+        int len     = end_field - (fields.c_str() + format_idx) + 1;
+        ret        += fields.substr(format_idx, len);
         format_idx += len;
     }
 
@@ -366,20 +365,17 @@ bool Replay::readAndAddSubscription(std::ifstream &file, uint16_t msg_size) {
         if (topic_name == "sensor_combined") {
             if (orb_fields == "uint64_t timestamp;float[3] gyro_rad;uint32_t gyro_integral_dt;"
                               "int32_t accelerometer_timestamp_relative;float[3] accelerometer_m_s2;"
-                              "uint32_t accelerometer_integral_dt" &&
-                file_format == "uint64_t timestamp;float[3] gyro_rad;float gyro_integral_dt;"
-                               "int32_t accelerometer_timestamp_relative;float[3] accelerometer_m_s2;"
-                               "float accelerometer_integral_dt;") {
+                              "uint32_t accelerometer_integral_dt"
+                && file_format == "uint64_t timestamp;float[3] gyro_rad;float gyro_integral_dt;"
+                                  "int32_t accelerometer_timestamp_relative;float[3] accelerometer_m_s2;"
+                                  "float accelerometer_integral_dt;") {
                 int gyro_integral_dt_offset_log;
                 int gyro_integral_dt_offset_intern;
                 int accelerometer_integral_dt_offset_log;
                 int accelerometer_integral_dt_offset_intern;
                 int unused;
 
-                if (findFieldOffset(file_format, "gyro_integral_dt", gyro_integral_dt_offset_log, unused) &&
-                    findFieldOffset(orb_fields, "gyro_integral_dt", gyro_integral_dt_offset_intern, unused) &&
-                    findFieldOffset(file_format, "accelerometer_integral_dt", accelerometer_integral_dt_offset_log, unused) &&
-                    findFieldOffset(orb_fields, "accelerometer_integral_dt", accelerometer_integral_dt_offset_intern, unused)) {
+                if (findFieldOffset(file_format, "gyro_integral_dt", gyro_integral_dt_offset_log, unused) && findFieldOffset(orb_fields, "gyro_integral_dt", gyro_integral_dt_offset_intern, unused) && findFieldOffset(file_format, "accelerometer_integral_dt", accelerometer_integral_dt_offset_log, unused) && findFieldOffset(orb_fields, "accelerometer_integral_dt", accelerometer_integral_dt_offset_intern, unused)) {
                     compat = new CompatSensorCombinedDtType(gyro_integral_dt_offset_log, gyro_integral_dt_offset_intern,
                                                             accelerometer_integral_dt_offset_log, accelerometer_integral_dt_offset_intern);
                 }
@@ -963,8 +959,7 @@ bool Replay::publishTopic(Subscription &sub, void *data) {
                 }
 
                 if (subscription->orb_meta) {
-                    if (strcmp(sub.orb_meta->o_name, subscription->orb_meta->o_name) == 0 &&
-                        subscription->orb_advert && subscription->multi_id == sub.multi_id - 1) {
+                    if (strcmp(sub.orb_meta->o_name, subscription->orb_meta->o_name) == 0 && subscription->orb_advert && subscription->multi_id == sub.multi_id - 1) {
                         advertised = true;
                     }
                 }

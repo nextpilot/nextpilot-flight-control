@@ -9,17 +9,17 @@
  ******************************************************************/
 
 #include <stdio.h>
-#include <lib/battery/battery.h>
+#include <battery/battery.h>
 #include "analog_battery.h"
 
 // Defaults to use if the parameters are not set
 #if BOARD_NUMBER_BRICKS > 0
-#if defined(BOARD_BATT_V_LIST) && defined(BOARD_BATT_I_LIST)
+#   if defined(BOARD_BATT_V_LIST) && defined(BOARD_BATT_I_LIST)
 static constexpr int DEFAULT_V_CHANNEL[BOARD_NUMBER_BRICKS] = BOARD_BATT_V_LIST;
 static constexpr int DEFAULT_I_CHANNEL[BOARD_NUMBER_BRICKS] = BOARD_BATT_I_LIST;
-#else
-#error "BOARD_BATT_V_LIST and BOARD_BATT_I_LIST need to be defined"
-#endif
+#   else
+#      error "BOARD_BATT_V_LIST and BOARD_BATT_I_LIST need to be defined"
+#   endif
 #else
 static constexpr int DEFAULT_V_CHANNEL[1] = {-1};
 static constexpr int DEFAULT_I_CHANNEL[1] = {-1};
@@ -50,8 +50,7 @@ void AnalogBattery::updateBatteryStatusADC(hrt_abstime timestamp, float voltage_
     const float voltage_v = voltage_raw * _analog_params.v_div;
     const float current_a = (current_raw - _analog_params.v_offs_cur) * _analog_params.a_per_v;
 
-    const bool connected = voltage_v > BOARD_ADC_OPEN_CIRCUIT_V &&
-                           (BOARD_ADC_OPEN_CIRCUIT_V <= BOARD_VALID_UV || is_valid());
+    const bool connected = voltage_v > BOARD_ADC_OPEN_CIRCUIT_V && (BOARD_ADC_OPEN_CIRCUIT_V <= BOARD_VALID_UV || is_valid());
 
     Battery::setConnected(connected);
     Battery::updateVoltage(voltage_v);

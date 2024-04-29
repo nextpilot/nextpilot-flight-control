@@ -13,7 +13,7 @@
  */
 
 #include "gyro.hpp"
-#include <lib/drivers/gyroscope/PX4Gyroscope.hpp>
+#include <gyroscope/PX4Gyroscope.hpp>
 
 const char *const UavcanGyroBridge::NAME = "gyro";
 

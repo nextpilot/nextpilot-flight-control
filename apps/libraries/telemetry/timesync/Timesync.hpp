@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 #include <uORB/PublicationMulti.hpp>
 #include <uORB/topics/timesync_status.h>

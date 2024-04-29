@@ -37,15 +37,15 @@
 
 #include <containers/List.hpp>
 #include <parameters/param.h>
-#include <lib/variable_length_ringbuffer/VariableLengthRingbuffer.hpp>
+#include <variable_length_ringbuffer/VariableLengthRingbuffer.hpp>
 #include <perf/perf_counter.h>
 #include <px4_platform_common/cli.h>
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/defines.h>
-#include <px4_platform_common/getopt.h>
-#include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
-#include <px4_platform_common/posix.h>
+
+#include <defines.h>
+#include <getopt/getopt.h>
+#include <module/module_command.hpp>
+#include <module/module_params.h>
+
 #include <uORB/Publication.hpp>
 #include <uORB/PublicationMulti.hpp>
 #include <uORB/SubscriptionInterval.hpp>

@@ -20,13 +20,12 @@
 // #include <param/param.h>
 // #include <perf/perf_counter.h>
 // #include <matrix/math.hpp>
-// #include <px4_platform_common/px4_config.h>
 
 // #include <defines.h>
 // #include <module/module_command.hpp>
 // #include <module/module_params.hpp>
-// #include <px4_platform_common/posix.h>
-// #include <px4_platform_common/tasks.h>
+
+
 // #include <workq/WorkItemScheduled.hpp>
 // #include <uORB/uORBPublication.hpp>
 // #include <uORB/uORBSubscription.hpp>
@@ -75,7 +74,7 @@ private:
 
     uORB::SubscriptionInterval _parameter_update_sub{ORB_ID(parameter_update), 1_s};
 
-    uORB::Subscription _att_sp_sub{ORB_ID(vehicle_attitude_setpoint)}; /**< vehicle attitude setpoint */
+    uORB::Subscription _att_sp_sub{ORB_ID(vehicle_attitude_setpoint)};                /**< vehicle attitude setpoint */
     uORB::Subscription _autotune_attitude_control_status_sub{ORB_ID(autotune_attitude_control_status)};
     uORB::Subscription _local_pos_sub{ORB_ID(vehicle_local_position)};                /**< local position subscription */
     uORB::Subscription _manual_control_setpoint_sub{ORB_ID(manual_control_setpoint)}; /**< notification of manual control updates */

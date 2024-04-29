@@ -13,9 +13,9 @@
 #include <stdint.h>
 
 #include "mavlink_bridge_header.h"
-#include <drivers/drv_hrt.h>
-#include <px4_platform_common/atomic.h>
-#include <px4_platform_common/events.h>
+#include <hrtimer.h>
+#include <atomic/atomic.hpp>
+#include <events/events.h>
 #include <pthread.h>
 
 using namespace time_literals;

@@ -18,7 +18,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <cstdbool>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 #include "mavlink_bridge_header.h"
 

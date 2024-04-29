@@ -53,7 +53,7 @@
 
 #define MODULE_NAME "UAVCAN_SOCKETCAN"
 
-#include <px4_platform_common/log.h>
+#include <ulog/log.h>
 
 namespace uavcan_socketcan
 {

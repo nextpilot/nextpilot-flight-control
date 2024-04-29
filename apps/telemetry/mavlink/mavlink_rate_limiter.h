@@ -18,7 +18,7 @@
 #ifndef MAVLINK_RATE_LIMITER_H_
 #define MAVLINK_RATE_LIMITER_H_
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 class MavlinkRateLimiter {
 private:

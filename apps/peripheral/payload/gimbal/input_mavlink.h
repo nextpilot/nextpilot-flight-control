@@ -24,7 +24,7 @@
 #include <uORB/topics/position_setpoint_triplet.h>
 #include <uORB/topics/vehicle_command.h>
 #include <uORB/topics/vehicle_roi.h>
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 
 namespace gimbal {
 

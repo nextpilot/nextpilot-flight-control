@@ -18,27 +18,24 @@
  * @author Beat Küng <beat-kueng@gmx.net>
  */
 
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
-#include <px4_platform_common/getopt.h>
-#include <px4_platform_common/posix.h>
-#include <px4_platform_common/tasks.h>
-#include <px4_platform_common/time.h>
-#include <px4_platform_common/log.h>
-#include <lib/mathlib/mathlib.h>
-#include <drivers/drv_hrt.h>
+
+#include <module/module_command.hpp>
+#include <module/module_params.h>
+#include <getopt/getopt.h>
+#include <ulog/log.h>
+#include <mathlib/mathlib.h>
+#include <hrtimer.h>
 #include <drivers/drv_adc.h>
-#include <lib/parameters/param.h>
-#include <lib/perf/perf_counter.h>
-#include <lib/battery/battery.h>
-#include <lib/conversion/rotation.h>
-#include <uORB/SubscriptionInterval.hpp>
-#include <uORB/SubscriptionCallback.hpp>
+#include <parameters/param.h>
+#include <perf/perf_counter.h>
+#include <battery/battery.h>
+#include <conversion/rotation.h>
+#include <uORB/Subscription.hpp>
 #include <uORB/Publication.hpp>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/adc_report.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <workq/ScheduledWorkItem.hpp>
+
 
 #include "analog_battery.h"
 
@@ -49,11 +46,11 @@ using namespace time_literals;
  */
 
 #ifndef BOARD_NUMBER_BRICKS
-#error "battery_status module requires power bricks"
+#   error "battery_status module requires power bricks"
 #endif
 
 #if BOARD_NUMBER_BRICKS == 0
-#error "battery_status module requires power bricks"
+#   error "battery_status module requires power bricks"
 #endif
 
 class BatteryStatus : public ModuleBase<BatteryStatus>, public ModuleParams, public px4::ScheduledWorkItem {
@@ -92,7 +89,7 @@ private:
 #if BOARD_NUMBER_BRICKS > 1
             &_battery2,
 #endif
-    }; // End _analogBatteries
+    }                          // End _analogBatteries
 
     perf_counter_t _loop_perf; /**< loop performance counter */
 
@@ -173,15 +170,11 @@ void BatteryStatus::adc_poll() {
                 if (adc_report.channel_id[i] >= 0) {
                     if (adc_report.channel_id[i] == _analogBatteries[b]->get_voltage_channel()) {
                         /* Voltage in volts */
-                        bat_voltage_adc_readings[b] = adc_report.raw_data[i] *
-                                                      adc_report.v_ref /
-                                                      adc_report.resolution;
+                        bat_voltage_adc_readings[b]    = adc_report.raw_data[i] * adc_report.v_ref / adc_report.resolution;
                         has_bat_voltage_adc_channel[b] = true;
 
                     } else if (adc_report.channel_id[i] == _analogBatteries[b]->get_current_channel()) {
-                        bat_current_adc_readings[b] = adc_report.raw_data[i] *
-                                                      adc_report.v_ref /
-                                                      adc_report.resolution;
+                        bat_current_adc_readings[b] = adc_report.raw_data[i] * adc_report.v_ref / adc_report.resolution;
                     }
                 }
             }

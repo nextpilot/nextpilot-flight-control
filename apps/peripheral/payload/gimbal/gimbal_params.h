@@ -11,7 +11,7 @@
 #pragma once
 
 #include <stdint.h>
-#include <lib/parameters/param.h>
+#include <parameters/param.h>
 
 namespace gimbal {
 

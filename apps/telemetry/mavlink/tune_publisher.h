@@ -11,8 +11,8 @@
 #pragma once
 
 #include <uORB/Publication.hpp>
-#include <drivers/drv_hrt.h>
-#include <lib/tunes/tunes.h>
+#include <hrtimer.h>
+#include <tunes/tunes.h>
 
 class TunePublisher {
 public:

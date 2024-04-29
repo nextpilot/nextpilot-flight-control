@@ -13,7 +13,6 @@
  * Implementation of STM32 based Board identity API
  */
 
-// #include <px4_platform_common/px4_config.h>
 #include <stdio.h>
 #include <string.h>
 

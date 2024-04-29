@@ -18,8 +18,8 @@
 
 #include <float.h>
 
-#include <px4_platform_common/log.h>
-#include <px4_platform_common/defines.h>
+#include <ulog/log.h>
+#include <defines.h>
 
 SimpleAnalyzer::SimpleAnalyzer(Mode mode, float window) :
     _window(window),

@@ -13,7 +13,7 @@
 
 #include <uORB/topics/mavlink_log.h>
 
-#include <lib/perf/perf_counter.h>
+#include <perf/perf_counter.h>
 
 class MavlinkStreamStatustext : public MavlinkStream {
 public:
@@ -24,6 +24,7 @@ public:
     static constexpr const char *get_name_static() {
         return "STATUSTEXT";
     }
+
     static constexpr uint16_t get_id_static() {
         return MAVLINK_MSG_ID_STATUSTEXT;
     }
@@ -31,6 +32,7 @@ public:
     const char *get_name() const override {
         return get_name_static();
     }
+
     uint16_t get_id() override {
         return get_id_static();
     }

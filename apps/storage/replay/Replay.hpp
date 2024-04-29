@@ -18,7 +18,7 @@
 
 #include "definitions.hpp"
 
-#include <px4_platform_common/module.h>
+#include <module/module_command.hpp>
 #include <uORB/topics/uORBTopics.hpp>
 #include <uORB/topics/ekf2_timestamps.h>
 
@@ -106,7 +106,7 @@ protected:
         uint8_t             multi_id;
         int                 timestamp_offset; ///< marks the field of the timestamp
 
-        bool ignored = false; ///< if true, it will not be considered for publication in the main loop
+        bool ignored = false;                 ///< if true, it will not be considered for publication in the main loop
 
         std::streampos next_read_pos;
         uint64_t       next_timestamp; ///< timestamp of the file

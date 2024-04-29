@@ -19,7 +19,6 @@
  */
 
 #include <defines.h>
-// #include <px4_platform_common/posix.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <stdint.h>

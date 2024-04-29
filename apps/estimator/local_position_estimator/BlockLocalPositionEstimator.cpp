@@ -1,7 +1,7 @@
 #include "BlockLocalPositionEstimator.hpp"
 #include <ulog/mavlink_log.h>
 #include <fcntl.h>
-#include <systemlib/err.h>
+// #include <systemlib/err.h>
 #include <matrix/math.hpp>
 #include <cstdlib>
 
@@ -12,10 +12,10 @@ static const uint32_t EST_STDDEV_XY_VALID = 2.0; // 2.0 m
 static const uint32_t EST_STDDEV_Z_VALID  = 2.0; // 2.0 m
 static const uint32_t EST_STDDEV_TZ_VALID = 2.0; // 2.0 m
 
-static const float P_MAX     = 1.0e6f; // max allowed value in state covariance
-static const float LAND_RATE = 10.0f;  // rate of land detector correction
+static const float P_MAX     = 1.0e6f;           // max allowed value in state covariance
+static const float LAND_RATE = 10.0f;            // rate of land detector correction
 
-static const char *msg_label = "[lpe] "; // rate of land detector correction
+static const char *msg_label = "[lpe] ";         // rate of land detector correction
 
 BlockLocalPositionEstimator::BlockLocalPositionEstimator() :
     ModuleParams(nullptr),
@@ -133,13 +133,13 @@ BlockLocalPositionEstimator::BlockLocalPositionEstimator() :
              (_param_lpe_fusion.get() & FUSE_BARO) != 0);
 }
 
-bool BlockLocalPositionEstimator::init() {
+int BlockLocalPositionEstimator::init() {
     if (!_sensors_sub.registerCallback()) {
         PX4_ERR("callback registration failed");
-        return false;
+        return -1;
     }
 
-    return true;
+    return 0;
 }
 
 Vector<float, BlockLocalPositionEstimator::n_x> BlockLocalPositionEstimator::dynamics(
@@ -195,20 +195,20 @@ void BlockLocalPositionEstimator::Run() {
         for (size_t i = 0; i < N_DIST_SUBS; i++) {
             auto *s = _dist_subs[i];
 
-            if (s == _sub_lidar || s == _sub_sonar) { continue; }
+            if (s == _sub_lidar || s == _sub_sonar) {
+                continue;
+            }
 
             if (s->update()) {
-                if (s->get().timestamp == 0) { continue; }
+                if (s->get().timestamp == 0) {
+                    continue;
+                }
 
-                if (s->get().type == distance_sensor_s::MAV_DISTANCE_SENSOR_LASER &&
-                    s->get().orientation == distance_sensor_s::ROTATION_DOWNWARD_FACING &&
-                    _sub_lidar == nullptr) {
+                if (s->get().type == distance_sensor_s::MAV_DISTANCE_SENSOR_LASER && s->get().orientation == distance_sensor_s::ROTATION_DOWNWARD_FACING && _sub_lidar == nullptr) {
                     _sub_lidar = s;
                     mavlink_log_info(&mavlink_log_pub, "%sDownward-facing Lidar detected with ID %zu", msg_label, i);
 
-                } else if (s->get().type == distance_sensor_s::MAV_DISTANCE_SENSOR_ULTRASOUND &&
-                           s->get().orientation == distance_sensor_s::ROTATION_DOWNWARD_FACING &&
-                           _sub_sonar == nullptr) {
+                } else if (s->get().type == distance_sensor_s::MAV_DISTANCE_SENSOR_ULTRASOUND && s->get().orientation == distance_sensor_s::ROTATION_DOWNWARD_FACING && _sub_sonar == nullptr) {
                     _sub_sonar = s;
                     mavlink_log_info(&mavlink_log_pub, "%sDownward-facing Sonar detected with ID %zu", msg_label, i);
                 }
@@ -392,10 +392,14 @@ void BlockLocalPositionEstimator::Run() {
                 m_P(j, i) = m_P(i, j);
             }
 
-            if (reinit_P) { break; }
+            if (reinit_P) {
+                break;
+            }
         }
 
-        if (reinit_P) { break; }
+        if (reinit_P) {
+            break;
+        }
     }
 
     if (reinit_P) {
@@ -511,8 +515,7 @@ void BlockLocalPositionEstimator::Run() {
     // needs to be propagated with frozen state
     float dt_hist = 1.0e-6f * (_timeStamp - _time_last_hist);
 
-    if (_time_last_hist == 0 ||
-        (dt_hist > HIST_STEP)) {
+    if (_time_last_hist == 0 || (dt_hist > HIST_STEP)) {
         _tDelay.update(Scalar<uint64_t>(_timeStamp));
         _xDelay.update(_x);
         _time_last_hist = _timeStamp;
@@ -566,8 +569,7 @@ void BlockLocalPositionEstimator::publishLocalPos() {
     }
 
     // publish local position
-    if (Vector3f(_x(X_x), _x(X_y), _x(X_z)).isAllFinite() &&
-        Vector3f(_x(X_vx), _x(X_vy), _x(X_vz)).isAllFinite()) {
+    if (Vector3f(_x(X_x), _x(X_y), _x(X_z)).isAllFinite() && Vector3f(_x(X_vx), _x(X_vy), _x(X_vz)).isAllFinite()) {
         _pub_lpos.get().timestamp_sample = _timeStamp;
 
         _pub_lpos.get().xy_valid   = _estimatorInitialized & EST_XY;
@@ -628,8 +630,7 @@ void BlockLocalPositionEstimator::publishOdom() {
     const Vector<float, n_x> &xLP = _xLowPass.getState();
 
     // publish vehicle odometry
-    if (Vector3f(_x(X_x), _x(X_y), _x(X_z)).isAllFinite() &&
-        Vector3f(_x(X_vx), _x(X_vy), _x(X_vz)).isAllFinite()) {
+    if (Vector3f(_x(X_x), _x(X_y), _x(X_z)).isAllFinite() && Vector3f(_x(X_vx), _x(X_vy), _x(X_vz)).isAllFinite()) {
         _pub_odom.get().timestamp_sample = _timeStamp;
         _pub_odom.get().pose_frame       = vehicle_odometry_s::POSE_FRAME_NED;
 
@@ -774,8 +775,7 @@ void BlockLocalPositionEstimator::publishGlobalPos() {
         }
     }
 
-    if (PX4_ISFINITE(lat) && PX4_ISFINITE(lon) && PX4_ISFINITE(alt) &&
-        Vector3f(xLP(X_vx), xLP(X_vy), xLP(X_vz)).isAllFinite()) {
+    if (PX4_ISFINITE(lat) && PX4_ISFINITE(lon) && PX4_ISFINITE(alt) && Vector3f(xLP(X_vx), xLP(X_vy), xLP(X_vz)).isAllFinite()) {
         _pub_gpos.get().timestamp_sample  = _timeStamp;
         _pub_gpos.get().lat               = lat;
         _pub_gpos.get().lon               = lon;
@@ -872,8 +872,7 @@ void BlockLocalPositionEstimator::updateSSParams() {
 
     // terrain random walk noise ((m/s)/sqrt(hz)), scales with velocity
     float pn_t_noise_density =
-        _param_lpe_pn_t.get() +
-        (_param_lpe_t_max_grade.get() / 100.0f) * sqrtf(_x(X_vx) * _x(X_vx) + _x(X_vy) * _x(X_vy));
+        _param_lpe_pn_t.get() + (_param_lpe_t_max_grade.get() / 100.0f) * sqrtf(_x(X_vx) * _x(X_vx) + _x(X_vy) * _x(X_vy));
     m_Q(X_tz, X_tz) = pn_t_noise_density * pn_t_noise_density;
 }
 
@@ -882,7 +881,7 @@ void BlockLocalPositionEstimator::predict(const sensor_combined_s &imu) {
     _R_att = matrix::Dcm<float>(matrix::Quatf(_sub_att.get().q));
     Vector3f a(imu.accelerometer_m_s2);
     // note, bias is removed in dynamics function
-    _u = _R_att * a;
+    _u        = _R_att * a;
     _u(U_az) += CONSTANTS_ONE_G; // add g
 
     // update state space based on new states
@@ -939,10 +938,8 @@ void BlockLocalPositionEstimator::predict(const sensor_combined_s &imu) {
     }
 
     // propagate
-    _x += dx;
-    Matrix<float, n_x, n_x> dP = (m_A * m_P + m_P * m_A.transpose() +
-                                  m_B * m_R * m_B.transpose() + m_Q) *
-                                 getDt();
+    _x                         += dx;
+    Matrix<float, n_x, n_x> dP  = (m_A * m_P + m_P * m_A.transpose() + m_B * m_R * m_B.transpose() + m_Q) * getDt();
 
     // covariance propagation logic
     for (size_t i = 0; i < n_x; i++) {
@@ -988,28 +985,26 @@ int BlockLocalPositionEstimator::custom_command(int argc, char *argv[]) {
     return print_usage("unknown command");
 }
 
-int
-    BlockLocalPositionEstimator::*
-    instantiate(int argc, char *argv[]) {
+BlockLocalPositionEstimator *BlockLocalPositionEstimator::instantiate(int argc, char *argv[]) {
     BlockLocalPositionEstimator *instance = new BlockLocalPositionEstimator();
 
     if (instance) {
-        _object.store(instance);
-        _task_id = task_id_is_work_queue;
+        // _object.store(instance);
+        // _task_id = task_id_is_work_queue;
 
-        if (instance->init()) {
-            return PX4_OK;
-        }
-
+        // if (instance->init()) {
+        //     return PX4_OK;
+        // }
+        return instance;
     } else {
         PX4_ERR("alloc failed");
     }
 
     delete instance;
-    _object.store(nullptr);
-    _task_id = -1;
+    // _object.store(nullptr);
+    // _task_id = -1;
 
-    return PX4_ERROR;
+    return nullptr;
 }
 
 int BlockLocalPositionEstimator::print_usage(const char *reason) {

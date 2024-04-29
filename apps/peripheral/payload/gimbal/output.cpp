@@ -13,8 +13,8 @@
 #include <uORB/topics/vehicle_attitude.h>
 #include <uORB/topics/vehicle_global_position.h>
 #include <uORB/topics/mount_orientation.h>
-#include <px4_platform_common/defines.h>
-#include <lib/geo/geo.h>
+#include <defines.h>
+#include <geo/geo.h>
 #include <math.h>
 #include <mathlib/mathlib.h>
 #include <matrix/math.hpp>
@@ -124,9 +124,7 @@ void OutputBase::_handle_position_update(const ControlData &control_data, bool f
     float roll = PX4_ISFINITE(control_data.type_data.lonlat.roll_offset) ? control_data.type_data.lonlat.roll_offset : 0.0f;
 
     // interface: use fixed pitch value > -pi otherwise consider ROI altitude
-    float pitch = (control_data.type_data.lonlat.pitch_fixed_angle >= -M_PI_F) ?
-                      control_data.type_data.lonlat.pitch_fixed_angle :
-                      _calculate_pitch(lon, lat, alt, vehicle_global_position);
+    float pitch = (control_data.type_data.lonlat.pitch_fixed_angle >= -M_PI_F) ? control_data.type_data.lonlat.pitch_fixed_angle : _calculate_pitch(lon, lat, alt, vehicle_global_position);
 
     float yaw = get_bearing_to_next_waypoint(vlat, vlon, lat, lon);
     // We set the yaw angle in the absolute frame in this case.

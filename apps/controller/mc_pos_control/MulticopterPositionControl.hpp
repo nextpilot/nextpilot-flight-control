@@ -23,16 +23,14 @@
 #include <slew_rate/SlewRateYaw.hpp>
 // #include <ulog/mavlink_log.h>
 
-// #include <px4_platform_common/px4_config.h>
 
 // #include <defines.h>
 // #include <module/module_command.hpp>
 // #include <module/module_params.hpp>
 // #include <workq/WorkItemScheduled.hpp>
-// #include <px4_platform_common/posix.h>
-// #include <px4_platform_common/tasks.h>
+
+
 // #include <uORB/uORBPublication.hpp>
-// #include <uORB/uORBSubscription.hpp>
 // #include <uORB/uORBSubscription.hpp>
 // #include <uORB/topics/hover_thrust_estimate.h>
 // #include <uORB/topics/parameter_update.h>
@@ -73,7 +71,7 @@ private:
     uORB::Publication<vehicle_attitude_setpoint_s>       _vehicle_attitude_setpoint_pub{ORB_ID(vehicle_attitude_setpoint)};
     uORB::Publication<vehicle_local_position_setpoint_s> _local_pos_sp_pub{ORB_ID(vehicle_local_position_setpoint)}; /**< vehicle local position setpoint publication */
 
-    uORB::SubscriptionCallbackWorkItem _local_pos_sub{this, ORB_ID(vehicle_local_position)}; /**< vehicle local position */
+    uORB::SubscriptionCallbackWorkItem _local_pos_sub{this, ORB_ID(vehicle_local_position)};                         /**< vehicle local position */
 
     uORB::SubscriptionInterval _parameter_update_sub{ORB_ID(parameter_update), 1_s};
 
@@ -158,9 +156,9 @@ private:
     control::BlockDerivative _vel_y_deriv; /**< velocity derivative in y */
     control::BlockDerivative _vel_z_deriv; /**< velocity derivative in z */
 
-    PositionControl _control; /**< class for core PID position control */
+    PositionControl _control;              /**< class for core PID position control */
 
-    hrt_abstime _last_warn{0}; /**< timer when the last warn message was sent out */
+    hrt_abstime _last_warn{0};             /**< timer when the last warn message was sent out */
 
     bool _hover_thrust_initialized{false};
 

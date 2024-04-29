@@ -22,7 +22,6 @@
 #include <uORB/topics/vehicle_command.h>
 #include <ulog/mavlink_log.h>
 #include <events/events.h>
-// #include <px4_platform_common/board_common.h>
 #include <containers/Array.hpp>
 
 using namespace time_literals;

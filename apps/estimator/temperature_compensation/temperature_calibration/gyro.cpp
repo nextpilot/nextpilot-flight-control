@@ -22,7 +22,7 @@
 #include <hrtimer.h>
 
 TemperatureCalibrationGyro::TemperatureCalibrationGyro(float min_temperature_rise, float min_start_temperature,
-                                                       float max_start_temperature, int gyro_subs[], int num_gyros) :
+                                                       float max_start_temperature, orb_subscr_t gyro_subs[], int num_gyros) :
     TemperatureCalibrationCommon(min_temperature_rise, min_start_temperature, max_start_temperature) {
     for (int i = 0; i < num_gyros; ++i) {
         _sensor_subs[i] = gyro_subs[i];
@@ -31,7 +31,7 @@ TemperatureCalibrationGyro::TemperatureCalibrationGyro(float min_temperature_ris
     _num_sensor_instances = num_gyros;
 }
 
-int TemperatureCalibrationGyro::update_sensor_instance(PerSensorData &data, int sensor_sub) {
+int TemperatureCalibrationGyro::update_sensor_instance(PerSensorData &data, orb_subscr_t sensor_sub) {
     bool finished = data.hot_soaked;
 
     bool updated;

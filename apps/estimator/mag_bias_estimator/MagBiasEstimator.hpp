@@ -15,19 +15,20 @@
 #include <mathlib/mathlib.h>
 #include <perf/perf_counter.h>
 #include <sensor_calibration/Magnetometer.hpp>
-// #include <px4_platform_common/px4_config.h>
 #include <defines.h>
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
 #include <workq/WorkItemScheduled.hpp>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/magnetometer_bias_estimate.h>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/sensor_mag.h>
 #include <uORB/topics/vehicle_angular_velocity.h>
 #include <uORB/topics/vehicle_status.h>
+
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 namespace mag_bias_estimator {
 
@@ -36,7 +37,7 @@ public:
     MagBiasEstimator();
     ~MagBiasEstimator() override;
 
-    static int *instantiate(int argc, char *argv[]);
+    static MagBiasEstimator *instantiate(int argc, char *argv[]);
 
     /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]) {

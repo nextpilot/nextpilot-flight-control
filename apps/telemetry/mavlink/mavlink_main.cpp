@@ -26,13 +26,11 @@
 #endif
 
 #include <containers/LockGuard.hpp>
-#include <lib/geo/geo.h>
-#include <lib/mathlib/mathlib.h>
-#include <lib/systemlib/mavlink_log.h>
-#include <lib/version/version.h>
-
-#include <px4_platform_common/events.h>
-
+#include <geo/geo.h>
+#include <mathlib/mathlib.h>
+#include <ulog/mavlink_log.h>
+#include <version/version.h>
+#include <events/events.h>
 #include <uORB/topics/event.h>
 #include "mavlink_receiver.h"
 #include "mavlink_main.h"

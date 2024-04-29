@@ -11,9 +11,8 @@
 #ifndef SCALED_IMU3_HPP
 #define SCALED_IMU3_HPP
 
-#include <lib/geo/geo.h>
-#include <lib/matrix/matrix/math.hpp>
-
+#include <geo/geo.h>
+#include <matrix/matrix/math.hpp>
 #include <uORB/topics/sensor_mag.h>
 #include <uORB/topics/vehicle_imu.h>
 #include <uORB/topics/vehicle_imu_status.h>
@@ -27,6 +26,7 @@ public:
     static constexpr const char *get_name_static() {
         return "SCALED_IMU3";
     }
+
     static constexpr uint16_t get_id_static() {
         return MAVLINK_MSG_ID_SCALED_IMU3;
     }
@@ -34,6 +34,7 @@ public:
     const char *get_name() const override {
         return get_name_static();
     }
+
     uint16_t get_id() override {
         return get_id_static();
     }

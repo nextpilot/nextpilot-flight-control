@@ -31,16 +31,10 @@
 // #include <mathlib/mathlib.h>
 // #include <perf/perf_counter.h>
 // #include <matrix/math.hpp>
-// #include <px4_platform_common/px4_config.h>
-
 // #include <defines.h>
 // #include <module/module_command.hpp>
 // #include <module/module_params.hpp>
-// #include <px4_platform_common/posix.h>
-// #include <px4_platform_common/px4_work_queue/WorkItem.hpp>
 // #include <uORB/uORBPublication.hpp>
-// #include <uORB/uORBPublication.hpp>
-// #include <uORB/uORBSubscription.hpp>
 // #include <uORB/uORBSubscription.hpp>
 // #include <uORB/topics/action_request.h>
 // #include <uORB/topics/airspeed_validated.h>
@@ -91,7 +85,7 @@ public:
 
     bool is_fixed_wing_requested() {
         return _transition_command == vtol_vehicle_status_s::VEHICLE_VTOL_STATE_FW;
-    };
+    }
 
     void quadchute(QuadchuteReason reason);
 
@@ -114,12 +108,15 @@ public:
     struct vehicle_torque_setpoint_s *get_vehicle_torque_setpoint_virtual_mc() {
         return &_vehicle_torque_setpoint_virtual_mc;
     }
+
     struct vehicle_torque_setpoint_s *get_vehicle_torque_setpoint_virtual_fw() {
         return &_vehicle_torque_setpoint_virtual_fw;
     }
+
     struct vehicle_thrust_setpoint_s *get_vehicle_thrust_setpoint_virtual_mc() {
         return &_vehicle_thrust_setpoint_virtual_mc;
     }
+
     struct vehicle_thrust_setpoint_s *get_vehicle_thrust_setpoint_virtual_fw() {
         return &_vehicle_thrust_setpoint_virtual_fw;
     }
@@ -127,51 +124,67 @@ public:
     struct airspeed_validated_s *get_airspeed() {
         return &_airspeed_validated;
     }
+
     struct position_setpoint_triplet_s *get_pos_sp_triplet() {
         return &_pos_sp_triplet;
     }
+
     struct tecs_status_s *get_tecs_status() {
         return &_tecs_status;
     }
+
     struct vehicle_attitude_s *get_att() {
         return &_vehicle_attitude;
     }
+
     struct vehicle_attitude_setpoint_s *get_att_sp() {
         return &_vehicle_attitude_sp;
     }
+
     struct vehicle_attitude_setpoint_s *get_fw_virtual_att_sp() {
         return &_fw_virtual_att_sp;
     }
+
     struct vehicle_attitude_setpoint_s *get_mc_virtual_att_sp() {
         return &_mc_virtual_att_sp;
     }
+
     struct vehicle_control_mode_s *get_control_mode() {
         return &_vehicle_control_mode;
     }
+
     struct vehicle_land_detected_s *get_land_detected() {
         return &_land_detected;
     }
+
     struct vehicle_local_position_s *get_local_pos() {
         return &_local_pos;
     }
+
     struct vehicle_local_position_setpoint_s *get_local_pos_sp() {
         return &_local_pos_sp;
     }
+
     struct vehicle_torque_setpoint_s *get_torque_setpoint_0() {
         return &_torque_setpoint_0;
     }
+
     struct vehicle_torque_setpoint_s *get_torque_setpoint_1() {
         return &_torque_setpoint_1;
     }
+
     struct vehicle_thrust_setpoint_s *get_thrust_setpoint_0() {
         return &_thrust_setpoint_0;
     }
+
     struct vehicle_thrust_setpoint_s *get_thrust_setpoint_1() {
         return &_thrust_setpoint_1;
     }
+
     struct vtol_vehicle_status_s *get_vtol_vehicle_status() {
         return &_vtol_vehicle_status;
     }
+
     float get_home_position_z() {
         return _home_position_z;
     }
@@ -210,7 +223,7 @@ private:
     uORB::PublicationMulti<vehicle_torque_setpoint_s> _vehicle_torque_setpoint1_pub{ORB_ID(vehicle_torque_setpoint)};
     uORB::Publication<vtol_vehicle_status_s>          _vtol_vehicle_status_pub{ORB_ID(vtol_vehicle_status)};
 
-    orb_advert_t _mavlink_log_pub{nullptr}; // mavlink log uORB handle
+    orb_advert_t _mavlink_log_pub{nullptr};             // mavlink log uORB handle
 
     vehicle_attitude_setpoint_s _vehicle_attitude_sp{}; // vehicle attitude setpoint
     vehicle_attitude_setpoint_s _fw_virtual_att_sp{};   // virtual fw attitude setpoint

@@ -12,7 +12,7 @@
  * @author RJ Gritter <rjgritter657@gmail.com>
  */
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <parameters/param.h>
 #include "rangefinder.hpp"
 #include <math.h>

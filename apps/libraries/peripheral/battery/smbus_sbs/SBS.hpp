@@ -23,7 +23,7 @@
 #include <px4_platform_common/i2c_spi_buses.h>
 #include <drivers/smbus/SMBus.hpp>
 #include <uORB/topics/battery_status.h>
-#include <px4_platform_common/param.h>
+#include <param/param.h>
 #include <geo/geo.h>
 
 

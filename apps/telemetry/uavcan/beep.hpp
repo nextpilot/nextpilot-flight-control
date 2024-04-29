@@ -23,7 +23,7 @@
 #include <uavcan/equipment/indication/BeepCommand.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/tune_control.h>
-#include <lib/tunes/tunes.h>
+#include <tunes/tunes.h>
 
 class UavcanBeepController {
 public:

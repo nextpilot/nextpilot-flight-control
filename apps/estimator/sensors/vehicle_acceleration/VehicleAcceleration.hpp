@@ -16,7 +16,6 @@
 #include <mathlib/math/filter/LowPassFilter2p.hpp>
 #include <ulog/log.h>
 #include <module/module_params.hpp>
-// #include <px4_platform_common/px4_config.h>
 #include <workq/WorkItemScheduled.hpp>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>

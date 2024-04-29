@@ -19,10 +19,9 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include <px4_platform_common/tasks.h>
-#include <px4_platform_common/sem.h>
-#include <drivers/drv_hrt.h>
-#include <lib/perf/perf_counter.h>
+
+#include <hrtimer.h>
+#include <perf/perf_counter.h>
 
 #include <uORB/Publication.hpp>
 #include <uORB/Subscription.hpp>

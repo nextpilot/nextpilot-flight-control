@@ -14,10 +14,10 @@
 
 #include "mag.hpp"
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include <systemlib/err.h>
 
-#include <lib/drivers/magnetometer/PX4Magnetometer.hpp>
+#include <magnetometer/PX4Magnetometer.hpp>
 
 const char *const UavcanMagnetometerBridge::NAME = "mag";
 

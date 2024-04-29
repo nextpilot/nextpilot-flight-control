@@ -17,9 +17,9 @@
  * @author Thomas Gubler <thomas@px4.io>
  */
 
-#include <lib/airspeed/airspeed.h>
-#include <lib/conversion/rotation.h>
-#include <lib/systemlib/px4_macros.h>
+#include <airspeed/airspeed.h>
+#include <conversion/rotation.h>
+#include <systemlib/px4_macros.h>
 
 #include <math.h>
 #include <poll.h>
@@ -38,7 +38,7 @@
 #include "mavlink_main.h"
 #include "mavlink_receiver.h"
 
-#include <lib/drivers/device/Device.hpp> // For DeviceId union
+#include <drivers/device/Device.hpp> // For DeviceId union
 
 #ifdef CONFIG_NET
 #   define MAVLINK_RECEIVER_NET_ADDED_STACK 1360

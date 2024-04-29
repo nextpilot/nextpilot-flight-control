@@ -7,6 +7,6 @@ cwd = GetCurrentDir()
 inc = []
 src = Glob("*.cpp", exclude="*_test.cpp")
 
-objs = DefineGroup("ins/sensors", src, depend=[""])
+objs = DefineGroup("ins/sensors", src, depend=["INS_USING_SENSOR"])
 
 Return("objs")

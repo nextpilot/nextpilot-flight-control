@@ -36,7 +36,6 @@
 #include <unistd.h>
 
 #include <defines.h>
-// #include <px4_platform_common/px4_config.h>
 #include <param/param.h>
 #include <ulog/mavlink_log.h>
 #include <uORB/uORBPublication.hpp>
@@ -146,9 +145,7 @@ static uint8_t _auth_method_arm_req_check() {
         break;
     }
 
-    return state == ARM_AUTH_MISSION_APPROVED ?
-               vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED :
-               vehicle_command_ack_s::VEHICLE_CMD_RESULT_DENIED;
+    return state == ARM_AUTH_MISSION_APPROVED ? vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED : vehicle_command_ack_s::VEHICLE_CMD_RESULT_DENIED;
 }
 
 static uint8_t _auth_method_two_arm_check() {

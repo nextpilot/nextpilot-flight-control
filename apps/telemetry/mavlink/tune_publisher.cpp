@@ -10,7 +10,7 @@
 
 #include "tune_publisher.h"
 #include "string.h"
-#include <px4_platform_common/log.h>
+#include <ulog/log.h>
 
 void TunePublisher::set_tune_string(const char *tune, const hrt_abstime &now) {
     // The tune string needs to be 0 terminated.

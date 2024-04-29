@@ -19,8 +19,7 @@
 #include "calibration_routines.h"
 #include "calibration_messages.h"
 #include <defines.h>
-// #include <px4_platform_common/posix.h>
-// #include <px4_platform_common/time.h>
+
 #include <hrtimer.h>
 #include <matrix/math.hpp>
 #include <geo/geo.h>

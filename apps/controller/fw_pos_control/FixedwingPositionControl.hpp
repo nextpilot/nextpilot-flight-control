@@ -35,16 +35,13 @@
 // #include <mathlib/mathlib.h>
 // #include <perf/perf_counter.h>
 #include <slew_rate/SlewRate.hpp>
-// #include <px4_platform_common/px4_config.h>
 
 // #include <defines.h>
 // #include <module/module_command.hpp>
 // #include <module/module_params.hpp>
-// #include <px4_platform_common/posix.h>
-// #include <px4_platform_common/px4_work_queue/WorkItem.hpp>
+
+#include <workq/WorkItem.hpp>
 // #include <uORB/uORBPublication.hpp>
-// #include <uORB/uORBPublication.hpp>
-// #include <uORB/uORBSubscription.hpp>
 // #include <uORB/uORBSubscription.hpp>
 // #include <uORB/topics/airspeed_validated.h>
 // #include <uORB/topics/landing_gear.h>
@@ -260,8 +257,8 @@ private:
     // [rad] yaw setpoint for manual position mode heading hold
     float _hdg_hold_yaw{0.0f};
 
-    bool _hdg_hold_enabled{false}; // heading hold enabled
-    bool _yaw_lock_engaged{false}; // yaw is locked for heading hold
+    bool _hdg_hold_enabled{false};            // heading hold enabled
+    bool _yaw_lock_engaged{false};            // yaw is locked for heading hold
 
     position_setpoint_s _hdg_hold_position{}; // position where heading hold started
 
@@ -402,7 +399,7 @@ private:
 
     hrt_abstime _time_in_fixed_bank_loiter{0}; // [us]
     float       _min_current_sp_distance_xy{FLT_MAX};
-    float       _target_bearing{0.0f}; // [rad]
+    float       _target_bearing{0.0f};         // [rad]
 
     // Update our local parameter cache.
     int parameters_update();

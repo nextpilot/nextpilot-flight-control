@@ -23,8 +23,7 @@
  * Includes here should only cover the needs of the framework definitions.
  */
 #include <ulog/log.h>
-// #include <px4_platform_common/px4_config.h>
-// #include <px4_platform_common/posix.h>
+
 #include <device/device_id.h>
 
 #define DEVICE_LOG(FMT, ...)   PX4_LOG_NAMED(_name, FMT, ##__VA_ARGS__)

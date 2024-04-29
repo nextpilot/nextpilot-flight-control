@@ -10,7 +10,7 @@
 
 #include "flow.hpp"
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 const char *const UavcanFlowBridge::NAME = "flow";
 

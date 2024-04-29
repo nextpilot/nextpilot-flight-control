@@ -17,8 +17,7 @@
 
 #include <defines.h>
 #include <events/events.h>
-// #include <px4_platform_common/posix.h>
-// #include <px4_platform_common/time.h>
+
 #include <hrtimer.h>
 #include <drivers/drv_tone_alarm.h>
 #include <geo/geo.h>

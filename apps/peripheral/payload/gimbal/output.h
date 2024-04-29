@@ -12,8 +12,8 @@
 
 #include "common.h"
 #include "gimbal_params.h"
-#include <drivers/drv_hrt.h>
-#include <lib/geo/geo.h>
+#include <hrtimer.h>
+#include <geo/geo.h>
 #include <uORB/Publication.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/mount_orientation.h>

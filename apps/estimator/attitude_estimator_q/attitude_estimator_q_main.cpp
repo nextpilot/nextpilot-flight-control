@@ -8,6 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "att_est_q"
+
 /*
  * @file attitude_estimator_q_main.cpp
  *
@@ -27,9 +29,8 @@
 #include <defines.h>
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
-// #include <px4_platform_common/posix.h>
+
 #include <uORB/uORBPublication.hpp>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/sensor_combined.h>
@@ -46,6 +47,8 @@ using matrix::Vector3f;
 using matrix::wrap_pi;
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class AttitudeEstimatorQ : public ModuleCommand<AttitudeEstimatorQ>, public ModuleParams, public WorkItem {
 public:
@@ -53,7 +56,7 @@ public:
     ~AttitudeEstimatorQ() override = default;
 
     /** @see ModuleCommand */
-    static int *instantiate(int argc, char *argv[]);
+    static AttitudeEstimatorQ *instantiate(int argc, char *argv[]);
 
     /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
@@ -150,13 +153,13 @@ AttitudeEstimatorQ::AttitudeEstimatorQ() :
     update_parameters(true);
 }
 
-bool AttitudeEstimatorQ::init() {
+int AttitudeEstimatorQ::init() {
     if (!_sensors_sub.registerCallback()) {
         PX4_ERR("callback registration failed");
-        return false;
+        return RT_ERROR;
     }
 
-    return true;
+    return RT_EOK;
 }
 
 void AttitudeEstimatorQ::Run() {
@@ -218,11 +221,7 @@ void AttitudeEstimatorQ::update_motion_capture_odometry() {
 
         if (_vehicle_mocap_odometry_sub.update(&mocap)) {
             // validation check for mocap attitude data
-            bool mocap_att_valid = PX4_ISFINITE(mocap.q[0]) && (PX4_ISFINITE(mocap.orientation_variance[0]) ? sqrtf(fmaxf(
-                                                                                                                  mocap.orientation_variance[0],
-                                                                                                                  fmaxf(mocap.orientation_variance[1],
-                                                                                                                        mocap.orientation_variance[2]))) <= _eo_max_std_dev :
-                                                                                                              true);
+            bool mocap_att_valid = PX4_ISFINITE(mocap.q[0]) && (PX4_ISFINITE(mocap.orientation_variance[0]) ? sqrtf(fmaxf(mocap.orientation_variance[0], fmaxf(mocap.orientation_variance[1], mocap.orientation_variance[2]))) <= _eo_max_std_dev : true);
 
             if (mocap_att_valid) {
                 Dcmf     Rmoc = Quatf(mocap.q);
@@ -320,11 +319,7 @@ void AttitudeEstimatorQ::update_visual_odometry() {
 
         if (_vehicle_visual_odometry_sub.update(&vision)) {
             // validation check for vision attitude data
-            bool vision_att_valid = PX4_ISFINITE(vision.q[0]) && (PX4_ISFINITE(vision.orientation_variance[0]) ? sqrtf(fmaxf(
-                                                                                                                     vision.orientation_variance[0],
-                                                                                                                     fmaxf(vision.orientation_variance[1],
-                                                                                                                           vision.orientation_variance[2]))) <= _eo_max_std_dev :
-                                                                                                                 true);
+            bool vision_att_valid = PX4_ISFINITE(vision.q[0]) && (PX4_ISFINITE(vision.orientation_variance[0]) ? sqrtf(fmaxf(vision.orientation_variance[0], fmaxf(vision.orientation_variance[1], vision.orientation_variance[2]))) <= _eo_max_std_dev : true);
 
             if (vision_att_valid) {
                 Dcmf     Rvis = Quatf(vision.q);
@@ -477,8 +472,7 @@ bool AttitudeEstimatorQ::update(float dt) {
     const float upper_accel_limit = CONSTANTS_ONE_G * 1.1f;
     const float lower_accel_limit = CONSTANTS_ONE_G * 0.9f;
 
-    if (_param_att_acc_comp.get() || ((accel_norm_sq > lower_accel_limit * lower_accel_limit) &&
-                                      (accel_norm_sq < upper_accel_limit * upper_accel_limit))) {
+    if (_param_att_acc_comp.get() || ((accel_norm_sq > lower_accel_limit * lower_accel_limit) && (accel_norm_sq < upper_accel_limit * upper_accel_limit))) {
         corr += (k % (_accel - _pos_acc).normalized()) * _param_att_w_acc.get();
     }
 
@@ -530,26 +524,27 @@ int AttitudeEstimatorQ::custom_command(int argc, char *argv[]) {
     return print_usage("unknown command");
 }
 
-int AttitudeEstimatorQ::instantiate(int argc, char *argv[]) {
+AttitudeEstimatorQ *AttitudeEstimatorQ::instantiate(int argc, char *argv[]) {
     AttitudeEstimatorQ *instance = new AttitudeEstimatorQ();
 
     if (instance) {
-        _object.store(instance);
-        _task_id = task_id_is_work_queue;
+        // _object.store(instance);
+        // _task_id = task_id_is_work_queue;
 
-        if (instance->init()) {
-            return PX4_OK;
-        }
+        // if (instance->init()) {
+        //     return PX4_OK;
+        // }
+        return instance;
 
     } else {
         PX4_ERR("alloc failed");
     }
 
     delete instance;
-    _object.store(nullptr);
-    _task_id = -1;
+    // _object.store(nullptr);
+    // _task_id = -1;
 
-    return PX4_ERROR;
+    return nullptr;
 }
 
 int AttitudeEstimatorQ::print_usage(const char *reason) {

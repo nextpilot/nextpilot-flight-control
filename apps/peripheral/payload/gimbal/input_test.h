@@ -11,7 +11,7 @@
 #pragma once
 
 #include "input.h"
-#include <px4_platform_common/atomic.h>
+#include <atomic/atomic.hpp>
 
 namespace gimbal {
 

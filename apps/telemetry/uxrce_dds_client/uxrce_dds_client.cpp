@@ -8,9 +8,9 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include <px4_platform_common/getopt.h>
+#include <getopt/getopt.h>
 #include <px4_platform_common/cli.h>
-#include <px4_platform_common/posix.h>
+
 
 #include "uxrce_dds_client.h"
 
@@ -24,11 +24,11 @@
 #include <unistd.h>
 
 #if defined(CONFIG_NET) || defined(__PX4_POSIX)
-#define UXRCE_DDS_CLIENT_UDP 1
+#   define UXRCE_DDS_CLIENT_UDP 1
 #endif
 
-#define STREAM_HISTORY 4
-#define BUFFER_SIZE    (UXR_CONFIG_SERIAL_TRANSPORT_MTU * STREAM_HISTORY) // MTU==512 by default
+#define STREAM_HISTORY       4
+#define BUFFER_SIZE          (UXR_CONFIG_SERIAL_TRANSPORT_MTU * STREAM_HISTORY) // MTU==512 by default
 
 #define PARTICIPANT_XML_SIZE 512
 
@@ -205,34 +205,30 @@ void UxrceddsClient::run() {
 
         char participant_xml[PARTICIPANT_XML_SIZE];
         int  ret = snprintf(participant_xml, PARTICIPANT_XML_SIZE, "%s<name>%s/px4_micro_xrce_dds</name>%s",
-                           _localhost_only ?
-                                "<dds>"
-                                "<profiles>"
-                                "<transport_descriptors>"
-                                "<transport_descriptor>"
-                                "<transport_id>udp_localhost</transport_id>"
-                                "<type>UDPv4</type>"
-                                "<interfaceWhiteList><address>127.0.0.1</address></interfaceWhiteList>"
-                                "</transport_descriptor>"
-                                "</transport_descriptors>"
-                                "</profiles>"
-                                "<participant>"
-                                "<rtps>" :
-                                "<dds>"
-                                "<participant>"
-                                "<rtps>",
-                           _client_namespace != nullptr ?
-                                _client_namespace :
-                                "",
-                           _localhost_only ?
-                                "<useBuiltinTransports>false</useBuiltinTransports>"
-                                "<userTransports><transport_id>udp_localhost</transport_id></userTransports>"
-                                "</rtps>"
-                                "</participant>"
-                                "</dds>" :
-                                "</rtps>"
-                                "</participant>"
-                                "</dds>");
+                           _localhost_only ? "<dds>"
+                                              "<profiles>"
+                                              "<transport_descriptors>"
+                                              "<transport_descriptor>"
+                                              "<transport_id>udp_localhost</transport_id>"
+                                              "<type>UDPv4</type>"
+                                              "<interfaceWhiteList><address>127.0.0.1</address></interfaceWhiteList>"
+                                              "</transport_descriptor>"
+                                              "</transport_descriptors>"
+                                              "</profiles>"
+                                              "<participant>"
+                                              "<rtps>"
+                                            : "<dds>"
+                                              "<participant>"
+                                              "<rtps>",
+                           _client_namespace != nullptr ? _client_namespace : "",
+                           _localhost_only ? "<useBuiltinTransports>false</useBuiltinTransports>"
+                                              "<userTransports><transport_id>udp_localhost</transport_id></userTransports>"
+                                              "</rtps>"
+                                              "</participant>"
+                                              "</dds>"
+                                            : "</rtps>"
+                                              "</participant>"
+                                              "</dds>");
 
         if (ret < 0 || ret >= PARTICIPANT_XML_SIZE) {
             PX4_ERR("create entities failed: namespace too long");
@@ -355,71 +351,101 @@ int UxrceddsClient::setBaudrate(int fd, unsigned baud) {
     int speed;
 
     switch (baud) {
-    case 9600: speed = B9600; break;
+    case 9600:
+        speed = B9600;
+        break;
 
-    case 19200: speed = B19200; break;
+    case 19200:
+        speed = B19200;
+        break;
 
-    case 38400: speed = B38400; break;
+    case 38400:
+        speed = B38400;
+        break;
 
-    case 57600: speed = B57600; break;
+    case 57600:
+        speed = B57600;
+        break;
 
-    case 115200: speed = B115200; break;
+    case 115200:
+        speed = B115200;
+        break;
 
-    case 230400: speed = B230400; break;
+    case 230400:
+        speed = B230400;
+        break;
 
 #ifndef B460800
-#define B460800 460800
+#   define B460800 460800
 #endif
 
-    case 460800: speed = B460800; break;
+    case 460800:
+        speed = B460800;
+        break;
 
 #ifndef B921600
-#define B921600 921600
+#   define B921600 921600
 #endif
 
-    case 921600: speed = B921600; break;
+    case 921600:
+        speed = B921600;
+        break;
 
 #ifndef B1000000
-#define B1000000 1000000
+#   define B1000000 1000000
 #endif
 
-    case 1000000: speed = B1000000; break;
+    case 1000000:
+        speed = B1000000;
+        break;
 
 #ifndef B1500000
-#define B1500000 1500000
+#   define B1500000 1500000
 #endif
 
-    case 1500000: speed = B1500000; break;
+    case 1500000:
+        speed = B1500000;
+        break;
 
 #ifndef B2000000
-#define B2000000 2000000
+#   define B2000000 2000000
 #endif
 
-    case 2000000: speed = B2000000; break;
+    case 2000000:
+        speed = B2000000;
+        break;
 
 #ifndef B2500000
-#define B2500000 2500000
+#   define B2500000 2500000
 #endif
 
-    case 2500000: speed = B2500000; break;
+    case 2500000:
+        speed = B2500000;
+        break;
 
 #ifndef B3000000
-#define B3000000 3000000
+#   define B3000000 3000000
 #endif
 
-    case 3000000: speed = B3000000; break;
+    case 3000000:
+        speed = B3000000;
+        break;
 
 #ifndef B3500000
-#define B3500000 3500000
+#   define B3500000 3500000
 #endif
 
-    case 3500000: speed = B3500000; break;
+    case 3500000:
+        speed = B3500000;
+        break;
 
 #ifndef B4000000
-#define B4000000 4000000
+#   define B4000000 4000000
 #endif
 
-    case 4000000: speed = B4000000; break;
+    case 4000000:
+        speed = B4000000;
+        break;
 
     default:
         PX4_ERR("ERR: unknown baudrate: %d", baud);
@@ -443,8 +469,7 @@ int UxrceddsClient::setBaudrate(int fd, unsigned baud) {
     // no input parity check, don't strip high bit off,
     // no XON/XOFF software flow control
     //
-    uart_config.c_iflag &= ~(IGNBRK | BRKINT | ICRNL |
-                             INLCR | PARMRK | INPCK | ISTRIP | IXON);
+    uart_config.c_iflag &= ~(IGNBRK | BRKINT | ICRNL | INLCR | PARMRK | INPCK | ISTRIP | IXON);
     //
     // Output flags - Turn off output processing
     //

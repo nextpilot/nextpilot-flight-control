@@ -3,14 +3,12 @@
 #include <hrtimer.h>
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
-#include <px4_platform_common/posix.h>
 #include <controllib/blocks.hpp>
 #include <geo/geo.h>
 #include <mathlib/mathlib.h>
 #include <matrix/Matrix.hpp>
 
 // uORB Subscriptions
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/vehicle_command.h>
 #include <uORB/topics/vehicle_status.h>
@@ -40,11 +38,13 @@
 using namespace matrix;
 using namespace control;
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 static const float  DELAY_MAX   = 0.5f;  // seconds
 static const float  HIST_STEP   = 0.05f; // 20 hz
 static const float  BIAS_MAX    = 1e-1f;
-static const size_t HIST_LEN    = 10; // DELAY_MAX / HIST_STEP;
+static const size_t HIST_LEN    = 10;    // DELAY_MAX / HIST_STEP;
 static const size_t N_DIST_SUBS = 4;
 
 // for fault detection
@@ -108,12 +108,13 @@ class BlockLocalPositionEstimator : public ModuleCommand<BlockLocalPositionEstim
     //
     //      land (detects when landed)): pz (always measures agl = 0)
     //
+
 public:
     BlockLocalPositionEstimator();
     ~BlockLocalPositionEstimator() override = default;
 
     /** @see ModuleCommand */
-    static int *instantiate(int argc, char *argv[]);
+    static BlockLocalPositionEstimator *instantiate(int argc, char *argv[]);
 
     /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
@@ -125,52 +126,85 @@ public:
 
 private:
     // constants
-    enum { X_x = 0,
-           X_y,
-           X_z,
-           X_vx,
-           X_vy,
-           X_vz,
-           X_bx,
-           X_by,
-           X_bz,
-           X_tz,
-           n_x };
-    enum { U_ax = 0,
-           U_ay,
-           U_az,
-           n_u };
-    enum { Y_baro_z = 0,
-           n_y_baro };
-    enum { Y_lidar_z = 0,
-           n_y_lidar };
-    enum { Y_flow_vx = 0,
-           Y_flow_vy,
-           n_y_flow };
-    enum { Y_sonar_z = 0,
-           n_y_sonar };
-    enum { Y_gps_x = 0,
-           Y_gps_y,
-           Y_gps_z,
-           Y_gps_vx,
-           Y_gps_vy,
-           Y_gps_vz,
-           n_y_gps };
-    enum { Y_vision_x = 0,
-           Y_vision_y,
-           Y_vision_z,
-           n_y_vision };
-    enum { Y_mocap_x = 0,
-           Y_mocap_y,
-           Y_mocap_z,
-           n_y_mocap };
-    enum { Y_land_vx = 0,
-           Y_land_vy,
-           Y_land_agl,
-           n_y_land };
-    enum { Y_target_x = 0,
-           Y_target_y,
-           n_y_target };
+    enum {
+        X_x = 0,
+        X_y,
+        X_z,
+        X_vx,
+        X_vy,
+        X_vz,
+        X_bx,
+        X_by,
+        X_bz,
+        X_tz,
+        n_x
+    };
+
+    enum {
+        U_ax = 0,
+        U_ay,
+        U_az,
+        n_u
+    };
+
+    enum {
+        Y_baro_z = 0,
+        n_y_baro
+    };
+
+    enum {
+        Y_lidar_z = 0,
+        n_y_lidar
+    };
+
+    enum {
+        Y_flow_vx = 0,
+        Y_flow_vy,
+        n_y_flow
+    };
+
+    enum {
+        Y_sonar_z = 0,
+        n_y_sonar
+    };
+
+    enum {
+        Y_gps_x = 0,
+        Y_gps_y,
+        Y_gps_z,
+        Y_gps_vx,
+        Y_gps_vy,
+        Y_gps_vz,
+        n_y_gps
+    };
+
+    enum {
+        Y_vision_x = 0,
+        Y_vision_y,
+        Y_vision_z,
+        n_y_vision
+    };
+
+    enum {
+        Y_mocap_x = 0,
+        Y_mocap_y,
+        Y_mocap_z,
+        n_y_mocap
+    };
+
+    enum {
+        Y_land_vx = 0,
+        Y_land_vy,
+        Y_land_agl,
+        n_y_land
+    };
+
+    enum {
+        Y_target_x = 0,
+        Y_target_y,
+        n_y_target
+    };
+
     enum {
         FUSE_GPS            = 1 << 0,
         FUSE_FLOW           = 1 << 1,
@@ -278,6 +312,7 @@ private:
     inline float agl() {
         return _x(X_tz) - _x(X_z);
     }
+
     bool landed();
     int  getDelayPeriods(float delay, uint8_t *periods);
 

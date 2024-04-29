@@ -16,7 +16,7 @@
 
 #include "esc.hpp"
 #include <systemlib/err.h>
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 #define MOTOR_BIT(x) (1 << (x))
 
@@ -110,12 +110,12 @@ void UavcanEscController::esc_status_sub_cb(const uavcan::ReceivedDataStructure<
         ref.esc_rpm         = msg.rpm;
         ref.esc_errorcount  = msg.error_count;
 
-        _esc_status.esc_count = _rotor_count;
-        _esc_status.counter += 1;
-        _esc_status.esc_connectiontype = esc_status_s::ESC_CONNECTION_TYPE_CAN;
-        _esc_status.esc_online_flags   = check_escs_status();
-        _esc_status.esc_armed_flags    = (1 << _rotor_count) - 1;
-        _esc_status.timestamp          = hrt_absolute_time();
+        _esc_status.esc_count           = _rotor_count;
+        _esc_status.counter            += 1;
+        _esc_status.esc_connectiontype  = esc_status_s::ESC_CONNECTION_TYPE_CAN;
+        _esc_status.esc_online_flags    = check_escs_status();
+        _esc_status.esc_armed_flags     = (1 << _rotor_count) - 1;
+        _esc_status.timestamp           = hrt_absolute_time();
         _esc_status_pub.publish(_esc_status);
     }
 }

@@ -19,8 +19,8 @@
 #include <uavcan/equipment/power/BatteryInfo.hpp>
 #include <ardupilot/equipment/power/BatteryInfoAux.hpp>
 #include <battery/battery.h>
-#include <drivers/drv_hrt.h>
-#include <px4_platform_common/module_params.h>
+#include <hrtimer.h>
+#include <module/module_params.h>
 
 using namespace time_literals;
 

@@ -19,8 +19,6 @@
  *
  */
 
-#include <px4_platform_common/px4_config.h>
-#include <px4_platform_common/tasks.h>
 
 #include <inttypes.h>
 #include <cstdlib>
@@ -34,7 +32,7 @@
 
 #include <uORB/topics/esc_status.h>
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 #include "uavcan_module.hpp"
 #include "uavcan_main.hpp"
@@ -390,8 +388,8 @@ void UavcanNode::fill_node_info() {
     // Extracting the first 8 hex digits of the git hash and converting them to int
     char fw_git_short[9] = {};
     std::memmove(fw_git_short, px4_firmware_version_string(), 8);
-    char *end        = nullptr;
-    swver.vcs_commit = std::strtol(fw_git_short, &end, 16);
+    char *end                   = nullptr;
+    swver.vcs_commit            = std::strtol(fw_git_short, &end, 16);
     swver.optional_field_flags |= swver.OPTIONAL_FIELD_FLAG_VCS_COMMIT;
 
     // Too verbose for normal operation
@@ -1092,11 +1090,11 @@ void UavcanNode::param_opcode(uavcan::NodeID node_id) {
 }
 
 void UavcanNode::cb_opcode(const uavcan::ServiceCallResult<uavcan::protocol::param::ExecuteOpcode> &result) {
-    bool                                             success = result.isSuccessful();
-    uint8_t                                          node_id = result.getCallID().server_node_id.get();
-    uavcan::protocol::param::ExecuteOpcode::Response resp    = result.getResponse();
-    success &= resp.ok;
-    _cmd_in_progress = false;
+    bool                                             success  = result.isSuccessful();
+    uint8_t                                          node_id  = result.getCallID().server_node_id.get();
+    uavcan::protocol::param::ExecuteOpcode::Response resp     = result.getResponse();
+    success                                                  &= resp.ok;
+    _cmd_in_progress                                          = false;
 
     if (!result.isSuccessful()) {
         PX4_ERR("save request for node %hhu timed out.", node_id);
@@ -1136,11 +1134,11 @@ void UavcanNode::cb_opcode(const uavcan::ServiceCallResult<uavcan::protocol::par
 }
 
 void UavcanNode::cb_restart(const uavcan::ServiceCallResult<uavcan::protocol::RestartNode> &result) {
-    bool                                    success = result.isSuccessful();
-    uint8_t                                 node_id = result.getCallID().server_node_id.get();
-    uavcan::protocol::RestartNode::Response resp    = result.getResponse();
-    success &= resp.ok;
-    _cmd_in_progress = false;
+    bool                                    success  = result.isSuccessful();
+    uint8_t                                 node_id  = result.getCallID().server_node_id.get();
+    uavcan::protocol::RestartNode::Response resp     = result.getResponse();
+    success                                         &= resp.ok;
+    _cmd_in_progress                                 = false;
 
     if (success) {
         PX4_DEBUG("restart request for node %hhu completed OK.", node_id);

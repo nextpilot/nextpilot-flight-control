@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <matrix/math.hpp>
+
 namespace math
 {
 

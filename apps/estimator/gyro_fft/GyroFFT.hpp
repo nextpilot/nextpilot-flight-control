@@ -17,11 +17,9 @@
 #include <defines.h>
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
-#include <px4_platform_common/posix.h>
+
 #include <workq/WorkItemScheduled.hpp>
 #include <uORB/uORBPublication.hpp>
-#include <uORB/uORBPublication.hpp>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/sensor_gyro.h>
@@ -57,8 +55,7 @@ public:
 private:
     static constexpr int MAX_SENSOR_COUNT = 4;
 
-    static constexpr int MAX_NUM_PEAKS = sizeof(sensor_gyro_fft_s::peak_frequencies_x) / sizeof(
-                                                                                             sensor_gyro_fft_s::peak_frequencies_x[0]);
+    static constexpr int MAX_NUM_PEAKS = sizeof(sensor_gyro_fft_s::peak_frequencies_x) / sizeof(sensor_gyro_fft_s::peak_frequencies_x[0]);
 
     void         Run() override;
     inline void  FindPeaks(const hrt_abstime &timestamp_sample, int axis, q15_t *fft_outupt_buffer);

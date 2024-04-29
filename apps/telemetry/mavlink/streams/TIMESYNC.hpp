@@ -11,7 +11,7 @@
 #ifndef TIMESYNC_HPP
 #define TIMESYNC_HPP
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 
 class MavlinkStreamTimesync : public MavlinkStream {
 public:
@@ -22,6 +22,7 @@ public:
     static constexpr const char *get_name_static() {
         return "TIMESYNC";
     }
+
     static constexpr uint16_t get_id_static() {
         return MAVLINK_MSG_ID_TIMESYNC;
     }
@@ -29,6 +30,7 @@ public:
     const char *get_name() const override {
         return get_name_static();
     }
+
     uint16_t get_id() override {
         return get_id_static();
     }

@@ -12,10 +12,10 @@
  * @author RJ Gritter <rjgritter657@gmail.com>
  */
 
-#include <drivers/drv_hrt.h>
+#include <hrtimer.h>
 #include "airspeed.hpp"
 #include <math.h>
-#include <lib/geo/geo.h> // For CONSTANTS_*
+#include <geo/geo.h> // For CONSTANTS_*
 
 const char *const UavcanAirspeedBridge::NAME = "airspeed";
 
@@ -58,6 +58,7 @@ void UavcanAirspeedBridge::oat_sub_cb(const uavcan::ReceivedDataStructure<uavcan
 void UavcanAirspeedBridge::tas_sub_cb(const uavcan::ReceivedDataStructure<uavcan::equipment::air_data::TrueAirspeed> &msg) {
     _last_tas_m_s = msg.true_airspeed;
 }
+
 void UavcanAirspeedBridge::ias_sub_cb(const uavcan::ReceivedDataStructure<uavcan::equipment::air_data::IndicatedAirspeed> &msg) {
     airspeed_s report{};
 
