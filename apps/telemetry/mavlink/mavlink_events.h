@@ -56,6 +56,7 @@ public:
     uint16_t get_latest_sequence() const {
         return _latest_sequence.load();
     }
+
     uint16_t get_oldest_sequence_after(uint16_t sequence) const;
 
     /**
@@ -73,7 +74,7 @@ private:
 
     Event *_events{nullptr}; ///< stored events, ringbuffer
     int    _capacity;
-    int    _next{0}; ///< next element to use
+    int    _next{0};         ///< next element to use
     int    _size{0};
 
     mutable pthread_mutex_t _mutex;

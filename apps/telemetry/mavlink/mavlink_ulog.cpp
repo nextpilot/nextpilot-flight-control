@@ -27,8 +27,7 @@ px4_sem_t    MavlinkULog::_lock;
 MavlinkULog::MavlinkULog(int datarate, float max_rate_factor, uint8_t target_system, uint8_t target_component) :
     _target_system(target_system), _target_component(target_component),
     _max_rate_factor(max_rate_factor),
-    _max_num_messages(math::max(1, (int)ceilf((_rate_calculation_delta_t / 1e6f) * _max_rate_factor * datarate /
-                                              (MAVLINK_MSG_ID_LOGGING_DATA_LEN + MAVLINK_NUM_NON_PAYLOAD_BYTES)))),
+    _max_num_messages(math::max(1, (int)ceilf((_rate_calculation_delta_t / 1e6f) * _max_rate_factor * datarate / (MAVLINK_MSG_ID_LOGGING_DATA_LEN + MAVLINK_NUM_NON_PAYLOAD_BYTES)))),
     _current_rate_factor(max_rate_factor) {
     // make sure we won't read any old messages
     while (_ulog_stream_sub.update()) {

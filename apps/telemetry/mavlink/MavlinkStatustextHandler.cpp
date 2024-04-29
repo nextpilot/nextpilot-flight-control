@@ -60,8 +60,7 @@ bool MavlinkStatustextHandler::should_publish_current(const mavlink_statustext_t
         _last_log_chunk_seq = msg_statustext.chunk_seq;
 
         const bool publication_message_is_full = sizeof(_log_msg.text) - 1 == strlen(_log_msg.text);
-        const bool found_zero_termination      = strnlen(msg_statustext.text,
-                                                         sizeof(msg_statustext.text)) < sizeof(msg_statustext.text);
+        const bool found_zero_termination      = strnlen(msg_statustext.text, sizeof(msg_statustext.text)) < sizeof(msg_statustext.text);
 
         if (publication_message_is_full || found_zero_termination) {
             _last_log_id        = 0;

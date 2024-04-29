@@ -14,8 +14,8 @@
 #include <pthread.h>
 
 #ifdef __PX4_NUTTX
-#include <nuttx/sched.h>
-#include <px4_platform/cpuload.h>
+#   include <nuttx/sched.h>
+#   include <px4_platform/cpuload.h>
 #endif /* __PX4_NUTTX */
 
 namespace nextpilot ::logger {
@@ -31,7 +31,7 @@ struct watchdog_data_t {
     int         logger_main_priority        = 0;
     hrt_abstime trigger_time                = 0; ///< timestamp when it was triggered
     bool        manual_watchdog_trigger     = false;
-#endif /* __PX4_NUTTX */
+#endif                                           /* __PX4_NUTTX */
 };
 
 /**

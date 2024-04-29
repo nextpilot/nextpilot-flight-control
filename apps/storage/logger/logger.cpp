@@ -179,31 +179,31 @@ int Logger::custom_command(int argc, char *argv[]) {
 // }
 
 int Logger::print_status() {
-    PX4_INFO("Running in mode: %s", configured_backend_mode());
-    PX4_INFO("Number of subscriptions: %i (%i bytes)", _num_subscriptions,
-             (int)(_num_subscriptions * sizeof(LoggerSubscription)));
+    LOG_RAW("Running in mode: %s\n", configured_backend_mode());
+    LOG_RAW("Number of subscriptions: %i (%i bytes)\n", _num_subscriptions,
+            (int)(_num_subscriptions * sizeof(LoggerSubscription)));
 
     bool is_logging = false;
 
     if (_writer.is_started(LogType::Full, LogWriter::BackendFile)) {
-        PX4_INFO("Full File Logging Running:");
+        LOG_RAW("Full File Logging Running:\n");
         print_statistics(LogType::Full);
         is_logging = true;
     }
 
     if (_writer.is_started(LogType::Mission, LogWriter::BackendFile)) {
-        PX4_INFO("Mission File Logging Running:");
+        LOG_RAW("Mission File Logging Running:\n");
         print_statistics(LogType::Mission);
         is_logging = true;
     }
 
     if (_writer.is_started(LogType::Full, LogWriter::BackendMavlink)) {
-        PX4_INFO("Mavlink Logging Running (Full log)");
+        LOG_RAW("Mavlink Logging Running (Full log)\n");
         is_logging = true;
     }
 
     if (!is_logging) {
-        PX4_INFO("Not logging");
+        LOG_RAW("Not logging\n");
     }
 
     return 0;
@@ -221,17 +221,17 @@ void Logger::print_statistics(LogType type) {
     float mebibytes = kibibytes / 1024.0f;
     float seconds   = ((float)(hrt_absolute_time() - stats.start_time_file)) / 1000000.0f;
 
-    PX4_INFO("Log file: %s/%s/%s", LOG_ROOT[(int)type], _file_name[(int)type].log_dir, _file_name[(int)type].log_file_name);
+    LOG_RAW("Log file: %s/%s/%s\n", LOG_ROOT[(int)type], _file_name[(int)type].log_dir, _file_name[(int)type].log_file_name);
 
     if (mebibytes < 0.1f) {
-        PX4_INFO("Wrote %4.2f KiB (avg %5.2f KiB/s)", (double)kibibytes, (double)(kibibytes / seconds));
+        LOG_RAW("Wrote %4.2f KiB (avg %5.2f KiB/s)\n", (double)kibibytes, (double)(kibibytes / seconds));
 
     } else {
-        PX4_INFO("Wrote %4.2f MiB (avg %5.2f KiB/s)", (double)mebibytes, (double)(kibibytes / seconds));
+        LOG_RAW("Wrote %4.2f MiB (avg %5.2f KiB/s)\n", (double)mebibytes, (double)(kibibytes / seconds));
     }
 
-    PX4_INFO("Since last status: dropouts: %zu (max len: %.3f s), max used buffer: %zu / %zu B", stats.write_dropouts,
-             (double)stats.max_dropout_duration, stats.high_water, _writer.get_buffer_size_file(type));
+    LOG_RAW("Since last status: dropouts: %zu (max len: %.3f s), max used buffer: %zu / %zu B\n", stats.write_dropouts,
+            (double)stats.max_dropout_duration, stats.high_water, _writer.get_buffer_size_file(type));
     stats.high_water           = 0;
     stats.write_dropouts       = 0;
     stats.max_dropout_duration = 0.f;
@@ -554,11 +554,9 @@ void Logger::run() {
 
     if (_writer.backend() & LogWriter::BackendFile) {
         int mkdir_ret = mkdir(LOG_ROOT[(int)LogType::Full], S_IRWXU | S_IRWXG | S_IRWXO);
-
         if (mkdir_ret == 0) {
             PX4_INFO("log root dir created: %s", LOG_ROOT[(int)LogType::Full]);
-
-        } else if (errno != EEXIST) {
+        } else if (errno != -EEXIST) {
             PX4_ERR("failed creating log root dir: %s (%i)", LOG_ROOT[(int)LogType::Full], errno);
 
             if ((_writer.backend() & ~LogWriter::BackendFile) == 0) {
@@ -1226,7 +1224,7 @@ int Logger::create_log_dir(LogType type, tm *tt, char *log_dir, int log_dir_len)
                 PX4_DEBUG("log dir created: %s", log_dir);
                 file_name.has_log_dir = true;
 
-            } else if (errno != EEXIST) {
+            } else if (errno != -EEXIST) {
                 PX4_ERR("failed creating new dir: %s (%i)", log_dir, errno);
                 return -1;
             }

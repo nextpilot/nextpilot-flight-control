@@ -23,16 +23,16 @@
 #include <stdbool.h>
 
 #ifdef __PX4_NUTTX
-#include <nuttx/fs/fs.h>
+#   include <nuttx/fs/fs.h>
 #else
-#include <arpa/inet.h>
-#include <drivers/device/device.h>
-#include <sys/socket.h>
+#   include <arpa/inet.h>
+#   include <drivers/device/device.h>
+#   include <sys/socket.h>
 #endif
 
 #if defined(CONFIG_NET) || !defined(__PX4_NUTTX)
-#include <net/if.h>
-#include <netinet/in.h>
+#   include <net/if.h>
+#   include <netinet/in.h>
 #endif
 
 #include <containers/List.hpp>
@@ -66,12 +66,12 @@
 #define DEFAULT_BAUD_RATE   57600
 #define DEFAULT_DEVICE_NAME "/dev/ttyS1"
 
-#define HASH_PARAM "_HASH_CHECK"
+#define HASH_PARAM          "_HASH_CHECK"
 
 #if defined(CONFIG_NET) || defined(__PX4_POSIX)
-#define MAVLINK_UDP
-#define DEFAULT_REMOTE_PORT_UDP 14550 ///< GCS port per MAVLink spec
-#endif                                // CONFIG_NET || __PX4_POSIX
+#   define MAVLINK_UDP
+#   define DEFAULT_REMOTE_PORT_UDP 14550 ///< GCS port per MAVLink spec
+#endif                                   // CONFIG_NET || __PX4_POSIX
 
 enum class Protocol {
     SERIAL = 0,
@@ -104,9 +104,11 @@ public:
     bool running() const {
         return _task_running.load();
     }
+
     bool should_exit() const {
         return _task_should_exit.load();
     }
+
     void request_stop() {
         _task_should_exit.store(true);
         _receiver.request_stop();
@@ -161,9 +163,11 @@ public:
     bool check_events() const {
         return _should_check_events.load();
     }
+
     void check_events_enable() {
         _should_check_events.store(true);
     }
+
     void check_events_disable() {
         _should_check_events.store(false);
     }
@@ -444,15 +448,19 @@ public:
     void set_has_received_messages(bool received_messages) {
         _received_messages = received_messages;
     }
+
     bool get_has_received_messages() {
         return _received_messages;
     }
+
     void set_wait_to_transmit(bool wait) {
         _wait_to_transmit = wait;
     }
+
     bool get_wait_to_transmit() {
         return _wait_to_transmit;
     }
+
     bool should_transmit() {
         return (_transmitting_enabled && (!_wait_to_transmit || (_wait_to_transmit && _received_messages)));
     }
@@ -462,21 +470,21 @@ public:
      */
     void count_txbytes(unsigned n) {
         _bytes_tx += n;
-    };
+    }
 
     /**
      * Count bytes not transmitted because of errors
      */
     void count_txerrbytes(unsigned n) {
         _bytes_txerr += n;
-    };
+    }
 
     /**
      * Count received bytes
      */
     void count_rxbytes(unsigned n) {
         _bytes_rx += n;
-    };
+    }
 
     /**
      * Get the receive status of this MAVLink link
@@ -484,6 +492,7 @@ public:
     telemetry_status_s &telemetry_status() {
         return _tstatus;
     }
+
     void telemetry_status_updated() {
         _tstatus_updated = true;
     }
@@ -504,7 +513,7 @@ public:
 
     int get_socket_fd() {
         return _socket_fd;
-    };
+    }
 
 #if defined(MAVLINK_UDP)
     unsigned short get_network_port() {
@@ -547,8 +556,11 @@ public:
     int get_data_rate() {
         return _datarate;
     }
+
     void set_data_rate(int rate) {
-        if (rate > 0) { _datarate = rate; }
+        if (rate > 0) {
+            _datarate = rate;
+        }
     }
 
     unsigned get_main_loop_delay() const {
@@ -565,15 +577,19 @@ public:
     MavlinkULog *get_ulog_streaming() {
         return _mavlink_ulog;
     }
+
     void try_start_ulog_streaming(uint8_t target_system, uint8_t target_component) {
-        if (_mavlink_ulog) { return; }
+        if (_mavlink_ulog) {
+            return;
+        }
 
         _mavlink_ulog = MavlinkULog::try_start(_datarate, 0.7f, target_system, target_component);
     }
 
     const events::SendProtocol &get_events_protocol() const {
         return _events;
-    };
+    }
+
     bool ftp_enabled() const {
         return _ftp_on;
     }
@@ -581,6 +597,7 @@ public:
     bool hash_check_enabled() const {
         return _param_mav_hash_chk_en.get();
     }
+
     bool forward_heartbeats_enabled() const {
         return _param_mav_hb_forw_en.get();
     }
@@ -649,14 +666,14 @@ private:
     mavlink_status_t  _mavlink_status{};
 
     /* states */
-    bool _hil_enabled{false};       /**< Hardware In the Loop mode */
-    bool _is_usb_uart{false};       /**< Port is USB */
-    bool _wait_to_transmit{false};  /**< Wait to transmit until received messages. */
-    bool _received_messages{false}; /**< Whether we've received valid mavlink messages. */
+    bool _hil_enabled{false};                     /**< Hardware In the Loop mode */
+    bool _is_usb_uart{false};                     /**< Port is USB */
+    bool _wait_to_transmit{false};                /**< Wait to transmit until received messages. */
+    bool _received_messages{false};               /**< Whether we've received valid mavlink messages. */
 
     px4::atomic_bool _should_check_events{false}; /**< Events subscription: only one MAVLink instance should check */
 
-    unsigned _main_loop_delay{1000}; /**< mainloop delay, depends on data rate */
+    unsigned _main_loop_delay{1000};              /**< mainloop delay, depends on data rate */
 
     List<MavlinkStream *> _streams;
 

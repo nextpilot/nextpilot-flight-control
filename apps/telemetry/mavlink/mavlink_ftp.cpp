@@ -23,9 +23,9 @@
 #include "mavlink_tests/mavlink_ftp_test.h"
 
 #ifndef MAVLINK_FTP_UNIT_TEST
-#include "mavlink_main.h"
+#   include "mavlink_main.h"
 #else
-#include <mavlink.h>
+#   include <mavlink.h>
 #endif
 
 using namespace time_literals;
@@ -103,8 +103,7 @@ void MavlinkFTP::handle_message(const mavlink_message_t *msg) {
         PX4_DEBUG("FTP: received ftp protocol message target_system: %d target_component: %d, seq: %d",
                   ftp_request.target_system, ftp_request.target_component, msg->seq);
 
-        if ((ftp_request.target_system == _getServerSystemId() || ftp_request.target_system == 0) &&
-            (ftp_request.target_component == _getServerComponentId() || ftp_request.target_component == 0)) {
+        if ((ftp_request.target_system == _getServerSystemId() || ftp_request.target_system == 0) && (ftp_request.target_component == _getServerComponentId() || ftp_request.target_component == 0)) {
             _process_request(&ftp_request, msg->sysid, msg->compid);
         }
     }
@@ -238,7 +237,7 @@ out:
         payload->opcode     = kRspNak;
         payload->size       = 1;
 
-        if (_our_errno == EEXIST) {
+        if (_our_errno == -EEXIST) {
             errorCode = kErrFailFileExists;
 
         } else if (_our_errno == ENOENT && errorCode == kErrFailErrno) {
@@ -335,7 +334,8 @@ MavlinkFTP::_workList(PayloadHeader *payload) {
 
     PX4_DEBUG("readdir with offset: %d", requested_offset);
 
-    while (requested_offset-- > 0 && readdir(dp)) {}
+    while (requested_offset-- > 0 && readdir(dp)) {
+    }
 
     for (;;) {
         errno  = 0;
@@ -1059,8 +1059,8 @@ void MavlinkFTP::send() {
                 PX4_WARN("stream download: read fail");
 
             } else {
-                payload->size = bytes_read;
-                _session_info.stream_offset += bytes_read;
+                payload->size                           = bytes_read;
+                _session_info.stream_offset            += bytes_read;
                 _session_info.stream_chunk_transmitted += bytes_read;
             }
         }

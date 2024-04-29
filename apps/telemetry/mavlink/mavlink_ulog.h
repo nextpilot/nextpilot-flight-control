@@ -77,6 +77,7 @@ public:
     float current_data_rate() const {
         return _current_rate_factor;
     }
+
     float maximum_data_rate() const {
         return _max_rate_factor;
     }

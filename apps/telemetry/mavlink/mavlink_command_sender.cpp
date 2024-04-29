@@ -97,10 +97,12 @@ void MavlinkCommandSender::handle_mavlink_command_ack(const mavlink_command_ack_
 
     while (command_item_s *item = _commands.get_next()) {
         // Check if the incoming ack matches any of the commands that we have sent.
-        if (item->command.command == ack.command &&
-            (item->command.target_system == 0 || from_sysid == item->command.target_system) &&
-            (item->command.target_component == 0 || from_compid == item->command.target_component) &&
-            item->num_sent_per_channel[channel] != -1) {
+        if (item->command.command == ack.command
+            && (item->command.target_system == 0
+                || from_sysid == item->command.target_system)
+            && (item->command.target_component == 0
+                || from_compid == item->command.target_component)
+            && item->num_sent_per_channel[channel] != -1) {
             item->num_sent_per_channel[channel] = -2; // mark this as acknowledged
             break;
         }
@@ -155,8 +157,8 @@ void MavlinkCommandSender::check_timeout(mavlink_channel_t channel) {
                 max_sent = item->num_sent_per_channel[i];
             }
 
-            if ((item->num_sent_per_channel[i] != -1) &&
-                (item->num_sent_per_channel[i] < min_sent)) {
+            if ((item->num_sent_per_channel[i] != -1)
+                && (item->num_sent_per_channel[i] < min_sent)) {
                 min_sent = item->num_sent_per_channel[i];
             }
         }
@@ -172,8 +174,8 @@ void MavlinkCommandSender::check_timeout(mavlink_channel_t channel) {
                       max_sent,
                       channel);
 
-        } else if (item->num_sent_per_channel[channel] == max_sent &&
-                   min_sent == max_sent) {
+        } else if (item->num_sent_per_channel[channel] == max_sent
+                   && min_sent == max_sent) {
             // If the next retry would be above the needed retries anyway, we can
             // drop the item, and continue with other items.
             if (item->num_sent_per_channel[channel] + 1 > RETRIES) {

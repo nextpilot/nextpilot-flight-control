@@ -15,9 +15,9 @@
 #include <uORB/uORB.h>
 
 #ifdef __PX4_NUTTX
-#define LOG_DIR_LEN 64
+#   define LOG_DIR_LEN 64
 #else
-#define LOG_DIR_LEN 256
+#   define LOG_DIR_LEN 256
 #endif
 
 namespace nextpilot {
@@ -57,6 +57,6 @@ int check_free_space(const char *log_root_dir, int32_t max_log_dirs_to_keep, orb
  */
 bool get_log_time(struct tm *tt, int utc_offset_sec = 0, bool boot_time = false);
 
-}
-}
-} // namespace nextpilot::logger::util
+} // namespace util
+} // namespace logger
+} // namespace nextpilot

@@ -24,18 +24,18 @@
 #define MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
 /* use efficient approach, see mavlink_helpers.h */
-#define MAVLINK_SEND_UART_BYTES mavlink_send_uart_bytes
+#define MAVLINK_SEND_UART_BYTES    mavlink_send_uart_bytes
 
-#define MAVLINK_START_UART_SEND mavlink_start_uart_send
-#define MAVLINK_END_UART_SEND   mavlink_end_uart_send
+#define MAVLINK_START_UART_SEND    mavlink_start_uart_send
+#define MAVLINK_END_UART_SEND      mavlink_end_uart_send
 
 #define MAVLINK_GET_CHANNEL_BUFFER mavlink_get_channel_buffer
 #define MAVLINK_GET_CHANNEL_STATUS mavlink_get_channel_status
 
 #if !defined(CONSTRAINED_MEMORY)
-#define MAVLINK_COMM_NUM_BUFFERS 6
-#define MAVLINK_COMM_4           static_cast<mavlink_channel_t>(4)
-#define MAVLINK_COMM_5           static_cast<mavlink_channel_t>(5)
+#   define MAVLINK_COMM_NUM_BUFFERS 6
+#   define MAVLINK_COMM_4           static_cast<mavlink_channel_t>(4)
+#   define MAVLINK_COMM_5           static_cast<mavlink_channel_t>(5)
 #endif
 
 #include <mavlink_types.h>
@@ -71,7 +71,7 @@ extern mavlink_message_t *mavlink_get_channel_buffer(uint8_t chan);
 
 #include <mavlink.h>
 #if !MAVLINK_FTP_UNIT_TEST
-#include <uAvionix.h>
+#   include <uAvionix.h>
 #endif
 
 __END_DECLS

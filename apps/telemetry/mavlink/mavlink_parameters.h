@@ -30,8 +30,8 @@
 #include <drivers/drv_hrt.h>
 
 #if defined(CONFIG_MAVLINK_UAVCAN_PARAMETERS)
-#include <uORB/topics/uavcan_parameter_request.h>
-#include <uORB/topics/uavcan_parameter_value.h>
+#   include <uORB/topics/uavcan_parameter_request.h>
+#   include <uORB/topics/uavcan_parameter_value.h>
 #endif // CONFIG_MAVLINK_UAVCAN_PARAMETERS
 
 using namespace time_literals;

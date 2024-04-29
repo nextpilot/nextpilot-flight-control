@@ -21,9 +21,9 @@
 #include <drivers/drv_hrt.h>
 
 #ifndef MAVLINK_FTP_UNIT_TEST
-#include "mavlink_bridge_header.h"
+#   include "mavlink_bridge_header.h"
 #else
-#include <mavlink.h>
+#   include <mavlink.h>
 #endif
 
 class MavlinkFtpTest;
@@ -85,8 +85,8 @@ public:
         kCmdCalcFileCRC32,    ///< Calculate CRC32 for file at <path>
         kCmdBurstReadFile,    ///< Burst download session file
 
-        kRspAck = 128, ///< Ack response
-        kRspNak        ///< Nak response
+        kRspAck = 128,        ///< Ack response
+        kRspNak               ///< Nak response
     };
 
     /// @brief Error codes returned in Nak response PayloadHeader.data[0].
@@ -156,7 +156,8 @@ private:
         uint8_t  stream_target_component_id;
         unsigned stream_chunk_transmitted;
     };
-    struct SessionInfo _session_info {}; ///< Session info, fd=-1 for no active session
+
+    struct SessionInfo _session_info {};        ///< Session info, fd=-1 for no active session
 
     ReceiveMessageFunc_t _utRcvMsgFunc{};       ///< Unit test override for mavlink message sending
     void                *_worker_data{nullptr}; ///< Additional parameter to _utRcvMsgFunc;

@@ -20,9 +20,9 @@
 #include <termios.h>
 
 #ifdef CONFIG_NET
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <netutils/netlib.h>
+#   include <arpa/inet.h>
+#   include <netinet/in.h>
+#   include <netutils/netlib.h>
 #endif
 
 #include <containers/LockGuard.hpp>
@@ -39,18 +39,18 @@
 
 // Guard against MAVLink misconfiguration
 #ifndef MAVLINK_CRC_EXTRA
-#error MAVLINK_CRC_EXTRA has to be defined on PX4 systems
+#   error MAVLINK_CRC_EXTRA has to be defined on PX4 systems
 #endif
 
 // Guard against flow control misconfiguration
 #if defined(CRTSCTS) && defined(__PX4_NUTTX) && (CRTSCTS != (CRTS_IFLOW | CCTS_OFLOW))
-#error The non-standard CRTSCTS define is incorrect. Fix this in the OS or replace with (CRTS_IFLOW | CCTS_OFLOW)
+#   error The non-standard CRTSCTS define is incorrect. Fix this in the OS or replace with (CRTS_IFLOW | CCTS_OFLOW)
 #endif
 
 #ifdef CONFIG_NET
-#define MAVLINK_NET_ADDED_STACK PX4_STACK_ADJUSTED(350)
+#   define MAVLINK_NET_ADDED_STACK PX4_STACK_ADJUSTED(350)
 #else
-#define MAVLINK_NET_ADDED_STACK 0
+#   define MAVLINK_NET_ADDED_STACK 0
 #endif
 
 #define FLOW_CONTROL_DISABLE_THRESHOLD 40       ///< picked so that some messages still would fit it.
@@ -65,15 +65,19 @@ Mavlink *mavlink_module_instances[MAVLINK_COMM_NUM_BUFFERS]{};
 void mavlink_send_uart_bytes(mavlink_channel_t chan, const uint8_t *ch, int length) {
     mavlink_module_instances[chan]->send_bytes(ch, length);
 }
+
 void mavlink_start_uart_send(mavlink_channel_t chan, int length) {
     mavlink_module_instances[chan]->send_start(length);
 }
+
 void mavlink_end_uart_send(mavlink_channel_t chan, int length) {
     mavlink_module_instances[chan]->send_finish();
 }
+
 mavlink_status_t *mavlink_get_channel_status(uint8_t channel) {
     return mavlink_module_instances[channel]->get_status();
 }
+
 mavlink_message_t *mavlink_get_channel_buffer(uint8_t channel) {
     return mavlink_module_instances[channel]->get_buffer();
 }
@@ -257,15 +261,17 @@ bool Mavlink::set_instance_id() {
 }
 
 void Mavlink::set_proto_version(unsigned version) {
-    if ((version == 1 || version == 0) &&
-        ((_protocol_version_switch == 0) || (_protocol_version_switch == 1))) {
+    if ((version == 1 || version == 0)
+        && ((_protocol_version_switch == 0)
+            || (_protocol_version_switch == 1))) {
         get_status()->flags |= MAVLINK_STATUS_FLAG_OUT_MAVLINK1;
-        _protocol_version = 1;
+        _protocol_version    = 1;
 
-    } else if (version == 2 &&
-               ((_protocol_version_switch == 0) || (_protocol_version_switch == 2))) {
+    } else if (version == 2
+               && ((_protocol_version_switch == 0)
+                   || (_protocol_version_switch == 2))) {
         get_status()->flags &= ~(MAVLINK_STATUS_FLAG_OUT_MAVLINK1);
-        _protocol_version = 2;
+        _protocol_version    = 2;
     }
 }
 
@@ -452,84 +458,136 @@ void Mavlink::forward_message(const mavlink_message_t *msg, Mavlink *self) {
 
 int Mavlink::mavlink_open_uart(const int baud, const char *uart_name, const FLOW_CONTROL_MODE flow_control) {
 #ifndef B460800
-#define B460800 460800
+#   define B460800 460800
 #endif
 
 #ifndef B500000
-#define B500000 500000
+#   define B500000 500000
 #endif
 
 #ifndef B921600
-#define B921600 921600
+#   define B921600 921600
 #endif
 
 #ifndef B1000000
-#define B1000000 1000000
+#   define B1000000 1000000
 #endif
 
     /* process baud rate */
     int speed;
 
     switch (baud) {
-    case 0: speed = B0; break;
+    case 0:
+        speed = B0;
+        break;
 
-    case 50: speed = B50; break;
+    case 50:
+        speed = B50;
+        break;
 
-    case 75: speed = B75; break;
+    case 75:
+        speed = B75;
+        break;
 
-    case 110: speed = B110; break;
+    case 110:
+        speed = B110;
+        break;
 
-    case 134: speed = B134; break;
+    case 134:
+        speed = B134;
+        break;
 
-    case 150: speed = B150; break;
+    case 150:
+        speed = B150;
+        break;
 
-    case 200: speed = B200; break;
+    case 200:
+        speed = B200;
+        break;
 
-    case 300: speed = B300; break;
+    case 300:
+        speed = B300;
+        break;
 
-    case 600: speed = B600; break;
+    case 600:
+        speed = B600;
+        break;
 
-    case 1200: speed = B1200; break;
+    case 1200:
+        speed = B1200;
+        break;
 
-    case 1800: speed = B1800; break;
+    case 1800:
+        speed = B1800;
+        break;
 
-    case 2400: speed = B2400; break;
+    case 2400:
+        speed = B2400;
+        break;
 
-    case 4800: speed = B4800; break;
+    case 4800:
+        speed = B4800;
+        break;
 
-    case 9600: speed = B9600; break;
+    case 9600:
+        speed = B9600;
+        break;
 
-    case 19200: speed = B19200; break;
+    case 19200:
+        speed = B19200;
+        break;
 
-    case 38400: speed = B38400; break;
+    case 38400:
+        speed = B38400;
+        break;
 
-    case 57600: speed = B57600; break;
+    case 57600:
+        speed = B57600;
+        break;
 
-    case 115200: speed = B115200; break;
+    case 115200:
+        speed = B115200;
+        break;
 
-    case 230400: speed = B230400; break;
+    case 230400:
+        speed = B230400;
+        break;
 
-    case 460800: speed = B460800; break;
+    case 460800:
+        speed = B460800;
+        break;
 
-    case 500000: speed = B500000; break;
+    case 500000:
+        speed = B500000;
+        break;
 
-    case 921600: speed = B921600; break;
+    case 921600:
+        speed = B921600;
+        break;
 
-    case 1000000: speed = B1000000; break;
+    case 1000000:
+        speed = B1000000;
+        break;
 
 #ifdef B1500000
 
-    case 1500000: speed = B1500000; break;
+    case 1500000:
+        speed = B1500000;
+        break;
 #endif
 
 #ifdef B2000000
 
-    case 2000000: speed = B2000000; break;
+    case 2000000:
+        speed = B2000000;
+        break;
 #endif
 
 #ifdef B3000000
 
-    case 3000000: speed = B3000000; break;
+    case 3000000:
+        speed = B3000000;
+        break;
 #endif
 
     default:
@@ -649,11 +707,11 @@ Mavlink::get_free_tx_buf() {
 
     // if we are using network sockets, return max length of one packet
     if (get_protocol() == Protocol::UDP) {
-#if defined(__PX4_POSIX)
+#   if defined(__PX4_POSIX)
         return 1500 * 10; // Speed up FTP transfers
-#else
+#   else
         return 1500;
-#endif /* defined(__PX4_POSIX) */
+#   endif                 /* defined(__PX4_POSIX) */
 
     } else
 #endif // MAVLINK_UDP
@@ -672,9 +730,9 @@ Mavlink::get_free_tx_buf() {
              * if no successful write since a defined time
              * and if the last try was not the last successful write
              */
-            if (_last_write_try_time != 0 &&
-                hrt_elapsed_time(&_last_write_success_time) > 500_ms &&
-                _last_write_success_time != _last_write_try_time) {
+            if (_last_write_try_time != 0
+                && hrt_elapsed_time(&_last_write_success_time) > 500_ms
+                && _last_write_success_time != _last_write_try_time) {
                 setup_flow_control(FLOW_CONTROL_OFF);
             }
         }
@@ -718,18 +776,18 @@ void Mavlink::send_finish() {
 
     else if (get_protocol() == Protocol::UDP) {
 
-#if defined(CONFIG_NET)
+#   if defined(CONFIG_NET)
 
         if (_src_addr_initialized) {
-#endif // CONFIG_NET
+#   endif // CONFIG_NET
             ret = sendto(_socket_fd, _buf, _buf_fill, 0, (struct sockaddr *)&_src_addr, sizeof(_src_addr));
-#if defined(CONFIG_NET)
+#   if defined(CONFIG_NET)
         }
 
-#endif // CONFIG_NET
+#   endif // CONFIG_NET
 
-        if ((_mode != MAVLINK_MODE_ONBOARD) && broadcast_enabled() &&
-            (!get_client_source_initialized() || !is_gcs_connected())) {
+        if ((_mode != MAVLINK_MODE_ONBOARD) && broadcast_enabled()
+            && (!get_client_source_initialized() || !is_gcs_connected())) {
             if (!_broadcast_address_found) {
                 find_broadcast_address();
             }
@@ -783,11 +841,11 @@ void Mavlink::find_broadcast_address() {
     struct ifconf ifconf;
     int           ret;
 
-#if defined(__APPLE__) && defined(__MACH__) || defined(__CYGWIN__)
+#   if defined(__APPLE__) && defined(__MACH__) || defined(__CYGWIN__)
     // On Mac, we can't determine the required buffer
     // size in advance, so we just use what tends to work.
     ifconf.ifc_len = 1024;
-#else
+#   else
     // On Linux, we can determine the required size of the
     // buffer first by providing NULL to ifc_req.
     ifconf.ifc_req = nullptr;
@@ -800,7 +858,7 @@ void Mavlink::find_broadcast_address() {
         return;
     }
 
-#endif
+#   endif
 
     PX4_DEBUG("need to allocate %d bytes", ifconf.ifc_len);
 
@@ -830,18 +888,16 @@ void Mavlink::find_broadcast_address() {
     // `continue` and `break`.
     for (;
          offset < (int)ifconf.ifc_len;
-#if defined(__APPLE__) && defined(__MACH__)
+#   if defined(__APPLE__) && defined(__MACH__)
          // On Mac, to get to next entry in buffer, jump by the size of
          // the interface name size plus whatever is greater, either the
          // sizeof sockaddr or ifr_addr.sa_len.
-         offset += IF_NAMESIZE + (sizeof(struct sockaddr) > cur_ifreq->ifr_addr.sa_len ?
-                                      sizeof(struct sockaddr) :
-                                      cur_ifreq->ifr_addr.sa_len)
-#else
+         offset += IF_NAMESIZE + (sizeof(struct sockaddr) > cur_ifreq->ifr_addr.sa_len ? sizeof(struct sockaddr) : cur_ifreq->ifr_addr.sa_len)
+#   else
          // On Linux, it's much easier to traverse the buffer, every entry
          // has the constant length.
          offset += sizeof(struct ifreq)
-#endif
+#   endif
     ) {
         // Point to next network interface in buffer.
         cur_ifreq = (struct ifreq *)&(((uint8_t *)ifconf.ifc_req)[offset]);
@@ -849,10 +905,10 @@ void Mavlink::find_broadcast_address() {
         PX4_DEBUG("looking at %s", cur_ifreq->ifr_name);
 
         // ignore loopback network
-        if (strcmp(cur_ifreq->ifr_name, "lo") == 0 ||
-            strcmp(cur_ifreq->ifr_name, "lo0") == 0 ||
-            strcmp(cur_ifreq->ifr_name, "lo1") == 0 ||
-            strcmp(cur_ifreq->ifr_name, "lo2") == 0) {
+        if (strcmp(cur_ifreq->ifr_name, "lo") == 0
+            || strcmp(cur_ifreq->ifr_name, "lo0") == 0
+            || strcmp(cur_ifreq->ifr_name, "lo1") == 0
+            || strcmp(cur_ifreq->ifr_name, "lo2") == 0) {
             PX4_DEBUG("skipping loopback");
             continue;
         }
@@ -873,7 +929,9 @@ void Mavlink::find_broadcast_address() {
             const struct in_addr netmask_addr   = query_netmask_addr(_socket_fd, *cur_ifreq);
             const struct in_addr broadcast_addr = compute_broadcast_addr(sin_addr, netmask_addr);
 
-            if (_interface_name && strstr(cur_ifreq->ifr_name, _interface_name) == nullptr) { continue; }
+            if (_interface_name && strstr(cur_ifreq->ifr_name, _interface_name) == nullptr) {
+                continue;
+            }
 
             PX4_INFO("using network interface %s, IP: %s", cur_ifreq->ifr_name, inet_ntoa(sin_addr));
             PX4_INFO("with netmask: %s", inet_ntoa(netmask_addr));
@@ -913,6 +971,7 @@ void Mavlink::find_broadcast_address() {
 
 const in_addr Mavlink::query_netmask_addr(const int socket_fd, const ifreq &ifreq) {
     struct ifreq netmask_ifreq {};
+
     strncpy(netmask_ifreq.ifr_name, ifreq.ifr_name, IF_NAMESIZE);
     ioctl(socket_fd, SIOCGIFNETMASK, &netmask_ifreq);
 
@@ -988,23 +1047,23 @@ bool Mavlink::send_autopilot_capabilities() {
     if (status_sub.copy(&status)) {
         mavlink_autopilot_version_t msg{};
 
-        msg.capabilities = MAV_PROTOCOL_CAPABILITY_MISSION_FLOAT;
-        msg.capabilities |= MAV_PROTOCOL_CAPABILITY_MISSION_INT;
-        msg.capabilities |= MAV_PROTOCOL_CAPABILITY_PARAM_FLOAT;
-        msg.capabilities |= MAV_PROTOCOL_CAPABILITY_COMMAND_INT;
-        msg.capabilities |= MAV_PROTOCOL_CAPABILITY_PARAM_ENCODE_BYTEWISE;
-        msg.capabilities |= MAV_PROTOCOL_CAPABILITY_FTP;
-        msg.capabilities |= MAV_PROTOCOL_CAPABILITY_SET_ATTITUDE_TARGET;
-        msg.capabilities |= MAV_PROTOCOL_CAPABILITY_SET_POSITION_TARGET_LOCAL_NED;
-        msg.capabilities |= MAV_PROTOCOL_CAPABILITY_SET_ACTUATOR_TARGET;
-        msg.capabilities |= MAV_PROTOCOL_CAPABILITY_FLIGHT_TERMINATION;
-        msg.capabilities |= MAV_PROTOCOL_CAPABILITY_MAVLINK2;
-        msg.capabilities |= MAV_PROTOCOL_CAPABILITY_MISSION_FENCE;
-        msg.capabilities |= MAV_PROTOCOL_CAPABILITY_MISSION_RALLY;
-        msg.flight_sw_version     = px4_firmware_version();
-        msg.middleware_sw_version = px4_firmware_version();
-        msg.os_sw_version         = px4_os_version();
-        msg.board_version         = px4_board_version();
+        msg.capabilities           = MAV_PROTOCOL_CAPABILITY_MISSION_FLOAT;
+        msg.capabilities          |= MAV_PROTOCOL_CAPABILITY_MISSION_INT;
+        msg.capabilities          |= MAV_PROTOCOL_CAPABILITY_PARAM_FLOAT;
+        msg.capabilities          |= MAV_PROTOCOL_CAPABILITY_COMMAND_INT;
+        msg.capabilities          |= MAV_PROTOCOL_CAPABILITY_PARAM_ENCODE_BYTEWISE;
+        msg.capabilities          |= MAV_PROTOCOL_CAPABILITY_FTP;
+        msg.capabilities          |= MAV_PROTOCOL_CAPABILITY_SET_ATTITUDE_TARGET;
+        msg.capabilities          |= MAV_PROTOCOL_CAPABILITY_SET_POSITION_TARGET_LOCAL_NED;
+        msg.capabilities          |= MAV_PROTOCOL_CAPABILITY_SET_ACTUATOR_TARGET;
+        msg.capabilities          |= MAV_PROTOCOL_CAPABILITY_FLIGHT_TERMINATION;
+        msg.capabilities          |= MAV_PROTOCOL_CAPABILITY_MAVLINK2;
+        msg.capabilities          |= MAV_PROTOCOL_CAPABILITY_MISSION_FENCE;
+        msg.capabilities          |= MAV_PROTOCOL_CAPABILITY_MISSION_RALLY;
+        msg.flight_sw_version      = px4_firmware_version();
+        msg.middleware_sw_version  = px4_firmware_version();
+        msg.os_sw_version          = px4_os_version();
+        msg.board_version          = px4_board_version();
         /* use only first 5 bytes of git hash for firmware version */
         const uint64_t   fw_git_version_binary    = px4_firmware_version_binary() & 0xFFFFFFFFFF000000;
         const uint64_t   fw_vendor_version        = px4_firmware_vendor_version() >> 8;
@@ -1041,7 +1100,7 @@ bool Mavlink::send_autopilot_capabilities() {
         // default system ID is 1.
         //
         // Note that the UUID show in `ver` will still be the same for all instances.
-        msg.uid += mavlink_system.sysid - 1;
+        msg.uid     += mavlink_system.sysid - 1;
         msg.uid2[0] += mavlink_system.sysid - 1;
 #endif /* CONFIG_ARCH_BOARD_PX4_SITL */
         mavlink_msg_autopilot_version_send_struct(get_channel(), &msg);
@@ -1809,7 +1868,7 @@ int Mavlink::task_main(int argc, char *argv[]) {
             _mav_broadcast = BROADCAST_MODE_ON;
             break;
 
-#if defined(CONFIG_NET_IGMP) && defined(CONFIG_NET_ROUTE)
+#   if defined(CONFIG_NET_IGMP) && defined(CONFIG_NET_ROUTE)
 
         // multicast
         case 'c':
@@ -1825,13 +1884,13 @@ int Mavlink::task_main(int argc, char *argv[]) {
             }
 
             break;
-#else
+#   else
 
         case 'c':
             PX4_ERR("Multicast option is not supported on this platform");
             err_flag = true;
             break;
-#endif
+#   endif
 #else
 
         case 'p':
@@ -2147,8 +2206,7 @@ int Mavlink::task_main(int argc, char *argv[]) {
                 set_hil_enabled(vehicle_status.hil_state == vehicle_status_s::HIL_STATE_ON);
 
                 if (_mode == MAVLINK_MODE_IRIDIUM) {
-                    if (_transmitting_enabled && vehicle_status.high_latency_data_link_lost &&
-                        !_transmitting_enabled_commanded && _first_heartbeat_sent) {
+                    if (_transmitting_enabled && vehicle_status.high_latency_data_link_lost && !_transmitting_enabled_commanded && _first_heartbeat_sent) {
                         _transmitting_enabled = false;
                         mavlink_log_info(&_mavlink_log_pub, "Disable transmitting with IRIDIUM mavlink on device %s\t", _device_name);
                         events::send<int8_t>(events::ID("mavlink_iridium_disable"), events::Log::Info,
@@ -2178,8 +2236,8 @@ int Mavlink::task_main(int argc, char *argv[]) {
                         PX4_ERR("vehicle_command lost, generation %u -> %u", last_generation, _vehicle_command_sub.get_last_generation());
                     }
 
-                    if ((vehicle_cmd.command == vehicle_command_s::VEHICLE_CMD_CONTROL_HIGH_LATENCY) &&
-                        _mode == MAVLINK_MODE_IRIDIUM) {
+                    if ((vehicle_cmd.command == vehicle_command_s::VEHICLE_CMD_CONTROL_HIGH_LATENCY)
+                        && _mode == MAVLINK_MODE_IRIDIUM) {
                         if (vehicle_cmd.param1 > 0.5f) {
                             if (!_transmitting_enabled) {
                                 mavlink_log_info(&_mavlink_log_pub, "Enable transmitting with IRIDIUM mavlink on device %s by command\t",
@@ -2747,17 +2805,17 @@ void Mavlink::display_status() {
         printf("UDP (%hu, remote port: %hu)\n", _network_port, _remote_port);
         printf("\tBroadcast enabled: %s\n",
                broadcast_enabled() ? "YES" : "NO");
-#if defined(CONFIG_NET_IGMP) && defined(CONFIG_NET_ROUTE)
+#   if defined(CONFIG_NET_IGMP) && defined(CONFIG_NET_ROUTE)
         printf("\tMulticast enabled: %s\n",
                multicast_enabled() ? "YES" : "NO");
-#endif
-#ifdef __PX4_POSIX
+#   endif
+#   ifdef __PX4_POSIX
 
         if (get_client_source_initialized()) {
             printf("\tpartner IP: %s\n", inet_ntoa(get_client_source_address().sin_addr));
         }
 
-#endif
+#   endif
         break;
 #endif // MAVLINK_UDP
 
@@ -3042,8 +3100,8 @@ void Mavlink::set_boot_complete() {
     LockGuard lg{mavlink_module_mutex};
 
     for (Mavlink *inst : mavlink_module_instances) {
-        if (inst && (inst->get_mode() != MAVLINK_MODE_ONBOARD) &&
-            !inst->broadcast_enabled() && inst->get_protocol() == Protocol::UDP) {
+        if (inst && (inst->get_mode() != MAVLINK_MODE_ONBOARD)
+            && !inst->broadcast_enabled() && inst->get_protocol() == Protocol::UDP) {
             PX4_INFO("MAVLink only on localhost (set param MAV_{i}_BROADCAST = 1 to enable network)");
         }
     }

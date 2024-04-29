@@ -14,7 +14,7 @@
 // #include <px4_platform_common/tasks.h>
 
 #if defined(__PX4_NUTTX) && !defined(CONFIG_SCHED_INSTRUMENTATION)
-#error watchdog support requires CONFIG_SCHED_INSTRUMENTATION
+#   error watchdog support requires CONFIG_SCHED_INSTRUMENTATION
 #endif
 
 using namespace time_literals;
@@ -68,17 +68,18 @@ bool watchdog_update(watchdog_data_t &watchdog_data, bool semaphore_value_satura
                 // update the timestamp if not ready to run or if transitioned into ready to run
                 uint8_t current_state = log_writer_task.tcb->task_state;
 
-                if (current_state != TSTATE_TASK_READYTORUN ||
-                    (watchdog_data.last_state != TSTATE_TASK_READYTORUN && current_state == TSTATE_TASK_READYTORUN)) {
+                if (current_state != TSTATE_TASK_READYTORUN
+                    || (watchdog_data.last_state != TSTATE_TASK_READYTORUN
+                        && current_state == TSTATE_TASK_READYTORUN)) {
                     watchdog_data.ready_to_run_timestamp = now;
                 }
 
                 watchdog_data.last_state = current_state;
 
-#if 0 // for debugging
-      // test code that prints the maximum time in ready state.
-      // Note: we are in IRQ context, and thus are strictly speaking not allowed to use PX4_ERR -
-      // we do it anyway since it's only used for debugging.
+#   if 0 // for debugging                                                                            \
+         // test code that prints the maximum time in ready state.                                   \
+         // Note: we are in IRQ context, and thus are strictly speaking not allowed to use PX4_ERR - \
+         // we do it anyway since it's only used for debugging.
 				static uint64_t max_time = 0;
 
 				if (now - watchdog_data.ready_to_run_timestamp > max_time) {
@@ -93,7 +94,7 @@ bool watchdog_update(watchdog_data_t &watchdog_data, bool semaphore_value_satura
 					max_time = 0;
 				}
 
-#endif
+#   endif
 
                 if (!semaphore_value_saturated) {
                     watchdog_data.sem_counter_saturated_start = now;
@@ -158,8 +159,7 @@ void watchdog_initialize(const pid_t pid_logger_main, const pthread_t writer_thr
 
     sched_unlock();
 
-    if (watchdog_data.logger_writer_task_index == -1 ||
-        watchdog_data.logger_main_task_index == -1) {
+    if (watchdog_data.logger_writer_task_index == -1 || watchdog_data.logger_main_task_index == -1) {
         // If we land here it means the NuttX implementation changed
         // and one of our assumptions is not valid anymore
         PX4_ERR("watchdog init failed");
@@ -168,5 +168,5 @@ void watchdog_initialize(const pid_t pid_logger_main, const pthread_t writer_thr
 #endif /* __PX4_NUTTX */
 }
 
-}
-} // namespace nextpilot::logger
+} // namespace logger
+} // namespace nextpilot

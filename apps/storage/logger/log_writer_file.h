@@ -16,6 +16,7 @@
 #include <pthread.h>
 #include <hrtimer.h>
 #include <perf/perf_counter.h>
+
 // #include <px4_platform_common/crypto.h>
 
 namespace nextpilot {
@@ -165,16 +166,18 @@ private:
         inline void fsync() const;
 
         void mark_read(size_t n) {
-            _count -= n;
+            _count         -= n;
             _total_written += n;
         }
 
         size_t total_written() const {
             return _total_written;
         }
+
         size_t buffer_size() const {
             return _buffer_size;
         }
+
         size_t count() const {
             return _count;
         }
@@ -210,5 +213,5 @@ private:
 #endif
 };
 
-}
-} // namespace nextpilot::logger
+} // namespace logger
+} // namespace nextpilot

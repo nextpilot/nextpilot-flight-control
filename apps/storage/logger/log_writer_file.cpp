@@ -19,7 +19,7 @@
 #include <ulog/log.h>
 
 #ifdef __PX4_NUTTX
-#include <systemlib/hardfault_log.h>
+#   include <systemlib/hardfault_log.h>
 #endif /* __PX4_NUTTX */
 
 using namespace time_literals;
@@ -88,9 +88,8 @@ bool LogWriterFile::init_logfile_encryption(const char *filename) {
     if (!rsa_crypto.get_encrypted_key(_key_idx,
                                       NULL,
                                       &key_size,
-                                      _exchange_key_idx) ||
-        !_crypto.get_nonce(NULL, &nonce_size) ||
-        key_size == 0) {
+                                      _exchange_key_idx)
+        || !_crypto.get_nonce(NULL, &nonce_size) || key_size == 0) {
         rsa_crypto.close();
         return false;
     }
@@ -98,14 +97,7 @@ bool LogWriterFile::init_logfile_encryption(const char *filename) {
     /* Allocate space and get key + nonce */
     uint8_t *key = (uint8_t *)malloc(key_size + nonce_size);
 
-    if (!key ||
-        !rsa_crypto.get_encrypted_key(
-            _key_idx,
-            key,
-            &key_size,
-            _exchange_key_idx) ||
-        !_crypto.get_nonce(
-            key + key_size, &nonce_size)) {
+    if (!key || !rsa_crypto.get_encrypted_key(_key_idx, key, &key_size, _exchange_key_idx) || !_crypto.get_nonce(key + key_size, &nonce_size)) {
         PX4_ERR("Can't get & encrypt the key");
         free(key);
         rsa_crypto.close();
@@ -531,11 +523,14 @@ int LogWriterFile::write(LogType type, void *ptr, size_t size, uint64_t dropout_
 
 const char *log_type_str(LogType type) {
     switch (type) {
-    case LogType::Full: return "full";
+    case LogType::Full:
+        return "full";
 
-    case LogType::Mission: return "mission";
+    case LogType::Mission:
+        return "mission";
 
-    case LogType::Count: break;
+    case LogType::Count:
+        break;
     }
 
     return "unknown";
@@ -576,7 +571,7 @@ void LogWriterFile::LogFileBuffer::write_no_check(void *ptr, size_t size) {
     size_t p = size - n; // number of bytes to write
 
     memcpy(&(_buffer[_head]), &(buffer_c[n]), p);
-    _head = (_head + p) % _buffer_size;
+    _head   = (_head + p) % _buffer_size;
     _count += size;
 }
 
@@ -586,8 +581,8 @@ size_t LogWriterFile::LogFileBuffer::get_read_ptr(void **ptr, bool *is_part) {
 
     if (read_ptr < 0) {
         read_ptr += _buffer_size;
-        *ptr     = &_buffer[read_ptr];
-        *is_part = true;
+        *ptr      = &_buffer[read_ptr];
+        *is_part  = true;
         return _buffer_size - read_ptr;
 
     } else {
@@ -663,5 +658,5 @@ void LogWriterFile::LogFileBuffer::reset() {
     _fd    = -1;
 }
 
-}
-} // namespace nextpilot::logger
+} // namespace logger
+} // namespace nextpilot

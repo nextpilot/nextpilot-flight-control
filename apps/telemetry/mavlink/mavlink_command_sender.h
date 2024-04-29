@@ -86,7 +86,7 @@ private:
 #elif MAVLINK_COMM_NUM_BUFFERS == 6
         int8_t num_sent_per_channel[MAVLINK_COMM_NUM_BUFFERS]{-1, -1, -1, -1, -1, -1};
 #else
-#error Unknown number of MAVLINK_COMM_NUM_BUFFERS
+#   error Unknown number of MAVLINK_COMM_NUM_BUFFERS
 #endif
     };
 

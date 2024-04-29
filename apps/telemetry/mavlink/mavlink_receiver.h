@@ -89,10 +89,10 @@
 #include <uORB/topics/vehicle_trajectory_waypoint.h>
 
 #if !defined(CONSTRAINED_FLASH)
-#include <uORB/topics/debug_array.h>
-#include <uORB/topics/debug_key_value.h>
-#include <uORB/topics/debug_value.h>
-#include <uORB/topics/debug_vect.h>
+#   include <uORB/topics/debug_array.h>
+#   include <uORB/topics/debug_key_value.h>
+#   include <uORB/topics/debug_value.h>
+#   include <uORB/topics/debug_vect.h>
 #endif // !CONSTRAINED_FLASH
 
 using namespace time_literals;
@@ -108,9 +108,11 @@ public:
     void stop();
 
     bool component_was_seen(int system_id, int component_id);
+
     void enable_message_statistics() {
         _message_statistics_enabled = true;
     }
+
     void print_detailed_rx_stats() const;
 
     void request_stop() {
@@ -235,6 +237,7 @@ private:
     orb_advert_t _mavlink_log_pub{nullptr};
 
     static constexpr unsigned MAX_REMOTE_COMPONENTS{16};
+
     struct ComponentState {
         uint32_t received_messages{0};
         uint32_t missed_messages{0};
@@ -242,6 +245,7 @@ private:
         uint8_t  component_id{0};
         uint8_t  last_sequence{0};
     };
+
     ComponentState _component_states[MAX_REMOTE_COMPONENTS]{};
     unsigned       _component_states_count{0};
     bool           _warned_component_states_full_once{false};
@@ -249,6 +253,7 @@ private:
     bool _message_statistics_enabled{false};
 #if !defined(CONSTRAINED_FLASH)
     static constexpr int MAX_MSG_STAT_SLOTS{16};
+
     struct ReceivedMessageStats {
         float    avg_rate_hz{0.f}; // average rate
         uint32_t last_time_received_ms{0};
@@ -256,8 +261,9 @@ private:
         uint8_t  system_id{0};
         uint8_t  component_id{0};
     };
+
     ReceivedMessageStats *_received_msg_stats{nullptr};
-#endif // !CONSTRAINED_FLASH
+#endif                                   // !CONSTRAINED_FLASH
 
     uint64_t _total_received_counter{0}; ///< The total number of successfully received messages
     uint64_t _total_lost_counter{0};     ///< Total messages lost during transmission.
@@ -341,6 +347,7 @@ private:
         BARO       = 0b1101000000000,
         DIFF_PRESS = 0b10000000000
     };
+
     PX4Accelerometer *_px4_accel{nullptr};
     PX4Gyroscope     *_px4_gyro{nullptr};
     PX4Magnetometer  *_px4_mag{nullptr};

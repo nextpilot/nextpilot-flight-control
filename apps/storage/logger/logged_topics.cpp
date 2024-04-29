@@ -8,6 +8,9 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "logger.topics"
+#define LOG_LVL _LOG_LVL_INFO
+
 #include "logged_topics.h"
 #include "messages.h"
 #include <param.h>
@@ -459,8 +462,7 @@ bool LoggedTopics::add_topic(const char *name, uint16_t interval_ms, uint8_t ins
 
             // check if already added: if so, only update the interval
             for (int j = 0; j < _subscriptions.count; ++j) {
-                if (_subscriptions.sub[j].id == static_cast<ORB_ID>(topics[i]->o_id) &&
-                    _subscriptions.sub[j].instance == instance) {
+                if (_subscriptions.sub[j].id == static_cast<ORB_ID>(topics[i]->o_id) && _subscriptions.sub[j].instance == instance) {
                     PX4_DEBUG("logging topic %s(%" PRIu8 "), interval: %" PRIu16 ", already added, only setting interval",
                               topics[i]->o_name, instance, interval_ms);
 
