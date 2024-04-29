@@ -8,6 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "airspeed_selector"
+
 #include "AirspeedValidator.hpp"
 
 #include <hrtimer.h>
@@ -671,3 +673,13 @@ and also publishes those.
 extern "C" __EXPORT int airspeed_selector_main(int argc, char *argv[]) {
     return AirspeedModule::main(argc, argv);
 }
+
+MSH_CMD_EXPORT_ALIAS(airspeed_selector_main, airspeed_selector, airspeed selector);
+
+int airspeed_selector_start() {
+    const char *argv[] = {"airspeed_selector", "start"};
+    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    return airspeed_selector_main(argc, (char **)argv);
+}
+
+INIT_APP_EXPORT(airspeed_selector_start);

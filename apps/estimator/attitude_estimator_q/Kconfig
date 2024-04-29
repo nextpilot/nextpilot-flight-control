@@ -7,6 +7,6 @@ menuconfig INS_USING_ATTITUDE_ESTIMATOR_Q
 # menuconfig USER_ATTITUDE_ESTIMATOR_Q
 # 	bool "attitude_estimator_q running as userspace module"
 # 	default n
-# 	depends on BOARD_PROTECTED && MODULES_ATTITUDE_ESTIMATOR_Q
+# 	depends on BOARD_PROTECTED && INS_USING_ATTITUDE_ESTIMATOR_Q
 # 	---help---
 # 		Put attitude_estimator_q in userspace memory

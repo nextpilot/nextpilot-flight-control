@@ -1,4 +1,4 @@
-menuconfig MODULES_LANDING_TARGET_ESTIMATOR
+menuconfig FCS_USING_LANDING_TARGET_ESTIMATOR
 	bool "landing_target_estimator"
 	default n
 	---help---
@@ -7,6 +7,6 @@ menuconfig MODULES_LANDING_TARGET_ESTIMATOR
 menuconfig USER_LANDING_TARGET_ESTIMATOR
 	bool "landing_target_estimator running as userspace module"
 	default y
-	depends on BOARD_PROTECTED && MODULES_LANDING_TARGET_ESTIMATOR
+	depends on BOARD_PROTECTED && FCS_USING_LANDING_TARGET_ESTIMATOR
 	---help---
 		Put landing_target_estimator in userspace memory

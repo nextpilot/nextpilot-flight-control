@@ -46,7 +46,11 @@
 /* Nextpilot Estimator Config */
 
 #define INS_USING_AIRSPEED_SELECTOR
-#define MODULES_MAG_BIAS_ESTIMATOR
+#define INS_USING_ATTITUDE_ESTIMATOR_Q
+#define INS_USING_GYRO_CALIBRATION
+#define INS_USING_LOCAL_POSITION_ESTIMATOR
+#define INS_USING_MAG_BIAS_ESTIMATOR
+#define INS_USING_TEMPERATURE_COMPENSATION
 /* end of Nextpilot Estimator Config */
 
 /* Nextpilot Libraries Config */

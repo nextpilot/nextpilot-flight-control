@@ -8,6 +8,6 @@ menuconfig INS_USING_AIRSPEED_SELECTOR
 # menuconfig USER_AIRSPEED_SELECTOR
 # 	bool "airspeed_selector running as userspace module"
 # 	default y
-# 	depends on BOARD_PROTECTED && MODULES_AIRSPEED_SELECTOR
+# 	depends on BOARD_PROTECTED && INS_USING_AIRSPEED_SELECTOR
 # 	---help---
 # 		Put airspeed_selector in userspace memory
