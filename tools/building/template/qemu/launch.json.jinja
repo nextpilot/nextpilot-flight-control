@@ -11,15 +11,15 @@
                     "text": "cd ${workspaceRoot}"
                 },
                 {
-                    "text": "file {{ TARGET_FILE }}"
+                    "text": "file {{ prj.TARGET_FILE }}"
                 },
                 {
                     "text": "break main"
                 }
             ],
-            "program": "${workspaceRoot}/{{ TARGET_FILE }}",
+            "program": "${workspaceRoot}/{{ prj.TARGET_FILE }}",
             "MIMode": "gdb",
-            "miDebuggerPath": "{{ RTT_ENV_ROOT }}/tools/gnu_gcc/arm_gcc/mingw/bin/arm-none-eabi-gdb.exe",
+            "miDebuggerPath": "{{ env.GCC_EXEC_PATH }}/arm-none-eabi-gdb.exe",
             "miDebuggerServerAddress": "localhost:1234",
             "servertype": "qemu"
         }

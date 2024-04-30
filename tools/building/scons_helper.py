@@ -109,6 +109,68 @@ def add_scons_option():
     __scons_inited__ = True
 
 
+def get_toolchain_option():
+
+    # 获取ENV路径
+    if os.getenv("ENV_ROOT"):
+        RTT_ENV_ROOT = os.path.normpath(os.getenv("ENV_ROOT")).replace("\\", "/")
+        os.environ["ENV_ROOT"] = RTT_ENV_ROOT
+    else:
+        RTT_ENV_ROOT = "UNKOWN"
+
+    if r"platform/env_released/env" in RTT_ENV_ROOT:
+        RTT_STD_ROOT = RTT_ENV_ROOT.replace(r"/platform/env_released/env", "")
+    else:
+        RTT_STD_ROOT = os.getenv("RTT_STD_ROOT", "UNKOWN")
+
+    if not os.getenv("QEMU_HOME") and RTT_ENV_ROOT != "UNKOWN":
+        if os.path.exists(os.path.join(RTT_ENV_ROOT, r"tools/qemu/qemu64")):
+            os.environ["QEMU_HOME"] = os.path.join(RTT_ENV_ROOT, r"tools/qemu/qemu64").replace("\\", "/")
+        else:
+            os.environ["QEMU_HOME"] = os.path.join(RTT_ENV_ROOT, r"tools/qemu/qemu32").replace("\\", "/")
+    else:
+        os.environ["QEMU_HOME"] = os.path.normpath(os.getenv("QEMU_HOME")).replace("\\", "/")
+
+    if not os.getenv("GCC_EXEC_PATH") and RTT_ENV_ROOT != "UNKOWN":
+        os.environ["GCC_EXEC_PATH"] = os.path.join(RTT_ENV_ROOT, r"tools/gnu_gcc/arm_gcc/mingw/bin").replace("\\", "/")
+    else:
+        os.environ["GCC_EXEC_PATH"] = os.path.normpath(os.getenv("GCC_EXEC_PATH")).replace("\\", "/")
+
+    __options__["RTT_ENV_ROOT"] = RTT_ENV_ROOT
+    __options__["RTT_STD_ROOT"] = RTT_STD_ROOT
+
+    CROSS_TOOL = os.getenv("RTT_CC", "gcc")
+    if CROSS_TOOL == "gcc":
+        EXEC_PATH = os.getenv("GCC_EXEC_PATH", "UNKNOWN")
+        TARGET_EXT = ".elf"
+        PLATFORM = "gcc"
+    elif CROSS_TOOL == "keil":
+        EXEC_PATH = os.getenv("MDK_EXEC_PATH", "UNKNOWN")
+        TARGET_EXT = ".axf"
+        PLATFORM = "armclang"  # "armcc"
+    elif CROSS_TOOL == "keil5":
+        EXEC_PATH = os.getenv("MDK_EXEC_PATH", "UNKNOWN")
+        TARGET_EXT = ".axf"
+        PLATFORM = "armclang"
+    elif CROSS_TOOL == "iar":
+        EXEC_PATH = os.getenv("IAR_EXEC_PATH", "UNKNOWN")
+        TARGET_EXT = ".out"
+        PLATFORM = "iar"
+    else:
+        print("ERROR: cross tool '%s' not support" % CROSS_TOOL)
+        exit(-1)
+
+    EXEC_PATH = os.getenv("RTT_EXEC_PATH", EXEC_PATH)
+
+    __options__["CROSS_TOOL"] = CROSS_TOOL
+    __options__["EXEC_PATH"] = EXEC_PATH
+    __options__["PLATFORM"] = PLATFORM
+    __options__["BUILD_TYPE"] = os.getenv("RTT_BUILD_TYPE", "release")
+    __options__["TARGET_EXT"] = TARGET_EXT
+
+    return __options__
+
+
 def get_project_option():
 
     BSP_ROOT = Dir("#").abspath
@@ -134,18 +196,6 @@ def get_project_option():
         SDK_ROOT = os.path.normpath(PRJ_ROOT + "/rtos/platform")
         BSP_NAME = os.path.relpath(BSP_ROOT, os.path.join(BSP_ROOT, r"../../")).replace("\\", "-").replace("/", "-")
 
-    # 获取ENV路径
-    if os.getenv("ENV_ROOT"):
-        RTT_ENV_ROOT = os.path.abspath(os.getenv("ENV_ROOT")).replace("\\", "/")
-    else:
-        print("ERROR: please run scons in env.exe console")
-        exit(-1)
-
-    if r"platform/env_released/env" in RTT_ENV_ROOT:
-        RTT_STD_ROOT = RTT_ENV_ROOT.replace(r"/platform/env_released/env", "")
-    else:
-        RTT_STD_ROOT = os.getenv("RTT_STD_ROOT", "UNKOWN")
-
     Export("PRJ_ROOT")
     Export("APP_ROOT")
     Export("BSP_ROOT")
@@ -159,8 +209,6 @@ def get_project_option():
     __options__["SDK_ROOT"] = SDK_ROOT
     __options__["PKG_ROOT"] = PKG_ROOT
     __options__["BSP_NAME"] = BSP_NAME
-    __options__["RTT_ENV_ROOT"] = RTT_ENV_ROOT
-    __options__["RTT_STD_ROOT"] = RTT_STD_ROOT
 
     # 添加path目录
     sys.path += [
@@ -168,6 +216,7 @@ def get_project_option():
         os.path.join(PRJ_ROOT, "tools/scripts"),
     ]
 
+    os.environ["RTT_ROOT"] = RTT_ROOT.replace("\\", "/")
     os.environ["RTT_DIR"] = RTT_ROOT
     os.environ["PRJ_DIR"] = PRJ_ROOT
     os.environ["SDK_DIR"] = SDK_ROOT
@@ -240,63 +289,14 @@ def get_rtconfig_option(file="rtconfig.h"):
 
 def get_command_option():
 
-    if not __scons_inited__:
-        BUILD_TYPE = "release"
-        CROSS_TOOL = "gcc"
-        TARGET_EXT = ".elf"
-        PLATFORM = "gcc"
-    else:
+    if GetOption("cross-tool"):
+        os.environ["RTT_CC"] = GetOption("cross-tool")
 
-        # 编译方式
-        if GetOption("build-type"):
-            BUILD_TYPE = GetOption("build-type")
-        else:
-            BUILD_TYPE = "release"
+    # if GetOption("exec-path"):
+    #     os.environ["RTT_EXEC_PATH"] = GetOption("exec-path")
 
-        # 根据命令行和环境变量，确定工具链名称
-        if GetOption("cross-tool"):
-            CROSS_TOOL = GetOption("cross-tool")
-        elif os.getenv("RTT_CC"):
-            CROSS_TOOL = os.getenv("RTT_CC")
-        else:
-            CROSS_TOOL = "gcc"
-
-        # 工具链路径、LINKER和TARGET文件
-        if CROSS_TOOL == "gcc":
-            EXEC_PATH = os.getenv("GCC_EXEC_PATH")
-            TARGET_EXT = ".elf"
-            PLATFORM = "gcc"
-        elif CROSS_TOOL == "keil":
-            EXEC_PATH = os.getenv("MDK_EXEC_PATH")
-            TARGET_EXT = ".axf"
-            PLATFORM = "armclang"  # "armcc"
-        elif CROSS_TOOL == "keil5":
-            EXEC_PATH = os.getenv("MDK_EXEC_PATH")
-            TARGET_EXT = ".axf"
-            PLATFORM = "armclang"
-        elif CROSS_TOOL == "iar":
-            EXEC_PATH = os.getenv("IAR_EXEC_PATH")
-            TARGET_EXT = ".out"
-            PLATFORM = "iar"
-        else:
-            print("ERROR: cross tool '%s' not support" % CROSS_TOOL)
-            exit(-1)
-
-        # 根据命令行和环境变量，覆盖工具链路径
-        # if GetOption("exec-path"):
-        #     EXEC_PATH = GetOption("exec-path")
-        # elif
-        if os.getenv("RTT_EXEC_PATH"):
-            EXEC_PATH = os.getenv("RTT_EXEC_PATH")
-        else:
-            EXEC_PATH = "UNKNOWN"
-        EXEC_PATH = os.path.normpath(EXEC_PATH).replace("\\", "/")
-
-    __options__["CROSS_TOOL"] = CROSS_TOOL
-    __options__["EXEC_PATH"] = EXEC_PATH
-    __options__["PLATFORM"] = PLATFORM
-    __options__["BUILD_TYPE"] = BUILD_TYPE
-    __options__["TARGET_EXT"] = TARGET_EXT
+    if GetOption("build-type"):
+        os.environ["RTT_BUILD_TYPE"] = GetOption("build-type")
 
     return __options__
 
@@ -310,7 +310,7 @@ def get_build_option(target=None):
     get_rtconfig_option()
 
     # 从命令行获取配置信息
-    get_command_option()
+    get_toolchain_option()
 
     # 板子名称
     if "BOARD_TYPE_NAME" in __options__:
@@ -463,12 +463,7 @@ def gen_setting_file():
     import rtconfig
 
     # 模板中所需的配置
-    __options__["CPU_COUNT"] = str(multiprocessing.cpu_count())
-
-    if os.path.exists(__options__["RTT_ENV_ROOT"] + r"/tools/qemu/qemu64"):
-        __options__["QEMU_ROOT"] = __options__["RTT_ENV_ROOT"] + r"/tools/qemu/qemu64"
-    else:
-        __options__["QEMU_ROOT"] = __options__["RTT_ENV_ROOT"] + r"/tools/qemu/qemu32"
+    os.environ["CPU_COUNT"] = str(multiprocessing.cpu_count())
 
     # 模板文件路径
     current_path = os.path.dirname(os.path.abspath(__file__))
@@ -501,7 +496,7 @@ def gen_setting_file():
         # 读取模板文件
         template = env.get_template(template_file)
         # 生成渲染后的文件
-        result = template.render(__options__)
+        result = template.render(prj=__options__, env=os.environ)
         # 保存文件
         with open(out_file, "wb") as f_out:
             f_out.write(result.encode("utf-8"))
@@ -579,7 +574,10 @@ def init():
     # 添加自定义option
     add_scons_option()
 
-    # 添加工程目录
+    # 获取命令选项
+    get_command_option()
+
+    # 获取编译选型
     get_build_option()
 
 
