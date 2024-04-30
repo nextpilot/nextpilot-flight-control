@@ -2,8 +2,11 @@ import os
 import rtconfig
 from building import *
 
-cwd = GetCurrentDir()
 objs = []
+
+cwd = GetCurrentDir()
+
+objs += DefineGroup(name="app", src=[], depend=[], CPPPATH=[cwd])
 
 for d in os.listdir(cwd):
     path = os.path.join(cwd, d)

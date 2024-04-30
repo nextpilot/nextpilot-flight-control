@@ -784,7 +784,7 @@ void MavlinkReceiver::handle_message_set_mode(mavlink_message_t *msg) {
     mavlink_set_mode_t new_mode;
     mavlink_msg_set_mode_decode(msg, &new_mode);
 
-    union px4_custom_mode custom_mode;
+    union custom_flight_mode custom_mode;
     custom_mode.data = new_mode.custom_mode;
 
     vehicle_command_s vcmd{};

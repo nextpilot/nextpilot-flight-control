@@ -9,7 +9,7 @@
  ******************************************************************/
 
 #include "framework.h"
-#define DEFINE_GET_PX4_CUSTOM_MODE
+#define DEFINE_GET_CUSTOM_MODE
 #include "../custom_flight_mode.h"
 #include <uORB/topics/vehicle_status.h>
 #include <events/events.h>
@@ -104,8 +104,8 @@ void FailsafeBase::updateStartDelay(const hrt_abstime &dt, bool delay_active) {
         }
 
     } else {
-        _current_start_delay += dt / 4;
-        hrt_abstime configured_delay = _param_com_fail_act_t.get() * 1_s;
+        _current_start_delay         += dt / 4;
+        hrt_abstime configured_delay  = _param_com_fail_act_t.get() * 1_s;
 
         if (_current_start_delay > configured_delay) {
             _current_start_delay = configured_delay;
@@ -147,8 +147,8 @@ void FailsafeBase::notifyUser(uint8_t user_intended_mode, Action action, Action 
     (void)_mavlink_log_pub;
 #else
 
-    px4_custom_mode custom_mode  = get_px4_custom_mode(user_intended_mode);
-    uint32_t        mavlink_mode = custom_mode.data;
+    custom_flight_mode custom_mode  = get_custom_flight_mode(user_intended_mode);
+    uint32_t           mavlink_mode = custom_mode.data;
 
     static_assert((int)failsafe_cause_t::_max + 1 == (int)Cause::Count, "Enum needs to be extended");
     static_assert((int)failsafe_action_t::_max + 1 == (int)Action::Count, "Enum needs to be extended");
@@ -539,9 +539,7 @@ void FailsafeBase::getSelectedAction(const State &state, const failsafe_flags_s 
 
     // If already precision landing, do not go into RTL or Land
     if (returned_state.updated_user_intended_mode == vehicle_status_s::NAVIGATION_STATE_AUTO_PRECLAND) {
-        if ((selected_action == Action::RTL || selected_action == Action::Land ||
-             returned_state.delayed_action == Action::RTL || returned_state.delayed_action == Action::Land) &&
-            modeCanRun(status_flags, vehicle_status_s::NAVIGATION_STATE_AUTO_PRECLAND)) {
+        if ((selected_action == Action::RTL || selected_action == Action::Land || returned_state.delayed_action == Action::RTL || returned_state.delayed_action == Action::Land) && modeCanRun(status_flags, vehicle_status_s::NAVIGATION_STATE_AUTO_PRECLAND)) {
             selected_action               = Action::Warn;
             returned_state.delayed_action = Action::None;
         }
@@ -570,19 +568,26 @@ void FailsafeBase::clearDelayIfNeeded(const State            &state,
 
 uint8_t FailsafeBase::modeFromAction(const Action &action, uint8_t user_intended_mode) {
     switch (action) {
-    case Action::FallbackPosCtrl: return vehicle_status_s::NAVIGATION_STATE_POSCTL;
+    case Action::FallbackPosCtrl:
+        return vehicle_status_s::NAVIGATION_STATE_POSCTL;
 
-    case Action::FallbackAltCtrl: return vehicle_status_s::NAVIGATION_STATE_ALTCTL;
+    case Action::FallbackAltCtrl:
+        return vehicle_status_s::NAVIGATION_STATE_ALTCTL;
 
-    case Action::FallbackStab: return vehicle_status_s::NAVIGATION_STATE_STAB;
+    case Action::FallbackStab:
+        return vehicle_status_s::NAVIGATION_STATE_STAB;
 
-    case Action::Hold: return vehicle_status_s::NAVIGATION_STATE_AUTO_LOITER;
+    case Action::Hold:
+        return vehicle_status_s::NAVIGATION_STATE_AUTO_LOITER;
 
-    case Action::RTL: return vehicle_status_s::NAVIGATION_STATE_AUTO_RTL;
+    case Action::RTL:
+        return vehicle_status_s::NAVIGATION_STATE_AUTO_RTL;
 
-    case Action::Land: return vehicle_status_s::NAVIGATION_STATE_AUTO_LAND;
+    case Action::Land:
+        return vehicle_status_s::NAVIGATION_STATE_AUTO_LAND;
 
-    case Action::Descend: return vehicle_status_s::NAVIGATION_STATE_DESCEND;
+    case Action::Descend:
+        return vehicle_status_s::NAVIGATION_STATE_DESCEND;
 
     case Action::Terminate:
     case Action::Disarm:
@@ -599,16 +604,7 @@ bool FailsafeBase::modeCanRun(const failsafe_flags_s &status_flags, uint8_t mode
     uint32_t mode_mask = 1u << mode;
     // mode_req_wind_and_flight_time_compliance: does not need to be handled here (these are separate failsafe triggers)
     // mode_req_manual_control: is handled separately
-    return (!status_flags.angular_velocity_invalid || ((status_flags.mode_req_angular_velocity & mode_mask) == 0)) &&
-           (!status_flags.attitude_invalid || ((status_flags.mode_req_attitude & mode_mask) == 0)) &&
-           (!status_flags.local_position_invalid || ((status_flags.mode_req_local_position & mode_mask) == 0)) &&
-           (!status_flags.local_position_invalid_relaxed || ((status_flags.mode_req_local_position_relaxed & mode_mask) == 0)) &&
-           (!status_flags.global_position_invalid || ((status_flags.mode_req_global_position & mode_mask) == 0)) &&
-           (!status_flags.local_altitude_invalid || ((status_flags.mode_req_local_alt & mode_mask) == 0)) &&
-           (!status_flags.auto_mission_missing || ((status_flags.mode_req_mission & mode_mask) == 0)) &&
-           (!status_flags.offboard_control_signal_lost || ((status_flags.mode_req_offboard_signal & mode_mask) == 0)) &&
-           (!status_flags.home_position_invalid || ((status_flags.mode_req_home_position & mode_mask) == 0)) &&
-           ((status_flags.mode_req_other & mode_mask) == 0);
+    return (!status_flags.angular_velocity_invalid || ((status_flags.mode_req_angular_velocity & mode_mask) == 0)) && (!status_flags.attitude_invalid || ((status_flags.mode_req_attitude & mode_mask) == 0)) && (!status_flags.local_position_invalid || ((status_flags.mode_req_local_position & mode_mask) == 0)) && (!status_flags.local_position_invalid_relaxed || ((status_flags.mode_req_local_position_relaxed & mode_mask) == 0)) && (!status_flags.global_position_invalid || ((status_flags.mode_req_global_position & mode_mask) == 0)) && (!status_flags.local_altitude_invalid || ((status_flags.mode_req_local_alt & mode_mask) == 0)) && (!status_flags.auto_mission_missing || ((status_flags.mode_req_mission & mode_mask) == 0)) && (!status_flags.offboard_control_signal_lost || ((status_flags.mode_req_offboard_signal & mode_mask) == 0)) && (!status_flags.home_position_invalid || ((status_flags.mode_req_home_position & mode_mask) == 0)) && ((status_flags.mode_req_other & mode_mask) == 0);
 }
 
 bool FailsafeBase::deferFailsafes(bool enabled, int timeout_s) {

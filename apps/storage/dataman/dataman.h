@@ -16,7 +16,7 @@
 #pragma once
 
 #include <string.h>
-#include "navigation.h"
+#include "navigator/navigation.h"
 #include <uORB/topics/mission.h>
 
 #ifdef __cplusplus
@@ -31,7 +31,7 @@ typedef enum {
     DM_KEY_WAYPOINTS_OFFBOARD_1, /* (alternate between 0 and 1) */
     DM_KEY_MISSION_STATE,        /* Persistent mission state */
     DM_KEY_COMPAT,
-    DM_KEY_NUM_KEYS /* Total number of item types defined */
+    DM_KEY_NUM_KEYS              /* Total number of item types defined */
 } dm_item_t;
 
 #if defined(MEMORY_CONSTRAINED_SYSTEM)
@@ -62,10 +62,7 @@ struct dataman_compat_s {
 /* increment this define whenever a binary incompatible change is performed */
 #define DM_COMPAT_VERSION 2ULL
 
-#define DM_COMPAT_KEY ((DM_COMPAT_VERSION << 32) + (sizeof(struct mission_item_s) << 24) +                        \
-                       (sizeof(struct mission_s) << 16) + (sizeof(struct mission_stats_entry_s) << 12) +          \
-                       (sizeof(struct mission_fence_point_s) << 8) + (sizeof(struct mission_safe_point_s) << 4) + \
-                       sizeof(struct dataman_compat_s))
+#define DM_COMPAT_KEY     ((DM_COMPAT_VERSION << 32) + (sizeof(struct mission_item_s) << 24) + (sizeof(struct mission_s) << 16) + (sizeof(struct mission_stats_entry_s) << 12) + (sizeof(struct mission_fence_point_s) << 8) + (sizeof(struct mission_safe_point_s) << 4) + sizeof(struct dataman_compat_s))
 
 /** Retrieve from the data manager store */
 __EXPORT ssize_t

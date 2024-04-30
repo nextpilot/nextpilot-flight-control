@@ -18,9 +18,7 @@
 #pragma once
 
 #include <defines.h>
-#include <custom_flight_mode.h>
-
-
+#include <commander/custom_flight_mode.h>
 #include <matrix/matrix/math.hpp>
 
 

@@ -24,6 +24,7 @@ public:
     static constexpr const char *get_name_static() {
         return "HEARTBEAT";
     }
+
     static constexpr uint16_t get_id_static() {
         return MAVLINK_MSG_ID_HEARTBEAT;
     }
@@ -31,6 +32,7 @@ public:
     const char *get_name() const override {
         return get_name_static();
     }
+
     uint16_t get_id() override {
         return get_id_static();
     }
@@ -88,8 +90,8 @@ private:
             }
 
             // uint32_t custom_mode - A bitfield for use for autopilot-specific flags
-            union px4_custom_mode custom_mode {
-                get_px4_custom_mode(vehicle_status.nav_state)
+            union custom_flight_mode custom_mode {
+                get_custom_flight_mode(vehicle_status.nav_state)
             };
 
             // uint8_t system_status (MAV_STATE) - System status flag.

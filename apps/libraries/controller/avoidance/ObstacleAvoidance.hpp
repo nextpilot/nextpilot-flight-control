@@ -20,7 +20,7 @@
 
 #include <defines.h>
 #include <module/module_params.hpp>
-#include <custom_flight_mode.h>
+#include <commander/custom_flight_mode.h>
 #include <hrtimer.h>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>

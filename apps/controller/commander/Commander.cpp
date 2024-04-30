@@ -23,7 +23,7 @@
 #include "Arming/ArmAuthorization/ArmAuthorization.h"
 #include "commander_helper.h"
 #include "esc_calibration.h"
-#define DEFINE_GET_PX4_CUSTOM_MODE
+#define DEFINE_GET_CUSTOM_MODE
 #include "custom_flight_mode.h"
 #include "ModeUtil/control_mode.hpp"
 #include "ModeUtil/conversions.hpp"
@@ -332,46 +332,46 @@ int Commander::custom_command(int argc, char *argv[]) {
     if (!strcmp(argv[0], "mode")) {
         if (argc > 1) {
             if (!strcmp(argv[1], "manual")) {
-                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, PX4_CUSTOM_MAIN_MODE_MANUAL);
+                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, CUSTOM_MAIN_FLIGHT_MODE_MANUAL);
 
             } else if (!strcmp(argv[1], "altctl")) {
-                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, PX4_CUSTOM_MAIN_MODE_ALTCTL);
+                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, CUSTOM_MAIN_FLIGHT_MODE_ALTCTL);
 
             } else if (!strcmp(argv[1], "posctl")) {
-                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, PX4_CUSTOM_MAIN_MODE_POSCTL);
+                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, CUSTOM_MAIN_FLIGHT_MODE_POSCTL);
 
             } else if (!strcmp(argv[1], "auto:mission")) {
-                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, PX4_CUSTOM_MAIN_MODE_AUTO,
-                                     PX4_CUSTOM_SUB_MODE_AUTO_MISSION);
+                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, CUSTOM_MAIN_FLIGHT_MODE_AUTO,
+                                     CUSTOM_SUB_FLIGHT_MODE_AUTO_MISSION);
 
             } else if (!strcmp(argv[1], "auto:loiter")) {
-                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, PX4_CUSTOM_MAIN_MODE_AUTO,
-                                     PX4_CUSTOM_SUB_MODE_AUTO_LOITER);
+                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, CUSTOM_MAIN_FLIGHT_MODE_AUTO,
+                                     CUSTOM_SUB_FLIGHT_MODE_AUTO_LOITER);
 
             } else if (!strcmp(argv[1], "auto:rtl")) {
-                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, PX4_CUSTOM_MAIN_MODE_AUTO,
-                                     PX4_CUSTOM_SUB_MODE_AUTO_RTL);
+                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, CUSTOM_MAIN_FLIGHT_MODE_AUTO,
+                                     CUSTOM_SUB_FLIGHT_MODE_AUTO_RTL);
 
             } else if (!strcmp(argv[1], "acro")) {
-                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, PX4_CUSTOM_MAIN_MODE_ACRO);
+                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, CUSTOM_MAIN_FLIGHT_MODE_ACRO);
 
             } else if (!strcmp(argv[1], "offboard")) {
-                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, PX4_CUSTOM_MAIN_MODE_OFFBOARD);
+                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, CUSTOM_MAIN_FLIGHT_MODE_OFFBOARD);
 
             } else if (!strcmp(argv[1], "stabilized")) {
-                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, PX4_CUSTOM_MAIN_MODE_STABILIZED);
+                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, CUSTOM_MAIN_FLIGHT_MODE_STABILIZED);
 
             } else if (!strcmp(argv[1], "auto:takeoff")) {
-                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, PX4_CUSTOM_MAIN_MODE_AUTO,
-                                     PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF);
+                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, CUSTOM_MAIN_FLIGHT_MODE_AUTO,
+                                     CUSTOM_SUB_FLIGHT_MODE_AUTO_TAKEOFF);
 
             } else if (!strcmp(argv[1], "auto:land")) {
-                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, PX4_CUSTOM_MAIN_MODE_AUTO,
-                                     PX4_CUSTOM_SUB_MODE_AUTO_LAND);
+                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, CUSTOM_MAIN_FLIGHT_MODE_AUTO,
+                                     CUSTOM_SUB_FLIGHT_MODE_AUTO_LAND);
 
             } else if (!strcmp(argv[1], "auto:precland")) {
-                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, PX4_CUSTOM_MAIN_MODE_AUTO,
-                                     PX4_CUSTOM_SUB_MODE_AUTO_PRECLAND);
+                send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_SET_MODE, 1, CUSTOM_MAIN_FLIGHT_MODE_AUTO,
+                                     CUSTOM_SUB_FLIGHT_MODE_AUTO_PRECLAND);
 
             } else {
                 PX4_ERR("argument %s unsupported.", argv[1]);
@@ -694,43 +694,43 @@ bool Commander::handle_command(const vehicle_command_s &cmd) {
 
         if (base_mode & VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED) {
             /* use autopilot-specific mode */
-            if (custom_main_mode == PX4_CUSTOM_MAIN_MODE_MANUAL) {
+            if (custom_main_mode == CUSTOM_MAIN_FLIGHT_MODE_MANUAL) {
                 desired_nav_state = vehicle_status_s::NAVIGATION_STATE_MANUAL;
 
-            } else if (custom_main_mode == PX4_CUSTOM_MAIN_MODE_ALTCTL) {
+            } else if (custom_main_mode == CUSTOM_MAIN_FLIGHT_MODE_ALTCTL) {
                 desired_nav_state = vehicle_status_s::NAVIGATION_STATE_ALTCTL;
 
-            } else if (custom_main_mode == PX4_CUSTOM_MAIN_MODE_POSCTL) {
+            } else if (custom_main_mode == CUSTOM_MAIN_FLIGHT_MODE_POSCTL) {
                 desired_nav_state = vehicle_status_s::NAVIGATION_STATE_POSCTL;
 
-            } else if (custom_main_mode == PX4_CUSTOM_MAIN_MODE_AUTO) {
+            } else if (custom_main_mode == CUSTOM_MAIN_FLIGHT_MODE_AUTO) {
                 if (custom_sub_mode > 0) {
                     switch (custom_sub_mode) {
-                    case PX4_CUSTOM_SUB_MODE_AUTO_LOITER:
+                    case CUSTOM_SUB_FLIGHT_MODE_AUTO_LOITER:
                         desired_nav_state = vehicle_status_s::NAVIGATION_STATE_AUTO_LOITER;
                         break;
 
-                    case PX4_CUSTOM_SUB_MODE_AUTO_MISSION:
+                    case CUSTOM_SUB_FLIGHT_MODE_AUTO_MISSION:
                         desired_nav_state = vehicle_status_s::NAVIGATION_STATE_AUTO_MISSION;
                         break;
 
-                    case PX4_CUSTOM_SUB_MODE_AUTO_RTL:
+                    case CUSTOM_SUB_FLIGHT_MODE_AUTO_RTL:
                         desired_nav_state = vehicle_status_s::NAVIGATION_STATE_AUTO_RTL;
                         break;
 
-                    case PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF:
+                    case CUSTOM_SUB_FLIGHT_MODE_AUTO_TAKEOFF:
                         desired_nav_state = vehicle_status_s::NAVIGATION_STATE_AUTO_TAKEOFF;
                         break;
 
-                    case PX4_CUSTOM_SUB_MODE_AUTO_LAND:
+                    case CUSTOM_SUB_FLIGHT_MODE_AUTO_LAND:
                         desired_nav_state = vehicle_status_s::NAVIGATION_STATE_AUTO_LAND;
                         break;
 
-                    case PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET:
+                    case CUSTOM_SUB_FLIGHT_MODE_AUTO_FOLLOW_TARGET:
                         desired_nav_state = vehicle_status_s::NAVIGATION_STATE_AUTO_FOLLOW_TARGET;
                         break;
 
-                    case PX4_CUSTOM_SUB_MODE_AUTO_PRECLAND:
+                    case CUSTOM_SUB_FLIGHT_MODE_AUTO_PRECLAND:
                         desired_nav_state = vehicle_status_s::NAVIGATION_STATE_AUTO_PRECLAND;
                         break;
 
@@ -746,13 +746,13 @@ bool Commander::handle_command(const vehicle_command_s &cmd) {
                     desired_nav_state = vehicle_status_s::NAVIGATION_STATE_AUTO_MISSION;
                 }
 
-            } else if (custom_main_mode == PX4_CUSTOM_MAIN_MODE_ACRO) {
+            } else if (custom_main_mode == CUSTOM_MAIN_FLIGHT_MODE_ACRO) {
                 desired_nav_state = vehicle_status_s::NAVIGATION_STATE_ACRO;
 
-            } else if (custom_main_mode == PX4_CUSTOM_MAIN_MODE_STABILIZED) {
+            } else if (custom_main_mode == CUSTOM_MAIN_FLIGHT_MODE_STABILIZED) {
                 desired_nav_state = vehicle_status_s::NAVIGATION_STATE_STAB;
 
-            } else if (custom_main_mode == PX4_CUSTOM_MAIN_MODE_OFFBOARD) {
+            } else if (custom_main_mode == CUSTOM_MAIN_FLIGHT_MODE_OFFBOARD) {
                 desired_nav_state = vehicle_status_s::NAVIGATION_STATE_OFFBOARD;
             }
 
@@ -2295,8 +2295,8 @@ void Commander::printRejectMode(uint8_t nav_state) {
     if (hrt_elapsed_time(&_last_print_mode_reject_time) > 1_s) {
         mavlink_log_critical(&_mavlink_log_pub, "Switching to %s is currently not available\t",
                              mode_util::nav_state_names[nav_state]);
-        px4_custom_mode custom_mode  = get_px4_custom_mode(nav_state);
-        uint32_t        mavlink_mode = custom_mode.data;
+        custom_flight_mode custom_mode  = get_custom_flight_mode(nav_state);
+        uint32_t           mavlink_mode = custom_mode.data;
         /* EVENT
          * @type append_health_and_arming_messages
          */

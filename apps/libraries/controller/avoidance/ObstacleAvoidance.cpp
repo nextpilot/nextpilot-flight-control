@@ -240,8 +240,8 @@ void ObstacleAvoidance::_publishVehicleCmdDoLoiter()
 	command.source_component = 1;
 	command.confirmation = false;
 	command.from_external = false;
-	command.param2 = (float)PX4_CUSTOM_MAIN_MODE_AUTO;
-	command.param3 = (float)PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
+	command.param2 = (float)CUSTOM_MAIN_FLIGHT_MODE_AUTO;
+	command.param3 = (float)CUSTOM_SUB_FLIGHT_MODE_AUTO_LOITER;
 
 	// publish the vehicle command
 	_pub_vehicle_command.publish(command);
