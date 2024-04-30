@@ -11,7 +11,6 @@
 #define LOG_TAG "gyro_cali"
 
 #include "GyroCalibration.hpp"
-
 #include <geo/geo.h>
 
 using namespace time_literals;
@@ -307,3 +306,13 @@ Simple online gyroscope calibration.
 extern "C" __EXPORT int gyro_calibration_main(int argc, char *argv[]) {
     return GyroCalibration::main(argc, argv);
 }
+
+MSH_CMD_EXPORT_ALIAS(gyro_calibration_main, gyro_cali, gyro calibration);
+
+int gyro_calibration_start() {
+    const char *argv[] = {"gyro_calibration", "start"};
+    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    return gyro_calibration_main(argc, (char **)argv);
+}
+
+INIT_APP_EXPORT(gyro_calibration_start);

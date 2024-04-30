@@ -569,3 +569,13 @@ Attitude estimator q.
 extern "C" __EXPORT int attitude_estimator_q_main(int argc, char *argv[]) {
     return AttitudeEstimatorQ::main(argc, argv);
 }
+
+MSH_CMD_EXPORT_ALIAS(attitude_estimator_q_main, att_est_q, attitude estimator q);
+
+int attitude_estimator_q_start() {
+    const char *argv[] = {"attitude_estimator_q", "start"};
+    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    return attitude_estimator_q_main(argc, (char **)argv);
+}
+
+INIT_APP_EXPORT(attitude_estimator_q_start);

@@ -8,6 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "mag_bias_est"
+
 #include "MagBiasEstimator.hpp"
 
 using namespace time_literals;
@@ -256,5 +258,15 @@ Online magnetometer bias estimator.
 extern "C" __EXPORT int mag_bias_estimator_main(int argc, char *argv[]) {
     return MagBiasEstimator::main(argc, argv);
 }
+
+MSH_CMD_EXPORT_ALIAS(mag_bias_estimator_main, mag_bias_est, mag bias estimator);
+
+int mag_bias_estimator_start() {
+    const char *argv[] = {"mag_bias_estimator", "start"};
+    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    return mag_bias_estimator_main(argc, (char **)argv);
+}
+
+INIT_APP_EXPORT(mag_bias_estimator_start);
 
 } // namespace mag_bias_estimator
