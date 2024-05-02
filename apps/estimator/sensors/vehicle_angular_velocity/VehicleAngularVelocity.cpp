@@ -8,6 +8,9 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG     "sensors.gyro"
+#define MODULE_NAME LOG_TAG
+
 #include "VehicleAngularVelocity.hpp"
 
 #include <ulog/log.h>
@@ -615,7 +618,7 @@ void VehicleAngularVelocity::UpdateDynamicNotchFFT(const hrt_abstime &time_now_u
         sensor_gyro_fft_s sensor_gyro_fft;
 
         if (_sensor_gyro_fft_sub.copy(&sensor_gyro_fft) && (sensor_gyro_fft.device_id == _selected_sensor_device_id) && (time_now_us < sensor_gyro_fft.timestamp + DYNAMIC_NOTCH_FITLER_TIMEOUT) && ((fabsf(sensor_gyro_fft.sensor_sample_rate_hz - _filter_sample_rate_hz) / _filter_sample_rate_hz) < 0.02f)) {
-            static constexpr float peak_freq_min = 10.f; // lower bound TODO: configurable?
+            static constexpr float peak_freq_min = 10.f;                                       // lower bound TODO: configurable?
 
             const float bandwidth = math::constrain(sensor_gyro_fft.resolution_hz, 8.f, 30.f); // TODO: base on numerical limits?
 
@@ -798,8 +801,7 @@ void VehicleAngularVelocity::Run() {
                     _timestamp_sample_last = sensor_data.timestamp_sample - 1e6f / _filter_sample_rate_hz;
                 }
 
-                const float inverse_dt_s = 1.f / math::constrain(((sensor_data.timestamp_sample - _timestamp_sample_last) * 1e-6f),
-                                                                 0.00002f, 0.02f);
+                const float inverse_dt_s = 1.f / math::constrain(((sensor_data.timestamp_sample - _timestamp_sample_last) * 1e-6f), 0.00002f, 0.02f);
                 _timestamp_sample_last   = sensor_data.timestamp_sample;
 
                 Vector3f angular_velocity_uncalibrated;

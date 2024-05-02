@@ -8,8 +8,10 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include "VehicleGPSPosition.hpp"
+#define LOG_TAG "sensors.gps"
+#define MODULE_NAME LOG_TAG
 
+#include "VehicleGPSPosition.hpp"
 #include <ulog/log.h>
 #include <geo/geo.h>
 #include <mathlib/mathlib.h>

@@ -11,7 +11,6 @@
 #pragma once
 
 #include "data_validator/DataValidatorGroup.hpp"
-
 #include <sensor_calibration/Barometer.hpp>
 #include <mathlib/math/Limits.hpp>
 #include <matrix/matrix/math.hpp>
@@ -29,6 +28,8 @@
 #include <uORB/topics/vehicle_air_data.h>
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 namespace sensors {
 class VehicleAirData : public ModuleParams, public WorkItemScheduled {

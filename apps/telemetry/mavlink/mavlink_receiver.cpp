@@ -19,8 +19,6 @@
 
 #include <airspeed/airspeed.h>
 #include <conversion/rotation.h>
-#include <systemlib/px4_macros.h>
-
 #include <math.h>
 #include <poll.h>
 

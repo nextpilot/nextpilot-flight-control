@@ -8,8 +8,10 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include "VehicleIMU.hpp"
+#define LOG_TAG     "sensors.imu"
+#define MODULE_NAME LOG_TAG
 
+#include "VehicleIMU.hpp"
 #include <ulog/log.h>
 #include <events/events.h>
 #include <sensor_calibration/Utilities.hpp>

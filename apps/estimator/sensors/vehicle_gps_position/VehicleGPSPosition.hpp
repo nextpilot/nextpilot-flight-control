@@ -24,6 +24,8 @@
 #include "gps_blending.hpp"
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 namespace sensors {
 class VehicleGPSPosition : public ModuleParams, public WorkItemScheduled {

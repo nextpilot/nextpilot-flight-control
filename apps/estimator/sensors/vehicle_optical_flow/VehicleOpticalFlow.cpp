@@ -8,9 +8,12 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include "VehicleOpticalFlow.hpp"
+#define LOG_TAG     "sensors.opticalflow"
+#define MODULE_NAME LOG_TAG
 
+#include "VehicleOpticalFlow.hpp"
 #include <ulog/log.h>
+
 namespace sensors {
 
 using namespace matrix;
@@ -93,8 +96,8 @@ void VehicleOpticalFlow::Run() {
         //  - from sensor_optical_flow if available, otherwise use synchronized sensor_gyro if available
         if (sensor_optical_flow.delta_angle_available && Vector3f(sensor_optical_flow.delta_angle).isAllFinite()) {
             // passthrough integrated gyro if available
-            _delta_angle += _flow_rotation * Vector3f{sensor_optical_flow.delta_angle};
-            _delta_angle_available = true;
+            _delta_angle           += _flow_rotation * Vector3f{sensor_optical_flow.delta_angle};
+            _delta_angle_available  = true;
 
         } else {
             _delta_angle_available = false;
@@ -133,7 +136,7 @@ void VehicleOpticalFlow::Run() {
                 _distance_sum_count = 1;
 
             } else {
-                _distance_sum += sensor_optical_flow.distance_m;
+                _distance_sum       += sensor_optical_flow.distance_m;
                 _distance_sum_count += 1;
             }
 
@@ -147,15 +150,15 @@ void VehicleOpticalFlow::Run() {
                     _distance_sum_count = 1;
 
                 } else {
-                    _distance_sum += range_sample.data;
+                    _distance_sum       += range_sample.data;
                     _distance_sum_count += 1;
                 }
             }
         }
 
-        _flow_timestamp_sample_last = sensor_optical_flow.timestamp_sample;
-        _flow_integral(0) += sensor_optical_flow.pixel_flow[0];
-        _flow_integral(1) += sensor_optical_flow.pixel_flow[1];
+        _flow_timestamp_sample_last  = sensor_optical_flow.timestamp_sample;
+        _flow_integral(0)           += sensor_optical_flow.pixel_flow[0];
+        _flow_integral(1)           += sensor_optical_flow.pixel_flow[1];
 
         _integration_timespan_us += sensor_optical_flow.integration_timespan_us;
 

@@ -8,8 +8,10 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include "VehicleAirData.hpp"
+#define LOG_TAG     "sensors.baro"
+#define MODULE_NAME LOG_TAG
 
+#include "VehicleAirData.hpp"
 #include <ulog/log.h>
 #include <events/events.h>
 #include <geo/geo.h>

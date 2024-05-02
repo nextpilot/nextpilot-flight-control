@@ -19,7 +19,6 @@
 
 #include <stdint.h>
 #include <sys/ioctl.h>
-#include <systemlib/px4_macros.h>
 
 namespace neopixel
 {

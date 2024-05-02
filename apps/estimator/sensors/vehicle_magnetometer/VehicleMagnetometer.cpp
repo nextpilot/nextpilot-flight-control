@@ -8,8 +8,10 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include "VehicleMagnetometer.hpp"
+#define LOG_TAG     "sensors.mag"
+#define MODULE_NAME LOG_TAG
 
+#include "VehicleMagnetometer.hpp"
 #include <ulog/log.h>
 #include <events/events.h>
 #include <geo/geo.h>

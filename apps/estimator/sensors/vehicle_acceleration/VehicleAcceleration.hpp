@@ -27,6 +27,8 @@
 #include <uORB/topics/vehicle_acceleration.h>
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 namespace sensors {
 

@@ -27,41 +27,41 @@
 #include "voted_sensors_update.h"
 #include "vehicle_imu/VehicleIMU.hpp"
 
-#if defined(CONFIG_SENSORS_VEHICLE_ACCELERATION)
+#if defined(SENSORS_VEHICLE_ACCELERATION)
 #   include "vehicle_acceleration/VehicleAcceleration.hpp"
-#endif // CONFIG_SENSORS_VEHICLE_ACCELERATION
+#endif // SENSORS_VEHICLE_ACCELERATION
 
-#if defined(CONFIG_SENSORS_VEHICLE_AIRSPEED)
+#if defined(SENSORS_VEHICLE_AIRSPEED)
 #   include <device/device_id.h>
 #   include <drivers/drv_adc.h>
 #   include <airspeed/airspeed.h>
 #   include <uORB/topics/airspeed.h>
 #   include <uORB/topics/differential_pressure.h>
 #   include <uORB/topics/vehicle_air_data.h>
-#endif // CONFIG_SENSORS_VEHICLE_AIRSPEED
+#endif // SENSORS_VEHICLE_AIRSPEED
 
-#if defined(CONFIG_SENSORS_VEHICLE_AIR_DATA)
+#if defined(SENSORS_VEHICLE_AIR_DATA)
 #   include <uORB/topics/sensor_baro.h>
 #   include "vehicle_air_data/VehicleAirData.hpp"
-#endif // CONFIG_SENSORS_VEHICLE_AIR_DATA
+#endif // SENSORS_VEHICLE_AIR_DATA
 
-#if defined(CONFIG_SENSORS_VEHICLE_ANGULAR_VELOCITY)
+#if defined(SENSORS_VEHICLE_ANGULAR_VELOCITY)
 #   include "vehicle_angular_velocity/VehicleAngularVelocity.hpp"
-#endif // CONFIG_SENSORS_VEHICLE_ANGULAR_VELOCITY
+#endif // SENSORS_VEHICLE_ANGULAR_VELOCITY
 
-#if defined(CONFIG_SENSORS_VEHICLE_GPS_POSITION)
+#if defined(SENSORS_VEHICLE_GPS_POSITION)
 #   include "vehicle_gps_position/VehicleGPSPosition.hpp"
-#endif // CONFIG_SENSORS_VEHICLE_GPS_POSITION
+#endif // SENSORS_VEHICLE_GPS_POSITION
 
-#if defined(CONFIG_SENSORS_VEHICLE_MAGNETOMETER)
+#if defined(SENSORS_VEHICLE_MAGNETOMETER)
 #   include "vehicle_magnetometer/VehicleMagnetometer.hpp"
 #   include <sensor_calibration/Magnetometer.hpp>
 #   include <uORB/topics/sensor_mag.h>
-#endif // CONFIG_SENSORS_VEHICLE_MAGNETOMETER
+#endif // SENSORS_VEHICLE_MAGNETOMETER
 
-#if defined(CONFIG_SENSORS_VEHICLE_OPTICAL_FLOW)
+#if defined(SENSORS_VEHICLE_OPTICAL_FLOW)
 #   include "vehicle_optical_flow/VehicleOpticalFlow.hpp"
-#endif // CONFIG_SENSORS_VEHICLE_OPTICAL_FLOW
+#endif // SENSORS_VEHICLE_OPTICAL_FLOW
 
 using namespace sensors;
 using namespace time_literals;
@@ -135,7 +135,7 @@ private:
 
     uORB::Publication<sensor_combined_s> _sensor_pub{ORB_ID(sensor_combined)};
 
-#if defined(CONFIG_SENSORS_VEHICLE_AIRSPEED)
+#if defined(SENSORS_VEHICLE_AIRSPEED)
     /**
      * Poll the differential pressure sensor for updated data.
      *
@@ -194,45 +194,45 @@ private:
         param_t air_tube_length;
         param_t air_tube_diameter_mm;
     } _parameter_handles{}; /**< handles for interesting parameters */
-#endif                      // CONFIG_SENSORS_VEHICLE_AIRSPEED
+#endif                      // SENSORS_VEHICLE_AIRSPEED
 
-#if defined(CONFIG_SENSORS_VEHICLE_ACCELERATION)
+#if defined(SENSORS_VEHICLE_ACCELERATION)
     VehicleAcceleration _vehicle_acceleration;
-#endif // CONFIG_SENSORS_VEHICLE_ACCELERATION
+#endif // SENSORS_VEHICLE_ACCELERATION
 
-#if defined(CONFIG_SENSORS_VEHICLE_AIR_DATA)
+#if defined(SENSORS_VEHICLE_AIR_DATA)
     VehicleAirData *_vehicle_air_data{nullptr};
     uint8_t         _n_baro{0};
-#endif // CONFIG_SENSORS_VEHICLE_AIR_DATA
+#endif // SENSORS_VEHICLE_AIR_DATA
 
-#if defined(CONFIG_SENSORS_VEHICLE_ANGULAR_VELOCITY)
+#if defined(SENSORS_VEHICLE_ANGULAR_VELOCITY)
     VehicleAngularVelocity _vehicle_angular_velocity;
-#endif // CONFIG_SENSORS_VEHICLE_ANGULAR_VELOCITY
+#endif // SENSORS_VEHICLE_ANGULAR_VELOCITY
 
-#if defined(CONFIG_SENSORS_VEHICLE_MAGNETOMETER)
+#if defined(SENSORS_VEHICLE_MAGNETOMETER)
     VehicleMagnetometer *_vehicle_magnetometer{nullptr};
     uint8_t              _n_mag{0};
-#endif // CONFIG_SENSORS_VEHICLE_MAGNETOMETER
+#endif // SENSORS_VEHICLE_MAGNETOMETER
 
-#if defined(CONFIG_SENSORS_VEHICLE_GPS_POSITION)
+#if defined(SENSORS_VEHICLE_GPS_POSITION)
     VehicleGPSPosition *_vehicle_gps_position{nullptr};
     uint8_t             _n_gps{0};
-#endif // CONFIG_SENSORS_VEHICLE_GPS_POSITION
+#endif // SENSORS_VEHICLE_GPS_POSITION
 
-#if defined(CONFIG_SENSORS_VEHICLE_OPTICAL_FLOW)
+#if defined(SENSORS_VEHICLE_OPTICAL_FLOW)
     VehicleOpticalFlow *_vehicle_optical_flow{nullptr};
     uint8_t             _n_optical_flow{0};
-#endif // CONFIG_SENSORS_VEHICLE_OPTICAL_FLOW
+#endif // SENSORS_VEHICLE_OPTICAL_FLOW
 
     DEFINE_PARAMETERS(
-#if defined(CONFIG_SENSORS_VEHICLE_AIR_DATA)
+#if defined(SENSORS_VEHICLE_AIR_DATA)
         (ParamBool<params_id::SYS_HAS_BARO>)_param_sys_has_baro,
-#endif // CONFIG_SENSORS_VEHICLE_AIR_DATA
-#if defined(CONFIG_SENSORS_VEHICLE_GPS_POSITION)
+#endif // SENSORS_VEHICLE_AIR_DATA
+#if defined(SENSORS_VEHICLE_GPS_POSITION)
         (ParamBool<params_id::SYS_HAS_GPS>)_param_sys_has_gps,
-#endif // CONFIG_SENSORS_VEHICLE_GPS_POSITION
-#if defined(CONFIG_SENSORS_VEHICLE_MAGNETOMETER)
+#endif // SENSORS_VEHICLE_GPS_POSITION
+#if defined(SENSORS_VEHICLE_MAGNETOMETER)
         (ParamInt<params_id::SYS_HAS_MAG>)_param_sys_has_mag,
-#endif // CONFIG_SENSORS_VEHICLE_MAGNETOMETER
+#endif // SENSORS_VEHICLE_MAGNETOMETER
         (ParamBool<params_id::SENS_IMU_MODE>)_param_sens_imu_mode)
 };

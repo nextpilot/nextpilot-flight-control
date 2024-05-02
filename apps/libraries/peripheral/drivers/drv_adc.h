@@ -19,7 +19,6 @@
 
 #include <stdint.h>
 #include <sys/ioctl.h>
-#include <systemlib/px4_macros.h>
 #include <uORB/topics/adc_report.h>
 
 /* Define the PX4 low level format ADC and the maximum

@@ -8,8 +8,9 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include "VehicleAcceleration.hpp"
+#define LOG_TAG "sensors.accel"
 
+#include "VehicleAcceleration.hpp"
 #include <ulog/log.h>
 #include <uORB/topics/vehicle_imu_status.h>
 
@@ -19,7 +20,7 @@ namespace sensors {
 
 VehicleAcceleration::VehicleAcceleration() :
     ModuleParams(nullptr),
-    WorkItemScheduled(MODULE_NAME, wq_configurations::nav_and_controllers) {
+    WorkItemScheduled(LOG_TAG, wq_configurations::nav_and_controllers) {
     _vehicle_acceleration_pub.advertise();
 
     CheckAndUpdateFilters();

@@ -18,6 +18,7 @@
 #include <mathlib/math/filter/LowPassFilter2p.hpp>
 #include <mathlib/math/filter/NotchFilter.hpp>
 #include <ulog/log.h>
+#include <perf/perf_counter.h>
 #include <module/module_params.hpp>
 #include <workq/WorkItemScheduled.hpp>
 #include <uORB/uORBPublication.hpp>
@@ -33,6 +34,8 @@
 #include <uORB/topics/vehicle_angular_velocity.h>
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 namespace sensors {
 

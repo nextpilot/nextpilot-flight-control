@@ -33,6 +33,9 @@
 #include <uORB/topics/vehicle_optical_flow.h>
 #include <uORB/topics/vehicle_optical_flow_vel.h>
 
+using namespace nextpilot;
+using namespace nextpilot::global_params;
+
 namespace sensors {
 
 class VehicleOpticalFlow : public ModuleParams, public WorkItemScheduled {

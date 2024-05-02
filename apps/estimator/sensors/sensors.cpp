@@ -18,6 +18,8 @@
  * @author Beat Küng <beat-kueng@gmx.net>
  */
 
+#define LOG_TAG "sensors"
+
 #include "sensors.hpp"
 
 Sensors::Sensors(bool hil_enabled) :
@@ -28,11 +30,11 @@ Sensors::Sensors(bool hil_enabled) :
     _voted_sensors_update(hil_enabled, _vehicle_imu_sub) {
     _sensor_pub.advertise();
 
-#if defined(CONFIG_SENSORS_VEHICLE_ACCELERATION)
+#if defined(SENSORS_VEHICLE_ACCELERATION)
     _vehicle_acceleration.Start();
-#endif // CONFIG_SENSORS_VEHICLE_ACCELERATION
+#endif // SENSORS_VEHICLE_ACCELERATION
 
-#if defined(CONFIG_SENSORS_VEHICLE_AIRSPEED)
+#if defined(SENSORS_VEHICLE_AIRSPEED)
     /* Differential pressure offset */
     _parameter_handles.diff_pres_offset_pa = param_find("SENS_DPRES_OFF");
 #   ifdef ADC_AIRSPEED_VOLTAGE_CHANNEL
@@ -45,11 +47,11 @@ Sensors::Sensors(bool hil_enabled) :
 
     _airspeed_validator.set_timeout(300000);
     _airspeed_validator.set_equal_value_threshold(100);
-#endif // CONFIG_SENSORS_VEHICLE_AIRSPEED
+#endif // SENSORS_VEHICLE_AIRSPEED
 
-#if defined(CONFIG_SENSORS_VEHICLE_ANGULAR_VELOCITY)
+#if defined(SENSORS_VEHICLE_ANGULAR_VELOCITY)
     _vehicle_angular_velocity.Start();
-#endif // CONFIG_SENSORS_VEHICLE_ANGULAR_VELOCITY
+#endif // SENSORS_VEHICLE_ANGULAR_VELOCITY
 
     param_find("SYS_FAC_CAL_MODE");
 
@@ -71,49 +73,49 @@ Sensors::~Sensors() {
         sub.unregisterCallback();
     }
 
-#if defined(CONFIG_SENSORS_VEHICLE_ACCELERATION)
+#if defined(SENSORS_VEHICLE_ACCELERATION)
     _vehicle_acceleration.Stop();
-#endif // CONFIG_SENSORS_VEHICLE_ACCELERATION
+#endif // SENSORS_VEHICLE_ACCELERATION
 
-#if defined(CONFIG_SENSORS_VEHICLE_ANGULAR_VELOCITY)
+#if defined(SENSORS_VEHICLE_ANGULAR_VELOCITY)
     _vehicle_angular_velocity.Stop();
-#endif // CONFIG_SENSORS_VEHICLE_ANGULAR_VELOCITY
+#endif // SENSORS_VEHICLE_ANGULAR_VELOCITY
 
-#if defined(CONFIG_SENSORS_VEHICLE_AIR_DATA)
+#if defined(SENSORS_VEHICLE_AIR_DATA)
 
     if (_vehicle_air_data) {
         _vehicle_air_data->Stop();
         delete _vehicle_air_data;
     }
 
-#endif // CONFIG_SENSORS_VEHICLE_AIR_DATA
+#endif // SENSORS_VEHICLE_AIR_DATA
 
-#if defined(CONFIG_SENSORS_VEHICLE_GPS_POSITION)
+#if defined(SENSORS_VEHICLE_GPS_POSITION)
 
     if (_vehicle_gps_position) {
         _vehicle_gps_position->Stop();
         delete _vehicle_gps_position;
     }
 
-#endif // CONFIG_SENSORS_VEHICLE_GPS_POSITION
+#endif // SENSORS_VEHICLE_GPS_POSITION
 
-#if defined(CONFIG_SENSORS_VEHICLE_MAGNETOMETER)
+#if defined(SENSORS_VEHICLE_MAGNETOMETER)
 
     if (_vehicle_magnetometer) {
         _vehicle_magnetometer->Stop();
         delete _vehicle_magnetometer;
     }
 
-#endif // CONFIG_SENSORS_VEHICLE_MAGNETOMETER
+#endif // SENSORS_VEHICLE_MAGNETOMETER
 
-#if defined(CONFIG_SENSORS_VEHICLE_OPTICAL_FLOW)
+#if defined(SENSORS_VEHICLE_OPTICAL_FLOW)
 
     if (_vehicle_optical_flow) {
         _vehicle_optical_flow->Stop();
         delete _vehicle_optical_flow;
     }
 
-#endif // CONFIG_SENSORS_VEHICLE_OPTICAL_FLOW
+#endif // SENSORS_VEHICLE_OPTICAL_FLOW
 
     for (auto &vehicle_imu : _vehicle_imu_list) {
         if (vehicle_imu) {
@@ -136,7 +138,7 @@ int Sensors::parameters_update() {
         return 0;
     }
 
-#if defined(CONFIG_SENSORS_VEHICLE_AIRSPEED)
+#if defined(SENSORS_VEHICLE_AIRSPEED)
     /* Airspeed offset */
     param_get(_parameter_handles.diff_pres_offset_pa, &(_parameters.diff_pres_offset_pa));
 #   ifdef ADC_AIRSPEED_VOLTAGE_CHANNEL
@@ -146,7 +148,7 @@ int Sensors::parameters_update() {
     param_get(_parameter_handles.air_cmodel, &_parameters.air_cmodel);
     param_get(_parameter_handles.air_tube_length, &_parameters.air_tube_length);
     param_get(_parameter_handles.air_tube_diameter_mm, &_parameters.air_tube_diameter_mm);
-#endif // CONFIG_SENSORS_VEHICLE_AIRSPEED
+#endif // SENSORS_VEHICLE_AIRSPEED
 
     _voted_sensors_update.parametersUpdate();
 
@@ -189,7 +191,7 @@ int Sensors::parameters_update() {
             }
         }
 
-#if defined(CONFIG_SENSORS_VEHICLE_MAGNETOMETER)
+#if defined(SENSORS_VEHICLE_MAGNETOMETER)
         // sensor_mag
         {
             uint32_t device_id_mag = calibration::GetCalibrationParamInt32("MAG", "ID", i);
@@ -206,29 +208,29 @@ int Sensors::parameters_update() {
                 cal.ParametersLoad();
             }
         }
-#endif // CONFIG_SENSORS_VEHICLE_MAGNETOMETER
+#endif // SENSORS_VEHICLE_MAGNETOMETER
     }
 
-#if defined(CONFIG_SENSORS_VEHICLE_AIR_DATA)
+#if defined(SENSORS_VEHICLE_AIR_DATA)
     InitializeVehicleAirData();
-#endif // CONFIG_SENSORS_VEHICLE_AIR_DATA
+#endif // SENSORS_VEHICLE_AIR_DATA
 
-#if defined(CONFIG_SENSORS_VEHICLE_GPS_POSITION)
+#if defined(SENSORS_VEHICLE_GPS_POSITION)
     InitializeVehicleGPSPosition();
-#endif // CONFIG_SENSORS_VEHICLE_GPS_POSITION
+#endif // SENSORS_VEHICLE_GPS_POSITION
 
-#if defined(CONFIG_SENSORS_VEHICLE_MAGNETOMETER)
+#if defined(SENSORS_VEHICLE_MAGNETOMETER)
     InitializeVehicleMagnetometer();
-#endif // CONFIG_SENSORS_VEHICLE_MAGNETOMETER
+#endif // SENSORS_VEHICLE_MAGNETOMETER
 
-#if defined(CONFIG_SENSORS_VEHICLE_OPTICAL_FLOW)
+#if defined(SENSORS_VEHICLE_OPTICAL_FLOW)
     InitializeVehicleOpticalFlow();
-#endif // CONFIG_SENSORS_VEHICLE_OPTICAL_FLOW
+#endif // SENSORS_VEHICLE_OPTICAL_FLOW
 
     return PX4_OK;
 }
 
-#if defined(CONFIG_SENSORS_VEHICLE_AIRSPEED)
+#if defined(SENSORS_VEHICLE_AIRSPEED)
 void Sensors::diff_pres_poll() {
     differential_pressure_s diff_pres{};
 
@@ -376,9 +378,9 @@ void Sensors::adc_poll() {
 
 #   endif // ADC_AIRSPEED_VOLTAGE_CHANNEL
 }
-#endif    // CONFIG_SENSORS_VEHICLE_AIRSPEED)
+#endif    // SENSORS_VEHICLE_AIRSPEED)
 
-#if defined(CONFIG_SENSORS_VEHICLE_AIR_DATA)
+#if defined(SENSORS_VEHICLE_AIR_DATA)
 void Sensors::InitializeVehicleAirData() {
     if (_param_sys_has_baro.get()) {
         if (_vehicle_air_data == nullptr) {
@@ -390,9 +392,9 @@ void Sensors::InitializeVehicleAirData() {
         }
     }
 }
-#endif // CONFIG_SENSORS_VEHICLE_AIR_DATA
+#endif // SENSORS_VEHICLE_AIR_DATA
 
-#if defined(CONFIG_SENSORS_VEHICLE_GPS_POSITION)
+#if defined(SENSORS_VEHICLE_GPS_POSITION)
 void Sensors::InitializeVehicleGPSPosition() {
     if (_param_sys_has_gps.get()) {
         if (_vehicle_gps_position == nullptr) {
@@ -404,7 +406,7 @@ void Sensors::InitializeVehicleGPSPosition() {
         }
     }
 }
-#endif // CONFIG_SENSORS_VEHICLE_GPS_POSITION
+#endif // SENSORS_VEHICLE_GPS_POSITION
 
 void Sensors::InitializeVehicleIMU() {
     // create a VehicleIMU instance for each accel/gyro pair
@@ -439,7 +441,7 @@ void Sensors::InitializeVehicleIMU() {
     }
 }
 
-#if defined(CONFIG_SENSORS_VEHICLE_MAGNETOMETER)
+#if defined(SENSORS_VEHICLE_MAGNETOMETER)
 void Sensors::InitializeVehicleMagnetometer() {
     if (_param_sys_has_mag.get()) {
         if (_vehicle_magnetometer == nullptr) {
@@ -451,9 +453,9 @@ void Sensors::InitializeVehicleMagnetometer() {
         }
     }
 }
-#endif // CONFIG_SENSORS_VEHICLE_MAGNETOMETER
+#endif // SENSORS_VEHICLE_MAGNETOMETER
 
-#if defined(CONFIG_SENSORS_VEHICLE_OPTICAL_FLOW)
+#if defined(SENSORS_VEHICLE_OPTICAL_FLOW)
 void Sensors::InitializeVehicleOpticalFlow() {
     if (_vehicle_optical_flow == nullptr) {
         uORB::Subscription sensor_optical_flow_sub{ORB_ID(sensor_optical_flow)};
@@ -467,7 +469,7 @@ void Sensors::InitializeVehicleOpticalFlow() {
         }
     }
 }
-#endif // CONFIG_SENSORS_VEHICLE_OPTICAL_FLOW
+#endif // SENSORS_VEHICLE_OPTICAL_FLOW
 
 void Sensors::Run() {
     if (should_exit()) {
@@ -496,7 +498,7 @@ void Sensors::Run() {
     if ((!_armed && hrt_elapsed_time(&_last_config_update) > 500_ms) || (_last_config_update == 0)) {
         bool updated = false;
 
-#if defined(CONFIG_SENSORS_VEHICLE_AIR_DATA)
+#if defined(SENSORS_VEHICLE_AIR_DATA)
         const int n_baro = orb_group_count(ORB_ID(sensor_baro));
 
         if (n_baro != _n_baro) {
@@ -504,9 +506,9 @@ void Sensors::Run() {
             updated = true;
         }
 
-#endif // CONFIG_SENSORS_VEHICLE_AIR_DATA
+#endif // SENSORS_VEHICLE_AIR_DATA
 
-#if defined(CONFIG_SENSORS_VEHICLE_GPS_POSITION)
+#if defined(SENSORS_VEHICLE_GPS_POSITION)
         const int n_gps = orb_group_count(ORB_ID(sensor_gps));
 
         if (n_gps != _n_gps) {
@@ -514,9 +516,9 @@ void Sensors::Run() {
             updated = true;
         }
 
-#endif // CONFIG_SENSORS_VEHICLE_GPS_POSITION
+#endif // SENSORS_VEHICLE_GPS_POSITION
 
-#if defined(CONFIG_SENSORS_VEHICLE_MAGNETOMETER)
+#if defined(SENSORS_VEHICLE_MAGNETOMETER)
         const int n_mag = orb_group_count(ORB_ID(sensor_mag));
 
         if (n_mag != _n_mag) {
@@ -524,9 +526,9 @@ void Sensors::Run() {
             updated = true;
         }
 
-#endif // CONFIG_SENSORS_VEHICLE_MAGNETOMETER
+#endif // SENSORS_VEHICLE_MAGNETOMETER
 
-#if defined(CONFIG_SENSORS_VEHICLE_OPTICAL_FLOW)
+#if defined(SENSORS_VEHICLE_OPTICAL_FLOW)
         const int n_optical_flow = orb_group_count(ORB_ID(sensor_optical_flow));
 
         if (n_optical_flow != _n_optical_flow) {
@@ -534,7 +536,7 @@ void Sensors::Run() {
             updated         = true;
         }
 
-#endif // CONFIG_SENSORS_VEHICLE_OPTICAL_FLOW
+#endif // SENSORS_VEHICLE_OPTICAL_FLOW
 
         const int n_accel = orb_group_count(ORB_ID(sensor_accel));
         const int n_gyro  = orb_group_count(ORB_ID(sensor_gyro));
@@ -573,11 +575,11 @@ void Sensors::Run() {
         _sensor_combined_prev_timestamp = _sensor_combined.timestamp;
     }
 
-#if defined(CONFIG_SENSORS_VEHICLE_AIRSPEED)
+#if defined(SENSORS_VEHICLE_AIRSPEED)
     // check analog airspeed
     adc_poll();
     diff_pres_poll();
-#endif // CONFIG_SENSORS_VEHICLE_AIRSPEED
+#endif // SENSORS_VEHICLE_AIRSPEED
 
     // backup schedule as a watchdog timeout
     ScheduleDelayed(10_ms);
@@ -639,57 +641,57 @@ Sensors *Sensors::instantiate(int argc, char *argv[]) {
 int Sensors::print_status() {
     _voted_sensors_update.printStatus();
 
-#if defined(CONFIG_SENSORS_VEHICLE_MAGNETOMETER)
+#if defined(SENSORS_VEHICLE_MAGNETOMETER)
 
     if (_vehicle_magnetometer) {
         PX4_INFO_RAW("\n");
         _vehicle_magnetometer->PrintStatus();
     }
 
-#endif // CONFIG_SENSORS_VEHICLE_MAGNETOMETER
+#endif // SENSORS_VEHICLE_MAGNETOMETER
 
-#if defined(CONFIG_SENSORS_VEHICLE_AIR_DATA)
+#if defined(SENSORS_VEHICLE_AIR_DATA)
 
     if (_vehicle_air_data) {
         PX4_INFO_RAW("\n");
         _vehicle_air_data->PrintStatus();
     }
 
-#endif // CONFIG_SENSORS_VEHICLE_AIR_DATA
+#endif // SENSORS_VEHICLE_AIR_DATA
 
-#if defined(CONFIG_SENSORS_VEHICLE_AIRSPEED)
+#if defined(SENSORS_VEHICLE_AIRSPEED)
     PX4_INFO_RAW("\n");
     PX4_INFO_RAW("Airspeed status:\n");
     _airspeed_validator.print();
-#endif // CONFIG_SENSORS_VEHICLE_AIRSPEED
+#endif // SENSORS_VEHICLE_AIRSPEED
 
-#if defined(CONFIG_SENSORS_VEHICLE_OPTICAL_FLOW)
+#if defined(SENSORS_VEHICLE_OPTICAL_FLOW)
 
     if (_vehicle_optical_flow) {
         PX4_INFO_RAW("\n");
         _vehicle_optical_flow->PrintStatus();
     }
 
-#endif // CONFIG_SENSORS_VEHICLE_OPTICAL_FLOW
+#endif // SENSORS_VEHICLE_OPTICAL_FLOW
 
-#if defined(CONFIG_SENSORS_VEHICLE_ACCELERATION)
+#if defined(SENSORS_VEHICLE_ACCELERATION)
     PX4_INFO_RAW("\n");
     _vehicle_acceleration.PrintStatus();
-#endif // CONFIG_SENSORS_VEHICLE_ACCELERATION
+#endif // SENSORS_VEHICLE_ACCELERATION
 
-#if defined(CONFIG_SENSORS_VEHICLE_ANGULAR_VELOCITY)
+#if defined(SENSORS_VEHICLE_ANGULAR_VELOCITY)
     PX4_INFO_RAW("\n");
     _vehicle_angular_velocity.PrintStatus();
-#endif // CONFIG_SENSORS_VEHICLE_ANGULAR_VELOCITY
+#endif // SENSORS_VEHICLE_ANGULAR_VELOCITY
 
-#if defined(CONFIG_SENSORS_VEHICLE_GPS_POSITION)
+#if defined(SENSORS_VEHICLE_GPS_POSITION)
 
     if (_vehicle_gps_position) {
         PX4_INFO_RAW("\n");
         _vehicle_gps_position->PrintStatus();
     }
 
-#endif // CONFIG_SENSORS_VEHICLE_GPS_POSITION
+#endif // SENSORS_VEHICLE_GPS_POSITION
 
     PX4_INFO_RAW("\n");
 
@@ -744,3 +746,13 @@ It runs in its own thread and polls on the currently selected gyro topic.
 extern "C" __EXPORT int sensors_main(int argc, char *argv[]) {
     return Sensors::main(argc, argv);
 }
+
+MSH_CMD_EXPORT_ALIAS(sensors_main, sensors, sensors);
+
+int sensors_start() {
+    const char *argv[] = {"sensors", "start"};
+    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    return sensors_main(argc, (char **)argv);
+}
+
+INIT_APP_EXPORT(sensors_start);
