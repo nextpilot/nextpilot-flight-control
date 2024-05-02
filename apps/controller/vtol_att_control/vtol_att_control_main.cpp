@@ -27,7 +27,7 @@
 #define LOG_TAG "vtol_att_control"
 
 #include "vtol_att_control_main.h"
-// #include <events/events.h>
+#include <events/events.h>
 // #include <ulog/mavlink_log.h>
 // #include <uORB/uORBPublication.hpp>
 
@@ -140,8 +140,7 @@ void VtolAttitudeControl::vehicle_cmd_poll() {
             const int transition_command_param1 = int(vehicle_command.param1 + 0.5f);
 
             // deny transition from MC to FW in Takeoff, Land, RTL and Orbit
-            if (transition_command_param1 == vtol_vehicle_status_s::VEHICLE_VTOL_STATE_FW &&
-                (_vehicle_status.nav_state == vehicle_status_s::NAVIGATION_STATE_AUTO_TAKEOFF || _vehicle_status.nav_state == vehicle_status_s::NAVIGATION_STATE_AUTO_LAND || _vehicle_status.nav_state == vehicle_status_s::NAVIGATION_STATE_AUTO_RTL || _vehicle_status.nav_state == vehicle_status_s::NAVIGATION_STATE_ORBIT)) {
+            if (transition_command_param1 == vtol_vehicle_status_s::VEHICLE_VTOL_STATE_FW && (_vehicle_status.nav_state == vehicle_status_s::NAVIGATION_STATE_AUTO_TAKEOFF || _vehicle_status.nav_state == vehicle_status_s::NAVIGATION_STATE_AUTO_LAND || _vehicle_status.nav_state == vehicle_status_s::NAVIGATION_STATE_AUTO_RTL || _vehicle_status.nav_state == vehicle_status_s::NAVIGATION_STATE_ORBIT)) {
                 result = vehicle_command_ack_s::VEHICLE_CMD_RESULT_TEMPORARILY_REJECTED;
 
             } else {
@@ -277,10 +276,10 @@ void VtolAttitudeControl::Run() {
 
     perf_begin(_loop_perf);
 
-    bool updated_fw_in = _vehicle_torque_setpoint_virtual_fw_sub.update(&_vehicle_torque_setpoint_virtual_fw);
-    updated_fw_in |= _vehicle_thrust_setpoint_virtual_fw_sub.update(&_vehicle_thrust_setpoint_virtual_fw);
-    bool updated_mc_in = _vehicle_torque_setpoint_virtual_mc_sub.update(&_vehicle_torque_setpoint_virtual_mc);
-    updated_mc_in |= _vehicle_thrust_setpoint_virtual_mc_sub.update(&_vehicle_thrust_setpoint_virtual_mc);
+    bool updated_fw_in  = _vehicle_torque_setpoint_virtual_fw_sub.update(&_vehicle_torque_setpoint_virtual_fw);
+    updated_fw_in      |= _vehicle_thrust_setpoint_virtual_fw_sub.update(&_vehicle_thrust_setpoint_virtual_fw);
+    bool updated_mc_in  = _vehicle_torque_setpoint_virtual_mc_sub.update(&_vehicle_torque_setpoint_virtual_mc);
+    updated_mc_in      |= _vehicle_thrust_setpoint_virtual_mc_sub.update(&_vehicle_thrust_setpoint_virtual_mc);
 
     // run on actuator publications corresponding to VTOL mode
     bool should_run = false;
@@ -410,8 +409,7 @@ void VtolAttitudeControl::Run() {
             // spoilers
             float spoiler_control = 0.f;
 
-            if ((_pos_sp_triplet.current.valid && _pos_sp_triplet.current.type == position_setpoint_s::SETPOINT_TYPE_LAND) ||
-                _vehicle_status.nav_state == vehicle_status_s::NAVIGATION_STATE_DESCEND) {
+            if ((_pos_sp_triplet.current.valid && _pos_sp_triplet.current.type == position_setpoint_s::SETPOINT_TYPE_LAND) || _vehicle_status.nav_state == vehicle_status_s::NAVIGATION_STATE_DESCEND) {
                 spoiler_control = _param_vt_spoiler_mc_ld.get();
             }
 
@@ -473,6 +471,7 @@ fw_att_control is the fixed wing attitude controller.
 int vtol_att_control_main(int argc, char *argv[]) {
     return VtolAttitudeControl::main(argc, argv);
 }
+
 MSH_CMD_EXPORT_ALIAS(vtol_att_control_main, vtol_att_control, vtol att control);
 
 int vtol_att_control_start() {
@@ -480,4 +479,5 @@ int vtol_att_control_start() {
     int         argc   = sizeof(argv) / sizeof(argv[0]);
     return VtolAttitudeControl::main(argc, (char **)argv);
 }
+
 INIT_APP_EXPORT(vtol_att_control_start);

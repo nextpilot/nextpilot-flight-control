@@ -26,7 +26,7 @@
 #include <mathlib/mathlib.h>
 #include <ulog/mavlink_log.h>
 #include <uORB/uORBSubscription.hpp>
-// #include <events/events.h>
+#include <events/events.h>
 
 bool MissionFeasibilityChecker::checkMissionFeasible(const mission_s &mission) {
     // Reset warning flag

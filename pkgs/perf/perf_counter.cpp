@@ -24,7 +24,6 @@
 #include <math.h>
 #include <pthread.h>
 #include <rtdbg.h>
-// #include <systemlib/err.h>
 
 #include "perf_counter.h"
 
@@ -92,6 +91,7 @@ RT_WEAK void reset_latency_counters(void) {
  * mutex protecting access to the perf_counters linked list (which is read from & written to by different threads)
  */
 pthread_mutex_t perf_counters_mutex = PTHREAD_MUTEX_INITIALIZER;
+
 // FIXME: the mutex does **not** protect against access to/from the perf
 // counter's data. It can still happen that a counter is updated while it is
 // printed. This can lead to inconsistent output, or completely bogus values
@@ -262,10 +262,10 @@ void perf_set_elapsed(perf_counter_t handle, int64_t elapsed) {
 
             // maintain mean and variance of the elapsed time in seconds
             // Knuth/Welford recursive mean and variance of update intervals (via Wikipedia)
-            float dt          = elapsed / 1e6f;
-            float delta_intvl = dt - pce->mean;
-            pce->mean += delta_intvl / pce->event_count;
-            pce->M2 += delta_intvl * (dt - pce->mean);
+            float dt           = elapsed / 1e6f;
+            float delta_intvl  = dt - pce->mean;
+            pce->mean         += delta_intvl / pce->event_count;
+            pce->M2           += delta_intvl * (dt - pce->mean);
 
             pce->time_start = 0;
         }
@@ -310,10 +310,10 @@ void perf_count_interval(perf_counter_t handle, hrt_abstime now) {
 
             // maintain mean and variance of interval in seconds
             // Knuth/Welford recursive mean and variance of update intervals (via Wikipedia)
-            float dt          = interval / 1e6f;
-            float delta_intvl = dt - pci->mean;
-            pci->mean += delta_intvl / pci->event_count;
-            pci->M2 += delta_intvl * (dt - pci->mean);
+            float dt           = interval / 1e6f;
+            float delta_intvl  = dt - pci->mean;
+            pci->mean         += delta_intvl / pci->event_count;
+            pci->M2           += delta_intvl * (dt - pci->mean);
             break;
         }
         }

@@ -12,7 +12,6 @@
 
 #include "../Common.hpp"
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/distance_sensor.h>
 
 using namespace nextpilot;

@@ -33,13 +33,9 @@
 #include <defines.h>
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
-
 #include <workq/WorkItemScheduled.hpp>
 
 #include <uORB/uORBPublication.hpp>
-#include <uORB/uORBPublication.hpp>
-#include <uORB/uORBSubscription.hpp>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/ekf2_timestamps.h>
 #include <uORB/topics/estimator_bias.h>

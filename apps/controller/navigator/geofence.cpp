@@ -22,7 +22,7 @@
 #include <hrtimer.h>
 #include <geo/geo.h>
 #include <ulog/mavlink_log.h>
-// #include <events/events.h>
+#include <events/events.h>
 
 #include "navigator.h"
 
@@ -75,8 +75,7 @@ void Geofence::_updateFence() {
         mission_fence_point_s mission_fence_point;
         bool                  is_circle_area = false;
 
-        if (dm_read(DM_KEY_FENCE_POINTS, current_seq, &mission_fence_point, sizeof(mission_fence_point_s)) !=
-            sizeof(mission_fence_point_s)) {
+        if (dm_read(DM_KEY_FENCE_POINTS, current_seq, &mission_fence_point, sizeof(mission_fence_point_s)) != sizeof(mission_fence_point_s)) {
             PX4_ERR("dm_read failed");
             break;
         }
@@ -352,12 +351,14 @@ bool Geofence::insidePolygon(const PolygonInfo &polygon, double lat, double lon,
 
     for (unsigned i = 0, j = polygon.vertex_count - 1; i < polygon.vertex_count; j = i++) {
         if (dm_read(DM_KEY_FENCE_POINTS, polygon.dataman_index + i, &temp_vertex_i,
-                    sizeof(mission_fence_point_s)) != sizeof(mission_fence_point_s)) {
+                    sizeof(mission_fence_point_s))
+            != sizeof(mission_fence_point_s)) {
             break;
         }
 
         if (dm_read(DM_KEY_FENCE_POINTS, polygon.dataman_index + j, &temp_vertex_j,
-                    sizeof(mission_fence_point_s)) != sizeof(mission_fence_point_s)) {
+                    sizeof(mission_fence_point_s))
+            != sizeof(mission_fence_point_s)) {
             break;
         }
 
@@ -367,10 +368,7 @@ bool Geofence::insidePolygon(const PolygonInfo &polygon, double lat, double lon,
             break;
         }
 
-        if (((double)temp_vertex_i.lon >= lon) != ((double)temp_vertex_j.lon >= lon) &&
-            (lat <= (double)(temp_vertex_j.lat - temp_vertex_i.lat) * (lon - (double)temp_vertex_i.lon) /
-                            (double)(temp_vertex_j.lon - temp_vertex_i.lon) +
-                        (double)temp_vertex_i.lat)) {
+        if (((double)temp_vertex_i.lon >= lon) != ((double)temp_vertex_j.lon >= lon) && (lat <= (double)(temp_vertex_j.lat - temp_vertex_i.lat) * (lon - (double)temp_vertex_i.lon) / (double)(temp_vertex_j.lon - temp_vertex_i.lon) + (double)temp_vertex_i.lat)) {
             c = !c;
         }
     }
@@ -382,7 +380,8 @@ bool Geofence::insideCircle(const PolygonInfo &polygon, double lat, double lon, 
     mission_fence_point_s circle_point{};
 
     if (dm_read(DM_KEY_FENCE_POINTS, polygon.dataman_index, &circle_point,
-                sizeof(mission_fence_point_s)) != sizeof(mission_fence_point_s)) {
+                sizeof(mission_fence_point_s))
+        != sizeof(mission_fence_point_s)) {
         PX4_ERR("dm_read failed");
         return false;
     }
@@ -510,8 +509,7 @@ int Geofence::loadFromFile(const char *filename) {
         for (int seq = 1; seq <= pointCounter; ++seq) {
             mission_fence_point_s mission_fence_point;
 
-            if (dm_read(DM_KEY_FENCE_POINTS, seq, &mission_fence_point, sizeof(mission_fence_point_s)) ==
-                sizeof(mission_fence_point_s)) {
+            if (dm_read(DM_KEY_FENCE_POINTS, seq, &mission_fence_point, sizeof(mission_fence_point_s)) == sizeof(mission_fence_point_s)) {
                 mission_fence_point.vertex_count = pointCounter;
                 dm_write(DM_KEY_FENCE_POINTS, seq, &mission_fence_point, sizeof(mission_fence_point_s));
             }

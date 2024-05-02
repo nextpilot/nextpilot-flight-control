@@ -121,9 +121,9 @@ private:
     using NotchFilterHarmonic = math::NotchFilter<float>[3][MAX_NUM_ESCS];
     NotchFilterHarmonic *_dynamic_notch_filter_esc_rpm{nullptr};
 
-    int                       _esc_rpm_harmonics{0};
-    px4::Bitset<MAX_NUM_ESCS> _esc_available{};
-    hrt_abstime               _last_esc_rpm_notch_update[MAX_NUM_ESCS]{};
+    int                  _esc_rpm_harmonics{0};
+    Bitset<MAX_NUM_ESCS> _esc_available{};
+    hrt_abstime          _last_esc_rpm_notch_update[MAX_NUM_ESCS]{};
 
     perf_counter_t _dynamic_notch_filter_esc_rpm_disable_perf{nullptr};
     perf_counter_t _dynamic_notch_filter_esc_rpm_init_perf{nullptr};

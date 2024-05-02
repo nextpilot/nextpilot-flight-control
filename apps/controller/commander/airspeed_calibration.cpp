@@ -27,7 +27,6 @@
 #include <uORB/topics/differential_pressure.h>
 #include <ulog/mavlink_log.h>
 #include <param/param.h>
-// #include <systemlib/err.h>
 
 using namespace nextpilot;
 using namespace time_literals;

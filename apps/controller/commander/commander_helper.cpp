@@ -31,7 +31,6 @@
 #include <uORB/topics/vehicle_control_mode.h>
 #include <uORB/topics/led_control.h>
 #include <uORB/topics/tune_control.h>
-// #include <systemlib/err.h>
 #include <param/param.h>
 #include <hrtimer.h>
 #include <drivers/drv_tone_alarm.h>

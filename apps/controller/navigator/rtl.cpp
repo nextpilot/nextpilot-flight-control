@@ -20,7 +20,7 @@
 #include "rtl.h"
 #include "navigator.h"
 #include <dataman/dataman.h>
-// #include <events/events.h>
+#include <events/events.h>
 #include <geo/geo.h>
 
 static constexpr float DELAY_SIGMA = 0.01f;
@@ -161,8 +161,7 @@ void RTL::find_RTL_destination() {
     for (int current_seq = 1; current_seq <= num_safe_points; ++current_seq) {
         mission_safe_point_s mission_safe_point;
 
-        if (dm_read(DM_KEY_SAFE_POINTS, current_seq, &mission_safe_point, sizeof(mission_safe_point_s)) !=
-            sizeof(mission_safe_point_s)) {
+        if (dm_read(DM_KEY_SAFE_POINTS, current_seq, &mission_safe_point, sizeof(mission_safe_point_s)) != sizeof(mission_safe_point_s)) {
             PX4_ERR("dm_read failed");
             continue;
         }
@@ -306,9 +305,7 @@ void RTL::set_rtl_item() {
     const float loiter_altitude  = math::min(_destination.alt + _param_rtl_descend_alt.get(), _rtl_alt);
 
     // if we will switch to mission for landing, already set the loiter radius (incl. direction) from mission
-    const float landing_loiter_radius = _destination.type == RTL_DESTINATION_MISSION_LANDING ?
-                                            _navigator->get_mission_landing_loiter_radius() :
-                                            _param_rtl_loiter_rad.get();
+    const float landing_loiter_radius = _destination.type == RTL_DESTINATION_MISSION_LANDING ? _navigator->get_mission_landing_loiter_radius() : _param_rtl_loiter_rad.get();
 
     const RTLHeadingMode rtl_heading_mode = static_cast<RTLHeadingMode>(_param_rtl_hdg_md.get());
 
@@ -357,12 +354,10 @@ void RTL::set_rtl_item() {
         _mission_item.altitude             = _rtl_alt; // Don't change altitude
         _mission_item.altitude_is_relative = false;
 
-        if (rtl_heading_mode == RTLHeadingMode::RTL_NAVIGATION_HEADING &&
-            destination_dist > _param_rtl_min_dist.get()) {
+        if (rtl_heading_mode == RTLHeadingMode::RTL_NAVIGATION_HEADING && destination_dist > _param_rtl_min_dist.get()) {
             _mission_item.yaw = get_bearing_to_next_waypoint(gpos.lat, gpos.lon, _destination.lat, _destination.lon);
 
-        } else if (rtl_heading_mode == RTLHeadingMode::RTL_DESTINATION_HEADING ||
-                   destination_dist < _param_rtl_min_dist.get()) {
+        } else if (rtl_heading_mode == RTLHeadingMode::RTL_DESTINATION_HEADING || destination_dist < _param_rtl_min_dist.get()) {
             // Use destination yaw if close to _destination.
             _mission_item.yaw = _destination.yaw;
 
@@ -658,8 +653,7 @@ float RTL::calculate_return_alt_from_cone_half_angle(float cone_half_angle_deg) 
     // minium rtl altitude to use when outside of horizontal acceptance radius of target position.
     // We choose the minimum height to be two times the distance from the land position in order to
     // avoid the vehicle touching the ground while still moving horizontally.
-    const float return_altitude_min_outside_acceptance_rad_amsl = _destination.alt + 2.0f *
-                                                                                         _navigator->get_acceptance_radius();
+    const float return_altitude_min_outside_acceptance_rad_amsl = _destination.alt + 2.0f * _navigator->get_acceptance_radius();
 
     float return_altitude_amsl = _destination.alt + _param_rtl_return_alt.get();
 
@@ -703,8 +697,8 @@ void RTL::calcRtlTimeEstimate(const RTLState rtl_state, rtl_time_estimate_s &rtl
 
         // Add cruise segment to home
         rtl_time_estimate.time_estimate += get_distance_to_next_waypoint(
-                                               _destination.lat, _destination.lon, gpos.lat, gpos.lon) /
-                                           getCruiseGroundSpeed();
+                                               _destination.lat, _destination.lon, gpos.lat, gpos.lon)
+                                         / getCruiseGroundSpeed();
 
     // FALLTHROUGH
     case RTL_STATE_HEAD_TO_CENTER:
@@ -869,8 +863,7 @@ float RTL::getCruiseGroundSpeed() {
         const float wind_across_home  = matrix::Vector2f(wind - to_home_dir * wind_towards_home).norm();
 
         // Note: use fminf so that we don't _rely_ on wind towards home to make RTL more efficient
-        const float ground_speed = sqrtf(cruise_speed * cruise_speed - wind_across_home * wind_across_home) + fminf(
-                                                                                                                  0.f, wind_towards_home);
+        const float ground_speed = sqrtf(cruise_speed * cruise_speed - wind_across_home * wind_across_home) + fminf(0.f, wind_towards_home);
 
         cruise_speed = ground_speed;
     }

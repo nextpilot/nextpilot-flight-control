@@ -12,7 +12,6 @@
 
 #include "../Common.hpp"
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/sensor_baro.h>
 #include <uORB/topics/estimator_status.h>
 #include <sensor_calibration/Barometer.hpp>

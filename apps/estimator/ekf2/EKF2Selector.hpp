@@ -20,7 +20,6 @@
 #include <mathlib/mathlib.h>
 #include <workq/WorkItemScheduled.hpp>
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/topics/estimator_selector_status.h>
 #include <uORB/topics/estimator_status.h>

@@ -12,7 +12,7 @@
 
 #include <mathlib/mathlib.h>
 #include <matrix/matrix/math.hpp>
-// #include <events/events.h>
+#include <events/events.h>
 #include "MulticopterPositionControl.hpp"
 #include "PositionControl/ControlMath.hpp"
 
@@ -90,16 +90,16 @@ void MulticopterPositionControl::parameters_update(bool force) {
         }
 
         if (_param_mpc_xy_vel_all.get() >= 0.f) {
-            float xy_vel = _param_mpc_xy_vel_all.get();
-            num_changed += _param_mpc_vel_manual.commit_no_notification(xy_vel);
-            num_changed += _param_mpc_vel_man_back.commit_no_notification(-1.f);
-            num_changed += _param_mpc_vel_man_side.commit_no_notification(-1.f);
-            num_changed += _param_mpc_xy_cruise.commit_no_notification(xy_vel);
-            num_changed += _param_mpc_xy_vel_max.commit_no_notification(xy_vel);
+            float xy_vel  = _param_mpc_xy_vel_all.get();
+            num_changed  += _param_mpc_vel_manual.commit_no_notification(xy_vel);
+            num_changed  += _param_mpc_vel_man_back.commit_no_notification(-1.f);
+            num_changed  += _param_mpc_vel_man_side.commit_no_notification(-1.f);
+            num_changed  += _param_mpc_xy_cruise.commit_no_notification(xy_vel);
+            num_changed  += _param_mpc_xy_vel_max.commit_no_notification(xy_vel);
         }
 
         if (_param_mpc_z_vel_all.get() >= 0.f) {
-            float z_vel = _param_mpc_z_vel_all.get();
+            float z_vel  = _param_mpc_z_vel_all.get();
             num_changed += _param_mpc_z_v_auto_up.commit_no_notification(z_vel);
             num_changed += _param_mpc_z_vel_max_up.commit_no_notification(z_vel);
             num_changed += _param_mpc_z_v_auto_dn.commit_no_notification(z_vel * 0.75f);
@@ -208,8 +208,7 @@ void MulticopterPositionControl::parameters_update(bool force) {
                                 "Descent speed has been constrained by max speed", _param_mpc_z_vel_max_dn.get());
         }
 
-        if (_param_mpc_thr_hover.get() > _param_mpc_thr_max.get() ||
-            _param_mpc_thr_hover.get() < _param_mpc_thr_min.get()) {
+        if (_param_mpc_thr_hover.get() > _param_mpc_thr_max.get() || _param_mpc_thr_hover.get() < _param_mpc_thr_min.get()) {
             _param_mpc_thr_hover.set(math::constrain(_param_mpc_thr_hover.get(), _param_mpc_thr_min.get(),
                                                      _param_mpc_thr_max.get()));
             _param_mpc_thr_hover.commit();
@@ -457,8 +456,7 @@ void MulticopterPositionControl::Run() {
 
             const float speed_up   = _takeoff.updateRamp(dt,
                                                        PX4_ISFINITE(_vehicle_constraints.speed_up) ? _vehicle_constraints.speed_up : _param_mpc_z_vel_max_up.get());
-            const float speed_down = PX4_ISFINITE(_vehicle_constraints.speed_down) ? _vehicle_constraints.speed_down :
-                                                                                     _param_mpc_z_vel_max_dn.get();
+            const float speed_down = PX4_ISFINITE(_vehicle_constraints.speed_down) ? _vehicle_constraints.speed_down : _param_mpc_z_vel_max_dn.get();
 
             // Allow ramping from zero thrust on takeoff
             const float minimum_thrust = flying ? _param_mpc_thr_min.get() : 0.f;
@@ -647,6 +645,7 @@ logging.
 extern "C" __EXPORT int mc_pos_control_main(int argc, char *argv[]) {
     return MulticopterPositionControl::main(argc, argv);
 }
+
 MSH_CMD_EXPORT_ALIAS(mc_pos_control_main, mc_pos_control, mc pos control);
 
 int mc_pos_control_start() {
@@ -656,4 +655,5 @@ int mc_pos_control_start() {
     int         argc   = sizeof(argv) / sizeof(argv[0]);
     return MulticopterPositionControl::main(argc, (char **)argv);
 }
+
 INIT_APP_EXPORT(mc_pos_control_start);

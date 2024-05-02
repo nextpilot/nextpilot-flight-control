@@ -40,7 +40,6 @@
 #include <module/module_params.hpp>
 #include <WorkItemScheduled.hpp>
 #include <uORB/uORBPublication.hpp>
-#include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/actuator_motors.h>
 #include <uORB/topics/actuator_servos.h>
@@ -54,6 +53,7 @@
 
 using namespace nextpilot::global_params;
 using namespace nextpilot;
+
 class ControlAllocator : public ModuleCommand<ControlAllocator>, public ModuleParams, public WorkItemScheduled {
 public:
     static constexpr int NUM_ACTUATORS = ControlAllocation::NUM_ACTUATORS;
@@ -146,8 +146,8 @@ private:
     uORB::SubscriptionCallbackWorkItem _vehicle_torque_setpoint_sub{this, ORB_ID(vehicle_torque_setpoint)}; /**< vehicle torque setpoint subscription */
     uORB::SubscriptionCallbackWorkItem _vehicle_thrust_setpoint_sub{this, ORB_ID(vehicle_thrust_setpoint)}; /**< vehicle thrust setpoint subscription */
 
-    uORB::Subscription _vehicle_torque_setpoint1_sub{ORB_ID(vehicle_torque_setpoint), 1}; /**< vehicle torque setpoint subscription (2. instance) */
-    uORB::Subscription _vehicle_thrust_setpoint1_sub{ORB_ID(vehicle_thrust_setpoint), 1}; /**< vehicle thrust setpoint subscription (2. instance) */
+    uORB::Subscription _vehicle_torque_setpoint1_sub{ORB_ID(vehicle_torque_setpoint), 1};                   /**< vehicle torque setpoint subscription (2. instance) */
+    uORB::Subscription _vehicle_thrust_setpoint1_sub{ORB_ID(vehicle_thrust_setpoint), 1};                   /**< vehicle thrust setpoint subscription (2. instance) */
 
     // Outputs
     uORB::PublicationMulti<control_allocator_status_s> _control_allocator_status_pub[2]{ORB_ID(control_allocator_status), ORB_ID(control_allocator_status)};

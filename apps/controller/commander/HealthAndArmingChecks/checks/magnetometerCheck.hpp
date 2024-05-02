@@ -12,7 +12,6 @@
 
 #include "../Common.hpp"
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/sensor_preflight_mag.h>
 #include <uORB/topics/sensor_mag.h>
 #include <uORB/topics/estimator_status.h>

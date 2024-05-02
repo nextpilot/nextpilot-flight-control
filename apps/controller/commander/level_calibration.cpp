@@ -20,7 +20,6 @@
 #include <matrix/math.hpp>
 #include <conversion/rotation.h>
 #include <param/param.h>
-// #include <systemlib/err.h>
 #include <ulog/mavlink_log.h>
 #include <uORB/topics/vehicle_attitude.h>
 #include <uORB/uORBSubscription.hpp>

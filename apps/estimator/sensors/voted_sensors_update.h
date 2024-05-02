@@ -19,14 +19,12 @@
 #include "data_validator/DataValidator.hpp"
 #include "data_validator/DataValidatorGroup.hpp"
 
-// #include <events/events.h>
+#include <events/events.h>
 #include <module/module_params.hpp>
 #include <hrtimer.h>
 #include <mathlib/mathlib.h>
 #include <matrix/math.hpp>
 #include <uORB/uORBPublication.hpp>
-#include <uORB/uORBSubscription.hpp>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/sensor_accel.h>
 #include <uORB/topics/sensor_gyro.h>
@@ -35,6 +33,9 @@
 #include <uORB/topics/sensor_selection.h>
 #include <uORB/topics/vehicle_imu.h>
 #include <uORB/topics/vehicle_imu_status.h>
+
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 namespace sensors {
 
@@ -82,6 +83,7 @@ private:
 
     struct SensorData {
         SensorData() = delete;
+
         explicit SensorData(ORB_ID meta) :
             subscription{{meta, 0}, {meta, 1}, {meta, 2}, {meta, 3}} {
         }
@@ -138,19 +140,19 @@ private:
 
     sensor_combined_s _last_sensor_data[MAX_SENSOR_COUNT]{}; /**< latest sensor data from all sensors instances */
 
-    const bool _hil_enabled{false}; /**< is hardware-in-the-loop mode enabled? */
+    const bool _hil_enabled{false};                          /**< is hardware-in-the-loop mode enabled? */
 
-    bool _selection_changed{true}; /**< true when a sensor selection has changed and not been published */
+    bool _selection_changed{true};                           /**< true when a sensor selection has changed and not been published */
 
-    matrix::Vector3f _accel_diff[MAX_SENSOR_COUNT]{}; /**< filtered accel differences between IMU units (m/s/s) */
-    matrix::Vector3f _gyro_diff[MAX_SENSOR_COUNT]{};  /**< filtered gyro differences between IMU uinits (rad/s) */
+    matrix::Vector3f _accel_diff[MAX_SENSOR_COUNT]{};        /**< filtered accel differences between IMU units (m/s/s) */
+    matrix::Vector3f _gyro_diff[MAX_SENSOR_COUNT]{};         /**< filtered gyro differences between IMU uinits (rad/s) */
 
-    uint32_t _accel_device_id[MAX_SENSOR_COUNT]{}; /**< accel driver device id for each uorb instance */
-    uint32_t _gyro_device_id[MAX_SENSOR_COUNT]{};  /**< gyro driver device id for each uorb instance */
+    uint32_t _accel_device_id[MAX_SENSOR_COUNT]{};           /**< accel driver device id for each uorb instance */
+    uint32_t _gyro_device_id[MAX_SENSOR_COUNT]{};            /**< gyro driver device id for each uorb instance */
 
-    uint64_t _last_accel_timestamp[MAX_SENSOR_COUNT]{}; /**< latest full timestamp */
+    uint64_t _last_accel_timestamp[MAX_SENSOR_COUNT]{};      /**< latest full timestamp */
 
-    sensor_selection_s _selection{}; /**< struct containing the sensor selection to be published to the uORB */
+    sensor_selection_s _selection{};                         /**< struct containing the sensor selection to be published to the uORB */
 
     bool _parameter_update{false};
 

@@ -21,7 +21,6 @@
 #include "ActuatorEffectiveness.hpp"
 #include <module/module_params.hpp>
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/uORBSubscription.hpp>
 
 class ActuatorEffectivenessTilts;
 
@@ -131,6 +130,7 @@ private:
         param_t moment_ratio;
         param_t tilt_index;
     };
+
     ParamHandles _param_handles[NUM_ROTORS_MAX];
     param_t      _count_handle;
 

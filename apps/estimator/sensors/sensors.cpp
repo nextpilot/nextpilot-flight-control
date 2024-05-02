@@ -35,9 +35,9 @@ Sensors::Sensors(bool hil_enabled) :
 #if defined(CONFIG_SENSORS_VEHICLE_AIRSPEED)
     /* Differential pressure offset */
     _parameter_handles.diff_pres_offset_pa = param_find("SENS_DPRES_OFF");
-#ifdef ADC_AIRSPEED_VOLTAGE_CHANNEL
+#   ifdef ADC_AIRSPEED_VOLTAGE_CHANNEL
     _parameter_handles.diff_pres_analog_scale = param_find("SENS_DPRES_ANSC");
-#endif /* ADC_AIRSPEED_VOLTAGE_CHANNEL */
+#   endif /* ADC_AIRSPEED_VOLTAGE_CHANNEL */
 
     _parameter_handles.air_cmodel           = param_find("CAL_AIR_CMODEL");
     _parameter_handles.air_tube_length      = param_find("CAL_AIR_TUBELEN");
@@ -125,10 +125,10 @@ Sensors::~Sensors() {
     perf_free(_loop_perf);
 }
 
-bool Sensors::init() {
+int Sensors::init() {
     _vehicle_imu_sub[0].registerCallback();
     ScheduleNow();
-    return true;
+    return 0;
 }
 
 int Sensors::parameters_update() {
@@ -139,9 +139,9 @@ int Sensors::parameters_update() {
 #if defined(CONFIG_SENSORS_VEHICLE_AIRSPEED)
     /* Airspeed offset */
     param_get(_parameter_handles.diff_pres_offset_pa, &(_parameters.diff_pres_offset_pa));
-#ifdef ADC_AIRSPEED_VOLTAGE_CHANNEL
+#   ifdef ADC_AIRSPEED_VOLTAGE_CHANNEL
     param_get(_parameter_handles.diff_pres_analog_scale, &(_parameters.diff_pres_analog_scale));
-#endif /* ADC_AIRSPEED_VOLTAGE_CHANNEL */
+#   endif /* ADC_AIRSPEED_VOLTAGE_CHANNEL */
 
     param_get(_parameter_handles.air_cmodel, &_parameters.air_cmodel);
     param_get(_parameter_handles.air_tube_length, &_parameters.air_tube_length);
@@ -267,10 +267,10 @@ void Sensors::diff_pres_poll() {
         _airspeed_validator.put(diff_pres.timestamp_sample, airspeed_input, diff_pres.error_count, 100); // TODO: real priority?
 
         // accumulate average for publication
-        _diff_pres_timestamp_sum += diff_pres.timestamp_sample;
-        _diff_pres_pressure_sum += diff_pres.differential_pressure_pa;
+        _diff_pres_timestamp_sum   += diff_pres.timestamp_sample;
+        _diff_pres_pressure_sum    += diff_pres.differential_pressure_pa;
         _diff_pres_temperature_sum += air_temperature_celsius;
-        _baro_pressure_sum += air_data.baro_pressure_pa;
+        _baro_pressure_sum         += air_data.baro_pressure_pa;
         _diff_pres_count++;
 
         if ((_diff_pres_count > 0) && hrt_elapsed_time(&_airspeed_last_publish) >= 50_ms) {
@@ -334,7 +334,7 @@ void Sensors::adc_poll() {
         return;
     }
 
-#ifdef ADC_AIRSPEED_VOLTAGE_CHANNEL
+#   ifdef ADC_AIRSPEED_VOLTAGE_CHANNEL
 
     if (_parameters.diff_pres_analog_scale > 0.0f) {
         adc_report_s adc;
@@ -374,9 +374,9 @@ void Sensors::adc_poll() {
         }
     }
 
-#endif // ADC_AIRSPEED_VOLTAGE_CHANNEL
+#   endif // ADC_AIRSPEED_VOLTAGE_CHANNEL
 }
-#endif // CONFIG_SENSORS_VEHICLE_AIRSPEED)
+#endif    // CONFIG_SENSORS_VEHICLE_AIRSPEED)
 
 #if defined(CONFIG_SENSORS_VEHICLE_AIR_DATA)
 void Sensors::InitializeVehicleAirData() {
@@ -416,8 +416,8 @@ void Sensors::InitializeVehicleIMU() {
             if (accel_sub.advertised() && gyro_sub.advertised()) {
                 // if the sensors module is responsible for voting (SENS_IMU_MODE 1) then run every VehicleIMU in the same WQ
                 //   otherwise each VehicleIMU runs in a corresponding INSx WQ
-                const bool              multi_mode = (_param_sens_imu_mode.get() == 0);
-                const px4::wq_config_t &wq_config  = multi_mode ? px4::ins_instance_to_wq(i) : wq_configurations::INS0;
+                const bool         multi_mode = (_param_sens_imu_mode.get() == 0);
+                const wq_config_t &wq_config  = multi_mode ? ins_instance_to_wq(i) : wq_configurations::INS0;
 
                 VehicleIMU *imu = new VehicleIMU(i, i, i, wq_config);
 
@@ -585,7 +585,7 @@ void Sensors::Run() {
     perf_end(_loop_perf);
 }
 
-int Sensors::instantiate(int argc, char *argv[]) {
+Sensors *Sensors::instantiate(int argc, char *argv[]) {
     bool hil_enabled = false;
     bool error_flag  = false;
 
@@ -593,7 +593,7 @@ int Sensors::instantiate(int argc, char *argv[]) {
     int         ch;
     const char *myoptarg = nullptr;
 
-    while ((ch = px4_getopt(argc, argv, "h", &myoptind, &myoptarg)) != EOF) {
+    while ((ch = getopt(argc, argv, "h", &myoptind, &myoptarg)) != EOF) {
         switch (ch) {
         case 'h':
             hil_enabled = true;
@@ -611,28 +611,29 @@ int Sensors::instantiate(int argc, char *argv[]) {
     }
 
     if (error_flag) {
-        return PX4_ERROR;
+        return nullptr;
     }
 
     Sensors *instance = new Sensors(hil_enabled);
 
     if (instance) {
-        _object.store(instance);
-        _task_id = task_id_is_work_queue;
+        // _object.store(instance);
+        // _task_id = task_id_is_work_queue;
 
-        if (instance->init()) {
-            return PX4_OK;
-        }
+        // if (instance->init()) {
+        //     return PX4_OK;
+        // }
+        return instance;
 
     } else {
         PX4_ERR("alloc failed");
     }
 
     delete instance;
-    _object.store(nullptr);
-    _task_id = -1;
+    // _object.store(nullptr);
+    // _task_id = -1;
 
-    return PX4_ERROR;
+    return nullptr;
 }
 
 int Sensors::print_status() {

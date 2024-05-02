@@ -16,7 +16,7 @@
 
 #include "LaunchDetector.h"
 #include <ulog/log.h>
-// #include <events/events.h>
+#include <events/events.h>
 
 namespace launchdetection {
 

@@ -12,7 +12,7 @@
 
 #include "../../HealthAndArmingChecks/HealthAndArmingChecks.hpp"
 #include <hrtimer.h>
-// #include <events/events.h>
+#include <events/events.h>
 #include <uORB/topics/actuator_armed.h>
 #include <uORB/topics/vehicle_control_mode.h>
 #include <uORB/topics/vehicle_status.h>
@@ -47,18 +47,22 @@ public:
     bool isInit() const {
         return (_arm_state == vehicle_status_s::ARMING_STATE_INIT);
     }
+
     bool isStandby() const {
         return (_arm_state == vehicle_status_s::ARMING_STATE_STANDBY);
     }
+
     bool isArmed() const {
         return (_arm_state == vehicle_status_s::ARMING_STATE_ARMED);
     }
+
     bool isShutdown() const {
         return (_arm_state == vehicle_status_s::ARMING_STATE_SHUTDOWN);
     }
 
     static const char *getArmStateName(uint8_t arming_state);
-    const char        *getArmStateName() const {
+
+    const char *getArmStateName() const {
         return getArmStateName(_arm_state);
     }
 

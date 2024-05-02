@@ -24,7 +24,6 @@
 #include <math.h>
 #include <fcntl.h>
 
-// #include <systemlib/err.h>
 #include <ulog/mavlink_log.h>
 
 #include <uORB/uORB.h>
@@ -32,7 +31,7 @@
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/vehicle_command.h>
 
-#define SEC2USEC 1000000.0f
+#define SEC2USEC      1000000.0f
 
 #define STATE_TIMEOUT 10000000 // [us] Maximum time to spend in any state
 
@@ -492,9 +491,7 @@ void PrecLand::slewrate(float &sp_x, float &sp_y) {
     }
 
     // limit the setpoint speed such that we can stop at the setpoint given the maximum acceleration/deceleration
-    float max_spd = sqrtf(_param_acceleration_hor * ((matrix::Vector2f)(_sp_pev - matrix::Vector2f(sp_x,
-                                                                                                   sp_y)))
-                                                        .length());
+    float max_spd = sqrtf(_param_acceleration_hor * ((matrix::Vector2f)(_sp_pev - matrix::Vector2f(sp_x, sp_y))).length());
     sp_vel        = (sp_curr - _sp_pev) / dt; // velocity of the setpoints
 
     if (sp_vel.length() > max_spd) {

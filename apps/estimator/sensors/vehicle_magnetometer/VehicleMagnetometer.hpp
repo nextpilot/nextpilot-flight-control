@@ -24,9 +24,6 @@
 #include <module/module_params.hpp>
 #include <workq/WorkItemScheduled.hpp>
 #include <uORB/uORBPublication.hpp>
-#include <uORB/uORBPublication.hpp>
-#include <uORB/uORBSubscription.hpp>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/battery_status.h>
 #include <uORB/topics/estimator_sensor_bias.h>

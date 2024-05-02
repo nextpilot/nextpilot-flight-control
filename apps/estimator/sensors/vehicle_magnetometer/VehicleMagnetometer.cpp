@@ -11,7 +11,7 @@
 #include "VehicleMagnetometer.hpp"
 
 #include <ulog/log.h>
-// #include <events/events.h>
+#include <events/events.h>
 #include <geo/geo.h>
 #include <sensor_calibration/Utilities.hpp>
 
@@ -238,10 +238,7 @@ void VehicleMagnetometer::UpdateMagCalibration() {
                 const Vector3f bias{estimator_sensor_bias.mag_bias};
                 const Vector3f bias_variance{estimator_sensor_bias.mag_bias_variance};
 
-                const bool valid = (hrt_elapsed_time(&estimator_sensor_bias.timestamp) < 1_s) && (estimator_sensor_bias.mag_device_id != 0) &&
-                                   estimator_sensor_bias.mag_bias_valid &&
-                                   estimator_sensor_bias.mag_bias_stable &&
-                                   (bias_variance.min() > min_var_allowed) && (bias_variance.max() < max_var_allowed);
+                const bool valid = (hrt_elapsed_time(&estimator_sensor_bias.timestamp) < 1_s) && (estimator_sensor_bias.mag_device_id != 0) && estimator_sensor_bias.mag_bias_valid && estimator_sensor_bias.mag_bias_stable && (bias_variance.min() > min_var_allowed) && (bias_variance.max() < max_var_allowed);
 
                 if (valid) {
                     // find corresponding mag calibration
@@ -421,7 +418,7 @@ void VehicleMagnetometer::Run() {
                     _voter.put(uorb_index, report.timestamp, mag_array, report.error_count, _priority[uorb_index]);
 
                     _timestamp_sample_sum[uorb_index] += report.timestamp_sample;
-                    _data_sum[uorb_index] += vect;
+                    _data_sum[uorb_index]             += vect;
                     _data_sum_count[uorb_index]++;
 
                     _last_data[uorb_index] = vect;
@@ -550,15 +547,25 @@ void VehicleMagnetometer::CheckFailover(const hrt_abstime &time_now_us) {
 
                     events::px4::enums::sensor_failover_reason_t failover_reason{};
 
-                    if (flags & DataValidator::ERROR_FLAG_NO_DATA) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::no_data; }
+                    if (flags & DataValidator::ERROR_FLAG_NO_DATA) {
+                        failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::no_data;
+                    }
 
-                    if (flags & DataValidator::ERROR_FLAG_STALE_DATA) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::stale_data; }
+                    if (flags & DataValidator::ERROR_FLAG_STALE_DATA) {
+                        failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::stale_data;
+                    }
 
-                    if (flags & DataValidator::ERROR_FLAG_TIMEOUT) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::timeout; }
+                    if (flags & DataValidator::ERROR_FLAG_TIMEOUT) {
+                        failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::timeout;
+                    }
 
-                    if (flags & DataValidator::ERROR_FLAG_HIGH_ERRCOUNT) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::high_error_count; }
+                    if (flags & DataValidator::ERROR_FLAG_HIGH_ERRCOUNT) {
+                        failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::high_error_count;
+                    }
 
-                    if (flags & DataValidator::ERROR_FLAG_HIGH_ERRDENSITY) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::high_error_density; }
+                    if (flags & DataValidator::ERROR_FLAG_HIGH_ERRDENSITY) {
+                        failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::high_error_density;
+                    }
 
                     /* EVENT
                      * @description
@@ -586,8 +593,8 @@ void VehicleMagnetometer::calcMagInconsistency() {
 
         const Vector3f primary_mag(_last_data[_selected_sensor_sub_index]); // primary mag field vector
 
-        float    mag_angle_diff_max = 0.0f; // the maximum angle difference
-        unsigned check_index        = 0;    // the number of sensors the primary has been checked against
+        float    mag_angle_diff_max = 0.0f;                                 // the maximum angle difference
+        unsigned check_index        = 0;                                    // the number of sensors the primary has been checked against
 
         // Check each sensor against the primary
         for (int i = 0; i < MAX_SENSOR_COUNT; i++) {

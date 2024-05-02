@@ -26,8 +26,6 @@
 #include <sensor_calibration/Barometer.hpp>
 #include <sensor_calibration/Utilities.hpp>
 #include <ulog/mavlink_log.h>
-// #include <systemlib/err.h>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/sensor_baro.h>
 #include <uORB/topics/sensor_gps.h>

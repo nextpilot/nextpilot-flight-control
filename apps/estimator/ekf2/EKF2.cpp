@@ -8,7 +8,7 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-// #include <events/events.h>
+#include <events/events.h>
 #include "EKF2.hpp"
 
 using namespace time_literals;
@@ -213,9 +213,9 @@ bool EKF2::multi_init(int imu, int mag) {
     _estimator_innovation_test_ratios_pub.advertise();
     _estimator_innovation_variances_pub.advertise();
     _estimator_innovations_pub.advertise();
-#if defined(CONFIG_EKF2_OPTICAL_FLOW)
+#   if defined(CONFIG_EKF2_OPTICAL_FLOW)
     _estimator_optical_flow_vel_pub.advertise();
-#endif // CONFIG_EKF2_OPTICAL_FLOW
+#   endif // CONFIG_EKF2_OPTICAL_FLOW
     _estimator_sensor_bias_pub.advertise();
     _estimator_states_pub.advertise();
     _estimator_status_flags_pub.advertise();
@@ -228,7 +228,7 @@ bool EKF2::multi_init(int imu, int mag) {
         _estimator_baro_bias_pub.advertise();
     }
 
-#if defined(CONFIG_EKF2_EXTERNAL_VISION)
+#   if defined(CONFIG_EKF2_EXTERNAL_VISION)
 
     // EV advertise
     if (_param_ekf2_ev_ctrl.get() & static_cast<int32_t>(EvCtrl::VPOS)) {
@@ -249,7 +249,7 @@ bool EKF2::multi_init(int imu, int mag) {
         _estimator_aid_src_ev_yaw_pub.advertise();
     }
 
-#endif // CONFIG_EKF2_EXTERNAL_VISION
+#   endif // CONFIG_EKF2_EXTERNAL_VISION
 
     // GNSS advertise
     if (_param_ekf2_gps_ctrl.get() & static_cast<int32_t>(GnssCtrl::VPOS)) {
@@ -266,15 +266,15 @@ bool EKF2::multi_init(int imu, int mag) {
         _estimator_aid_src_gnss_vel_pub.advertise();
     }
 
-#if defined(CONFIG_EKF2_GNSS_YAW)
+#   if defined(CONFIG_EKF2_GNSS_YAW)
 
     if (_param_ekf2_gps_ctrl.get() & static_cast<int32_t>(GnssCtrl::YAW)) {
         _estimator_aid_src_gnss_yaw_pub.advertise();
     }
 
-#endif // CONFIG_EKF2_GNSS_YAW
+#   endif // CONFIG_EKF2_GNSS_YAW
 
-#if defined(CONFIG_EKF2_RANGE_FINDER)
+#   if defined(CONFIG_EKF2_RANGE_FINDER)
 
     // RNG advertise
     if (_param_ekf2_rng_ctrl.get()) {
@@ -282,7 +282,7 @@ bool EKF2::multi_init(int imu, int mag) {
         _estimator_rng_hgt_bias_pub.advertise();
     }
 
-#endif // CONFIG_EKF2_RANGE_FINDER
+#   endif // CONFIG_EKF2_RANGE_FINDER
 
     _attitude_pub.advertise();
     _local_position_pub.advertise();
@@ -597,7 +597,7 @@ void EKF2::Run() {
         // integrate time to monitor time slippage
         if (_start_time_us > 0) {
             _integrated_time_us += imu_dt;
-            _last_time_slip_us = (imu_sample_new.time_us - _start_time_us) - _integrated_time_us;
+            _last_time_slip_us   = (imu_sample_new.time_us - _start_time_us) - _integrated_time_us;
 
         } else {
             _start_time_us     = imu_sample_new.time_us;
@@ -690,8 +690,7 @@ void EKF2::Run() {
 
 void EKF2::VerifyParams() {
     if ((_param_ekf2_aid_mask.get() & SensorFusionMask::DEPRECATED_USE_GPS) || (_param_ekf2_aid_mask.get() & SensorFusionMask::DEPRECATED_USE_GPS_YAW)) {
-        _param_ekf2_aid_mask.set(_param_ekf2_aid_mask.get() & ~(SensorFusionMask::DEPRECATED_USE_GPS |
-                                                                SensorFusionMask::DEPRECATED_USE_GPS_YAW));
+        _param_ekf2_aid_mask.set(_param_ekf2_aid_mask.get() & ~(SensorFusionMask::DEPRECATED_USE_GPS | SensorFusionMask::DEPRECATED_USE_GPS_YAW));
         _param_ekf2_aid_mask.commit();
         mavlink_log_critical(&_mavlink_log_pub, "Use EKF2_GPS_CTRL instead\n");
         /* EVENT
@@ -1774,10 +1773,10 @@ float EKF2::filter_altitude_ellipsoid(float amsl_hgt) {
 
     } else if (_gps_time_usec != _gps_alttitude_ellipsoid_previous_timestamp) {
         // apply a 10 second first order low pass filter to baro offset
-        float dt                                    = 1e-6f * (_gps_time_usec - _gps_alttitude_ellipsoid_previous_timestamp);
-        _gps_alttitude_ellipsoid_previous_timestamp = _gps_time_usec;
-        float offset_rate_correction                = 0.1f * (height_diff - _wgs84_hgt_offset);
-        _wgs84_hgt_offset += dt * constrain(offset_rate_correction, -0.1f, 0.1f);
+        float dt                                     = 1e-6f * (_gps_time_usec - _gps_alttitude_ellipsoid_previous_timestamp);
+        _gps_alttitude_ellipsoid_previous_timestamp  = _gps_time_usec;
+        float offset_rate_correction                 = 0.1f * (height_diff - _wgs84_hgt_offset);
+        _wgs84_hgt_offset                           += dt * constrain(offset_rate_correction, -0.1f, 0.1f);
     }
 
     return amsl_hgt + _wgs84_hgt_offset;
@@ -1837,8 +1836,7 @@ void EKF2::UpdateAirspeedSample(ekf2_timestamps_s &ekf2_timestamps) {
                 _ekf.setAirspeedData(airspeed_sample);
             }
 
-            ekf2_timestamps.airspeed_timestamp_rel = (int16_t)((int64_t)airspeed.timestamp / 100 -
-                                                               (int64_t)ekf2_timestamps.timestamp / 100);
+            ekf2_timestamps.airspeed_timestamp_rel = (int16_t)((int64_t)airspeed.timestamp / 100 - (int64_t)ekf2_timestamps.timestamp / 100);
         }
     }
 }
@@ -1911,8 +1909,7 @@ void EKF2::UpdateBaroSample(ekf2_timestamps_s &ekf2_timestamps) {
 
         _ekf.setBaroData(baroSample{airdata.timestamp_sample, airdata.baro_alt_meter, reset});
 
-        ekf2_timestamps.vehicle_air_data_timestamp_rel = (int16_t)((int64_t)airdata.timestamp / 100 -
-                                                                   (int64_t)ekf2_timestamps.timestamp / 100);
+        ekf2_timestamps.vehicle_air_data_timestamp_rel = (int16_t)((int64_t)airdata.timestamp / 100 - (int64_t)ekf2_timestamps.timestamp / 100);
     }
 }
 
@@ -2056,8 +2053,7 @@ bool EKF2::UpdateExtVisionSample(ekf2_timestamps_s &ekf2_timestamps) {
             _ekf.setExtVisionData(ev_data);
         }
 
-        ekf2_timestamps.visual_odometry_timestamp_rel = (int16_t)((int64_t)ev_odom.timestamp / 100 -
-                                                                  (int64_t)ekf2_timestamps.timestamp / 100);
+        ekf2_timestamps.visual_odometry_timestamp_rel = (int16_t)((int64_t)ev_odom.timestamp / 100 - (int64_t)ekf2_timestamps.timestamp / 100);
     }
 
     return new_ev_odom;
@@ -2114,8 +2110,7 @@ bool EKF2::UpdateFlowSample(ekf2_timestamps_s &ekf2_timestamps) {
             _ekf.set_rangefinder_limits(optical_flow.min_ground_distance, optical_flow.max_ground_distance);
         }
 
-        ekf2_timestamps.optical_flow_timestamp_rel = (int16_t)((int64_t)optical_flow.timestamp / 100 -
-                                                               (int64_t)ekf2_timestamps.timestamp / 100);
+        ekf2_timestamps.optical_flow_timestamp_rel = (int16_t)((int64_t)optical_flow.timestamp / 100 - (int64_t)ekf2_timestamps.timestamp / 100);
     }
 
     return new_optical_flow;
@@ -2201,8 +2196,7 @@ void EKF2::UpdateMagSample(ekf2_timestamps_s &ekf2_timestamps) {
 
         _ekf.setMagData(magSample{magnetometer.timestamp_sample, Vector3f{magnetometer.magnetometer_ga}, reset});
 
-        ekf2_timestamps.vehicle_magnetometer_timestamp_rel = (int16_t)((int64_t)magnetometer.timestamp / 100 -
-                                                                       (int64_t)ekf2_timestamps.timestamp / 100);
+        ekf2_timestamps.vehicle_magnetometer_timestamp_rel = (int16_t)((int64_t)magnetometer.timestamp / 100 - (int64_t)ekf2_timestamps.timestamp / 100);
     }
 }
 
@@ -2241,8 +2235,7 @@ void EKF2::UpdateRangeSample(ekf2_timestamps_s &ekf2_timestamps) {
         if (_msg_missed_distance_sensor_perf == nullptr) {
             _msg_missed_distance_sensor_perf = perf_alloc(PC_COUNT, MODULE_NAME ": distance_sensor messages missed");
 
-        } else if (_distance_sensor_subs[_distance_sensor_selected].get_last_generation() != _distance_sensor_last_generation +
-                                                                                                 1) {
+        } else if (_distance_sensor_subs[_distance_sensor_selected].get_last_generation() != _distance_sensor_last_generation + 1) {
             perf_count(_msg_missed_distance_sensor_perf);
         }
 
@@ -2262,8 +2255,7 @@ void EKF2::UpdateRangeSample(ekf2_timestamps_s &ekf2_timestamps) {
             _last_range_sensor_update = ekf2_timestamps.timestamp;
         }
 
-        ekf2_timestamps.distance_sensor_timestamp_rel = (int16_t)((int64_t)distance_sensor.timestamp / 100 -
-                                                                  (int64_t)ekf2_timestamps.timestamp / 100);
+        ekf2_timestamps.distance_sensor_timestamp_rel = (int16_t)((int64_t)distance_sensor.timestamp / 100 - (int64_t)ekf2_timestamps.timestamp / 100);
     }
 
     if (_last_range_sensor_update < ekf2_timestamps.timestamp - 1_s) {

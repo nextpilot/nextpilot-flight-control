@@ -9,7 +9,7 @@
  ******************************************************************/
 
 #include "batteryCheck.hpp"
-// #include <events/events.h>
+#include <events/events.h>
 
 using namespace time_literals;
 
@@ -18,41 +18,56 @@ static_assert(battery_status_s::BATTERY_FAULT_COUNT == (static_cast<uint8_t>(bat
 
 static constexpr const char *battery_fault_reason_str(battery_fault_reason_t battery_fault_reason) {
     switch (battery_fault_reason) {
-    case battery_fault_reason_t::deep_discharge: return "under voltage";
+    case battery_fault_reason_t::deep_discharge:
+        return "under voltage";
 
-    case battery_fault_reason_t::voltage_spikes: return "over voltage";
+    case battery_fault_reason_t::voltage_spikes:
+        return "over voltage";
 
-    case battery_fault_reason_t::cell_fail: return "cell fault";
+    case battery_fault_reason_t::cell_fail:
+        return "cell fault";
 
-    case battery_fault_reason_t::over_current: return "over current";
+    case battery_fault_reason_t::over_current:
+        return "over current";
 
-    case battery_fault_reason_t::fault_temperature: return "critical temperature";
+    case battery_fault_reason_t::fault_temperature:
+        return "critical temperature";
 
-    case battery_fault_reason_t::under_temperature: return "under temperature";
+    case battery_fault_reason_t::under_temperature:
+        return "under temperature";
 
-    case battery_fault_reason_t::incompatible_voltage: return "voltage mismatch";
+    case battery_fault_reason_t::incompatible_voltage:
+        return "voltage mismatch";
 
-    case battery_fault_reason_t::incompatible_firmware: return "incompatible firmware";
+    case battery_fault_reason_t::incompatible_firmware:
+        return "incompatible firmware";
 
-    case battery_fault_reason_t::incompatible_model: return "incompatible model";
+    case battery_fault_reason_t::incompatible_model:
+        return "incompatible model";
 
-    case battery_fault_reason_t::hardware_fault: return "hardware fault";
+    case battery_fault_reason_t::hardware_fault:
+        return "hardware fault";
 
-    case battery_fault_reason_t::over_temperature: return "near temperature limit";
+    case battery_fault_reason_t::over_temperature:
+        return "near temperature limit";
     }
 
     return "";
-};
+}
 
 using battery_mode_t = events::px4::enums::battery_mode_t;
 static_assert(battery_status_s::BATTERY_MODE_COUNT == (static_cast<uint8_t>(battery_mode_t::_max) + 1), "Battery mode flags mismatch!");
+
 static constexpr const char *battery_mode_str(battery_mode_t battery_mode) {
     switch (battery_mode) {
-    case battery_mode_t::autodischarging: return "auto discharging";
+    case battery_mode_t::autodischarging:
+        return "auto discharging";
 
-    case battery_mode_t::hotswap: return "hot-swap";
+    case battery_mode_t::hotswap:
+        return "hot-swap";
 
-    default: return "unknown";
+    default:
+        return "unknown";
     }
 }
 
@@ -130,9 +145,7 @@ void BatteryChecks::checkAndReport(const Context &context, Report &reporter) {
 
                 for (uint8_t fault_index = 0; fault_index <= static_cast<uint8_t>(battery_fault_reason_t::_max); fault_index++) {
                     if (battery.faults & (1 << fault_index)) {
-                        events::px4::enums::suggested_action_t action = context.isArmed() ?
-                                                                            events::px4::enums::suggested_action_t::land :
-                                                                            events::px4::enums::suggested_action_t::none;
+                        events::px4::enums::suggested_action_t action = context.isArmed() ? events::px4::enums::suggested_action_t::land : events::px4::enums::suggested_action_t::none;
 
                         /* EVENT
                          * @description

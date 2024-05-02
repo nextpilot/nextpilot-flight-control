@@ -11,7 +11,7 @@
 #include "VehicleIMU.hpp"
 
 #include <ulog/log.h>
-// #include <events/events.h>
+#include <events/events.h>
 #include <sensor_calibration/Utilities.hpp>
 #include <ulog/mavlink_log.h>
 
@@ -23,7 +23,7 @@ using math::constrain;
 
 namespace sensors {
 
-VehicleIMU::VehicleIMU(int instance, uint8_t accel_index, uint8_t gyro_index, const px4::wq_config_t &config) :
+VehicleIMU::VehicleIMU(int instance, uint8_t accel_index, uint8_t gyro_index, const wq_config_t &config) :
     ModuleParams(nullptr),
     WorkItemScheduled(MODULE_NAME, config),
     _sensor_accel_sub(ORB_ID(sensor_accel), accel_index),
@@ -287,7 +287,7 @@ bool VehicleIMU::UpdateAccel() {
                 _accel_temperature_sum_count = 1;
 
             } else {
-                _accel_temperature_sum += accel.temperature;
+                _accel_temperature_sum       += accel.temperature;
                 _accel_temperature_sum_count += 1;
             }
         }
@@ -303,8 +303,7 @@ bool VehicleIMU::UpdateAccel() {
 
         if (accel.clip_counter[0] > 0 || accel.clip_counter[1] > 0 || accel.clip_counter[2] > 0) {
             // rotate sensor clip counts into vehicle body frame
-            const Vector3f clipping{_accel_calibration.rotation() *
-                                    Vector3f{(float)accel.clip_counter[0], (float)accel.clip_counter[1], (float)accel.clip_counter[2]}};
+            const Vector3f clipping{_accel_calibration.rotation() * Vector3f{(float)accel.clip_counter[0], (float)accel.clip_counter[1], (float)accel.clip_counter[2]}};
 
             // round to get reasonble clip counts per axis (after board rotation)
             const uint8_t clip_x = roundf(fabsf(clipping(0)));
@@ -417,7 +416,7 @@ bool VehicleIMU::UpdateGyro() {
                 _gyro_temperature_sum_count = 1;
 
             } else {
-                _gyro_temperature_sum += gyro.temperature;
+                _gyro_temperature_sum       += gyro.temperature;
                 _gyro_temperature_sum_count += 1;
             }
         }
@@ -430,8 +429,7 @@ bool VehicleIMU::UpdateGyro() {
 
         if (gyro.clip_counter[0] > 0 || gyro.clip_counter[1] > 0 || gyro.clip_counter[2] > 0) {
             // rotate sensor clip counts into vehicle body frame
-            const Vector3f clipping{_gyro_calibration.rotation() *
-                                    Vector3f{(float)gyro.clip_counter[0], (float)gyro.clip_counter[1], (float)gyro.clip_counter[2]}};
+            const Vector3f clipping{_gyro_calibration.rotation() * Vector3f{(float)gyro.clip_counter[0], (float)gyro.clip_counter[1], (float)gyro.clip_counter[2]}};
 
             // round to get reasonble clip counts per axis (after board rotation)
             const uint8_t clip_x = roundf(fabsf(clipping(0)));
@@ -497,7 +495,7 @@ bool VehicleIMU::Publish() {
             const Vector3f delta_angle_corrected{angular_velocity * gyro_dt_s};
 
             // accumulate delta angle coning corrections
-            _coning_norm_accum += accumulated_coning_corrections.norm() * gyro_dt_s;
+            _coning_norm_accum              += accumulated_coning_corrections.norm() * gyro_dt_s;
             _coning_norm_accum_total_time_s += gyro_dt_s;
 
             // delta velocity: apply offsets, scale, and board rotation
@@ -635,8 +633,8 @@ void VehicleIMU::UpdateIntegratorConfiguration() {
         _gyro_integrator.set_reset_samples(gyro_integral_samples);
 
         _backup_schedule_timeout_us = math::constrain((int)math::min(sensor_accel_s::ORB_QUEUE_LENGTH * accel_interval_us,
-                                                                     sensor_gyro_s::ORB_QUEUE_LENGTH * gyro_interval_us) /
-                                                          2,
+                                                                     sensor_gyro_s::ORB_QUEUE_LENGTH * gyro_interval_us)
+                                                          / 2,
                                                       1000, 20000);
 
         // gyro: find largest integer multiple of gyro_integral_samples
@@ -749,11 +747,11 @@ void VehicleIMU::SensorCalibrationSaveAccel() {
 
                 } else {
                     for (int axis_index = 0; axis_index < 3; axis_index++) {
-                        const float sum_of_variances = _accel_learned_calibration[i].bias_variance(axis_index) + bias_variance(axis_index);
-                        const float k1               = bias_variance(axis_index) / sum_of_variances;
-                        const float k2               = _accel_learned_calibration[i].bias_variance(axis_index) / sum_of_variances;
-                        offset_estimate(axis_index)  = k2 * offset_estimate(axis_index) + k1 * _accel_learned_calibration[i].offset(axis_index);
-                        bias_variance(axis_index) *= k2;
+                        const float sum_of_variances  = _accel_learned_calibration[i].bias_variance(axis_index) + bias_variance(axis_index);
+                        const float k1                = bias_variance(axis_index) / sum_of_variances;
+                        const float k2                = _accel_learned_calibration[i].bias_variance(axis_index) / sum_of_variances;
+                        offset_estimate(axis_index)   = k2 * offset_estimate(axis_index) + k1 * _accel_learned_calibration[i].offset(axis_index);
+                        bias_variance(axis_index)    *= k2;
                     }
                 }
 
@@ -800,11 +798,11 @@ void VehicleIMU::SensorCalibrationSaveGyro() {
 
                 } else {
                     for (int axis_index = 0; axis_index < 3; axis_index++) {
-                        const float sum_of_variances = _gyro_learned_calibration[i].bias_variance(axis_index) + bias_variance(axis_index);
-                        const float k1               = bias_variance(axis_index) / sum_of_variances;
-                        const float k2               = _gyro_learned_calibration[i].bias_variance(axis_index) / sum_of_variances;
-                        offset_estimate(axis_index)  = k2 * offset_estimate(axis_index) + k1 * _gyro_learned_calibration[i].offset(axis_index);
-                        bias_variance(axis_index) *= k2;
+                        const float sum_of_variances  = _gyro_learned_calibration[i].bias_variance(axis_index) + bias_variance(axis_index);
+                        const float k1                = bias_variance(axis_index) / sum_of_variances;
+                        const float k2                = _gyro_learned_calibration[i].bias_variance(axis_index) / sum_of_variances;
+                        offset_estimate(axis_index)   = k2 * offset_estimate(axis_index) + k1 * _gyro_learned_calibration[i].offset(axis_index);
+                        bias_variance(axis_index)    *= k2;
                     }
                 }
 

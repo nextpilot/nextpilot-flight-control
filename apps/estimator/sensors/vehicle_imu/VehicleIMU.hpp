@@ -24,8 +24,6 @@
 #include <workq/WorkItemScheduled.hpp>
 #include <uORB/uORBPublication.hpp>
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/uORBSubscription.hpp>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/estimator_sensor_bias.h>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/sensor_accel.h>
@@ -35,13 +33,15 @@
 #include <uORB/topics/vehicle_imu_status.h>
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 namespace sensors {
 
 class VehicleIMU : public ModuleParams, public WorkItemScheduled {
 public:
     VehicleIMU() = delete;
-    VehicleIMU(int instance, uint8_t accel_index, uint8_t gyro_index, const px4::wq_config_t &config);
+    VehicleIMU(int instance, uint8_t accel_index, uint8_t gyro_index, const wq_config_t &config);
 
     ~VehicleIMU() override;
 

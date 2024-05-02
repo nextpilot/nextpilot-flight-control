@@ -12,9 +12,9 @@ for d in os.listdir(cwd):
         objs += SConscript(os.path.join(d, "SConscript"))
 
 
-inc = []
+inc = [cwd]
 src = Glob("*.cpp", exclude="*_test.cpp")
 
-objs += DefineGroup("ins/sensors", src, depend=["INS_USING_SENSORS"])
+objs += DefineGroup("ins/sensors", src, depend=["INS_USING_SENSORS"], LOCAL_CPPPATH=inc)
 
 Return("objs")

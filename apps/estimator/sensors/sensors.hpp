@@ -23,46 +23,44 @@
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
 #include <uORB/uORBPublication.hpp>
-#include <uORB/uORBPublication.hpp>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/uORBSubscription.hpp>
 #include "voted_sensors_update.h"
 #include "vehicle_imu/VehicleIMU.hpp"
 
 #if defined(CONFIG_SENSORS_VEHICLE_ACCELERATION)
-#include "vehicle_acceleration/VehicleAcceleration.hpp"
+#   include "vehicle_acceleration/VehicleAcceleration.hpp"
 #endif // CONFIG_SENSORS_VEHICLE_ACCELERATION
 
 #if defined(CONFIG_SENSORS_VEHICLE_AIRSPEED)
-#include <device/device_id.h>
-#include <drivers/drv_adc.h>
-#include <airspeed/airspeed.h>
-#include <uORB/topics/airspeed.h>
-#include <uORB/topics/differential_pressure.h>
-#include <uORB/topics/vehicle_air_data.h>
+#   include <device/device_id.h>
+#   include <drivers/drv_adc.h>
+#   include <airspeed/airspeed.h>
+#   include <uORB/topics/airspeed.h>
+#   include <uORB/topics/differential_pressure.h>
+#   include <uORB/topics/vehicle_air_data.h>
 #endif // CONFIG_SENSORS_VEHICLE_AIRSPEED
 
 #if defined(CONFIG_SENSORS_VEHICLE_AIR_DATA)
-#include <uORB/topics/sensor_baro.h>
-#include "vehicle_air_data/VehicleAirData.hpp"
+#   include <uORB/topics/sensor_baro.h>
+#   include "vehicle_air_data/VehicleAirData.hpp"
 #endif // CONFIG_SENSORS_VEHICLE_AIR_DATA
 
 #if defined(CONFIG_SENSORS_VEHICLE_ANGULAR_VELOCITY)
-#include "vehicle_angular_velocity/VehicleAngularVelocity.hpp"
+#   include "vehicle_angular_velocity/VehicleAngularVelocity.hpp"
 #endif // CONFIG_SENSORS_VEHICLE_ANGULAR_VELOCITY
 
 #if defined(CONFIG_SENSORS_VEHICLE_GPS_POSITION)
-#include "vehicle_gps_position/VehicleGPSPosition.hpp"
+#   include "vehicle_gps_position/VehicleGPSPosition.hpp"
 #endif // CONFIG_SENSORS_VEHICLE_GPS_POSITION
 
 #if defined(CONFIG_SENSORS_VEHICLE_MAGNETOMETER)
-#include "vehicle_magnetometer/VehicleMagnetometer.hpp"
-#include <sensor_calibration/Magnetometer.hpp>
-#include <uORB/topics/sensor_mag.h>
+#   include "vehicle_magnetometer/VehicleMagnetometer.hpp"
+#   include <sensor_calibration/Magnetometer.hpp>
+#   include <uORB/topics/sensor_mag.h>
 #endif // CONFIG_SENSORS_VEHICLE_MAGNETOMETER
 
 #if defined(CONFIG_SENSORS_VEHICLE_OPTICAL_FLOW)
-#include "vehicle_optical_flow/VehicleOpticalFlow.hpp"
+#   include "vehicle_optical_flow/VehicleOpticalFlow.hpp"
 #endif // CONFIG_SENSORS_VEHICLE_OPTICAL_FLOW
 
 using namespace sensors;
@@ -72,13 +70,14 @@ using namespace time_literals;
  * subtract 5 degrees in an attempt to account for the electrical upheating of the PCB
  */
 #define PCB_TEMP_ESTIMATE_DEG 5.0f
+
 class Sensors : public ModuleCommand<Sensors>, public ModuleParams, public WorkItemScheduled {
 public:
     explicit Sensors(bool hil_enabled);
     ~Sensors() override;
 
     /** @see ModuleCommand */
-    static int *instantiate(int argc, char *argv[]);
+    static Sensors *instantiate(int argc, char *argv[]);
 
     /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
@@ -107,7 +106,7 @@ private:
 
     void InitializeVehicleOpticalFlow();
 
-    const bool _hil_enabled; /**< if true, HIL is active */
+    const bool _hil_enabled;   /**< if true, HIL is active */
 
     perf_counter_t _loop_perf; /**< loop performance counter */
 
@@ -169,16 +168,16 @@ private:
     uint64_t _airspeed_last_publish{0};
     uint64_t _diff_pres_timestamp_sum{0};
 
-#ifdef ADC_AIRSPEED_VOLTAGE_CHANNEL
+#   ifdef ADC_AIRSPEED_VOLTAGE_CHANNEL
     uORB::Subscription                              _adc_report_sub{ORB_ID(adc_report)};
     uORB::PublicationMulti<differential_pressure_s> _diff_pres_pub{ORB_ID(differential_pressure)};
-#endif // ADC_AIRSPEED_VOLTAGE_CHANNEL
+#   endif // ADC_AIRSPEED_VOLTAGE_CHANNEL
 
     struct Parameters {
         float diff_pres_offset_pa;
-#ifdef ADC_AIRSPEED_VOLTAGE_CHANNEL
+#   ifdef ADC_AIRSPEED_VOLTAGE_CHANNEL
         float diff_pres_analog_scale;
-#endif /* ADC_AIRSPEED_VOLTAGE_CHANNEL */
+#   endif /* ADC_AIRSPEED_VOLTAGE_CHANNEL */
 
         int32_t air_cmodel;
         float   air_tube_length;
@@ -187,9 +186,9 @@ private:
 
     struct ParameterHandles {
         param_t diff_pres_offset_pa;
-#ifdef ADC_AIRSPEED_VOLTAGE_CHANNEL
+#   ifdef ADC_AIRSPEED_VOLTAGE_CHANNEL
         param_t diff_pres_analog_scale;
-#endif /* ADC_AIRSPEED_VOLTAGE_CHANNEL */
+#   endif /* ADC_AIRSPEED_VOLTAGE_CHANNEL */
 
         param_t air_cmodel;
         param_t air_tube_length;

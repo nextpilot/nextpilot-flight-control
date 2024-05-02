@@ -12,7 +12,6 @@
 
 #include "../Common.hpp"
 #include <uORB/uORBSubscription.hpp>
-#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/estimator_status.h>
 #include <uORB/topics/sensor_gyro.h>
 #include <sensor_calibration/Gyroscope.hpp>
