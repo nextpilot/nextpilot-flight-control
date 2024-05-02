@@ -22,26 +22,17 @@
  * claim the timer and then drive it directly.
  */
 
-#include <px4_platform_common/px4_config.h>
-#include <nuttx/arch.h>
-#include <nuttx/irq.h>
 
 #include <sys/types.h>
 #include <stdbool.h>
-
 #include <assert.h>
 #include <debug.h>
 #include <time.h>
 #include <queue.h>
 #include <errno.h>
 #include <string.h>
+#include <drv_hrt.h>
 
-#include <board_config.h>
-#include <drivers/drv_hrt.h>
-
-
-#include "stm32_gpio.h"
-#include "stm32_tim.h"
 
 #ifdef CONFIG_DEBUG_HRT
 #   define hrtinfo _info
@@ -763,8 +754,7 @@ void hrt_cancel(struct hrt_call *entry) {
     px4_leave_critical_section(flags);
 }
 
-static void
-hrt_call_enter(struct hrt_call *entry) {
+static void hrt_call_enter(struct hrt_call *entry) {
     struct hrt_call *call, *next;
 
     call = (struct hrt_call *)sq_peek(&callout_queue);
@@ -895,10 +885,20 @@ static void hrt_latency_update(void) {
     latency_counters[index]++;
 }
 
+/*
+ * initialise a hrt_call structure
+ */
 void hrt_call_init(struct hrt_call *entry) {
     memset(entry, 0, sizeof(*entry));
 }
 
+/*
+ * delay a hrt_call_every() periodic call by the given number of
+ * microseconds. This should be called from within the callout to
+ * cause the callout to be re-scheduled for a later time. The periodic
+ * callouts will then continue from that new base time at the
+ * previously specified period.
+ */
 void hrt_call_delay(struct hrt_call *entry, hrt_abstime delay) {
     entry->deadline = hrt_absolute_time() + delay;
 }

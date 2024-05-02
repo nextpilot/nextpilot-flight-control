@@ -76,6 +76,7 @@ static int hrt_init(void) {
 
     return 0;
 }
+
 INIT_COMPONENT_EXPORT(hrt_init);
 
 /*
@@ -95,7 +96,7 @@ RT_WEAK hrt_abstime hrt_absolute_time(void) {
  */
 hrt_abstime ts_to_abstime(const struct timespec *ts) {
     hrt_abstime result;
-    result = (hrt_abstime)(ts->tv_sec) * 1000000ULL;
+    result  = (hrt_abstime)(ts->tv_sec) * 1000000ULL;
     result += ts->tv_nsec / 1000ULL;
     return result;
 }
@@ -127,9 +128,9 @@ void hrt_store_absolute_time(volatile hrt_abstime *t) {
 }
 
 void abstime_to_ts(struct timespec *ts, hrt_abstime abstime) {
-    ts->tv_sec = abstime / 1000000ULL;
-    abstime -= ts->tv_sec * 1000000ULL;
-    ts->tv_nsec = abstime * 1000ULL;
+    ts->tv_sec   = abstime / 1000000ULL;
+    abstime     -= ts->tv_sec * 1000000ULL;
+    ts->tv_nsec  = abstime * 1000ULL;
 }
 
 /**
@@ -137,12 +138,7 @@ void abstime_to_ts(struct timespec *ts, hrt_abstime abstime) {
  *
  * This routine simulates a timer interrupt handler
  */
-void hrt_tim_isr(void *param) {
-    uint8_t status = 0;
-    if (param) {
-        status = *((uint8_t *)param);
-    }
-
+void hrt_tim_isr(uint32_t status) {
     // rt_enter_critical();
 
     /* grab the timer for latency tracking purposes */

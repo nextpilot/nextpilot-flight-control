@@ -21,6 +21,7 @@
 #include <stdbool.h>
 #include <inttypes.h>
 #include <queue.h>
+#include <rtthread.h>
 
 #if defined(__PX4_NUTTX) && !defined(CONFIG_BUILD_FLAT)
 #   include <px4_platform/board_ctrl.h>
@@ -141,7 +142,11 @@ static inline hrt_abstime hrt_elapsed_time(const hrt_abstime *then) {
  *
  * This function ensures that the timestamp cannot be seen half-written by an interrupt handler.
  */
-__EXPORT extern void hrt_store_absolute_time(volatile hrt_abstime *time);
+static inline void hrt_store_absolute_time(volatile hrt_abstime *t) {
+    rt_base_t flags = rt_hw_interrupt_disable();
+    *t              = hrt_absolute_time();
+    rt_hw_interrupt_enable(flags);
+}
 
 #ifdef __PX4_QURT
 /**
@@ -213,25 +218,25 @@ __EXPORT extern void hrt_ioctl_init(void);
 
 #if defined(ENABLE_LOCKSTEP_SCHEDULER)
 
-__EXPORT extern int  px4_lockstep_register_component(void);
-__EXPORT extern void px4_lockstep_unregister_component(int component);
-__EXPORT extern void px4_lockstep_progress(int component);
-__EXPORT extern void px4_lockstep_wait_for_components(void);
+__EXPORT extern int  lockstep_register_component(void);
+__EXPORT extern void lockstep_unregister_component(int component);
+__EXPORT extern void lockstep_progress(int component);
+__EXPORT extern void lockstep_wait_for_components(void);
 
 #else
-static inline int px4_lockstep_register_component(void) {
+static inline int lockstep_register_component(void) {
     return 0;
 }
 
-static inline void px4_lockstep_unregister_component(int component) {
+static inline void lockstep_unregister_component(int component) {
     (void)component;
 }
 
-static inline void px4_lockstep_progress(int component) {
+static inline void lockstep_progress(int component) {
     (void)component;
 }
 
-static inline void px4_lockstep_wait_for_components(void) {
+static inline void lockstep_wait_for_components(void) {
 }
 #endif /* defined(ENABLE_LOCKSTEP_SCHEDULER) */
 
