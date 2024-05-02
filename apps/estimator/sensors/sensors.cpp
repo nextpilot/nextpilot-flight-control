@@ -755,4 +755,4 @@ int sensors_start() {
     return sensors_main(argc, (char **)argv);
 }
 
-INIT_APP_EXPORT(sensors_start);
+// INIT_APP_EXPORT(sensors_start);
