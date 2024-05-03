@@ -12,7 +12,7 @@
 #include <rtthread.h>
 #include <hrtimer.h>
 
-static rt_timer_t _timer = nullptr;
+static rt_timer_t _timer = NULL;
 
 /**
  * Fetch a never-wrapping absolute time value in microseconds from
@@ -23,18 +23,33 @@ hrt_abstime hrt_absolute_time(void) {
     return 1000000ULL * tick / RT_TICK_PER_SECOND;
 }
 
+extern int hrt_tim_isr(uint32_t status);
+
 static void hrt_tim_timeout(void *param) {
     hrt_tim_isr(1);
 }
 
 int hrt_tim_control(int cmd, void *arg) {
-    if (_timer) {
-        return rt_timer_control(_timer, cmd, arg);
+    if (!_timer) {
+        return -1;
     }
-    return -1;
+
+    rt_err_t ret = 0;
+
+    if (cmd == RT_TIMER_CTRL_SET_TIME) {
+        if (_timer->parent.flag & RT_TIMER_FLAG_ACTIVATED) {
+            ret += rt_timer_stop(_timer);
+        }
+        ret += rt_timer_control(_timer, cmd, arg);
+        ret += rt_timer_start(_timer);
+    } else {
+        ret += rt_timer_control(_timer, cmd, arg);
+    }
+
+    return ret;
 }
 
 int hrt_tim_init(void) {
-    _timer = rt_timer_create("hrtimer", hrt_tim_timeout, nullptr, 5, RT_TIMER_FLAG_PERIODIC);
+    _timer = rt_timer_create("hrtimer", hrt_tim_timeout, NULL, 1, RT_TIMER_FLAG_ONE_SHOT);
     return 0;
 }

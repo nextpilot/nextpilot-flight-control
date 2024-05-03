@@ -18,14 +18,13 @@
 
 #include <sys/ioctl.h>
 #include <sys/types.h>
+#include <sys/time.h>
 #include <stdbool.h>
 #include <inttypes.h>
 #include <queue.h>
 #include <rtthread.h>
+#include <defines.h>
 
-#if defined(__PX4_NUTTX) && !defined(CONFIG_BUILD_FLAT)
-#   include <px4_platform/board_ctrl.h>
-#endif
 
 __BEGIN_DECLS
 

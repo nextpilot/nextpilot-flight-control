@@ -377,12 +377,12 @@ static void hrt_call_reschedule() {
 
     // LOG_D("schedule for %u at %u", (unsigned)(deadline & 0xffffffff), (unsigned)(now & 0xffffffff));
 
-#if defined(HRT_USING_HARD_TIMER)
+#if defined(HRT_USING_HWTIMER)
     /* set the new compare value and remember it for latency tracking */
     // rCCR_HRT = latency_baseline = deadline & 0xffff;
 #else
     // do nothing
-#endif // HRT_USING_HARD_TIMER
+#endif // HRT_USING_HWTIMER
 }
 
 static void hrt_latency_update(void) {

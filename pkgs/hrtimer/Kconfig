@@ -5,13 +5,16 @@ menuconfig PKG_USING_HRTIMER
 if PKG_USING_HRTIMER
     choice
         prompt "Select Hrtimer Version"
-        default PKG_USING_HRTIMER_V1
+        default PKG_USING_HRTIMER_V3
 
         config PKG_USING_HRTIMER_V1
             bool "PKG_USING_HRTIMER_V1"
 
         config PKG_USING_HRTIMER_V2
             bool "PKG_USING_HRTIMER_V2"
+
+        config PKG_USING_HRTIMER_V3
+            bool "PKG_USING_HRTIMER_V3"
     endchoice
 
     if PKG_USING_HRTIMER_V1
@@ -20,5 +23,9 @@ if PKG_USING_HRTIMER
 
     if PKG_USING_HRTIMER_V2
         rsource "V2/Kconfig"
+    endif
+
+    if PKG_USING_HRTIMER_V3
+        rsource "V3/Kconfig"
     endif
 endif

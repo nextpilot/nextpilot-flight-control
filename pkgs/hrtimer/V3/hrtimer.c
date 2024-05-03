@@ -24,9 +24,8 @@
 #include <queue.h>
 #include <errno.h>
 #include <string.h>
-#include <drv_hrt.h>
 #include <stdint.h>
-#include <rtthread.h>
+#include <hrtimer.h>
 
 
 #ifdef CONFIG_DEBUG_HRT
@@ -55,7 +54,7 @@
 /*
  * Queue of callout entries.
  */
-static struct sq_queue_s callout_queue;
+static struct sq_queue_s callout_queue = {NULL, NULL};
 
 /* latency baseline (last compare value applied) */
 static uint16_t latency_baseline;
@@ -87,25 +86,10 @@ static void hrt_call_invoke(void);
 
 
 /**
- * Initialise the high-resolution timing module.
- */
-static void hrt_init(void) {
-    sq_init(&callout_queue);
-    // hrt_tim_init();
-
-#ifdef HRT_PPM_CHANNEL
-    /* configure the PPM input pin */
-    px4_arch_configgpio(GPIO_PPM_IN);
-#endif
-}
-
-INIT_COMPONENT_EXPORT(hrt_init);
-
-/**
  * Handle the compare interrupt by calling the callout dispatcher
  * and then re-scheduling the next deadline.
  */
-static int hrt_tim_isr(uint32_t status) {
+int hrt_tim_isr(uint32_t status) {
     /* grab the timer for latency tracking purposes */
     latency_actual = hrt_absolute_time();
 

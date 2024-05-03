@@ -1,19 +1,19 @@
 
 if PKG_USING_HRTIMER_V2
     choice
-        default HRT_USING_HARD_SYSTICK
+        default HRT_USING_SYSTICK
         prompt "Select hrtimer source"
 
-        config HRT_USING_HARD_SYSTICK
-            bool "os systick"
+        config HRT_USING_SYSTICK
+            bool "sys tick"
 
-        config HRT_USING_HARD_TIMER
+        config HRT_USING_HWTIMER
             bool "hard timer"
 
     endchoice
 
-    if HRT_USING_HARD_TIMER
-        config HRT_HARD_TIMER_NAME
+    if HRT_USING_HWTIMER
+        config HRT_HWTIMER_NAME
             string "hard timer name"
             default "tim13"
     endif

@@ -75,17 +75,17 @@ struct perf_ctr_interval : public perf_ctr_header {
  */
 static sq_queue_t perf_counters = {nullptr, nullptr};
 
-RT_WEAK latency_info_t get_latency(uint16_t bucket_idx, uint16_t counter_idx) {
-    latency_info_t info;
-    return info;
-}
+// RT_WEAK latency_info_t get_latency(uint16_t bucket_idx, uint16_t counter_idx) {
+//     latency_info_t info;
+//     return info;
+// }
 
-RT_WEAK uint16_t get_latency_bucket_count(void) {
-    return 0;
-}
+// RT_WEAK uint16_t get_latency_bucket_count(void) {
+//     return 0;
+// }
 
-RT_WEAK void reset_latency_counters(void) {
-}
+// RT_WEAK void reset_latency_counters(void) {
+// }
 
 /**
  * mutex protecting access to the perf_counters linked list (which is read from & written to by different threads)

@@ -19,11 +19,6 @@
 #include <stdint.h>
 #include <defines.h>
 
-typedef struct latency_info {
-    uint16_t bucket;
-    uint32_t counter;
-} latency_info_t;
-
 /**
  * Counter types.
  */

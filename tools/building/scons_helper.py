@@ -123,16 +123,22 @@ def get_toolchain_option():
     else:
         RTT_STD_ROOT = os.getenv("RTT_STD_ROOT", "UNKOWN")
 
-    if not os.getenv("QEMU_HOME") and RTT_ENV_ROOT != "UNKOWN":
-        if os.path.exists(os.path.join(RTT_ENV_ROOT, r"tools/qemu/qemu64")):
-            os.environ["QEMU_HOME"] = os.path.join(RTT_ENV_ROOT, r"tools/qemu/qemu64").replace("\\", "/")
+    if not os.getenv("QEMU_HOME"):
+        if RTT_ENV_ROOT != "UNKOWN":
+            if os.path.exists(os.path.join(RTT_ENV_ROOT, r"tools/qemu/qemu64")):
+                os.environ["QEMU_HOME"] = os.path.join(RTT_ENV_ROOT, r"tools/qemu/qemu64").replace("\\", "/")
+            else:
+                os.environ["QEMU_HOME"] = os.path.join(RTT_ENV_ROOT, r"tools/qemu/qemu32").replace("\\", "/")
         else:
-            os.environ["QEMU_HOME"] = os.path.join(RTT_ENV_ROOT, r"tools/qemu/qemu32").replace("\\", "/")
+            os.environ["QEMU_HOME"] = "UNKOWN"
     else:
         os.environ["QEMU_HOME"] = os.path.normpath(os.getenv("QEMU_HOME")).replace("\\", "/")
 
-    if not os.getenv("GCC_EXEC_PATH") and RTT_ENV_ROOT != "UNKOWN":
-        os.environ["GCC_EXEC_PATH"] = os.path.join(RTT_ENV_ROOT, r"tools/gnu_gcc/arm_gcc/mingw/bin").replace("\\", "/")
+    if not os.getenv("GCC_EXEC_PATH"):
+        if RTT_ENV_ROOT != "UNKOWN":
+            os.environ["GCC_EXEC_PATH"] = os.path.join(RTT_ENV_ROOT, r"tools/gnu_gcc/arm_gcc/mingw/bin").replace("\\", "/")
+        else:
+            os.environ["GCC_EXEC_PATH"] = "UNKOWN"
     else:
         os.environ["GCC_EXEC_PATH"] = os.path.normpath(os.getenv("GCC_EXEC_PATH")).replace("\\", "/")
 
@@ -160,7 +166,7 @@ def get_toolchain_option():
         print("ERROR: cross tool '%s' not support" % CROSS_TOOL)
         exit(-1)
 
-    EXEC_PATH = os.getenv("RTT_EXEC_PATH", EXEC_PATH)
+    EXEC_PATH = os.path.normpath(os.getenv("RTT_EXEC_PATH", EXEC_PATH)).replace("\\", "/")
 
     __options__["CROSS_TOOL"] = CROSS_TOOL
     __options__["EXEC_PATH"] = EXEC_PATH

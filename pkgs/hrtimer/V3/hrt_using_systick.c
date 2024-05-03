@@ -9,11 +9,11 @@
  ******************************************************************/
 
 
-#include "hrtimer.h"
+#include <hrtimer.h>
 #include "board.h"
 
-
-static uint64_t _timebase_us = 0;
+static uint64_t   _timebase_us = 0;
+static rt_timer_t _timer       = NULL;
 
 hrt_abstime hrt_absolute_time(void) {
     uint64_t us   = 0;
@@ -34,6 +34,18 @@ hrt_abstime hrt_absolute_time(void) {
            _timebase_us;                            // 初始时间戳us
 }
 
+static void hrt_tim_timeout(void *param) {
+    hrt_tim_isr(1);
+}
+
+int hrt_tim_control(int cmd, void *arg) {
+    if (_timer) {
+        return rt_timer_control(_timer, cmd, arg);
+    }
+    return -1;
+}
+
 int hrt_tim_init(void) {
+    _timer = rt_timer_create("hrtimer", hrt_tim_timeout, NULL, 1, RT_TIMER_FLAG_ONE_SHOT);
     return 0;
 }

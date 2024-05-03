@@ -58,15 +58,15 @@
 using namespace nextpilot::logger;
 using namespace time_literals;
 
-RT_WEAK void lockstep_progress(int component) {
-}
+// RT_WEAK void lockstep_progress(int component) {
+// }
 
-RT_WEAK int lockstep_register_component() {
-    return 0;
-}
+// RT_WEAK int lockstep_register_component() {
+//     return 0;
+// }
 
-RT_WEAK void lockstep_unregister_component(int) {
-}
+// RT_WEAK void lockstep_unregister_component(int) {
+// }
 
 RT_WEAK int register_shutdown_hook(shutdown_hook_t hook) {
     return 0;
