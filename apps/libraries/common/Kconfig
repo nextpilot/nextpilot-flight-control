@@ -1,3 +1,0 @@
-menu "Common Libraries Config"
-orsource "*/Kconfig"
-endmenu
