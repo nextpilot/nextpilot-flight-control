@@ -41,7 +41,7 @@ MagBiasEstimator *MagBiasEstimator::instantiate(int argc, char *argv[]) {
     /* Schedule a cycle to start things. */
     obj->start();
 
-    return 0;
+    return obj;
 }
 
 void MagBiasEstimator::start() {

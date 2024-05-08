@@ -89,6 +89,7 @@
 		"RTT_Studio.Debuger.QEMU.Location": "C:/RT-ThreadStudio/repo/Extract/Debugger_Support_Packages/RealThread/QEMU/4.2.0.4",
 		"files.associations": {
 			".clang-format-ignore": "ignore",
+			"*.jinja": "jinja",
 			"Kconfig": "kconfig",
 			"*.hpp.jinja": "jinja-cpp",
 			"random": "c",
@@ -119,7 +120,6 @@
 			"string_view": "cpp",
 			"condition_variable": "cpp",
 			"mutex": "cpp",
-			"stdint.h": "c",
 			"fstream": "cpp",
 			"xmemory": "cpp"
 		}
