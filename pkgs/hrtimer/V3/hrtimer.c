@@ -318,7 +318,7 @@ static void hrt_call_reschedule() {
     latency_baseline = deadline;
 
     // Remove the existing expiry and update with the new expiry
-    hrt_tim_control(RT_TIMER_CTRL_SET_TIME, deadline - now);
+    hrt_tim_expiry(deadline - now);
 }
 
 static void hrt_latency_update(void) {

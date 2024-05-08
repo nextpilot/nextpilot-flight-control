@@ -156,7 +156,46 @@ void timer_clear_pending(int timer)
     }
 }
 
+uint64_t hrt_absolute_time()
+{
+    const uint32_t SystemCoreClock = 1000000ULL;
+
+    uint64_t us = rt_tick_get_millisecond() * 1000UL;
+
+    uint32_t reload =  TIMER_LOAD(TIMER_HW_BASE);
+    uint32_t tvalue = TIMER_VALUE(TIMER_HW_BASE);
+
+    us += 1000000ULL * (reload - tvalue) / SystemCoreClock;
+
+    return us;
+}
+
 void rt_hw_us_delay(rt_uint32_t us)
 {
-    rt_thread_mdelay(us / 1000);
+    rt_uint32_t ticks;
+    rt_uint32_t told, tnow, tcnt = 0;
+
+    rt_uint32_t reload =  TIMER_LOAD(TIMER_HW_BASE);
+    ticks = us * reload / (1000000 / RT_TICK_PER_SECOND);
+    told = TIMER_VALUE(TIMER_HW_BASE);
+    while (1)
+    {
+        tnow = TIMER_VALUE(TIMER_HW_BASE);
+        if (tnow != told)
+        {
+            if (tnow < told)
+            {
+                tcnt += told - tnow;
+            }
+            else
+            {
+                tcnt += reload - tnow + told;
+            }
+            told = tnow;
+            if (tcnt >= ticks)
+            {
+                break;
+            }
+        }
+    }
 }

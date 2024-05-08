@@ -206,14 +206,9 @@ __EXPORT extern void hrt_call_init(struct hrt_call *entry);
 __EXPORT extern void hrt_call_delay(struct hrt_call *entry, hrt_abstime delay);
 
 /*
- * Initialise the HRT.
+ * update with the new expiry
  */
-__EXPORT extern void hrt_init(void);
-
-/*
- * Initialise the HRT ioctl (user mode access to HRT).
- */
-__EXPORT extern void hrt_ioctl_init(void);
+__EXPORT extern int hrt_tim_expiry(uint32_t timeout_us);
 
 #if defined(ENABLE_LOCKSTEP_SCHEDULER)
 
