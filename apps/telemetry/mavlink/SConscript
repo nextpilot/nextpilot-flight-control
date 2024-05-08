@@ -10,17 +10,17 @@ cmd = [
     sys.executable,
     os.path.join(cwd, "mavlink/pymavlink/tools/mavgen.py"),
     "--lang",
-    "c",
+    "C",
     "--wire-protocol",
     "2.0",
     # --no-validate,
     # --strict-units,
-    "--output"
-    os.path.join(cwd, "malvink"),
-    os.path.join(cwd, "mavlink/message_definitions/v1.0/"),
+    "--output",
+    os.path.join(cwd, "mavlink/generated"),
+    os.path.join(cwd, "mavlink/message_definitions/v1.0/common.xml"),
 ]
 
-subprocess.run(cmd)
+subprocess.call(cmd)
 
 inc = [cwd]
 src = Glob("*.cpp", exclude="*Test.cpp")

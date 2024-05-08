@@ -1,15 +1,19 @@
 import os
 import sys
+import subprocess
 from building import *
 
 
 cwd = GetCurrentDir()
 
 # 生成romfs.c文件
-mkromfs = os.path.abspath(os.path.join(cwd, r"../../../rtos/rt-thread/tools/mkromfs.py"))
-rootpath = os.path.abspath(os.path.join(cwd, "root"))
-pycmd = os.path.basename(sys.executable)
-os.system("%s %s %s romfs.c" % (pycmd, mkromfs, rootpath))
+cmd = [
+    sys.executable,
+    os.path.normpath(os.path.join(cwd, r"../../../rtos/rt-thread/tools/mkromfs.py")),  # mkromfs.py
+    os.path.normpath(os.path.join(cwd, "root")),  # rootpath
+    os.path.normpath(os.path.join(cwd, "romfs.c")),
+]
+subprocess.call(cmd)
 
 inc = []
 src = ["romfs.c", "romfs_mnt.c"]
