@@ -284,7 +284,7 @@
 
 /* Nextpilot Hardware Config */
 
-#define BSP_CETCS_FCS
+#define BSP_PX4_FMUv5
 #define SOC_STM32F765II
 
 /* Chip Memory Setting */
@@ -577,7 +577,7 @@
 /* utilities pacakge */
 
 #define PKG_USING_BOARD_VERSION
-#define BOARD_TYPE_NAME "CETCS-FCS-DEFAULT"
+#define BOARD_TYPE_NAME "PX4-FMUv5-DEFAULT"
 #define BOARD_CHIP_NAME "STM32F765IIk"
 #define BOARD_HAS_HW_VERSIONING
 #define ADC_HW_VER_DEVICE_NAME   "adc1"

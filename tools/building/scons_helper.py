@@ -400,7 +400,7 @@ def deploy_bsp_project():
         shutil.copytree(src_dir, dst_dir, ignore=ignore)
 
     #
-    dist_root = "dist/cetcs-fcs"
+    dist_root = "dist/fcs"
 
     # common
     copy_list = [

@@ -296,7 +296,7 @@
 
 /* Nextpilot Hardware Config */
 
-#define BSP_CETCS_FCS_V4
+#define BSP_PX4_FMUv5
 #define SOC_STM32H753II
 
 /* Chip Memory Setting */
@@ -399,7 +399,7 @@
 #define LOGGER_FULL_LOG_ROOT_PATH "/mnt/microsd/log"
 #define LOGGER_LESS_LOG_ROOT_PATH "/mnt/micorsd/mission_log"
 #define PKG_USING_BOARD_VERSION
-#define BOARD_TYPE_NAME "CETCS-FCSv4-DEFAULT"
+#define BOARD_TYPE_NAME "PX4-FMUv5-DEFAULT"
 #define BOARD_CHIP_NAME "STM32H753IIk"
 #define SYS_USING_ROMFS
 #define DRV_USING_RC_INPUT_OLD

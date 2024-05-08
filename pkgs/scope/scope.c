@@ -8,19 +8,6 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-// 根据不同的板子选择调试串口
-// #if defined(BSP_CETCS_FCS_V3)
-// #define SCOPE_UART_NAME "uart2" // shell是uart7，mavlink是uart3
-// #elif defined(BSP_CETCS_FCS_V4) && defined(DRV_USING_SNC200A)
-// #define SCOPE_UART_NAME "uart4" // shell是串口6，mavlink是uart1
-// #elif defined(BSP_CETCS_FCS_V4)
-// #define SCOPE_UART_NAME "uart5" // shell是uart6，mavlink是uart1
-// #elif defined(BSP_CETCS_INS_V4)
-// #define SCOPE_UART_NAME "uart3" // shell是uart4，mavlink是uart1
-// #else
-// #define SCOPE_UART_NAME "uart1"
-// #endif
-
 #define LOG_TAG "scope"
 #define LOG_LVL LOG_LVL_INFO
 
@@ -30,7 +17,7 @@
 #include "scope.h"
 
 #ifndef SCOPE_UART_NAME
-#error "please define SCOPE_UART_NAME"
+#   error "please define SCOPE_UART_NAME"
 #endif // SCOPE_UART_NAME
 
 float       _debug_value[DEBUG_VALUE_COUNT];
@@ -275,8 +262,7 @@ int scope_send_debug_vector(int interval_ms) {
         init_flag = 1;
     }
 
-    if (index < 16 && len >= 0 &&
-        (rt_tick_get() - init_msec > 2 * 1e3)) {
+    if (index < 16 && len >= 0 && (rt_tick_get() - init_msec > 2 * 1e3)) {
         scope_printf_old("ch%02d: %s\n", index, _debug_name[index]);
         index++;
     }
@@ -388,24 +374,24 @@ static int scope_init() {
     // 如果采用异步，则不会影响主线程(类似ulog)
     uint16_t openflag = 0;
 #if defined(RT_USING_SERIAL_V1)
-    if (_scope_device->flag & RT_DEVICE_FLAG_DMA_RX)
+    if (_scope_device->flag & RT_DEVICE_FLAG_DMA_RX) {
         openflag |= RT_DEVICE_FLAG_DMA_RX;
-    else if (_scope_device->flag & RT_DEVICE_FLAG_INT_RX) {
+    } else if (_scope_device->flag & RT_DEVICE_FLAG_INT_RX) {
         openflag |= RT_DEVICE_FLAG_INT_RX;
     }
 
-    if (_scope_device->flag & RT_DEVICE_FLAG_DMA_TX)
+    if (_scope_device->flag & RT_DEVICE_FLAG_DMA_TX) {
         openflag |= RT_DEVICE_FLAG_DMA_TX;
-    else if (_scope_device->flag & RT_DEVICE_FLAG_INT_TX) {
+    } else if (_scope_device->flag & RT_DEVICE_FLAG_INT_TX) {
         openflag |= RT_DEVICE_FLAG_INT_TX;
     }
 #else
-#ifdef SCOPE_USING_ASYNC_OUTPUT
+#   ifdef SCOPE_USING_ASYNC_OUTPUT
     openflag = RT_DEVICE_FLAG_TX_BLOCKING | RT_DEVICE_FLAG_RX_NON_BLOCKING;
-#else
+#   else
     openflag = RT_DEVICE_FLAG_TX_NON_BLOCKING | RT_DEVICE_FLAG_RX_NON_BLOCKING;
-#endif // SCOPE_USING_ASYNC_OUTPUT
-#endif // RT_USING_SERIAL_V1
+#   endif // SCOPE_USING_ASYNC_OUTPUT
+#endif    // RT_USING_SERIAL_V1
 
     if (rt_device_open(_scope_device, openflag) != 0) {
         LOG_E("open %s fail", SCOPE_UART_NAME);

@@ -22,7 +22,7 @@
   </DaveTm>
 
   <Target>
-    <TargetName>cetcs-fcs-default</TargetName>
+    <TargetName>px4-fmuv5-default</TargetName>
     <ToolsetNumber>0x4</ToolsetNumber>
     <ToolsetName>ARM-ADS</ToolsetName>
     <TargetOption>

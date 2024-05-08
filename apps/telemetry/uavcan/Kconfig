@@ -1,4 +1,4 @@
-menuconfig DRIVERS_UAVCAN
+menuconfig TEL_USING_UAVCAN
 	bool "uavcan"
 	default n
 	---help---
@@ -6,19 +6,19 @@ menuconfig DRIVERS_UAVCAN
 
 
 menuconfig BOARD_UAVCAN_INTERFACES
-depends on DRIVERS_UAVCAN || DRIVERS_UAVCANNODE
+depends on TEL_USING_UAVCAN || TEL_USING_UAVCANNODE
     int "UAVCANv0 interface count"
     default 2
     ---help---
         Interface count for UAVCANv0
 
 menuconfig BOARD_UAVCAN_PERIPHERALS
-depends on DRIVERS_UAVCAN
+depends on TEL_USING_UAVCAN
     string "UAVCAN peripheral firmware"
     help
         list of UAVCAN peripheral firmware to build and embed
 
 menuconfig BOARD_UAVCAN_TIMER_OVERRIDE
-depends on DRIVERS_UAVCAN
+depends on TEL_USING_UAVCAN
     int "UAVCAN timer override"
     default 0

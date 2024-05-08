@@ -20,7 +20,7 @@ scons -j8
 ```
 ![](../A.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/image/env-build-qemu-vexpress-v9.png)
 
-编译完成之后在终端继续输入`qemu.bat`，启动qemu模拟器中，并在模拟器中运行cetcs-sitl.bin程序，Env 命令行界面显示 Nextpilot 系统启动过程中打印的初始化信息及版本号信息等。
+编译完成之后在终端继续输入`qemu.bat`，启动qemu模拟器中，并在模拟器中运行sitl-qemu-default.bin程序，Env 命令行界面显示 Nextpilot 系统启动过程中打印的初始化信息及版本号信息等。
 ```bat
 :: qemu.bat 是 Window 批处理文件，主要包括 QEMU 的执行指令，
 
@@ -30,9 +30,9 @@ if exist sd.bin goto run
 qemu-img create -f raw sd.bin 64M
 
 :run
-:: 用双核vexpress-a9运行cetcs-sitl.bin程序，网卡为tap
+:: 用双核vexpress-a9运行sitl-qemu-default.bin程序，网卡为tap
 qemu-system-arm -M vexpress-a9 -smp cpus=2
-                 -kernel build/cetcs-sitl.bin
+                 -kernel build/sitl-qemu-default.bin
                  -display none -serial stdio -sd sd.bin
                  -net nic -net tap,ifname=tap
 ```

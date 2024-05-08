@@ -7,7 +7,7 @@
 
   <Targets>
     <Target>
-      <TargetName>cetcs-fcs-default</TargetName>
+      <TargetName>px4-fmuv5-default</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>6190000::V6.19::ARMCLANG</pCCUsed>
@@ -49,7 +49,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\build\keil\Obj\</OutputDirectory>
-          <OutputName>cetcs-fcs</OutputName>
+          <OutputName>px4-fmuv5-default</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
@@ -82,7 +82,7 @@
           <AfterMake>
             <RunUserProg1>1</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name>fromelf --bin !L --output build/cetcs-fcs.bin</UserProg1Name>
+            <UserProg1Name>fromelf --bin !L --output build/px4-fmuv5-default.bin</UserProg1Name>
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>

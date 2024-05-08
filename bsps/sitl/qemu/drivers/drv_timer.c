@@ -162,7 +162,7 @@ uint64_t hrt_absolute_time()
 
     uint64_t us = rt_tick_get_millisecond() * 1000UL;
 
-    uint32_t reload =  TIMER_LOAD(TIMER_HW_BASE);
+    uint32_t reload = TIMER_LOAD(TIMER_HW_BASE);
     uint32_t tvalue = TIMER_VALUE(TIMER_HW_BASE);
 
     us += 1000000ULL * (reload - tvalue) / SystemCoreClock;

@@ -1,6 +1,6 @@
 menu "Nextpilot Hardware Config"
 
-    config BSP_CETCS_FCS
+    config BSP_PX4_FMUv5
         bool
         default y
 
