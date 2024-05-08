@@ -25,9 +25,6 @@
 // #include <module/module_params.hpp>
 // #include <workq/WorkItemScheduled.hpp>
 // #include <uORB/uORBPublication.hpp>
-// #include <uORB/uORBPublication.hpp>
-// #include <uORB/uORBSubscription.hpp>
-// #include <uORB/uORBSubscription.hpp>
 // #include <uORB/uORBSubscription.hpp>
 // #include <uORB/topics/actuator_controls_status.h>
 // #include <uORB/topics/airspeed_validated.h>

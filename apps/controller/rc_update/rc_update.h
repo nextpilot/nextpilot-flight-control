@@ -29,8 +29,6 @@
 // #include <mathlib/mathlib.h>
 // #include <perf/perf_counter.h>
 // #include <uORB/uORBPublication.hpp>
-// #include <uORB/uORBPublication.hpp>
-// #include <uORB/uORBSubscription.hpp>
 // #include <uORB/uORBSubscription.hpp>
 // #include <uORB/topics/manual_control_setpoint.h>
 // #include <uORB/topics/manual_control_switches.h>

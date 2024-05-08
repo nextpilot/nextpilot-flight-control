@@ -29,7 +29,6 @@
 // #include <workq/WorkItemScheduled.hpp>
 // #include <uORB/uORBPublication.hpp>
 // #include <uORB/uORBSubscription.hpp>
-// #include <uORB/uORBSubscription.hpp>
 // #include <uORB/topics/airspeed_validated.h>
 // #include <uORB/topics/autotune_attitude_control_status.h>
 // #include <uORB/topics/landing_gear_wheel.h>

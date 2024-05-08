@@ -27,7 +27,6 @@
 #include <workq/WorkItem.hpp>
 // #include <uORB/uORBPublication.hpp>
 // #include <uORB/uORBSubscription.hpp>
-// #include <uORB/uORBSubscription.hpp>
 // #include <uORB/topics/actuator_controls_status.h>
 // #include <uORB/topics/manual_control_setpoint.h>
 // #include <uORB/topics/parameter_update.h>

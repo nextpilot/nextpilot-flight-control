@@ -25,13 +25,9 @@
 // #include <perf/perf_counter.h>
 // #include <defines.h>
 // #include <module/module_command.hpp>
-// #include <module/module_command.hpp>
 // #include <module/module_params.hpp>
-// #include <module/module_params.hpp>
-
 // #include <workq/WorkItemScheduled.hpp>
 // #include <uORB/uORBPublication.hpp>
-// #include <uORB/uORBSubscription.hpp>
 // #include <uORB/uORBSubscription.hpp>
 // #include <uORB/topics/actuator_armed.h>
 // #include <uORB/topics/parameter_update.h>

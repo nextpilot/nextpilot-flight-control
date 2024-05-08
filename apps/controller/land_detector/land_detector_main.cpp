@@ -19,10 +19,7 @@
 #define LOG_TAG "land_detector_main"
 
 // #include <hrtimer.h>
-
 // #include <defines.h>
-
-
 #include "FixedwingLandDetector.h"
 #include "MulticopterLandDetector.h"
 #include "RoverLandDetector.h"
