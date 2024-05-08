@@ -22,6 +22,7 @@ ActuatorEffectivenessTailsitterVTOL::ActuatorEffectivenessTailsitterVTOL(ModuleP
     ModuleParams(parent), _mc_rotors(this), _control_surfaces(this) {
     setFlightPhase(FlightPhase::HOVER_FLIGHT);
 }
+
 bool ActuatorEffectivenessTailsitterVTOL::getEffectivenessMatrix(Configuration            &configuration,
                                                                  EffectivenessUpdateReason external_update) {
     if (external_update == EffectivenessUpdateReason::NO_EXTERNAL_UPDATE) {

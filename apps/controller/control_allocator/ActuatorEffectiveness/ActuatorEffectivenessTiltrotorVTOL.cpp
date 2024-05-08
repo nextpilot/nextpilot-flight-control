@@ -26,6 +26,7 @@ ActuatorEffectivenessTiltrotorVTOL::ActuatorEffectivenessTiltrotorVTOL(ModulePar
     _control_surfaces(this), _tilts(this) {
     setFlightPhase(FlightPhase::HOVER_FLIGHT);
 }
+
 bool ActuatorEffectivenessTiltrotorVTOL::getEffectivenessMatrix(Configuration            &configuration,
                                                                 EffectivenessUpdateReason external_update) {
     if (!_collective_tilt_updated && external_update == EffectivenessUpdateReason::NO_EXTERNAL_UPDATE) {

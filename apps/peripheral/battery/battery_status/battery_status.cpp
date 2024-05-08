@@ -89,7 +89,7 @@ private:
 #if BOARD_NUMBER_BRICKS > 1
             &_battery2,
 #endif
-    }                          // End _analogBatteries
+    };                         // End _analogBatteries
 
     perf_counter_t _loop_perf; /**< loop performance counter */
 

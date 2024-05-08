@@ -413,7 +413,8 @@ void ControlAllocator::Run() {
 void ControlAllocator::update_effectiveness_matrix_if_needed(EffectivenessUpdateReason reason) {
     ActuatorEffectiveness::Configuration config{};
 
-    if (reason == EffectivenessUpdateReason::NO_EXTERNAL_UPDATE && hrt_elapsed_time(&_last_effectiveness_update) < 100_ms) { // rate-limit updates
+    if (reason == EffectivenessUpdateReason::NO_EXTERNAL_UPDATE
+        && hrt_elapsed_time(&_last_effectiveness_update) < 100_ms) { // rate-limit updates
         return;
     }
 
@@ -550,14 +551,13 @@ void ControlAllocator::publish_control_allocator_status(int matrix_index) {
     const matrix::Vector<float, NUM_AXES> &allocated_control = _control_allocation[matrix_index]->getAllocatedControl();
 
     // Unallocated control
-    const matrix::Vector<float, NUM_AXES> unallocated_control = _control_allocation[matrix_index]->getControlSetpoint() -
-                                                                allocated_control;
-    control_allocator_status.unallocated_torque[0] = unallocated_control(0);
-    control_allocator_status.unallocated_torque[1] = unallocated_control(1);
-    control_allocator_status.unallocated_torque[2] = unallocated_control(2);
-    control_allocator_status.unallocated_thrust[0] = unallocated_control(3);
-    control_allocator_status.unallocated_thrust[1] = unallocated_control(4);
-    control_allocator_status.unallocated_thrust[2] = unallocated_control(5);
+    const matrix::Vector<float, NUM_AXES> unallocated_control = _control_allocation[matrix_index]->getControlSetpoint() - allocated_control;
+    control_allocator_status.unallocated_torque[0]            = unallocated_control(0);
+    control_allocator_status.unallocated_torque[1]            = unallocated_control(1);
+    control_allocator_status.unallocated_torque[2]            = unallocated_control(2);
+    control_allocator_status.unallocated_thrust[0]            = unallocated_control(3);
+    control_allocator_status.unallocated_thrust[1]            = unallocated_control(4);
+    control_allocator_status.unallocated_thrust[2]            = unallocated_control(5);
 
     // override control_allocator_status in customized saturation logic for certain effectiveness types
     _actuator_effectiveness->getUnallocatedControl(matrix_index, control_allocator_status);
@@ -566,11 +566,13 @@ void ControlAllocator::publish_control_allocator_status(int matrix_index) {
     control_allocator_status.torque_setpoint_achieved = (Vector3f(control_allocator_status.unallocated_torque[0],
                                                                   control_allocator_status.unallocated_torque[1],
                                                                   control_allocator_status.unallocated_torque[2])
-                                                             .norm_squared() < 1e-6f);
+                                                             .norm_squared()
+                                                         < 1e-6f);
     control_allocator_status.thrust_setpoint_achieved = (Vector3f(control_allocator_status.unallocated_thrust[0],
                                                                   control_allocator_status.unallocated_thrust[1],
                                                                   control_allocator_status.unallocated_thrust[2])
-                                                             .norm_squared() < 1e-6f);
+                                                             .norm_squared()
+                                                         < 1e-6f);
 
     // Actuator saturation
     const matrix::Vector<float, NUM_ACTUATORS> &actuator_sp  = _control_allocation[matrix_index]->getActuatorSetpoint();
@@ -653,7 +655,8 @@ void ControlAllocator::publish_actuator_controls() {
 void ControlAllocator::check_for_motor_failures() {
     failure_detector_status_s failure_detector_status;
 
-    if ((FailureMode)_param_ca_failure_mode.get() > FailureMode::IGNORE && _failure_detector_status_sub.update(&failure_detector_status)) {
+    if ((FailureMode)_param_ca_failure_mode.get() > FailureMode::IGNORE
+        && _failure_detector_status_sub.update(&failure_detector_status)) {
         if (failure_detector_status.fd_motor) {
             if (_handled_motor_failure_bitmask != failure_detector_status.motor_failure_mask) {
                 // motor failure bitmask changed
@@ -803,6 +806,7 @@ extern "C" __EXPORT int control_allocator_main(int argc, char *argv[]);
 int control_allocator_main(int argc, char *argv[]) {
     return ControlAllocator::main(argc, argv);
 }
+
 MSH_CMD_EXPORT_ALIAS(control_allocator_main, control_allocator, control allocator);
 
 int control_allocator_start() {
@@ -810,4 +814,5 @@ int control_allocator_start() {
     int         argc   = sizeof(argv) / sizeof(argv[0]);
     return ControlAllocator::main(argc, (char **)argv);
 }
+
 // INIT_APP_EXPORT(control_allocator_start);

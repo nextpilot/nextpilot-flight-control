@@ -108,15 +108,16 @@ void ActuatorEffectivenessHelicopter::updateSetpoint(const matrix::Vector<float,
     _saturation_flags = {};
 
     // throttle/collective pitch curve
-    const float throttle = math::interpolateN(-control_sp(ControlAxis::THRUST_Z),
-                                              _geometry.throttle_curve) *
-                           throttleSpoolupProgress();
+    const float throttle = math::interpolateN(-control_sp(ControlAxis::THRUST_Z), _geometry.throttle_curve)
+                         * throttleSpoolupProgress();
     const float collective_pitch = math::interpolateN(-control_sp(ControlAxis::THRUST_Z), _geometry.pitch_curve);
 
     // actuator mapping
     actuator_sp(0) = mainMotorEnaged() ? throttle : NAN;
 
-    actuator_sp(1) = control_sp(ControlAxis::YAW) * _geometry.yaw_sign + fabsf(collective_pitch - _geometry.yaw_collective_pitch_offset) * _geometry.yaw_collective_pitch_scale + throttle * _geometry.yaw_throttle_scale;
+    actuator_sp(1) = control_sp(ControlAxis::YAW) * _geometry.yaw_sign
+                   + fabsf(collective_pitch - _geometry.yaw_collective_pitch_offset) * _geometry.yaw_collective_pitch_scale
+                   + throttle * _geometry.yaw_throttle_scale;
 
     // Saturation check for yaw
     if (actuator_sp(1) < actuator_min(1)) {
@@ -129,7 +130,10 @@ void ActuatorEffectivenessHelicopter::updateSetpoint(const matrix::Vector<float,
     for (int i = 0; i < _geometry.num_swash_plate_servos; i++) {
         float roll_coeff                                = sinf(_geometry.swash_plate_servos[i].angle) * _geometry.swash_plate_servos[i].arm_length;
         float pitch_coeff                               = cosf(_geometry.swash_plate_servos[i].angle) * _geometry.swash_plate_servos[i].arm_length;
-        actuator_sp(_first_swash_plate_servo_index + i) = collective_pitch + control_sp(ControlAxis::PITCH) * pitch_coeff - control_sp(ControlAxis::ROLL) * roll_coeff + _geometry.swash_plate_servos[i].trim;
+        actuator_sp(_first_swash_plate_servo_index + i) = collective_pitch
+                                                        + control_sp(ControlAxis::PITCH) * pitch_coeff
+                                                        - control_sp(ControlAxis::ROLL) * roll_coeff
+                                                        + _geometry.swash_plate_servos[i].trim;
 
         // Saturation check for roll & pitch
         if (actuator_sp(_first_swash_plate_servo_index + i) < actuator_min(_first_swash_plate_servo_index + i)) {
@@ -147,7 +151,8 @@ bool ActuatorEffectivenessHelicopter::mainMotorEnaged() {
     manual_control_switches_s manual_control_switches;
 
     if (_manual_control_switches_sub.update(&manual_control_switches)) {
-        _main_motor_engaged = manual_control_switches.engage_main_motor_switch == manual_control_switches_s::SWITCH_POS_NONE || manual_control_switches.engage_main_motor_switch == manual_control_switches_s::SWITCH_POS_ON;
+        _main_motor_engaged = manual_control_switches.engage_main_motor_switch == manual_control_switches_s::SWITCH_POS_NONE
+                           || manual_control_switches.engage_main_motor_switch == manual_control_switches_s::SWITCH_POS_ON;
     }
 
     return _main_motor_engaged;
