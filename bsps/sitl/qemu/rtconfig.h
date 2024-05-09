@@ -63,12 +63,6 @@
 
 /* Nextpilot Libraries Config */
 
-/* Common Libraries Config */
-
-#define PKG_USING_MATHLIB
-#define PKG_USING_MATRIX
-/* end of Common Libraries Config */
-
 /* Controller Libraries Config */
 
 #define PKG_USING_ADSB
@@ -133,6 +127,8 @@
 
 /* Nextpilot Telemetry Config */
 
+#define TEL_USING_MAVLINK
+#define MAVLINK_DIALECT "common"
 /* end of Nextpilot Telemetry Config */
 /* end of Nextpilot Firmware Config */
 
@@ -146,18 +142,22 @@
 #define PKG_USING_HRTIMER_V3
 #define HRT_USING_OSTICK
 #define PKG_USING_LIBCRC
+#define PKG_USING_MATHLIB
+#define PKG_USING_MATRIX
 #define PKG_USING_PARAM
 #define PARAM_USING_GLOBAL_AUTOGEN
 #define PARAM_USING_STORAGE_FILE
 #define PARAM_DEFAULT_FILE_PATH "/param.bin"
 #define PKG_USING_PERF
 #define PKG_USING_QUEUE
+#define PKG_USING_RING_BUFFER
 #define PKG_USING_SHUTDOWN
 
 /* ULog backend */
 
 /* end of ULog backend */
 #define PKG_USING_UORB
+#define PKG_USING_VAR_LEN_RINGBUFFER
 #define PKG_USING_BOARD_VERSION
 #define BOARD_TYPE_NAME "sitl-qemu-default"
 #define BOARD_CHIP_NAME "cortex-A9"

@@ -70,7 +70,7 @@ public:
     int size() const;
 
 private:
-    ::px4::atomic<uint16_t> _latest_sequence{events::initial_event_sequence};
+    ::atomic<uint16_t> _latest_sequence{events::initial_event_sequence};
 
     Event *_events{nullptr}; ///< stored events, ringbuffer
     int    _capacity;

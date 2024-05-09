@@ -130,7 +130,7 @@ void Replay::setUserParams(const char *filename) {
             int32_t value = (int32_t)param_value_double;
 
             if (orig_value != value) {
-                PX4_WARN("setting %s (INT32) %d -> %d", param_name(handle), orig_value, value);
+                PX4_WARN("setting %s (INT32) %d -> %d", param_get_name(handle), orig_value, value);
             }
 
             param_set(handle, (const void *)&value);
@@ -142,7 +142,7 @@ void Replay::setUserParams(const char *filename) {
             float value = (float)param_value_double;
 
             if (fabsf(orig_value - value) > FLT_EPSILON) {
-                PX4_WARN("setting %s (FLOAT) %.3f -> %.3f", param_name(handle), (double)orig_value, (double)value);
+                PX4_WARN("setting %s (FLOAT) %.3f -> %.3f", param_get_name(handle), (double)orig_value, (double)value);
             }
 
             param_set(handle, (const void *)&value);

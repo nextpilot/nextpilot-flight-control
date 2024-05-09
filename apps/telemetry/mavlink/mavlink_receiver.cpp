@@ -35,8 +35,8 @@
 #include "mavlink_command_sender.h"
 #include "mavlink_main.h"
 #include "mavlink_receiver.h"
-
-#include <drivers/device/Device.hpp> // For DeviceId union
+#include "device/device_id.h"
+// #include <drivers/device/Device.hpp> // For DeviceId union
 
 #ifdef CONFIG_NET
 #   define MAVLINK_RECEIVER_NET_ADDED_STACK 1360
@@ -72,11 +72,17 @@ static constexpr vehicle_odometry_s vehicle_odometry_empty{
 MavlinkReceiver::MavlinkReceiver(Mavlink *parent) :
     ModuleParams(nullptr),
     _mavlink(parent),
+#ifdef MAVLINK_USING_FTP
     _mavlink_ftp(parent),
+#endif //MAVLINK_USING_FTP
     _mavlink_log_handler(parent),
     _mission_manager(parent),
-    _parameters_manager(parent),
-    _mavlink_timesync(parent) {
+    _parameters_manager(parent)
+#ifdef MAVLINK_USING_TIMESYNC
+    ,
+    _mavlink_timesync(parent)
+#endif //MAVLINK_USING_TIMESYNC
+{
 }
 
 void MavlinkReceiver::acknowledge(uint8_t sysid, uint8_t compid, uint16_t command, uint8_t result, uint8_t progress) {
@@ -694,11 +700,11 @@ void MavlinkReceiver::handle_message_optical_flow_rad(mavlink_message_t *msg) {
     mavlink_optical_flow_rad_t flow;
     mavlink_msg_optical_flow_rad_decode(msg, &flow);
 
-    device::Device::DeviceId device_id;
-    device_id.devid_s.bus_type = device::Device::DeviceBusType::DeviceBusType_MAVLINK;
-    device_id.devid_s.bus      = _mavlink->get_instance_id();
-    device_id.devid_s.address  = msg->sysid;
-    device_id.devid_s.devtype  = DRV_FLOW_DEVTYPE_MAVLINK;
+    device::DeviceId device_id;
+    device_id.devid_s.bus_type  = device::DeviceBusType::DeviceBusType_MAVLINK;
+    device_id.devid_s.bus_index = _mavlink->get_instance_id();
+    device_id.devid_s.address   = msg->sysid;
+    device_id.devid_s.devtype   = DRV_FLOW_DEVTYPE_MAVLINK;
 
     sensor_optical_flow_s sensor_optical_flow{};
 
@@ -738,11 +744,11 @@ void MavlinkReceiver::handle_message_hil_optical_flow(mavlink_message_t *msg) {
     mavlink_hil_optical_flow_t flow;
     mavlink_msg_hil_optical_flow_decode(msg, &flow);
 
-    device::Device::DeviceId device_id;
-    device_id.devid_s.bus_type = device::Device::DeviceBusType::DeviceBusType_MAVLINK;
-    device_id.devid_s.bus      = _mavlink->get_instance_id();
-    device_id.devid_s.address  = msg->sysid;
-    device_id.devid_s.devtype  = DRV_FLOW_DEVTYPE_SIM;
+    device::DeviceId device_id;
+    device_id.devid_s.bus_type  = device::DeviceBusType::DeviceBusType_MAVLINK;
+    device_id.devid_s.bus_index = _mavlink->get_instance_id();
+    device_id.devid_s.address   = msg->sysid;
+    device_id.devid_s.devtype   = DRV_FLOW_DEVTYPE_SIM;
 
     sensor_optical_flow_s sensor_optical_flow{};
 
@@ -811,11 +817,11 @@ void MavlinkReceiver::handle_message_distance_sensor(mavlink_message_t *msg) {
 
     distance_sensor_s ds{};
 
-    device::Device::DeviceId device_id;
-    device_id.devid_s.bus_type = device::Device::DeviceBusType::DeviceBusType_MAVLINK;
-    device_id.devid_s.bus      = _mavlink->get_instance_id();
-    device_id.devid_s.address  = msg->sysid;
-    device_id.devid_s.devtype  = DRV_DIST_DEVTYPE_MAVLINK;
+    device::DeviceId device_id;
+    device_id.devid_s.bus_type  = device::DeviceBusType::DeviceBusType_MAVLINK;
+    device_id.devid_s.bus_index = _mavlink->get_instance_id();
+    device_id.devid_s.address   = msg->sysid;
+    device_id.devid_s.devtype   = DRV_DIST_DEVTYPE_MAVLINK;
 
     ds.timestamp        = hrt_absolute_time();                                      /* Use system time for now, don't trust sender to attach correct timestamp */
     ds.min_distance     = static_cast<float>(dist_sensor.min_distance) * 1e-2f;     /* cm to m */
@@ -847,8 +853,9 @@ void MavlinkReceiver::handle_message_att_pos_mocap(mavlink_message_t *msg) {
     // fill vehicle_odometry from Mavlink ATT_POS_MOCAP
     vehicle_odometry_s odom{vehicle_odometry_empty};
 
+#ifdef MAVLINK_USING_TIMESYNC
     odom.timestamp_sample = _mavlink_timesync.sync_stamp(att_pos_mocap.time_usec);
-
+#endif // MAVLINK_USING_TIMESYNC
     odom.q[0] = att_pos_mocap.q[0];
     odom.q[1] = att_pos_mocap.q[1];
     odom.q[2] = att_pos_mocap.q[2];
@@ -1126,9 +1133,9 @@ void MavlinkReceiver::handle_message_vision_position_estimate(mavlink_message_t 
 
     // fill vehicle_odometry from Mavlink VISION_POSITION_ESTIMATE
     vehicle_odometry_s odom{vehicle_odometry_empty};
-
+#ifdef MAVLINK_USING_TIMESYNC
     odom.timestamp_sample = _mavlink_timesync.sync_stamp(vpe.usec);
-
+#endif //MAVLINK_USING_TIMESYNC
     odom.pose_frame  = vehicle_odometry_s::POSE_FRAME_NED;
     odom.position[0] = vpe.x;
     odom.position[1] = vpe.y;
@@ -1162,9 +1169,9 @@ void MavlinkReceiver::handle_message_odometry(mavlink_message_t *msg) {
 
     // fill vehicle_odometry from Mavlink ODOMETRY
     vehicle_odometry_s odom{vehicle_odometry_empty};
-
+#ifdef MAVLINK_USING_TIMESYNC
     odom.timestamp_sample = _mavlink_timesync.sync_stamp(odom_in.time_usec);
-
+#endif //MAVLINK_USING_TIMESYNC
     const matrix::Vector3f odom_in_p(odom_in.x, odom_in.y, odom_in.z);
 
     // position x/y/z (m)
@@ -1640,6 +1647,7 @@ void MavlinkReceiver::handle_message_serial_control(mavlink_message_t *msg) {
         return;
     }
 
+#ifdef MAVLINK_USING_SHELL
     MavlinkShell *shell = _mavlink->get_shell();
 
     if (shell) {
@@ -1654,6 +1662,7 @@ void MavlinkReceiver::handle_message_serial_control(mavlink_message_t *msg) {
             _mavlink->close_shell();
         }
     }
+#endif //MAVLINK_USING_SHELL
 }
 
 void MavlinkReceiver::handle_message_logging_ack(mavlink_message_t *msg) {
@@ -1762,9 +1771,9 @@ void MavlinkReceiver::handle_message_trajectory_representation_bezier(mavlink_me
     mavlink_msg_trajectory_representation_bezier_decode(msg, &trajectory);
 
     vehicle_trajectory_bezier_s trajectory_bezier{};
-
+#ifdef MAVLINK_USING_TIMESYNC
     trajectory_bezier.timestamp = _mavlink_timesync.sync_stamp(trajectory.time_usec);
-
+#endif //MAVLINK_USING_TIMESYNC
     for (int i = 0; i < vehicle_trajectory_bezier_s::NUMBER_POINTS; ++i) {
         trajectory_bezier.control_points[i].position[0] = trajectory.pos_x[i];
         trajectory_bezier.control_points[i].position[1] = trajectory.pos_y[i];
@@ -2177,11 +2186,11 @@ void MavlinkReceiver::handle_message_hil_gps(mavlink_message_t *msg) {
 
     sensor_gps_s gps{};
 
-    device::Device::DeviceId device_id;
-    device_id.devid_s.bus_type = device::Device::DeviceBusType::DeviceBusType_MAVLINK;
-    device_id.devid_s.bus      = _mavlink->get_instance_id();
-    device_id.devid_s.address  = msg->sysid;
-    device_id.devid_s.devtype  = DRV_GPS_DEVTYPE_SIM;
+    device::DeviceId device_id;
+    device_id.devid_s.bus_type  = device::DeviceBusType::DeviceBusType_MAVLINK;
+    device_id.devid_s.bus_index = _mavlink->get_instance_id();
+    device_id.devid_s.address   = msg->sysid;
+    device_id.devid_s.devtype   = DRV_GPS_DEVTYPE_SIM;
 
     gps.device_id = device_id.devid;
 
@@ -2249,8 +2258,9 @@ void MavlinkReceiver::handle_message_landing_target(mavlink_message_t *msg) {
 
     if (landing_target.position_valid && landing_target.frame == MAV_FRAME_LOCAL_NED) {
         landing_target_pose_s landing_target_pose{};
-
-        landing_target_pose.timestamp     = _mavlink_timesync.sync_stamp(landing_target.time_usec);
+#ifdef MAVLINK_USING_TIMESYNC
+        landing_target_pose.timestamp = _mavlink_timesync.sync_stamp(landing_target.time_usec);
+#endif //MAVLINK_USING_TIMESYNC
         landing_target_pose.abs_pos_valid = true;
         landing_target_pose.x_abs         = landing_target.x;
         landing_target_pose.y_abs         = landing_target.y;
@@ -2355,14 +2365,14 @@ void MavlinkReceiver::handle_message_utm_global_position(mavlink_message_t *msg)
 
     bool is_self_published = false;
 
-#ifndef BOARD_HAS_NO_UUID
-    px4_guid_t px4_guid;
-    board_get_px4_guid(px4_guid);
-    is_self_published = sizeof(px4_guid) == sizeof(utm_pos.uas_id) && memcmp(px4_guid, utm_pos.uas_id, sizeof(px4_guid_t)) == 0;
-#else
+    // #ifndef BOARD_HAS_NO_UUID
+    //     px4_guid_t px4_guid;
+    //     board_get_px4_guid(px4_guid);
+    //     is_self_published = sizeof(px4_guid) == sizeof(utm_pos.uas_id) && memcmp(px4_guid, utm_pos.uas_id, sizeof(px4_guid_t)) == 0;
+    // #else
 
-    is_self_published = msg->sysid == _mavlink->get_system_id();
-#endif /* BOARD_HAS_NO_UUID */
+    //     is_self_published = msg->sysid == _mavlink->get_system_id();
+    // #endif /* BOARD_HAS_NO_UUID */
 
     // Ignore selfpublished UTM messages
     if (is_self_published) {
@@ -2376,7 +2386,7 @@ void MavlinkReceiver::handle_message_utm_global_position(mavlink_message_t *msg)
 
     transponder_report_s t{};
     t.timestamp = hrt_absolute_time();
-    mav_array_memcpy(t.uas_id, utm_pos.uas_id, PX4_GUID_BYTE_LENGTH);
+    // mav_array_memcpy(t.uas_id, utm_pos.uas_id, PX4_GUID_BYTE_LENGTH);
     t.icao_address  = msg->sysid;
     t.lat           = utm_pos.lat * 1e-7;
     t.lon           = utm_pos.lon * 1e-7;
@@ -2875,11 +2885,11 @@ void MavlinkReceiver::handle_message_gimbal_device_attitude_status(mavlink_messa
 
 void MavlinkReceiver::run() {
     /* set thread name */
-    {
-        char thread_name[17];
-        snprintf(thread_name, sizeof(thread_name), "mavlink_rcv_if%d", _mavlink->get_instance_id());
-        px4_prctl(PR_SET_NAME, thread_name, px4_getpid());
-    }
+    // {
+    //     char thread_name[17];
+    //     snprintf(thread_name, sizeof(thread_name), "mavlink_rcv_if%d", _mavlink->get_instance_id());
+    //     px4_prctl(PR_SET_NAME, thread_name, px4_getpid());
+    // }
 
     // poll timeout in ms. Also defines the max update frequency of the mission & param manager, etc.
     const int timeout = 10;
@@ -2997,17 +3007,19 @@ void MavlinkReceiver::run() {
                                 _mavlink->set_boot_complete();
                             }
                         }
-
+#ifdef MAVLINK_USING_FTP
                         if (_mavlink->ftp_enabled()) {
                             /* handle packet with ftp component */
                             _mavlink_ftp.handle_message(&msg);
                         }
-
+#endif // MAVLINK_USING_FTP
                         /* handle packet with log component */
                         _mavlink_log_handler.handle_message(&msg);
 
+#ifdef MAVLINK_USING_TIMESYNC
                         /* handle packet with timesync component */
                         _mavlink_timesync.handle_message(&msg);
+#endif // MAVLINK_USING_TIMESYNC
 
                         /* handle packet with parent object */
                         _mavlink->handle_message(&msg);
@@ -3064,10 +3076,11 @@ void MavlinkReceiver::run() {
 
             _parameters_manager.send();
 
+#ifdef MAVLINK_USING_FTP
             if (_mavlink->ftp_enabled()) {
                 _mavlink_ftp.send();
             }
-
+#endif // MAVLINK_USING_FTP
             _mavlink_log_handler.send();
             last_send_update = t;
         }
@@ -3245,20 +3258,25 @@ void MavlinkReceiver::print_detailed_rx_stats() const {
 }
 
 void MavlinkReceiver::start() {
-    pthread_attr_t receiveloop_attr;
-    pthread_attr_init(&receiveloop_attr);
+    // pthread_attr_t receiveloop_attr;
+    // pthread_attr_init(&receiveloop_attr);
 
-    struct sched_param param;
-    (void)pthread_attr_getschedparam(&receiveloop_attr, &param);
-    param.sched_priority = SCHED_PRIORITY_MAX - 80;
-    (void)pthread_attr_setschedparam(&receiveloop_attr, &param);
+    // struct sched_param param;
+    // (void)pthread_attr_getschedparam(&receiveloop_attr, &param);
+    // param.sched_priority = SCHED_PRIORITY_MAX - 80;
+    // (void)pthread_attr_setschedparam(&receiveloop_attr, &param);
 
-    pthread_attr_setstacksize(&receiveloop_attr,
-                              PX4_STACK_ADJUSTED(sizeof(MavlinkReceiver) + 2840 + MAVLINK_RECEIVER_NET_ADDED_STACK));
+    // pthread_attr_setstacksize(&receiveloop_attr,
+    //                           PX4_STACK_ADJUSTED(sizeof(MavlinkReceiver) + 2840 + MAVLINK_RECEIVER_NET_ADDED_STACK));
 
-    pthread_create(&_thread, &receiveloop_attr, MavlinkReceiver::start_trampoline, (void *)this);
+    // pthread_create(&_thread, &receiveloop_attr, MavlinkReceiver::start_trampoline, (void *)this);
 
-    pthread_attr_destroy(&receiveloop_attr);
+    // pthread_attr_destroy(&receiveloop_attr);
+
+    char thread_name[RT_NAME_MAX];
+    snprintf(thread_name, sizeof(thread_name), "mavlink_rcv_if%d", _mavlink->get_instance_id());
+
+    _thread = rt_thread_create(thread_name, MavlinkReceiver::start_trampoline, this, 4096, 15, 1000);
 }
 
 void MavlinkReceiver::updateParams() {
@@ -3266,13 +3284,12 @@ void MavlinkReceiver::updateParams() {
     ModuleParams::updateParams();
 }
 
-void *MavlinkReceiver::start_trampoline(void *context) {
+void MavlinkReceiver::start_trampoline(void *context) {
     MavlinkReceiver *self = reinterpret_cast<MavlinkReceiver *>(context);
     self->run();
-    return nullptr;
 }
 
 void MavlinkReceiver::stop() {
     _should_exit.store(true);
-    pthread_join(_thread, nullptr);
+    rt_thread_delete(_thread);
 }

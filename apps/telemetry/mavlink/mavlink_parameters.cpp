@@ -21,7 +21,7 @@
 
 #include "mavlink_parameters.h"
 #include "mavlink_main.h"
-#include <systemlib/mavlink_log.h>
+#include <ulog/mavlink_log.h>
 
 MavlinkParametersManager::MavlinkParametersManager(Mavlink *mavlink) :
     _mavlink(mavlink) {
@@ -73,12 +73,12 @@ void MavlinkParametersManager::handle_message(const mavlink_message_t *msg) {
         if (set.target_system == mavlink_system.sysid && (set.target_component == mavlink_system.compid || set.target_component == MAV_COMP_ID_ALL)) {
             /* local name buffer to enforce null-terminated string */
             char name[MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN + 1];
-            strncpy(name, set.param_id, MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN);
+            rt_strncpy(name, set.param_id, MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN);
             /* enforce null termination */
             name[MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN] = '\0';
 
             /* Whatever the value is, we're being told to stop sending */
-            if (strncmp(name, "_HASH_CHECK", sizeof(name)) == 0) {
+            if (rt_strncmp(name, "_HASH_CHECK", sizeof(name)) == 0) {
                 if (_mavlink->hash_check_enabled()) {
                     _send_all_index = -1;
                 }
@@ -93,7 +93,7 @@ void MavlinkParametersManager::handle_message(const mavlink_message_t *msg) {
             if (param == PARAM_INVALID) {
                 PX4_ERR("unknown param: %s", name);
 
-            } else if (!((param_type(param) == PARAM_TYPE_INT32 && set.param_type == MAV_PARAM_TYPE_INT32) || (param_type(param) == PARAM_TYPE_FLOAT && set.param_type == MAV_PARAM_TYPE_REAL32))) {
+            } else if (!((param_get_type(param) == PARAM_TYPE_INT32 && set.param_type == MAV_PARAM_TYPE_INT32) || (param_get_type(param) == PARAM_TYPE_FLOAT && set.param_type == MAV_PARAM_TYPE_REAL32))) {
                 PX4_ERR("param types mismatch param: %s", name);
 
             } else {
@@ -111,7 +111,7 @@ void MavlinkParametersManager::handle_message(const mavlink_message_t *msg) {
             req.message_type = msg->msgid;
             req.node_id      = set.target_component;
             req.param_index  = -1;
-            strncpy(req.param_id, set.param_id, MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN + 1);
+            rt_strncpy(req.param_id, set.param_id, MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN + 1);
             req.param_id[MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN] = '\0';
 
             if (set.param_type == MAV_PARAM_TYPE_REAL32) {
@@ -142,15 +142,15 @@ void MavlinkParametersManager::handle_message(const mavlink_message_t *msg) {
             /* when no index is given, loop through string ids and compare them */
             if (req_read.param_index < 0) {
                 /* XXX: I left this in so older versions of QGC wouldn't break */
-                if (strncmp(req_read.param_id, HASH_PARAM, MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN) == 0) {
+                if (rt_strncmp(req_read.param_id, HASH_PARAM, MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN) == 0) {
                     /* return hash check for cached params */
                     uint32_t hash = param_hash_check();
 
                     /* build the one-off response message */
                     mavlink_param_value_t param_value;
-                    param_value.param_count = param_count_used();
+                    param_value.param_count = param_get_count_used();
                     param_value.param_index = -1;
-                    strncpy(param_value.param_id, HASH_PARAM, MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN);
+                    rt_strncpy(param_value.param_id, HASH_PARAM, MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN);
                     param_value.param_type = MAV_PARAM_TYPE_UINT32;
                     memcpy(&param_value.param_value, &hash, sizeof(hash));
                     mavlink_msg_param_value_send_struct(_mavlink->get_channel(), &param_value);
@@ -158,7 +158,7 @@ void MavlinkParametersManager::handle_message(const mavlink_message_t *msg) {
                 } else {
                     /* local name buffer to enforce null-terminated string */
                     char name[MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN + 1];
-                    strncpy(name, req_read.param_id, MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN);
+                    rt_strncpy(name, req_read.param_id, MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN);
                     /* enforce null termination */
                     name[MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN] = '\0';
                     /* attempt to find parameter and send it */
@@ -187,7 +187,7 @@ void MavlinkParametersManager::handle_message(const mavlink_message_t *msg) {
             req.message_type = msg->msgid;
             req.node_id      = req_read.target_component;
             req.param_index  = req_read.param_index;
-            strncpy(req.param_id, req_read.param_id, MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN + 1);
+            rt_strncpy(req.param_id, req_read.param_id, MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN + 1);
             req.param_id[MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN] = '\0';
 
             // Enque the request and forward the first to the uavcan node
@@ -216,8 +216,8 @@ void MavlinkParametersManager::handle_message(const mavlink_message_t *msg) {
             }
 
             _rc_param_map.param_index[i] = map_rc.param_index;
-            strncpy(&(_rc_param_map.param_id[i * (rc_parameter_map_s::PARAM_ID_LEN + 1)]), map_rc.param_id,
-                    MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN);
+            rt_strncpy(&(_rc_param_map.param_id[i * (rc_parameter_map_s::PARAM_ID_LEN + 1)]), map_rc.param_id,
+                       MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN);
             /* enforce null termination */
             _rc_param_map.param_id[i * (rc_parameter_map_s::PARAM_ID_LEN + 1) + rc_parameter_map_s::PARAM_ID_LEN] = '\0';
             _rc_param_map.scale[i]                                                                                = map_rc.scale;
@@ -335,7 +335,7 @@ bool MavlinkParametersManager::send_untransmitted() {
             do {
                 param = param_for_index(_param_update_index);
                 ++_param_update_index;
-            } while (param != PARAM_INVALID && !param_used(param));
+            } while (param != PARAM_INVALID && !param_value_used(param));
 
             // send parameters which are untransmitted while there is
             // space in the TX buffer
@@ -347,10 +347,10 @@ bool MavlinkParametersManager::send_untransmitted() {
                     break;
                 }
             }
-        } while ((_mavlink->get_free_tx_buf() >= get_size()) && !_mavlink->radio_status_critical() && (_param_update_index < (int)param_count()));
+        } while ((_mavlink->get_free_tx_buf() >= get_size()) && !_mavlink->radio_status_critical() && (_param_update_index < (int)param_get_count()));
 
         // Flag work as done once all params have been sent
-        if (_param_update_index >= (int)param_count()) {
+        if (_param_update_index >= (int)param_get_count()) {
             _param_update_time = 0;
         }
     }
@@ -371,9 +371,9 @@ bool MavlinkParametersManager::send_one() {
 
             /* build the one-off response message */
             mavlink_param_value_t msg;
-            msg.param_count = param_count_used();
+            msg.param_count = param_get_count_used();
             msg.param_index = -1;
-            strncpy(msg.param_id, HASH_PARAM, MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN);
+            rt_strncpy(msg.param_id, HASH_PARAM, MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN);
             msg.param_type = MAV_PARAM_TYPE_UINT32;
             memcpy(&msg.param_value, &hash, sizeof(hash));
             mavlink_msg_param_value_send_struct(_mavlink->get_channel(), &msg);
@@ -392,13 +392,13 @@ bool MavlinkParametersManager::send_one() {
             /* walk through all parameters, including unused ones */
             p = param_for_index(_send_all_index);
             _send_all_index++;
-        } while (p != PARAM_INVALID && !param_used(p));
+        } while (p != PARAM_INVALID && !param_value_used(p));
 
         if (p != PARAM_INVALID) {
             send_param(p);
         }
 
-        if ((p == PARAM_INVALID) || (_send_all_index >= (int)param_count())) {
+        if ((p == PARAM_INVALID) || (_send_all_index >= (int)param_get_count())) {
             _send_all_index = -1;
             return false;
 
@@ -426,7 +426,7 @@ int MavlinkParametersManager::send_param(param_t param, int component_id) {
      * get param value, since MAVLink encodes float and int params in the same
      * space during transmission, copy param onto float val_buf
      */
-    if (param_type(param) == PARAM_TYPE_INT32) {
+    if (param_get_type(param) == PARAM_TYPE_INT32) {
         int32_t param_value;
 
         if (param_get(param, &param_value) != OK) {
@@ -445,7 +445,7 @@ int MavlinkParametersManager::send_param(param_t param, int component_id) {
         msg.param_value = param_value;
     }
 
-    msg.param_count = param_count_used();
+    msg.param_count = param_get_count_used();
     msg.param_index = param_get_used_index(param);
 
 #if defined(__GNUC__) && __GNUC__ >= 8
@@ -459,13 +459,13 @@ int MavlinkParametersManager::send_param(param_t param, int component_id) {
      * has length 16. In this case the receiving end needs to terminate it
      * when copying it.
      */
-    strncpy(msg.param_id, param_name(param), MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN);
+    rt_strncpy(msg.param_id, param_get_name(param), MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN);
 #if defined(__GNUC__) && __GNUC__ >= 8
 #   pragma GCC diagnostic pop
 #endif
 
     /* query parameter type */
-    param_type_t type = param_type(param);
+    param_type_t type = param_get_type(param);
 
     /*
      * Map onboard parameter type to MAVLink type,
@@ -509,7 +509,7 @@ bool MavlinkParametersManager::send_uavcan() {
         }
 
         mavlink_param_value_t msg{};
-        msg.param_count = value.param_count;
+        msg.param_count = value.param_get_count;
         msg.param_index = value.param_index;
 #   if defined(__GNUC__) && __GNUC__ >= 8
 #      pragma GCC diagnostic ignored "-Wstringop-truncation"
@@ -521,12 +521,12 @@ bool MavlinkParametersManager::send_uavcan() {
          * has length 16. In this case the receiving end needs to terminate it
          * when copying it.
          */
-        strncpy(msg.param_id, value.param_id, MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN);
+        rt_strncpy(msg.param_id, value.param_id, MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN);
 #   if defined(__GNUC__) && __GNUC__ >= 8
 #      pragma GCC diagnostic pop
 #   endif
 
-        if (value.param_type == MAV_PARAM_TYPE_REAL32) {
+        if (value.param_get_type == MAV_PARAM_TYPE_REAL32) {
             msg.param_type  = MAVLINK_TYPE_FLOAT;
             msg.param_value = value.real_value;
 

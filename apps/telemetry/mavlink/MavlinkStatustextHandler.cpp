@@ -16,9 +16,9 @@ bool MavlinkStatustextHandler::should_publish_previous(const mavlink_statustext_
     // happen if the last chunk has been dropped, let's publish what we have.
     if (_last_log_id > 0 && msg_statustext.id != _last_log_id) {
         // We add a note that a part is missing at the end.
-        const size_t offset = strlen(_log_msg.text);
-        strncpy(_log_msg.text + offset, "[ missing ... ]",
-                sizeof(_log_msg.text) - offset);
+        const size_t offset = rt_strlen(_log_msg.text);
+        rt_strncpy(_log_msg.text + offset, "[ missing ... ]",
+                   sizeof(_log_msg.text) - offset);
         _log_msg.text[sizeof(_log_msg.text) - 1] = '\0';
 
         return true;
@@ -38,29 +38,29 @@ bool MavlinkStatustextHandler::should_publish_current(const mavlink_statustext_t
 
         if (msg_statustext.chunk_seq == 0) {
             // We start from 0 with a new message.
-            strncpy(_log_msg.text, msg_statustext.text,
-                    math::min(sizeof(_log_msg.text), sizeof(msg_statustext.text)));
+            rt_strncpy(_log_msg.text, msg_statustext.text,
+                       math::min(sizeof(_log_msg.text), sizeof(msg_statustext.text)));
             _log_msg.text[sizeof(msg_statustext.text)] = '\0';
 
         } else {
             if (msg_statustext.chunk_seq != _last_log_chunk_seq + 1) {
-                const size_t offset = strlen(_log_msg.text);
-                strncpy(_log_msg.text + offset, "[ missing ... ]",
-                        sizeof(_log_msg.text) - offset);
+                const size_t offset = rt_strlen(_log_msg.text);
+                rt_strncpy(_log_msg.text + offset, "[ missing ... ]",
+                           sizeof(_log_msg.text) - offset);
                 _log_msg.text[sizeof(_log_msg.text) - offset - 1] = '\0';
             }
 
             // We add a consecutive chunk.
-            const size_t offset     = strlen(_log_msg.text);
+            const size_t offset     = rt_strlen(_log_msg.text);
             const size_t max_to_add = math::min(sizeof(_log_msg.text) - offset - 1, sizeof(msg_statustext.text));
-            strncpy(_log_msg.text + offset, msg_statustext.text, max_to_add);
+            rt_strncpy(_log_msg.text + offset, msg_statustext.text, max_to_add);
             _log_msg.text[math::min(offset + max_to_add, sizeof(_log_msg.text) - 1)] = '\0';
         }
 
         _last_log_chunk_seq = msg_statustext.chunk_seq;
 
-        const bool publication_message_is_full = sizeof(_log_msg.text) - 1 == strlen(_log_msg.text);
-        const bool found_zero_termination      = strnlen(msg_statustext.text, sizeof(msg_statustext.text)) < sizeof(msg_statustext.text);
+        const bool publication_message_is_full = sizeof(_log_msg.text) - 1 == rt_strlen(_log_msg.text);
+        const bool found_zero_termination      = rt_strnlen(msg_statustext.text, sizeof(msg_statustext.text)) < sizeof(msg_statustext.text);
 
         if (publication_message_is_full || found_zero_termination) {
             _last_log_id        = 0;
@@ -80,9 +80,9 @@ bool MavlinkStatustextHandler::should_publish_current(const mavlink_statustext_t
         static_assert(sizeof(_log_msg.text) > sizeof(msg_statustext.text),
                       "_log_msg.text not big enough to hold msg_statustext.text");
 
-        strncpy(_log_msg.text, msg_statustext.text,
-                math::min(sizeof(_log_msg.text),
-                          sizeof(msg_statustext.text)));
+        rt_strncpy(_log_msg.text, msg_statustext.text,
+                   math::min(sizeof(_log_msg.text),
+                             sizeof(msg_statustext.text)));
 
         // We need to 0-terminate after the copied text which does not have to be
         // 0-terminated on the wire.

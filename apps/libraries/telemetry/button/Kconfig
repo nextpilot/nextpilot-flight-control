@@ -1,0 +1,3 @@
+menuconfig PKG_USING_BUTTON_PUBLISHER
+	bool "Library for button functionality"
+	default n

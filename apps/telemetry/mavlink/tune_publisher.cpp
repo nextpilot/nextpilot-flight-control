@@ -14,7 +14,7 @@
 
 void TunePublisher::set_tune_string(const char *tune, const hrt_abstime &now) {
     // The tune string needs to be 0 terminated.
-    const unsigned tune_len = strlen(tune);
+    const unsigned tune_len = rt_strlen(tune);
 
     // We don't expect the tune string to be longer than what can come in via MAVLink including 0 termination.
     if (tune_len >= MAX_TUNE_LEN) {
@@ -22,7 +22,7 @@ void TunePublisher::set_tune_string(const char *tune, const hrt_abstime &now) {
         return;
     }
 
-    strncpy(_tune_buffer, tune, MAX_TUNE_LEN);
+    rt_strncpy(_tune_buffer, tune, MAX_TUNE_LEN);
 
     _tunes.set_string(_tune_buffer, tune_control_s::VOLUME_LEVEL_DEFAULT);
 

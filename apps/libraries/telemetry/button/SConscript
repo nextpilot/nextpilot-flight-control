@@ -1,0 +1,16 @@
+import os
+import rtconfig
+from building import *
+
+
+cwd = GetCurrentDir()
+
+inc = []
+src = Glob("*.cpp")
+
+objs = DefineGroup(
+    "lib/timesync", src, depend=["PKG_USING_BUTTON_PUBLISHER"], CPPPATH=inc
+)
+
+
+Return("objs")

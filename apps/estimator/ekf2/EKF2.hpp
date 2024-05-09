@@ -246,7 +246,7 @@ private:
     const bool _multi_mode;
     int        _instance{0};
 
-    px4::atomic_bool _task_should_exit{false};
+    atomic_bool _task_should_exit{false};
 
     // time slip monitoring
     uint64_t _integrated_time_us = 0; ///< integral of gyro delta time from start (uSec)

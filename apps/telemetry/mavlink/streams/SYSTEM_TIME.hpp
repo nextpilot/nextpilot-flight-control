@@ -20,6 +20,7 @@ public:
     static constexpr const char *get_name_static() {
         return "SYSTEM_TIME";
     }
+
     static constexpr uint16_t get_id_static() {
         return MAVLINK_MSG_ID_SYSTEM_TIME;
     }
@@ -27,6 +28,7 @@ public:
     const char *get_name() const override {
         return get_name_static();
     }
+
     uint16_t get_id() override {
         return get_id_static();
     }
@@ -42,7 +44,7 @@ private:
 
     bool send() override {
         timespec tv;
-        px4_clock_gettime(CLOCK_REALTIME, &tv);
+        clock_gettime(CLOCK_REALTIME, &tv);
 
         mavlink_system_time_t msg{};
         msg.time_boot_ms   = hrt_absolute_time() / 1000;

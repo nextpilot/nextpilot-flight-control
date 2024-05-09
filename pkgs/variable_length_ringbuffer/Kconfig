@@ -1,0 +1,4 @@
+menuconfig PKG_USING_VAR_LEN_RINGBUFFER
+    bool "FIFO ringbuffer implementation for packets of variable length"
+    select PKG_USING_RING_BUFFER
+    default n

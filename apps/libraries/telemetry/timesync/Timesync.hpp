@@ -19,13 +19,14 @@
 
 #include <hrtimer.h>
 
-#include <uORB/PublicationMulti.hpp>
+#include <uORB/uORBPublication.hpp>
 #include <uORB/topics/timesync_status.h>
 
 #include <math.h>
 #include <float.h>
 
 using namespace time_literals;
+using namespace nextpilot;
 
 static constexpr time_t PX4_EPOCH_SECS = 1234567890ULL;
 

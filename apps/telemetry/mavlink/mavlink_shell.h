@@ -66,8 +66,8 @@ public:
     }
 
 private:
-    px4::atomic<uint8_t> _target_sysid{};
-    px4::atomic<uint8_t> _target_compid{};
+    atomic<uint8_t> _target_sysid{};
+    atomic<uint8_t> _target_compid{};
 
     int        _to_shell_fd   = -1;       /** fd to write to the shell */
     int        _from_shell_fd = -1;       /** fd to read from the shell */

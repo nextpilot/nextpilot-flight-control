@@ -15,9 +15,7 @@
 
 #include <dirent.h>
 #include <queue.h>
-
 #include <defines.h>
-#include <systemlib/err.h>
 #include <hrtimer.h>
 
 #ifndef MAVLINK_FTP_UNIT_TEST

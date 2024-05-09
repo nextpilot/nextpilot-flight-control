@@ -15,14 +15,17 @@
  * @author Beat Küng <beat-kueng@gmx.net>
  */
 
+#define LOG_TAG     "mavlink.ulog"
+#define MODULE_NAME LOG_TAG
+
 #include "mavlink_ulog.h"
 #include <ulog/log.h>
 #include <errno.h>
 #include <mathlib/mathlib.h>
 
-bool         MavlinkULog::_init     = false;
-MavlinkULog *MavlinkULog::_instance = nullptr;
-px4_sem_t    MavlinkULog::_lock;
+bool                MavlinkULog::_init     = false;
+MavlinkULog        *MavlinkULog::_instance = nullptr;
+struct rt_semaphore MavlinkULog::_lock;
 
 MavlinkULog::MavlinkULog(int datarate, float max_rate_factor, uint8_t target_system, uint8_t target_component) :
     _target_system(target_system), _target_component(target_component),
@@ -169,7 +172,7 @@ void MavlinkULog::initialize() {
         return;
     }
 
-    px4_sem_init(&_lock, 1, 1);
+    rt_sem_init(&_lock, "ulog_lock", 1, RT_IPC_FLAG_PRIO);
     _init = true;
 }
 

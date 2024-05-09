@@ -26,11 +26,8 @@
 #include <geo/geo.h>
 #include <mathlib/mathlib.h>
 #include <matrix/matrix/math.hpp>
-
 #include <math.h>
-
-#include <uORB/Subscription.hpp>
-#include <uORB/SubscriptionMultiArray.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/vehicle_status.h>
 
 #include "streams/ACTUATOR_OUTPUT_STATUS.hpp"
@@ -116,8 +113,8 @@
 #   include "streams/SCALED_PRESSURE2.hpp"
 #   include "streams/SCALED_PRESSURE3.hpp"
 #   include "streams/SMART_BATTERY_INFO.hpp"
-#   include "streams/UAVIONIX_ADSB_OUT_CFG.hpp"
-#   include "streams/UAVIONIX_ADSB_OUT_DYNAMIC.hpp"
+// #   include "streams/UAVIONIX_ADSB_OUT_CFG.hpp"
+// #   include "streams/UAVIONIX_ADSB_OUT_DYNAMIC.hpp"
 #   include "streams/UTM_GLOBAL_POSITION.hpp"
 #endif // !CONSTRAINED_FLASH
 
@@ -471,7 +468,7 @@ MavlinkStream *create_mavlink_stream(const char *stream_name, Mavlink *mavlink) 
     // search for stream with specified name in supported streams list
     if (stream_name != nullptr) {
         for (const auto &stream : streams_list) {
-            if (strcmp(stream_name, stream.get_name()) == 0) {
+            if (rt_strcmp(stream_name, stream.get_name()) == 0) {
                 return stream.new_instance(mavlink);
             }
         }

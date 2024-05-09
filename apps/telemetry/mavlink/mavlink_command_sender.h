@@ -64,16 +64,17 @@ private:
     ~MavlinkCommandSender();
 
     static void lock() {
-        do {
-        } while (px4_sem_wait(&_lock) != 0);
+        // do {
+        // } while (px4_sem_wait(&_lock) != 0);
+        rt_sem_take(&_lock, RT_WAITING_FOREVER);
     }
 
     static void unlock() {
-        px4_sem_post(&_lock);
+        rt_sem_release(&_lock);
     }
 
     static MavlinkCommandSender *_instance;
-    static px4_sem_t             _lock;
+    static struct rt_semaphore   _lock;
 
     struct command_item_s {
         mavlink_command_long_t command           = {};

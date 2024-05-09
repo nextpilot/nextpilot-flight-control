@@ -37,7 +37,7 @@
 class TemperatureCalibration;
 
 namespace temperature_calibration {
-px4::atomic<TemperatureCalibration *> instance{nullptr};
+atomic<TemperatureCalibration *> instance{nullptr};
 }
 
 class TemperatureCalibration {

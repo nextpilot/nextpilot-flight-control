@@ -20,23 +20,26 @@
 
 #pragma once
 
-#include "mavlink_ftp.h"
+#ifdef MAVLINK_USING_FTP
+#   include "mavlink_ftp.h"
+#endif //MAVLINK_USING_FTP
 #include "mavlink_log_handler.h"
 #include "mavlink_mission.h"
 #include "mavlink_parameters.h"
 #include "MavlinkStatustextHandler.hpp"
-#include "mavlink_timesync.h"
+#ifdef MAVLINK_USING_TIMESYNC
+#   include "mavlink_timesync.h"
+#endif // MAVLINK_USING_TIMESYNC
 #include "tune_publisher.h"
 
 #include <geo/geo.h>
-#include <drivers/accelerometer/PX4Accelerometer.hpp>
-#include <drivers/gyroscope/PX4Gyroscope.hpp>
-#include <drivers/magnetometer/PX4Magnetometer.hpp>
-#include <systemlib/mavlink_log.h>
-#include <module/module_params.h>
-#include <uORB/Publication.hpp>
-#include <uORB/PublicationMulti.hpp>
-#include <uORB/SubscriptionInterval.hpp>
+#include <accelerometer/PX4Accelerometer.hpp>
+#include <gyroscope/PX4Gyroscope.hpp>
+#include <magnetometer/PX4Magnetometer.hpp>
+#include <ulog/mavlink_log.h>
+#include <module/module_params.hpp>
+#include <uORB/uORBPublication.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/actuator_armed.h>
 #include <uORB/topics/actuator_outputs.h>
 #include <uORB/topics/airspeed.h>
@@ -96,6 +99,8 @@
 #endif // !CONSTRAINED_FLASH
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class Mavlink;
 
@@ -120,8 +125,8 @@ public:
     }
 
 private:
-    static void *start_trampoline(void *context);
-    void         run();
+    static void start_trampoline(void *context);
+    void        run();
 
     void acknowledge(uint8_t sysid, uint8_t compid, uint16_t command, uint8_t result, uint8_t progress = 0);
 
@@ -216,8 +221,8 @@ private:
     void update_message_statistics(const mavlink_message_t &message);
     void update_rx_stats(const mavlink_message_t &message);
 
-    px4::atomic_bool _should_exit{false};
-    pthread_t        _thread{};
+    atomic_bool _should_exit{false};
+    rt_thread_t _thread{};
     /**
      * @brief Updates optical flow parameters.
      */
@@ -225,11 +230,15 @@ private:
 
     Mavlink *_mavlink;
 
-    MavlinkFTP               _mavlink_ftp;
+#ifdef MAVLINK_USING_FTP
+    MavlinkFTP _mavlink_ftp;
+#endif // MAVLINK_USING_FTP
     MavlinkLogHandler        _mavlink_log_handler;
     MavlinkMissionManager    _mission_manager;
     MavlinkParametersManager _parameters_manager;
-    MavlinkTimesync          _mavlink_timesync;
+#ifdef MAVLINK_USING_TIMESYNC
+    MavlinkTimesync _mavlink_timesync;
+#endif //MAVLINK_USING_TIMESYNC
     MavlinkStatustextHandler _mavlink_statustext_handler;
 
     mavlink_status_t _status{}; ///< receiver status, used for mavlink_parse_char()
@@ -381,9 +390,9 @@ private:
     hrt_abstime _heartbeat_component_uart_bridge{0};
 
     DEFINE_PARAMETERS(
-        (ParamFloat<px4::params::BAT_CRIT_THR>)_param_bat_crit_thr,
-        (ParamFloat<px4::params::BAT_EMERGEN_THR>)_param_bat_emergen_thr,
-        (ParamFloat<px4::params::BAT_LOW_THR>)_param_bat_low_thr);
+        (ParamFloat<params_id::BAT_CRIT_THR>)_param_bat_crit_thr,
+        (ParamFloat<params_id::BAT_EMERGEN_THR>)_param_bat_emergen_thr,
+        (ParamFloat<params_id::BAT_LOW_THR>)_param_bat_low_thr);
 
     // Disallow copy construction and move assignment.
     MavlinkReceiver(const MavlinkReceiver &)           = delete;

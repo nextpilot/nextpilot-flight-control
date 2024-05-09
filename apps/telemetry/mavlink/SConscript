@@ -20,12 +20,31 @@ cmd = [
     os.path.join(cwd, "mavlink/message_definitions/v1.0/common.xml"),
 ]
 
-subprocess.call(cmd)
+# subprocess.call(cmd)
 
-inc = [cwd]
-src = Glob("*.cpp", exclude="*Test.cpp")
+inc = [
+    cwd,
+    os.path.join(cwd, "mavlink/generated"),
+    os.path.join(cwd, "mavlink/generated/common"),
+]
+src = Glob("*.cpp", exclude="*Test.cpp") + Glob("mavlink.c")
 
-objs = DefineGroup("tel/mavlink", src, depend=["TEL_USING_MAVLINk"])
+if not GetDepend(["MAVLINK_USING_SHELL"]):
+    SrcRemove(src, "mavlink_shell.cpp")
+
+if not GetDepend(["MAVLINK_USING_FTP"]):
+    SrcRemove(src, "mavlink_ftp.cpp")
+
+if not GetDepend(["MAVLINK_USING_TIMESYNC"]):
+    SrcRemove(src, "mavlink_timesync.cpp")
+
+objs = DefineGroup(
+    "tel/mavlink",
+    src,
+    depend=["TEL_USING_MAVLINK"],
+    LOCAL_CPPPATH=inc,
+    CXXFLAGS=" -Wno-address-of-packed-member",
+)
 
 
 Return("objs")

@@ -19,8 +19,8 @@
 #define MAVLINK_STREAM_H_
 
 #include <hrtimer.h>
-#include <module/module_params.h>
-#include <containers/List.hpp>
+#include <module/module_params.hpp>
+#include <containers/IntrusiveList.hpp>
 
 class Mavlink;
 

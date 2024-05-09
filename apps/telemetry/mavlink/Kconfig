@@ -1,5 +1,6 @@
 menuconfig TEL_USING_MAVLINK
 	bool "mavlink"
+	select PKG_USING_VAR_LEN_RINGBUFFER
 	default n
 	---help---
 		Enable support for mavlink
@@ -17,6 +18,11 @@ depends on TEL_USING_MAVLINK && TEL_USING_UAVCAN
         default y
 	---help---
 		Expose UAVCAN parameters over Mavlink.
+
+
+config MAVLINK_USING_SHELL
+	bool "enable mavlink shell service"
+	default n
 
 # menuconfig USER_MAVLINK
 # 	bool "mavlink running as userspace module"

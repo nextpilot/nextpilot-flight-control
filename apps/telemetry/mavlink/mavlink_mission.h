@@ -23,12 +23,14 @@
 #pragma once
 
 #include <dataman/dataman.h>
-#include <uORB/Publication.hpp>
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBPublication.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/mission_result.h>
 
 #include "mavlink_bridge_header.h"
 #include "mavlink_rate_limiter.h"
+
+using namespace nextpilot;
 
 enum MAVLINK_WPM_STATES {
     MAVLINK_WPM_STATE_IDLE = 0,

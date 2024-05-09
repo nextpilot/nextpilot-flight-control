@@ -214,11 +214,11 @@ private:
         _setget_response = nullptr;
     }
 
-    px4::atomic_bool _task_should_exit{false}; ///< flag to indicate to tear down the CAN driver
+    atomic_bool _task_should_exit{false}; ///< flag to indicate to tear down the CAN driver
 
-    unsigned _output_count{0};                 ///< number of actuators currently available
+    unsigned _output_count{0};            ///< number of actuators currently available
 
-    static UavcanNode *_instance;              ///< singleton pointer
+    static UavcanNode *_instance;         ///< singleton pointer
 
     uavcan_node::Allocator _pool_allocator;
 

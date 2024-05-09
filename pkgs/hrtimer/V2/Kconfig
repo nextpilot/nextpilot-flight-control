@@ -1,8 +1,8 @@
 
 if PKG_USING_HRTIMER_V2
     choice
-        default HRT_USING_SYSTICK
         prompt "Select hrtimer source"
+        default HRT_USING_SYSTICK
 
         config HRT_USING_SYSTICK
             bool "sys tick"

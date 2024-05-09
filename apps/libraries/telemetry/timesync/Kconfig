@@ -1,0 +1,3 @@
+menuconfig PKG_USING_TIMESYNC
+	bool "time synchroniser definition"
+	default n

@@ -20,9 +20,9 @@
 #include "../mavlink_ftp.h"
 
 #ifdef __PX4_NUTTX
-#define PX4_MAVLINK_TEST_DATA_DIR "/fs/microsd/ftp_unit_test_data"
+#   define PX4_MAVLINK_TEST_DATA_DIR "/fs/microsd/ftp_unit_test_data"
 #else
-#define PX4_MAVLINK_TEST_DATA_DIR "ftp_unit_test_data"
+#   define PX4_MAVLINK_TEST_DATA_DIR "ftp_unit_test_data"
 #endif
 
 static const char *_test_files[] = {
@@ -33,8 +33,7 @@ static const char *_test_files[] = {
     PX4_MAVLINK_TEST_DATA_DIR "/"
                               "test_240.data"};
 
-constexpr uint32_t MAX_DATA_LEN = MAVLINK_MSG_FILE_TRANSFER_PROTOCOL_FIELD_PAYLOAD_LEN - sizeof(
-                                                                                             MavlinkFTP::PayloadHeader);
+constexpr uint32_t MAX_DATA_LEN = MAVLINK_MSG_FILE_TRANSFER_PROTOCOL_FIELD_PAYLOAD_LEN - sizeof(MavlinkFTP::PayloadHeader);
 
 const MavlinkFtpTest::DownloadTestCase MavlinkFtpTest::_rgDownloadTestCases[] = {
     {_test_files[0], MAX_DATA_LEN - 1, true, false},  // Read takes less than single packet
@@ -216,7 +215,7 @@ bool MavlinkFtpTest::_list_test() {
 
         payload.opcode = MavlinkFTP::kCmdListDirectory;
         payload.offset = 0;
-        payload.size   = strlen(test->dir) + 1;
+        payload.size   = rt_strlen(test->dir) + 1;
 
         bool success = _send_receive_msg(&payload,             // FTP payload header
                                          (uint8_t *)test->dir, // Data to start into FTP message payload
@@ -229,7 +228,7 @@ bool MavlinkFtpTest::_list_test() {
 
         if (test->success) {
             ut_compare("Didn't get Ack back", reply->opcode, MavlinkFTP::kRspAck);
-            ut_compare("Incorrect payload size", reply->size, strlen(test->response) + 1);
+            ut_compare("Incorrect payload size", reply->size, rt_strlen(test->response) + 1);
 
             // The return order of directories from the List command is not repeatable. So we can't do a direct comparison
             // to a hardcoded return result string.
@@ -284,7 +283,7 @@ bool MavlinkFtpTest::_list_eof_test() {
 #else
     payload.offset = 6; // (3 test files, 1 test folder, two skipped ./..)
 #endif
-    payload.size = strlen(dir) + 1;
+    payload.size = rt_strlen(dir) + 1;
 
     bool success = _send_receive_msg(&payload,       // FTP payload header
                                      (uint8_t *)dir, // Data to start into FTP message payload
@@ -310,7 +309,7 @@ bool MavlinkFtpTest::_open_badfile_test() {
 
     payload.opcode = MavlinkFTP::kCmdOpenFileRO;
     payload.offset = 0;
-    payload.size   = strlen(dir) + 1;
+    payload.size   = rt_strlen(dir) + 1;
 
     bool success = _send_receive_msg(&payload,       // FTP payload header
                                      (uint8_t *)dir, // Data to start into FTP message payload
@@ -339,7 +338,7 @@ bool MavlinkFtpTest::_open_terminate_test() {
 
         payload.opcode = MavlinkFTP::kCmdOpenFileRO;
         payload.offset = 0;
-        payload.size   = strlen(test->file) + 1;
+        payload.size   = rt_strlen(test->file) + 1;
 
         bool success = _send_receive_msg(&payload,              // FTP payload header
                                          (uint8_t *)test->file, // Data to start into FTP message payload
@@ -384,7 +383,7 @@ bool MavlinkFtpTest::_terminate_badsession_test() {
 
     payload.opcode = MavlinkFTP::kCmdOpenFileRO;
     payload.offset = 0;
-    payload.size   = strlen(file) + 1;
+    payload.size   = rt_strlen(file) + 1;
 
     bool success = _send_receive_msg(&payload,        // FTP payload header
                                      (uint8_t *)file, // Data to start into FTP message payload
@@ -441,7 +440,7 @@ bool MavlinkFtpTest::_read_test() {
 
         payload.opcode = MavlinkFTP::kCmdOpenFileRO;
         payload.offset = 0;
-        payload.size   = strlen(test->file) + 1;
+        payload.size   = rt_strlen(test->file) + 1;
 
         bool success = _send_receive_msg(&payload,              // FTP payload header
                                          (uint8_t *)test->file, // Data to start into FTP message payload
@@ -539,7 +538,7 @@ bool MavlinkFtpTest::_burst_test() {
 
         payload.opcode = MavlinkFTP::kCmdOpenFileRO;
         payload.offset = 0;
-        payload.size   = strlen(test->file) + 1;
+        payload.size   = rt_strlen(test->file) + 1;
 
         bool success = _send_receive_msg(&payload,              // FTP payload header
                                          (uint8_t *)test->file, // Data to start into FTP message payload
@@ -612,7 +611,7 @@ bool MavlinkFtpTest::_read_badsession_test() {
 
     payload.opcode = MavlinkFTP::kCmdOpenFileRO;
     payload.offset = 0;
-    payload.size   = strlen(file) + 1;
+    payload.size   = rt_strlen(file) + 1;
 
     bool success = _send_receive_msg(&payload,        // FTP payload header
                                      (uint8_t *)file, // Data to start into FTP message payload
@@ -681,7 +680,7 @@ bool MavlinkFtpTest::_removedirectory_test() {
 
         payload.opcode = MavlinkFTP::kCmdRemoveDirectory;
         payload.offset = 0;
-        payload.size   = strlen(test->dir) + 1;
+        payload.size   = rt_strlen(test->dir) + 1;
 
         bool success = _send_receive_msg(&payload,             // FTP payload header
                                          (uint8_t *)test->dir, // Data to start into FTP message payload
@@ -731,7 +730,7 @@ bool MavlinkFtpTest::_createdirectory_test() {
 
         payload.opcode = MavlinkFTP::kCmdCreateDirectory;
         payload.offset = 0;
-        payload.size   = strlen(test->dir) + 1;
+        payload.size   = rt_strlen(test->dir) + 1;
 
         bool success = _send_receive_msg(&payload,             // FTP payload header
                                          (uint8_t *)test->dir, // Data to start into FTP message payload
@@ -787,7 +786,7 @@ bool MavlinkFtpTest::_removefile_test() {
 
         payload.opcode = MavlinkFTP::kCmdRemoveFile;
         payload.offset = 0;
-        payload.size   = strlen(test->file) + 1;
+        payload.size   = rt_strlen(test->file) + 1;
 
         bool success = _send_receive_msg(&payload,              // FTP payload header
                                          (uint8_t *)test->file, // Data to start into FTP message payload

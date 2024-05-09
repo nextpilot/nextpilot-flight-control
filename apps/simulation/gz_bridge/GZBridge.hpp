@@ -106,7 +106,7 @@ private:
     GZMixingInterfaceESC   _mixing_interface_esc{_node, _node_mutex};
     GZMixingInterfaceServo _mixing_interface_servo{_node, _node_mutex};
 
-    px4::atomic<uint64_t> _world_time_us{0};
+    atomic<uint64_t> _world_time_us{0};
 
     pthread_mutex_t _node_mutex;
 

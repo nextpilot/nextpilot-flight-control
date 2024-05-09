@@ -19,11 +19,11 @@
 
 #pragma once
 
-#include <parameters/param.h>
+#include <param/param.h>
 
 #include "mavlink_bridge_header.h"
-#include <uORB/Publication.hpp>
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBPublication.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/rc_parameter_map.h>
 #include <uORB/topics/parameter_update.h>
 #include <hrtimer.h>
@@ -34,6 +34,7 @@
 #endif // CONFIG_MAVLINK_UAVCAN_PARAMETERS
 
 using namespace time_literals;
+using namespace nextpilot;
 
 class Mavlink;
 

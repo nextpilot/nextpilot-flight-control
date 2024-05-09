@@ -151,9 +151,9 @@ private:
     bool        _gyro_fault_detected{false};
     bool        _accel_fault_detected{false};
 
-    uint8_t              _available_instances{0};
-    uint8_t              _selected_instance{INVALID_INSTANCE};
-    px4::atomic<uint8_t> _request_instance{INVALID_INSTANCE};
+    uint8_t         _available_instances{0};
+    uint8_t         _selected_instance{INVALID_INSTANCE};
+    atomic<uint8_t> _request_instance{INVALID_INSTANCE};
 
     uint32_t    _instance_changed_count{0};
     hrt_abstime _last_instance_change{0};

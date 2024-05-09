@@ -22,6 +22,7 @@ public:
     static constexpr const char *get_name_static() {
         return "UAVIONIX_ADSB_OUT_CFG";
     }
+
     static constexpr uint16_t get_id_static() {
         return MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_CFG;
     }
@@ -29,6 +30,7 @@ public:
     const char *get_name() const override {
         return get_name_static();
     }
+
     uint16_t get_id() override {
         return get_id_static();
     }
@@ -76,13 +78,13 @@ private:
     }
 
     DEFINE_PARAMETERS(
-        (ParamInt<px4::params::ADSB_ICAO_ID>)_adsb_icao,
-        (ParamInt<px4::params::ADSB_LEN_WIDTH>)_adsb_len_width,
-        (ParamInt<px4::params::ADSB_EMIT_TYPE>)_adsb_emit_type,
-        (ParamInt<px4::params::ADSB_GPS_OFF_LAT>)_adsb_gps_offset_lat,
-        (ParamInt<px4::params::ADSB_GPS_OFF_LON>)_adsb_gps_offset_lon,
-        (ParamInt<px4::params::ADSB_CALLSIGN_1>)_adsb_callsign_part1,
-        (ParamInt<px4::params::ADSB_CALLSIGN_2>)_adsb_callsign_part2);
+        (ParamInt<params_id::ADSB_ICAO_ID>)_adsb_icao,
+        (ParamInt<params_id::ADSB_LEN_WIDTH>)_adsb_len_width,
+        (ParamInt<params_id::ADSB_EMIT_TYPE>)_adsb_emit_type,
+        (ParamInt<params_id::ADSB_GPS_OFF_LAT>)_adsb_gps_offset_lat,
+        (ParamInt<params_id::ADSB_GPS_OFF_LON>)_adsb_gps_offset_lon,
+        (ParamInt<params_id::ADSB_CALLSIGN_1>)_adsb_callsign_part1,
+        (ParamInt<params_id::ADSB_CALLSIGN_2>)_adsb_callsign_part2);
 
     uint16_t _stall_speed{0}; // [cm/s]
     char     _callsign[9];

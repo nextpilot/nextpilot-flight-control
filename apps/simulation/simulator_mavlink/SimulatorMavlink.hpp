@@ -290,7 +290,7 @@ private:
     int32_t _output_functions[actuator_outputs_s::NUM_ACTUATOR_OUTPUTS]{};
 
 #if defined(ENABLE_LOCKSTEP_SCHEDULER)
-    px4::atomic<bool> _has_initialized{false};
+    atomic<bool> _has_initialized{false};
 #endif
 
     int _lockstep_component{-1};

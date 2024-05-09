@@ -44,8 +44,8 @@
 using namespace time_literals;
 using namespace gimbal;
 
-static px4::atomic<bool> thread_should_exit{false};
-static px4::atomic<bool> thread_running{false};
+static atomic<bool> thread_should_exit{false};
+static atomic<bool> thread_running{false};
 
 static constexpr int input_objs_len_max = 3;
 

@@ -23,7 +23,7 @@ TEST(MavlinkStatustextHandler, Singles) {
 
     mavlink_statustext_t statustext1{};
     statustext1.severity = some_severity;
-    strncpy(statustext1.text, some_text, sizeof(statustext1.text));
+    rt_strncpy(statustext1.text, some_text, sizeof(statustext1.text));
 
     EXPECT_FALSE(handler.should_publish_previous(statustext1));
     EXPECT_TRUE(handler.should_publish_current(statustext1, some_time));
@@ -33,7 +33,7 @@ TEST(MavlinkStatustextHandler, Singles) {
 
     mavlink_statustext_t statustext2{};
     statustext2.severity = some_other_severity;
-    strncpy(statustext2.text, some_other_text, sizeof(statustext2.text));
+    rt_strncpy(statustext2.text, some_other_text, sizeof(statustext2.text));
 
     EXPECT_FALSE(handler.should_publish_previous(statustext2));
     EXPECT_TRUE(handler.should_publish_current(statustext2, some_other_time));
@@ -68,7 +68,7 @@ TEST(MavlinkStatustextHandler, Multiple) {
     EXPECT_TRUE(handler.should_publish_current(statustext2, some_other_time));
 
     // Check overall text length.
-    EXPECT_EQ(strlen(handler.log_message().text), 75);
+    EXPECT_EQ(rt_strlen(handler.log_message().text), 75);
 
     // And a few samples.
     EXPECT_EQ(handler.log_message().text[30], 'a');
@@ -106,7 +106,7 @@ TEST(MavlinkStatustextHandler, TooMany) {
     EXPECT_FALSE(handler.should_publish_previous(statustext3));
     EXPECT_TRUE(handler.should_publish_current(statustext3, some_time + 2));
 
-    EXPECT_EQ(strlen(handler.log_message().text), sizeof(log_message_s::text) - 1);
+    EXPECT_EQ(rt_strlen(handler.log_message().text), sizeof(log_message_s::text) - 1);
 }
 
 TEST(MavlinkStatustextHandler, LastMissing) {
@@ -132,13 +132,13 @@ TEST(MavlinkStatustextHandler, LastMissing) {
 
     // We expect 50 a and then a missing bracket.
     EXPECT_TRUE(handler.should_publish_previous(statustext2));
-    EXPECT_EQ(strlen(handler.log_message().text), 50 + 15);
+    EXPECT_EQ(rt_strlen(handler.log_message().text), 50 + 15);
     EXPECT_EQ(handler.log_message().text[25], 'a');
 
     EXPECT_TRUE(handler.should_publish_previous(statustext2));
     EXPECT_TRUE(handler.should_publish_current(statustext2, some_other_time));
     // And we expect the single message to get through as well.
-    EXPECT_EQ(strlen(handler.log_message().text), 10);
+    EXPECT_EQ(rt_strlen(handler.log_message().text), 10);
     EXPECT_EQ(handler.log_message().text[5], 'b');
 }
 
@@ -160,7 +160,7 @@ TEST(MavlinkStatustextHandler, FirstMissing) {
     EXPECT_TRUE(handler.should_publish_current(statustext2, some_time));
 
     // We expect a missing bracket and our 10 b.
-    EXPECT_EQ(strlen(handler.log_message().text), 15 + 35);
+    EXPECT_EQ(rt_strlen(handler.log_message().text), 15 + 35);
     EXPECT_EQ(handler.log_message().text[20], 'b');
 }
 
@@ -187,7 +187,7 @@ TEST(MavlinkStatustextHandler, MiddleMissing) {
     EXPECT_TRUE(handler.should_publish_current(statustext3, some_time + 2));
 
     // The two texts plus the missing bracket.
-    EXPECT_EQ(strlen(handler.log_message().text), 50 + 25 + 15);
+    EXPECT_EQ(rt_strlen(handler.log_message().text), 50 + 25 + 15);
     EXPECT_EQ(handler.log_message().text[20], 'a');
     EXPECT_EQ(handler.log_message().text[70], 'c');
 }
@@ -204,25 +204,25 @@ TEST(MavlinkStatustextHandler, NoGarbageAfterZeroTermination) {
 
     mavlink_statustext_t statustext1{};
     statustext1.severity = some_severity;
-    strncpy(statustext1.text, long_text, sizeof(statustext1.text));
+    rt_strncpy(statustext1.text, long_text, sizeof(statustext1.text));
 
     EXPECT_FALSE(handler.should_publish_previous(statustext1));
     EXPECT_TRUE(handler.should_publish_current(statustext1, some_time));
     EXPECT_STREQ(handler.log_message().text, long_text);
 
-    for (unsigned i = strlen(handler.log_message().text); i < sizeof(log_message_s::text); ++i) {
+    for (unsigned i = rt_strlen(handler.log_message().text); i < sizeof(log_message_s::text); ++i) {
         EXPECT_EQ(handler.log_message().text[i], '\0');
     }
 
     mavlink_statustext_t statustext2{};
     statustext2.severity = some_other_severity;
-    strncpy(statustext2.text, short_text, sizeof(statustext2.text));
+    rt_strncpy(statustext2.text, short_text, sizeof(statustext2.text));
 
     EXPECT_FALSE(handler.should_publish_previous(statustext2));
     EXPECT_TRUE(handler.should_publish_current(statustext2, some_other_time));
     EXPECT_STREQ(handler.log_message().text, short_text);
 
-    for (unsigned i = strlen(handler.log_message().text); i < sizeof(log_message_s::text); ++i) {
+    for (unsigned i = rt_strlen(handler.log_message().text); i < sizeof(log_message_s::text); ++i) {
         EXPECT_EQ(handler.log_message().text[i], '\0');
     }
 }

@@ -78,7 +78,7 @@ private:
                         msg.id                              = _id++;
                         unsigned text_size;
 
-                        while ((text_size = strlen(text)) > 0) {
+                        while ((text_size = rt_strlen(text)) > 0) {
                             unsigned chunk_size = math::min(text_size, max_chunk_size);
 
                             if (chunk_size < max_chunk_size) {

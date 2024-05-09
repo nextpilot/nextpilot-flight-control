@@ -19,14 +19,15 @@
 
 #include <drivers/drv_tone_alarm.h>
 #include <hrtimer.h>
-#include <uORB/Publication.hpp>
-#include <uORB/PublicationMulti.hpp>
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBPublication.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/actuator_armed.h>
 #include <uORB/topics/button_event.h>
 #include <uORB/topics/vehicle_command.h>
 #include <uORB/topics/led_control.h>
 #include <uORB/topics/tune_control.h>
+
+using namespace nextpilot;
 
 class ButtonPublisher
 {

@@ -47,8 +47,8 @@ public:
         mavlink_component_information_t component_info{};
         PX4_DEBUG("COMPONENT_INFORMATION request");
 
-        strncpy(component_info.general_metadata_uri, "mftp://etc/extras/component_general.json.xz",
-                sizeof(component_info.general_metadata_uri) - 1);
+        rt_strncpy(component_info.general_metadata_uri, "mftp://etc/extras/component_general.json.xz",
+                   sizeof(component_info.general_metadata_uri) - 1);
         component_info.general_metadata_file_crc = component_information::component_general_crc;
 
         component_info.time_boot_ms = hrt_absolute_time() / 1000;

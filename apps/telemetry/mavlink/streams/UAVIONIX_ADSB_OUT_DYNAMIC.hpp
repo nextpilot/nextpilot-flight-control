@@ -25,6 +25,7 @@ public:
     static constexpr const char *get_name_static() {
         return "UAVIONIX_ADSB_OUT_DYNAMIC";
     }
+
     static constexpr uint16_t get_id_static() {
         return MAVLINK_MSG_ID_UAVIONIX_ADSB_OUT_DYNAMIC;
     }
@@ -32,6 +33,7 @@ public:
     const char *get_name() const override {
         return get_name_static();
     }
+
     uint16_t get_id() override {
         return get_id_static();
     }
@@ -54,8 +56,8 @@ private:
     uORB::Subscription _vehicle_status_sub{ORB_ID(vehicle_status)};
 
     DEFINE_PARAMETERS(
-        (ParamInt<px4::params::ADSB_SQUAWK>)_adsb_squawk,
-        (ParamInt<px4::params::ADSB_EMERGC>)_adsb_emergc);
+        (ParamInt<params_id::ADSB_SQUAWK>)_adsb_squawk,
+        (ParamInt<params_id::ADSB_EMERGC>)_adsb_emergc);
 
     bool send() override {
         vehicle_status_s vehicle_status;

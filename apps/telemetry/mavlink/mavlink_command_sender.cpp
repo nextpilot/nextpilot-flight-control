@@ -21,10 +21,10 @@
 #define CMD_DEBUG(FMT, ...) PX4_LOG_NAMED_COND("cmd sender", _debug_enabled, FMT, ##__VA_ARGS__)
 
 MavlinkCommandSender *MavlinkCommandSender::_instance = nullptr;
-px4_sem_t             MavlinkCommandSender::_lock;
+struct rt_semaphore   MavlinkCommandSender::_lock;
 
 void MavlinkCommandSender::initialize() {
-    px4_sem_init(&_lock, 1, 1);
+    rt_sem_init(&_lock, "cmdsend_lock", 1, RT_IPC_FLAG_PRIO);
 
     if (_instance == nullptr) {
         _instance = new MavlinkCommandSender();
@@ -36,7 +36,7 @@ MavlinkCommandSender &MavlinkCommandSender::instance() {
 }
 
 MavlinkCommandSender::~MavlinkCommandSender() {
-    px4_sem_destroy(&_lock);
+    rt_sem_detach(&_lock);
 }
 
 int MavlinkCommandSender::handle_vehicle_command(const vehicle_command_s &command, mavlink_channel_t channel) {

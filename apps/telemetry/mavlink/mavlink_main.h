@@ -25,30 +25,27 @@
 #ifdef __PX4_NUTTX
 #   include <nuttx/fs/fs.h>
 #else
-#   include <arpa/inet.h>
-#   include <drivers/device/device.h>
-#   include <sys/socket.h>
+// #   include <arpa/inet.h>
+// #   include <drivers/device/device.h>
+// #   include <sys/socket.h>
 #endif
 
 #if defined(CONFIG_NET) || !defined(__PX4_NUTTX)
-#   include <net/if.h>
-#   include <netinet/in.h>
+// #   include <net/if.h>
+// #   include <netinet/in.h>
 #endif
 
-#include <containers/List.hpp>
-#include <parameters/param.h>
+#include <containers/IntrusiveList.hpp>
+#include <param/param.h>
 #include <variable_length_ringbuffer/VariableLengthRingbuffer.hpp>
 #include <perf/perf_counter.h>
-#include <px4_platform_common/cli.h>
 
 #include <defines.h>
 #include <getopt/getopt.h>
 #include <module/module_command.hpp>
-#include <module/module_params.h>
+#include <module/module_params.hpp>
 
-#include <uORB/Publication.hpp>
-#include <uORB/PublicationMulti.hpp>
-#include <uORB/SubscriptionInterval.hpp>
+#include <uORB/uORBPublication.hpp>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/radio_status.h>
 #include <uORB/topics/telemetry_status.h>
@@ -60,7 +57,9 @@
 #include "mavlink_events.h"
 #include "mavlink_messages.h"
 #include "mavlink_receiver.h"
-#include "mavlink_shell.h"
+#ifdef MAVLINK_USING_SHELL
+#   include "mavlink_shell.h"
+#endif //MAVLINK_USING_SHELL
 #include "mavlink_ulog.h"
 
 #define DEFAULT_BAUD_RATE   57600
@@ -81,6 +80,8 @@ enum class Protocol {
 };
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class Mavlink final : public ModuleParams {
 public:
@@ -326,7 +327,8 @@ public:
      */
     unsigned get_free_tx_buf();
 
-    static int start_helper(int argc, char *argv[]);
+    static int  start_helper(int argc, char *argv[]);
+    static void start_entry(void *param);
 
     /**
      * Enable / disable Hardware in the Loop simulation mode.
@@ -567,11 +569,13 @@ public:
         return _main_loop_delay;
     }
 
+#ifdef MAVLINK_USING_SHELL
     /** get the Mavlink shell. Create a new one if there isn't one. It is *always* created via MavlinkReceiver thread.
      *  Returns nullptr if shell cannot be created */
     MavlinkShell *get_shell();
     /** close the Mavlink shell if it is open */
     void close_shell();
+#endif //MAVLINK_USING_SHELL
 
     /** get ulog streaming if active, nullptr otherwise */
     MavlinkULog *get_ulog_streaming() {
@@ -634,11 +638,11 @@ public:
 private:
     MavlinkReceiver _receiver;
 
-    int _instance_id{-1};
-    int _task_id{-1};
+    int         _instance_id{-1};
+    rt_thread_t _task_id{nullptr};
 
-    px4::atomic_bool _task_should_exit{false};
-    px4::atomic_bool _task_running{false};
+    atomic_bool _task_should_exit{false};
+    atomic_bool _task_running{false};
 
     bool _transmitting_enabled{true};
     bool _transmitting_enabled_commanded{false};
@@ -666,18 +670,20 @@ private:
     mavlink_status_t  _mavlink_status{};
 
     /* states */
-    bool _hil_enabled{false};                     /**< Hardware In the Loop mode */
-    bool _is_usb_uart{false};                     /**< Port is USB */
-    bool _wait_to_transmit{false};                /**< Wait to transmit until received messages. */
-    bool _received_messages{false};               /**< Whether we've received valid mavlink messages. */
+    bool _hil_enabled{false};                /**< Hardware In the Loop mode */
+    bool _is_usb_uart{false};                /**< Port is USB */
+    bool _wait_to_transmit{false};           /**< Wait to transmit until received messages. */
+    bool _received_messages{false};          /**< Whether we've received valid mavlink messages. */
 
-    px4::atomic_bool _should_check_events{false}; /**< Events subscription: only one MAVLink instance should check */
+    atomic_bool _should_check_events{false}; /**< Events subscription: only one MAVLink instance should check */
 
-    unsigned _main_loop_delay{1000};              /**< mainloop delay, depends on data rate */
+    unsigned _main_loop_delay{1000};         /**< mainloop delay, depends on data rate */
 
     List<MavlinkStream *> _streams;
 
-    MavlinkShell               *_mavlink_shell{nullptr};
+#ifdef MAVLINK_USING_SHELL
+    MavlinkShell *_mavlink_shell{nullptr};
+#endif //MAVLINK_USING_SHELL
     MavlinkULog                *_mavlink_ulog{nullptr};
     static events::EventBuffer *_event_buffer;
     events::SendProtocol        _events{*_event_buffer, *this};
@@ -765,18 +771,18 @@ private:
     pthread_mutex_t _radio_status_mutex{};
 
     DEFINE_PARAMETERS(
-        (ParamInt<px4::params::MAV_SYS_ID>)_param_mav_sys_id,
-        (ParamInt<px4::params::MAV_COMP_ID>)_param_mav_comp_id,
-        (ParamInt<px4::params::MAV_PROTO_VER>)_param_mav_proto_ver,
-        (ParamInt<px4::params::MAV_SIK_RADIO_ID>)_param_sik_radio_id,
-        (ParamInt<px4::params::MAV_TYPE>)_param_mav_type,
-        (ParamBool<px4::params::MAV_USEHILGPS>)_param_mav_usehilgps,
-        (ParamBool<px4::params::MAV_FWDEXTSP>)_param_mav_fwdextsp,
-        (ParamBool<px4::params::MAV_HASH_CHK_EN>)_param_mav_hash_chk_en,
-        (ParamBool<px4::params::MAV_HB_FORW_EN>)_param_mav_hb_forw_en,
-        (ParamInt<px4::params::MAV_RADIO_TOUT>)_param_mav_radio_timeout,
-        (ParamInt<px4::params::SYS_HITL>)_param_sys_hitl,
-        (ParamBool<px4::params::SYS_FAILURE_EN>)_param_sys_failure_injection_enabled)
+        (ParamInt<params_id::MAV_SYS_ID>)_param_mav_sys_id,
+        (ParamInt<params_id::MAV_COMP_ID>)_param_mav_comp_id,
+        (ParamInt<params_id::MAV_PROTO_VER>)_param_mav_proto_ver,
+        (ParamInt<params_id::MAV_SIK_RADIO_ID>)_param_sik_radio_id,
+        (ParamInt<params_id::MAV_TYPE>)_param_mav_type,
+        (ParamBool<params_id::MAV_USEHILGPS>)_param_mav_usehilgps,
+        (ParamBool<params_id::MAV_FWDEXTSP>)_param_mav_fwdextsp,
+        (ParamBool<params_id::MAV_HASH_CHK_EN>)_param_mav_hash_chk_en,
+        (ParamBool<params_id::MAV_HB_FORW_EN>)_param_mav_hb_forw_en,
+        (ParamInt<params_id::MAV_RADIO_TOUT>)_param_mav_radio_timeout,
+        (ParamInt<params_id::SYS_HITL>)_param_sys_hitl,
+        (ParamBool<params_id::SYS_FAILURE_EN>)_param_sys_failure_injection_enabled)
 
     perf_counter_t _loop_perf{perf_alloc(PC_ELAPSED, MODULE_NAME ": tx run elapsed")};             /**< loop performance counter */
     perf_counter_t _loop_interval_perf{perf_alloc(PC_INTERVAL, MODULE_NAME ": tx run interval")};  /**< loop interval performance counter */

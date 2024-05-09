@@ -10,9 +10,11 @@
 
 #pragma once
 
-#include <uORB/Publication.hpp>
+#include <uORB/uORBPublication.hpp>
 #include <hrtimer.h>
 #include <tunes/tunes.h>
+
+using namespace nextpilot;
 
 class TunePublisher {
 public:

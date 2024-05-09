@@ -15,7 +15,7 @@
 #include <mathlib/mathlib.h>
 #include <matrix/matrix/math.hpp>
 
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/airspeed.h>
 #include <uORB/topics/battery_status.h>
 #include <uORB/topics/estimator_selector_status.h>

@@ -19,6 +19,12 @@
 #define PX4_WARN     LOG_W
 #define PX4_DEBUG    LOG_D
 #define PX4_INFO_RAW LOG_RAW
+#define PX4_LOG_NAMED_COND(name, cond, fmt, ...) \
+    do {                                         \
+        if (cond) {                              \
+            LOG_I(fmt, ##__VA_ARGS__);           \
+        }                                        \
+    } while (0);
 
 #define PX4_ERROR (-1)
 #define PX4_OK    0
@@ -28,13 +34,13 @@
 #endif // ERROR
 
 #ifndef OK
-#define OK 0
+#   define OK 0
 #endif // OK
 
 #define px4_usleep usleep
 
 #ifndef PX4_ISFINITE
-#define PX4_ISFINITE rt_isfinite
+#   define PX4_ISFINITE rt_isfinite
 #endif // PX4_ISFINITE
 
 #define PX4_STORAGEDIR ""

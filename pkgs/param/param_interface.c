@@ -417,3 +417,7 @@ void param_foreach(void (*func)(void *arg, param_t idx), void *arg, bool only_ch
         func(arg, idx);
     }
 }
+
+uint32_t param_hash_check(void) {
+    return 0;
+}

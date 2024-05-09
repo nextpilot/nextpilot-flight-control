@@ -26,6 +26,7 @@ public:
     static constexpr const char *get_name_static() {
         return "UTM_GLOBAL_POSITION";
     }
+
     static constexpr uint16_t get_id_static() {
         return MAVLINK_MSG_ID_UTM_GLOBAL_POSITION;
     }
@@ -33,6 +34,7 @@ public:
     const char *get_name() const override {
         return get_name_static();
     }
+
     uint16_t get_id() override {
         return get_id_static();
     }
@@ -64,25 +66,25 @@ private:
 
             // Compute Unix epoch and set time field
             timespec tv;
-            px4_clock_gettime(CLOCK_REALTIME, &tv);
+            clock_gettime(CLOCK_REALTIME, &tv);
             uint64_t unix_epoch = (uint64_t)tv.tv_sec * 1000000 + tv.tv_nsec / 1000;
 
             // If the time is before 2001-01-01, it's probably the default 2000
             if (unix_epoch > 978307200000000) {
-                msg.time = unix_epoch;
+                msg.time   = unix_epoch;
                 msg.flags |= UTM_DATA_AVAIL_FLAGS_TIME_VALID;
             }
 
-#ifndef BOARD_HAS_NO_UUID
-            px4_guid_t px4_guid;
-            board_get_px4_guid(px4_guid);
-            static_assert(sizeof(px4_guid_t) == sizeof(msg.uas_id), "GUID byte length mismatch");
-            memcpy(&msg.uas_id, &px4_guid, sizeof(msg.uas_id));
-            msg.flags |= UTM_DATA_AVAIL_FLAGS_UAS_ID_AVAILABLE;
-#else
-            // TODO Fill ID with something reasonable
-            memset(&msg.uas_id[0], 0, sizeof(msg.uas_id));
-#endif /* BOARD_HAS_NO_UUID */
+            // #ifndef BOARD_HAS_NO_UUID
+            //             px4_guid_t px4_guid;
+            //             board_get_px4_guid(px4_guid);
+            //             static_assert(sizeof(px4_guid_t) == sizeof(msg.uas_id), "GUID byte length mismatch");
+            //             memcpy(&msg.uas_id, &px4_guid, sizeof(msg.uas_id));
+            //             msg.flags |= UTM_DATA_AVAIL_FLAGS_UAS_ID_AVAILABLE;
+            // #else
+            //             // TODO Fill ID with something reasonable
+            //             memset(&msg.uas_id[0], 0, sizeof(msg.uas_id));
+            // #endif /* BOARD_HAS_NO_UUID */
 
             // Handle global position
             msg.lat = global_pos.lat * 1e7;
@@ -103,23 +105,23 @@ private:
                 float evv = 0.f;
 
                 if (local_pos.v_xy_valid) {
-                    msg.vx = local_pos.vx * 100.f;
-                    msg.vy = local_pos.vy * 100.f;
-                    evh    = local_pos.evh;
+                    msg.vx     = local_pos.vx * 100.f;
+                    msg.vy     = local_pos.vy * 100.f;
+                    evh        = local_pos.evh;
                     msg.flags |= UTM_DATA_AVAIL_FLAGS_HORIZONTAL_VELO_AVAILABLE;
                 }
 
                 if (local_pos.v_z_valid) {
-                    msg.vz = local_pos.vz * 100.f;
-                    evv    = local_pos.evv;
+                    msg.vz     = local_pos.vz * 100.f;
+                    evv        = local_pos.evv;
                     msg.flags |= UTM_DATA_AVAIL_FLAGS_VERTICAL_VELO_AVAILABLE;
                 }
 
                 msg.vel_acc = sqrtf(evh * evh + evv * evv) * 100.f;
 
                 if (local_pos.dist_bottom_valid) {
-                    msg.relative_alt = local_pos.dist_bottom * 1000.f;
-                    msg.flags |= UTM_DATA_AVAIL_FLAGS_RELATIVE_ALTITUDE_AVAILABLE;
+                    msg.relative_alt  = local_pos.dist_bottom * 1000.f;
+                    msg.flags        |= UTM_DATA_AVAIL_FLAGS_RELATIVE_ALTITUDE_AVAILABLE;
                 }
             }
 
@@ -137,8 +139,8 @@ private:
                     msg.next_lon = position_setpoint_triplet.current.lon * 1e7;
                     // HACK We assume that the offset between AMSL and WGS84 is constant between the current
                     // vehicle position and the the target waypoint.
-                    msg.next_alt = (position_setpoint_triplet.current.alt + (global_pos.alt_ellipsoid - global_pos.alt)) * 1000.f;
-                    msg.flags |= UTM_DATA_AVAIL_FLAGS_NEXT_WAYPOINT_AVAILABLE;
+                    msg.next_alt  = (position_setpoint_triplet.current.alt + (global_pos.alt_ellipsoid - global_pos.alt)) * 1000.f;
+                    msg.flags    |= UTM_DATA_AVAIL_FLAGS_NEXT_WAYPOINT_AVAILABLE;
                 }
             }
 

@@ -29,7 +29,7 @@
 #include <geo/geo.h>
 #include <mathlib/mathlib.h>
 #include <ulog/mavlink_log.h>
-#include <version/version.h>
+#include <version/board_version.h>
 #include <events/events.h>
 #include <uORB/topics/event.h>
 #include "mavlink_receiver.h"
@@ -138,8 +138,8 @@ Mavlink::~Mavlink() {
 
             /* if we have given up, kill it */
             if (++i > 100) {
-                PX4_ERR("mavlink didn't stop, killing task %d", _task_id);
-                px4_task_delete(_task_id);
+                PX4_ERR("mavlink didn't stop, killing instance %d", get_instance_id());
+                rt_thread_delete(_task_id);
                 break;
             }
         } while (running());
@@ -291,7 +291,7 @@ Mavlink::get_instance_for_device(const char *device_name) {
     LockGuard lg{mavlink_module_mutex};
 
     for (Mavlink *inst : mavlink_module_instances) {
-        if (inst && (inst->_protocol == Protocol::SERIAL) && (strcmp(inst->_device_name, device_name) == 0)) {
+        if (inst && (inst->_protocol == Protocol::SERIAL) && (rt_strcmp(inst->_device_name, device_name) == 0)) {
             return inst;
         }
     }
@@ -394,7 +394,7 @@ bool Mavlink::serial_instance_exists(const char *device_name, Mavlink *self) {
 
     for (Mavlink *inst : mavlink_module_instances) {
         /* don't compare with itself and with non serial instances*/
-        if (inst && (inst != self) && (inst->get_protocol() == Protocol::SERIAL) && !strcmp(device_name, inst->_device_name)) {
+        if (inst && (inst != self) && (inst->get_protocol() == Protocol::SERIAL) && !rt_strcmp(device_name, inst->_device_name)) {
             return true;
         }
     }
@@ -903,10 +903,10 @@ void Mavlink::find_broadcast_address() {
         PX4_DEBUG("looking at %s", cur_ifreq->ifr_name);
 
         // ignore loopback network
-        if (strcmp(cur_ifreq->ifr_name, "lo") == 0
-            || strcmp(cur_ifreq->ifr_name, "lo0") == 0
-            || strcmp(cur_ifreq->ifr_name, "lo1") == 0
-            || strcmp(cur_ifreq->ifr_name, "lo2") == 0) {
+        if (rt_strcmp(cur_ifreq->ifr_name, "lo") == 0
+            || rt_strcmp(cur_ifreq->ifr_name, "lo0") == 0
+            || rt_strcmp(cur_ifreq->ifr_name, "lo1") == 0
+            || rt_strcmp(cur_ifreq->ifr_name, "lo2") == 0) {
             PX4_DEBUG("skipping loopback");
             continue;
         }
@@ -970,7 +970,7 @@ void Mavlink::find_broadcast_address() {
 const in_addr Mavlink::query_netmask_addr(const int socket_fd, const ifreq &ifreq) {
     struct ifreq netmask_ifreq {};
 
-    strncpy(netmask_ifreq.ifr_name, ifreq.ifr_name, IF_NAMESIZE);
+    rt_strncpy(netmask_ifreq.ifr_name, ifreq.ifr_name, IF_NAMESIZE);
     ioctl(socket_fd, SIOCGIFNETMASK, &netmask_ifreq);
 
     return ((struct sockaddr_in *)&netmask_ifreq.ifr_addr)->sin_addr;
@@ -1058,18 +1058,18 @@ bool Mavlink::send_autopilot_capabilities() {
         msg.capabilities          |= MAV_PROTOCOL_CAPABILITY_MAVLINK2;
         msg.capabilities          |= MAV_PROTOCOL_CAPABILITY_MISSION_FENCE;
         msg.capabilities          |= MAV_PROTOCOL_CAPABILITY_MISSION_RALLY;
-        msg.flight_sw_version      = px4_firmware_version();
-        msg.middleware_sw_version  = px4_firmware_version();
-        msg.os_sw_version          = px4_os_version();
-        msg.board_version          = px4_board_version();
+        msg.flight_sw_version      = get_firmware_version();
+        msg.middleware_sw_version  = get_firmware_version();
+        msg.os_sw_version          = get_os_version();
+        msg.board_version          = get_board_version();
         /* use only first 5 bytes of git hash for firmware version */
-        const uint64_t   fw_git_version_binary    = px4_firmware_version_binary() & 0xFFFFFFFFFF000000;
-        const uint64_t   fw_vendor_version        = px4_firmware_vendor_version() >> 8;
+        const uint64_t   fw_git_version_binary    = get_firmware_version_binary() & 0xFFFFFFFFFF000000;
+        const uint64_t   fw_vendor_version        = get_firmware_vendor_version() >> 8;
         constexpr size_t fw_vendor_version_length = 3;
         memcpy(&msg.flight_custom_version, &fw_git_version_binary, sizeof(msg.flight_custom_version));
         memcpy(&msg.flight_custom_version, &fw_vendor_version, fw_vendor_version_length);
         memcpy(&msg.middleware_custom_version, &fw_git_version_binary, sizeof(msg.middleware_custom_version));
-        uint64_t os_git_version_binary = px4_os_version_binary();
+        uint64_t os_git_version_binary = get_os_version_binary();
         memcpy(&msg.os_custom_version, &os_git_version_binary, sizeof(msg.os_custom_version));
 #ifdef CONFIG_CDCACM_VENDORID
         msg.vendor_id = CONFIG_CDCACM_VENDORID;
@@ -1081,16 +1081,16 @@ bool Mavlink::send_autopilot_capabilities() {
 #else
         msg.product_id = 0;
 #endif
-        uuid_uint32_t uid;
-        board_get_uuid32(uid);
-        msg.uid = (((uint64_t)uid[PX4_CPU_UUID_WORD32_UNIQUE_M]) << 32) | uid[PX4_CPU_UUID_WORD32_UNIQUE_H];
+        //         uuid_uint32_t uid;
+        //         board_get_uuid32(uid);
+        //         msg.uid = (((uint64_t)uid[PX4_CPU_UUID_WORD32_UNIQUE_M]) << 32) | uid[PX4_CPU_UUID_WORD32_UNIQUE_H];
 
-#ifndef BOARD_HAS_NO_UUID
-        px4_guid_t px4_guid;
-        board_get_px4_guid(px4_guid);
-        static_assert(sizeof(px4_guid_t) == sizeof(msg.uid2), "GUID byte length mismatch");
-        memcpy(&msg.uid2, &px4_guid, sizeof(msg.uid2));
-#endif /* BOARD_HAS_NO_UUID */
+        // #ifndef BOARD_HAS_NO_UUID
+        //         px4_guid_t px4_guid;
+        //         board_get_px4_guid(px4_guid);
+        //         static_assert(sizeof(px4_guid_t) == sizeof(msg.uid2), "GUID byte length mismatch");
+        //         memcpy(&msg.uid2, &px4_guid, sizeof(msg.uid2));
+        // #endif /* BOARD_HAS_NO_UUID */
 
 #ifdef CONFIG_ARCH_BOARD_PX4_SITL
         // To avoid that multiple SITL instances have the same UUID, we add the mavlink
@@ -1114,7 +1114,7 @@ void Mavlink::send_protocol_version() {
     msg.version                             = _protocol_version * 100;
     msg.min_version                         = 100;
     msg.max_version                         = 200;
-    uint64_t mavlink_lib_git_version_binary = px4_mavlink_lib_version_binary();
+    uint64_t mavlink_lib_git_version_binary = get_mavlink_lib_version_binary();
     // TODO add when available
     // memcpy(&msg.spec_version_hash, &mavlink_spec_git_version_binary, sizeof(msg.spec_version_hash));
     memcpy(&msg.library_version_hash, &mavlink_lib_git_version_binary, sizeof(msg.library_version_hash));
@@ -1142,7 +1142,7 @@ int Mavlink::configure_stream(const char *stream_name, const float rate) {
     }
 
     for (const auto &stream : _streams) {
-        if (strcmp(stream_name, stream->get_name()) == 0) {
+        if (rt_strcmp(stream_name, stream->get_name()) == 0) {
             if (interval != 0) {
                 /* set new interval */
                 stream->set_interval(interval);
@@ -1188,9 +1188,9 @@ void Mavlink::configure_stream_threadsafe(const char *stream_name, const float r
         }
 
         /* copy stream name */
-        unsigned n = strlen(stream_name) + 1;
+        unsigned n = rt_strlen(stream_name) + 1;
         char    *s = new char[n];
-        strcpy(s, stream_name);
+        rt_strcpy(s, stream_name);
 
         /* set subscription task */
         _subscribe_to_stream_rate = rate;
@@ -1215,8 +1215,8 @@ void Mavlink::pass_message(const mavlink_message_t *msg) {
     }
 }
 
-MavlinkShell *
-Mavlink::get_shell() {
+#ifdef MAVLINK_USING_SHELL
+MavlinkShell *Mavlink::get_shell() {
     if (!_mavlink_shell) {
         MavlinkShell *shell = new MavlinkShell();
 
@@ -1245,6 +1245,7 @@ void Mavlink::close_shell() {
         _mavlink_shell = nullptr;
     }
 }
+#endif // MAVLINK_USING_SHELL
 
 void Mavlink::update_rate_mult() {
     float const_rate = 0.0f;
@@ -1346,7 +1347,7 @@ int Mavlink::configure_streams_to_default(const char *configure_single_stream) {
 
     auto configure_stream_local =
         [&stream_configured, configure_single_stream, &ret, this](const char *stream_name, float rate) {
-            if (!configure_single_stream || strcmp(configure_single_stream, stream_name) == 0) {
+            if (!configure_single_stream || rt_strcmp(configure_single_stream, stream_name) == 0) {
                 int ret_local = configure_stream(stream_name, rate);
 
                 if (ret_local != 0) {
@@ -1720,7 +1721,7 @@ int Mavlink::configure_streams_to_default(const char *configure_single_stream) {
         break;
     }
 
-    if (configure_single_stream && !stream_configured && strcmp(configure_single_stream, "HEARTBEAT") != 0) {
+    if (configure_single_stream && !stream_configured && rt_strcmp(configure_single_stream, "HEARTBEAT") != 0) {
         // stream was not found, assume it is disabled by default
         return configure_stream(configure_single_stream, 0.0f);
     }
@@ -1732,32 +1733,32 @@ int Mavlink::task_main(int argc, char *argv[]) {
     // If stdin, stdout and/or stderr file descriptors (0, 1, 2)
     // are not open when mavlink module starts (as might be the case for USB auto-start),
     // use default /dev/null so that these numbers are not used by other other files.
-    if (fcntl(0, F_GETFD) == -1) {
-        int tmp = open("/dev/null", O_RDONLY);
+    // if (fcntl(0, F_GETFD) == -1) {
+    //     int tmp = open("/dev/null", O_RDONLY);
 
-        if (tmp != 0) {
-            dup2(tmp, 0);
-            close(tmp);
-        }
-    }
+    //     if (tmp != 0) {
+    //         dup2(tmp, 0);
+    //         close(tmp);
+    //     }
+    // }
 
-    if (fcntl(1, F_GETFD) == -1) {
-        int tmp = open("/dev/null", O_WRONLY);
+    // if (fcntl(1, F_GETFD) == -1) {
+    //     int tmp = open("/dev/null", O_WRONLY);
 
-        if (tmp != 1) {
-            dup2(tmp, 1);
-            close(tmp);
-        }
-    }
+    //     if (tmp != 1) {
+    //         dup2(tmp, 1);
+    //         close(tmp);
+    //     }
+    // }
 
-    if (fcntl(2, F_GETFD) == -1) {
-        int tmp = open("/dev/null", O_WRONLY);
+    // if (fcntl(2, F_GETFD) == -1) {
+    //     int tmp = open("/dev/null", O_WRONLY);
 
-        if (tmp != 2) {
-            dup2(tmp, 2);
-            close(tmp);
-        }
-    }
+    //     if (tmp != 2) {
+    //         dup2(tmp, 2);
+    //         close(tmp);
+    //     }
+    // }
 
     int ch;
     _baudrate                       = 57600;
@@ -1780,10 +1781,10 @@ int Mavlink::task_main(int argc, char *argv[]) {
     int temp_int_arg;
 #endif
 
-    while ((ch = px4_getopt(argc, argv, "b:r:d:n:u:o:m:t:c:fswxzZp", &myoptind, &myoptarg)) != EOF) {
+    while ((ch = getopt(argc, argv, "b:r:d:n:u:o:m:t:c:fswxzZp", &myoptind, &myoptarg)) != EOF) {
         switch (ch) {
         case 'b':
-            if (px4_get_parameter_value(myoptarg, _baudrate) != 0) {
+            if (get_parameter_value(myoptarg, _baudrate) != 0) {
                 PX4_ERR("baudrate parsing failed");
                 err_flag = true;
             }
@@ -1796,7 +1797,7 @@ int Mavlink::task_main(int argc, char *argv[]) {
             break;
 
         case 'r':
-            if (px4_get_parameter_value(myoptarg, _datarate) != 0) {
+            if (get_parameter_value(myoptarg, _datarate) != 0) {
                 PX4_ERR("datarate parsing failed");
                 err_flag = true;
             }
@@ -1826,7 +1827,7 @@ int Mavlink::task_main(int argc, char *argv[]) {
 #if defined(MAVLINK_UDP)
 
         case 'u':
-            if (px4_get_parameter_value(myoptarg, temp_int_arg) != 0) {
+            if (get_parameter_value(myoptarg, temp_int_arg) != 0) {
                 PX4_ERR("invalid data udp_port");
                 err_flag = true;
 
@@ -1838,7 +1839,7 @@ int Mavlink::task_main(int argc, char *argv[]) {
             break;
 
         case 'o':
-            if (px4_get_parameter_value(myoptarg, temp_int_arg) != 0) {
+            if (get_parameter_value(myoptarg, temp_int_arg) != 0) {
                 PX4_ERR("invalid remote udp_port");
                 err_flag = true;
 
@@ -1907,7 +1908,7 @@ int Mavlink::task_main(int argc, char *argv[]) {
         case 'm': {
             int mode;
 
-            if (px4_get_parameter_value(myoptarg, mode) == 0) {
+            if (get_parameter_value(myoptarg, mode) == 0) {
                 if (mode >= 0 && mode < (int)MAVLINK_MODE_COUNT) {
                     _mode = (MAVLINK_MODE)mode;
 
@@ -1917,45 +1918,45 @@ int Mavlink::task_main(int argc, char *argv[]) {
                 }
 
             } else {
-                if (strcmp(myoptarg, "custom") == 0) {
+                if (rt_strcmp(myoptarg, "custom") == 0) {
                     _mode = MAVLINK_MODE_CUSTOM;
 
-                } else if (strcmp(myoptarg, "camera") == 0) {
+                } else if (rt_strcmp(myoptarg, "camera") == 0) {
                     // left in here for compatibility
                     _mode = MAVLINK_MODE_ONBOARD;
 
-                } else if (strcmp(myoptarg, "onboard") == 0) {
+                } else if (rt_strcmp(myoptarg, "onboard") == 0) {
                     _mode = MAVLINK_MODE_ONBOARD;
 
-                } else if (strcmp(myoptarg, "osd") == 0) {
+                } else if (rt_strcmp(myoptarg, "osd") == 0) {
                     _mode = MAVLINK_MODE_OSD;
 
-                } else if (strcmp(myoptarg, "magic") == 0) {
+                } else if (rt_strcmp(myoptarg, "magic") == 0) {
                     _mode = MAVLINK_MODE_MAGIC;
 
-                } else if (strcmp(myoptarg, "config") == 0) {
+                } else if (rt_strcmp(myoptarg, "config") == 0) {
                     _mode = MAVLINK_MODE_CONFIG;
 
-                } else if (strcmp(myoptarg, "iridium") == 0) {
+                } else if (rt_strcmp(myoptarg, "iridium") == 0) {
                     _mode = MAVLINK_MODE_IRIDIUM;
                     set_telemetry_status_type(telemetry_status_s::LINK_TYPE_IRIDIUM);
 
-                } else if (strcmp(myoptarg, "minimal") == 0) {
+                } else if (rt_strcmp(myoptarg, "minimal") == 0) {
                     _mode = MAVLINK_MODE_MINIMAL;
 
-                } else if (strcmp(myoptarg, "extvision") == 0) {
+                } else if (rt_strcmp(myoptarg, "extvision") == 0) {
                     _mode = MAVLINK_MODE_EXTVISION;
 
-                } else if (strcmp(myoptarg, "extvisionmin") == 0) {
+                } else if (rt_strcmp(myoptarg, "extvisionmin") == 0) {
                     _mode = MAVLINK_MODE_EXTVISIONMIN;
 
-                } else if (strcmp(myoptarg, "gimbal") == 0) {
+                } else if (rt_strcmp(myoptarg, "gimbal") == 0) {
                     _mode = MAVLINK_MODE_GIMBAL;
 
-                } else if (strcmp(myoptarg, "onboard_low_bandwidth") == 0) {
+                } else if (rt_strcmp(myoptarg, "onboard_low_bandwidth") == 0) {
                     _mode = MAVLINK_MODE_ONBOARD_LOW_BANDWIDTH;
 
-                } else if (strcmp(myoptarg, "uavionix") == 0) {
+                } else if (rt_strcmp(myoptarg, "uavionix") == 0) {
                     _mode = MAVLINK_MODE_UAVIONIX;
 
                 } else {
@@ -2003,7 +2004,7 @@ int Mavlink::task_main(int argc, char *argv[]) {
     }
 
     /* USB serial is indicated by /dev/ttyACMx */
-    if (strncmp(_device_name, "/dev/ttyACM", 11) == 0) {
+    if (rt_strncmp(_device_name, "/dev/ttyACM", 11) == 0) {
         if (_datarate == 0) {
             _datarate = 100000;
         }
@@ -2072,7 +2073,7 @@ int Mavlink::task_main(int argc, char *argv[]) {
         // set thread name
         char thread_name[13];
         snprintf(thread_name, sizeof(thread_name), "mavlink_if%d", get_instance_id());
-        px4_prctl(PR_SET_NAME, thread_name, px4_getpid());
+        // px4_prctl(PR_SET_NAME, thread_name, px4_getpid());
 
     } else {
         PX4_ERR("no instances available");
@@ -2153,7 +2154,7 @@ int Mavlink::task_main(int argc, char *argv[]) {
 
 #endif // MAVLINK_UDP
 
-    _task_id = px4_getpid();
+    _task_id = rt_thread_self();
 
     /* if the protocol is serial, we send the system version blindly */
     if (get_protocol() == Protocol::SERIAL) {
@@ -2338,6 +2339,7 @@ int Mavlink::task_main(int argc, char *argv[]) {
             mavlink_msg_command_long_send_struct(get_channel(), &msg);
         }
 
+#ifdef MAVLINK_USING_SHELL
         /* check for shell output */
         if (_mavlink_shell && _mavlink_shell->available() > 0) {
             if (get_free_tx_buf() >= MAVLINK_MSG_ID_SERIAL_CONTROL_LEN + MAVLINK_NUM_NON_PAYLOAD_BYTES) {
@@ -2352,6 +2354,7 @@ int Mavlink::task_main(int argc, char *argv[]) {
                 mavlink_msg_serial_control_send_struct(get_channel(), &msg);
             }
         }
+#endif // MAVLINK_USING_SHELL
 
         check_requested_subscriptions();
 
@@ -2641,6 +2644,17 @@ void Mavlink::configure_sik_radio() {
     }
 }
 
+typedef struct start_option_s {
+    int    argc;
+    char **argv;
+} start_option_t;
+
+void Mavlink::start_entry(void *param) {
+    start_option_t *option = (start_option_t *)param;
+
+    start_helper(option->argc, option->argv);
+}
+
 int Mavlink::start_helper(int argc, char *argv[]) {
     /* create the instance in task context */
     Mavlink *instance = new Mavlink();
@@ -2699,12 +2713,20 @@ int Mavlink::start(int argc, char *argv[]) {
     // between the starting task and the spawned
     // task - start_helper() only returns
     // when the started task exits.
-    px4_task_spawn_cmd("mavlink_main",
-                       SCHED_DEFAULT,
-                       SCHED_PRIORITY_DEFAULT,
-                       PX4_STACK_ADJUSTED(2896) + MAVLINK_NET_ADDED_STACK,
-                       (px4_main_t)&Mavlink::start_helper,
-                       (char *const *)argv);
+    start_option_t option = {.argc = argc, .argv = argv};
+    rt_thread_create("mavlink_main",
+                     Mavlink::start_entry,
+                     &option,
+                     4096,
+                     16,
+                     1000);
+
+    // px4_task_spawn_cmd("mavlink_main",
+    //                    SCHED_DEFAULT,
+    //                    SCHED_PRIORITY_DEFAULT,
+    //                    PX4_STACK_ADJUSTED(2896) + MAVLINK_NET_ADDED_STACK,
+    //                    (px4_main_t)&Mavlink::start_helper,
+    //                    (char *const *)argv);
 
     // Ensure that this shell command
     // does not return before the instance
@@ -2843,7 +2865,7 @@ void Mavlink::display_status_streams() {
         char           rate_str[20];
 
         if (interval < 0) {
-            strcpy(rate_str, "unlimited");
+            rt_strcpy(rate_str, "unlimited");
 
         } else {
             float rate = 1000000.0f / (float)interval;
@@ -2892,14 +2914,14 @@ int Mavlink::stop_command(int argc, char *argv[]) {
     int i = 0;
 
     while (i < argc) {
-        if (0 == strcmp(argv[i], "-d") && i < argc - 1) {
+        if (0 == rt_strcmp(argv[i], "-d") && i < argc - 1) {
             provided_device = true;
             device_name     = argv[i + 1];
             i++;
 
 #if defined(MAVLINK_UDP)
 
-        } else if (0 == strcmp(argv[i], "-u") && i < argc - 1) {
+        } else if (0 == rt_strcmp(argv[i], "-u") && i < argc - 1) {
             provided_network_port = true;
             temp_int_arg          = strtoul(argv[i + 1], &eptr, 10);
 
@@ -3001,7 +3023,7 @@ int Mavlink::stream_command(int argc, char *argv[]) {
     int i = 0;
 
     while (i < argc) {
-        if (0 == strcmp(argv[i], "-r") && i < argc - 1) {
+        if (0 == rt_strcmp(argv[i], "-r") && i < argc - 1) {
             rate = strtod(argv[i + 1], nullptr);
 
             if (rate < 0.0f) {
@@ -3010,21 +3032,21 @@ int Mavlink::stream_command(int argc, char *argv[]) {
 
             i++;
 
-        } else if (0 == strcmp(argv[i], "-d") && i < argc - 1) {
+        } else if (0 == rt_strcmp(argv[i], "-d") && i < argc - 1) {
             provided_device = true;
             device_name     = argv[i + 1];
             i++;
 
-        } else if (0 == strcmp(argv[i], "-s") && i < argc - 1) {
+        } else if (0 == rt_strcmp(argv[i], "-s") && i < argc - 1) {
             stream_name = argv[i + 1];
             i++;
 
 #ifdef MAVLINK_UDP
 
-        } else if (0 == strcmp(argv[i], "-u") && i < argc - 1) {
+        } else if (0 == rt_strcmp(argv[i], "-u") && i < argc - 1) {
             provided_network_port = true;
 
-            if (px4_get_parameter_value(argv[i + 1], temp_int_arg) != 0) {
+            if (get_parameter_value(argv[i + 1], temp_int_arg) != 0) {
                 err_flag = true;
 
             } else {
@@ -3190,23 +3212,23 @@ extern "C" __EXPORT int mavlink_main(int argc, char *argv[]) {
         return 1;
     }
 
-    if (!strcmp(argv[1], "start")) {
+    if (!rt_strcmp(argv[1], "start")) {
         return Mavlink::start(argc, argv);
 
-    } else if (!strcmp(argv[1], "stop-all")) {
+    } else if (!rt_strcmp(argv[1], "stop-all")) {
         return Mavlink::destroy_all_instances();
 
-    } else if (!strcmp(argv[1], "status")) {
-        bool show_streams_status = argc > 2 && strcmp(argv[2], "streams") == 0;
+    } else if (!rt_strcmp(argv[1], "status")) {
+        bool show_streams_status = argc > 2 && rt_strcmp(argv[2], "streams") == 0;
         return Mavlink::get_status_all_instances(show_streams_status);
 
-    } else if (!strcmp(argv[1], "stop")) {
+    } else if (!rt_strcmp(argv[1], "stop")) {
         return Mavlink::stop_command(argc, argv);
 
-    } else if (!strcmp(argv[1], "stream")) {
+    } else if (!rt_strcmp(argv[1], "stream")) {
         return Mavlink::stream_command(argc, argv);
 
-    } else if (!strcmp(argv[1], "boot_complete")) {
+    } else if (!rt_strcmp(argv[1], "boot_complete")) {
         Mavlink::set_boot_complete();
         return 0;
 
@@ -3217,3 +3239,5 @@ extern "C" __EXPORT int mavlink_main(int argc, char *argv[]) {
 
     return 0;
 }
+
+MSH_CMD_EXPORT_ALIAS(mavlink_main, mavlink, mavlink);

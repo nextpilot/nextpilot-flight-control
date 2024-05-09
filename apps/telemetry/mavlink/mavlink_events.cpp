@@ -11,7 +11,7 @@
 #include "mavlink_events.h"
 #include "mavlink_main.h"
 
-#include <px4_log.h>
+#include <ulog/log.h>
 #include <errno.h>
 
 namespace events {
@@ -27,7 +27,9 @@ EventBuffer::~EventBuffer() {
 }
 
 int EventBuffer::init() {
-    if (_events) { return 0; }
+    if (_events) {
+        return 0;
+    }
 
     _events = new Event[_capacity];
 
@@ -70,6 +72,7 @@ uint16_t EventBuffer::get_oldest_sequence_after(uint16_t sequence) const {
     pthread_mutex_unlock(&_mutex);
     return sequence_ret;
 }
+
 bool EventBuffer::get_event(uint16_t sequence, Event &event) const {
     pthread_mutex_lock(&_mutex);
 

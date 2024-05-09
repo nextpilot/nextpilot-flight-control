@@ -15,7 +15,6 @@
 #include "mavlink_main.h"
 #include <sys/stat.h>
 #include <time.h>
-#include <systemlib/err.h>
 
 #define MOUNTPOINT PX4_STORAGEDIR
 
@@ -24,19 +23,19 @@ static const char *kLogData = MOUNTPOINT "/logdata.txt";
 static const char *kTmpData = MOUNTPOINT "/$log$.txt";
 
 #ifdef __PX4_NUTTX
-#define PX4LOG_REGULAR_FILE DTYPE_FILE
-#define PX4LOG_DIRECTORY    DTYPE_DIRECTORY
+#   define PX4LOG_REGULAR_FILE DTYPE_FILE
+#   define PX4LOG_DIRECTORY    DTYPE_DIRECTORY
 #else
-#define PX4LOG_REGULAR_FILE DT_REG
-#define PX4LOG_DIRECTORY    DT_DIR
+#   define PX4LOG_REGULAR_FILE DT_REG
+#   define PX4LOG_DIRECTORY    DT_DIR
 #endif
 
 // #define MAVLINK_LOG_HANDLER_VERBOSE
 
 #ifdef MAVLINK_LOG_HANDLER_VERBOSE
-#define PX4LOG_WARN(fmt, ...) warnx(fmt, ##__VA_ARGS__)
+#   define PX4LOG_WARN(fmt, ...) warnx(fmt, ##__VA_ARGS__)
 #else
-#define PX4LOG_WARN(fmt, ...)
+#   define PX4LOG_WARN(fmt, ...)
 #endif
 
 //-------------------------------------------------------------------
@@ -45,9 +44,13 @@ stat_file(const char *file, time_t *date = nullptr, uint32_t *size = nullptr) {
     struct stat st;
 
     if (stat(file, &st) == 0) {
-        if (date) { *date = st.st_mtime; }
+        if (date) {
+            *date = st.st_mtime;
+        }
 
-        if (size) { *size = st.st_size; }
+        if (size) {
+            *size = st.st_size;
+        }
 
         return true;
     }
@@ -59,6 +62,7 @@ stat_file(const char *file, time_t *date = nullptr, uint32_t *size = nullptr) {
 MavlinkLogHandler::MavlinkLogHandler(Mavlink *mavlink) :
     _mavlink(mavlink) {
 }
+
 MavlinkLogHandler::~MavlinkLogHandler() {
     _close_and_unlink_files();
 }
@@ -128,10 +132,8 @@ void MavlinkLogHandler::_log_request_list(const mavlink_message_t *msg) {
 
     if (_log_count) {
         //-- Define (and clamp) range
-        _next_entry = request.start < _log_count ? request.start :
-                                                   _log_count - 1;
-        _last_entry = request.end < _log_count ? request.end :
-                                                 _log_count - 1;
+        _next_entry = request.start < _log_count ? request.start : _log_count - 1;
+        _last_entry = request.end < _log_count ? request.end : _log_count - 1;
     }
 
     PX4LOG_WARN("\nMavlinkLogHandler::_log_request_list: start: %d last: %d count: %d",
@@ -264,7 +266,7 @@ MavlinkLogHandler::_log_send_data() {
     response.id      = _current_log_index;
     response.count   = read_size;
     mavlink_msg_log_data_send_struct(_mavlink->get_channel(), &response);
-    _current_log_data_offset += read_size;
+    _current_log_data_offset    += read_size;
     _current_log_data_remaining -= read_size;
 
     if (read_size < sizeof(response.data) || _current_log_data_remaining == 0) {
@@ -307,7 +309,7 @@ bool MavlinkLogHandler::_get_entry(int idx, uint32_t &size, uint32_t &date, char
 
                 if (sscanf(line, "%" PRIu32 " %" PRIu32 " %s", &date, &size, file) == 3) {
                     if (filename && filename_len > 0) {
-                        strncpy(filename, file, filename_len);
+                        rt_strncpy(filename, file, filename_len);
                         filename[filename_len - 1] = 0; // ensure null-termination
                     }
 
@@ -435,7 +437,7 @@ void MavlinkLogHandler::_init_list_helper() {
 
 //-------------------------------------------------------------------
 bool MavlinkLogHandler::_get_session_date(const char *path, const char *dir, time_t &date) {
-    if (strlen(dir) > 4) {
+    if (rt_strlen(dir) > 4) {
         // Always try to get file time first
         if (stat_file(path, &date)) {
             // Try to prevent taking date if it's around 1970 (use the logic below instead)
@@ -445,7 +447,7 @@ bool MavlinkLogHandler::_get_session_date(const char *path, const char *dir, tim
         }
 
         // Convert "sess000" to 00:00 Jan 1 1970 (day per session)
-        if (strncmp(dir, "sess", 4) == 0) {
+        if (rt_strncmp(dir, "sess", 4) == 0) {
             unsigned u;
 
             if (sscanf(&dir[4], "%u", &u) == 1) {
@@ -500,7 +502,7 @@ bool MavlinkLogHandler::_get_log_time_size(const char *path, const char *file, t
             }
 
             // Convert "log000" to 00:00 (minute per flight in session)
-            if (strncmp(file, "log", 3) == 0) {
+            if (rt_strncmp(file, "log", 3) == 0) {
                 unsigned u;
 
                 if (sscanf(&file[3], "%u", &u) == 1) {

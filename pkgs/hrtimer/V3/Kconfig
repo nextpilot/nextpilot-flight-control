@@ -1,8 +1,9 @@
 if PKG_USING_HRTIMER_V3
 
     choice
-        default HRT_USING_OSTICK
         prompt "Select hrtimer source"
+
+        default HRT_USING_SYSTICK
 
         config HRT_USING_OSTICK
             bool "os tick, timestamp=1ms, callout=1ms"

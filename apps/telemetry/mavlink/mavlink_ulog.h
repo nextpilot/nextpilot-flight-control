@@ -23,14 +23,15 @@
 #include <hrtimer.h>
 #include <perf/perf_counter.h>
 
-#include <uORB/Publication.hpp>
-#include <uORB/Subscription.hpp>
+#include <uORB/uORBPublication.hpp>
+#include <uORB/uORBSubscription.hpp>
 #include <uORB/topics/ulog_stream.h>
 #include <uORB/topics/ulog_stream_ack.h>
 
 #include "mavlink_bridge_header.h"
 
 using namespace time_literals;
+using namespace nextpilot;
 
 /**
  * @class MavlinkULog
@@ -87,17 +88,18 @@ private:
     ~MavlinkULog();
 
     static void lock() {
-        do {
-        } while (px4_sem_wait(&_lock) != 0);
+        // do {
+        // } while (px4_sem_wait(&_lock) != 0);
+        rt_sem_take(&_lock, RT_WAITING_FOREVER);
     }
 
     static void unlock() {
-        px4_sem_post(&_lock);
+        rt_sem_release(&_lock);
     }
 
     void publish_ack(uint16_t sequence);
 
-    static px4_sem_t             _lock;
+    static struct rt_semaphore   _lock;
     static bool                  _init;
     static MavlinkULog          *_instance;
     static constexpr hrt_abstime _rate_calculation_delta_t = 100_ms; ///< rate update interval

@@ -1,0 +1,18 @@
+import os
+import rtconfig
+from building import *
+
+cwd = GetCurrentDir()
+objs = []
+
+
+inc = [cwd]
+
+objs += DefineGroup(name="lib/include", src=[], depend=[], CPPPATH=inc)
+
+for d in os.listdir(cwd):
+    path = os.path.join(cwd, d)
+    if os.path.isfile(os.path.join(path, "SConscript")):
+        objs += SConscript(os.path.join(d, "SConscript"))
+
+Return("objs")
