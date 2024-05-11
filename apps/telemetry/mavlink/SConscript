@@ -43,8 +43,8 @@ objs = DefineGroup(
     src,
     depend=["TEL_USING_MAVLINK"],
     LOCAL_CPPPATH=inc,
-    CFLAGS=" -Wno-address-of-packed-member ",
-    CXXFLAGS=" -Wno-address-of-packed-member ",
+    CFLAGS=" -Wno-address-of-packed-member",
+    CXXFLAGS=" -Wno-address-of-packed-member",
 )
 
 
