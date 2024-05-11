@@ -1,0 +1,7 @@
+from building import * 
+
+src = ['optparse_demo.c']
+
+objs = DefineGroup('optparse', src, depend = ['OPTPARSE_USING_DEMO'])
+
+Return('objs')

@@ -1,0 +1,22 @@
+import os
+from building import *
+
+# get current dir path
+cwd = GetCurrentDir()
+
+# init src and inc vars
+src = Glob("*.c")
+inc = [cwd]
+
+# add group to IDE project
+group = DefineGroup("lib/optparse", src, depend=["PKG_USING_OPTPARSE"], CPPPATH=inc)
+
+# traversal subscript
+list = os.listdir(cwd)
+if GetDepend(""):
+    for d in list:
+        path = os.path.join(cwd, d)
+        if os.path.isfile(os.path.join(path, "SConscript")):
+            group = group + SConscript(os.path.join(d, "SConscript"))
+
+Return("group")
