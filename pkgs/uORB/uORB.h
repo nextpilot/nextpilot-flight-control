@@ -39,9 +39,9 @@ typedef const struct orb_metadata *orb_id_t;
  * Maximum number of multi topic instances. This must be <= 10 (because it's the last char of the node path)
  */
 #if defined(CONSTRAINED_MEMORY)
-#define ORB_MULTI_MAX_INSTANCES 4
+#   define ORB_MULTI_MAX_INSTANCES 4
 #else
-#define ORB_MULTI_MAX_INSTANCES 10
+#   define ORB_MULTI_MAX_INSTANCES 10
 #endif // CONSTRAINED_MEMORY
 
 /**
@@ -61,9 +61,9 @@ typedef const struct orb_metadata *orb_id_t;
  * @param _name		The name of the topic.
  */
 #if defined(__cplusplus)
-#define ORB_DECLARE(_name) extern "C" const struct orb_metadata __orb_##_name
+#   define ORB_DECLARE(_name) extern "C" const struct orb_metadata __orb_##_name
 #else
-#define ORB_DECLARE(_name) extern const struct orb_metadata __orb_##_name
+#   define ORB_DECLARE(_name) extern const struct orb_metadata __orb_##_name
 #endif //__cplusplus
 
 /**
@@ -441,7 +441,7 @@ void orb_print_message_internal(const struct orb_metadata *meta, const void *dat
 
 #ifdef __cplusplus
 }
-#endif //__cplusplus
+#endif                            //__cplusplus
 
 /* Diverse uORB header defines */ // XXX: move to better location
 typedef uint8_t arming_state_t;

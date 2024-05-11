@@ -382,7 +382,7 @@ MavlinkFTP::_workList(PayloadHeader *payload) {
 #endif
             // For files we get the file size as well
             direntType     = kDirentFile;
-            int  ret       = snprintf(_work_buffer2, _work_buffer2_len, "%s/%s", _work_buffer1, result->d_name);
+            int  ret       = rt_snprintf(_work_buffer2, _work_buffer2_len, "%s/%s", _work_buffer1, result->d_name);
             bool buf_is_ok = ((ret > 0) && (ret < _work_buffer2_len));
 
             if (buf_is_ok) {
@@ -423,7 +423,7 @@ MavlinkFTP::_workList(PayloadHeader *payload) {
 
         } else if (direntType == kDirentFile) {
             // Files send filename and file length
-            int  ret       = snprintf(_work_buffer2, _work_buffer2_len, "%s\t%" PRIu32, result->d_name, fileSize);
+            int  ret       = rt_snprintf(_work_buffer2, _work_buffer2_len, "%s\t%" PRIu32, result->d_name, fileSize);
             bool buf_is_ok = ((ret > 0) && (ret < _work_buffer2_len));
 
             if (!buf_is_ok) {

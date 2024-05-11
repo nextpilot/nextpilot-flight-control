@@ -17,6 +17,8 @@
  * @author Anton Babushkin <anton@px4.io>
  */
 
+#define LOG_TAG "mavlink.mission"
+
 #include "mavlink_mission.h"
 #include "mavlink_main.h"
 

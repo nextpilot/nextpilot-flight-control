@@ -39,11 +39,11 @@
 #define INIT_EXPORT_WORKQ(fn)       INIT_EXPORT(fn, "5.0.5")
 #define INIT_EXPORT_TONE(fn)        INIT_EXPORT(fn, "5.0.6")
 
-#define INIT_EXPORT_DRIVER(fn)     INIT_EXPORT(fn, "5.4")
-#define INIT_EXPORT_SYSTEM(fn)     INIT_EXPORT(fn, "5.5")
-#define INIT_EXPORTR_ESTIMATOR(fn) INIT_EXPORT(fn, "5.6")
-#define INIT_EXPORT_CONTROLLER(fn) INIT_EXPORT(fn, "5.7")
-#define INIT_EXPORT_SIMULATION(fn) INIT_APP_EXPORT(fn)
+#define INIT_EXPORT_DRIVER(fn)      INIT_EXPORT(fn, "5.4")
+#define INIT_EXPORT_SYSTEM(fn)      INIT_EXPORT(fn, "5.5")
+#define INIT_EXPORT_ESTIMATOR(fn)   INIT_EXPORT(fn, "5.6")
+#define INIT_EXPORT_CONTROLLER(fn)  INIT_EXPORT(fn, "5.7")
+#define INIT_EXPORT_SIMULATION(fn)  INIT_APP_EXPORT(fn)
 
 /* 任务周期 */
 #define SIMULATION_PERIOD_MS (5)
@@ -56,8 +56,8 @@
 #ifdef BSP_USING_QEMU
 // #define CONSTRAINED_FLASH
 #else
-#define CONSTRAINED_FLASH
-#define CONSTRAINED_MEMORY
+#   define CONSTRAINED_FLASH
+#   define CONSTRAINED_MEMORY
 #endif
 
 #endif // __NEXTPIOT_RTTDEF_H__

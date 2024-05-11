@@ -5,28 +5,52 @@ menuconfig TEL_USING_MAVLINK
 	---help---
 		Enable support for mavlink
 
-config MAVLINK_DIALECT
-depends on TEL_USING_MAVLINK
-        string "Mavlink dialect"
-        default "common"
-	---help---
-		Select the Mavlink dialect to generate and use.
+if TEL_USING_MAVLINK
+	config MAVLINK_DIALECT
+		string "Mavlink dialect"
+		default "common"
+		---help---
+			Select the Mavlink dialect to generate and use.
 
-config MAVLINK_UAVCAN_PARAMETERS
-depends on TEL_USING_MAVLINK && TEL_USING_UAVCAN
-        bool "Mavlink UAVCAN parameter support"
-        default y
-	---help---
-		Expose UAVCAN parameters over Mavlink.
+	# config MAVLINK_USING_UDP
+	# 	bool "support udp connection"
+	# 	select RT_USING_LWIP
+	# 	default y if BSP_USING_QEMU
+	# 	default n
 
+	# config MAVLINK_COMM_NUM_BUFFERS
+	# 	int "mavlink max instance"
+	# 	range 1 6
+	# 	default 6 if MAVLINK_USING_UDP
+	# 	default 4
 
-config MAVLINK_USING_SHELL
-	bool "enable mavlink shell service"
-	default n
+	config MAVLINK_HANDLE_PARAMETERS
+        bool "handle parameter service"
+		default n
 
-# menuconfig USER_MAVLINK
-# 	bool "mavlink running as userspace module"
-# 	default y
-# 	depends on BOARD_PROTECTED && TEL_USING_MAVLINK
-# 	---help---
-# 		Put mavlink in userspace memory
+	config MAVLINK_UAVCAN_PARAMETERS
+		depends on TEL_USING_UAVCAN && MAVLINK_HANDLE_PARAMETERS
+		bool "Mavlink UAVCAN parameter support"
+		default y
+		---help---
+			Expose UAVCAN parameters over Mavlink.
+
+	config MAVLINK_HANDLE_MISSION
+        bool "handle mission service"
+		default n
+
+    config MAVLINK_HANDLE_FTP
+        bool "handle ftp service"
+        default n
+
+	config MAVLINK_USING_SHELL
+		bool "enable mavlink shell service"
+		default n
+
+	# menuconfig USER_MAVLINK
+	# 	bool "mavlink running as userspace module"
+	# 	default y
+	# 	depends on BOARD_PROTECTED && TEL_USING_MAVLINK
+	# 	---help---
+	# 		Put mavlink in userspace memory
+endif

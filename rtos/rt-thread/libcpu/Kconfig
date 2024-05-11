@@ -1,3 +1,5 @@
+menu "RT-Thread Libcpu"
+
 if ARCH_ARMV8 && ARCH_CPU_64BIT
     menu "AArch64 Architecture Configuration"
     config ARCH_TEXT_OFFSET
@@ -253,3 +255,5 @@ config ARCH_HOST_SIMULATOR
 config ARCH_CPU_STACK_GROWS_UPWARD
     bool
     default n
+
+endmenu

@@ -414,7 +414,7 @@ void MavlinkLogHandler::_init_list_helper() {
         if (result->d_type == PX4LOG_DIRECTORY) {
             time_t tt = 0;
             char   log_path[128];
-            int    ret        = snprintf(log_path, sizeof(log_path), "%s/%s", kLogRoot, result->d_name);
+            int    ret        = rt_snprintf(log_path, sizeof(log_path), "%s/%s", kLogRoot, result->d_name);
             bool   path_is_ok = (ret > 0) && (ret < (int)sizeof(log_path));
 
             if (path_is_ok) {
@@ -472,7 +472,7 @@ void MavlinkLogHandler::_scan_logs(FILE *f, const char *dir, time_t &date) {
                 time_t   ldate = date;
                 uint32_t size  = 0;
                 char     log_file_path[128];
-                int      ret        = snprintf(log_file_path, sizeof(log_file_path), "%s/%s", dir, result->d_name);
+                int      ret        = rt_snprintf(log_file_path, sizeof(log_file_path), "%s/%s", dir, result->d_name);
                 bool     path_is_ok = (ret > 0) && (ret < (int)sizeof(log_file_path));
 
                 if (path_is_ok) {
@@ -538,7 +538,7 @@ void MavlinkLogHandler::_delete_all(const char *dir) {
 
         if (result->d_type == PX4LOG_DIRECTORY && result->d_name[0] != '.') {
             char log_path[128];
-            int  ret        = snprintf(log_path, sizeof(log_path), "%s/%s", dir, result->d_name);
+            int  ret        = rt_snprintf(log_path, sizeof(log_path), "%s/%s", dir, result->d_name);
             bool path_is_ok = (ret > 0) && (ret < (int)sizeof(log_path));
 
             if (path_is_ok) {
@@ -552,7 +552,7 @@ void MavlinkLogHandler::_delete_all(const char *dir) {
 
         if (result->d_type == PX4LOG_REGULAR_FILE) {
             char log_path[128];
-            int  ret        = snprintf(log_path, sizeof(log_path), "%s/%s", dir, result->d_name);
+            int  ret        = rt_snprintf(log_path, sizeof(log_path), "%s/%s", dir, result->d_name);
             bool path_is_ok = (ret > 0) && (ret < (int)sizeof(log_path));
 
             if (path_is_ok) {

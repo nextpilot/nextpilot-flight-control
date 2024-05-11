@@ -22,15 +22,7 @@
 #include <pthread.h>
 #include <stdbool.h>
 
-#ifdef __PX4_NUTTX
-#   include <nuttx/fs/fs.h>
-#else
-// #   include <arpa/inet.h>
-// #   include <drivers/device/device.h>
-// #   include <sys/socket.h>
-#endif
-
-#if defined(CONFIG_NET) || !defined(__PX4_NUTTX)
+#if defined(RT_USING_LWIP) || !defined(__PX4_NUTTX)
 // #   include <net/if.h>
 // #   include <netinet/in.h>
 #endif
@@ -63,20 +55,20 @@
 #include "mavlink_ulog.h"
 
 #define DEFAULT_BAUD_RATE   57600
-#define DEFAULT_DEVICE_NAME "/dev/ttyS1"
+#define DEFAULT_DEVICE_NAME "uart1"
 
 #define HASH_PARAM          "_HASH_CHECK"
 
-#if defined(CONFIG_NET) || defined(__PX4_POSIX)
-#   define MAVLINK_UDP
+#if defined(RT_USING_LWIP)
+#   define MAVLINK_USING_UDP
 #   define DEFAULT_REMOTE_PORT_UDP 14550 ///< GCS port per MAVLink spec
-#endif                                   // CONFIG_NET || __PX4_POSIX
+#endif                                   // RT_USING_LWIP || __PX4_POSIX
 
 enum class Protocol {
     SERIAL = 0,
-#if defined(MAVLINK_UDP)
+#if defined(MAVLINK_USING_UDP)
     UDP,
-#endif // MAVLINK_UDP
+#endif // MAVLINK_USING_UDP
 };
 
 using namespace time_literals;
@@ -300,7 +292,7 @@ public:
         return _tstatus.heartbeat_type_gcs;
     }
 
-#if defined(MAVLINK_UDP)
+#if defined(MAVLINK_USING_UDP)
     static Mavlink *get_instance_for_network_port(unsigned long port);
 
     bool broadcast_enabled() {
@@ -310,7 +302,7 @@ public:
     bool multicast_enabled() {
         return _mav_broadcast == BROADCAST_MODE_MULTICAST;
     }
-#endif // MAVLINK_UDP
+#endif // MAVLINK_USING_UDP
 
     /**
      * Set the boot complete flag on all instances
@@ -517,7 +509,7 @@ public:
         return _socket_fd;
     }
 
-#if defined(MAVLINK_UDP)
+#if defined(MAVLINK_USING_UDP)
     unsigned short get_network_port() {
         return _network_port;
     }
@@ -732,7 +724,7 @@ private:
     unsigned    _bytes_rx{0};
     hrt_abstime _bytes_timestamp{0};
 
-#if defined(MAVLINK_UDP)
+#if defined(MAVLINK_USING_UDP)
     BROADCAST_MODE _mav_broadcast{BROADCAST_MODE_OFF};
 
     sockaddr_in _myaddr{};
@@ -746,7 +738,7 @@ private:
 
     unsigned short _network_port{14556};
     unsigned short _remote_port{DEFAULT_REMOTE_PORT_UDP};
-#endif // MAVLINK_UDP
+#endif // MAVLINK_USING_UDP
 
     uint8_t  _buf[MAVLINK_MAX_PACKET_LEN]{};
     unsigned _buf_fill{0};
@@ -836,15 +828,17 @@ private:
      */
     void update_rate_mult();
 
-#if defined(MAVLINK_UDP)
+#if defined(MAVLINK_USING_UDP)
     void find_broadcast_address();
 
     void init_udp();
-#endif // MAVLINK_UDP
+#endif // MAVLINK_USING_UDP
 
     bool set_channel();
 
     bool set_instance_id();
+
+    bool init_by_instance(int instance);
 
     /**
      * Main mavlink task.

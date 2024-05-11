@@ -9,16 +9,16 @@ inc = [cwd]
 src = ["hrtimer.c"]
 
 if GetDepend(["HRT_USING_OSTICK"]):
-    src += ["hrt_using_ostick.c"]
+    src += ["timestamp_using_ostick.c"]
 
 if GetDepend(["HRT_USING_SYSTICK"]):
-    src += ["hrt_using_systick.c"]
+    src += ["timestamp_using_systick.c"]
 
 if GetDepend(["HRT_USING_HWTIMER"]):
-    src += ["hrt_using_hwtimer.c"]
+    src += ["timestamp_using_hwtimer.c"]
 
 if GetDepend(["HRT_USING_CPUTIME"]):
-    src += ["hrt_using_cputime.c"]
+    src += ["timestamp_using_cputime.c"]
 
 objs = DefineGroup("lib/common", src, depend=["PKG_USING_HRTIMER_V3"], CPPPATH=inc)
 

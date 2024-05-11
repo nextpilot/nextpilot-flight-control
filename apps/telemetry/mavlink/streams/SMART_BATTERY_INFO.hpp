@@ -22,6 +22,7 @@ public:
     static constexpr const char *get_name_static() {
         return "SMART_BATTERY_INFO";
     }
+
     static constexpr uint16_t get_id_static() {
         return MAVLINK_MSG_ID_SMART_BATTERY_INFO;
     }
@@ -29,6 +30,7 @@ public:
     const char *get_name() const override {
         return get_name_static();
     }
+
     uint16_t get_id() override {
         return get_id_static();
     }
@@ -70,10 +72,10 @@ private:
                     uint16_t year  = (80 + (battery_status.manufacture_date >> 9)) % 100;
 
                     // Formatted as 'dd/mm/yy-123456' (maxed 15 + 1 chars)
-                    snprintf(msg.serial_number, sizeof(msg.serial_number), "%d/%d/%d-%d", day, month, year, battery_status.serial_number);
+                    rt_snprintf(msg.serial_number, sizeof(msg.serial_number), "%d/%d/%d-%d", day, month, year, battery_status.serial_number);
 
                 } else {
-                    snprintf(msg.serial_number, sizeof(msg.serial_number), "%d", battery_status.serial_number);
+                    rt_snprintf(msg.serial_number, sizeof(msg.serial_number), "%d", battery_status.serial_number);
                 }
 
                 // msg.device_name = ??

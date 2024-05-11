@@ -59,7 +59,7 @@ private:
     // max agent ip characters (15+'\0')
     static const uint8_t AGENT_IP_MAX_LENGTH = 16;
 
-#if defined(CONFIG_NET) || defined(__PX4_POSIX)
+#if defined(RT_USING_LWIP)
     char _port[PORT_MAX_LENGTH];
     char _agent_ip[AGENT_IP_MAX_LENGTH];
 #endif

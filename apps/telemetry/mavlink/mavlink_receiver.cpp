@@ -22,7 +22,7 @@
 #include <math.h>
 #include <poll.h>
 
-#ifdef CONFIG_NET
+#ifdef RT_USING_LWIP
 #   include <net/if.h>
 #   include <arpa/inet.h>
 #   include <netinet/in.h>
@@ -38,7 +38,7 @@
 #include "device/device_id.h"
 // #include <drivers/device/Device.hpp> // For DeviceId union
 
-#ifdef CONFIG_NET
+#ifdef RT_USING_LWIP
 #   define MAVLINK_RECEIVER_NET_ADDED_STACK 1360
 #else
 #   define MAVLINK_RECEIVER_NET_ADDED_STACK 0
@@ -2887,7 +2887,7 @@ void MavlinkReceiver::run() {
     /* set thread name */
     // {
     //     char thread_name[17];
-    //     snprintf(thread_name, sizeof(thread_name), "mavlink_rcv_if%d", _mavlink->get_instance_id());
+    //     rt_snprintf(thread_name, sizeof(thread_name), "mavlink_rcv_if%d", _mavlink->get_instance_id());
     //     px4_prctl(PR_SET_NAME, thread_name, px4_getpid());
     // }
 
@@ -2897,7 +2897,7 @@ void MavlinkReceiver::run() {
 #if defined(__PX4_POSIX)
     /* 1500 is the Wifi MTU, so we make sure to fit a full packet */
     uint8_t buf[1600 * 5];
-#elif defined(CONFIG_NET)
+#elif defined(RT_USING_LWIP)
     /* 1500 is the Wifi MTU, so we make sure to fit a full packet */
     uint8_t buf[1000];
 #else
@@ -2913,7 +2913,7 @@ void MavlinkReceiver::run() {
         fds[0].events = POLLIN;
     }
 
-#if defined(MAVLINK_UDP)
+#if defined(MAVLINK_USING_UDP)
     struct sockaddr_in srcaddr = {};
     socklen_t          addrlen = sizeof(srcaddr);
 
@@ -2922,7 +2922,7 @@ void MavlinkReceiver::run() {
         fds[0].events = POLLIN;
     }
 
-#endif // MAVLINK_UDP
+#endif // MAVLINK_USING_UDP
 
     ssize_t     nread            = 0;
     hrt_abstime last_send_update = 0;
@@ -2949,7 +2949,7 @@ void MavlinkReceiver::run() {
                     usleep(100000);
                 }
             }
-#if defined(MAVLINK_UDP)
+#if defined(MAVLINK_USING_UDP)
 
             else if (_mavlink->get_protocol() == Protocol::UDP) {
                 if (fds[0].revents & POLLIN) {
@@ -2979,7 +2979,7 @@ void MavlinkReceiver::run() {
 
             // only start accepting messages on UDP once we're sure who we talk to
             if (_mavlink->get_protocol() != Protocol::UDP || _mavlink->get_client_source_initialized()) {
-#endif // MAVLINK_UDP
+#endif // MAVLINK_USING_UDP
 
                 /* if read failed, this loop won't execute */
                 for (ssize_t i = 0; i < nread; i++) {
@@ -3057,10 +3057,10 @@ void MavlinkReceiver::run() {
                     }
                 }
 
-#if defined(MAVLINK_UDP)
+#if defined(MAVLINK_USING_UDP)
             }
 
-#endif // MAVLINK_UDP
+#endif // MAVLINK_USING_UDP
 
         } else if (ret == -1) {
             usleep(10000);
@@ -3274,7 +3274,7 @@ void MavlinkReceiver::start() {
     // pthread_attr_destroy(&receiveloop_attr);
 
     char thread_name[RT_NAME_MAX];
-    snprintf(thread_name, sizeof(thread_name), "mavlink_rcv_if%d", _mavlink->get_instance_id());
+    rt_snprintf(thread_name, sizeof(thread_name), "mavlink_rcv_if%d", _mavlink->get_instance_id());
 
     _thread = rt_thread_create(thread_name, MavlinkReceiver::start_trampoline, this, 4096, 15, 1000);
 }

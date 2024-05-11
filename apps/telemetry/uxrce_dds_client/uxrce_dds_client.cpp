@@ -23,7 +23,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#if defined(CONFIG_NET) || defined(__PX4_POSIX)
+#if defined(RT_USING_LWIP)
 #   define UXRCE_DDS_CLIENT_UDP 1
 #endif
 

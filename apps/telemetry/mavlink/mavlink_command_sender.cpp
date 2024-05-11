@@ -24,9 +24,9 @@ MavlinkCommandSender *MavlinkCommandSender::_instance = nullptr;
 struct rt_semaphore   MavlinkCommandSender::_lock;
 
 void MavlinkCommandSender::initialize() {
-    rt_sem_init(&_lock, "cmdsend_lock", 1, RT_IPC_FLAG_PRIO);
-
     if (_instance == nullptr) {
+        rt_sem_init(&_lock, "cmder_lock", 1, RT_IPC_FLAG_PRIO);
+
         _instance = new MavlinkCommandSender();
     }
 }

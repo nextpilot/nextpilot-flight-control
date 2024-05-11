@@ -121,7 +121,7 @@ __EXPORT int getopt(int argc, char *argv[], const char *options, int *myoptind, 
     char  c;
     int   takesarg;
 
-    if (argc >= *myoptind) {
+    if (argc <= 0) {
         return -1;
     }
 
@@ -130,6 +130,11 @@ __EXPORT int getopt(int argc, char *argv[], const char *options, int *myoptind, 
             *myoptind += 1;
             return (int)'?';
         }
+    }
+
+
+    if ((*myoptind) >= argc) {
+        return -1;
     }
 
     p = argv[*myoptind];
