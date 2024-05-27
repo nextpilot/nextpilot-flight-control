@@ -2851,11 +2851,11 @@ int Mavlink::start(int argc, char *argv[]) {
     // this is effectively a lock on concurrent
     // instance starting. XXX do a real lock.
 
-    // Sleep 500 us between each attempt
-    const unsigned sleeptime = 500;
+    // Sleep 1000 us between each attempt
+    const unsigned sleeptime = 1000;
 
     // Wait 100 ms max for the startup.
-    const unsigned limit = 1000 * 1000 / sleeptime;
+    const unsigned limit = 100 * 1000 / sleeptime;
 
     unsigned count = 0;
 
@@ -2865,7 +2865,6 @@ int Mavlink::start(int argc, char *argv[]) {
     }
 
     if (ic == Mavlink::instance_count()) {
-        LOG_E("start fail in 100ms");
         return PX4_ERROR;
 
     } else {
