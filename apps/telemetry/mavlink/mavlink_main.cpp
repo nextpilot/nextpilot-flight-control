@@ -18,6 +18,7 @@
  */
 
 #define LOG_TAG "mavlink.main"
+#define LOG_LVL LOG_LVL_INFO
 
 #include <termios.h>
 
@@ -456,7 +457,7 @@ void Mavlink::forward_message(const mavlink_message_t *msg, Mavlink *self) {
     }
 }
 
-int Mavlink::mavlink_open_uart(const int baud, const char *uart_name, const FLOW_CONTROL_MODE flow_control) {
+rt_device_t Mavlink::mavlink_open_uart(const int baud, const char *uart_name, const FLOW_CONTROL_MODE flow_control) {
 #ifndef B460800
 #   define B460800 460800
 #endif
@@ -593,77 +594,78 @@ int Mavlink::mavlink_open_uart(const int baud, const char *uart_name, const FLOW
     default:
         PX4_ERR("Unsupported baudrate: %d\n\tsupported examples:\n\t9600, 19200, 38400, 57600\t\n115200\n230400\n460800\n500000\n921600\n1000000\n",
                 baud);
-        return -EINVAL;
+        return nullptr;
     }
 
     /* open uart */
-    _uart_fd = ::open(uart_name, O_RDWR | O_NOCTTY);
+    _uart_fd = rt_device_find(uart_name);
 
     /*
      * Return here in the iridium mode since the iridium driver does not
      * support the subsequent function calls.
      */
-    if (_uart_fd < 0 || _mode == MAVLINK_MODE_IRIDIUM) {
+    if (!_uart_fd || _mode == MAVLINK_MODE_IRIDIUM) {
         return _uart_fd;
     }
 
-    /* Try to set baud rate */
-    struct termios uart_config;
-    int            termios_state;
+    //     /* Try to set baud rate */
+    //     struct termios uart_config;
+    //     int            termios_state;
 
-    /* Initialize the uart config */
-    if ((termios_state = tcgetattr(_uart_fd, &uart_config)) < 0) {
-        PX4_ERR("ERR GET CONF %s: %d\n", uart_name, termios_state);
-        ::close(_uart_fd);
-        return -1;
-    }
+    //     /* Initialize the uart config */
+    //     if ((termios_state = tcgetattr(_uart_fd, &uart_config)) < 0) {
+    //         PX4_ERR("ERR GET CONF %s: %d\n", uart_name, termios_state);
+    //         ::close(_uart_fd);
+    //         return -1;
+    //     }
 
-    /* Clear ONLCR flag (which appends a CR for every LF) */
-    uart_config.c_oflag &= ~ONLCR;
+    //     /* Clear ONLCR flag (which appends a CR for every LF) */
+    //     uart_config.c_oflag &= ~ONLCR;
 
-    /* Set baud rate */
-    if (cfsetispeed(&uart_config, speed) < 0 || cfsetospeed(&uart_config, speed) < 0) {
-        PX4_ERR("ERR SET BAUD %s: %d\n", uart_name, termios_state);
-        ::close(_uart_fd);
-        return -1;
-    }
+    //     /* Set baud rate */
+    //     if (cfsetispeed(&uart_config, speed) < 0 || cfsetospeed(&uart_config, speed) < 0) {
+    //         PX4_ERR("ERR SET BAUD %s: %d\n", uart_name, termios_state);
+    //         ::close(_uart_fd);
+    //         return -1;
+    //     }
 
-#if defined(__PX4_LINUX) || defined(__PX4_DARWIN) || defined(__PX4_CYGWIN)
-    /* Put in raw mode */
-    cfmakeraw(&uart_config);
-#endif
+    // #if defined(__PX4_LINUX) || defined(__PX4_DARWIN) || defined(__PX4_CYGWIN)
+    //     /* Put in raw mode */
+    //     cfmakeraw(&uart_config);
+    // #endif
 
-    if ((termios_state = tcsetattr(_uart_fd, TCSANOW, &uart_config)) < 0) {
-        PX4_WARN("ERR SET CONF %s\n", uart_name);
-        ::close(_uart_fd);
-        return -1;
-    }
+    //     if ((termios_state = tcsetattr(_uart_fd, TCSANOW, &uart_config)) < 0) {
+    //         PX4_WARN("ERR SET CONF %s\n", uart_name);
+    //         ::close(_uart_fd);
+    //         return -1;
+    //     }
 
-    /* setup hardware flow control */
-    if (setup_flow_control(flow_control) && (flow_control != FLOW_CONTROL_AUTO)) {
-        PX4_WARN("hardware flow control not supported");
-    }
+    //     /* setup hardware flow control */
+    //     if (setup_flow_control(flow_control) && (flow_control != FLOW_CONTROL_AUTO)) {
+    //         PX4_WARN("hardware flow control not supported");
+    //     }
 
     return _uart_fd;
 }
 
 int Mavlink::setup_flow_control(enum FLOW_CONTROL_MODE mode) {
-    struct termios uart_config;
+    int ret = 0;
+    // struct termios uart_config;
 
-    int ret = tcgetattr(_uart_fd, &uart_config);
+    // int ret = tcgetattr(_uart_fd, &uart_config);
 
-    if (mode != FLOW_CONTROL_OFF) {
-        uart_config.c_cflag |= CRTSCTS;
+    // if (mode != FLOW_CONTROL_OFF) {
+    //     uart_config.c_cflag |= CRTSCTS;
 
-    } else {
-        uart_config.c_cflag &= ~CRTSCTS;
-    }
+    // } else {
+    //     uart_config.c_cflag &= ~CRTSCTS;
+    // }
 
-    ret = tcsetattr(_uart_fd, TCSANOW, &uart_config);
+    // ret = tcsetattr(_uart_fd, TCSANOW, &uart_config);
 
-    if (!ret) {
-        _flow_control_mode = mode;
-    }
+    // if (!ret) {
+    //     _flow_control_mode = mode;
+    // }
 
     return ret;
 }
@@ -770,7 +772,7 @@ void Mavlink::send_finish() {
 
     // send message to UART
     if (get_protocol() == Protocol::SERIAL) {
-        ret = ::write(_uart_fd, _buf, _buf_fill);
+        ret = rt_device_write(_uart_fd, 0, _buf, _buf_fill);
     }
 #if defined(MAVLINK_USING_UDP)
 
@@ -2238,7 +2240,7 @@ int Mavlink::task_main(int argc, char *argv[]) {
     if (get_protocol() == Protocol::SERIAL) {
         _uart_fd = mavlink_open_uart(_baudrate, _device_name, _flow_control);
 
-        if (_uart_fd < 0) {
+        if (!_uart_fd) {
             PX4_ERR("could not open %s", _device_name);
             return PX4_ERROR;
         }
@@ -2578,11 +2580,11 @@ int Mavlink::task_main(int argc, char *argv[]) {
     /* delete streams */
     _streams.clear();
 
-    if (_uart_fd >= 0) {
+    if (_uart_fd) {
         /* discard all pending data, as close() might block otherwise on NuttX with flow control enabled */
-        tcflush(_uart_fd, TCIOFLUSH);
+        // tcflush(_uart_fd, TCIOFLUSH);
         /* close UART */
-        ::close(_uart_fd);
+        rt_device_close(_uart_fd);
     }
 
     if (_socket_fd >= 0) {
@@ -2693,54 +2695,54 @@ void Mavlink::publish_telemetry_status() {
 }
 
 void Mavlink::configure_sik_radio() {
-    /* radio config check */
-    if (_uart_fd >= 0 && _param_sik_radio_id.get() != 0) {
-        /* request to configure radio and radio is present */
-        FILE *fs = fdopen(_uart_fd, "w");
+    //     /* radio config check */
+    //     if (_uart_fd >= 0 && _param_sik_radio_id.get() != 0) {
+    //         /* request to configure radio and radio is present */
+    //         FILE *fs = fdopen(_uart_fd, "w");
 
-        if (fs) {
-            /* switch to AT command mode */
-            px4_usleep(1200000);
-            fprintf(fs, "+++");
-            fflush(fs);
-            px4_usleep(1200000);
+    //         if (fs) {
+    //             /* switch to AT command mode */
+    //             px4_usleep(1200000);
+    //             fprintf(fs, "+++");
+    //             fflush(fs);
+    //             px4_usleep(1200000);
 
-            if (_param_sik_radio_id.get() > 0) {
-                /* set channel */
-                fprintf(fs, "ATS3=%" PRIu32 "\r\n", _param_sik_radio_id.get());
-                px4_usleep(200000);
+    //             if (_param_sik_radio_id.get() > 0) {
+    //                 /* set channel */
+    //                 fprintf(fs, "ATS3=%" PRIu32 "\r\n", _param_sik_radio_id.get());
+    //                 px4_usleep(200000);
 
-            } else {
-                /* reset to factory defaults */
-                fprintf(fs, "AT&F\r\n");
-                px4_usleep(200000);
-            }
+    //             } else {
+    //                 /* reset to factory defaults */
+    //                 fprintf(fs, "AT&F\r\n");
+    //                 px4_usleep(200000);
+    //             }
 
-            /* write config */
-            fprintf(fs, "AT&W\r\n");
-            px4_usleep(200000);
+    //             /* write config */
+    //             fprintf(fs, "AT&W\r\n");
+    //             px4_usleep(200000);
 
-            /* reboot */
-            fprintf(fs, "ATZ\r\n");
-            px4_usleep(200000);
+    //             /* reboot */
+    //             fprintf(fs, "ATZ\r\n");
+    //             px4_usleep(200000);
 
-            // XXX NuttX suffers from a bug where
-            // fclose() also closes the fd, not just
-            // the file stream. Since this is a one-time
-            // config thing, we leave the file struct
-            // allocated.
-#ifndef __PX4_NUTTX
-            fclose(fs);
-#endif
+    //             // XXX NuttX suffers from a bug where
+    //             // fclose() also closes the fd, not just
+    //             // the file stream. Since this is a one-time
+    //             // config thing, we leave the file struct
+    //             // allocated.
+    // #ifndef __PX4_NUTTX
+    //             fclose(fs);
+    // #endif
 
-        } else {
-            PX4_WARN("open fd %d failed", _uart_fd);
-        }
+    //         } else {
+    //             PX4_WARN("open fd %d failed", _uart_fd);
+    //         }
 
-        /* reset param and save */
-        _param_sik_radio_id.set(0);
-        _param_sik_radio_id.commit_no_notification();
-    }
+    //         /* reset param and save */
+    //         _param_sik_radio_id.set(0);
+    //         _param_sik_radio_id.commit_no_notification();
+    // }
 }
 
 typedef struct start_option_s {
@@ -2778,6 +2780,17 @@ int Mavlink::start_helper(int argc, char *argv[]) {
 }
 
 int Mavlink::start(int argc, char *argv[]) {
+    char cmd_buf[128];
+    int  cmd_pos = 0;
+    for (int i = 0; i < argc; i++) {
+        if (i == 0) {
+            cmd_pos += snprintf(cmd_buf + cmd_pos, sizeof(cmd_buf) - cmd_pos, "%s", argv[i]);
+        } else {
+            cmd_pos += snprintf(cmd_buf + cmd_pos, sizeof(cmd_buf) - cmd_pos, " %s", argv[i]);
+        }
+    }
+    LOG_I(cmd_buf);
+
     MavlinkULog::initialize();
     MavlinkCommandSender::initialize();
 
@@ -2842,7 +2855,7 @@ int Mavlink::start(int argc, char *argv[]) {
     const unsigned sleeptime = 500;
 
     // Wait 100 ms max for the startup.
-    const unsigned limit = 100 * 1000 / sleeptime;
+    const unsigned limit = 1000 * 1000 / sleeptime;
 
     unsigned count = 0;
 
@@ -2852,6 +2865,7 @@ int Mavlink::start(int argc, char *argv[]) {
     }
 
     if (ic == Mavlink::instance_count()) {
+        LOG_E("start fail in 100ms");
         return PX4_ERROR;
 
     } else {

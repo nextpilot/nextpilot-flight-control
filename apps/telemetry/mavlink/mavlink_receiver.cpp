@@ -2906,12 +2906,12 @@ void MavlinkReceiver::run() {
 #endif
     mavlink_message_t msg;
 
-    struct pollfd fds[1] = {};
+    // struct pollfd fds[1] = {};
 
-    if (_mavlink->get_protocol() == Protocol::SERIAL) {
-        fds[0].fd     = _mavlink->get_uart_fd();
-        fds[0].events = POLLIN;
-    }
+    // if (_mavlink->get_protocol() == Protocol::SERIAL) {
+    //     fds[0].fd     = _mavlink->get_uart_fd();
+    //     fds[0].events = POLLIN;
+    // }
 
 #if defined(MAVLINK_USING_UDP)
     struct sockaddr_in srcaddr = {};
@@ -2938,12 +2938,13 @@ void MavlinkReceiver::run() {
             updateParams();
         }
 
-        int ret = poll(&fds[0], 1, timeout);
+        // int ret = poll(&fds[0], 1, timeout);
+        int ret = 0;
 
         if (ret > 0) {
             if (_mavlink->get_protocol() == Protocol::SERIAL) {
                 /* non-blocking read. read may return negative values */
-                nread = ::read(fds[0].fd, buf, sizeof(buf));
+                nread = rt_device_read(_mavlink->get_uart_fd(), 0, buf, sizeof(buf));
 
                 if (nread == -1 && errno == ENOTCONN) { // Not connected (can happen for USB)
                     usleep(100000);

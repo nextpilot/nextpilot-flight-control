@@ -165,7 +165,7 @@ public:
         _should_check_events.store(false);
     }
 
-    int get_uart_fd() const {
+    rt_device_t get_uart_fd() const {
         return _uart_fd;
     }
 
@@ -688,7 +688,7 @@ private:
     bool _ftp_on{false};
     bool _use_software_mav_throttling{false};
 
-    int _uart_fd{-1};
+    rt_device_t _uart_fd{nullptr};
 
     int   _baudrate{57600};
     int   _datarate{1000}; ///< data rate for normal streams (attitude, position, etc.)
@@ -783,9 +783,9 @@ private:
 
     void mavlink_update_parameters();
 
-    int mavlink_open_uart(const int               baudrate     = DEFAULT_BAUD_RATE,
-                          const char             *uart_name    = DEFAULT_DEVICE_NAME,
-                          const FLOW_CONTROL_MODE flow_control = FLOW_CONTROL_AUTO);
+    rt_device_t mavlink_open_uart(const int               baudrate     = DEFAULT_BAUD_RATE,
+                                  const char             *uart_name    = DEFAULT_DEVICE_NAME,
+                                  const FLOW_CONTROL_MODE flow_control = FLOW_CONTROL_AUTO);
 
     static constexpr unsigned RADIO_BUFFER_CRITICAL_LOW_PERCENTAGE = 25;
     static constexpr unsigned RADIO_BUFFER_LOW_PERCENTAGE          = 35;
