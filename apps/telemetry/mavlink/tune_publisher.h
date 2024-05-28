@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include <uORB/uORBPublication.hpp>
+#include <uORB/Publication.hpp>
 #include <hrtimer.h>
 #include <tunes/tunes.h>
 

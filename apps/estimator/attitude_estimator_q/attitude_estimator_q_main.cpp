@@ -30,8 +30,8 @@
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
 
-#include <uORB/uORBPublication.hpp>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Publication.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/sensor_combined.h>
 #include <uORB/topics/vehicle_attitude.h>

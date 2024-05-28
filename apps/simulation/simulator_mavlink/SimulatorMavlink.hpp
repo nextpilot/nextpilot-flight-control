@@ -27,8 +27,8 @@
 #include <px4_platform_common/bitmask.h>
 #include <module/module_params.hpp>
 
-#include <uORB/uORBPublication.hpp>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Publication.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/actuator_outputs.h>
 #include <uORB/topics/battery_status.h>
 #include <uORB/topics/differential_pressure.h>

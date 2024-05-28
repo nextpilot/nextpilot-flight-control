@@ -16,17 +16,31 @@
 
 #pragma once
 
-#include "FlightTask.hpp"
+#include <uORB/Subscription.hpp>
+#include <uORB/Publication.hpp>
 
-static constexpr float GPS_MESSAGE_STALE_TIMEOUT_MS =
-    3000.0f; // Duration after which the connection to the target is considered lost
+#include <uORB/topics/follow_target.h>
+#include <uORB/topics/vehicle_local_position.h>
+#include <uORB/topics/follow_target_estimator.h>
+#include <uORB/topics/parameter_update.h>
+
+#include <hrtimer.h>
+#include <mathlib/math/filter/AlphaFilter.hpp>
+#include <geo/geo.h>
+#include <mathlib/mathlib.h>
+#include <module/module_params.hpp>
+#include <module/module_usage.h>
+#include <workq/WorkItemScheduled.hpp>
+
+static constexpr float GPS_MESSAGE_STALE_TIMEOUT_MS        = 3000.0f; // Duration after which the connection to the target is considered lost
 static constexpr float MINIMUM_TIME_BETWEEN_POS_FUSIONS_MS = 500.0f;
 static constexpr float MINIMUM_TIME_BETWEEN_VEL_FUSIONS_MS = 100.0f;
 static constexpr float ACCELERATION_SATURATION             = 20.0f; // 2*g
-static constexpr float MINIMUM_SPEED_FOR_TARGET_MOVING =
-    0.1f; // speed threshold above which the target is considered to be moving
+static constexpr float MINIMUM_SPEED_FOR_TARGET_MOVING     = 0.1f;  // speed threshold above which the target is considered to be moving
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 struct filter_gains_s {
     // Position fusion gains

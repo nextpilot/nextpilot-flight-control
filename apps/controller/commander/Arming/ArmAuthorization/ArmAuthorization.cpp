@@ -38,7 +38,7 @@
 #include <defines.h>
 #include <param/param.h>
 #include <ulog/mavlink_log.h>
-#include <uORB/uORBPublication.hpp>
+#include <uORB/Publication.hpp>
 #include <uORB/topics/vehicle_command.h>
 #include <uORB/topics/vehicle_command_ack.h>
 #include <inttypes.h>

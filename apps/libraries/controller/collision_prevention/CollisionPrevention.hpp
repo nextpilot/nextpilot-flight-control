@@ -25,8 +25,8 @@
 #include <matrix/matrix/math.hpp>
 #include <module/module_params.hpp>
 #include <ulog/mavlink_log.h>
-#include <uORB/uORBPublication.hpp>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Publication.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/collision_constraints.h>
 #include <uORB/topics/distance_sensor.h>
 #include <uORB/topics/mavlink_log.h>

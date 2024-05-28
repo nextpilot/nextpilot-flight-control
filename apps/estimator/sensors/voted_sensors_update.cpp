@@ -20,7 +20,7 @@
 #include <geo/geo.h>
 #include <ulog/mavlink_log.h>
 
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 
 using namespace sensors;
 using namespace matrix;
@@ -280,15 +280,25 @@ bool VotedSensorsUpdate::checkFailover(SensorData &sensor, const char *sensor_na
 
                     events::px4::enums::sensor_failover_reason_t failover_reason{};
 
-                    if (flags & DataValidator::ERROR_FLAG_NO_DATA) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::no_data; }
+                    if (flags & DataValidator::ERROR_FLAG_NO_DATA) {
+                        failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::no_data;
+                    }
 
-                    if (flags & DataValidator::ERROR_FLAG_STALE_DATA) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::stale_data; }
+                    if (flags & DataValidator::ERROR_FLAG_STALE_DATA) {
+                        failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::stale_data;
+                    }
 
-                    if (flags & DataValidator::ERROR_FLAG_TIMEOUT) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::timeout; }
+                    if (flags & DataValidator::ERROR_FLAG_TIMEOUT) {
+                        failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::timeout;
+                    }
 
-                    if (flags & DataValidator::ERROR_FLAG_HIGH_ERRCOUNT) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::high_error_count; }
+                    if (flags & DataValidator::ERROR_FLAG_HIGH_ERRCOUNT) {
+                        failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::high_error_count;
+                    }
 
-                    if (flags & DataValidator::ERROR_FLAG_HIGH_ERRDENSITY) { failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::high_error_density; }
+                    if (flags & DataValidator::ERROR_FLAG_HIGH_ERRDENSITY) {
+                        failover_reason = failover_reason | events::px4::enums::sensor_failover_reason_t::high_error_density;
+                    }
 
                     /* EVENT
                      * @description
@@ -367,11 +377,9 @@ void VotedSensorsUpdate::sensorsPoll(sensor_combined_s &raw) {
     status.accel_device_id_primary = _selection.accel_device_id;
     status.gyro_device_id_primary  = _selection.gyro_device_id;
 
-    static_assert(MAX_SENSOR_COUNT == (sizeof(sensors_status_imu_s::accel_inconsistency_m_s_s) / sizeof(
-                                                                                                     sensors_status_imu_s::accel_inconsistency_m_s_s[0])),
+    static_assert(MAX_SENSOR_COUNT == (sizeof(sensors_status_imu_s::accel_inconsistency_m_s_s) / sizeof(sensors_status_imu_s::accel_inconsistency_m_s_s[0])),
                   "check sensors_status_imu accel_inconsistency_m_s_s size");
-    static_assert(MAX_SENSOR_COUNT == (sizeof(sensors_status_imu_s::gyro_inconsistency_rad_s) / sizeof(
-                                                                                                    sensors_status_imu_s::gyro_inconsistency_rad_s[0])),
+    static_assert(MAX_SENSOR_COUNT == (sizeof(sensors_status_imu_s::gyro_inconsistency_rad_s) / sizeof(sensors_status_imu_s::gyro_inconsistency_rad_s[0])),
                   "check sensors_status_imu accel_inconsistency_m_s_s size");
 
     for (int i = 0; i < MAX_SENSOR_COUNT; i++) {
@@ -401,8 +409,7 @@ void VotedSensorsUpdate::sensorsPoll(sensor_combined_s &raw) {
 
 void VotedSensorsUpdate::setRelativeTimestamps(sensor_combined_s &raw) {
     if (_last_accel_timestamp[_accel.last_best_vote]) {
-        raw.accelerometer_timestamp_relative = (int32_t)((int64_t)_last_accel_timestamp[_accel.last_best_vote] -
-                                                         (int64_t)raw.timestamp);
+        raw.accelerometer_timestamp_relative = (int32_t)((int64_t)_last_accel_timestamp[_accel.last_best_vote] - (int64_t)raw.timestamp);
     }
 }
 
@@ -414,8 +421,8 @@ void VotedSensorsUpdate::calcAccelInconsistency() {
     for (int sensor_index = 0; sensor_index < MAX_SENSOR_COUNT; sensor_index++) {
         if ((_accel_device_id[sensor_index] != 0) && (_accel.priority[sensor_index] > 0)) {
             accel_count++;
-            accel_all[sensor_index] = Vector3f{_last_sensor_data[sensor_index].accelerometer_m_s2};
-            accel_mean += accel_all[sensor_index];
+            accel_all[sensor_index]  = Vector3f{_last_sensor_data[sensor_index].accelerometer_m_s2};
+            accel_mean              += accel_all[sensor_index];
         }
     }
 
@@ -438,8 +445,8 @@ void VotedSensorsUpdate::calcGyroInconsistency() {
     for (int sensor_index = 0; sensor_index < MAX_SENSOR_COUNT; sensor_index++) {
         if ((_gyro_device_id[sensor_index] != 0) && (_gyro.priority[sensor_index] > 0)) {
             gyro_count++;
-            gyro_all[sensor_index] = Vector3f{_last_sensor_data[sensor_index].gyro_rad};
-            gyro_mean += gyro_all[sensor_index];
+            gyro_all[sensor_index]  = Vector3f{_last_sensor_data[sensor_index].gyro_rad};
+            gyro_mean              += gyro_all[sensor_index];
         }
     }
 

@@ -19,7 +19,7 @@
 #pragma once
 
 #include "FlightTaskManualAltitudeSmoothVel.hpp"
-#include <uORB/uORBPublication.hpp>
+#include <uORB/Publication.hpp>
 #include <uORB/topics/orbit_status.h>
 #include <slew_rate/SlewRateYaw.hpp>
 #include <motion_planning/PositionSmoothing.hpp>
@@ -110,7 +110,7 @@ private:
         (ParamFloat<params_id::MPC_YAWRAUTO_MAX>)_param_mpc_yawrauto_max,
         (ParamFloat<params_id::MPC_XY_TRAJ_P>)_param_mpc_xy_traj_p,
         (ParamFloat<params_id::NAV_MC_ALT_RAD>)
-            _param_nav_mc_alt_rad, // vertical acceptance radius at which waypoints are updated
+            _param_nav_mc_alt_rad,                              // vertical acceptance radius at which waypoints are updated
         (ParamFloat<params_id::MPC_XY_ERR_MAX>)_param_mpc_xy_err_max,
         (ParamFloat<params_id::MPC_ACC_HOR>)_param_mpc_acc_hor, // acceleration in flight
         (ParamFloat<params_id::MPC_JERK_AUTO>)_param_mpc_jerk_auto,

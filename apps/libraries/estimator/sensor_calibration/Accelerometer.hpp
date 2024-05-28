@@ -14,7 +14,7 @@
 #include <matrix/matrix/math.hpp>
 
 #include <ulog/log.h>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/sensor_correction.h>
 
 using namespace nextpilot;

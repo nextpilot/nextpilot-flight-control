@@ -22,8 +22,8 @@
 #include <module/module_params.hpp>
 #include <commander/custom_flight_mode.h>
 #include <hrtimer.h>
-#include <uORB/uORBPublication.hpp>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Publication.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/position_controller_status.h>
 #include <uORB/topics/vehicle_command.h>
 #include <uORB/topics/vehicle_status.h>

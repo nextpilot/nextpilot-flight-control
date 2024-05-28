@@ -13,7 +13,7 @@
 #include "PWMSim.hpp"
 #include <mathlib/mathlib.h>
 #include <getopt/getopt.h>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/parameter_update.h>
 
 PWMSim::PWMSim(bool hil_mode_enabled) :
@@ -162,6 +162,7 @@ It is used in SITL and HITL.
 extern "C" __EXPORT int pwm_out_sim_main(int argc, char *argv[]) {
     return PWMSim::main(argc, argv);
 }
+
 MSH_CMD_EXPORT_ALIAS(pwm_out_sim_main, sim_pwm_out, pwm out simulator);
 
 int pwm_out_sim_start() {
@@ -175,4 +176,5 @@ int pwm_out_sim_start() {
 
     return 0;
 }
+
 INIT_APP_EXPORT(pwm_out_sim_start);

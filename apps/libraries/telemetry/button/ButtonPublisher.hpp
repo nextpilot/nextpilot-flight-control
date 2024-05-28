@@ -19,8 +19,8 @@
 
 #include <drivers/drv_tone_alarm.h>
 #include <hrtimer.h>
-#include <uORB/uORBPublication.hpp>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Publication.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/actuator_armed.h>
 #include <uORB/topics/button_event.h>
 #include <uORB/topics/vehicle_command.h>

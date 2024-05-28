@@ -23,7 +23,7 @@
 #include <fcntl.h>
 #include <math.h>
 #include <hrtimer.h>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/differential_pressure.h>
 #include <ulog/mavlink_log.h>
 #include <param/param.h>

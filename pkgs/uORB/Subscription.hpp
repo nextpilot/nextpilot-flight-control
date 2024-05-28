@@ -25,7 +25,7 @@
 #include <hrtimer.h>
 #endif // PKG_USING_HRTIMER
 #include <uORB/topics/uORBTopics.hpp>
-#include <uORBDeviceNode.hpp>
+#include <DeviceNode.hpp>
 
 #ifdef PKG_USING_WORKQUEUE
 #include "WorkItem.hpp"

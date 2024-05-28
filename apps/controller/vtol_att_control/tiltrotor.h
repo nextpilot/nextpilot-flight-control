@@ -22,7 +22,7 @@
 #include <param.h>
 #include <hrtimer.h>
 
-#include <uORB/uORBPublication.hpp>
+#include <uORB/Publication.hpp>
 #include <uORB/topics/tiltrotor_extra_controls.h>
 
 using namespace nextpilot::global_params;

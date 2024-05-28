@@ -11,7 +11,7 @@
 #pragma once
 
 #include <module/module_command.hpp>
-#include <module/module_params.h>
+#include <module/module_params.hpp>
 
 #include <src/modules/uxrce_dds_client/dds_topics.h>
 

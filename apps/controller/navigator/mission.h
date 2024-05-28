@@ -32,7 +32,7 @@
 #include <dataman/dataman.h>
 #include <hrtimer.h>
 #include <module/module_params.hpp>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/home_position.h>
 #include <uORB/topics/mission.h>
 #include <uORB/topics/mission_result.h>
@@ -66,24 +66,31 @@ public:
     uint16_t get_land_start_index() const {
         return _land_start_index;
     }
+
     bool get_land_start_available() const {
         return _land_start_available;
     }
+
     bool get_mission_finished() const {
         return _mission_type == MISSION_TYPE_NONE;
     }
+
     bool get_mission_changed() const {
         return _mission_changed;
     }
+
     bool get_mission_waypoints_changed() const {
         return _mission_waypoints_changed;
     }
+
     double get_landing_start_lat() {
         return _landing_start_lat;
     }
+
     double get_landing_start_lon() {
         return _landing_start_lon;
     }
+
     float get_landing_start_alt() {
         return _landing_start_alt;
     }
@@ -91,12 +98,15 @@ public:
     double get_landing_lat() {
         return _landing_lat;
     }
+
     double get_landing_lon() {
         return _landing_lon;
     }
+
     float get_landing_alt() {
         return _landing_alt;
     }
+
     float get_landing_loiter_rad() {
         return _landing_loiter_radius;
     }
@@ -289,7 +299,7 @@ private:
         WORK_ITEM_TYPE_TRANSITION_AFTER_TAKEOFF,
         WORK_ITEM_TYPE_MOVE_TO_LAND_AFTER_TRANSITION,
         WORK_ITEM_TYPE_PRECISION_LAND
-    } _work_item_type{WORK_ITEM_TYPE_DEFAULT}; /**< current type of work to do (sub mission item) */
+    } _work_item_type{WORK_ITEM_TYPE_DEFAULT};                                        /**< current type of work to do (sub mission item) */
 
     uint8_t _mission_execution_mode{mission_result_s::MISSION_EXECUTION_MODE_NORMAL}; /**< the current mode of how the mission is executed,look at mission_result.msg for the definition */
     bool    _execution_mode_changed{false};

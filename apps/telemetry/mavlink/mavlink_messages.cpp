@@ -27,7 +27,7 @@
 #include <mathlib/mathlib.h>
 #include <matrix/matrix/math.hpp>
 #include <math.h>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/vehicle_status.h>
 
 #include "streams/ACTUATOR_OUTPUT_STATUS.hpp"

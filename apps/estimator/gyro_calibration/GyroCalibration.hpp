@@ -19,7 +19,7 @@
 #include <mathlib/math/WelfordMeanVector.hpp>
 #include <perf/perf_counter.h>
 #include <sensor_calibration/Gyroscope.hpp>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/sensor_accel.h>
 #include <uORB/topics/sensor_gyro.h>

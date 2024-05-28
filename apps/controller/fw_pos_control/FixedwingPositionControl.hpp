@@ -26,53 +26,56 @@
 #include "launchdetection/LaunchDetector.h"
 #include "runway_takeoff/RunwayTakeoff.h"
 
-#include "nextpilot.h"
-// #include <float.h>
-// #include <hrtimer.h>
-// #include <geo/geo.h>
+
+#include <float.h>
+
+#include <hrtimer.h>
+#include <geo/geo.h>
 #include <npfg/npfg.hpp>
 #include <tecs/TECS.hpp>
-// #include <mathlib/mathlib.h>
-// #include <perf/perf_counter.h>
+#include <mathlib/mathlib.h>
+#include <perf/perf_counter.h>
 #include <slew_rate/SlewRate.hpp>
 
-// #include <defines.h>
-// #include <module/module_command.hpp>
-// #include <module/module_params.hpp>
+#include <defines.h>
+#include <module/module_command.hpp>
+#include <module/module_params.hpp>
 
 #include <workq/WorkItem.hpp>
-// #include <uORB/uORBPublication.hpp>
-// #include <uORB/uORBSubscription.hpp>
-// #include <uORB/topics/airspeed_validated.h>
-// #include <uORB/topics/landing_gear.h>
-// #include <uORB/topics/launch_detection_status.h>
-// #include <uORB/topics/manual_control_setpoint.h>
-// #include <uORB/topics/normalized_unsigned_setpoint.h>
-// #include <uORB/topics/npfg_status.h>
-// #include <uORB/topics/parameter_update.h>
-// #include <uORB/topics/position_controller_landing_status.h>
-// #include <uORB/topics/position_controller_status.h>
-// #include <uORB/topics/position_setpoint_triplet.h>
-// #include <uORB/topics/tecs_status.h>
-// #include <uORB/topics/trajectory_setpoint.h>
-// #include <uORB/topics/vehicle_air_data.h>
-// #include <uORB/topics/vehicle_angular_velocity.h>
-// #include <uORB/topics/vehicle_attitude.h>
-// #include <uORB/topics/vehicle_attitude_setpoint.h>
-// #include <uORB/topics/vehicle_command.h>
-// #include <uORB/topics/vehicle_control_mode.h>
-// #include <uORB/topics/vehicle_global_position.h>
-// #include <uORB/topics/vehicle_land_detected.h>
-// #include <uORB/topics/vehicle_local_position.h>
-// #include <uORB/topics/vehicle_local_position_setpoint.h>
-// #include <uORB/topics/vehicle_status.h>
-// #include <uORB/topics/wind.h>
-// #include <uORB/topics/orbit_status.h>
-// #include <uORB/uORB.h>
+#include <uORB/Publication.hpp>
+#include <uORB/Subscription.hpp>
+#include <uORB/topics/airspeed_validated.h>
+#include <uORB/topics/landing_gear.h>
+#include <uORB/topics/launch_detection_status.h>
+#include <uORB/topics/manual_control_setpoint.h>
+#include <uORB/topics/normalized_unsigned_setpoint.h>
+#include <uORB/topics/npfg_status.h>
+#include <uORB/topics/parameter_update.h>
+#include <uORB/topics/position_controller_landing_status.h>
+#include <uORB/topics/position_controller_status.h>
+#include <uORB/topics/position_setpoint_triplet.h>
+#include <uORB/topics/tecs_status.h>
+#include <uORB/topics/trajectory_setpoint.h>
+#include <uORB/topics/vehicle_air_data.h>
+#include <uORB/topics/vehicle_angular_velocity.h>
+#include <uORB/topics/vehicle_attitude.h>
+#include <uORB/topics/vehicle_attitude_setpoint.h>
+#include <uORB/topics/vehicle_command.h>
+#include <uORB/topics/vehicle_control_mode.h>
+#include <uORB/topics/vehicle_global_position.h>
+#include <uORB/topics/vehicle_land_detected.h>
+#include <uORB/topics/vehicle_local_position.h>
+#include <uORB/topics/vehicle_local_position_setpoint.h>
+#include <uORB/topics/vehicle_status.h>
+#include <uORB/topics/wind.h>
+#include <uORB/topics/orbit_status.h>
+#include <uORB/uORB.h>
 
 using namespace launchdetection;
 using namespace runwaytakeoff;
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 using matrix::Vector2d;
 using matrix::Vector2f;

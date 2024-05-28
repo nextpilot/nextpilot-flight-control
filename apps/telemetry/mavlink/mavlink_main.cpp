@@ -37,6 +37,7 @@
 #include <uORB/topics/event.h>
 #include "mavlink_receiver.h"
 #include "mavlink_main.h"
+#include "rtdevice.h"
 
 // Guard against MAVLink misconfiguration
 #ifndef MAVLINK_CRC_EXTRA
@@ -388,6 +389,10 @@ int Mavlink::get_status_all_instances(bool show_streams_status) {
         }
     }
 
+
+    if (iterations == 0) {
+        LOG_W("no instance running");
+    }
     /* return an error if there are no instances */
     return (iterations == 0);
 }
@@ -457,146 +462,7 @@ void Mavlink::forward_message(const mavlink_message_t *msg, Mavlink *self) {
     }
 }
 
-rt_device_t Mavlink::mavlink_open_uart(const int baud, const char *uart_name, const FLOW_CONTROL_MODE flow_control) {
-#ifndef B460800
-#   define B460800 460800
-#endif
-
-#ifndef B500000
-#   define B500000 500000
-#endif
-
-#ifndef B921600
-#   define B921600 921600
-#endif
-
-#ifndef B1000000
-#   define B1000000 1000000
-#endif
-
-    /* process baud rate */
-    int speed;
-
-    switch (baud) {
-    case 0:
-        speed = B0;
-        break;
-
-    case 50:
-        speed = B50;
-        break;
-
-    case 75:
-        speed = B75;
-        break;
-
-    case 110:
-        speed = B110;
-        break;
-
-    case 134:
-        speed = B134;
-        break;
-
-    case 150:
-        speed = B150;
-        break;
-
-    case 200:
-        speed = B200;
-        break;
-
-    case 300:
-        speed = B300;
-        break;
-
-    case 600:
-        speed = B600;
-        break;
-
-    case 1200:
-        speed = B1200;
-        break;
-
-    case 1800:
-        speed = B1800;
-        break;
-
-    case 2400:
-        speed = B2400;
-        break;
-
-    case 4800:
-        speed = B4800;
-        break;
-
-    case 9600:
-        speed = B9600;
-        break;
-
-    case 19200:
-        speed = B19200;
-        break;
-
-    case 38400:
-        speed = B38400;
-        break;
-
-    case 57600:
-        speed = B57600;
-        break;
-
-    case 115200:
-        speed = B115200;
-        break;
-
-    case 230400:
-        speed = B230400;
-        break;
-
-    case 460800:
-        speed = B460800;
-        break;
-
-    case 500000:
-        speed = B500000;
-        break;
-
-    case 921600:
-        speed = B921600;
-        break;
-
-    case 1000000:
-        speed = B1000000;
-        break;
-
-#ifdef B1500000
-
-    case 1500000:
-        speed = B1500000;
-        break;
-#endif
-
-#ifdef B2000000
-
-    case 2000000:
-        speed = B2000000;
-        break;
-#endif
-
-#ifdef B3000000
-
-    case 3000000:
-        speed = B3000000;
-        break;
-#endif
-
-    default:
-        PX4_ERR("Unsupported baudrate: %d\n\tsupported examples:\n\t9600, 19200, 38400, 57600\t\n115200\n230400\n460800\n500000\n921600\n1000000\n",
-                baud);
-        return nullptr;
-    }
-
+int Mavlink::mavlink_open_uart(const int baud, const char *uart_name, const FLOW_CONTROL_MODE flow_control) {
     /* open uart */
     _uart_fd = rt_device_find(uart_name);
 
@@ -605,7 +471,81 @@ rt_device_t Mavlink::mavlink_open_uart(const int baud, const char *uart_name, co
      * support the subsequent function calls.
      */
     if (!_uart_fd || _mode == MAVLINK_MODE_IRIDIUM) {
-        return _uart_fd;
+        LOG_E("find %s fail", uart_name);
+        return -1;
+    }
+
+    if (_is_usb_uart) {
+        if (rt_device_open(_uart_fd, RT_DEVICE_FLAG_RDWR | RT_DEVICE_FLAG_INT_RX) != RT_EOK) {
+            LOG_E("open %s fail", uart_name);
+            return -RT_ERROR;
+        }
+    } else {
+        // 配置串口
+        struct serial_configure config = RT_SERIAL_CONFIG_DEFAULT;
+        config.baud_rate               = baud;
+        config.data_bits               = DATA_BITS_8;
+        config.stop_bits               = STOP_BITS_1;
+
+#if defined(RT_USING_SERIAL_V1)
+        config.bufsz = MAVLINK_MAX_PACKET_LEN;
+#else
+        config.rx_bufsz = MAVLINK_MAX_PACKET_LEN;
+        config.tx_bufsz = MAVLINK_MAX_PACKET_LEN;
+#endif // RT_USING_SERIAL_V1
+        config.parity = PARITY_NONE;
+        // config.flowcontrol             = 0;
+        if (rt_device_control(_uart_fd, RT_DEVICE_CTRL_CONFIG, &config) != RT_EOK) {
+            LOG_E("config %s fail", uart_name);
+            return -RT_ERROR;
+        }
+
+        // 打开串口
+        rt_uint16_t flags = RT_DEVICE_FLAG_RDWR;
+#ifdef RT_USING_SERIAL_V1
+        // 不管是V1还是V2，POLL必定是阻塞，也就是CPU一直等，等到read到数据或者write完数据
+        // V1版本，INT发送，没有缓存，会CPU阻塞（RTT在drv_usart.c中增加一个while强等），直到数据发送完毕才返回
+        // V1版本，INT接收，有缓存，每收到1个char调用一次中断将char拷贝到环形buff，然后触发rx_indicate
+        // V1版本，DMA发送是非阻塞，调用rt_device_write立即返回
+        // V1版本，DMA接收是非阻塞，调用rt_devie_read立即返回
+        if (_uart_fd->flag & RT_DEVICE_FLAG_DMA_RX) {
+            flags |= RT_DEVICE_FLAG_DMA_RX;
+        } else if (_uart_fd->flag & RT_DEVICE_FLAG_INT_RX) {
+            flags |= RT_DEVICE_FLAG_INT_RX;
+        }
+
+        if (_uart_fd->flag & RT_DEVICE_FLAG_DMA_TX) {
+            flags |= RT_DEVICE_FLAG_DMA_TX;
+        } else if (_uart_fd->flag & RT_DEVICE_FLAG_INT_TX) {
+            flags |= RT_DEVICE_FLAG_INT_TX;
+        }
+#else
+        // V2版本是否阻塞跟DMA还是INT无关，只根据xxxx_BLOCKING确定
+        flags |= (RT_DEVICE_FLAG_RX_NON_BLOCKING | RT_DEVICE_FLAG_TX_BLOCKING);
+#endif // RT_USING_SERIAL_V1
+
+        if (rt_device_open(_uart_fd, flags) != RT_EOK) {
+            LOG_E("open %s fail", uart_name);
+            return -RT_ERROR;
+        }
+
+        // INT接收，每个char都会触发一次回调，太浪费资源了，如果上层应用对实时性要求不高，建议上层应用轮询
+        // DMA接收，只会触发空闲、半满、全满等3个中断，此时建议采用中断回调模式激活上层应用
+        if (flags & RT_DEVICE_FLAG_DMA_RX) {
+            // rt_device_set_rx_indicate(_uart_fd, callback_uart_rx_indicate);
+        }
+
+#ifdef RT_USING_SERIAL_V1
+        // V1版本，DMA发送，是非阻塞，因此启动发送完成回调
+        // V1版本，INT发送，会阻塞，因此没必要启用发送完成回调
+        if (flags & RT_DEVICE_FLAG_DMA_TX) {
+#else
+        // V2版本，非阻塞模式，则启用发送完成回调
+        if (flags & RT_DEVICE_FLAG_TX_NON_BLOCKING) {
+#endif // RT_USING_SERIAL_V1
+
+            // rt_device_set_tx_complete(_uart_fd, callback_uart_tx_complete);
+        }
     }
 
     //     /* Try to set baud rate */
@@ -645,7 +585,7 @@ rt_device_t Mavlink::mavlink_open_uart(const int baud, const char *uart_name, co
     //         PX4_WARN("hardware flow control not supported");
     //     }
 
-    return _uart_fd;
+    return 0;
 }
 
 int Mavlink::setup_flow_control(enum FLOW_CONTROL_MODE mode) {
@@ -1742,7 +1682,15 @@ bool Mavlink::init_by_instance(int instance) {
     int mode = 0;
     rt_snprintf(buff, sizeof(buff), "MAV_%d_MODE", instance);
     if (param_get(param_find(buff), &mode) == 0) {
-        _mode = (MAVLINK_MODE)mode;
+        if (mode >= 0 && mode < (int)MAVLINK_MODE_COUNT) {
+            _mode = (MAVLINK_MODE)mode;
+        } else {
+            LOG_E("invalid mode: %d", mode);
+            return false;
+        }
+    } else {
+        _mode = MAVLINK_MODE_NORMAL;
+        LOG_I("use default NORM mode");
     }
 
     // 接口配置
@@ -1753,9 +1701,12 @@ bool Mavlink::init_by_instance(int instance) {
             LOG_I("mav%d disable, as MAV_%d_CONFIG=0", instance);
             return false;
         }
+    } else {
+        LOG_E("can't find MAV_%d_CONFIG, which must be set", instance);
+        return false;
     }
 
-    if (config >= 100 && config < 108) {
+    if (config >= 100 && config < 108) { // 串口
         set_protocol(Protocol::SERIAL);
 
         // 设备名
@@ -1767,13 +1718,17 @@ bool Mavlink::init_by_instance(int instance) {
 
         // 波特率
         rt_snprintf(buff, sizeof(buff), "MAV_%d_BAUD", instance);
-        param_get(param_find(buff), &_baudrate);
-        if (_baudrate < 9600 || _baudrate > 3000000) {
-            LOG_E("invalid baud rate %d", _baudrate);
-            return false;
+        if (param_get(param_find(buff), &_baudrate) == 0) {
+            if (_baudrate < 9600 || _baudrate > 3000000) {
+                LOG_E("invalid baud rate %d", _baudrate);
+                return false;
+            }
+        } else {
+            _baudrate = 57600;
+            LOG_W("use default baudrate: 57600");
         }
 
-    } else if (config == 10) {
+    } else if (config == 10) { // udp
 #if defined(MAVLINK_USING_UDP)
         set_protocol(Protocol::UDP);
 
@@ -1801,25 +1756,36 @@ bool Mavlink::init_by_instance(int instance) {
         rt_snprintf(buff, sizeof(buff), "MAV_%d_LOC_PORT", instance);
         param_get(param_find(buff), &_network_port);
 #else
+        LOG_W("not support udp connect");
         return false;
 #endif // MAVLINK_USING_UDP
     } else {
+        LOG_W("invalid MAV_%d_CONFIG: %d", instance, config);
         return false;
     }
 
     // 速率
     rt_snprintf(buff, sizeof(buff), "MAV_%d_RATE", instance);
-    param_get(param_find(buff), &_datarate);
-    if (_datarate > MAX_DATA_RATE) {
-        LOG_E("invalid data rate %d", _datarate);
-        return false;
+    if (param_get(param_find(buff), &_datarate) == 0) {
+        if (_datarate > MAX_DATA_RATE) {
+            LOG_E("invalid data rate %d", _datarate);
+            return false;
+        }
+    } else {
+        _datarate = 0;
     }
 
     // 转发
     int forward = 0;
-
     rt_snprintf(buff, sizeof(buff), "MAV_%d_FORWARD", instance);
-    if (param_get(param_find(buff), &forward) == 0 && forward != 0) {
+    if (param_get(param_find(buff), &forward) == 0) {
+        if (forward != 0) {
+            _forwarding_on = true;
+        } else {
+            _forwarding_on = false;
+        }
+    } else {
+        _forwarding_on = false;
     }
 
     return true;
@@ -1865,8 +1831,8 @@ int Mavlink::task_main(int argc, char *argv[]) {
     _interface_name = nullptr;
 
     // We don't care about the name and verb at this point.
-    argc -= 2;
-    argv += 2;
+    argc -= 1;
+    argv += 1;
 
     /* don't exit from getopt loop to leave getopt global variables in consistent state,
      * set error flag instead */
@@ -2100,7 +2066,7 @@ int Mavlink::task_main(int argc, char *argv[]) {
     }
 
     if (err_flag) {
-        usage();
+        // usage();
         return PX4_ERROR;
     }
 
@@ -2238,9 +2204,9 @@ int Mavlink::task_main(int argc, char *argv[]) {
 
     /* open the UART device after setting the instance, as it might block */
     if (get_protocol() == Protocol::SERIAL) {
-        _uart_fd = mavlink_open_uart(_baudrate, _device_name, _flow_control);
+        int ret = mavlink_open_uart(_baudrate, _device_name, _flow_control);
 
-        if (!_uart_fd) {
+        if (ret != 0 && !_is_usb_uart) {
             PX4_ERR("could not open %s", _device_name);
             return PX4_ERROR;
         }
@@ -3359,16 +3325,24 @@ extern "C" __EXPORT int mavlink_main(int argc, char *argv[]) {
 MSH_CMD_EXPORT_ALIAS(mavlink_main, mavlink, mavlink);
 
 int mavlink_start() {
-    const char *inst[] = {"-i0", "-i1", "-i2", "-i3", "-i4", "-i5"};
+    const char *inst[] = {"0", "1", "2", "3", "4", "5"};
 
-    const char *argv[] = {"mavlink", "start", nullptr};
+    const char *argv[] = {"mavlink", "start", "-i", nullptr};
     int         argc   = sizeof(argv) / sizeof(argv[0]);
+    int         ret    = 0;
 
-    int ret = 0;
-    for (unsigned i = 0; (i < MAVLINK_COMM_NUM_BUFFERS) && (i < sizeof(inst) / sizeof(inst[0])); i++) {
-        argv[2]  = inst[i];
+#ifdef BSP_USING_QEMU
+    // param_set_int32(param_id::MAV_0_CONFIG, 10);
+    unsigned max_instance = 2;
+#else
+    unsigned max_instance = MAVLINK_COMM_NUM_BUFFERS;
+#endif
+
+    for (unsigned i = 0; (i < max_instance) && (i < sizeof(inst) / sizeof(inst[0])); i++) {
+        argv[3]  = inst[i];
         ret     += mavlink_main(argc, (char **)argv);
     }
+
     return ret;
 }
 

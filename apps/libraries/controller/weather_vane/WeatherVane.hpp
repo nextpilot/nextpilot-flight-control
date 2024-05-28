@@ -21,7 +21,7 @@
 
 #include <module/module_params.hpp>
 #include <matrix/matrix/math.hpp>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/vehicle_attitude_setpoint.h>
 #include <uORB/topics/vehicle_local_position.h>
 #include <uORB/topics/vehicle_control_mode.h>

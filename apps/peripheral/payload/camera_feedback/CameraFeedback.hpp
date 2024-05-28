@@ -22,7 +22,7 @@
 
 #include <defines.h>
 #include <module/module_command.hpp>
-#include <module/module_params.h>
+#include <module/module_params.hpp>
 
 #include <workq/WorkItem.hpp>
 #include <uORB/Publication.hpp>

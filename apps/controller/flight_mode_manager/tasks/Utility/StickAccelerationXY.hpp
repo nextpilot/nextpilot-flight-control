@@ -19,7 +19,7 @@
 #include <module/module_params.hpp>
 #include <mathlib/math/filter/AlphaFilter.hpp>
 #include <matrix/math.hpp>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/takeoff_status.h>
 #include "SlewRate.hpp"
 
@@ -31,19 +31,22 @@ public:
     StickAccelerationXY(ModuleParams *parent);
     ~StickAccelerationXY() = default;
 
-    void  resetPosition();
-    void  resetPosition(const matrix::Vector2f &position);
-    void  resetVelocity(const matrix::Vector2f &velocity);
-    void  resetAcceleration(const matrix::Vector2f &acceleration);
-    void  generateSetpoints(matrix::Vector2f stick_xy, const float yaw, const float yaw_sp, const matrix::Vector3f &pos,
-                            const matrix::Vector2f &vel_sp_feedback, const float dt);
-    void  getSetpoints(matrix::Vector3f &pos_sp, matrix::Vector3f &vel_sp, matrix::Vector3f &acc_sp);
+    void resetPosition();
+    void resetPosition(const matrix::Vector2f &position);
+    void resetVelocity(const matrix::Vector2f &velocity);
+    void resetAcceleration(const matrix::Vector2f &acceleration);
+    void generateSetpoints(matrix::Vector2f stick_xy, const float yaw, const float yaw_sp, const matrix::Vector3f &pos,
+                           const matrix::Vector2f &vel_sp_feedback, const float dt);
+    void getSetpoints(matrix::Vector3f &pos_sp, matrix::Vector3f &vel_sp, matrix::Vector3f &acc_sp);
+
     float getMaxAcceleration() {
         return _param_mpc_acc_hor.get();
     };
+
     float getMaxJerk() {
         return _param_mpc_jerk_max.get();
     };
+
     void setVelocityConstraint(float vel) {
         _velocity_constraint = fmaxf(vel, FLT_EPSILON);
     };

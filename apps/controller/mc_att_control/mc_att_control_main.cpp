@@ -23,6 +23,10 @@
 #define LOG_TAG "mc_att_control"
 
 #include "mc_att_control.hpp"
+#include <hrtimer.h>
+#include <mathlib/math/Limits.hpp>
+#include <mathlib/math/Functions.hpp>
+
 #include "AttitudeControl/AttitudeControlMath.hpp"
 
 using namespace matrix;

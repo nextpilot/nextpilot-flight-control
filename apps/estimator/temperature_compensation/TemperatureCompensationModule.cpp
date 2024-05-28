@@ -12,7 +12,7 @@
 
 #include "temperature_calibration/temperature_calibration.h"
 
-#include <uORB/uORBPublication.hpp>
+#include <uORB/Publication.hpp>
 #include <uORB/topics/vehicle_command.h>
 
 #include <ulog/mavlink_log.h>

@@ -38,8 +38,8 @@
 #include <magnetometer/PX4Magnetometer.hpp>
 #include <ulog/mavlink_log.h>
 #include <module/module_params.hpp>
-#include <uORB/uORBPublication.hpp>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Publication.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/actuator_armed.h>
 #include <uORB/topics/actuator_outputs.h>
 #include <uORB/topics/airspeed.h>

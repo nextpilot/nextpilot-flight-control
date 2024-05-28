@@ -805,7 +805,7 @@ InputMavlinkGimbalV2::UpdateResult InputMavlinkGimbalV2::_process_set_manual_con
     if (set_manual_control.origin_sysid == control_data.sysid_primary_control && set_manual_control.origin_compid == control_data.compid_primary_control) {
         const matrix::Quatf q =
             (PX4_ISFINITE(set_manual_control.pitch) && PX4_ISFINITE(set_manual_control.yaw)) ? matrix::Quatf(
-                matrix::Eulerf(0.0f, set_manual_control.pitch, set_manual_control.yaw))
+                                                                                                   matrix::Eulerf(0.0f, set_manual_control.pitch, set_manual_control.yaw))
                                                                                              : matrix::Quatf(NAN, NAN, NAN, NAN);
 
         const matrix::Vector3f angular_velocity =

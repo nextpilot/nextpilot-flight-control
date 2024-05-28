@@ -18,7 +18,7 @@
 
 #include <defines.h>
 #include <module/module_command.hpp>
-#include <module/module_params.h>
+#include <module/module_params.hpp>
 #include <workq/ScheduledWorkItem.hpp>
 
 #include <px4_platform/cpuload.h>

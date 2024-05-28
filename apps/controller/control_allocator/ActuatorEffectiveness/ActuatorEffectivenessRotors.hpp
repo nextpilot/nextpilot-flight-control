@@ -20,7 +20,7 @@
 
 #include "ActuatorEffectiveness.hpp"
 #include <module/module_params.hpp>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 
 class ActuatorEffectivenessTilts;
 

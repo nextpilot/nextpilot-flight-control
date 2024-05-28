@@ -16,25 +16,25 @@
 
 #pragma once
 
-#include "nextpilot.h"
 
+#include <hrtimer.h>
 #include <pid_design/pid_design.hpp>
 #include <system_identification/system_identification.hpp>
-// #include <defines.h>
-// #include <module/module_command.hpp>
-// #include <module/module_params.hpp>
-
+#include <defines.h>
+#include <module/module_command.hpp>
+#include <module/module_params.hpp>
+#include <perf/perf_counter.h>
 #include <workq/WorkItem.hpp>
-// #include <uORB/uORBPublication.hpp>
-// #include <uORB/uORBSubscription.hpp>
-// #include <uORB/topics/actuator_controls_status.h>
-// #include <uORB/topics/manual_control_setpoint.h>
-// #include <uORB/topics/parameter_update.h>
-// #include <uORB/topics/autotune_attitude_control_status.h>
-// #include <uORB/topics/vehicle_angular_velocity.h>
-// #include <uORB/topics/vehicle_status.h>
-// #include <uORB/topics/vehicle_torque_setpoint.h>
-// #include <mathlib/mathlib.h>
+#include <uORB/Publication.hpp>
+#include <uORB/Subscription.hpp>
+#include <uORB/topics/actuator_controls_status.h>
+#include <uORB/topics/manual_control_setpoint.h>
+#include <uORB/topics/parameter_update.h>
+#include <uORB/topics/autotune_attitude_control_status.h>
+#include <uORB/topics/vehicle_angular_velocity.h>
+#include <uORB/topics/vehicle_status.h>
+#include <uORB/topics/vehicle_torque_setpoint.h>
+#include <mathlib/mathlib.h>
 
 using namespace time_literals;
 using namespace nextpilot;

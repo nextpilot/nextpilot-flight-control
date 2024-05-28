@@ -21,7 +21,7 @@
 #include <module/module_params.hpp>
 #include <matrix/matrix/math.hpp>
 #include <mathlib/mathlib.h>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/manual_control_setpoint.h>
 #include <uORB/topics/failsafe_flags.h>
 
@@ -44,6 +44,7 @@ public:
     const matrix::Vector4f &getPosition() {
         return _positions;
     }; // Raw stick position, no deadzone
+
     const matrix::Vector4f &getPositionExpo() {
         return _positions_expo;
     }; // Deadzone and expo applied
@@ -52,30 +53,39 @@ public:
     float getRoll() const {
         return _positions(1);
     }
+
     float getRollExpo() const {
         return _positions_expo(1);
     }
+
     float getPitch() const {
         return _positions(0);
     }
+
     float getPitchExpo() const {
         return _positions_expo(0);
     }
+
     float getYaw() const {
         return _positions(3);
     }
+
     float getYawExpo() const {
         return _positions_expo(3);
     }
+
     float getThrottleZeroCentered() const {
         return -_positions(2);
     } // Convert Z-axis(down) command to Up-axis frame
+
     float getThrottleZeroCenteredExpo() const {
         return -_positions_expo(2);
     }
+
     const matrix::Vector2f getPitchRoll() {
         return _positions.slice<2, 1>(0, 0);
     }
+
     const matrix::Vector2f getPitchRollExpo() {
         return _positions_expo.slice<2, 1>(0, 0);
     }

@@ -42,8 +42,8 @@
 #include <accelerometer/PX4Accelerometer.hpp>
 #include <gyroscope/PX4Gyroscope.hpp>
 #include <perf/perf_counter.h>
-#include <uORB/uORBPublication.hpp>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Publication.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/airspeed.h>
 #include <uORB/topics/actuator_outputs.h>

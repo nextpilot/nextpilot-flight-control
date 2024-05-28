@@ -20,7 +20,7 @@
 #include <matrix/Matrix.hpp>
 
 // uORB Subscriptions
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/vehicle_command.h>
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/actuator_armed.h>
@@ -39,7 +39,7 @@
 #include <uORB/topics/vehicle_odometry.h>
 
 // uORB Publications
-#include <uORB/uORBPublication.hpp>
+#include <uORB/Publication.hpp>
 #include <uORB/topics/vehicle_local_position.h>
 #include <uORB/topics/vehicle_global_position.h>
 #include <uORB/topics/estimator_states.h>

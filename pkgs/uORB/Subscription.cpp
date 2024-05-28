@@ -8,8 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include "uORBSubscription.hpp"
-#include "uORBDeviceNode.hpp"
+#include "Subscription.hpp"
+#include "DeviceNode.hpp"
 #include "uORB.h"
 
 using namespace nextpilot::uORB;

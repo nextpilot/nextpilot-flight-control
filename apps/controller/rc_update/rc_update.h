@@ -10,32 +10,23 @@
 
 #pragma once
 
-/**
- * @file rc_update.h
- *
- * @author Beat Kueng <beat-kueng@gmx.net>
- */
-
-#include "nextpilot.h"
-
-
-// #include <defines.h>
-// #include <module/module_command.hpp>
-// #include <module/module_params.hpp>
+#include <defines.h>
+#include <module/module_command.hpp>
+#include <module/module_params.hpp>
 
 #include <workq/WorkItem.hpp>
-// #include <hrtimer.h>
-// #include <hysteresis/hysteresis.h>
-// #include <mathlib/mathlib.h>
-// #include <perf/perf_counter.h>
-// #include <uORB/uORBPublication.hpp>
-// #include <uORB/uORBSubscription.hpp>
-// #include <uORB/topics/manual_control_setpoint.h>
-// #include <uORB/topics/manual_control_switches.h>
-// #include <uORB/topics/input_rc.h>
-// #include <uORB/topics/rc_channels.h>
-// #include <uORB/topics/rc_parameter_map.h>
-// #include <uORB/topics/parameter_update.h>
+#include <hrtimer.h>
+#include <hysteresis/hysteresis.h>
+#include <mathlib/mathlib.h>
+#include <perf/perf_counter.h>
+#include <uORB/Publication.hpp>
+#include <uORB/Subscription.hpp>
+#include <uORB/topics/manual_control_setpoint.h>
+#include <uORB/topics/manual_control_switches.h>
+#include <uORB/topics/input_rc.h>
+#include <uORB/topics/rc_channels.h>
+#include <uORB/topics/rc_parameter_map.h>
+#include <uORB/topics/parameter_update.h>
 
 using namespace time_literals;
 using namespace nextpilot;

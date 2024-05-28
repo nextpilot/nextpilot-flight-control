@@ -22,8 +22,8 @@ uint8_t orb_get_queue_size(const orb_advert_t node);
 // int          orb_publish_auto(const struct orb_metadata *meta, orb_advert_t *node, const void *data, int *instance);
 
 #ifdef __cplusplus
-#include <uORB/topics/uORBTopics.hpp>
-#include "uORBDeviceNode.hpp"
+#   include <uORB/topics/uORBTopics.hpp>
+#   include "DeviceNode.hpp"
 
 namespace nextpilot::uORB {
 
@@ -92,6 +92,7 @@ public:
     Publication(ORB_ID id) :
         PublicationBase(id) {
     }
+
     Publication(const orb_metadata *meta) :
         PublicationBase(static_cast<ORB_ID>(meta->o_id)) {
     }
@@ -131,6 +132,7 @@ public:
     PublicationData(ORB_ID id) :
         Publication<T>(id) {
     }
+
     PublicationData(const orb_metadata *meta) :
         Publication<T>(meta) {
     }
@@ -138,6 +140,7 @@ public:
     T &get() {
         return _data;
     }
+
     void set(const T &data) {
         _data = data;
     }
@@ -146,6 +149,7 @@ public:
     bool update() {
         return Publication<T>::publish(_data);
     }
+
     bool update(const T &data) {
         _data = data;
         return Publication<T>::publish(_data);
@@ -220,6 +224,7 @@ public:
     PublicationMultiData(ORB_ID id) :
         PublicationMulti<T>(id) {
     }
+
     PublicationMultiData(const orb_metadata *meta) :
         PublicationMulti<T>(meta) {
     }
@@ -227,6 +232,7 @@ public:
     T &get() {
         return _data;
     }
+
     void set(const T &data) {
         _data = data;
     }
@@ -235,6 +241,7 @@ public:
     bool update() {
         return PublicationMulti<T>::publish(_data);
     }
+
     bool update(const T &data) {
         _data = data;
         return PublicationMulti<T>::publish(_data);

@@ -21,7 +21,7 @@
 #include "Sticks.hpp"
 #include "StickTiltXY.hpp"
 #include "StickYaw.hpp"
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 
 class FlightTaskManualAltitude : public FlightTask {
 public:
@@ -61,10 +61,11 @@ protected:
                                     (ParamFloat<params_id::MPC_LAND_ALT1>)_param_mpc_land_alt1, /**< altitude at which to start downwards slowdown */
                                     (ParamFloat<params_id::MPC_LAND_ALT2>)_param_mpc_land_alt2, /**< altitude below which to land with land speed */
                                     (ParamFloat<params_id::MPC_LAND_SPEED>)
-                                        _param_mpc_land_speed, /**< desired downwards speed when approaching the ground */
+                                        _param_mpc_land_speed,                                  /**< desired downwards speed when approaching the ground */
                                     (ParamFloat<params_id::MPC_TKO_SPEED>)
-                                        _param_mpc_tko_speed /**< desired upwards speed when still close to the ground */
+                                        _param_mpc_tko_speed                                    /**< desired upwards speed when still close to the ground */
     )
+
 private:
     bool _isYawInput();
     void _unlockYaw();
@@ -97,7 +98,7 @@ private:
 
     void setGearAccordingToSwitch();
 
-    uint8_t _reset_counter = 0; /**< counter for estimator resets in z-direction */
+    uint8_t _reset_counter = 0;                        /**< counter for estimator resets in z-direction */
 
     float _min_distance_to_ground{(float)(-INFINITY)}; /**< min distance to ground constraint */
     float _max_distance_to_ground{(float)INFINITY};    /**< max distance to ground constraint */

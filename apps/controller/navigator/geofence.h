@@ -23,7 +23,7 @@
 #include <hrtimer.h>
 #include <geo/geo.h>
 #include <defines.h>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/home_position.h>
 #include <uORB/topics/vehicle_global_position.h>
 #include <uORB/topics/sensor_gps.h>

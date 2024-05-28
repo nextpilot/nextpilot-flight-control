@@ -12,6 +12,26 @@
 
 #include "FlightTask.hpp"
 #include "FlightTasks_generated.hpp"
+#include <hrtimer.h>
+#include <module/module_command.hpp>
+#include <module/module_params.hpp>
+#include <workq/WorkItemScheduled.hpp>
+#include <perf/perf_counter.h>
+
+#include <uORB/Subscription.hpp>
+#include <uORB/Publication.hpp>
+#include <uORB/topics/landing_gear.h>
+#include <uORB/topics/parameter_update.h>
+#include <uORB/topics/takeoff_status.h>
+#include <uORB/topics/trajectory_setpoint.h>
+#include <uORB/topics/vehicle_attitude_setpoint.h>
+#include <uORB/topics/vehicle_command.h>
+#include <uORB/topics/vehicle_control_mode.h>
+#include <uORB/topics/vehicle_land_detected.h>
+#include <uORB/topics/vehicle_local_position.h>
+#include <uORB/topics/vehicle_local_position_setpoint.h>
+#include <uORB/topics/vehicle_status.h>
+
 #include <new>
 
 enum class FlightTaskError : int {

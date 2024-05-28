@@ -11,7 +11,7 @@
 #ifndef HYGROMETER_SENSOR_HPP
 #define HYGROMETER_SENSOR_HPP
 
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/sensor_hygrometer.h>
 
 class MavlinkStreamHygrometerSensor : public MavlinkStream {

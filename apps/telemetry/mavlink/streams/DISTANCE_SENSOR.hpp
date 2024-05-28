@@ -11,7 +11,7 @@
 #ifndef DISTANCE_SENSOR_HPP
 #define DISTANCE_SENSOR_HPP
 
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/distance_sensor.h>
 
 class MavlinkStreamDistanceSensor : public MavlinkStream {

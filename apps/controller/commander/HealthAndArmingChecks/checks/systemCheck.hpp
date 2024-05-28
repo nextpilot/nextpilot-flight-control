@@ -11,7 +11,7 @@
 #pragma once
 
 #include "../Common.hpp"
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/actuator_armed.h>
 
 using namespace nextpilot;

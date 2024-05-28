@@ -10,45 +10,46 @@
 
 #pragma once
 
-#include "nextpilot.h"
-// #include <hrtimer.h>
+
+#include <hrtimer.h>
 #include "ecl_pitch_controller.h"
 #include "ecl_roll_controller.h"
 #include "ecl_wheel_controller.h"
 #include "ecl_yaw_controller.h"
-// #include <mathlib/mathlib.h>
-// #include <param/param.h>
-// #include <perf/perf_counter.h>
-// #include <matrix/math.hpp>
+#include <mathlib/mathlib.h>
+#include <param/param.h>
+#include <perf/perf_counter.h>
+#include <matrix/math.hpp>
 
-// #include <defines.h>
-// #include <module/module_command.hpp>
-// #include <module/module_params.hpp>
+#include <defines.h>
+#include <module/module_command.hpp>
+#include <module/module_params.hpp>
+#include <workq/WorkItemScheduled.hpp>
 
-
-// #include <workq/WorkItemScheduled.hpp>
-// #include <uORB/uORBPublication.hpp>
-// #include <uORB/uORBSubscription.hpp>
-// #include <uORB/topics/airspeed_validated.h>
-// #include <uORB/topics/autotune_attitude_control_status.h>
-// #include <uORB/topics/landing_gear_wheel.h>
-// #include <uORB/topics/manual_control_setpoint.h>
-// #include <uORB/topics/parameter_update.h>
-// #include <uORB/topics/vehicle_angular_velocity.h>
-// #include <uORB/topics/vehicle_attitude.h>
-// #include <uORB/topics/vehicle_attitude_setpoint.h>
-// #include <uORB/topics/vehicle_control_mode.h>
-// #include <uORB/topics/vehicle_local_position.h>
-// #include <uORB/topics/vehicle_land_detected.h>
-// #include <uORB/topics/vehicle_rates_setpoint.h>
-// #include <uORB/topics/vehicle_status.h>
+#include <uORB/Publication.hpp>
+#include <uORB/Subscription.hpp>
+#include <uORB/topics/airspeed_validated.h>
+#include <uORB/topics/autotune_attitude_control_status.h>
+#include <uORB/topics/landing_gear_wheel.h>
+#include <uORB/topics/manual_control_setpoint.h>
+#include <uORB/topics/parameter_update.h>
+#include <uORB/topics/vehicle_angular_velocity.h>
+#include <uORB/topics/vehicle_attitude.h>
+#include <uORB/topics/vehicle_attitude_setpoint.h>
+#include <uORB/topics/vehicle_control_mode.h>
+#include <uORB/topics/vehicle_local_position.h>
+#include <uORB/topics/vehicle_land_detected.h>
+#include <uORB/topics/vehicle_rates_setpoint.h>
+#include <uORB/topics/vehicle_status.h>
 
 using matrix::Eulerf;
 using matrix::Quatf;
 
-using uORB::SubscriptionData;
-
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
+
+using uORB::SubscriptionData;
 
 class FixedwingAttitudeControl final : public ModuleCommand<FixedwingAttitudeControl>, public ModuleParams, public WorkItemScheduled {
 public:

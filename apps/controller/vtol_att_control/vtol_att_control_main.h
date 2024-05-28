@@ -25,42 +25,45 @@
  */
 
 #pragma once
-#include "nextpilot.h"
-// #include <hrtimer.h>
-// #include <geo/geo.h>
-// #include <mathlib/mathlib.h>
-// #include <perf/perf_counter.h>
-// #include <matrix/math.hpp>
-// #include <defines.h>
-// #include <module/module_command.hpp>
-// #include <module/module_params.hpp>
-// #include <uORB/uORBPublication.hpp>
-// #include <uORB/uORBSubscription.hpp>
-// #include <uORB/topics/action_request.h>
-// #include <uORB/topics/airspeed_validated.h>
-// #include <uORB/topics/home_position.h>
-// #include <uORB/topics/normalized_unsigned_setpoint.h>
-// #include <uORB/topics/vehicle_air_data.h>
-// #include <uORB/topics/parameter_update.h>
-// #include <uORB/topics/position_setpoint_triplet.h>
-// #include <uORB/topics/tecs_status.h>
-// #include <uORB/topics/vehicle_attitude.h>
-// #include <uORB/topics/vehicle_attitude_setpoint.h>
-// #include <uORB/topics/vehicle_command.h>
-// #include <uORB/topics/vehicle_command_ack.h>
-// #include <uORB/topics/vehicle_control_mode.h>
-// #include <uORB/topics/vehicle_land_detected.h>
-// #include <uORB/topics/vehicle_local_position.h>
-// #include <uORB/topics/vehicle_local_position_setpoint.h>
-// #include <uORB/topics/vtol_vehicle_status.h>
-// #include <uORB/topics/vehicle_status.h>
-// #include <uORB/topics/vehicle_thrust_setpoint.h>
-// #include <uORB/topics/vehicle_torque_setpoint.h>
+
+#include <hrtimer.h>
+#include <geo/geo.h>
+#include <mathlib/mathlib.h>
+#include <perf/perf_counter.h>
+#include <matrix/math.hpp>
+#include <defines.h>
+#include <module/module_command.hpp>
+#include <module/module_params.hpp>
+#include <workq/WorkItem.hpp>
+#include <uORB/Publication.hpp>
+#include <uORB/Subscription.hpp>
+#include <uORB/topics/action_request.h>
+#include <uORB/topics/airspeed_validated.h>
+#include <uORB/topics/home_position.h>
+#include <uORB/topics/normalized_unsigned_setpoint.h>
+#include <uORB/topics/vehicle_air_data.h>
+#include <uORB/topics/parameter_update.h>
+#include <uORB/topics/position_setpoint_triplet.h>
+#include <uORB/topics/tecs_status.h>
+#include <uORB/topics/vehicle_attitude.h>
+#include <uORB/topics/vehicle_attitude_setpoint.h>
+#include <uORB/topics/vehicle_command.h>
+#include <uORB/topics/vehicle_command_ack.h>
+#include <uORB/topics/vehicle_control_mode.h>
+#include <uORB/topics/vehicle_land_detected.h>
+#include <uORB/topics/vehicle_local_position.h>
+#include <uORB/topics/vehicle_local_position_setpoint.h>
+#include <uORB/topics/vtol_vehicle_status.h>
+#include <uORB/topics/vehicle_status.h>
+#include <uORB/topics/vehicle_thrust_setpoint.h>
+#include <uORB/topics/vehicle_torque_setpoint.h>
+
 #include "standard.h"
 #include "tailsitter.h"
 #include "tiltrotor.h"
 
 using namespace time_literals;
+using namespace nextpilot;
 using namespace nextpilot::global_params;
 
 extern "C" __EXPORT int vtol_att_control_main(int argc, char *argv[]);

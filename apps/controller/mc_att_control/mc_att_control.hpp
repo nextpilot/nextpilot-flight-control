@@ -10,7 +10,26 @@
 
 #pragma once
 
-#include "nextpilot.h"
+#include <matrix/matrix/math.hpp>
+#include <perf/perf_counter.h>
+#include <defines.h>
+#include <module/module_command.hpp>
+#include <module/module_params.hpp>
+#include <ulog/mavlink_log.h>
+#include <workq/WorkItem.hpp>
+#include <uORB/Publication.hpp>
+#include <uORB/Subscription.hpp>
+
+#include <uORB/topics/manual_control_setpoint.h>
+#include <uORB/topics/parameter_update.h>
+#include <uORB/topics/autotune_attitude_control_status.h>
+#include <uORB/topics/vehicle_attitude.h>
+#include <uORB/topics/vehicle_attitude_setpoint.h>
+#include <uORB/topics/vehicle_control_mode.h>
+#include <uORB/topics/vehicle_local_position.h>
+#include <uORB/topics/vehicle_rates_setpoint.h>
+#include <uORB/topics/vehicle_status.h>
+#include <mathlib/math/filter/AlphaFilter.hpp>
 #include "AttitudeControl/AttitudeControl.hpp"
 
 using namespace time_literals;

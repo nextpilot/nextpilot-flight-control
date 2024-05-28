@@ -28,7 +28,7 @@
 #include <sensor_calibration/Gyroscope.hpp>
 #include <sensor_calibration/Utilities.hpp>
 #include <ulog/mavlink_log.h>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/sensor_gyro.h>
 
 static constexpr char     sensor_name[]{"gyro"};

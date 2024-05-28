@@ -18,7 +18,23 @@
 
 #pragma once
 
-#include "nextpilot.h"
+#include <hrtimer.h>
+#include <hysteresis/hysteresis.h>
+#include <perf/perf_counter.h>
+#include <defines.h>
+#include <module/module_command.hpp>
+#include <module/module_params.hpp>
+#include <workq/WorkItem.hpp>
+#include <uORB/Publication.hpp>
+#include <uORB/Subscription.hpp>
+
+#include <uORB/topics/hover_thrust_estimate.h>
+#include <uORB/topics/parameter_update.h>
+#include <uORB/topics/vehicle_land_detected.h>
+#include <uORB/topics/vehicle_local_position.h>
+#include <uORB/topics/vehicle_local_position_setpoint.h>
+#include <uORB/topics/vehicle_status.h>
+
 #include "zero_order_hover_thrust_ekf.hpp"
 
 using namespace time_literals;

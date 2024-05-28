@@ -21,7 +21,7 @@
 #include "navigator_mode.h"
 #include "mission_block.h"
 #include <module/module_params.hpp>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/home_position.h>
 #include <uORB/topics/rtl_time_estimate.h>
 #include <uORB/topics/vehicle_status.h>

@@ -12,7 +12,7 @@
 
 #include "Common.hpp"
 #include <uORB/topics/event.h>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 
 #include <stdint.h>
 
@@ -128,7 +128,8 @@ TEST_F(ReporterTest, reporting) {
     event_sub.subscribe();
     event_s event;
 
-    while (event_sub.update(&event)); // clear all updates
+    while (event_sub.update(&event))
+        ;                         // clear all updates
 
     for (int j = 0; j < 2; ++j) { // test with and without additional report arguments
         const bool with_arg = j == 0;
@@ -220,7 +221,8 @@ TEST_F(ReporterTest, reporting_multiple) {
     event_sub.subscribe();
     event_s event;
 
-    while (event_sub.update(&event)); // clear all updates
+    while (event_sub.update(&event))
+        ; // clear all updates
 
     for (int i = 0; i < 3; ++i) {
         reporter.reset();

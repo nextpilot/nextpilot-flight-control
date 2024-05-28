@@ -23,7 +23,7 @@
 
 #include <hrtimer.h>
 #include <ulog/mavlink_log.h>
-#include <uORB/uORBPublication.hpp>
+#include <uORB/Publication.hpp>
 #include <uORB/topics/mission.h>
 #include <uORB/topics/position_setpoint_triplet.h>
 #include <uORB/topics/vehicle_command.h>

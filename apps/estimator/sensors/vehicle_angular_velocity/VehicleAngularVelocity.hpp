@@ -21,8 +21,8 @@
 #include <perf/perf_counter.h>
 #include <module/module_params.hpp>
 #include <workq/WorkItemScheduled.hpp>
-#include <uORB/uORBPublication.hpp>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Publication.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/esc_status.h>
 #include <uORB/topics/estimator_selector_status.h>
 #include <uORB/topics/estimator_sensor_bias.h>

@@ -17,7 +17,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/sensor_gps.h>
 #include <hrtimer.h>
 #include <events/events.h>

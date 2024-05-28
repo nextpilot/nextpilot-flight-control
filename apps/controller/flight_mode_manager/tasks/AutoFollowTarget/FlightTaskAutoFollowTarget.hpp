@@ -20,8 +20,21 @@
 #pragma once
 
 #include "FlightTaskAuto.hpp"
-#include "Sticks.hpp"
 #include "follow_target_estimator/TargetEstimator.hpp"
+#include "Sticks.hpp"
+
+#include <param/param.h>
+#include <mathlib/mathlib.h>
+
+#include <uORB/Subscription.hpp>
+#include <uORB/Publication.hpp>
+#include <uORB/topics/follow_target_status.h>
+#include <uORB/topics/follow_target_estimator.h>
+#include <uORB/topics/gimbal_manager_set_attitude.h>
+#include <uORB/topics/vehicle_command.h>
+
+#include <mathlib/math/filter/second_order_reference_model.hpp>
+#include <matrix/matrix/helper_functions.hpp>
 #include <motion_planning/VelocitySmoothing.hpp>
 
 // << Follow Target Behavior related constants >>

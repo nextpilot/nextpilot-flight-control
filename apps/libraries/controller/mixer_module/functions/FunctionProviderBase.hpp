@@ -13,7 +13,7 @@
 #include <limits.h>
 #include <float.h>
 #include <mixer_module/output_functions.hpp>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <workq/WorkItemScheduled.hpp>
 
 using namespace nextpilot;

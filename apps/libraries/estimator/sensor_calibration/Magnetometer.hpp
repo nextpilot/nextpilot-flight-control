@@ -14,7 +14,7 @@
 #include <matrix/matrix/math.hpp>
 
 #include <ulog/log.h>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/battery_status.h>
 
 using namespace nextpilot;

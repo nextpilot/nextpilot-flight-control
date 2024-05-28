@@ -20,7 +20,7 @@
 #include "ActuatorEffectivenessRotors.hpp"
 #include "ActuatorEffectivenessControlSurfaces.hpp"
 #include <uORB/topics/normalized_unsigned_setpoint.h>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 
 using namespace nextpilot;
 

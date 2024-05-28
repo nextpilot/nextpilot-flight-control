@@ -10,7 +10,23 @@
 
 #pragma once
 
-#include "nextpilot.h"
+#include <hrtimer.h>
+#include <hysteresis/hysteresis.h>
+#include <perf/perf_counter.h>
+#include <defines.h>
+#include <module/module_command.hpp>
+#include <module/module_params.hpp>
+#include <workq/WorkItemScheduled.hpp>
+
+#include <uORB/topics/action_request.h>
+#include <uORB/topics/landing_gear.h>
+#include <uORB/topics/manual_control_switches.h>
+#include <uORB/topics/manual_control_setpoint.h>
+#include <uORB/topics/parameter_update.h>
+#include <uORB/topics/vehicle_status.h>
+#include <uORB/Publication.hpp>
+#include <uORB/Subscription.hpp>
+
 #include "ManualControlSelector.hpp"
 #include "MovingDiff.hpp"
 

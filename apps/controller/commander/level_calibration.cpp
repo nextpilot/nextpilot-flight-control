@@ -22,7 +22,7 @@
 #include <param/param.h>
 #include <ulog/mavlink_log.h>
 #include <uORB/topics/vehicle_attitude.h>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 
 using namespace time_literals;
 using namespace matrix;

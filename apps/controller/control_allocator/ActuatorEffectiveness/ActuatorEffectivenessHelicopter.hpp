@@ -12,7 +12,7 @@
 
 #include "ActuatorEffectiveness.hpp"
 #include <module/module_params.hpp>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/manual_control_switches.h>
 
@@ -76,6 +76,7 @@ private:
         bool thrust_pos;
         bool thrust_neg;
     };
+
     static void setSaturationFlag(float coeff, bool &positive_flag, bool &negative_flag);
 
     struct ParamHandlesSwashPlate {
@@ -83,6 +84,7 @@ private:
         param_t arm_length;
         param_t trim;
     };
+
     struct ParamHandles {
         ParamHandlesSwashPlate swash_plate_servos[NUM_SWASH_PLATE_SERVOS_MAX];
         param_t                num_swash_plate_servos;
@@ -94,6 +96,7 @@ private:
         param_t                yaw_ccw;
         param_t                spoolup_time;
     };
+
     ParamHandles _param_handles{};
 
     Geometry _geometry{};

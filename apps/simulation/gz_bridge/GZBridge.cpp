@@ -10,7 +10,7 @@
 
 #include "GZBridge.hpp"
 
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 
 #include <geo/geo.h>
 #include <mathlib/mathlib.h>
@@ -47,7 +47,7 @@ int GZBridge::init() {
         gz::msgs::EntityFactory req{};
         req.set_sdf_filename(_model_sim + "/model.sdf");
 
-        req.set_name(_model_name); // New name for the entity, overrides the name on the SDF.
+        req.set_name(_model_name);     // New name for the entity, overrides the name on the SDF.
 
         req.set_allow_renaming(false); // allowed to rename the entity in case of overlap with existing entities
 
@@ -145,8 +145,7 @@ int GZBridge::init() {
 
 #endif
     // Air pressure: /world/$WORLD/model/$MODEL/link/base_link/sensor/air_pressure_sensor/air_pressure
-    std::string air_pressure_topic = "/world/" + _world_name + "/model/" + _model_name +
-                                     "/link/base_link/sensor/air_pressure_sensor/air_pressure";
+    std::string air_pressure_topic = "/world/" + _world_name + "/model/" + _model_name + "/link/base_link/sensor/air_pressure_sensor/air_pressure";
 
     if (!_node.Subscribe(air_pressure_topic, &GZBridge::barometerCallback, this)) {
         PX4_ERR("failed to subscribe to %s", air_pressure_topic.c_str());
@@ -606,17 +605,17 @@ void GZBridge::odometryCallback(const gz::msgs::OdometryWithCovariance &odometry
     //  pose 6x6 cross-covariance matrix
     //  (states: x, y, z, roll, pitch, yaw).
     //  If unknown, assign NaN value to first element in the array.
-    odom.position_variance[0] = odometry.pose_with_covariance().covariance().data(7);  // Y  row 1, col 1
-    odom.position_variance[1] = odometry.pose_with_covariance().covariance().data(0);  // X  row 0, col 0
-    odom.position_variance[2] = odometry.pose_with_covariance().covariance().data(14); // Z  row 2, col 2
+    odom.position_variance[0] = odometry.pose_with_covariance().covariance().data(7);     // Y  row 1, col 1
+    odom.position_variance[1] = odometry.pose_with_covariance().covariance().data(0);     // X  row 0, col 0
+    odom.position_variance[2] = odometry.pose_with_covariance().covariance().data(14);    // Z  row 2, col 2
 
     odom.orientation_variance[0] = odometry.pose_with_covariance().covariance().data(21); // R  row 3, col 3
     odom.orientation_variance[1] = odometry.pose_with_covariance().covariance().data(28); // P  row 4, col 4
     odom.orientation_variance[2] = odometry.pose_with_covariance().covariance().data(35); // Y  row 5, col 5
 
-    odom.velocity_variance[0] = odometry.twist_with_covariance().covariance().data(7);  // Y  row 1, col 1
-    odom.velocity_variance[1] = odometry.twist_with_covariance().covariance().data(0);  // X  row 0, col 0
-    odom.velocity_variance[2] = odometry.twist_with_covariance().covariance().data(14); // Z  row 2, col 2
+    odom.velocity_variance[0] = odometry.twist_with_covariance().covariance().data(7);    // Y  row 1, col 1
+    odom.velocity_variance[1] = odometry.twist_with_covariance().covariance().data(0);    // X  row 0, col 0
+    odom.velocity_variance[2] = odometry.twist_with_covariance().covariance().data(14);   // Z  row 2, col 2
 
     // odom.reset_counter = vpe.reset_counter;
     _visual_odometry_pub.publish(odom);

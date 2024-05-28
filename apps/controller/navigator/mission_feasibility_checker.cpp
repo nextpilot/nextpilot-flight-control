@@ -25,7 +25,7 @@
 #include <geo/geo.h>
 #include <mathlib/mathlib.h>
 #include <ulog/mavlink_log.h>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <events/events.h>
 
 bool MissionFeasibilityChecker::checkMissionFeasible(const mission_s &mission) {

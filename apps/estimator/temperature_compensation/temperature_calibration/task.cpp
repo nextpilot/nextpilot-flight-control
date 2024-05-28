@@ -16,7 +16,7 @@
  * @author Beat Küng <beat-kueng@gmx.net>
  */
 
-#include <uORB/uORBPublication.hpp>
+#include <uORB/Publication.hpp>
 #include <uORB/topics/sensor_gyro.h>
 #include <mathlib/mathlib.h>
 #include <atomic/atomic.hpp>

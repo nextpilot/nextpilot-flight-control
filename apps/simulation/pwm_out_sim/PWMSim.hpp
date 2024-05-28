@@ -16,12 +16,12 @@
 #include <mixer_module/mixer_module.hpp>
 #include <module/module_command.hpp>
 #include <uORB/topics/parameter_update.h>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 
 #if defined(CONFIG_ARCH_BOARD_PX4_SITL)
-#define PARAM_PREFIX "PWM_MAIN"
+#   define PARAM_PREFIX "PWM_MAIN"
 #else
-#define PARAM_PREFIX "HIL_ACT"
+#   define PARAM_PREFIX "HIL_ACT"
 #endif
 
 using namespace time_literals;

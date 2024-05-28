@@ -11,7 +11,7 @@
 #pragma once
 
 #include "../Common.hpp"
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/input_rc.h>
 
 using namespace nextpilot;
@@ -33,6 +33,7 @@ private:
         param_t max;
         param_t dz;
     };
+
     struct ParamValues {
         float min;
         float trim;

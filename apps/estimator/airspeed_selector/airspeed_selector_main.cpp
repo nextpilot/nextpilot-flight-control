@@ -24,7 +24,7 @@
 #include <airspeed/airspeed.h>
 #include <ulog/mavlink_log.h>
 
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/airspeed.h>
 #include <uORB/topics/airspeed_validated.h>
 #include <uORB/topics/estimator_selector_status.h>
@@ -32,7 +32,7 @@
 #include <uORB/topics/mavlink_log.h>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/position_setpoint.h>
-#include <uORB/uORBPublication.hpp>
+#include <uORB/Publication.hpp>
 #include <uORB/topics/vehicle_acceleration.h>
 #include <uORB/topics/vehicle_air_data.h>
 #include <uORB/topics/vehicle_attitude.h>

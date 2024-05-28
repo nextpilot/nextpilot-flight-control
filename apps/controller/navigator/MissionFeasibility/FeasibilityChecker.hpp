@@ -16,7 +16,7 @@
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/vehicle_global_position.h>
 #include <uORB/topics/vehicle_land_detected.h>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <module/module_params.hpp>
 
 using namespace nextpilot::global_params;
@@ -52,14 +52,7 @@ public:
      * @return True At least one check failed.
      */
     bool someCheckFailed() {
-        return _takeoff_failed ||
-               _distance_first_waypoint_failed ||
-               _distance_between_waypoints_failed ||
-               _land_pattern_validity_failed ||
-               _fixed_wing_land_approach_failed ||
-               _below_home_alt_failed ||
-               _mission_validity_failed ||
-               _takeoff_land_available_failed;
+        return _takeoff_failed || _distance_first_waypoint_failed || _distance_between_waypoints_failed || _land_pattern_validity_failed || _fixed_wing_land_approach_failed || _below_home_alt_failed || _mission_validity_failed || _takeoff_land_available_failed;
     }
 
     /**

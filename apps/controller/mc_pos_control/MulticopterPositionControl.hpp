@@ -14,35 +14,34 @@
 
 #pragma once
 
-#include "nextpilot.h"
 #include "PositionControl/PositionControl.hpp"
 #include "Takeoff/Takeoff.hpp"
-// #include <hrtimer.h>
+
+#include <hrtimer.h>
 #include <controllib/blocks.hpp>
-// #include <perf/perf_counter.h>
+#include <perf/perf_counter.h>
 #include <slew_rate/SlewRateYaw.hpp>
-// #include <ulog/mavlink_log.h>
+#include <ulog/mavlink_log.h>
+#include <defines.h>
+#include <module/module_command.hpp>
+#include <module/module_params.hpp>
+#include <workq/WorkItemScheduled.hpp>
 
-
-// #include <defines.h>
-// #include <module/module_command.hpp>
-// #include <module/module_params.hpp>
-// #include <workq/WorkItemScheduled.hpp>
-
-
-// #include <uORB/uORBPublication.hpp>
-// #include <uORB/uORBSubscription.hpp>
-// #include <uORB/topics/hover_thrust_estimate.h>
-// #include <uORB/topics/parameter_update.h>
-// #include <uORB/topics/trajectory_setpoint.h>
-// #include <uORB/topics/vehicle_attitude_setpoint.h>
-// #include <uORB/topics/vehicle_constraints.h>
-// #include <uORB/topics/vehicle_control_mode.h>
-// #include <uORB/topics/vehicle_land_detected.h>
-// #include <uORB/topics/vehicle_local_position.h>
-// #include <uORB/topics/vehicle_local_position_setpoint.h>
+#include <uORB/Publication.hpp>
+#include <uORB/Subscription.hpp>
+#include <uORB/topics/hover_thrust_estimate.h>
+#include <uORB/topics/parameter_update.h>
+#include <uORB/topics/trajectory_setpoint.h>
+#include <uORB/topics/vehicle_attitude_setpoint.h>
+#include <uORB/topics/vehicle_constraints.h>
+#include <uORB/topics/vehicle_control_mode.h>
+#include <uORB/topics/vehicle_land_detected.h>
+#include <uORB/topics/vehicle_local_position.h>
+#include <uORB/topics/vehicle_local_position_setpoint.h>
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class MulticopterPositionControl : public ModuleCommand<MulticopterPositionControl>, public control::SuperBlock, public ModuleParams, public WorkItemScheduled {
 public:

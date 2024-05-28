@@ -12,7 +12,7 @@
 
 #include <hrtimer.h>
 #include <conversion/rotation.h>
-#include <uORB/uORBPublication.hpp>
+#include <uORB/Publication.hpp>
 #include <uORB/topics/sensor_gyro.h>
 #include <uORB/topics/sensor_gyro_fifo.h>
 

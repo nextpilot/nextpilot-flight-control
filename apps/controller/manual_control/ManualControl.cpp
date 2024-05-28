@@ -12,6 +12,9 @@
 
 #include "ManualControl.hpp"
 
+#include <events/events.h>
+#include <ulog/mavlink_log.h>
+#include <uORB/topics/vehicle_command.h>
 ManualControl::ManualControl() :
     ModuleParams(nullptr),
     WorkItemScheduled(MODULE_NAME, wq_configurations::hp_default) {

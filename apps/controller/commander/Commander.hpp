@@ -28,7 +28,7 @@
 #include <module/module_thread.hpp>
 
 // publications
-#include <uORB/uORBPublication.hpp>
+#include <uORB/Publication.hpp>
 #include <uORB/topics/actuator_armed.h>
 #include <uORB/topics/actuator_test.h>
 #include <uORB/topics/failure_detector_status.h>
@@ -37,7 +37,7 @@
 #include <uORB/topics/vehicle_status.h>
 
 // subscriptions
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/action_request.h>
 #include <uORB/topics/airspeed.h>
 #include <uORB/topics/battery_status.h>

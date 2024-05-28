@@ -30,7 +30,7 @@
 #include <world_magnetic_model/geo_mag_declination.h>
 #include <ulog/mavlink_log.h>
 #include <param/param.h>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/sensor_mag.h>
 #include <uORB/topics/sensor_gyro.h>
 #include <uORB/topics/vehicle_attitude.h>

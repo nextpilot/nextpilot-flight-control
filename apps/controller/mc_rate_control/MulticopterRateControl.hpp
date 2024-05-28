@@ -10,12 +10,33 @@
 
 #pragma once
 
-#include "nextpilot.h"
-#include "rate_control/rate_control.hpp"
+#include <rate_control/rate_control.hpp>
+#include <matrix/matrix/math.hpp>
+#include <perf/perf_counter.h>
+#include <defines.h>
+#include <module/module_command.hpp>
+#include <module/module_params.hpp>
+#include <workq/WorkItemScheduled.hpp>
+#include <ulog/mavlink_log.h>
+#include <uORB/Publication.hpp>
+#include <uORB/Subscription.hpp>
+#include <uORB/topics/actuator_controls_status.h>
+#include <uORB/topics/battery_status.h>
+#include <uORB/topics/control_allocator_status.h>
+#include <uORB/topics/manual_control_setpoint.h>
+#include <uORB/topics/parameter_update.h>
+#include <uORB/topics/rate_ctrl_status.h>
+#include <uORB/topics/vehicle_angular_velocity.h>
+#include <uORB/topics/vehicle_control_mode.h>
+#include <uORB/topics/vehicle_land_detected.h>
+#include <uORB/topics/vehicle_rates_setpoint.h>
+#include <uORB/topics/vehicle_status.h>
+#include <uORB/topics/vehicle_thrust_setpoint.h>
+#include <uORB/topics/vehicle_torque_setpoint.h>
 
 using namespace time_literals;
-using namespace nextpilot::global_params;
 using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 class MulticopterRateControl : public ModuleCommand<MulticopterRateControl>, public ModuleParams, public nextpilot::WorkItem {
 public:

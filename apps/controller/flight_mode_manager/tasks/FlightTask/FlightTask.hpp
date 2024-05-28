@@ -18,7 +18,23 @@
 
 #pragma once
 
-#include "nextpilot.h"
+#include <module/module_params.hpp>
+#include <hrtimer.h>
+#include <matrix/matrix/math.hpp>
+#include <uORB/Subscription.hpp>
+#include <uORB/topics/landing_gear.h>
+#include <uORB/topics/trajectory_setpoint.h>
+#include <uORB/topics/vehicle_local_position.h>
+#include <uORB/topics/vehicle_local_position_setpoint.h>
+#include <uORB/topics/vehicle_command.h>
+#include <uORB/topics/vehicle_constraints.h>
+#include <uORB/topics/vehicle_attitude.h>
+#include <uORB/topics/vehicle_trajectory_waypoint.h>
+#include <uORB/topics/home_position.h>
+#include <geo/geo.h>
+
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 struct ekf_reset_counters_s {
     uint8_t xy;
@@ -82,6 +98,7 @@ public:
     const ekf_reset_counters_s getResetCounters() const {
         return _reset_counters;
     }
+
     void setResetCounters(const ekf_reset_counters_s &counters) {
         _reset_counters = counters;
     }
@@ -181,15 +198,15 @@ protected:
     /* Time abstraction */
     static constexpr uint64_t _timeout = 500000; /**< maximal time in us before a loop or data times out */
 
-    float _deltatime{}; /**< passed time in seconds since the task was last updated */
+    float _deltatime{};                          /**< passed time in seconds since the task was last updated */
 
-    hrt_abstime _time_stamp_activate{}; /**< time stamp when task was activated */
-    hrt_abstime _time_stamp_current{};  /**< time stamp at the beginning of the current task update */
-    hrt_abstime _time_stamp_last{};     /**< time stamp when task was last updated */
+    hrt_abstime _time_stamp_activate{};          /**< time stamp when task was activated */
+    hrt_abstime _time_stamp_current{};           /**< time stamp at the beginning of the current task update */
+    hrt_abstime _time_stamp_last{};              /**< time stamp when task was last updated */
 
     /* Current vehicle state */
-    matrix::Vector3f _position; /**< current vehicle position */
-    matrix::Vector3f _velocity; /**< current vehicle velocity */
+    matrix::Vector3f _position;       /**< current vehicle position */
+    matrix::Vector3f _velocity;       /**< current vehicle velocity */
 
     float _yaw{};                     /**< current vehicle yaw heading */
     bool  _is_yaw_good_for_control{}; /**< true if the yaw estimate can be used for yaw control */

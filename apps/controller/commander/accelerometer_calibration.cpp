@@ -112,7 +112,7 @@
 #include <conversion/rotation.h>
 #include <param/param.h>
 #include <ulog/mavlink_log.h>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/sensor_accel.h>
 #include <uORB/topics/vehicle_attitude.h>
 

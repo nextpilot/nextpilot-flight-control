@@ -20,7 +20,7 @@
 
 
 #include <module/module_command.hpp>
-#include <module/module_params.h>
+#include <module/module_params.hpp>
 #include <getopt/getopt.h>
 #include <ulog/log.h>
 #include <mathlib/mathlib.h>
@@ -84,12 +84,12 @@ private:
     AnalogBattery _battery2;
 #endif
 
-    AnalogBattery *_analogBatteries[BOARD_NUMBER_BRICKS] {
+    AnalogBattery *_analogBatteries[BOARD_NUMBER_BRICKS]{
         &_battery1,
 #if BOARD_NUMBER_BRICKS > 1
-            &_battery2,
+        &_battery2,
 #endif
-    };                         // End _analogBatteries
+    }; // End _analogBatteries
 
     perf_counter_t _loop_perf; /**< loop performance counter */
 

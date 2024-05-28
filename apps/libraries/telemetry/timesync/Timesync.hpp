@@ -19,7 +19,7 @@
 
 #include <hrtimer.h>
 
-#include <uORB/uORBPublication.hpp>
+#include <uORB/Publication.hpp>
 #include <uORB/topics/timesync_status.h>
 
 #include <math.h>

@@ -23,7 +23,7 @@
 #include <drivers/drv_pwm_output.h>
 #include <defines.h>
 #include <ulog/mavlink_log.h>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/battery_status.h>
 #include <uORB/topics/actuator_test.h>
 #include <param/param.h>

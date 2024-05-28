@@ -14,7 +14,7 @@
 
 #include <gz/transport.hh>
 
-#include <uORB/uORBPublication.hpp>
+#include <uORB/Publication.hpp>
 #include <uORB/topics/esc_status.h>
 
 // GZBridge mixing class for ESCs.

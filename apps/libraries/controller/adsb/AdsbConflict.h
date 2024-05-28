@@ -16,8 +16,8 @@
 #include <stdint.h>
 #include <geo/geo.h>
 #include <hrtimer.h>
-#include <uORB/uORBPublication.hpp>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Publication.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/transponder_report.h>
 #include <uORB/topics/vehicle_command.h>
 #include <ulog/mavlink_log.h>

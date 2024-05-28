@@ -14,8 +14,8 @@
 
 #pragma once
 
-#include <uORB/uORBSubscription.hpp>
-#include <uORB/uORBPublication.hpp>
+#include <uORB/Subscription.hpp>
+#include <uORB/Publication.hpp>
 #include <uORB/topics/button_event.h>
 
 using namespace nextpilot;
@@ -27,12 +27,15 @@ public:
 
     bool safetyButtonHandler();
     void activateSafety();
+
     bool isButtonAvailable() const {
         return _button_available;
     }
+
     bool isSafetyOff() const {
         return _safety_off;
     }
+
     bool isSafetyDisabled() const {
         return _safety_disabled;
     }

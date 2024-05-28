@@ -1,5 +1,5 @@
-#include "uORBPublication.hpp"
-#include "uORBDeviceNode.hpp"
+#include "Publication.hpp"
+#include "DeviceNode.hpp"
 #include "uORB.h"
 
 using namespace nextpilot::uORB;

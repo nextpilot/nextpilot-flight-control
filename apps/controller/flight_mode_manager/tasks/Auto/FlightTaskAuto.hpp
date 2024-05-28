@@ -17,7 +17,14 @@
 #pragma once
 
 #include "FlightTask.hpp"
+#include <uORB/topics/position_setpoint_triplet.h>
+#include <uORB/topics/position_setpoint.h>
+#include <uORB/topics/home_position.h>
+#include <uORB/topics/manual_control_setpoint.h>
+#include <uORB/topics/vehicle_status.h>
+#include <geo/geo.h>
 #include <weather_vane/WeatherVane.hpp>
+#include <mathlib/math/filter/AlphaFilter.hpp>
 #include <motion_planning/PositionSmoothing.hpp>
 #include "Sticks.hpp"
 #include "StickAccelerationXY.hpp"

@@ -16,7 +16,7 @@
 #include <uavcan/equipment/indication/LightsCommand.hpp>
 
 #include <led/led.h>
-#include <module/module_params.h>
+#include <module/module_params.hpp>
 
 class UavcanRGBController : public ModuleParams {
 public:

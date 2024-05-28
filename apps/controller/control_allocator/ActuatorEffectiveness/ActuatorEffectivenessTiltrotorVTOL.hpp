@@ -24,7 +24,7 @@
 #include "ActuatorEffectivenessTilts.hpp"
 #include <uORB/topics/normalized_unsigned_setpoint.h>
 #include <uORB/topics/tiltrotor_extra_controls.h>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 
 using namespace nextpilot;
 

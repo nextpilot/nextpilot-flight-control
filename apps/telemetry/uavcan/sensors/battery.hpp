@@ -20,7 +20,7 @@
 #include <ardupilot/equipment/power/BatteryInfoAux.hpp>
 #include <battery/battery.h>
 #include <hrtimer.h>
-#include <module/module_params.h>
+#include <module/module_params.hpp>
 
 using namespace time_literals;
 

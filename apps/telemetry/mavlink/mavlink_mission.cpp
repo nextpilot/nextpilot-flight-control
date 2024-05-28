@@ -58,7 +58,7 @@ void MavlinkMissionManager::init_offboard_mission() {
         int dm_lock_ret = dm_lock(DM_KEY_MISSION_STATE);
 
         if (dm_lock_ret != 0) {
-            PX4_ERR("DM_KEY_MISSION_STATE lock failed");
+            LOG_W("lock DM_KEY_MISSION_STATE fail (%d)", dm_lock_ret);
         }
 
         mission_s mission_state;
@@ -75,7 +75,7 @@ void MavlinkMissionManager::init_offboard_mission() {
             _current_seq                     = mission_state.current_seq;
 
         } else if (ret < 0) {
-            PX4_WARN("offboard mission init failed (%i)", ret);
+            LOG_W("read DM_KEY_MISSION_STATE fail (%i)", ret);
         }
 
         load_geofence_stats();
@@ -94,6 +94,8 @@ int MavlinkMissionManager::load_geofence_stats() {
     if (ret == sizeof(mission_stats_entry_s)) {
         _count[MAV_MISSION_TYPE_FENCE] = stats.num_items;
         _geofence_update_counter       = stats.update_counter;
+    } else {
+        LOG_W("read DM_KEY_FENCE_POINTS fail (%d)", ret);
     }
 
     return ret;
@@ -106,6 +108,8 @@ int MavlinkMissionManager::load_safepoint_stats() {
 
     if (ret == sizeof(mission_stats_entry_s)) {
         _count[MAV_MISSION_TYPE_RALLY] = stats.num_items;
+    } else {
+        LOG_W("read DM_KEY_SAFE_POINTS fail (%d)", ret);
     }
 
     return ret;

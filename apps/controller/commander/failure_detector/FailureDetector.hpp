@@ -27,8 +27,8 @@
 #include <module/module_params.hpp>
 
 // subscriptions
-#include <uORB/uORBSubscription.hpp>
-#include <uORB/uORBPublication.hpp>
+#include <uORB/Subscription.hpp>
+#include <uORB/Publication.hpp>
 #include <uORB/topics/actuator_motors.h>
 #include <uORB/topics/sensor_selection.h>
 #include <uORB/topics/vehicle_attitude_setpoint.h>
@@ -46,15 +46,16 @@ using namespace nextpilot::global_params;
 
 union failure_detector_status_u {
     struct {
-        uint16_t roll : 1;
-        uint16_t pitch : 1;
-        uint16_t alt : 1;
-        uint16_t ext : 1;
-        uint16_t arm_escs : 1;
-        uint16_t battery : 1;
+        uint16_t roll            : 1;
+        uint16_t pitch           : 1;
+        uint16_t alt             : 1;
+        uint16_t ext             : 1;
+        uint16_t arm_escs        : 1;
+        uint16_t battery         : 1;
         uint16_t imbalanced_prop : 1;
-        uint16_t motor : 1;
+        uint16_t motor           : 1;
     } flags;
+
     uint16_t value{0};
 };
 
@@ -79,16 +80,20 @@ public:
     FailureDetector(ModuleParams *parent);
     ~FailureDetector() = default;
 
-    bool                             update(const vehicle_status_s &vehicle_status, const vehicle_control_mode_s &vehicle_control_mode);
+    bool update(const vehicle_status_s &vehicle_status, const vehicle_control_mode_s &vehicle_control_mode);
+
     const failure_detector_status_u &getStatus() const {
         return _status;
     }
+
     const decltype(failure_detector_status_u::flags) &getStatusFlags() const {
         return _status.flags;
     }
+
     float getImbalancedPropMetric() const {
         return _imbalanced_prop_lpf.getState();
     }
+
     uint16_t getMotorFailures() const {
         return _motor_failure_esc_timed_out_mask | _motor_failure_esc_under_current_mask;
     }

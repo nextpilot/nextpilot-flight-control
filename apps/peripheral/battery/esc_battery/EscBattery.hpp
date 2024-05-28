@@ -12,7 +12,7 @@
 
 #include <defines.h>
 #include <module/module_command.hpp>
-#include <module/module_params.h>
+#include <module/module_params.hpp>
 #include <workq/ScheduledWorkItem.hpp>
 #include <uORB/Publication.hpp>
 #include <uORB/PublicationMulti.hpp>

@@ -12,7 +12,7 @@
 
 #include "../Common.hpp"
 
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/sensors_status_imu.h>
 
 class ImuConsistencyChecks : public HealthAndArmingCheckBase {

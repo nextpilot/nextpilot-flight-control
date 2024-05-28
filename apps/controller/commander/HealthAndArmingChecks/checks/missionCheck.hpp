@@ -12,7 +12,7 @@
 
 #include "../Common.hpp"
 
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/mission_result.h>
 
 class MissionChecks : public HealthAndArmingCheckBase {

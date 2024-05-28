@@ -37,7 +37,7 @@
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
 
-#include <uORB/uORBPublication.hpp>
+#include <uORB/Publication.hpp>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/radio_status.h>
 #include <uORB/topics/telemetry_status.h>
@@ -783,9 +783,9 @@ private:
 
     void mavlink_update_parameters();
 
-    rt_device_t mavlink_open_uart(const int               baudrate     = DEFAULT_BAUD_RATE,
-                                  const char             *uart_name    = DEFAULT_DEVICE_NAME,
-                                  const FLOW_CONTROL_MODE flow_control = FLOW_CONTROL_AUTO);
+    int mavlink_open_uart(const int               baudrate     = DEFAULT_BAUD_RATE,
+                          const char             *uart_name    = DEFAULT_DEVICE_NAME,
+                          const FLOW_CONTROL_MODE flow_control = FLOW_CONTROL_AUTO);
 
     static constexpr unsigned RADIO_BUFFER_CRITICAL_LOW_PERCENTAGE = 25;
     static constexpr unsigned RADIO_BUFFER_LOW_PERCENTAGE          = 35;

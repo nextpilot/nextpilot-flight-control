@@ -21,7 +21,7 @@
 #include <matrix/math.hpp>
 #include <mathlib/math/filter/AlphaFilter.hpp>
 
-#include <uORB/uORBPublication.hpp>
+#include <uORB/Publication.hpp>
 #include <uORB/topics/tecs_status.h>
 #include <uORB/uORB.h>
 #include <motion_planning/VelocitySmoothing.hpp>

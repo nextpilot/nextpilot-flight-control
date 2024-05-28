@@ -11,11 +11,12 @@
 #pragma once
 
 #include "../Common.hpp"
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/vtol_vehicle_status.h>
 
 using namespace nextpilot;
 using namespace nextpilot::global_params;
+
 class VtolChecks : public HealthAndArmingCheckBase {
 public:
     VtolChecks()  = default;

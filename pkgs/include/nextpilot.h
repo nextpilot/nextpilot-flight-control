@@ -73,8 +73,8 @@
 #ifdef PKG_USING_UORB
 #include "uORB/uORB.h"
 #ifdef __cplusplus
-#include "uORB/uORBPublication.hpp"
-#include "uORB/uORBSubscription.hpp"
+#include "uORB/Publication.hpp"
+#include "uORB/Subscription.hpp"
 #include "uORB/topics/uORBTopics.hpp"
 #endif //__cplusplus
 #endif // PKG_USING_UORB

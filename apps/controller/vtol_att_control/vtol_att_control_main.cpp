@@ -28,8 +28,8 @@
 
 #include "vtol_att_control_main.h"
 #include <events/events.h>
-// #include <ulog/mavlink_log.h>
-// #include <uORB/uORBPublication.hpp>
+#include <ulog/mavlink_log.h>
+#include <uORB/Publication.hpp>
 
 using namespace matrix;
 using namespace time_literals;

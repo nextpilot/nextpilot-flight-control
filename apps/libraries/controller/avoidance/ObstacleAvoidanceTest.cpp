@@ -10,7 +10,7 @@
 
 #include <gtest/gtest.h>
 #include <avoidance/ObstacleAvoidance.hpp>
-#include <uORB/uORBSubscription.hpp>
+#include <uORB/Subscription.hpp>
 
 
 using namespace matrix;

@@ -8,8 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include "uORBDeviceNode.hpp"
-#include "uORBSubscription.hpp"
+#include "DeviceNode.hpp"
+#include "Subscription.hpp"
 
 namespace nextpilot::uORB {
 
@@ -32,9 +32,9 @@ DeviceNode *DeviceNode::advertise(const struct orb_metadata *meta, const void *d
     if (!instance) {
         node = getDeviceNode(meta, 0); //  查找inst=0主题
         if (node) {
-            max_inst = 0; // 查找到不需要创建
+            max_inst = 0;              // 查找到不需要创建
         } else {
-            max_inst = 1; // 没有查到到，后面代码创建
+            max_inst = 1;              // 没有查到到，后面代码创建
         }
     }
 
