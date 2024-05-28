@@ -172,13 +172,17 @@ const wq_config_t &serial_port_to_wq(const char *serial) {
 
 const wq_config_t &ins_instance_to_wq(uint8_t instance) {
     switch (instance) {
-    case 0: return wq_configurations::INS0;
+    case 0:
+        return wq_configurations::INS0;
 
-    case 1: return wq_configurations::INS1;
+    case 1:
+        return wq_configurations::INS1;
 
-    case 2: return wq_configurations::INS2;
+    case 2:
+        return wq_configurations::INS2;
 
-    case 3: return wq_configurations::INS3;
+    case 3:
+        return wq_configurations::INS3;
     }
 
     LOG_W("no INS%d wq configuration, using INS0", instance);
@@ -256,7 +260,7 @@ int WorkQueueManagerStart() {
             return -1;
         }
 
-        rt_thread_t tid = rt_thread_create("wq:manager", WorkQueueManagerEntry, nullptr, 1024, 10, 5);
+        rt_thread_t tid = rt_thread_create("wq:manager", WorkQueueManagerEntry, nullptr, 2048, 10, 5);
 
         if (!tid) {
             LOG_E("create wq:manager thread fail");
@@ -359,6 +363,7 @@ int WorkQueueManagerStatus() {
 } // namespace nextpilot
 
 #include <module_usage.h>
+
 static void usage() {
     PRINT_MODULE_DESCRIPTION(
         R"DESCR_STR(
@@ -396,17 +401,20 @@ static int work_queue_main(int argc, char *argv[]) {
 
     return 0;
 }
+
 MSH_CMD_EXPORT_ALIAS(work_queue_main, workq, work queue manager);
 
 static int work_queue_status() {
     nextpilot::WorkQueueManagerStatus();
     return 0;
 }
+
 MSH_CMD_EXPORT_ALIAS(work_queue_status, list_wq, list work manager);
 
 static int work_queue_start() {
     nextpilot::WorkQueueManagerStart();
     return 0;
 }
+
 // 这里需要注意，C++全局变量是在INIT_COMPONENT_EXPORT阶段初始化的
 INIT_EXPORT(work_queue_start, "5.0");

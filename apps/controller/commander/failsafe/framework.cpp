@@ -8,6 +8,9 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "cmder.framework"
+#define LOG_LVL LOG_LVL_INFO
+
 #include "framework.h"
 #define DEFINE_GET_CUSTOM_MODE
 #include "../custom_flight_mode.h"

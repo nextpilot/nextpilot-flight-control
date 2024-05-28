@@ -8,6 +8,9 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "cmder.common"
+#define LOG_LVL LOG_LVL_INFO
+
 #include "Common.hpp"
 #include "../ModeUtil/mode_requirements.hpp"
 
@@ -52,9 +55,9 @@ Report::EventBufferHeader *Report::addEventToBuffer(uint32_t event_id, const eve
     unsigned           total_size = sizeof(EventBufferHeader) + args_size;
     EventBufferHeader *header     = (EventBufferHeader *)(_event_buffer + _next_buffer_idx);
     memcpy(&header->id, &event_id, sizeof(event_id)); // header might be unaligned
-    header->log_levels = ((uint8_t)log_levels.internal << 4) | (uint8_t)log_levels.external;
-    header->size       = args_size;
-    _next_buffer_idx += total_size;
+    header->log_levels  = ((uint8_t)log_levels.internal << 4) | (uint8_t)log_levels.external;
+    header->size        = args_size;
+    _next_buffer_idx   += total_size;
     ++_results[_current_result].num_events;
     _results[_current_result].event_id_hash ^= event_id ^ modes; // very simple hash
     return header;

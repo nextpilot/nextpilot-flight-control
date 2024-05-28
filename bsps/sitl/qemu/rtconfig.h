@@ -18,6 +18,7 @@
 
 /* Nextpilot Firmware Config */
 
+
 /* Nextpilot Airframe Config */
 
 /* Nextpilot Bootloader Config */
@@ -152,11 +153,11 @@
 #define PKG_USING_QUEUE
 #define PKG_USING_RING_BUFFER
 #define PKG_USING_SHUTDOWN
+#define PKG_USING_UORB
 
 /* ULog backend */
 
 /* end of ULog backend */
-#define PKG_USING_UORB
 #define PKG_USING_VAR_LEN_RINGBUFFER
 #define PKG_USING_BOARD_VERSION
 #define BOARD_TYPE_NAME "sitl-qemu-default"
@@ -223,6 +224,9 @@
 #define RT_VER_NUM 0x50002
 #define RT_USING_STDC_ATOMIC
 /* end of RT-Thread Kernel */
+
+/* RT-Thread Libcpu */
+
 #define RT_USING_CACHE
 #define RT_USING_HW_ATOMIC
 #define RT_USING_CPU_FFS
@@ -232,6 +236,7 @@
 #define ARCH_ARM_CORTEX_A
 #define RT_USING_GIC_V2
 #define ARCH_ARM_CORTEX_A9
+/* end of RT-Thread Libcpu */
 
 /* RT-Thread Components */
 
@@ -288,9 +293,6 @@
 
 #define RT_USING_DEVICE_IPC
 #define RT_UNAMED_PIPE_NUMBER 64
-#define RT_USING_SYSTEM_WORKQUEUE
-#define RT_SYSTEM_WORKQUEUE_STACKSIZE 2048
-#define RT_SYSTEM_WORKQUEUE_PRIORITY 23
 #define RT_USING_SERIAL
 #define RT_USING_SERIAL_V1
 #define RT_SERIAL_USING_DMA

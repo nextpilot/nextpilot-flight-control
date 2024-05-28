@@ -160,7 +160,7 @@ uint64_t hrt_absolute_time()
 {
     const uint32_t SystemCoreClock = 1000000ULL;
 
-    uint64_t us = rt_tick_get_millisecond() * 1000UL;
+    uint64_t us = 1000ULL * rt_tick_get_millisecond();
 
     uint32_t reload = TIMER_LOAD(TIMER_HW_BASE);
     uint32_t tvalue = TIMER_VALUE(TIMER_HW_BASE);
@@ -176,7 +176,7 @@ void rt_hw_us_delay(rt_uint32_t us)
     rt_uint32_t told, tnow, tcnt = 0;
 
     rt_uint32_t reload =  TIMER_LOAD(TIMER_HW_BASE);
-    ticks = us * reload / (1000000 / RT_TICK_PER_SECOND);
+    ticks = us * reload / (1000000UL / RT_TICK_PER_SECOND);
     told = TIMER_VALUE(TIMER_HW_BASE);
     while (1)
     {
@@ -198,4 +198,15 @@ void rt_hw_us_delay(rt_uint32_t us)
             }
         }
     }
+}
+
+#include "ktime.h"
+rt_err_t rt_ktime_boottime_get_us(struct timeval *tv)
+{
+
+    uint64_t t = hrt_absolute_time();
+    tv->tv_sec = t / 1000000ULL;
+    tv->tv_usec = t % 1000000ULL;
+
+    return RT_EOK;
 }

@@ -370,7 +370,7 @@ Logger *Logger::instantiate(int argc, char *argv[]) {
 Logger::Logger(LogWriter::Backend backend, size_t buffer_size, uint32_t log_interval, const char *poll_topic_name,
                LogMode log_mode, bool log_name_timestamp, float rate_factor) :
     ModuleParams(nullptr),
-    ModuleThread(LOG_TAG, 4096, 20, 100), _log_mode(log_mode), _log_name_timestamp(log_name_timestamp),
+    ModuleThread(LOG_TAG, 4096 * 2, 20, 100), _log_mode(log_mode), _log_name_timestamp(log_name_timestamp),
     _event_subscription(ORB_ID::event), _writer(backend, buffer_size), _log_interval(log_interval),
     _rate_factor(rate_factor) {
     if (poll_topic_name) {
