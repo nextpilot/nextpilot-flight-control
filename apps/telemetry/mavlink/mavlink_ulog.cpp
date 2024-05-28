@@ -172,7 +172,7 @@ void MavlinkULog::initialize() {
         return;
     }
 
-    rt_sem_init(&_lock, "ulog_lock", 1, RT_IPC_FLAG_PRIO);
+    rt_sem_init(&_lock, "mav_ulog_lock", 1, RT_IPC_FLAG_PRIO);
     _init = true;
 }
 

@@ -17,8 +17,8 @@ template <class T, size_t N>
 class BlockingQueue {
 public:
     BlockingQueue() {
-        rt_sem_init(&_sem_head, "rf_head", N, RT_IPC_FLAG_PRIO);
-        rt_sem_init(&_sem_tail, "rf_tail", 0, RT_IPC_FLAG_PRIO);
+        rt_sem_init(&_sem_head, "bockq_head", N, RT_IPC_FLAG_PRIO);
+        rt_sem_init(&_sem_tail, "bockq_tail", 0, RT_IPC_FLAG_PRIO);
     }
 
     ~BlockingQueue() {

@@ -64,7 +64,7 @@ MixingOutput::MixingOutput(const char *param_prefix, uint8_t max_num_outputs, Ou
 	_armed.force_failsafe = false;
 	_armed.in_esc_calibration_mode = false;
 
-	rt_sem_init(&_lock,"mxier_lock", 1, RT_IPC_FLAG_PRIO);
+	rt_sem_init(&_lock,"mixer_lock", 1, RT_IPC_FLAG_PRIO);
 
 	initParamHandles();
 
