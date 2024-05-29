@@ -10,15 +10,19 @@ src = ["hrtimer.c"]
 
 if GetDepend(["HRT_USING_OSTICK"]):
     src += ["timestamp_using_ostick.c"]
-
-if GetDepend(["HRT_USING_SYSTICK"]):
+elif GetDepend(["HRT_USING_SYSTICK"]):
     src += ["timestamp_using_systick.c"]
+elif GetDepend(["HRT_USING_TIM"]):
+    src += ["timestamp_using_tim.c"]
+elif GetDepend(["HRT_USING_DWT"]):
+    src += ["timestamp_using_dwt.c"]
+elif GetDepend(["HRT_USING_TSG"]):
+    src += ["timestamp_using_tsg.c"]
 
-if GetDepend(["HRT_USING_HWTIMER"]):
-    src += ["timestamp_using_hwtimer.c"]
-
-if GetDepend(["HRT_USING_CPUTIME"]):
-    src += ["timestamp_using_cputime.c"]
+if GetDepend(["HRT_USING_OSTIMER"]):
+    src += ["callout_using_ostimer.c"]
+elif GetDepend(["HRT_USING_HWTIMER"]):
+    src += ["callout_using_hwtimer.c"]
 
 objs = DefineGroup("lib/common", src, depend=["PKG_USING_HRTIMER_V3"], CPPPATH=inc)
 

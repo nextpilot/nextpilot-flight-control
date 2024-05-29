@@ -10,13 +10,13 @@
 
 #include <hrtimer.h>
 
-static rt_timer_t _timer       = NULL;
+static rt_timer_t _timer = NULL;
 
 static void hrt_tim_timeout(void *param) {
-    hrt_tim_isr(1);
+    hrt_call_isr(1);
 }
 
-int hrt_tim_expiry(uint32_t timeout_us) {
+int hrt_next_expiry(uint32_t timeout_us) {
     if (!_timer) {
         return -1;
     }

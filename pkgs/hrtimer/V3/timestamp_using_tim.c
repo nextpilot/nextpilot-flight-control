@@ -78,8 +78,7 @@ void TIM8_UP_TIM13_IRQHandler(void) {
     rt_interrupt_enter();
     /* Capture compare 1 event */
     if (__HAL_TIM_GET_FLAG(&htim13, TIM_FLAG_CC1) != RESET) {
-        uint8_t status = 0;
-        hrt_tim_isr(&status);
+        hrt_call_isr(0);
         __HAL_TIM_SET_COUNTER(&htim13, 0);
         if (__HAL_TIM_GET_IT_SOURCE(&htim13, TIM_IT_CC1) != RESET) {
             __HAL_TIM_CLEAR_IT(&htim13, TIM_IT_CC1);
@@ -90,9 +89,8 @@ void TIM8_UP_TIM13_IRQHandler(void) {
     /* TIM Update event */
     if (__HAL_TIM_GET_FLAG(&htim13, TIM_FLAG_UPDATE) != RESET) {
         if (__HAL_TIM_GET_IT_SOURCE(&htim13, TIM_IT_UPDATE) != RESET) {
-            _timebase_us   += HRT_COUNTER_PERIOD;
-            uint8_t status  = 1;
-            hrt_tim_isr(&status);
+            _timebase_us += HRT_COUNTER_PERIOD;
+            hrt_call_isr(1);
             __HAL_TIM_CLEAR_IT(&htim13, TIM_IT_UPDATE);
 #if (USE_HAL_TIM_REGISTER_CALLBACKS == 1)
             htim->PeriodElapsedCallback(htim);

@@ -1,21 +1,40 @@
 if PKG_USING_HRTIMER_V3
 
     choice
-        prompt "Select hrtimer source"
+        prompt "Select boottime source"
 
-        default HRT_USING_SYSTICK
+        default HRT_USING_OSTICK
 
         config HRT_USING_OSTICK
-            bool "os tick, timestamp=1ms, callout=1ms"
+            bool "os tick, 1ms"
 
         config HRT_USING_SYSTICK
-            bool "sys tick, timestamp=1us, callout=1ms"
+            bool "sys tick, 1us"
+
+        config HRT_USING_TIM
+            bool "hard timer, 1us"
+
+        config HRT_USING_DWT
+            bool "DWT: Data Watchpoint and Trace, 1us"
+
+        config HRT_USING_TSG
+            bool "TSG: Global Timestamp Generator(STM32H7), 1us"
+
+        config HRT_USING_RTC
+            bool "RTC: Real Time Clock, 1s"
+
+    endchoice
+
+    choice
+        prompt "select callout timer"
+
+        default HRT_USING_OSTIMER
+
+        config HRT_USING_OSTIMER
+            bool "os soft timer, period 1ms"
 
         config HRT_USING_HWTIMER
-            bool "hard timer, timestamp=1us, callout=1us"
-
-        config HRT_USING_CPUTIME
-            bool "cpu time, timestamp=1us, callout=1us"
+            bool "pwm hard timer, period 65ms + dynamic"
 
     endchoice
 

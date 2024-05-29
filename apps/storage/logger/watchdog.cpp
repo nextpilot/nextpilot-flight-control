@@ -76,10 +76,11 @@ bool watchdog_update(watchdog_data_t &watchdog_data, bool semaphore_value_satura
 
                 watchdog_data.last_state = current_state;
 
-#   if 0 // for debugging                                                                            \
-         // test code that prints the maximum time in ready state.                                   \
-         // Note: we are in IRQ context, and thus are strictly speaking not allowed to use PX4_ERR - \
-         // we do it anyway since it's only used for debugging.
+#   if 0
+                // for debugging
+                // test code that prints the maximum time in ready state.
+                // Note: we are in IRQ context, and thus are strictly speaking not allowed to use PX4_ERR -
+                // we do it anyway since it's only used for debugging.
 				static uint64_t max_time = 0;
 
 				if (now - watchdog_data.ready_to_run_timestamp > max_time) {

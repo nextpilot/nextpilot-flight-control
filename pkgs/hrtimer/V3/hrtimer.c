@@ -69,15 +69,11 @@ __EXPORT uint32_t latency_counters[LATENCY_BUCKET_COUNT + 1];
 
 /* timer-specific functions */
 // static void hrt_tim_init(void);
-// static int  hrt_tim_isr(int irq, void *context, void *arg);
+// static int  hrt_call_isr(int irq, void *context, void *arg);
 static void hrt_latency_update(void);
 
 /* callout list manipulation */
-static void hrt_call_internal(struct hrt_call *entry,
-                              hrt_abstime      deadline,
-                              hrt_abstime      interval,
-                              hrt_callout      callout,
-                              void            *arg);
+static void hrt_call_internal(struct hrt_call *entry, hrt_abstime deadline, hrt_abstime interval, hrt_callout callout, void *arg);
 static void hrt_call_enter(struct hrt_call *entry);
 static void hrt_call_reschedule(void);
 static void hrt_call_invoke(void);
@@ -89,7 +85,7 @@ static void hrt_call_invoke(void);
  * Handle the compare interrupt by calling the callout dispatcher
  * and then re-scheduling the next deadline.
  */
-int hrt_tim_isr(uint32_t status) {
+int hrt_call_isr(int status) {
     /* grab the timer for latency tracking purposes */
     latency_actual = hrt_absolute_time();
 
@@ -318,7 +314,7 @@ static void hrt_call_reschedule() {
     latency_baseline = deadline;
 
     // Remove the existing expiry and update with the new expiry
-    hrt_tim_expiry(deadline - now);
+    hrt_next_expiry(deadline - now);
 }
 
 static void hrt_latency_update(void) {
