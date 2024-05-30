@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Support Question
+  - name: Discuss Forum
     url: https://github.com/nextpilot/nextpilot-flight-control/discussions
-    about: For questions about using NextPilot or related components, please use the discuss forum and discord server
-  - name: Help Document
+    about: For questions about NextPilot or related components, please use the discuss forum and discord server
+  - name: Document Center
     url: https://docs.nextpilot.cn/
-    about: how to use or develop NextPilot, please visit our help document
+    about: How to use or develop NextPilot, please visit document center
