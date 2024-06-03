@@ -28,7 +28,7 @@ body:
       label: Describe possible alternatives
       description: A clear and concise description of any alternative solutions or features you've considered.
     validations:
-      required: fals
+      required: false
 
   - type: textarea
     attributes:
