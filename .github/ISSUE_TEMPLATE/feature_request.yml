@@ -1,5 +1,6 @@
 name: 🚀 Feature Request
 description: Suggest an idea for this project
+title: "[Feature] "
 labels: ["feature-request"]
 body:
   - type: markdown
@@ -20,16 +21,16 @@ body:
       label: Describe your preferred solution
       description: A clear and concise description of what you want to happen.
     validations:
-      required: true
+      required: false
 
   - type: textarea
     attributes:
       label: Describe possible alternatives
       description: A clear and concise description of any alternative solutions or features you've considered.
     validations:
-      required: true
+      required: fals
 
   - type: textarea
     attributes:
-      label: Additional context
+      label: Other additional context
       description: Add any other context or screenshots for the feature request here.
