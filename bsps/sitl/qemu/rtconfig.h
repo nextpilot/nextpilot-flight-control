@@ -154,12 +154,13 @@
 #define PKG_USING_QUEUE
 #define PKG_USING_RING_BUFFER
 #define PKG_USING_SHUTDOWN
-#define PKG_USING_UORB
 
 /* ULog backend */
 
 /* end of ULog backend */
+#define PKG_USING_UORB
 #define PKG_USING_VAR_LEN_RINGBUFFER
+#define PKG_USING_VCONSOLE_V2
 #define PKG_USING_BOARD_VERSION
 #define BOARD_TYPE_NAME "sitl-qemu-default"
 #define BOARD_CHIP_NAME "cortex-A9"

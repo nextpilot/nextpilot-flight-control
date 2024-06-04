@@ -1,0 +1,19 @@
+import os
+import sys
+import rtconfig
+import subprocess
+from building import *
+
+
+cwd = GetCurrentDir()
+
+
+# 添加当前文件夹下的代码
+inc = [cwd]
+src = Glob("*.c")  # + Glob("*.cpp")
+
+
+objs = DefineGroup("pkg/vconsole", src, depend=["PKG_USING_VCONSOLE_V2"], CPPPATH=inc)
+
+
+Return("objs")
