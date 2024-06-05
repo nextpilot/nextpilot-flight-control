@@ -2871,13 +2871,6 @@ void MavlinkReceiver::handle_message_gimbal_device_attitude_status(mavlink_messa
 }
 
 void MavlinkReceiver::run() {
-    /* set thread name */
-    // {
-    //     char thread_name[17];
-    //     rt_snprintf(thread_name, sizeof(thread_name), "mavlink_rcv_if%d", _mavlink->get_instance_id());
-    //     px4_prctl(PR_SET_NAME, thread_name, px4_getpid());
-    // }
-
     // poll timeout in ms. Also defines the max update frequency of the mission & param manager, etc.
     const int timeout = 10;
 
@@ -3243,25 +3236,19 @@ void MavlinkReceiver::print_detailed_rx_stats() const {
 }
 
 void MavlinkReceiver::start() {
-    // pthread_attr_t receiveloop_attr;
-    // pthread_attr_init(&receiveloop_attr);
-
-    // struct sched_param param;
-    // (void)pthread_attr_getschedparam(&receiveloop_attr, &param);
-    // param.sched_priority = SCHED_PRIORITY_MAX - 80;
-    // (void)pthread_attr_setschedparam(&receiveloop_attr, &param);
-
-    // pthread_attr_setstacksize(&receiveloop_attr,
-    //                           PX4_STACK_ADJUSTED(sizeof(MavlinkReceiver) + 2840 + MAVLINK_RECEIVER_NET_ADDED_STACK));
-
-    // pthread_create(&_thread, &receiveloop_attr, MavlinkReceiver::start_trampoline, (void *)this);
-
-    // pthread_attr_destroy(&receiveloop_attr);
-
     char thread_name[RT_NAME_MAX];
-    rt_snprintf(thread_name, sizeof(thread_name), "mavlink_rcv_if%d", _mavlink->get_instance_id());
+    rt_snprintf(thread_name, sizeof(thread_name), "mavlink%d_recv", _mavlink->get_instance_id());
 
-    _thread = rt_thread_create(thread_name, MavlinkReceiver::start_trampoline, this, 4096, 15, 1000);
+    _thread = rt_thread_create(thread_name, MavlinkReceiver::start_trampoline, this, 4096 * 2, 15, 1000);
+
+    if (!_thread) {
+        LOG_E("create %d thread fail", thread_name);
+        return;
+    }
+
+    if (rt_thread_startup(_thread) != RT_EOK) {
+        LOG_E("startup %s thread fail", thread_name);
+    }
 }
 
 void MavlinkReceiver::updateParams() {

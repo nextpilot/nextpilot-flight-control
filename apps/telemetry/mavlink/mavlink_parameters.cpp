@@ -29,19 +29,20 @@ MavlinkParametersManager::MavlinkParametersManager(Mavlink *mavlink) :
     _mavlink(mavlink) {
 }
 
-unsigned
-MavlinkParametersManager::get_size() {
+unsigned MavlinkParametersManager::get_size() {
     return MAVLINK_MSG_ID_PARAM_VALUE_LEN + MAVLINK_NUM_NON_PAYLOAD_BYTES;
 }
 
 void MavlinkParametersManager::handle_message(const mavlink_message_t *msg) {
     switch (msg->msgid) {
     case MAVLINK_MSG_ID_PARAM_REQUEST_LIST: {
+        LOG_D("param request list");
         /* request all parameters */
         mavlink_param_request_list_t req_list;
         mavlink_msg_param_request_list_decode(msg, &req_list);
 
-        if (req_list.target_system == mavlink_system.sysid && (req_list.target_component == mavlink_system.compid || req_list.target_component == MAV_COMP_ID_ALL)) {
+        if (req_list.target_system == mavlink_system.sysid
+            && (req_list.target_component == mavlink_system.compid || req_list.target_component == MAV_COMP_ID_ALL)) {
             if (_send_all_index < 0) {
                 _send_all_index = PARAM_HASH;
 
@@ -71,6 +72,7 @@ void MavlinkParametersManager::handle_message(const mavlink_message_t *msg) {
         /* set parameter */
         mavlink_param_set_t set;
         mavlink_msg_param_set_decode(msg, &set);
+        LOG_D("param request read %s", set.param_id);
 
         if (set.target_system == mavlink_system.sysid && (set.target_component == mavlink_system.compid || set.target_component == MAV_COMP_ID_ALL)) {
             /* local name buffer to enforce null-terminated string */
@@ -139,8 +141,10 @@ void MavlinkParametersManager::handle_message(const mavlink_message_t *msg) {
         /* request one parameter */
         mavlink_param_request_read_t req_read;
         mavlink_msg_param_request_read_decode(msg, &req_read);
+        LOG_D("param request read %s", req_read.param_id);
 
-        if (req_read.target_system == mavlink_system.sysid && (req_read.target_component == mavlink_system.compid || req_read.target_component == MAV_COMP_ID_ALL)) {
+        if (req_read.target_system == mavlink_system.sysid
+            && (req_read.target_component == mavlink_system.compid || req_read.target_component == MAV_COMP_ID_ALL)) {
             /* when no index is given, loop through string ids and compare them */
             if (req_read.param_index < 0) {
                 /* XXX: I left this in so older versions of QGC wouldn't break */

@@ -4,6 +4,8 @@ import sys
 import rtconfig
 from building import *
 
+os.environ["PYTHONUTF8"] = "1"
+
 cwd = GetCurrentDir()
 
 # msg文件所在路径
