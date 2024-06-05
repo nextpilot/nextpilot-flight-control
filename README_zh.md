@@ -18,16 +18,16 @@ NextPilot是一款的高性能高可靠的自动驾驶仪，支持多旋翼、�
 
 ## 机型支持
 
-- 多旋翼: quad, six, oct, hex
-- 固定翼: plane
-- 垂  起: standard, tailsitter, tiltrotor
+- 多旋翼：quad, six, oct, hex
+- 固定翼：plane
+- 垂  起：standard, tailsitter, tiltrotor
 
 ## 功能支持
 
 ### 飞行控制
 
-- 飞行模式: manul, arco, att, alt, pos; takeoff, land, mission, loiter, rtl, follow; offboard
-- 安全保护: geofence, low power, gnss loss, rc loss, datalink loss, engine failure, etc
+- 飞行模式：手动, 特技, 姿态, 定高, 定点; 起飞, 着陆, 任务, 悬停, 返航, 跟随; 外部控制等
+- 安全保护：地理围栏, 低电量保护, GNSS失锁, 遥控失联, 链路失联, 发动机故障等
 
 ### 组合导航
 
@@ -43,13 +43,11 @@ NextPilot是一款的高性能高可靠的自动驾驶仪，支持多旋翼、�
 
 目前 NextPilot 支持 [PX4 FMUv5](https://docs.px4.io/main/en/flight_controller/cuav_v5_plus.html) 系列开源硬件，以及 NextPilot 自主开发的飞控硬件。
 
-NextPilot 主要当前支持以下硬件：
-
-- 处理器: STM32F765IIK 和 STM32H753IIK
+- 处理器：STM32F765IIK 和 STM32H753IIK
 - 传感器：gnss/imu/baro/mag
 - 作动器：pwm/can/rs485
 - 遥控器：s.bus
-- 告  警: led/tunes
+- 告  警：led/tunes
 
 # 文档资料
 
@@ -63,12 +61,12 @@ NextPilot 非常感谢所有社区小伙伴的支持，在使用 NextPilot 的�
 
 ## 开发指南
 
-[开发环境](https://docs.nextpilot.cn/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/01.setup-develop-environment.html) | [添加代码](https://docs.nextpilot.cn/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/99.add-new-code.html) | [系统框架]()
-
 NextPilot 主要支持以下 IDE:
 
 - MDK KEIL
 - ARM GCC + VSCode
+
+您可以通过 [开发指南](https://docs.nextpilot.cn/develop) 了解如何进行NextPilot开发，比如：[搭建开发环境](https://docs.nextpilot.cn/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/01.setup-develop-environment.html)， [如何添加代码](https://docs.nextpilot.cn/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/99.add-new-code.html)， [系统底层框架]()等。
 
 # 许可协议
 
