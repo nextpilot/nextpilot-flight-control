@@ -1752,6 +1752,7 @@ bool Mavlink::init_by_instance(int instance) {
         if (_remote_port == 0) {
             _remote_port = DEFAULT_REMOTE_PORT;
         }
+        _src_addr.sin_port = htons(_remote_port);
 
 
         // 广播
