@@ -1727,7 +1727,7 @@ bool Mavlink::init_by_instance(int instance) {
         char ip[32];
         // 目标ip
         int remote_ip = 0;
-        rt_snprintf(buff, sizeof(buff), "MAV_%d_RMT_IP", instance);
+        rt_snprintf(buff, sizeof(buff), "MAV_%d_REMOTE_IP", instance);
         param_get(param_find(buff), &remote_ip);
         rt_snprintf(ip, sizeof(ip), "%d.%d.%d.%d",
                     (remote_ip >> 24) & 0xff, (remote_ip >> 16) & 0xff, (remote_ip >> 8) & 0xff, (remote_ip) & 0xff);
@@ -1740,12 +1740,16 @@ bool Mavlink::init_by_instance(int instance) {
         }
 
         //目标port
-        rt_snprintf(buff, sizeof(buff), "MAV_%d_RMT_PORT", instance);
+        rt_snprintf(buff, sizeof(buff), "MAV_%d_REMOTE_PRT", instance);
         param_get(param_find(buff), &_remote_port);
 
         // 本地port
-        rt_snprintf(buff, sizeof(buff), "MAV_%d_LOC_PORT", instance);
+        rt_snprintf(buff, sizeof(buff), "MAV_%d_UDP_PRT", instance);
         param_get(param_find(buff), &_network_port);
+
+        // 广播
+        // rt_snprintf(buff, sizeof(buff), "MAV_%d_BROADCAST", instance);
+
 #else
         LOG_W("not support udp connect");
         return false;
@@ -1754,6 +1758,9 @@ bool Mavlink::init_by_instance(int instance) {
         LOG_W("invalid MAV_%d_CONFIG: %d", instance, config);
         return false;
     }
+
+    // 流控
+    // rt_snprintf(buff, sizeof(buff), "MAV_%d_FLOW_CTRL", instance);
 
     // 速率
     rt_snprintf(buff, sizeof(buff), "MAV_%d_RATE", instance);
@@ -3323,8 +3330,12 @@ int mavlink_start() {
     int         ret    = 0;
 
 #ifdef BSP_USING_QEMU
-    // param_set_int32(param_id::MAV_0_CONFIG, 10);
-    unsigned max_instance = 2;
+    param_set_int32((param_t)params_id::MAV_0_CONFIG, 10);
+    param_set_int32((param_t)params_id::MAV_0_UDP_PRT, 14556);
+    param_set_int32((param_t)params_id::MAV_0_REMOTE_IP, (127 << 24) | (0 << 16) | (0 << 8) | 1);
+    param_set_int32((param_t)params_id::MAV_0_REMOTE_PRT, 14550);
+    // param_set_int32(params_id::MAV_0_CONFIG, 0);
+    unsigned max_instance = 1;
 #else
     unsigned max_instance = MAVLINK_COMM_NUM_BUFFERS;
 #endif

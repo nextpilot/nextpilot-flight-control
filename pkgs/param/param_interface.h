@@ -145,7 +145,8 @@ int param_get_internal(param_t idx, param_value_t *val, bool mark_used);
  */
 int param_get(param_t idx, void *val);
 
-float   param_get_float(param_t idx);
+float param_get_float(param_t idx);
+
 int32_t param_get_int32(param_t idx);
 
 ///////////////////////////////////////////////////
@@ -169,8 +170,14 @@ int param_set(param_t idx, const void *val);
  * @return		Zero if the parameter's value could be set from a scalar, nonzero otherwise.
  */
 int param_set_no_notification(param_t idx, const void *val);
-int param_set_float(param_t idx, float val);
-int param_set_int32(param_t idx, int32_t val);
+
+static inline int param_set_float(param_t idx, float val) {
+    return param_set(idx, &val);
+}
+
+static inline int param_set_int32(param_t idx, int32_t val) {
+    return param_set(idx, &val);
+}
 
 ///////////////////////////////////////////////////
 // 设置/查询状态

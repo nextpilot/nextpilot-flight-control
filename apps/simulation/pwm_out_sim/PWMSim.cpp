@@ -168,7 +168,7 @@ MSH_CMD_EXPORT_ALIAS(pwm_out_sim_main, sim_pwm_out, pwm out simulator);
 int pwm_out_sim_start() {
     int32_t hitl = param_get_int32((param_t)params_id::SYS_HITL);
 
-    if (true /*hitl == 2*/) {
+    if (hitl == 2) {
         const char *argv[] = {"sim_pwm_out", "start"};
         int         argc   = sizeof(argv) / sizeof(argv[0]);
         return PWMSim::main(argc, (char **)argv);

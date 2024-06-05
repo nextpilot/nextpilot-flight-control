@@ -123,9 +123,9 @@ void SensorBaroSim::Run() {
             }
 
             // Apply noise and drift
-            const float abs_pressure_noise = 1.f * (float)y1; // 1 Pa RMS noise
-            _baro_drift_pa += _baro_drift_pa_per_sec * dt;
-            const float absolute_pressure_noisy = absolute_pressure + abs_pressure_noise + _baro_drift_pa;
+            const float abs_pressure_noise       = 1.f * (float)y1; // 1 Pa RMS noise
+            _baro_drift_pa                      += _baro_drift_pa_per_sec * dt;
+            const float absolute_pressure_noisy  = absolute_pressure + abs_pressure_noise + _baro_drift_pa;
 
             // convert to hPa
             float pressure = absolute_pressure_noisy + _sim_baro_off_p.get();
@@ -199,12 +199,13 @@ int SensorBaroSim::print_usage(const char *reason) {
 extern "C" __EXPORT int sensor_baro_sim_main(int argc, char *argv[]) {
     return SensorBaroSim::main(argc, argv);
 }
+
 MSH_CMD_EXPORT_ALIAS(sensor_baro_sim_main, sim_baro, baro simulator);
 
 int sensor_baro_sim_start() {
     int32_t hitl = param_get_int32((param_t)params_id::SYS_HITL);
 
-    if (true /*hitl == 2*/) {
+    if (hitl == 2) {
         const char *argv[] = {"sim_baro", "start"};
         int         argc   = sizeof(argv) / sizeof(argv[0]);
         return SensorBaroSim::main(argc, (char **)argv);
@@ -212,4 +213,5 @@ int sensor_baro_sim_start() {
 
     return 0;
 }
+
 INIT_APP_EXPORT(sensor_baro_sim_start);

@@ -170,12 +170,13 @@ int SensorAirspeedSim::print_usage(const char *reason) {
 extern "C" __EXPORT int sensor_airspeed_sim_main(int argc, char *argv[]) {
     return SensorAirspeedSim::main(argc, argv);
 }
+
 MSH_CMD_EXPORT_ALIAS(sensor_airspeed_sim_main, sim_airspeed, airspeed simulator);
 
 int sensor_airspeed_sim_start() {
     int32_t hitl = param_get_int32((param_t)params_id::SYS_HITL);
 
-    if (true /*hitl == 2*/) {
+    if (hitl == 2) {
         const char *argv[] = {"sim_airspeed", "start"};
         int         argc   = sizeof(argv) / sizeof(argv[0]);
         return SensorAirspeedSim::main(argc, (char **)argv);
@@ -183,4 +184,5 @@ int sensor_airspeed_sim_start() {
 
     return 0;
 }
+
 INIT_APP_EXPORT(sensor_airspeed_sim_start);

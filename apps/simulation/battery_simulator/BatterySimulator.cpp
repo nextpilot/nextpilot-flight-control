@@ -134,9 +134,9 @@ void BatterySimulator::updateCommands() {
             vehicle_command_ack_s ack{};
             ack.command       = vehicle_command.command;
             ack.from_external = false;
-            ack.result        = supported ?
-                                    vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED :
-                                    vehicle_command_ack_s::VEHICLE_CMD_RESULT_UNSUPPORTED;
+            ack.result        = supported
+                                  ? vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED
+                                  : vehicle_command_ack_s::VEHICLE_CMD_RESULT_UNSUPPORTED;
             ack.timestamp     = hrt_absolute_time();
             _command_ack_pub.publish(ack);
         }
@@ -193,12 +193,13 @@ int BatterySimulator::print_usage(const char *reason) {
 extern "C" __EXPORT int battery_simulator_main(int argc, char *argv[]) {
     return BatterySimulator::main(argc, argv);
 }
+
 MSH_CMD_EXPORT_ALIAS(battery_simulator_main, sim_battery, battery simulator);
 
 int battery_simulator_start() {
     int32_t hitl = param_get_int32((param_t)params_id::SYS_HITL);
 
-    if (true /*hitl == 2*/) {
+    if (hitl == 2) {
         const char *argv[] = {"sim_battery", "start"};
         int         argc   = sizeof(argv) / sizeof(argv[0]);
         return BatterySimulator::main(argc, (char **)argv);
@@ -206,4 +207,5 @@ int battery_simulator_start() {
 
     return 0;
 }
+
 INIT_APP_EXPORT(battery_simulator_start);

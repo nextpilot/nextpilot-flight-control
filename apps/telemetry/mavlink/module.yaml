@@ -157,6 +157,19 @@ parameters:
               default: [14556, 0, 0]
               requires_ethernet: true
 
+          MAV_${i}_REMOTE_IP:
+              description:
+                  short: MAVLink Remote IP for instance ${i}
+                  long: |
+                      If ethernet enabled and selected as configuration for MAVLink instance ${i},
+                      selected remote IP will be set and used in MAVLink instance ${i}.
+
+              type: int32
+              reboot_required: true
+              num_instances: *max_num_config_instances
+              default: [0, 0, 0]
+              requires_ethernet: true
+
           MAV_${i}_REMOTE_PRT:
               description:
                   short: MAVLink Remote Port for instance ${i}
