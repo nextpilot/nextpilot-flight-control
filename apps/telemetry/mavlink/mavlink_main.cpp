@@ -1724,6 +1724,13 @@ bool Mavlink::init_by_instance(int instance) {
 #if defined(RT_LWIP_UDP)
         set_protocol(Protocol::UDP);
 
+        // 本地port
+        rt_snprintf(buff, sizeof(buff), "MAV_%d_UDP_PRT", instance);
+        param_get(param_find(buff), &_network_port);
+        if (_network_port == 0) {
+            _network_port = DEFAULT_LOCAL_PORT;
+        }
+
         char ip[32];
         // 目标ip
         int remote_ip = 0;
@@ -1742,10 +1749,10 @@ bool Mavlink::init_by_instance(int instance) {
         //目标port
         rt_snprintf(buff, sizeof(buff), "MAV_%d_REMOTE_PRT", instance);
         param_get(param_find(buff), &_remote_port);
+        if (_remote_port == 0) {
+            _remote_port = DEFAULT_REMOTE_PORT;
+        }
 
-        // 本地port
-        rt_snprintf(buff, sizeof(buff), "MAV_%d_UDP_PRT", instance);
-        param_get(param_find(buff), &_network_port);
 
         // 广播
         // rt_snprintf(buff, sizeof(buff), "MAV_%d_BROADCAST", instance);
@@ -2123,8 +2130,8 @@ int Mavlink::task_main(int argc, char *argv[]) {
             return PX4_ERROR;
         }
 
-        PX4_INFO("mode: %s, data rate: %d B/s on udp port %hu remote port %hu",
-                 mavlink_mode_str(_mode), _datarate, _network_port, _remote_port);
+        PX4_INFO("mode: %s, data rate: %d B/s on udp port %hu remote %s:%hu",
+                 mavlink_mode_str(_mode), _datarate, _network_port, inet_ntoa(_src_addr.sin_addr), _remote_port);
     }
 
 #endif // RT_LWIP_UDP
@@ -2209,14 +2216,11 @@ int Mavlink::task_main(int argc, char *argv[]) {
             return PX4_ERROR;
         }
     }
-
 #if defined(RT_LWIP_UDP)
-
     /* init socket if necessary */
-    if (get_protocol() == Protocol::UDP) {
+    else if (get_protocol() == Protocol::UDP) {
         init_udp();
     }
-
 #endif // RT_LWIP_UDP
 
     _task_id = rt_thread_self();
@@ -3331,10 +3335,12 @@ int mavlink_start() {
 
 #ifdef BSP_USING_QEMU
     param_set_int32((param_t)params_id::MAV_0_CONFIG, 10);
+    param_set_int32((param_t)params_id::MAV_0_MODE, 0);
+    param_set_int32((param_t)params_id::MAV_0_RATE, 40000);
     param_set_int32((param_t)params_id::MAV_0_UDP_PRT, 14556);
     param_set_int32((param_t)params_id::MAV_0_REMOTE_IP, (127 << 24) | (0 << 16) | (0 << 8) | 1);
     param_set_int32((param_t)params_id::MAV_0_REMOTE_PRT, 14550);
-    // param_set_int32(params_id::MAV_0_CONFIG, 0);
+    param_set_int32((param_t)params_id::MAV_0_FORWARD, 0);
     unsigned max_instance = 1;
 #else
     unsigned max_instance = MAVLINK_COMM_NUM_BUFFERS;

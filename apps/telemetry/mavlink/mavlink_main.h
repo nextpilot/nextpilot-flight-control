@@ -56,9 +56,9 @@
 #define HASH_PARAM          "_HASH_CHECK"
 
 #if defined(SAL_USING_POSIX)
-#   define RT_LWIP_UDP
-#   define DEFAULT_REMOTE_PORT_UDP 14550 ///< GCS port per MAVLink spec
-#endif                                   // SAL_USING_POSIX
+#   define DEFAULT_REMOTE_PORT 14550 ///< GCS port per MAVLink spec
+#   define DEFAULT_LOCAL_PORT  14556
+#endif                               // SAL_USING_POSIX
 
 enum class Protocol {
     SERIAL = 0,
@@ -735,8 +735,8 @@ private:
     bool _broadcast_address_not_found_warned{false};
     bool _broadcast_failed_warned{false};
 
-    unsigned short _network_port{14556};
-    unsigned short _remote_port{DEFAULT_REMOTE_PORT_UDP};
+    unsigned short _network_port{DEFAULT_LOCAL_PORT};
+    unsigned short _remote_port{DEFAULT_REMOTE_PORT};
 #endif // RT_LWIP_UDP
 
     uint8_t  _buf[MAVLINK_MAX_PACKET_LEN]{};

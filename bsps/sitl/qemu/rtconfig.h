@@ -12,6 +12,7 @@
 
 #define RT_USING_UART0
 #define RT_USING_UART1
+#define BSP_DRV_EMAC
 /* end of Onboard Peripheral Drivers */
 /* end of Hardware Driver Config */
 /* end of Nextpilot Hardware Config */
@@ -354,6 +355,7 @@
 #define RT_USING_POSIX_STDIO
 #define RT_USING_POSIX_POLL
 #define RT_USING_POSIX_SELECT
+#define RT_USING_POSIX_SOCKET
 #define RT_USING_POSIX_TERMIOS
 #define RT_USING_POSIX_AIO
 #define RT_USING_POSIX_DELAY
