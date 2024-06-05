@@ -6,7 +6,7 @@
 
 [English](README.md) | [中文](README_zh.md) | [Español](README_es.md) | [Deutsch](README_de.md)
 
-NextPilot是一款的高性能高可靠的自动驾驶仪，支持多旋翼、复合翼、固定翼等。软件框架(param/workq)、通信中间层（uorb/mavlink）、控制算法等参考或移植于[PX4 V1.14.2](https://github.com/px4/px4-autopilot.git)项目，并基于国产[RT-Thread V5.0.2](https://github.com/RT-Thread/rt-thread/tree/v5.0.2)实时操作系统进行打造。
+NextPilot是一款的高性能高可靠的自动驾驶仪，支持多旋翼、复合翼、固定翼等。软件框架(param/workq)、通信中间层（uorb/mavlink）、控制算法等参考或移植于[PX4 V1.14.2](https://github.com/PX4/PX4-Autopilot/tree/v1.14.2)项目，并基于国产[RT-Thread V5.0.2](https://github.com/RT-Thread/rt-thread/tree/v5.0.2)实时操作系统进行打造。
 
 1. 采用国产[RT-Thread](https://rt-thread.org)实时嵌入式操作系统，拥有高可靠和自主可控等特性；
 1. 支持[MATLAB/Simulink](https://www.mathworks.com)工具链，应用MBD进行飞控算法设计、仿真、验证；
@@ -26,18 +26,9 @@ NextPilot use [airframe]() set Vehicle parameters and start modules.
 
 ## Supported Function
 
-### Peripheral
-
-- sensors: gnss/gps/rtk, IMU(gyro, accel), baro, mag, airspeed
-- actuator: pwm, can
-- battery: smart, analog
-- radio control: s.bus
-- notification: led, tunes, safety_button
-- payload:
-
 ### Controller
 
-- Flight Mode: manul, arco, att, alt, pos; takeoff, land, mission, loiter, rtl, follow; offboard 
+- Flight Mode: manul, arco, att, alt, pos; takeoff, land, mission, loiter, rtl, follow; offboard
 - Safety: geofence, low power, gnss loss, rc loss, datalink loss, engine failure, etc
 
 ### Estimator
@@ -58,11 +49,20 @@ NextPilot use [airframe]() set Vehicle parameters and start modules.
 
 ## Supported Hardware
 
-目前 NextPilot 支持 [PX4 FMUv5](https://docs.px4.io/main/en/flight_controller/cuav_v5_plus.html) 系列开源硬件，以及 NextPilot 自主开发的飞控硬件。
+NextPilot support [PX4 FMUv5](https://docs.px4.io/main/en/flight_controller/cuav_v5_plus.html) open hardware，and hardware deveolp by NextPilot Develop Team.
+
+- mcu: STM32F765 and STM32F753
+- sensors: gnss/gps/rtk, IMU(gyro, accel), baro, mag, airspeed
+- actuator: pwm, can
+- battery: smart, analog
+- radio control: s.bus
+- notification: led, tunes, safety_button
+- payload:
 
 # Document
 
 ## User Manual
+
 [Getting Started](https://docs.nextpilot.cn/manual) | [Flight Mode](https://docs.nextpilot.cn/manual/05.%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/01.%E9%A3%9E%E8%A1%8C%E6%A8%A1%E5%BC%8F/index.html) | [Simulation]()
 
 ## Develeop Guide
@@ -76,7 +76,7 @@ The main IDE/compilers supported by NextPilot are:
 
 # License
 
-NextPilt follows the [BSD 3-Clause License](./LICENSE). It's completely open-source, can be used in commercial applications for free, does not require the disclosure of code, and has no potential commercial risk. 
+NextPilt follows the [BSD 3-Clause License](./LICENSE). It's completely open-source, can be used in commercial applications for free, does not require the disclosure of code, and has no potential commercial risk.
 
 # Contribution
 
