@@ -10,7 +10,6 @@
 
 #include "mavlink_events.h"
 #include "mavlink_main.h"
-
 #include <ulog/log.h>
 #include <errno.h>
 

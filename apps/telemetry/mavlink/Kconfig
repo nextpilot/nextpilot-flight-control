@@ -14,7 +14,7 @@ if TEL_USING_MAVLINK
 
 	# config MAVLINK_USING_UDP
 	# 	bool "support udp connection"
-	# 	select RT_USING_LWIP
+	# 	select SAL_USING_POSIX
 	# 	default y if BSP_USING_QEMU
 	# 	default n
 

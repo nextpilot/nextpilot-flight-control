@@ -37,20 +37,28 @@ for root, dirs, files in os.walk(prj_root):
 
 # subprocess.call(cmd)
 
+if GetDepend(["RT_LWIP_UDP"]):
+    ethernet = ["--ethernet"]
+else:
+    ethernet = []
 
 # Generating module_params.c from modules.yaml
-cmd = [
-    sys.executable,
-    os.path.join(prj_root, "tools/module_config/generate_module_params.py"),
-    # "--verbose,
-    # "--board-with-io",
-    "--params-file",
-    File("#/build/module_params.c").abspath,
-    "--board",
-    "nextpilot",
-    # "--timer-config", "xxxx",
-    "--config-files",
-] + list(modules_config_file)
+cmd = (
+    [
+        sys.executable,
+        os.path.join(prj_root, "tools/module_config/generate_module_params.py"),
+        # "--verbose,
+        # "--board-with-io",
+        "--params-file",
+        File("#/build/module_params.c").abspath,
+        "--board",
+        "nextpilot",
+        # "--timer-config", "xxxx",
+        "--config-files",
+    ]
+    + list(modules_config_file)
+    + ethernet
+)
 
 if sys.version_info > (3, 0):
     subprocess.call(cmd)

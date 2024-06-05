@@ -18,6 +18,7 @@
  */
 
 #define LOG_TAG "mavlink.mission"
+#define LOG_LVL LOG_LVL_INFO
 
 #include "mavlink_mission.h"
 #include "mavlink_main.h"

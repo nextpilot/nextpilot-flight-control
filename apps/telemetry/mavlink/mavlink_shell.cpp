@@ -15,11 +15,12 @@
  * @author Beat Küng <beat-kueng@gmx.net>
  */
 
+#define LOG_TAG "mavlink.shell"
+#define LOG_LVL LOG_LVL_INFO
+
 #include "mavlink_shell.h"
 #include <defines.h>
 #include <ulog/log.h>
-
-
 #include <unistd.h>
 #include <errno.h>
 #include <sys/ioctl.h>

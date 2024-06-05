@@ -16,6 +16,7 @@
  */
 
 #define LOG_TAG     "mavlink.ulog"
+#define LOG_LVL     LOG_LVL_INFO
 #define MODULE_NAME LOG_TAG
 
 #include "mavlink_ulog.h"

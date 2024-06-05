@@ -8,24 +8,20 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/**
- * @file mavlink_main.h
- *
- * MAVLink 2.0 protocol interface definition.
- *
- * @author Lorenz Meier <lorenz@px4.io>
- * @author Anton Babushkin <anton.babushkin@me.com>
- */
 
 #pragma once
 
 #include <pthread.h>
 #include <stdbool.h>
 
-#if defined(RT_USING_LWIP) || !defined(__PX4_NUTTX)
+#if defined(SAL_USING_POSIX)
+// #   include <arpa/inet.h>
+#   include <sys/socket.h>
 // #   include <net/if.h>
 // #   include <netinet/in.h>
+#   include <netdb.h>
 #endif
+
 
 #include <containers/IntrusiveList.hpp>
 #include <param/param.h>
@@ -59,16 +55,16 @@
 
 #define HASH_PARAM          "_HASH_CHECK"
 
-#if defined(RT_USING_LWIP)
-#   define MAVLINK_USING_UDP
+#if defined(SAL_USING_POSIX)
+#   define RT_LWIP_UDP
 #   define DEFAULT_REMOTE_PORT_UDP 14550 ///< GCS port per MAVLink spec
-#endif                                   // RT_USING_LWIP || __PX4_POSIX
+#endif                                   // SAL_USING_POSIX
 
 enum class Protocol {
     SERIAL = 0,
-#if defined(MAVLINK_USING_UDP)
+#if defined(RT_LWIP_UDP)
     UDP,
-#endif // MAVLINK_USING_UDP
+#endif // RT_LWIP_UDP
 };
 
 using namespace time_literals;
@@ -292,7 +288,7 @@ public:
         return _tstatus.heartbeat_type_gcs;
     }
 
-#if defined(MAVLINK_USING_UDP)
+#ifdef RT_LWIP_UDP
     static Mavlink *get_instance_for_network_port(unsigned long port);
 
     bool broadcast_enabled() {
@@ -302,7 +298,7 @@ public:
     bool multicast_enabled() {
         return _mav_broadcast == BROADCAST_MODE_MULTICAST;
     }
-#endif // MAVLINK_USING_UDP
+#endif // RT_LWIP_UDP
 
     /**
      * Set the boot complete flag on all instances
@@ -509,7 +505,7 @@ public:
         return _socket_fd;
     }
 
-#if defined(MAVLINK_USING_UDP)
+#if defined(RT_LWIP_UDP)
     unsigned short get_network_port() {
         return _network_port;
     }
@@ -518,9 +514,12 @@ public:
         return _remote_port;
     }
 
+#   ifdef MAVLINK_USING_BROADCAST
     const in_addr query_netmask_addr(const int socket_fd, const ifreq &ifreq);
 
     const in_addr compute_broadcast_addr(const in_addr &host_addr, const in_addr &netmask_addr);
+
+#   endif // MAVLINK_USING_BROADCAST
 
     struct sockaddr_in &get_client_source_address() {
         return _src_addr;
@@ -724,7 +723,7 @@ private:
     unsigned    _bytes_rx{0};
     hrt_abstime _bytes_timestamp{0};
 
-#if defined(MAVLINK_USING_UDP)
+#if defined(RT_LWIP_UDP)
     BROADCAST_MODE _mav_broadcast{BROADCAST_MODE_OFF};
 
     sockaddr_in _myaddr{};
@@ -738,7 +737,7 @@ private:
 
     unsigned short _network_port{14556};
     unsigned short _remote_port{DEFAULT_REMOTE_PORT_UDP};
-#endif // MAVLINK_USING_UDP
+#endif // RT_LWIP_UDP
 
     uint8_t  _buf[MAVLINK_MAX_PACKET_LEN]{};
     unsigned _buf_fill{0};
@@ -828,11 +827,11 @@ private:
      */
     void update_rate_mult();
 
-#if defined(MAVLINK_USING_UDP)
+#if defined(RT_LWIP_UDP)
     void find_broadcast_address();
 
     void init_udp();
-#endif // MAVLINK_USING_UDP
+#endif // RT_LWIP_UDP
 
     bool set_channel();
 

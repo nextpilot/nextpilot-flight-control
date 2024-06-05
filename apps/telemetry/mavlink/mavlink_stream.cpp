@@ -16,6 +16,9 @@
  * @author Lorenz Meier <lorenz@px4.io>
  */
 
+#define LOG_TAG "mavlink.stream"
+#define LOG_LVL LOG_LVL_INFO
+
 #include <stdlib.h>
 
 #include "mavlink_stream.h"

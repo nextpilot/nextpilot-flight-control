@@ -8,8 +8,6 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/// @file mavlink_log_handler.h
-/// @author px4dev, Gus Grubba <mavlink@grubba.com>
 
 #include "mavlink_log_handler.h"
 #include "mavlink_main.h"

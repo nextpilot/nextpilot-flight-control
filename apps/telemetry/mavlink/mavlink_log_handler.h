@@ -10,8 +10,6 @@
 
 #pragma once
 
-/// @file mavlink_log_handler.h
-/// @author px4dev, Gus Grubba <mavlink@grubba.com>
 
 #include <dirent.h>
 #include <queue.h>

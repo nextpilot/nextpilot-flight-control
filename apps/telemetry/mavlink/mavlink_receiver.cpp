@@ -8,27 +8,15 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/**
- * @file mavlink_receiver.cpp
- * MAVLink protocol message receive and dispatch
- *
- * @author Lorenz Meier <lorenz@px4.io>
- * @author Anton Babushkin <anton@px4.io>
- * @author Thomas Gubler <thomas@px4.io>
- */
+#define LOG_TAG "mavlink.receiver"
+#define LOG_LVL LOG_LVL_INFO
 
 #include <airspeed/airspeed.h>
 #include <conversion/rotation.h>
 #include <math.h>
 #include <poll.h>
 
-#ifdef RT_USING_LWIP
-#   include <net/if.h>
-#   include <arpa/inet.h>
-#   include <netinet/in.h>
-#endif
-
-#ifndef __PX4_POSIX
+#ifndef RT_USING_POSIX_TERMIOS
 #   include <termios.h>
 #endif
 
@@ -36,9 +24,8 @@
 #include "mavlink_main.h"
 #include "mavlink_receiver.h"
 #include "device/device_id.h"
-// #include <drivers/device/Device.hpp> // For DeviceId union
 
-#ifdef RT_USING_LWIP
+#ifdef SAL_USING_POSIX
 #   define MAVLINK_RECEIVER_NET_ADDED_STACK 1360
 #else
 #   define MAVLINK_RECEIVER_NET_ADDED_STACK 0
@@ -2894,10 +2881,10 @@ void MavlinkReceiver::run() {
     // poll timeout in ms. Also defines the max update frequency of the mission & param manager, etc.
     const int timeout = 10;
 
-#if defined(__PX4_POSIX)
+#if defined(BSP_USING_QEMU)
     /* 1500 is the Wifi MTU, so we make sure to fit a full packet */
     uint8_t buf[1600 * 5];
-#elif defined(RT_USING_LWIP)
+#elif defined(SAL_USING_POSIX)
     /* 1500 is the Wifi MTU, so we make sure to fit a full packet */
     uint8_t buf[1000];
 #else
@@ -2906,14 +2893,9 @@ void MavlinkReceiver::run() {
 #endif
     mavlink_message_t msg;
 
-    // struct pollfd fds[1] = {};
 
-    // if (_mavlink->get_protocol() == Protocol::SERIAL) {
-    //     fds[0].fd     = _mavlink->get_uart_fd();
-    //     fds[0].events = POLLIN;
-    // }
-
-#if defined(MAVLINK_USING_UDP)
+#if defined(RT_LWIP_UDP)
+    struct pollfd      fds[1]  = {};
     struct sockaddr_in srcaddr = {};
     socklen_t          addrlen = sizeof(srcaddr);
 
@@ -2921,8 +2903,7 @@ void MavlinkReceiver::run() {
         fds[0].fd     = _mavlink->get_socket_fd();
         fds[0].events = POLLIN;
     }
-
-#endif // MAVLINK_USING_UDP
+#endif // RT_LWIP_UDP
 
     ssize_t     nread            = 0;
     hrt_abstime last_send_update = 0;
@@ -2938,21 +2919,24 @@ void MavlinkReceiver::run() {
             updateParams();
         }
 
-        // int ret = poll(&fds[0], 1, timeout);
-        int ret = 0;
+        nread = 0;
 
-        if (ret > 0) {
-            if (_mavlink->get_protocol() == Protocol::SERIAL) {
-                /* non-blocking read. read may return negative values */
-                nread = rt_device_read(_mavlink->get_uart_fd(), 0, buf, sizeof(buf));
-
-                if (nread == -1 && errno == ENOTCONN) { // Not connected (can happen for USB)
-                    usleep(100000);
-                }
+        if (_mavlink->get_protocol() == Protocol::SERIAL) {
+            /* non-blocking read. read may return negative values */
+            if (_mavlink->get_uart_fd()->rx_indicate) {
+                // 等待rx_indicate
+                // rt_completion_wait(&(_mavlink->get_recv_comp()), timeout);
+            } else {
+                // 否则采用10ms轮询
+                rt_thread_mdelay(timeout);
             }
-#if defined(MAVLINK_USING_UDP)
+            nread = rt_device_read(_mavlink->get_uart_fd(), 0, buf, sizeof(buf));
+        }
+#if defined(RT_LWIP_UDP)
+        else if (_mavlink->get_protocol() == Protocol::UDP) {
+            int ret = poll(&fds[0], 1, timeout);
 
-            else if (_mavlink->get_protocol() == Protocol::UDP) {
+            if (ret > 0) {
                 if (fds[0].revents & POLLIN) {
                     nread = recvfrom(_mavlink->get_socket_fd(), buf, sizeof(buf), 0, (struct sockaddr *)&srcaddr, &addrlen);
                 }
@@ -2976,96 +2960,96 @@ void MavlinkReceiver::run() {
                         PX4_INFO("partner IP: %s", inet_ntoa(srcaddr.sin_addr));
                     }
                 }
+            } else {
+                rt_thread_mdelay(10);
             }
+        }
 
-            // only start accepting messages on UDP once we're sure who we talk to
-            if (_mavlink->get_protocol() != Protocol::UDP || _mavlink->get_client_source_initialized()) {
-#endif // MAVLINK_USING_UDP
+        // only start accepting messages on UDP once we're sure who we talk to
+        if (_mavlink->get_protocol() != Protocol::UDP || _mavlink->get_client_source_initialized()) {
+#endif // RT_LWIP_UDP
 
-                /* if read failed, this loop won't execute */
-                for (ssize_t i = 0; i < nread; i++) {
-                    if (mavlink_parse_char(_mavlink->get_channel(), buf[i], &msg, &_status)) {
-                        /* check if we received version 2 and request a switch. */
-                        if (!(_mavlink->get_status()->flags & MAVLINK_STATUS_FLAG_IN_MAVLINK1)) {
-                            /* this will only switch to proto version 2 if allowed in settings */
-                            _mavlink->set_proto_version(2);
+            /* if read failed, this loop won't execute */
+            for (ssize_t i = 0; i < nread; i++) {
+                if (mavlink_parse_char(_mavlink->get_channel(), buf[i], &msg, &_status)) {
+                    /* check if we received version 2 and request a switch. */
+                    if (!(_mavlink->get_status()->flags & MAVLINK_STATUS_FLAG_IN_MAVLINK1)) {
+                        /* this will only switch to proto version 2 if allowed in settings */
+                        _mavlink->set_proto_version(2);
+                    }
+
+                    /* handle generic messages and commands */
+                    handle_message(&msg);
+
+                    /* handle packet with mission manager */
+                    _mission_manager.handle_message(&msg);
+
+                    /* handle packet with parameter component */
+                    if (_mavlink->boot_complete()) {
+                        // make sure mavlink app has booted before we start processing parameter sync
+                        _parameters_manager.handle_message(&msg);
+
+                    } else {
+                        if (hrt_elapsed_time(&_mavlink->get_first_start_time()) > 20_s) {
+                            PX4_ERR("system boot did not complete in 20 seconds");
+                            _mavlink->set_boot_complete();
                         }
-
-                        /* handle generic messages and commands */
-                        handle_message(&msg);
-
-                        /* handle packet with mission manager */
-                        _mission_manager.handle_message(&msg);
-
-                        /* handle packet with parameter component */
-                        if (_mavlink->boot_complete()) {
-                            // make sure mavlink app has booted before we start processing parameter sync
-                            _parameters_manager.handle_message(&msg);
-
-                        } else {
-                            if (hrt_elapsed_time(&_mavlink->get_first_start_time()) > 20_s) {
-                                PX4_ERR("system boot did not complete in 20 seconds");
-                                _mavlink->set_boot_complete();
-                            }
-                        }
+                    }
 #ifdef MAVLINK_USING_FTP
-                        if (_mavlink->ftp_enabled()) {
-                            /* handle packet with ftp component */
-                            _mavlink_ftp.handle_message(&msg);
-                        }
+                    if (_mavlink->ftp_enabled()) {
+                        /* handle packet with ftp component */
+                        _mavlink_ftp.handle_message(&msg);
+                    }
 #endif // MAVLINK_USING_FTP
-                        /* handle packet with log component */
-                        _mavlink_log_handler.handle_message(&msg);
+                    /* handle packet with log component */
+                    _mavlink_log_handler.handle_message(&msg);
 
 #ifdef MAVLINK_USING_TIMESYNC
-                        /* handle packet with timesync component */
-                        _mavlink_timesync.handle_message(&msg);
+                    /* handle packet with timesync component */
+                    _mavlink_timesync.handle_message(&msg);
 #endif // MAVLINK_USING_TIMESYNC
 
-                        /* handle packet with parent object */
-                        _mavlink->handle_message(&msg);
+                    /* handle packet with parent object */
+                    _mavlink->handle_message(&msg);
 
-                        update_rx_stats(msg);
+                    update_rx_stats(msg);
 
-                        if (_message_statistics_enabled) {
-                            update_message_statistics(msg);
-                        }
+                    if (_message_statistics_enabled) {
+                        update_message_statistics(msg);
                     }
                 }
-
-                /* count received bytes (nread will be -1 on read error) */
-                if (nread > 0) {
-                    _mavlink->count_rxbytes(nread);
-
-                    telemetry_status_s &tstatus   = _mavlink->telemetry_status();
-                    tstatus.rx_message_count      = _total_received_counter;
-                    tstatus.rx_message_lost_count = _total_lost_counter;
-                    tstatus.rx_message_lost_rate  = static_cast<float>(_total_lost_counter) / static_cast<float>(_total_received_counter);
-
-                    if (_mavlink_status_last_buffer_overrun != _status.buffer_overrun) {
-                        tstatus.rx_buffer_overruns++;
-                        _mavlink_status_last_buffer_overrun = _status.buffer_overrun;
-                    }
-
-                    if (_mavlink_status_last_parse_error != _status.parse_error) {
-                        tstatus.rx_parse_errors++;
-                        _mavlink_status_last_parse_error = _status.parse_error;
-                    }
-
-                    if (_mavlink_status_last_packet_rx_drop_count != _status.packet_rx_drop_count) {
-                        tstatus.rx_packet_drop_count++;
-                        _mavlink_status_last_packet_rx_drop_count = _status.packet_rx_drop_count;
-                    }
-                }
-
-#if defined(MAVLINK_USING_UDP)
             }
 
-#endif // MAVLINK_USING_UDP
+            /* count received bytes (nread will be -1 on read error) */
+            if (nread > 0) {
+                _mavlink->count_rxbytes(nread);
 
-        } else if (ret == -1) {
-            usleep(10000);
+                telemetry_status_s &tstatus   = _mavlink->telemetry_status();
+                tstatus.rx_message_count      = _total_received_counter;
+                tstatus.rx_message_lost_count = _total_lost_counter;
+                tstatus.rx_message_lost_rate  = static_cast<float>(_total_lost_counter) / static_cast<float>(_total_received_counter);
+
+                if (_mavlink_status_last_buffer_overrun != _status.buffer_overrun) {
+                    tstatus.rx_buffer_overruns++;
+                    _mavlink_status_last_buffer_overrun = _status.buffer_overrun;
+                }
+
+                if (_mavlink_status_last_parse_error != _status.parse_error) {
+                    tstatus.rx_parse_errors++;
+                    _mavlink_status_last_parse_error = _status.parse_error;
+                }
+
+                if (_mavlink_status_last_packet_rx_drop_count != _status.packet_rx_drop_count) {
+                    tstatus.rx_packet_drop_count++;
+                    _mavlink_status_last_packet_rx_drop_count = _status.packet_rx_drop_count;
+                }
+            }
+
+#if defined(RT_LWIP_UDP)
         }
+
+#endif // RT_LWIP_UDP
+
 
         const hrt_abstime t = hrt_absolute_time();
 

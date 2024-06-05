@@ -17,8 +17,10 @@
  * @author Beat Kueng <beat@px4.io>
  */
 
-#include <stdio.h>
+#define LOG_TAG "mavlink.param"
+#define LOG_LVL LOG_INFO_LVL
 
+#include <stdio.h>
 #include "mavlink_parameters.h"
 #include "mavlink_main.h"
 #include <ulog/mavlink_log.h>

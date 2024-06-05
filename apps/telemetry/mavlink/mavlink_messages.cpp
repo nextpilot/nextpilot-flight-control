@@ -16,6 +16,9 @@
  * @author Anton Babushkin <anton.babushkin@me.com>
  */
 
+#define LOG_TAG "mavlink.messages"
+#define LOG_LVL LOG_LVL_INFO
+
 #include "mavlink_main.h"
 #include "mavlink_messages.h"
 #include "mavlink_command_sender.h"
