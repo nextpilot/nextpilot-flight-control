@@ -39,11 +39,11 @@ pytz==2022.1
 PyYAML==6.0
 pyyaml_env_tag==0.1
 regex==2022.7.25
-requests==2.28.1
+requests==2.32.2
 six==1.16.0
 smmap==5.0.0
-tornado==6.2
-tqdm==4.64.0
+tornado==6.4.1
+tqdm==4.66.3
 urllib3==1.26.11
 watchdog==2.1.9
 zipp==3.8.1
