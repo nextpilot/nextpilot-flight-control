@@ -489,7 +489,11 @@ void unwind_backtrace(struct pt_regs *regs, const struct unwind_idx exidx_start[
     arm_get_current_stackframe(regs, &frame);
 
 #ifndef RT_BACKTRACE_FUNCTION_NAME
+#ifdef BSP_USING_QEMU
+    rt_kprintf("please use: arm-none-eabi-addr2line -e build\\sitl-qemu-default.elf -a -f %08x", frame.pc);
+#else
     rt_kprintf("please use: addr2line -e rtthread.elf -a -f %08x", frame.pc);
+#endif
 #endif
     LOG_D("pc = %08x, sp = %08x", frame.pc, frame.sp);
 

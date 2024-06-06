@@ -14,7 +14,7 @@
 #include <automac.h>
 #include <netif/ethernetif.h>
 #include <lwipopts.h>
-
+#include "delay.h"
 #include "mmu.h"
 #include "drv_smc911x.h"
 
@@ -559,4 +559,4 @@ int smc911x_emac_hw_init(void)
     eth_device_linkchange(&_emac.parent, RT_TRUE);
     return 0;
 }
-INIT_APP_EXPORT(smc911x_emac_hw_init);
+INIT_ENV_EXPORT(smc911x_emac_hw_init);

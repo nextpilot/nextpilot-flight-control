@@ -176,4 +176,5 @@ static param_interface_t _itf = {
 static int param_global_autogen_init() {
     return param_interface_register(&_itf);
 }
+
 INIT_COMPONENT_EXPORT(param_global_autogen_init);
