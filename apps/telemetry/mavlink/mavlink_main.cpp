@@ -278,8 +278,7 @@ int Mavlink::instance_count() {
     return inst_index;
 }
 
-Mavlink *
-Mavlink::get_instance_for_device(const char *device_name) {
+Mavlink *Mavlink::get_instance_for_device(const char *device_name) {
     LockGuard lg{mavlink_module_mutex};
 
     for (Mavlink *inst : mavlink_module_instances) {
@@ -291,9 +290,21 @@ Mavlink::get_instance_for_device(const char *device_name) {
     return nullptr;
 }
 
+Mavlink *Mavlink::get_instance_for_device(const rt_device_t dev) {
+    LockGuard lg{mavlink_module_mutex};
+
+    for (Mavlink *inst : mavlink_module_instances) {
+        if (inst && (inst->_protocol == Protocol::SERIAL) && (inst->get_uart_fd() == dev)) {
+            return inst;
+        }
+    }
+
+    return nullptr;
+}
+
+
 #ifdef RT_LWIP_UDP
-Mavlink *
-Mavlink::get_instance_for_network_port(unsigned long port) {
+Mavlink *Mavlink::get_instance_for_network_port(unsigned long port) {
     LockGuard lg{mavlink_module_mutex};
 
     for (Mavlink *inst : mavlink_module_instances) {
@@ -450,6 +461,30 @@ void Mavlink::forward_message(const mavlink_message_t *msg, Mavlink *self) {
     }
 }
 
+static rt_err_t mavlink_uart_rx_indicate(rt_device_t dev, rt_size_t size) {
+    int ret = 0;
+
+    Mavlink *inst = Mavlink::get_instance_for_device(dev);
+
+    if (inst && size > 0) {
+        ret = rt_sem_release(&(inst->get_uart_rx_ind_sem()));
+    }
+
+    return ret;
+}
+
+static rt_err_t mavlink_uart_tx_complete(rt_device_t dev, void *buffer) {
+    int ret = 0;
+
+    Mavlink *inst = Mavlink::get_instance_for_device(dev);
+
+    if (inst) {
+        ret = rt_sem_release(&(inst->get_uart_tx_cmp_sem()));
+    }
+
+    return ret;
+}
+
 int Mavlink::mavlink_open_uart(const int baud, const char *uart_name, const FLOW_CONTROL_MODE flow_control) {
     /* open uart */
     _uart_fd = rt_device_find(uart_name);
@@ -520,7 +555,7 @@ int Mavlink::mavlink_open_uart(const int baud, const char *uart_name, const FLOW
         // INT接收，每个char都会触发一次回调，太浪费资源了，如果上层应用对实时性要求不高，建议上层应用轮询
         // DMA接收，只会触发空闲、半满、全满等3个中断，此时建议采用中断回调模式激活上层应用
         if (flags & RT_DEVICE_FLAG_DMA_RX) {
-            // rt_device_set_rx_indicate(_uart_fd, callback_uart_rx_indicate);
+            rt_device_set_rx_indicate(_uart_fd, mavlink_uart_rx_indicate);
         }
 
 #ifdef RT_USING_SERIAL_V1
@@ -531,8 +566,7 @@ int Mavlink::mavlink_open_uart(const int baud, const char *uart_name, const FLOW
         // V2版本，非阻塞模式，则启用发送完成回调
         if (flags & RT_DEVICE_FLAG_TX_NON_BLOCKING) {
 #endif // RT_USING_SERIAL_V1
-
-            // rt_device_set_tx_complete(_uart_fd, callback_uart_tx_complete);
+            rt_device_set_tx_complete(_uart_fd, mavlink_uart_tx_complete);
         }
     }
 
@@ -625,8 +659,7 @@ int Mavlink::set_hil_enabled(bool hil_enabled) {
     return ret;
 }
 
-unsigned
-Mavlink::get_free_tx_buf() {
+unsigned Mavlink::get_free_tx_buf() {
     /*
      * Check if the OS buffer is full and disable HW
      * flow control if it continues to be full
@@ -2144,8 +2177,8 @@ int Mavlink::task_main(int argc, char *argv[]) {
         }
 
         // set thread name
-        char thread_name[13];
-        rt_snprintf(thread_name, sizeof(thread_name), "mavlink_if%d", get_instance_id());
+        // char thread_name[13];
+        // rt_snprintf(thread_name, sizeof(thread_name), "mavlink_if%d", get_instance_id());
         // px4_prctl(PR_SET_NAME, thread_name, px4_getpid());
 
     } else {
@@ -2216,6 +2249,13 @@ int Mavlink::task_main(int argc, char *argv[]) {
             PX4_ERR("could not open %s", _device_name);
             return PX4_ERROR;
         }
+
+
+        char name[RT_NAME_MAX];
+        rt_snprintf(name, sizeof(name), "mav%d_rx_ind", get_instance_id());
+        rt_sem_init(&_uart_rx_ind_sem, name, 0, RT_IPC_FLAG_PRIO);
+        rt_snprintf(name, sizeof(name), "mav%d_tx_cmp", get_instance_id());
+        rt_sem_init(&_uart_tx_cmp_sem, name, 1, RT_IPC_FLAG_PRIO);
     }
 #if defined(RT_LWIP_UDP)
     /* init socket if necessary */
@@ -2554,12 +2594,16 @@ int Mavlink::task_main(int argc, char *argv[]) {
         // tcflush(_uart_fd, TCIOFLUSH);
         /* close UART */
         rt_device_close(_uart_fd);
+        rt_sem_detach(&_uart_rx_ind_sem);
+        rt_sem_detach(&_uart_tx_cmp_sem);
     }
 
+#ifdef RT_LWIP_UDP
     if (_socket_fd >= 0) {
         close(_socket_fd);
         _socket_fd = -1;
     }
+#endif //RT_LWIP_UDP
 
     if (_mavlink_ulog) {
         _mavlink_ulog->stop();

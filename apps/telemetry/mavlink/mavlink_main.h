@@ -122,6 +122,8 @@ public:
 
     static Mavlink *get_instance_for_device(const char *device_name);
 
+    static Mavlink *get_instance_for_device(const rt_device_t dev);
+
     mavlink_message_t *get_buffer() {
         return &_mavlink_buffer;
     }
@@ -626,6 +628,14 @@ public:
         return _radio_status_critical;
     }
 
+    struct rt_semaphore &get_uart_rx_ind_sem() {
+        return _uart_rx_ind_sem;
+    }
+
+    struct rt_semaphore &get_uart_tx_cmp_sem() {
+        return _uart_tx_cmp_sem;
+    }
+
 private:
     MavlinkReceiver _receiver;
 
@@ -761,6 +771,10 @@ private:
     pthread_mutex_t _send_mutex{};
     pthread_mutex_t _radio_status_mutex{};
 
+    struct rt_semaphore _uart_rx_ind_sem {};
+
+    struct rt_semaphore _uart_tx_cmp_sem {};
+
     DEFINE_PARAMETERS(
         (ParamInt<params_id::MAV_SYS_ID>)_param_mav_sys_id,
         (ParamInt<params_id::MAV_COMP_ID>)_param_mav_comp_id,
@@ -775,7 +789,8 @@ private:
         (ParamInt<params_id::SYS_HITL>)_param_sys_hitl,
         (ParamBool<params_id::SYS_FAILURE_EN>)_param_sys_failure_injection_enabled)
 
-    perf_counter_t _loop_perf{perf_alloc(PC_ELAPSED, MODULE_NAME ": tx run elapsed")};             /**< loop performance counter */
+    perf_counter_t _loop_perf{
+        perf_alloc(PC_ELAPSED, MODULE_NAME ": tx run elapsed")};                                   /**< loop performance counter */
     perf_counter_t _loop_interval_perf{perf_alloc(PC_INTERVAL, MODULE_NAME ": tx run interval")};  /**< loop interval performance counter */
     perf_counter_t _send_byte_error_perf{perf_alloc(PC_COUNT, MODULE_NAME ": send_bytes error")};  /**< send bytes error count */
     perf_counter_t _forwarding_error_perf{perf_alloc(PC_COUNT, MODULE_NAME ": forwarding error")}; /**< forwarding messages error count */
