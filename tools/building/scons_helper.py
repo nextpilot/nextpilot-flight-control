@@ -232,7 +232,7 @@ def get_project_option():
     return __options__
 
 
-def gen_rtconfig_header(target="default"):
+def gen_rtconfig_header(target=None):
     from menukconfig import mk_rtconfig
     import shutil
 
@@ -592,10 +592,10 @@ def auto_build():
         for target in COMMAND_LINE_TARGETS:
             build(target)
     else:
-        build("default")
+        build()
 
 
-def build(target="default"):
+def build(target=None):
     import rtconfig
     import building
 
@@ -642,6 +642,9 @@ def build(target="default"):
     building.DoBuilding(__options__["TARGET_FILE"], objs)
 
     #
-    Alias(target, __options__["TARGET_FILE"])
+    if not target:
+        Alias(target, __options__["TARGET_FILE"])
+    else:
+        pass
 
     # deploy_bsp_project()
