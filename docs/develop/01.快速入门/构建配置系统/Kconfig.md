@@ -1,6 +1,6 @@
 # Kconfig
 
-## Kconfig在Nextpilot中的工作机制
+## Kconfig工作机制
 
 C/C++语言项目的裁剪配置本质上通过条件编译和宏的展开来实现的，Nextpilot借助Kconfig这套机制更方便的实现了这一功能。当前以Windows下Env工具中的使用为例，简述Kconfig在Nextpilot的工作机制。
 
