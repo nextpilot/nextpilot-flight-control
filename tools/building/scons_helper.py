@@ -642,7 +642,7 @@ def build(target=None):
     building.DoBuilding(__options__["TARGET_FILE"], objs)
 
     #
-    if not target:
+    if target:
         Alias(target, __options__["TARGET_FILE"])
     else:
         pass
