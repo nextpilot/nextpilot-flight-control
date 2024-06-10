@@ -3239,7 +3239,7 @@ void MavlinkReceiver::start() {
     char thread_name[RT_NAME_MAX];
     rt_snprintf(thread_name, sizeof(thread_name), "mavlink%d_recv", _mavlink->get_instance_id());
 
-    _thread = rt_thread_create(thread_name, MavlinkReceiver::start_trampoline, this, 4096 * 2, 15, 1000);
+    _thread = rt_thread_create(thread_name, MavlinkReceiver::start_trampoline, this, 4096 * 4, 15, 1000);
 
     if (!_thread) {
         LOG_E("create %d thread fail", thread_name);
