@@ -1054,7 +1054,7 @@ start() {
 
     // px4_sem_setprotocol(&g_init_sema, SEM_PRIO_NONE);
 
-    rt_thread_t task = rt_thread_create("dataman", task_main, nullptr, 1024, 20, 10);
+    rt_thread_t task = rt_thread_create("dataman", task_main, nullptr, 4096, 20, 10);
 
     /* start the worker thread with low priority for disk IO */
     if (!task) {
@@ -1220,3 +1220,11 @@ int dataman_main(int argc, char *argv[]) {
 }
 
 MSH_CMD_EXPORT_ALIAS(dataman_main, dataman, dataman);
+
+int dataman_start() {
+    const char *argv[] = {"dataman", "start"};
+    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    return dataman_main(argc, (char **)argv);
+}
+
+INIT_APP_EXPORT(dataman_start);
