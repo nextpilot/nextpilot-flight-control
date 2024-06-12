@@ -55,7 +55,7 @@ NextPilot use [airframe](apps/airframe/README.md) set Vehicle parameters and sta
 ### Simulation
 
 - [SITL: qemu + SIH](bsps/sitl/qemu/README.md)
-- HITL: SIH
+- HITL: stm32 + SIH
 
 ## Supported Hardware
 
@@ -80,7 +80,6 @@ key design point:
 - battery: smart, analog
 - radio control: s.bus
 - notification: led, tunes, safety_button
-- payload:
 
 # Document
 

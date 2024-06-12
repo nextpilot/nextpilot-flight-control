@@ -35,9 +35,9 @@ NextPilot是一款的高性能高可靠的自动驾驶仪，支持多旋翼、�
 
 ### 飞行仿真
 
-- 硬件在环：运行于stm32硬件上，飞控集成了飞行动力学仿真，传感器采用仿真数据，地面站通过UART连接飞控
+- [软件在环]((bsps/sitl/qemu/README.md))：运行于qemu环境（支持windows和ubuntu），飞控集成了飞行动力学仿真，传感器采用仿真数据，地面站通过UDP连接飞控
 
-- 软件在环：运行于qemu环境（支持windows和ubuntu），飞控集成了飞行动力学仿真，传感器采用仿真数据，地面站通过UDP连接飞控
+- 硬件在环：运行于stm32硬件上，飞控集成了飞行动力学仿真，传感器采用仿真数据，地面站通过UART连接飞控
 
 ## 硬件支持
 
@@ -77,7 +77,7 @@ NextPilot 非常感谢所有社区小伙伴的支持，在使用 NextPilot 的�
 NextPilot 主要支持以下 IDE:
 
 - KEIL MDK
-- ARM GCC + VSCode
+- ARM GCC + VSCode,  [Windows](https://github.com/nextpilot/nextpilot-windows-toolchain) | [Ubuntu](https://github.com/nextpilot/nextpilot-ubuntu-toolchain)
 
 您可以通过 [开发指南](https://docs.nextpilot.cn/develop) 了解如何进行NextPilot开发，比如：[搭建开发环境](https://docs.nextpilot.cn/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/01.setup-develop-environment.html)， [如何添加代码](https://docs.nextpilot.cn/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/99.add-new-code.html)， [系统底层框架]()等。
 
