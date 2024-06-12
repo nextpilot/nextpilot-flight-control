@@ -32,7 +32,7 @@
 - Fixed Wing: plane
 - Hybrid VTOL: standard, tailsitter, tiltrotor
 
-NextPilot use [airframe]() set Vehicle parameters and start modules.
+NextPilot use [airframe](apps/airframe/README.md) set Vehicle parameters and start modules.
 
 ## Supported Function
 
@@ -54,13 +54,23 @@ NextPilot use [airframe]() set Vehicle parameters and start modules.
 
 ### Simulation
 
-- SITL: qemu + SIH
+- [SITL: qemu + SIH](bsps/sitl/qemu/README.md)
 - HITL: SIH
 
 ## Supported Hardware
 
-NextPilot support [PX4 FMUv5](https://docs.px4.io/main/en/flight_controller/cuav_v5_plus.html) open-source hardware，and hardware designed [by NextPilot Develop Team](bsps/ndt/README.md).
+open-source hardware:
+- [CUAV Pixhawk V5+ (FMUv5)](https://docs.px4.io/main/en/flight_controller/cuav_v5_plus.html), [bsp code](bsps/px4/fmu-v5)
+- [CUAV Pixhawk V6X (FMUv6x)](https://docs.px4.io/main/en/flight_controller/cuav_pixhawk_v6x.html), to be done
+- [Holybro Pixhawk 5X (FMUv5X)](https://docs.px4.io/main/en/flight_controller/pixhawk5x.html), to be done
+- [Holybro Pixhawk 6X (FMUv6X)](https://docs.px4.io/main/en/flight_controller/pixhawk6x.html), to be done
 
+designed by NextPilot:
+- fcs-v1, flight control system
+- ins-v1, integrated navigation system
+- ads-v1, air data system
+
+key design point:
 - mcu: STM32F765 and STM32F753
 - sensors: gnss/gps/rtk, IMU(gyro, accel), baro, mag, airspeed
 - actuator: pwm, can
@@ -81,16 +91,16 @@ NextPilot support [PX4 FMUv5](https://docs.px4.io/main/en/flight_controller/cuav
 
 The main IDE/compilers supported by NextPilot are:
 
-- MDK KEIL
-- ARM GCC + VSCode
+- KEIL MDK
+- ARM GCC + VSCode, [Windows](https://github.com/nextpilot/nextpilot-windows-toolchain) | [Ubuntu](https://github.com/nextpilot/nextpilot-ubuntu-toolchain)
 
 # License
 
-NextPilt follows the [BSD 3-Clause License](./LICENSE). It's completely open-source, can be used in commercial applications for free, does not require the disclosure of code, and has no potential commercial risk.
+NextPilot follows the [BSD 3-Clause License](./LICENSE). It's completely open-source, can be used in commercial applications for free, does not require the disclosure of code, and has no potential commercial risk.
 
 # Contribution
 
-If you are interested in NextPilot and want to join in the development of NextPilot and become a code contributor, please refer to the [Code Contribution Guide](.github/CONTRIBUTING.md).
+If you are interested in NextPilot and want to join in the development and become a code contributor, please refer to the [Code Contribution Guide](.github/CONTRIBUTING.md).
 
 Thanks for the following contributors!
 
