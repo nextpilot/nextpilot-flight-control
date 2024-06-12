@@ -8,7 +8,7 @@
 
 `NextPilot Flight Control System` is a powerfull, scalable and advanced autopilot, which is designed to be easily used in education, research, and industry.
 
-1. Excellent performance. RTOS based on [RT-Thread V5.0.2](https://github.com/rt-thread/rt-thread/) with active community and rich components, such as FINSH, DFS, ULOG etc.
+1. Excellent performance. RTOS based on [RT-Thread V5.0.2](https://github.com/RT-Thread/rt-thread/tree/v5.0.2) with active community and rich components, such as FINSH, DFS, ULOG etc.
 
 2. More powerfull. main function ported from [PX4 V1.14.2](https://github.com/PX4/PX4-Autopilot/tree/v1.14.2), which developed by world-class developers from industry and academia, powered all kinds of vehicles from racing and cargo drones through to ground vehicles and submersibles.
 
@@ -60,17 +60,20 @@ NextPilot use [airframe](apps/airframe/README.md) set Vehicle parameters and sta
 ## Supported Hardware
 
 open-source hardware:
+
 - [CUAV Pixhawk V5+ (FMUv5)](https://docs.px4.io/main/en/flight_controller/cuav_v5_plus.html), [bsp code](bsps/px4/fmu-v5)
 - [CUAV Pixhawk V6X (FMUv6x)](https://docs.px4.io/main/en/flight_controller/cuav_pixhawk_v6x.html), to be done
 - [Holybro Pixhawk 5X (FMUv5X)](https://docs.px4.io/main/en/flight_controller/pixhawk5x.html), to be done
 - [Holybro Pixhawk 6X (FMUv6X)](https://docs.px4.io/main/en/flight_controller/pixhawk6x.html), to be done
 
 designed by NextPilot:
+
 - fcs-v1, flight control system
 - ins-v1, integrated navigation system
 - ads-v1, air data system
 
 key design point:
+
 - mcu: STM32F765 and STM32F753
 - sensors: gnss/gps/rtk, IMU(gyro, accel), baro, mag, airspeed
 - actuator: pwm, can

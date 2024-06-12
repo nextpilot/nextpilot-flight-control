@@ -6,11 +6,11 @@
 
 [English](README.md) | [中文](README_zh.md) | [Español](README_es.md) | [Deutsch](README_de.md)
 
-NextPilot是一款的高性能高可靠的自动驾驶仪，支持多旋翼、复合翼、固定翼等。软件框架(param/workq)、通信中间层（uorb/mavlink）、控制算法等参考或移植于[PX4 V1.14.2](https://github.com/PX4/PX4-Autopilot/tree/v1.14.2)项目，并基于国产[RT-Thread V5.0.2](https://github.com/RT-Thread/rt-thread/tree/v5.0.2)实时操作系统进行打造。
+NextPilot是一款的高性能高可靠的自动驾驶仪，支持多旋翼、复合翼、固定翼等。基于国产[RT-Thread V5.0.2](https://github.com/RT-Thread/rt-thread/tree/v5.0.2)实时操作系统，其中软件框架、通信中间层、控制算法等参考或移植于[PX4 V1.14.2](https://github.com/PX4/PX4-Autopilot/tree/v1.14.2)开源飞控。
 
 1. 采用国产[RT-Thread](https://rt-thread.org)实时嵌入式操作系统，拥有高可靠和自主可控等特性；
-1. 支持[MATLAB/Simulink](https://www.mathworks.com)工具链，应用MBD进行飞控算法设计、仿真、验证；
-1. 支持模型在环(MIL)、软件在环(SIL)、硬件在环(HIL)、仿真在环(SIH)等各种飞行验证。
+2. 支持[MATLAB/Simulink](https://www.mathworks.com)工具链，应用MBD进行飞控算法设计、仿真、验证；
+3. 支持模型在环(MIL)、软件在环(SIL)、硬件在环(HIL)、仿真在环(SIH)等各种飞行验证。
 
 # 系统框架
 
@@ -41,7 +41,20 @@ NextPilot是一款的高性能高可靠的自动驾驶仪，支持多旋翼、�
 
 ## 硬件支持
 
-目前 NextPilot 支持 [PX4 FMUv5](https://docs.px4.io/main/en/flight_controller/cuav_v5_plus.html) 系列开源硬件，以及 NextPilot 自主开发的飞控硬件。
+Pixhawk开源硬件:
+
+- [CUAV Pixhawk V5+ (FMUv5)](https://docs.px4.io/main/en/flight_controller/cuav_v5_plus.html), [bsp code](bsps/px4/fmu-v5)
+- [CUAV Pixhawk V6X (FMUv6x)](https://docs.px4.io/main/en/flight_controller/cuav_pixhawk_v6x.html), 即将支持
+- [Holybro Pixhawk 5X (FMUv5X)](https://docs.px4.io/main/en/flight_controller/pixhawk5x.html), 即将支持
+- [Holybro Pixhawk 6X (FMUv6X)](https://docs.px4.io/main/en/flight_controller/pixhawk6x.html), 即将支持
+
+NextPilot设计硬件:
+
+- fcs-v1, 飞行控制计算机
+- ins-v1, 组合导航计算机
+- ads-v1, 大气数据计算机
+
+支持的硬件设计点:
 
 - 处理器：STM32F765IIK 和 STM32H753IIK
 - 传感器：gnss/imu/baro/mag
@@ -63,7 +76,7 @@ NextPilot 非常感谢所有社区小伙伴的支持，在使用 NextPilot 的�
 
 NextPilot 主要支持以下 IDE:
 
-- MDK KEIL
+- KEIL MDK
 - ARM GCC + VSCode
 
 您可以通过 [开发指南](https://docs.nextpilot.cn/develop) 了解如何进行NextPilot开发，比如：[搭建开发环境](https://docs.nextpilot.cn/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/01.setup-develop-environment.html)， [如何添加代码](https://docs.nextpilot.cn/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/99.add-new-code.html)， [系统底层框架]()等。
