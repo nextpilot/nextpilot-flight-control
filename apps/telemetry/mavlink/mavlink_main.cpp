@@ -964,6 +964,9 @@ void Mavlink::init_udp() {
         return;
     }
 
+    // 为什么调用下get_socket_fd()，在recv线程才能正确获取呢
+    LOG_I("init udp socket fd = %d", get_socket_fd());
+
     if (bind(_socket_fd, (struct sockaddr *)&_myaddr, sizeof(_myaddr)) < 0) {
         PX4_WARN("bind failed: %s", strerror(errno));
         return;
@@ -2164,7 +2167,7 @@ int Mavlink::task_main(int argc, char *argv[]) {
             return PX4_ERROR;
         }
 
-        PX4_INFO("mode: %s, data rate: %d B/s on udp port %hu remote %s:%hu",
+        PX4_INFO("mode %s, data rate %d B/s, on udp port %hu, remote %s@%hu",
                  mavlink_mode_str(_mode), _datarate, _network_port, inet_ntoa(_src_addr.sin_addr), _remote_port);
     }
 
@@ -2281,7 +2284,8 @@ int Mavlink::task_main(int argc, char *argv[]) {
 
     while (!should_exit()) {
         /* main loop */
-        px4_usleep(_main_loop_delay);
+        // px4_usleep(_main_loop_delay);
+        rt_thread_mdelay(10);
 
         if (!should_transmit()) {
             check_requested_subscriptions();
@@ -2846,7 +2850,7 @@ int Mavlink::start(int argc, char *argv[]) {
                                        &option,
                                        4096,
                                        16,
-                                       1000);
+                                       100);
     if (!tid) {
         LOG_E("create thread fail");
         return -1;

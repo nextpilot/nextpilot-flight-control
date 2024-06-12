@@ -2882,10 +2882,10 @@ void MavlinkReceiver::run() {
     uint8_t buf[1000];
 #else
     /* the serial port buffers internally as well, we just need to fit a small chunk */
-    uint8_t buf[64];
+    uint8_t buf[MAVLINK_MAX_PACKET_LEN];
 #endif
-    mavlink_message_t msg;
 
+    mavlink_message_t msg;
 
 #if defined(RT_LWIP_UDP)
     struct pollfd      fds[1]  = {};
@@ -2918,7 +2918,7 @@ void MavlinkReceiver::run() {
             /* non-blocking read. read may return negative values */
             if (_mavlink->get_uart_fd()->rx_indicate) {
                 // 等待rx_indicate
-                // rt_completion_wait(&(_mavlink->get_recv_comp()), timeout);
+                rt_sem_take(&(_mavlink->get_uart_rx_ind_sem()), timeout);
             } else {
                 // 否则采用10ms轮询
                 rt_thread_mdelay(timeout);
@@ -2927,6 +2927,7 @@ void MavlinkReceiver::run() {
         }
 #if defined(RT_LWIP_UDP)
         else if (_mavlink->get_protocol() == Protocol::UDP) {
+            // ret>0 sucess, ret=0 timeout, ret=-1 failed
             int ret = poll(&fds[0], 1, timeout);
 
             if (ret > 0) {
@@ -3239,7 +3240,7 @@ void MavlinkReceiver::start() {
     char thread_name[RT_NAME_MAX];
     rt_snprintf(thread_name, sizeof(thread_name), "mavlink%d_recv", _mavlink->get_instance_id());
 
-    _thread = rt_thread_create(thread_name, MavlinkReceiver::start_trampoline, this, 4096 * 4, 15, 1000);
+    _thread = rt_thread_create(thread_name, MavlinkReceiver::start_trampoline, this, 4096 * 4, 15, 100);
 
     if (!_thread) {
         LOG_E("create %d thread fail", thread_name);
@@ -3263,5 +3264,8 @@ void MavlinkReceiver::start_trampoline(void *context) {
 
 void MavlinkReceiver::stop() {
     _should_exit.store(true);
-    rt_thread_delete(_thread);
+    if (_thread) {
+        rt_thread_delete(_thread);
+    }
+    _thread = nullptr;
 }
