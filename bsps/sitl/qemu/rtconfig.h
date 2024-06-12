@@ -129,8 +129,8 @@
 
 /* Nextpilot Telemetry Config */
 
-// #define TEL_USING_MAVLINK
-// #define MAVLINK_DIALECT "common"
+#define TEL_USING_MAVLINK
+#define MAVLINK_DIALECT "common"
 /* end of Nextpilot Telemetry Config */
 /* end of Nextpilot Firmware Config */
 
