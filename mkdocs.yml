@@ -1,7 +1,7 @@
 site_name: NextPilot Flight Control System
 site_url: http://docs.nextpilot.com
 site_author: NextPilot Develop Team
-site_description: NextPilot 一款基于RT-thread和Simulink MBD的国产飞行控制系统
+site_description: NextPilot, a powerfull, scalable and advanced autopilot.
 
 repo_name: nextpilot-flight-control
 repo_url: https://github.com/nextpilot/nextpilot-flight-control/
@@ -17,7 +17,7 @@ site_dir: build/gh-pages
 use_directory_urls: false
 dev_addr: "127.0.0.1:8063"
 
-copyright: Copyright &copy; 2015-2024 <a href="https://docs.nextpilot.cn">Nextpilot Develop Team</a>, Maintained by <a href="/about/release-notes/#maintenance-team">LaterComer</a>.
+copyright: Copyright &copy; 2015-2024 <a href="https://docs.nextpilot.cn">Nextpilot Develop Team</a>, Maintained by <a href="https://github.com/later-comer">LaterComer</a>.
 
 # nav:
 #     - 主页: index.md
