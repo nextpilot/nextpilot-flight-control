@@ -26,7 +26,7 @@ scons default     # 根据config/default.config编译工程
 scons bootloader  # 根据config/bootloader.config编译工程
 
 # 生成mdk5/vs code/vs/cmake等工程
-scons --target=mdk5  # 生成keil工程
+scons --target=mdk5  # 生成mdk5工程
 scons --target=vsc   # 生成vsc工程
 scons bootloader --target=mdk5  # 根据config/bootloader.config生成mdk5工程
 
