@@ -24,33 +24,54 @@ if TEL_USING_MAVLINK
 	# 	default 6 if MAVLINK_USING_UDP
 	# 	default 4
 
-	config MAVLINK_HANDLE_PARAMETERS
-        bool "handle parameter service"
+	config MAVLINK_USING_PARAM
+        bool "enable parameter service"
 		default n
 
-	config MAVLINK_UAVCAN_PARAMETERS
-		depends on TEL_USING_UAVCAN && MAVLINK_HANDLE_PARAMETERS
-		bool "Mavlink UAVCAN parameter support"
+	config MAVLINK_USING_UAVCAN_PARAM
+		depends on TEL_USING_UAVCAN && MAVLINK_USING_PARAM
+		bool "enable UAVCAN parameter support"
 		default y
 		---help---
 			Expose UAVCAN parameters over Mavlink.
 
-	config MAVLINK_HANDLE_MISSION
-        bool "handle mission service"
+	config MAVLINK_USING_MISSION
+        bool "enable mission service"
 		default n
 
-    config MAVLINK_HANDLE_FTP
-        bool "handle ftp service"
+    config MAVLINK_USING_FTP
+        bool "enable ftp service"
         default n
+
+	config MALVINK_FTP_ROOT_DIR
+        string "ftp root dir"
+        default "/mnt/microsd" if SYS_USING_ROMFS
+        default "/"
+        depends on MAVLINK_USING_FTP
 
 	config MAVLINK_USING_SHELL
 		bool "enable mavlink shell service"
 		default n
 
-	# menuconfig USER_MAVLINK
-	# 	bool "mavlink running as userspace module"
-	# 	default y
-	# 	depends on BOARD_PROTECTED && TEL_USING_MAVLINK
-	# 	---help---
-	# 		Put mavlink in userspace memory
+    config MAVLINK_USING_LOG_DOWNLOAD
+        bool "enable log download service"
+        default n
+
+    config MALVINK_LOG_ROOT_DIR
+        string "log root dir"
+        default "/mnt/microsd/log" if SYS_USING_ROMFS
+        default "/log"
+        depends on MAVLINK_USING_LOG_DOWNLOAD
+
+    config MAVLINK_USING_LOG_STREAM
+        bool "enable log stream"
+        default n
+
+    config MAVLINK_USING_TIMESYNC
+        bool "enable timesync service"
+        default n
+
+    config MAVLINK_USING_PLAY_TUNE
+        bool "enable tune publisher"
+        default n
 endif

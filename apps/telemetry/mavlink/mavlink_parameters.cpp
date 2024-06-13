@@ -52,7 +52,7 @@ void MavlinkParametersManager::handle_message(const mavlink_message_t *msg) {
             }
         }
 
-#if defined(CONFIG_MAVLINK_UAVCAN_PARAMETERS)
+#if defined(MAVLINK_USING_UAVCAN_PARAM)
 
         if (req_list.target_system == mavlink_system.sysid && req_list.target_component < 127 && (req_list.target_component != mavlink_system.compid || req_list.target_component == MAV_COMP_ID_ALL)) {
             // publish list request to UAVCAN driver via uORB.
@@ -64,7 +64,7 @@ void MavlinkParametersManager::handle_message(const mavlink_message_t *msg) {
             _uavcan_parameter_request_pub.publish(req);
         }
 
-#endif // CONFIG_MAVLINK_UAVCAN_PARAMETERS
+#endif // MAVLINK_USING_UAVCAN_PARAM
         break;
     }
 
@@ -107,7 +107,7 @@ void MavlinkParametersManager::handle_message(const mavlink_message_t *msg) {
             }
         }
 
-#if defined(CONFIG_MAVLINK_UAVCAN_PARAMETERS)
+#if defined(MAVLINK_USING_UAVCAN_PARAM)
 
         if (set.target_system == mavlink_system.sysid && set.target_component < 127 && (set.target_component != mavlink_system.compid || set.target_component == MAV_COMP_ID_ALL)) {
             // publish set request to UAVCAN driver via uORB.
@@ -133,7 +133,7 @@ void MavlinkParametersManager::handle_message(const mavlink_message_t *msg) {
             _uavcan_parameter_request_pub.publish(req);
         }
 
-#endif // CONFIG_MAVLINK_UAVCAN_PARAMETERS
+#endif // MAVLINK_USING_UAVCAN_PARAM
         break;
     }
 
@@ -184,7 +184,7 @@ void MavlinkParametersManager::handle_message(const mavlink_message_t *msg) {
             }
         }
 
-#if defined(CONFIG_MAVLINK_UAVCAN_PARAMETERS)
+#if defined(MAVLINK_USING_UAVCAN_PARAM)
 
         if (req_read.target_system == mavlink_system.sysid && req_read.target_component < 127 && (req_read.target_component != mavlink_system.compid || req_read.target_component == MAV_COMP_ID_ALL)) {
             // publish set request to UAVCAN driver via uORB.
@@ -201,7 +201,7 @@ void MavlinkParametersManager::handle_message(const mavlink_message_t *msg) {
             request_next_uavcan_parameter();
         }
 
-#endif // CONFIG_MAVLINK_UAVCAN_PARAMETERS
+#endif // MAVLINK_USING_UAVCAN_PARAM
         break;
     }
 
@@ -299,13 +299,13 @@ void MavlinkParametersManager::send() {
 }
 
 bool MavlinkParametersManager::send_params() {
-#if defined(CONFIG_MAVLINK_UAVCAN_PARAMETERS)
+#if defined(MAVLINK_USING_UAVCAN_PARAM)
 
     if (send_uavcan()) {
         return true;
     }
 
-#endif // CONFIG_MAVLINK_UAVCAN_PARAMETERS
+#endif // MAVLINK_USING_UAVCAN_PARAM
 
     if (send_one()) {
         return true;
@@ -501,7 +501,7 @@ int MavlinkParametersManager::send_param(param_t param, int component_id) {
     return 0;
 }
 
-#if defined(CONFIG_MAVLINK_UAVCAN_PARAMETERS)
+#if defined(MAVLINK_USING_UAVCAN_PARAM)
 
 bool MavlinkParametersManager::send_uavcan() {
     /* Send parameter values received from the UAVCAN topic */
@@ -604,4 +604,4 @@ void MavlinkParametersManager::dequeue_uavcan_request() {
     }
 }
 
-#endif // CONFIG_MAVLINK_UAVCAN_PARAMETERS
+#endif // MAVLINK_USING_UAVCAN_PARAM

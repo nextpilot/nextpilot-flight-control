@@ -48,7 +48,9 @@
 #ifdef MAVLINK_USING_SHELL
 #   include "mavlink_shell.h"
 #endif //MAVLINK_USING_SHELL
-#include "mavlink_ulog.h"
+#ifdef MAVLINK_USING_LOG_STREAM
+#   include "mavlink_ulog.h"
+#endif // MAVLINK_USING_LOG_STREAM
 
 #define DEFAULT_BAUD_RATE   57600
 #define DEFAULT_DEVICE_NAME "uart1"
@@ -570,6 +572,7 @@ public:
     void close_shell();
 #endif //MAVLINK_USING_SHELL
 
+#ifdef MAVLINK_USING_LOG_STREAM
     /** get ulog streaming if active, nullptr otherwise */
     MavlinkULog *get_ulog_streaming() {
         return _mavlink_ulog;
@@ -582,6 +585,7 @@ public:
 
         _mavlink_ulog = MavlinkULog::try_start(_datarate, 0.7f, target_system, target_component);
     }
+#endif // MAVLINK_USING_LOG_STREAM
 
     const events::SendProtocol &get_events_protocol() const {
         return _events;
@@ -685,7 +689,9 @@ private:
 #ifdef MAVLINK_USING_SHELL
     MavlinkShell *_mavlink_shell{nullptr};
 #endif //MAVLINK_USING_SHELL
-    MavlinkULog                *_mavlink_ulog{nullptr};
+#ifdef MAVLINK_USING_LOG_STREAM
+    MavlinkULog *_mavlink_ulog{nullptr};
+#endif // MAVLINK_USING_LOG_STREAM
     static events::EventBuffer *_event_buffer;
     events::SendProtocol        _events{*_event_buffer, *this};
 

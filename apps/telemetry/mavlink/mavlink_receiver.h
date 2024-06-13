@@ -23,15 +23,22 @@
 #ifdef MAVLINK_USING_FTP
 #   include "mavlink_ftp.h"
 #endif //MAVLINK_USING_FTP
-#include "mavlink_log_handler.h"
-#include "mavlink_mission.h"
-#include "mavlink_parameters.h"
+#ifdef MAVLINK_USING_LOG_DOWNLOAD
+#   include "mavlink_log_handler.h"
+#endif // MAVLINK_USING_LOG_DOWNLOAD
+#ifdef MAVLINK_USING_MISSION
+#   include "mavlink_mission.h"
+#endif //MAVLINK_USING_MISSION
+#ifdef MAVLINK_USING_PARAM
+#   include "mavlink_parameters.h"
+#endif //MAVLINK_USING_PARAM
 #include "MavlinkStatustextHandler.hpp"
 #ifdef MAVLINK_USING_TIMESYNC
 #   include "mavlink_timesync.h"
 #endif // MAVLINK_USING_TIMESYNC
-#include "tune_publisher.h"
-
+#ifdef MAVLINK_USING_PLAY_TUNE
+#   include "tune_publisher.h"
+#endif // MAVLINK_USING_PLAY_TUNE
 #include <geo/geo.h>
 #include <accelerometer/PX4Accelerometer.hpp>
 #include <gyroscope/PX4Gyroscope.hpp>
@@ -215,9 +222,9 @@ private:
     bool evaluate_target_ok(int command, int target_system, int target_component);
 
     void fill_thrust(float *thrust_body_array, uint8_t vehicle_type, float thrust);
-
+#ifdef MAVLINK_USING_PLAY_TUNE
     void schedule_tune(const char *tune);
-
+#endif // MAVLINK_USING_PLAY_TUNE
     void update_message_statistics(const mavlink_message_t &message);
     void update_rx_stats(const mavlink_message_t &message);
 
@@ -228,17 +235,24 @@ private:
      */
     void updateParams() override;
 
-    Mavlink *_mavlink;
-
 #ifdef MAVLINK_USING_FTP
     MavlinkFTP _mavlink_ftp;
 #endif // MAVLINK_USING_FTP
-    MavlinkLogHandler        _mavlink_log_handler;
-    MavlinkMissionManager    _mission_manager;
+#ifdef MAVLINK_USING_LOG_DOWNLOAD
+    MavlinkLogHandler _mavlink_log_handler;
+#endif // MAVLINK_USING_LOG_DOWNLOAD
+#ifdef MAVLINK_USING_MISSION
+    MavlinkMissionManager _mission_manager;
+#endif // MAVLINK_USING_MISSION
+#ifdef MAVLINK_USING_PARAM
     MavlinkParametersManager _parameters_manager;
+#endif // MAVLINK_USING_PARAM
 #ifdef MAVLINK_USING_TIMESYNC
     MavlinkTimesync _mavlink_timesync;
 #endif //MAVLINK_USING_TIMESYNC
+
+    Mavlink *_mavlink;
+
     MavlinkStatustextHandler _mavlink_statustext_handler;
 
     mavlink_status_t _status{}; ///< receiver status, used for mavlink_parse_char()
@@ -366,9 +380,10 @@ private:
 
     hrt_abstime _last_utm_global_pos_com{0};
 
-    // Allocated if needed.
+// Allocated if needed.
+#ifdef MAVLINK_USING_PLAY_TUNE
     TunePublisher *_tune_publisher{nullptr};
-
+#endif // MAVLINK_USING_PLAY_TUNE
     hrt_abstime _last_heartbeat_check{0};
 
     hrt_abstime _heartbeat_type_antenna_tracker{0};

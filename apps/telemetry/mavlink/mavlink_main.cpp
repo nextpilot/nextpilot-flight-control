@@ -1235,9 +1235,11 @@ void Mavlink::update_rate_mult() {
 
     float mavlink_ulog_streaming_rate_inv = 1.0f;
 
+#ifdef MAVLINK_USING_LOG_STREAM
     if (_mavlink_ulog) {
         mavlink_ulog_streaming_rate_inv = 1.0f - _mavlink_ulog->current_data_rate();
     }
+#endif //MAVLINK_USING_LOG_STREAM
 
     /* scale up and down as the link permits */
     float bandwidth_mult = (float)(_datarate * mavlink_ulog_streaming_rate_inv - const_rate) / rate;
@@ -2388,9 +2390,11 @@ int Mavlink::task_main(int argc, char *argv[]) {
             }
         }
 
+#ifdef MAVLINK_USING_LOG_STREAM
         /* send command ACK */
         bool cmd_logging_start_acknowledgement = false;
         bool cmd_logging_stop_acknowledgement  = false;
+#endif // MAVLINK_USING_LOG_STREAM
 
         if (_vehicle_command_ack_sub.updated()) {
             static constexpr size_t COMMAND_ACK_TOTAL_LEN = MAVLINK_MSG_ID_COMMAND_ACK_LEN + MAVLINK_NUM_NON_PAYLOAD_BYTES;
@@ -2417,13 +2421,14 @@ int Mavlink::task_main(int argc, char *argv[]) {
                         msg.target_component = command_ack.target_component;
 
                         mavlink_msg_command_ack_send_struct(get_channel(), &msg);
-
+#ifdef MAVLINK_USING_LOG_STREAM
                         if (command_ack.command == vehicle_command_s::VEHICLE_CMD_LOGGING_START) {
                             cmd_logging_start_acknowledgement = true;
 
                         } else if (command_ack.command == vehicle_command_s::VEHICLE_CMD_LOGGING_STOP && command_ack.result == vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED) {
                             cmd_logging_stop_acknowledgement = true;
                         }
+#endif // MAVLINK_USING_LOG_STREAM
                     }
                 }
             }
@@ -2490,6 +2495,7 @@ int Mavlink::task_main(int argc, char *argv[]) {
             }
         }
 
+#ifdef MAVLINK_USING_LOG_STREAM
         /* check for ulog streaming messages */
         if (_mavlink_ulog) {
             if (cmd_logging_stop_acknowledgement) {
@@ -2513,6 +2519,7 @@ int Mavlink::task_main(int argc, char *argv[]) {
                 }
             }
         }
+#endif // MAVLINK_USING_LOG_STREAM
 
         /* handle new events */
         if (check_events()) {
@@ -2609,10 +2616,12 @@ int Mavlink::task_main(int argc, char *argv[]) {
     }
 #endif //RT_LWIP_UDP
 
+#ifdef MAVLINK_USING_LOG_STREAM
     if (_mavlink_ulog) {
         _mavlink_ulog->stop();
         _mavlink_ulog = nullptr;
     }
+#endif // MAVLINK_USING_LOG_STREAM
 
     pthread_mutex_destroy(&_send_mutex);
     pthread_mutex_destroy(&_radio_status_mutex);
@@ -2808,7 +2817,9 @@ int Mavlink::start(int argc, char *argv[]) {
     }
     LOG_I(cmd_buf);
 
+#ifdef MAVLINK_USING_LOG_STREAM
     MavlinkULog::initialize();
+#endif // MAVLINK_USING_LOG_STREAM
     MavlinkCommandSender::initialize();
 
     if (!_event_buffer) {
@@ -2937,10 +2948,12 @@ void Mavlink::display_status() {
     _receiver.print_detailed_rx_stats();
 #endif // !CONSTRAINED_FLASH
 
+#ifdef MAVLINK_USING_LOG_STREAM
     if (_mavlink_ulog) {
         LOG_RAW("\tULog rate: %.1f%% of max %.1f%%\n", (double)_mavlink_ulog->current_data_rate() * 100.,
                 (double)_mavlink_ulog->maximum_data_rate() * 100.);
     }
+#endif // MAVLINK_USING_LOG_STREAM
 
     LOG_RAW("\tFTP enabled: %s, TX enabled: %s\n",
             _ftp_on ? "YES" : "NO",

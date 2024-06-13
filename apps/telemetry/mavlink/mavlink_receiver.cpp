@@ -32,7 +32,9 @@
 #endif
 
 MavlinkReceiver::~MavlinkReceiver() {
+#ifdef MAVLINK_USING_PLAY_TUNE
     delete _tune_publisher;
+#endif // MAVLINK_USING_PLAY_TUNE
     delete _px4_accel;
     delete _px4_gyro;
     delete _px4_mag;
@@ -58,18 +60,22 @@ static constexpr vehicle_odometry_s vehicle_odometry_empty{
 
 MavlinkReceiver::MavlinkReceiver(Mavlink *parent) :
     ModuleParams(nullptr),
-    _mavlink(parent),
 #ifdef MAVLINK_USING_FTP
     _mavlink_ftp(parent),
 #endif //MAVLINK_USING_FTP
+#ifdef MAVLINK_USING_LOG_DOWNLOAD
     _mavlink_log_handler(parent),
+#endif // MAVLINK_USING_LOG_DOWNLOAD
+#ifdef MAVLINK_USING_MISSION
     _mission_manager(parent),
-    _parameters_manager(parent)
+#endif // MAVLINK_USING_MISSION
+#ifdef MAVLINK_USING_PARAM
+    _parameters_manager(parent),
+#endif // MAVLINK_USING_PARAM
 #ifdef MAVLINK_USING_TIMESYNC
-    ,
-    _mavlink_timesync(parent)
+    _mavlink_timesync(parent),
 #endif //MAVLINK_USING_TIMESYNC
-{
+    _mavlink(parent) {
 }
 
 void MavlinkReceiver::acknowledge(uint8_t sysid, uint8_t compid, uint16_t command, uint8_t result, uint8_t progress) {
@@ -194,11 +200,13 @@ void MavlinkReceiver::handle_message(mavlink_message_t *msg) {
     case MAVLINK_MSG_ID_SERIAL_CONTROL:
         handle_message_serial_control(msg);
         break;
-
+#ifdef MAVLINK_USING_LOG_STREAM
     case MAVLINK_MSG_ID_LOGGING_ACK:
         handle_message_logging_ack(msg);
         break;
+#endif // MAVLINK_USING_LOG_STREAM
 
+#ifdef MAVLINK_USING_PLAY_TUNE
     case MAVLINK_MSG_ID_PLAY_TUNE:
         handle_message_play_tune(msg);
         break;
@@ -206,6 +214,7 @@ void MavlinkReceiver::handle_message(mavlink_message_t *msg) {
     case MAVLINK_MSG_ID_PLAY_TUNE_V2:
         handle_message_play_tune_v2(msg);
         break;
+#endif // MAVLINK_USING_PLAY_TUNE
 
     case MAVLINK_MSG_ID_OBSTACLE_DISTANCE:
         handle_message_obstacle_distance(msg);
@@ -593,6 +602,7 @@ void MavlinkReceiver::handle_message_command_both(mavlink_message_t *msg, const 
             return;
         }
 
+#ifdef MAVLINK_USING_LOG_STREAM
         if (cmd_mavlink.command == MAV_CMD_LOGGING_START) {
             // check that we have enough bandwidth available: this is given by the configured logger topics
             // and rates. The 5000 is somewhat arbitrary, but makes sure that we cannot enable log streaming
@@ -612,6 +622,7 @@ void MavlinkReceiver::handle_message_command_both(mavlink_message_t *msg, const 
                 _mavlink->try_start_ulog_streaming(msg->sysid, msg->compid);
             }
         }
+#endif // MAVLINK_USING_LOG_STREAM
 
         if (!send_ack) {
             _cmd_pub.publish(vehicle_command);
@@ -1652,6 +1663,7 @@ void MavlinkReceiver::handle_message_serial_control(mavlink_message_t *msg) {
 #endif //MAVLINK_USING_SHELL
 }
 
+#ifdef MAVLINK_USING_LOG_STREAM
 void MavlinkReceiver::handle_message_logging_ack(mavlink_message_t *msg) {
     mavlink_logging_ack_t logging_ack;
     mavlink_msg_logging_ack_decode(msg, &logging_ack);
@@ -1662,7 +1674,9 @@ void MavlinkReceiver::handle_message_logging_ack(mavlink_message_t *msg) {
         ulog_streaming->handle_ack(logging_ack);
     }
 }
+#endif // MAVLINK_USING_LOG_STREAM
 
+#ifdef MAVLINK_USING_PLAY_TUNE
 void MavlinkReceiver::handle_message_play_tune(mavlink_message_t *msg) {
     mavlink_play_tune_t play_tune;
     mavlink_msg_play_tune_decode(msg, &play_tune);
@@ -1710,6 +1724,8 @@ void MavlinkReceiver::schedule_tune(const char *tune) {
     // Send first one straightaway.
     _tune_publisher->publish_next_tune(now);
 }
+#endif // MAVLINK_USING_PLAY_TUNE
+
 
 void MavlinkReceiver::handle_message_obstacle_distance(mavlink_message_t *msg) {
     mavlink_obstacle_distance_t mavlink_obstacle_distance;
@@ -2975,14 +2991,16 @@ void MavlinkReceiver::run() {
                     /* handle generic messages and commands */
                     handle_message(&msg);
 
+#ifdef MAVLINK_USING_MISSION
                     /* handle packet with mission manager */
                     _mission_manager.handle_message(&msg);
-
+#endif // MAVLINK_USING_MISSION
                     /* handle packet with parameter component */
                     if (_mavlink->boot_complete()) {
+#ifdef MAVLINK_USING_PARAM
                         // make sure mavlink app has booted before we start processing parameter sync
                         _parameters_manager.handle_message(&msg);
-
+#endif // MAVLINK_USING_PARAM
                     } else {
                         if (hrt_elapsed_time(&_mavlink->get_first_start_time()) > 20_s) {
                             PX4_ERR("system boot did not complete in 20 seconds");
@@ -2995,9 +3013,10 @@ void MavlinkReceiver::run() {
                         _mavlink_ftp.handle_message(&msg);
                     }
 #endif // MAVLINK_USING_FTP
+#ifdef MAVLINK_USING_LOG_DOWNLOAD
                     /* handle packet with log component */
                     _mavlink_log_handler.handle_message(&msg);
-
+#endif // MAVLINK_USING_LOG_DOWNLOAD
 #ifdef MAVLINK_USING_TIMESYNC
                     /* handle packet with timesync component */
                     _mavlink_timesync.handle_message(&msg);
@@ -3050,23 +3069,31 @@ void MavlinkReceiver::run() {
         CheckHeartbeats(t);
 
         if (t - last_send_update > timeout * 1000) {
+#ifdef MAVLINK_USING_MISSION
             _mission_manager.check_active_mission();
             _mission_manager.send();
+#endif // MAVLINK_USING_MISSION
 
+#ifdef MAVLINK_USING_PARAM
             _parameters_manager.send();
+#endif // MAVLINK_USING_PARAM
 
 #ifdef MAVLINK_USING_FTP
             if (_mavlink->ftp_enabled()) {
                 _mavlink_ftp.send();
             }
 #endif // MAVLINK_USING_FTP
+
+#ifdef MAVLINK_USING_LOG_DOWNLOAD
             _mavlink_log_handler.send();
+#endif // MAVLINK_USING_LOG_DOWNLOAD
             last_send_update = t;
         }
-
+#ifdef MAVLINK_USING_PLAY_TUNE
         if (_tune_publisher != nullptr) {
             _tune_publisher->publish_next_tune(t);
         }
+#endif // MAVLINK_USING_PLAY_TUNE
     }
 }
 

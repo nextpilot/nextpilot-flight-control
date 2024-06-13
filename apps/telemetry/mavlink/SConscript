@@ -29,11 +29,24 @@ inc = [
 ]
 src = Glob("*.cpp", exclude="*Test.cpp") + Glob("mavlink.c")
 
+
+if not GetDepend(["MAVLINK_USING_PARAM"]):
+    SrcRemove(src, "mavlink_parameters.cpp")
+
+if not GetDepend(["MAVLINK_USING_MISSION"]):
+    SrcRemove(src, "mavlink_mission.cpp")
+
 if not GetDepend(["MAVLINK_USING_SHELL"]):
     SrcRemove(src, "mavlink_shell.cpp")
 
 if not GetDepend(["MAVLINK_USING_FTP"]):
     SrcRemove(src, "mavlink_ftp.cpp")
+
+if not GetDepend(["MAVLINK_USING_LOG_DOWNLOAD"]):
+    SrcRemove(src, "mavlink_log_handler.cpp")
+
+if not GetDepend(["MAVLINK_USING_LOG_STREAM"]):
+    SrcRemove(src, "mavlink_ulog.cpp")
 
 if not GetDepend(["MAVLINK_USING_TIMESYNC"]):
     SrcRemove(src, "mavlink_timesync.cpp")

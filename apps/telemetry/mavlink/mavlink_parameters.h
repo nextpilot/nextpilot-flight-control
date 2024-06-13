@@ -28,10 +28,10 @@
 #include <uORB/topics/parameter_update.h>
 #include <hrtimer.h>
 
-#if defined(CONFIG_MAVLINK_UAVCAN_PARAMETERS)
+#if defined(MAVLINK_USING_UAVCAN_PARAM)
 #   include <uORB/topics/uavcan_parameter_request.h>
 #   include <uORB/topics/uavcan_parameter_value.h>
-#endif // CONFIG_MAVLINK_UAVCAN_PARAMETERS
+#endif // MAVLINK_USING_UAVCAN_PARAM
 
 using namespace time_literals;
 using namespace nextpilot;
@@ -77,7 +77,7 @@ protected:
 
     int send_param(param_t param, int component_id = -1);
 
-#if defined(CONFIG_MAVLINK_UAVCAN_PARAMETERS)
+#if defined(MAVLINK_USING_UAVCAN_PARAM)
     /**
      * Send UAVCAN params
      */
@@ -126,7 +126,7 @@ protected:
                   "uavcan_parameter_request_s MAV_PARAM_TYPE_INT64 constant mismatch");
 
     uORB::Subscription _uavcan_parameter_value_sub{ORB_ID(uavcan_parameter_value)};
-#endif // CONFIG_MAVLINK_UAVCAN_PARAMETERS
+#endif // MAVLINK_USING_UAVCAN_PARAM
 
     uORB::Publication<rc_parameter_map_s> _rc_param_map_pub{ORB_ID(rc_parameter_map)};
     rc_parameter_map_s                    _rc_param_map{};
