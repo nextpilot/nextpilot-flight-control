@@ -464,48 +464,18 @@ def deploy_bsp_project():
 
 
 def gen_setting_file():
-    import multiprocessing
-    import jinja2
-    import rtconfig
+    import vscode_helper as vscode
 
-    # 模板中所需的配置
-    os.environ["CPU_COUNT"] = str(multiprocessing.cpu_count())
-
-    # 模板文件路径
-    current_path = os.path.dirname(os.path.abspath(__file__))
     if "qemu" in __options__["BSP_ROOT"]:
-        template_path = os.path.join(current_path, "template/qemu")
+        os.makedirs(os.path.join(__options__["BSP_ROOT"], ".vscode"), exist_ok=True)
+
+        launch_file = os.path.join(__options__["BSP_ROOT"], ".vscode", "launch.json")
+        vscode.add_qemu_debug_launch(launch_file)
+        vscode.add_scons_debug_lanuch(launch_file)
+        setting_file = os.path.join(__options__["BSP_ROOT"], ".vscode", "settings.json")
+        vscode.add_rtt_studio_setting(setting_file)
     else:
-        template_path = os.path.join(current_path, "template/stm32")
-
-    out_path_dict = {
-        "launch.json": os.path.join(__options__["BSP_ROOT"], ".vscode"),
-        "settings.json": os.path.join(__options__["BSP_ROOT"], ".vscode"),
-        ".rtthread_jlink_download": __options__["BSP_ROOT"],
-        ".rtthread_stlink_download": __options__["BSP_ROOT"],
-        "link.icf": os.path.join(__options__["BSP_ROOT"], "build/linker_scripts"),
-        "link.lds": os.path.join(__options__["BSP_ROOT"], "build/linker_scripts"),
-        "link.sct": os.path.join(__options__["BSP_ROOT"], "build/linker_scripts"),
-    }
-
-    # 创建jinja2环境
-    env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_path, "utf-8"))
-
-    for template_file in os.listdir(template_path):
-        # 确定文件保存路径
-        out_name = template_file.replace(".jinja", "")
-        out_path = out_path_dict[out_name]
-        if not os.path.exists(out_path):
-            os.makedirs(out_path)
-        out_file = os.path.join(out_path, out_name)
-
-        # 读取模板文件
-        template = env.get_template(template_file)
-        # 生成渲染后的文件
-        result = template.render(prj=__options__, env=os.environ)
-        # 保存文件
-        with open(out_file, "wb") as f_out:
-            f_out.write(result.encode("utf-8"))
+        pass
 
 
 def start_stlink_debug():
