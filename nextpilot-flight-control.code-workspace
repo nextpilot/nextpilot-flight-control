@@ -80,6 +80,34 @@
 		"[markdown]": {
 			"editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
 		},
+		// terminal
+		"terminal.integrated.profiles.windows": {
+			"PowerShell": {
+				"source": "PowerShell",
+				"icon": "terminal-powershell"
+			},
+			"Command Prompt": {
+				"path": [
+					"${env:windir}\\Sysnative\\cmd.exe",
+					"${env:windir}\\System32\\cmd.exe"
+				],
+				"args": [],
+				"icon": "terminal-cmd"
+			},
+			"Git Bash": {
+				"source": "Git Bash"
+			},
+			"NextPilot Windows Toolchain": {
+				"path": [
+					"${env:windir}\\System32\\cmd.exe"
+				],
+				"args": [
+					"/k",
+					"C:\\nextpilot-windows-toolchain\\init.bat",
+				]
+			}
+		},
+		// rtt studio
 		"RTT_Studio.Build.Parallel_Jobs": "12",
 		"RTT_Studio.Env_Location": "C:/RT-ThreadStudio/platform/env_released/env",
 		"RTT_Studio.Toolchain_Location": "C:/RT-ThreadStudio/repo/Extract/ToolChain_Support_Packages/ARM/GNU_Tools_for_ARM_Embedded_Processors/5.4.1/bin",
@@ -123,5 +151,5 @@
 			"fstream": "cpp",
 			"xmemory": "cpp"
 		}
-	}
+	},
 }
