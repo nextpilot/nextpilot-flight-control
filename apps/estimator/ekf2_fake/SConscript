@@ -1,0 +1,12 @@
+import os
+import sys
+from building import *
+
+cwd = GetCurrentDir()
+
+inc = []
+src = Glob("*.cpp", exclude="*_test.cpp")
+
+objs = DefineGroup("ins/ekf2_fake", src, depend=["INS_USING_EKF2_FAKE"])
+
+Return("objs")

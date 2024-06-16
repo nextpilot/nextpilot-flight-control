@@ -26,10 +26,28 @@
 
 /* Nextpilot Controller Config */
 
+#define FCS_USING_COMMANDER
+#define FCS_USING_CONTROL_ALLOCATOR
+#define FCS_USING_FLIGHT_MODE_MANAGER
+#define FCS_USING_FW_ATT_CONTROL
+#define FCS_USING_FW_AUTOTUNE_ATTITUDE_CONTROL
+#define FCS_UISNG_FW_POS_CONTROL
+#define FCS_USING_FW_RATE_CONTROL
+#define FCS_USING_LAND_DETECTOR
+#define FCS_USING_MANUAL_CONTROL
+#define FCS_USING_MC_ATT_CONTROL
+#define FCS_MC_AUTOTUNE_ATTITUDE_CONTROL
+#define FCS_USING_MC_HOVER_THRUST_ESTIMATOR
+#define FCS_USING_MC_POS_CONTROL
+#define FCS_USING_MC_RATE_CONTROL
+#define FCS_USING_NAVIGATOR
+#define FCS_USING_RC_UPDATE
+#define FCS_USING_VTOL_ATT_CONTROL
 /* end of Nextpilot Controller Config */
 
 /* Nextpilot Estimator Config */
 
+#define INS_USING_EKF2_FAKE
 /* end of Nextpilot Estimator Config */
 
 /* Nextpilot Libraries Config */
@@ -78,20 +96,28 @@
 
 /* Nextpilot Simulation Config */
 
+#define SIM_USING_BATTERY
+#define SIM_USING_PWM_OUT
+#define SIM_USING_SENSOR_AIRSPEED
+#define SIM_USING_SENSOR_BARO
+#define SIM_USING_SENSOR_GPS
+#define SIM_USING_SENSOR_MAG
+#define SIM_USING_SIH
 /* end of Nextpilot Simulation Config */
 
 /* Nextpilot Storage Config */
 
 #define SYS_USING_DATAMAN
 #define DATAMAN_DEFAULT_FILE_PATH "/dataman.bin"
+#define SYS_USING_LOGGER
+#define LOGGER_FULL_LOG_ROOT_PATH "/log"
+#define LOGGER_LESS_LOG_ROOT_PATH "/mission_log"
 /* end of Nextpilot Storage Config */
 
 /* Nextpilot Telemetry Config */
 
 #define TEL_USING_MAVLINK
 #define MAVLINK_DIALECT "common"
-#define MAVLINK_USING_PARAM
-#define MAVLINK_USING_MISSION
 /* end of Nextpilot Telemetry Config */
 /* end of Nextpilot Firmware Config */
 
@@ -116,11 +142,11 @@
 #define PKG_USING_QUEUE
 #define PKG_USING_RING_BUFFER
 #define PKG_USING_SHUTDOWN
+#define PKG_USING_UORB
 
 /* ULog backend */
 
 /* end of ULog backend */
-#define PKG_USING_UORB
 #define PKG_USING_VAR_LEN_RINGBUFFER
 #define PKG_USING_VCONSOLE_V2
 #define PKG_USING_BOARD_VERSION
@@ -132,7 +158,7 @@
 /* RT-Thread Kernel */
 
 #define RT_NAME_MAX 16
-#define RT_ALIGN_SIZE 4
+#define RT_ALIGN_SIZE 8
 #define RT_THREAD_PRIORITY_256
 #define RT_THREAD_PRIORITY_MAX 256
 #define RT_TICK_PER_SECOND 1000
@@ -153,7 +179,6 @@
 #define RT_USING_DEBUG
 #define RT_DEBUGING_COLOR
 #define RT_DEBUGING_CONTEXT
-#define RT_DEBUGING_INIT
 
 /* Inter-Thread communication */
 
@@ -168,7 +193,10 @@
 /* Memory Management */
 
 #define RT_PAGE_MAX_ORDER 11
+#define RT_USING_MEMPOOL
 #define RT_USING_SMALL_MEM
+#define RT_USING_MEMHEAP
+#define RT_MEMHEAP_FAST_MODE
 #define RT_USING_SMALL_MEM_AS_HEAP
 #define RT_USING_MEMTRACE
 #define RT_USING_HEAP

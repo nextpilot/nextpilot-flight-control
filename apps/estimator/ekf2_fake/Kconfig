@@ -1,0 +1,5 @@
+menuconfig INS_USING_EKF2_FAKE
+	bool "ekf2_fake"
+	default n
+	---help---
+		Enable support for ekf2 fake
