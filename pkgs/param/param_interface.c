@@ -254,7 +254,7 @@ int32_t param_get_int32(param_t idx) {
     param_value_t val;
     int           ret = param_get_internal(idx, &val, false);
     if (ret == 0) {
-        return val.f32;
+        return val.i32;
     } else {
         return INT32_MAX;
     }
