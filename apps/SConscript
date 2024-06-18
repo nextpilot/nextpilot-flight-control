@@ -8,7 +8,14 @@ objs = []
 src = Glob("*.cpp")
 inc = [cwd]
 
-objs += DefineGroup(name="app", src=src, depend=[], CPPPATH=inc)
+
+if GetDepend(["BSP_USING_QEMU"]):
+    defs = ["CONSTRAINED_FLASH", "CONSTRAINED_MEMORY"]
+else:
+    defs = []
+
+
+objs += DefineGroup(name="app", src=src, depend=[], CPPPATH=inc, CPPDEFINES=defs)
 
 for d in os.listdir(cwd):
     path = os.path.join(cwd, d)

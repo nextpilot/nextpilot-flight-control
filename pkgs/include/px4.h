@@ -8,8 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#ifndef __NEXTPILOT_PX4DEF_H__
-#define __NEXTPILOT_PX4DEF_H__
+#ifndef __NEXTPILOT_PX4_H__
+#define __NEXTPILOT_PX4_H__
 
 #include <rtdbg.h>
 
@@ -46,4 +46,4 @@
 #define PX4_STORAGEDIR ""
 #define PX4_ROOTFSDIR  ""
 
-#endif // __NEXTPILOT_PX4DEF_H__
+#endif // __NEXTPILOT_PX4_H__

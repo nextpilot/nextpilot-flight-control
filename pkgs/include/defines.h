@@ -8,12 +8,13 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#ifndef __DEFINES_H__
-#define __DEFINES_H__
+#ifndef __NEXTPILOT_DEFINES_H__
+#define __NEXTPILOT_DEFINES_H__
+
 #include "rtt.h"
 #include "px4.h"
 #include "macros.h"
-#include "math_const.h"
+#include "constants.h"
 #include "visibility.h"
 
-#endif // __DEFINES_H__
+#endif // __NEXTPILOT_DEFINES_H__

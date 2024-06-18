@@ -19,7 +19,6 @@
 #include "calibration_routines.h"
 #include "calibration_messages.h"
 #include <defines.h>
-
 #include <hrtimer.h>
 #include <matrix/math.hpp>
 #include <geo/geo.h>

@@ -17,7 +17,6 @@
 #pragma once
 
 #include <stdint.h>
-
 #include <mathlib/mathlib.h>
 #include <matrix/math.hpp>
 #include <defines.h>

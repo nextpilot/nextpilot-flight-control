@@ -8,10 +8,10 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#pragma once
 
-#ifndef __TASK_H__
-#define __TASK_H__
+#ifndef __NEXTPILOT_TASK_H__
+#define __NEXTPILOT_TASK_H__
+
 #include <stdbool.h>
 #include "rtconfig.h"
 
@@ -72,4 +72,4 @@
 #define SCHED_PRIORITY_PARAMS     (WQ_HP_BASE + 12) // 22
 //      SCHED_PRIORITY_IDLE
 
-#endif // __TASK_H__
+#endif // __NEXTPILOT_TASK_H__

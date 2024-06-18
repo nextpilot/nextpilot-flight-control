@@ -8,30 +8,30 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#ifndef __MACROS_H__
-#define __MACROS_H__
+#ifndef __NEXTPILOT_MACROS_H__
+#define __NEXTPILOT_MACROS_H__
 
 #if !defined(arraySize)
-#define arraySize(a) (sizeof((a)) / sizeof((a[0])))
+#   define arraySize(a) (sizeof((a)) / sizeof((a[0])))
 #endif
 
 #if !defined(CAT)
-#if !defined(_CAT)
-#define _CAT(a, b) a##b
-#endif
-#define CAT(a, b) _CAT(a, b)
+#   if !defined(_CAT)
+#      define _CAT(a, b) a##b
+#   endif
+#   define CAT(a, b) _CAT(a, b)
 #endif
 
 #if !defined(FREEZE_STR)
-#define FREEZE_STR(s) #s
+#   define FREEZE_STR(s) #s
 #endif
 
 #if !defined(STRINGIFY)
-#define STRINGIFY(s) FREEZE_STR(s)
+#   define STRINGIFY(s) FREEZE_STR(s)
 #endif
 
 // #if !defined(UNUSED)
 // #define UNUSED(var) (void)(var)
 // #endif
 
-#endif // __MACROS_H__
+#endif // __NEXTPILOT_MACROS_H__

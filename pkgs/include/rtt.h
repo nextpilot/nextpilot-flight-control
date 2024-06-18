@@ -8,8 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#ifndef __NEXTPIOT_RTTDEF_H__
-#define __NEXTPIOT_RTTDEF_H__
+#ifndef __NEXTPIOT_RTT_H__
+#define __NEXTPIOT_RTT_H__
 
 /* board init routines will be called in board_init() function */
 // #define INIT_BOARD_EXPORT(fn) INIT_EXPORT(fn, "1")
@@ -53,11 +53,5 @@
 #define ATTITUDE_PERIOD_US   (ATTITUDE_PERIOD_MS * 1000U)
 #define POSITION_PERIOD_US   (POSITION_PERIOD_MS * 1000U)
 
-#ifdef BSP_USING_QEMU
-// #define CONSTRAINED_FLASH
-#else
-#   define CONSTRAINED_FLASH
-#   define CONSTRAINED_MEMORY
-#endif
 
-#endif // __NEXTPIOT_RTTDEF_H__
+#endif // __NEXTPIOT_RTT_H__
