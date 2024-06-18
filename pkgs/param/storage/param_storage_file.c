@@ -9,6 +9,7 @@
  ******************************************************************/
 
 #define LOG_TAG "param.file"
+#define LOG_LVL LOG_LVL_INFO
 
 #include <string.h>
 #include <rtthread.h>
@@ -103,7 +104,9 @@ static int _open(param_storage_t *dev, const char *name, uint8_t flag) {
         return -1;
     }
 
-    LOG_I("select file %s ", name);
+    dev->name = name;
+
+    LOG_D("select file %s ", name);
 
     return 0;
 }
@@ -149,7 +152,7 @@ static param_storage_ops_t _ops = {
 };
 
 static param_storage_t _dev = {
-    .name = "file",
+    .name = "",
     .type = 1,
     .ops  = &_ops,
 };

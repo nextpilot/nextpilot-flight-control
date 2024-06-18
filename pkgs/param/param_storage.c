@@ -104,7 +104,13 @@ int param_export_internal(const char *devname, param_filter_func filter) {
     // 关闭设备
     dev->ops->close(dev);
 
-    // LOG_I("export all params to %s", devname);
+    if (devname) {
+        LOG_I("export params to %s", devname);
+    } else if (dev->name) {
+        LOG_I("export params to %s", dev->name);
+    } else {
+        LOG_I("export params to %s", "default");
+    }
 
     return 0;
 }
@@ -170,7 +176,13 @@ int param_import_internal(const char *devname, param_filter_func filter) {
     // 关闭设备
     dev->ops->close(dev);
 
-    // LOG_I("import all params from %s", devname);
+    if (devname) {
+        LOG_I("import params from %s", devname);
+    } else if (dev->name) {
+        LOG_I("import params from %s", dev->name);
+    } else {
+        LOG_I("import params from %s", "default");
+    }
 
     // 提醒参数已经更新
     param_notify_autosave();
@@ -232,14 +244,14 @@ static void param_autosave_entry(void *param) {
         if (ret == 0 && _param_autosave_enable) {
             // 保存间隔时间要大于3s
             rt_tick_t delta = rt_tick_get() - last_autosave_timestamp;
-            if (delta < 10000UL) {
-                rt_thread_mdelay(10000 - delta);
+            if (delta < 3000UL) {
+                rt_thread_mdelay(3000 - delta);
             }
 
             // 保存参数到flash或文件
             if (param_save_default() == 0) {
                 last_autosave_timestamp = rt_tick_get();
-                LOG_D("param autosave ok");
+                LOG_D("param autosave okay");
             } else {
                 LOG_E("param autosave fail");
             }
@@ -253,7 +265,7 @@ RT_WEAK void board_param_init() {
 static int param_storage_init() {
     // 从默认设备加载param
     if (param_load_default() == 0) {
-        LOG_I("load param from default");
+        LOG_D("load param from default");
     }
 
     // 加载板级参数
