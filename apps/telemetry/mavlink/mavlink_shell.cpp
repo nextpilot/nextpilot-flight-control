@@ -8,12 +8,6 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/**
- * @file mavlink_shell.cpp
- * A shell to be used via MAVLink
- *
- * @author Beat Küng <beat-kueng@gmx.net>
- */
 
 #define LOG_TAG "mavlink.shell"
 #define LOG_LVL LOG_LVL_INFO

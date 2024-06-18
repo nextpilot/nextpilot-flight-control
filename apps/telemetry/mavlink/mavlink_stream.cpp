@@ -8,13 +8,6 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/**
- * @file mavlink_stream.cpp
- * Mavlink messages stream implementation.
- *
- * @author Anton Babushkin <anton.babushkin@me.com>
- * @author Lorenz Meier <lorenz@px4.io>
- */
 
 #define LOG_TAG "mavlink.stream"
 #define LOG_LVL LOG_LVL_INFO

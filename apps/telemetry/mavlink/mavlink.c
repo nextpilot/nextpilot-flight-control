@@ -8,13 +8,6 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/**
- * @file mavlink.c
- * Define MAVLink specific parameters
- *
- * @author Lorenz Meier <lorenz@px4.io>
- */
-
 
 #include <unistd.h>
 #include <stdio.h>

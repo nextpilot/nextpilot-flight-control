@@ -8,12 +8,6 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/**
- * @file mavlink_bridge_header
- * MAVLink bridge header for UART access.
- *
- * @author Lorenz Meier <lm@inf.ethz.ch>
- */
 
 /* MAVLink adapter header */
 #ifndef MAVLINK_BRIDGE_HEADER_H

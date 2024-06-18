@@ -8,12 +8,6 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/**
- * @file mavlink_ulog.cpp
- * ULog data streaming via MAVLink
- *
- * @author Beat Küng <beat-kueng@gmx.net>
- */
 
 #define LOG_TAG     "mavlink.ulog"
 #define LOG_LVL     LOG_LVL_INFO

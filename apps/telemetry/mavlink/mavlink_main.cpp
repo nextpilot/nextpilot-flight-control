@@ -25,7 +25,7 @@
 #include <uORB/topics/event.h>
 #include "mavlink_receiver.h"
 #include "mavlink_main.h"
-#include "rtdevice.h"
+#include <rtdevice.h>
 
 // Guard against MAVLink misconfiguration
 #ifndef MAVLINK_CRC_EXTRA

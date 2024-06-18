@@ -8,16 +8,6 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/**
- * @file timestamped list.h
- * Fixed size list with timestamps.
- *
- * The list has a fixed size that is set at instantiation and is based
- * on timestamps. If a new value is put into a full list, the oldest value
- * is overwritten.
- *
- * @author Julian Oes <julian@oes.ch>
- */
 
 #pragma once
 

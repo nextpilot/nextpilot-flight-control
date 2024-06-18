@@ -8,12 +8,6 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/**
- * @file mavlink_timesync.cpp
- * Mavlink timesync implementation.
- *
- * @author Mohammed Kabir <mhkabir98@gmail.com>
- */
 
 #include "mavlink_timesync.h"
 #include "mavlink_main.h"

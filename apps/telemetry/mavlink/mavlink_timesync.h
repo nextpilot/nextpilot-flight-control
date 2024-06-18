@@ -8,12 +8,7 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/**
- * @file mavlink_timesync.h
- * Mavlink time synchroniser definition.
- *
- * @author Mohammed Kabir <mhkabir98@gmail.com>
- */
+
 
 #pragma once
 

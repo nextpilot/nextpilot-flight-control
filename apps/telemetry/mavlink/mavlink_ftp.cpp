@@ -8,8 +8,6 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/// @file mavlink_ftp.cpp
-///	@author px4dev, Don Gagne <don@thegagnes.com>
 
 #include <crc32.h>
 #include <unistd.h>

@@ -8,12 +8,7 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/**
- * @file mavlink_messages.h
- * MAVLink 1.0 message formatters definition.
- *
- * @author Anton Babushkin <anton.babushkin@me.com>
- */
+
 
 #ifndef MAVLINK_MESSAGES_H_
 #define MAVLINK_MESSAGES_H_

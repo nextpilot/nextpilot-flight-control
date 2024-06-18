@@ -10,8 +10,6 @@
 
 #pragma once
 
-/// @file mavlink_ftp.h
-///     @author px4dev, Don Gagne <don@thegagnes.com>
 
 #include <dirent.h>
 #include <queue.h>

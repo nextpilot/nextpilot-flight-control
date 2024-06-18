@@ -8,14 +8,6 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/**
- * @file mavlink_mission.cpp
- * MAVLink mission manager implementation.
- *
- * @author Lorenz Meier <lorenz@px4.io>
- * @author Julian Oes <julian@px4.io>
- * @author Anton Babushkin <anton@px4.io>
- */
 
 #define LOG_TAG "mavlink.mission"
 #define LOG_LVL LOG_LVL_INFO

@@ -8,13 +8,6 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/**
- * @file mavlink_command_sender.cpp
- * Mavlink commands sender with support for retransmission.
- *
- * @author Julian Oes <julian@oes.ch>
- */
-
 #include "mavlink_command_sender.h"
 #include <ulog/log.h>
 

@@ -8,11 +8,6 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/**
- * @file mavlink_simple_analyzer.cpp
- *
- * @author Achermann Florian <acfloria@ethz.ch>
- */
 
 #include "mavlink_simple_analyzer.h"
 

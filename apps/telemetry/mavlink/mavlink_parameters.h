@@ -8,14 +8,6 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/**
- * @file mavlink_parameters.h
- * Mavlink parameters manager definition.
- *
- * @author Anton Babushkin <anton.babushkin@me.com>
- * @author Lorenz Meier <lorenz@px4.io>
- * @author Beat Kueng <beat@px4.io>
- */
 
 #pragma once
 

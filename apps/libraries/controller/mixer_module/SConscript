@@ -11,11 +11,11 @@ cwd = GetCurrentDir()
 cmd = [
     sys.executable,
     os.path.join(cwd, "generate_function_header.py"),
-    os.path.join(cwd, "output_functions.yaml"),
+    "output_functions.yaml",  # os.path.join(cwd, "output_functions.yaml"),
     os.path.join(cwd, "output_functions.hpp"),
 ]
 
-subprocess.call(cmd)
+subprocess.call(cmd, cwd=cwd)
 
 inc = []
 src = ["mixer_module.cpp", "actuator_test.cpp"]

@@ -8,12 +8,6 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/**
- * @file mavlink_rate_limiter.h
- * Message rate limiter definition.
- *
- * @author Anton Babushkin <anton.babushkin@me.com>
- */
 
 #ifndef MAVLINK_RATE_LIMITER_H_
 #define MAVLINK_RATE_LIMITER_H_

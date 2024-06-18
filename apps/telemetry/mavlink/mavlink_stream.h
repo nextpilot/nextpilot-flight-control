@@ -8,12 +8,6 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/**
- * @file mavlink_stream.h
- * Mavlink messages stream definition.
- *
- * @author Anton Babushkin <anton.babushkin@me.com>
- */
 
 #ifndef MAVLINK_STREAM_H_
 #define MAVLINK_STREAM_H_

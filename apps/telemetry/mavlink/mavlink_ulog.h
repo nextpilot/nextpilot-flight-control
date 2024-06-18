@@ -8,12 +8,6 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/**
- * @file mavlink_ulog.h
- * ULog data streaming via MAVLink
- *
- * @author Beat Küng <beat-kueng@gmx.net>
- */
 
 #pragma once
 

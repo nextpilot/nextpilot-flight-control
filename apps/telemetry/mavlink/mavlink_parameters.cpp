@@ -8,14 +8,6 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/**
- * @file mavlink_parameters.cpp
- * Mavlink parameters manager implementation.
- *
- * @author Anton Babushkin <anton.babushkin@me.com>
- * @author Lorenz Meier <lorenz@px4.io>
- * @author Beat Kueng <beat@px4.io>
- */
 
 #define LOG_TAG "mavlink.param"
 #define LOG_LVL LOG_INFO_LVL

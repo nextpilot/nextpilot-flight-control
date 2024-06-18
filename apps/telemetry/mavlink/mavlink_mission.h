@@ -8,17 +8,6 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/**
- * @file mavlink_mission.h
- * Implementation of the MAVLink mission protocol.
- * Documentation:
- * - http://qgroundcontrol.org/mavlink/mission_interface
- * - http://qgroundcontrol.org/mavlink/waypoint_protocol
- *
- * @author Lorenz Meier <lorenz@px4.io>
- * @author Julian Oes <julian@px4.io>
- * @author Anton Babushkin <anton@px4.io>
- */
 
 #pragma once
 

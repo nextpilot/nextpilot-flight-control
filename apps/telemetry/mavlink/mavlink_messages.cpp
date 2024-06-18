@@ -8,13 +8,6 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/**
- * @file mavlink_messages.cpp
- * MAVLink 2.0 message formatters implementation.
- *
- * @author Lorenz Meier <lorenz@px4.io>
- * @author Anton Babushkin <anton.babushkin@me.com>
- */
 
 #define LOG_TAG "mavlink.messages"
 #define LOG_LVL LOG_LVL_INFO

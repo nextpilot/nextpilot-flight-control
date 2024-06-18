@@ -8,12 +8,6 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/**
- * @file mavlink_shell.h
- * A shell to be used via MAVLink
- *
- * @author Beat Küng <beat-kueng@gmx.net>
- */
 
 #include <stddef.h>
 #include <stdint.h>
