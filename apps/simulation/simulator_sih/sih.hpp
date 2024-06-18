@@ -96,6 +96,10 @@ private:
     // simulated sensors
     PX4Accelerometer                     _px4_accel{1310988}; // 1310988: DRV_IMU_DEVTYPE_SIM, BUS: 1, ADDR: 1, TYPE: SIMULATION
     PX4Gyroscope                         _px4_gyro{1310988};  // 1310988: DRV_IMU_DEVTYPE_SIM, BUS: 1, ADDR: 1, TYPE: SIMULATION
+    sensor_accel_s                       _sensor_accel{};
+    sensor_gyro_s                        _sensor_gyro{};
+    uORB::Publication<sensor_accel_s>    _sensor_accel_pub{ORB_ID(sensor_accel)};
+    uORB::Publication<sensor_gyro_s>     _sensor_gyro_pub{ORB_ID(sensor_gyro)};
     uORB::Publication<distance_sensor_s> _distance_snsr_pub{ORB_ID(distance_sensor)};
     uORB::Publication<airspeed_s>        _airspeed_pub{ORB_ID(airspeed)};
 

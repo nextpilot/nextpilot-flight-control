@@ -402,6 +402,36 @@ void Sih::reconstruct_sensors_signals(const hrt_abstime &time_now_us) {
     // update IMU every iteration
     _px4_accel.update(time_now_us, acc(0), acc(1), acc(2));
     _px4_gyro.update(time_now_us, gyro(0), gyro(1), gyro(2));
+
+    // publish sensor acceleration
+    _sensor_accel.timestamp        = time_now_us;
+    _sensor_accel.timestamp_sample = time_now_us;
+    _sensor_accel.device_id        = _px4_accel.get_device_id();
+    _sensor_accel.x                = acc(0);
+    _sensor_accel.y                = acc(1);
+    _sensor_accel.z                = acc(2);
+    _sensor_accel.temperature      = 25.f;
+    _sensor_accel.error_count      = 0;
+    for (int acc_axis = 0; acc_axis < 3; acc_axis++) {
+        _sensor_accel.clip_counter[acc_axis] = 0;
+    }
+    _sensor_accel.samples = 1;
+    _sensor_accel_pub.publish(_sensor_accel);
+
+    // publish sensor gyroscope
+    _sensor_gyro.timestamp        = time_now_us;
+    _sensor_gyro.timestamp_sample = time_now_us;
+    _sensor_gyro.device_id        = _px4_gyro.get_device_id();
+    _sensor_gyro.x                = gyro(0);
+    _sensor_gyro.y                = gyro(1);
+    _sensor_gyro.z                = gyro(2);
+    _sensor_gyro.temperature      = 25.f;
+    _sensor_gyro.error_count      = 0;
+    for (int gyro_axis = 0; gyro_axis < 3; gyro_axis++) {
+        _sensor_gyro.clip_counter[gyro_axis] = 0;
+    }
+    _sensor_gyro.samples = 1;
+    _sensor_gyro_pub.publish(_sensor_gyro);
 }
 
 void Sih::send_airspeed(const hrt_abstime &time_now_us) {
