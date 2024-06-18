@@ -15,126 +15,113 @@
 
 #define EKF2_FAKE_PERIOD_MS 5
 
+using namespace nextpilot;
+
 static bool    _ekf2_fake_thread_switch  = false;
 static bool    _inject_gps_failsafe_flag = false;
 static int32_t _sys_hitl                 = 0;
 
-// // 订阅主题
-// static orb_subsc_t sensor_gyro_sub;
-// static orb_subsc_t v_acceleration_sub;
-// static orb_subsc_t v_angular_velocity_sub;
-// static orb_subsc_t v_attitude_sub;
-// static orb_subsc_t v_local_position_sub;
-// static orb_subsc_t v_global_position_sub;
+uORB::Subscription sensor_gyro_sub{ORB_ID(sensor_gyro)};
+uORB::Subscription v_acceleration_sub{ORB_ID(sensor_accel)};
+uORB::Subscription v_angular_velocity_sub{ORB_ID(vehicle_angular_velocity_groundtruth)};
+uORB::Subscription v_attitude_sub{ORB_ID(vehicle_attitude_groundtruth)};
+uORB::Subscription v_local_position_sub{ORB_ID(vehicle_local_position_groundtruth)};
+uORB::Subscription v_global_position_sub{ORB_ID(vehicle_global_position_groundtruth)};
 
-// static rt_err_t ekf2_fake_init() {
-//     sensor_gyro_sub        = orb_subscribe(ORB_ID(sensor_gyro));
-//     v_acceleration_sub     = orb_subscribe(ORB_ID(sensor_accel));
-//     v_angular_velocity_sub = orb_subscribe(ORB_ID(vehicle_angular_velocity_groundtruth));
-//     v_attitude_sub         = orb_subscribe(ORB_ID(vehicle_attitude_groundtruth));
-//     v_local_position_sub   = orb_subscribe(ORB_ID(vehicle_local_position_groundtruth));
-//     v_global_position_sub  = orb_subscribe(ORB_ID(vehicle_global_position_groundtruth));
-//     return RT_EOK;
-// }
-
-// static void ekf2_fake_step() {
-//     hrt_abstime now_us = hrt_absolute_time();
-//     if (_sys_hitl != 2) {
-//         return;
-//     }
-
-//     // 发布 vehicle_angular_acceleration_s 主题
-//     struct sensor_gyro_s                  sensor_gyro                  = {0}; // 订阅角速度主题，用于计算角加速度
-//     struct vehicle_angular_acceleration_s vehicle_angular_acceleration = {0}; // 需要发布的主题
-//     static struct sensor_gyro_s           last_senseor_gyro            = {0}; // 用于差分计算角加速度
-//     if (orb_update(sensor_gyro_sub, &sensor_gyro) == RT_EOK) {
-//         vehicle_angular_acceleration.timestamp        = now_us;
-//         vehicle_angular_acceleration.timestamp_sample = 1;
-//         vehicle_angular_acceleration.xyz[0]           = (sensor_gyro.x - last_senseor_gyro.x) / EKF2_FAKE_PERIOD_MS;
-//         vehicle_angular_acceleration.xyz[1]           = (sensor_gyro.y - last_senseor_gyro.y) / EKF2_FAKE_PERIOD_MS;
-//         vehicle_angular_acceleration.xyz[2]           = (sensor_gyro.z - last_senseor_gyro.z) / EKF2_FAKE_PERIOD_MS;
-//         last_senseor_gyro                             = sensor_gyro;
-//         orb_publish(ORB_ID(vehicle_angular_acceleration), NULL, &vehicle_angular_acceleration);
-//     }
-
-//     // 发布 vehicle_acceleration_s 主题
-//     struct vehicle_acceleration_s v_acceleration = {0};
-//     if (orb_update(v_acceleration_sub, &v_acceleration) == RT_EOK) {
-//         struct vehicle_acceleration_s vehicle_acceleration = {0};
-//         vehicle_acceleration.timestamp                     = now_us;
-//         vehicle_acceleration.timestamp_sample              = v_acceleration.timestamp;
-//         vehicle_acceleration.xyz[0]                        = v_acceleration.xyz[0];
-//         vehicle_acceleration.xyz[1]                        = v_acceleration.xyz[1];
-//         vehicle_acceleration.xyz[2]                        = v_acceleration.xyz[2];
-//         orb_publish(ORB_ID(vehicle_acceleration), NULL, &vehicle_acceleration);
-//     }
-
-//     // 发布 vehicle_angular_velocity_s 主题
-//     struct vehicle_angular_velocity_s angular_velocity_groundtruth = {0};
-//     if (orb_update(v_angular_velocity_sub, &angular_velocity_groundtruth) == RT_EOK) {
-//         struct vehicle_angular_velocity_s vehicle_angular_velocity = {0};
-//         vehicle_angular_velocity.timestamp                         = now_us;
-//         vehicle_angular_velocity.timestamp_sample                  = now_us;
-//         vehicle_angular_velocity.xyz[0]                            = angular_velocity_groundtruth.xyz[0];
-//         vehicle_angular_velocity.xyz[1]                            = angular_velocity_groundtruth.xyz[1];
-//         vehicle_angular_velocity.xyz[2]                            = angular_velocity_groundtruth.xyz[2];
-//         orb_publish(ORB_ID(vehicle_angular_velocity), NULL, &vehicle_angular_velocity);
-//     }
-
-//     // 发布 vehicle_attitude_s 主题
-//     struct vehicle_attitude_s attitude_groundtruth = {0};
-//     if (orb_update(v_attitude_sub, &attitude_groundtruth) == RT_EOK) {
-//         struct vehicle_attitude_s attitude = {0};
-//         attitude.timestamp                 = attitude_groundtruth.timestamp;
-//         attitude.timestamp_sample          = attitude_groundtruth.timestamp_sample;
-//         attitude.q[0]                      = attitude_groundtruth.q[0];
-//         attitude.q[1]                      = attitude_groundtruth.q[1];
-//         attitude.q[2]                      = attitude_groundtruth.q[2];
-//         attitude.q[3]                      = attitude_groundtruth.q[3];
-//         orb_publish(ORB_ID(vehicle_attitude), NULL, &attitude);
-//     }
-
-//     // 发布 local_position_s 主题
-//     struct vehicle_local_position_s local_position_groundtruth = {0};
-//     if (orb_update(v_local_position_sub, &local_position_groundtruth) == RT_EOK) {
-//         struct vehicle_local_position_s local_position = {0};
-//         if (!_inject_gps_failsafe_flag) {
-//             rt_memcpy(&local_position, &local_position_groundtruth, sizeof(struct vehicle_local_position_s));
-//         } else {
-//             rt_memcpy(&local_position, &local_position_groundtruth, sizeof(struct vehicle_local_position_s));
-//             local_position.eph        = 20.0f;
-//             local_position.epv        = 20.0f;
-//             local_position.evh        = 20.0f;
-//             local_position.evv        = 20.0f;
-//             local_position.xy_valid   = false;
-//             local_position.v_xy_valid = false;
-//             local_position.xy_global  = false;
-//         }
-//         orb_publish(ORB_ID(vehicle_local_position), NULL, &local_position);
-//     }
-
-//     // 发布 vehicle_global_position_s 主题
-//     struct vehicle_global_position_s global_position_groundtruth = {0};
-//     if (orb_update(v_global_position_sub, &global_position_groundtruth) == RT_EOK) {
-//         struct vehicle_global_position_s global_position = {0};
-//         if (!_inject_gps_failsafe_flag) {
-//             rt_memcpy(&global_position, &global_position_groundtruth, sizeof(struct vehicle_global_position_s));
-//         } else {
-//             rt_memcpy(&global_position, &global_position_groundtruth, sizeof(struct vehicle_global_position_s));
-//             global_position.eph            = 20.0f;
-//             global_position.epv            = 20.0f;
-//             global_position.dead_reckoning = true;
-//         }
-//         orb_publish(ORB_ID(vehicle_global_position), NULL, &global_position);
-//     }
-// }
+// uORB::Publication<vehicle_acceleration> v_acceleration_pub{ORB_ID(vehicle_acceleration)}; /**< vehicle vehicle acceleration publication */
 
 static void ekf2_fake_run(void *parameter) {
-    // ekf2_fake_init();
-
     while (_ekf2_fake_thread_switch) {
-        // ekf2_fake_step();
-        LOG_D("ISSSSS");
+        // hrt_abstime now_us = hrt_absolute_time();
+
+        // // 发布 vehicle_angular_acceleration_s 主题
+        // sensor_gyro_s sensor_gyro{};
+        // // TODO: v1.14.2版本无此msg
+        // // vehicle_angular_acceleration_s vehicle_angular_acceleration{};
+        // // static sensor_gyro_s last_senseor_gyro{};
+
+        // LOG_I("ASDASD");
+        // if (sensor_gyro_sub.update(&sensor_gyro)) {
+        //     // vehicle_angular_acceleration.timestamp        = now_us;
+        //     // vehicle_angular_acceleration.timestamp_sample = 1;
+        //     // vehicle_angular_acceleration.xyz[0]           = (sensor_gyro.x - last_senseor_gyro.x) / EKF2_FAKE_PERIOD_MS;
+        //     // vehicle_angular_acceleration.xyz[1]           = (sensor_gyro.y - last_senseor_gyro.y) / EKF2_FAKE_PERIOD_MS;
+        //     // vehicle_angular_acceleration.xyz[2]           = (sensor_gyro.z - last_senseor_gyro.z) / EKF2_FAKE_PERIOD_MS;
+        //     // last_senseor_gyro                             = sensor_gyro;
+        //     // orb_publish(ORB_ID(vehicle_angular_acceleration), NULL, &vehicle_angular_acceleration);
+        // }
+
+        // // 发布 vehicle_acceleration_s 主题
+        // vehicle_acceleration_s v_acceleration{};
+        // if (v_acceleration_sub.update(&v_acceleration)) {
+        //     vehicle_acceleration_s vehicle_acceleration{};
+        //     vehicle_acceleration.timestamp        = now_us;
+        //     vehicle_acceleration.timestamp_sample = v_acceleration.timestamp;
+        //     vehicle_acceleration.xyz[0]           = v_acceleration.xyz[0];
+        //     vehicle_acceleration.xyz[1]           = v_acceleration.xyz[1];
+        //     vehicle_acceleration.xyz[2]           = v_acceleration.xyz[2];
+        //     // orb_publish(ORB_ID(vehicle_acceleration), NULL, &vehicle_acceleration);
+        //     v_acceleration_pub.publish(vehicle_acceleration);
+        // }
+
+        //     // 发布 vehicle_angular_velocity_s 主题
+        //     struct vehicle_angular_velocity_s angular_velocity_groundtruth = {0};
+        //     if (orb_update(v_angular_velocity_sub, &angular_velocity_groundtruth) == RT_EOK) {
+        //         struct vehicle_angular_velocity_s vehicle_angular_velocity = {0};
+        //         vehicle_angular_velocity.timestamp                         = now_us;
+        //         vehicle_angular_velocity.timestamp_sample                  = now_us;
+        //         vehicle_angular_velocity.xyz[0]                            = angular_velocity_groundtruth.xyz[0];
+        //         vehicle_angular_velocity.xyz[1]                            = angular_velocity_groundtruth.xyz[1];
+        //         vehicle_angular_velocity.xyz[2]                            = angular_velocity_groundtruth.xyz[2];
+        //         orb_publish(ORB_ID(vehicle_angular_velocity), NULL, &vehicle_angular_velocity);
+        //     }
+
+        //     // 发布 vehicle_attitude_s 主题
+        //     struct vehicle_attitude_s attitude_groundtruth = {0};
+        //     if (orb_update(v_attitude_sub, &attitude_groundtruth) == RT_EOK) {
+        //         struct vehicle_attitude_s attitude = {0};
+        //         attitude.timestamp                 = attitude_groundtruth.timestamp;
+        //         attitude.timestamp_sample          = attitude_groundtruth.timestamp_sample;
+        //         attitude.q[0]                      = attitude_groundtruth.q[0];
+        //         attitude.q[1]                      = attitude_groundtruth.q[1];
+        //         attitude.q[2]                      = attitude_groundtruth.q[2];
+        //         attitude.q[3]                      = attitude_groundtruth.q[3];
+        //         orb_publish(ORB_ID(vehicle_attitude), NULL, &attitude);
+        //     }
+
+        //     // 发布 local_position_s 主题
+        //     struct vehicle_local_position_s local_position_groundtruth = {0};
+        //     if (orb_update(v_local_position_sub, &local_position_groundtruth) == RT_EOK) {
+        //         struct vehicle_local_position_s local_position = {0};
+        //         if (!_inject_gps_failsafe_flag) {
+        //             rt_memcpy(&local_position, &local_position_groundtruth, sizeof(struct vehicle_local_position_s));
+        //         } else {
+        //             rt_memcpy(&local_position, &local_position_groundtruth, sizeof(struct vehicle_local_position_s));
+        //             local_position.eph        = 20.0f;
+        //             local_position.epv        = 20.0f;
+        //             local_position.evh        = 20.0f;
+        //             local_position.evv        = 20.0f;
+        //             local_position.xy_valid   = false;
+        //             local_position.v_xy_valid = false;
+        //             local_position.xy_global  = false;
+        //         }
+        //         orb_publish(ORB_ID(vehicle_local_position), NULL, &local_position);
+        //     }
+
+        //     // 发布 vehicle_global_position_s 主题
+        //     struct vehicle_global_position_s global_position_groundtruth = {0};
+        //     if (orb_update(v_global_position_sub, &global_position_groundtruth) == RT_EOK) {
+        //         struct vehicle_global_position_s global_position = {0};
+        //         if (!_inject_gps_failsafe_flag) {
+        //             rt_memcpy(&global_position, &global_position_groundtruth, sizeof(struct vehicle_global_position_s));
+        //         } else {
+        //             rt_memcpy(&global_position, &global_position_groundtruth, sizeof(struct vehicle_global_position_s));
+        //             global_position.eph            = 20.0f;
+        //             global_position.epv            = 20.0f;
+        //             global_position.dead_reckoning = true;
+        //         }
+        //         orb_publish(ORB_ID(vehicle_global_position), NULL, &global_position);
+        //     }
         rt_thread_mdelay(EKF2_FAKE_PERIOD_MS);
     }
 }
@@ -260,4 +247,4 @@ static int ekf2_fake_main(int argc, char *argv[]) {
     return RT_EOK;
 }
 
-MSH_CMD_EXPORT_ALIAS(ekf2_fake_main, sim, create ekf2 fake date useage);
+MSH_CMD_EXPORT_ALIAS(ekf2_fake_main, ekf2_fake, ekf2 fake module useage);
