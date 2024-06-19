@@ -17,6 +17,7 @@
  */
 
 #define LOG_TAG "control_allocator"
+#define LOG_LVL LOG_LVL_INFO
 
 #include "ControlAllocator.hpp"
 #include <hrtimer.h>

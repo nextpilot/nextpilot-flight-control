@@ -9,6 +9,7 @@
  ******************************************************************/
 
 #define LOG_TAG "fw_rate_control"
+#define LOG_LVL LOG_LVL_INFO
 
 #include "FixedwingRateControl.hpp"
 
@@ -72,8 +73,7 @@ void FixedwingRateControl::vehicle_manual_poll() {
     if (_vcontrol_mode.flag_control_manual_enabled && _in_fw_or_transition_wo_tailsitter_transition) {
         // Always copy the new manual setpoint, even if it wasn't updated, to fill the actuators with valid values
         if (_manual_control_setpoint_sub.copy(&_manual_control_setpoint)) {
-            if (_vcontrol_mode.flag_control_rates_enabled &&
-                !_vcontrol_mode.flag_control_attitude_enabled) {
+            if (_vcontrol_mode.flag_control_rates_enabled && !_vcontrol_mode.flag_control_attitude_enabled) {
                 // RATE mode we need to generate the rate setpoint from manual user inputs
 
                 if (_vehicle_status.is_vtol_tailsitter && _vehicle_status.vehicle_type == vehicle_status_s::VEHICLE_TYPE_FIXED_WING) {
@@ -95,14 +95,11 @@ void FixedwingRateControl::vehicle_manual_poll() {
             } else {
                 // Manual/direct control, filled in FW-frame. Note that setpoints will get transformed to body frame prior publishing.
 
-                _vehicle_torque_setpoint.xyz[0] = math::constrain(_manual_control_setpoint.roll * _param_fw_man_r_sc.get() +
-                                                                      _param_trim_roll.get(),
+                _vehicle_torque_setpoint.xyz[0] = math::constrain(_manual_control_setpoint.roll * _param_fw_man_r_sc.get() + _param_trim_roll.get(),
                                                                   -1.f, 1.f);
-                _vehicle_torque_setpoint.xyz[1] = math::constrain(-_manual_control_setpoint.pitch * _param_fw_man_p_sc.get() +
-                                                                      _param_trim_pitch.get(),
+                _vehicle_torque_setpoint.xyz[1] = math::constrain(-_manual_control_setpoint.pitch * _param_fw_man_p_sc.get() + _param_trim_pitch.get(),
                                                                   -1.f, 1.f);
-                _vehicle_torque_setpoint.xyz[2] = math::constrain(_manual_control_setpoint.yaw * _param_fw_man_y_sc.get() +
-                                                                      _param_trim_yaw.get(),
+                _vehicle_torque_setpoint.xyz[2] = math::constrain(_manual_control_setpoint.yaw * _param_fw_man_y_sc.get() + _param_trim_yaw.get(),
                                                                   -1.f, 1.f);
 
                 _vehicle_thrust_setpoint.xyz[0] = math::constrain((_manual_control_setpoint.throttle + 1.f) * .5f, 0.f, 1.f);
@@ -288,23 +285,23 @@ void FixedwingRateControl::Run() {
             float trim_yaw   = _param_trim_yaw.get();
 
             if (airspeed < _param_fw_airspd_trim.get()) {
-                trim_roll += interpolate(airspeed, _param_fw_airspd_min.get(), _param_fw_airspd_trim.get(),
-                                         _param_fw_dtrim_r_vmin.get(),
-                                         0.0f);
+                trim_roll  += interpolate(airspeed, _param_fw_airspd_min.get(), _param_fw_airspd_trim.get(),
+                                          _param_fw_dtrim_r_vmin.get(),
+                                          0.0f);
                 trim_pitch += interpolate(airspeed, _param_fw_airspd_min.get(), _param_fw_airspd_trim.get(),
                                           _param_fw_dtrim_p_vmin.get(),
                                           0.0f);
-                trim_yaw += interpolate(airspeed, _param_fw_airspd_min.get(), _param_fw_airspd_trim.get(),
-                                        _param_fw_dtrim_y_vmin.get(),
-                                        0.0f);
+                trim_yaw   += interpolate(airspeed, _param_fw_airspd_min.get(), _param_fw_airspd_trim.get(),
+                                          _param_fw_dtrim_y_vmin.get(),
+                                          0.0f);
 
             } else {
-                trim_roll += interpolate(airspeed, _param_fw_airspd_trim.get(), _param_fw_airspd_max.get(), 0.0f,
-                                         _param_fw_dtrim_r_vmax.get());
+                trim_roll  += interpolate(airspeed, _param_fw_airspd_trim.get(), _param_fw_airspd_max.get(), 0.0f,
+                                          _param_fw_dtrim_r_vmax.get());
                 trim_pitch += interpolate(airspeed, _param_fw_airspd_trim.get(), _param_fw_airspd_max.get(), 0.0f,
                                           _param_fw_dtrim_p_vmax.get());
-                trim_yaw += interpolate(airspeed, _param_fw_airspd_trim.get(), _param_fw_airspd_max.get(), 0.0f,
-                                        _param_fw_dtrim_y_vmax.get());
+                trim_yaw   += interpolate(airspeed, _param_fw_airspd_trim.get(), _param_fw_airspd_max.get(), 0.0f,
+                                          _param_fw_dtrim_y_vmax.get());
             }
 
             if (_vcontrol_mode.flag_control_rates_enabled) {
@@ -369,8 +366,7 @@ void FixedwingRateControl::Run() {
 
         // Add feed-forward from roll control output to yaw control output
         // This can be used to counteract the adverse yaw effect when rolling the plane
-        _vehicle_torque_setpoint.xyz[2] = math::constrain(_vehicle_torque_setpoint.xyz[2] + _param_fw_rll_to_yaw_ff.get() *
-                                                                                                _vehicle_torque_setpoint.xyz[0],
+        _vehicle_torque_setpoint.xyz[2] = math::constrain(_vehicle_torque_setpoint.xyz[2] + _param_fw_rll_to_yaw_ff.get() * _vehicle_torque_setpoint.xyz[0],
                                                           -1.f, 1.f);
 
         // Tailsitter: rotate back to body frame from airspeed frame
@@ -381,9 +377,7 @@ void FixedwingRateControl::Run() {
         }
 
         /* Only publish if any of the proper modes are enabled */
-        if (_vcontrol_mode.flag_control_rates_enabled ||
-            _vcontrol_mode.flag_control_attitude_enabled ||
-            _vcontrol_mode.flag_control_manual_enabled) {
+        if (_vcontrol_mode.flag_control_rates_enabled || _vcontrol_mode.flag_control_attitude_enabled || _vcontrol_mode.flag_control_manual_enabled) {
             {
                 _vehicle_thrust_setpoint.timestamp        = hrt_absolute_time();
                 _vehicle_thrust_setpoint.timestamp_sample = angular_velocity.timestamp_sample;
@@ -527,6 +521,7 @@ fw_rate_control is the fixed-wing rate controller.
 extern "C" __EXPORT int fw_rate_control_main(int argc, char *argv[]) {
     return FixedwingRateControl::main(argc, argv);
 }
+
 MSH_CMD_EXPORT_ALIAS(fw_rate_control_main, fw_rate_control, fw rate control);
 
 int fw_rate_control_start() {
@@ -536,4 +531,5 @@ int fw_rate_control_start() {
     int         argc   = sizeof(argv) / sizeof(argv[0]);
     return FixedwingRateControl::main(argc, (char **)argv);
 }
+
 INIT_APP_EXPORT(fw_rate_control_start);

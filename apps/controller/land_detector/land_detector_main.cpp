@@ -17,6 +17,7 @@
  */
 
 #define LOG_TAG "land_detector_main"
+#define LOG_LVL LOG_LVL_INFO
 
 // #include <hrtimer.h>
 // #include <defines.h>

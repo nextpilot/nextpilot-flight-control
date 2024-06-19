@@ -18,6 +18,7 @@
  */
 
 #define LOG_TAG "sih"
+#define LOG_LVL LOG_LVL_INFO
 
 #include "aero.hpp"
 #include "sih.hpp"

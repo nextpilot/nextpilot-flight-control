@@ -15,6 +15,7 @@
  */
 
 #define LOG_TAG "fw_autotune"
+#define LOG_LVL LOG_LVL_INFO
 
 #include "fw_autotune_attitude_control.hpp"
 
@@ -109,8 +110,8 @@ void FwAutotuneAttitudeControl::Run() {
     // collect sample interval average for filters
     if (_last_run > 0) {
         // Guard against too small (< 0.125ms) and too large (> 20ms) dt's.
-        const float dt = math::constrain(((timestamp_sample - _last_run) * 1e-6f), 0.000125f, 0.02f);
-        _interval_sum += dt;
+        const float dt  = math::constrain(((timestamp_sample - _last_run) * 1e-6f), 0.000125f, 0.02f);
+        _interval_sum  += dt;
         _interval_count++;
 
     } else {
@@ -139,10 +140,10 @@ void FwAutotuneAttitudeControl::Run() {
         const hrt_abstime now = hrt_absolute_time();
         updateStateMachine(now);
 
-        Vector<float, 5> coeff = _sys_id.getCoefficients();
-        coeff(2) *= _input_scale;
-        coeff(3) *= _input_scale;
-        coeff(4) *= _input_scale;
+        Vector<float, 5> coeff  = _sys_id.getCoefficients();
+        coeff(2)               *= _input_scale;
+        coeff(3)               *= _input_scale;
+        coeff(4)               *= _input_scale;
 
         const Vector3f num(coeff(2), coeff(3), coeff(4));
         const Vector3f den(1.f, coeff(0), coeff(1));
@@ -465,7 +466,7 @@ bool FwAutotuneAttitudeControl::areGainsGood() const {
 
             if (i < 3) {
                 // There is no yaw attitude controller
-                are_positive &= _att_p(i) > 0.f;
+                are_positive     &= _att_p(i) > 0.f;
                 are_small_enough &= _att_p(i) < 12.f;
             }
         }
@@ -663,6 +664,7 @@ int FwAutotuneAttitudeControl::print_usage(const char *reason) {
 extern "C" __EXPORT int fw_autotune_attitude_control_main(int argc, char *argv[]) {
     return FwAutotuneAttitudeControl::main(argc, argv);
 }
+
 MSH_CMD_EXPORT_ALIAS(fw_autotune_attitude_control_main, fw_autotune, fw autotune attitude control);
 
 int fw_autotune_attitude_control_start() {
@@ -672,4 +674,5 @@ int fw_autotune_attitude_control_start() {
     int         argc   = sizeof(argv) / sizeof(argv[0]);
     return FwAutotuneAttitudeControl::main(argc, (char **)argv);
 }
+
 INIT_APP_EXPORT(fw_autotune_attitude_control_start);

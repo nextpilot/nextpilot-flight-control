@@ -21,6 +21,7 @@
  */
 
 #define LOG_TAG "navigator"
+#define LOG_LVL LOG_LVL_INFO
 
 #include "navigator.h"
 #include <float.h>
@@ -430,8 +431,7 @@ void Navigator::Run() {
 
                 // DO_CHANGE_ALTITUDE is acknowledged by commander
 
-            } else if (cmd.command == vehicle_command_s::VEHICLE_CMD_DO_ORBIT &&
-                       get_vstatus()->vehicle_type == vehicle_status_s::VEHICLE_TYPE_FIXED_WING) {
+            } else if (cmd.command == vehicle_command_s::VEHICLE_CMD_DO_ORBIT && get_vstatus()->vehicle_type == vehicle_status_s::VEHICLE_TYPE_FIXED_WING) {
                 // for multicopters the orbit command is directly executed by the orbit flighttask
 
                 bool orbit_location_valid = true;
@@ -711,9 +711,7 @@ void Navigator::Run() {
                     // fly the mission in reverse if switching from a non-manual mode
                     _mission.set_execution_mode(mission_result_s::MISSION_EXECUTION_MODE_REVERSE);
 
-                    if ((_navigation_mode != nullptr && (_navigation_mode != &_rtl || _mission.get_mission_changed())) &&
-                        (!_mission.get_mission_finished()) &&
-                        (!get_land_detected()->landed)) {
+                    if ((_navigation_mode != nullptr && (_navigation_mode != &_rtl || _mission.get_mission_changed())) && (!_mission.get_mission_finished()) && (!get_land_detected()->landed)) {
                         // determine the closest mission item if switching from a non-mission mode, and we are either not already
                         // mission mode or the mission waypoints changed.
                         // The seconds condition is required so that when no mission was uploaded and one is available the closest
@@ -828,9 +826,7 @@ void Navigator::Run() {
             }
 
             // transition to hover in Descend mode
-            if (_vstatus.nav_state == vehicle_status_s::NAVIGATION_STATE_DESCEND &&
-                _vstatus.is_vtol && _vstatus.vehicle_type == vehicle_status_s::VEHICLE_TYPE_FIXED_WING &&
-                force_vtol()) {
+            if (_vstatus.nav_state == vehicle_status_s::NAVIGATION_STATE_DESCEND && _vstatus.is_vtol && _vstatus.vehicle_type == vehicle_status_s::VEHICLE_TYPE_FIXED_WING && force_vtol()) {
                 vehicle_command_s vcmd = {};
                 vcmd.command           = NAV_CMD_DO_VTOL_TRANSITION;
                 vcmd.param1            = vtol_vehicle_status_s::VEHICLE_VTOL_STATE_MC;
@@ -869,9 +865,7 @@ void Navigator::Run() {
 }
 
 void Navigator::geofence_breach_check(bool &have_geofence_position_data) {
-    if (have_geofence_position_data &&
-        (_geofence.getGeofenceAction() != geofence_result_s::GF_ACTION_NONE) &&
-        (hrt_elapsed_time(&_last_geofence_check) > GEOFENCE_CHECK_INTERVAL_US)) {
+    if (have_geofence_position_data && (_geofence.getGeofenceAction() != geofence_result_s::GF_ACTION_NONE) && (hrt_elapsed_time(&_last_geofence_check) > GEOFENCE_CHECK_INTERVAL_US)) {
         const position_controller_status_s &pos_ctrl_status = _position_controller_status_sub.get();
 
         matrix::Vector2<double>   fence_violation_test_point;
@@ -923,8 +917,7 @@ void Navigator::geofence_breach_check(bool &have_geofence_position_data) {
                                                                                              fence_violation_test_point(1),
                                                                                              _global_pos.alt);
 
-        gf_violation_type.flags.max_altitude_exceeded = !_geofence.isBelowMaxAltitude(_global_pos.alt +
-                                                                                      vertical_test_point_distance);
+        gf_violation_type.flags.max_altitude_exceeded = !_geofence.isBelowMaxAltitude(_global_pos.alt + vertical_test_point_distance);
 
         gf_violation_type.flags.fence_violation = !_geofence.isInsidePolygonOrCircle(fence_violation_test_point(0),
                                                                                      fence_violation_test_point(1),
@@ -1207,9 +1200,7 @@ void Navigator::check_traffic() {
     if (_traffic_sub.updated()) {
         _traffic_sub.copy(&_adsb_conflict._transponder_report);
 
-        uint16_t required_flags = transponder_report_s::PX4_ADSB_FLAGS_VALID_COORDS |
-                                  transponder_report_s::PX4_ADSB_FLAGS_VALID_HEADING |
-                                  transponder_report_s::PX4_ADSB_FLAGS_VALID_VELOCITY | transponder_report_s::PX4_ADSB_FLAGS_VALID_ALTITUDE;
+        uint16_t required_flags = transponder_report_s::PX4_ADSB_FLAGS_VALID_COORDS | transponder_report_s::PX4_ADSB_FLAGS_VALID_HEADING | transponder_report_s::PX4_ADSB_FLAGS_VALID_VELOCITY | transponder_report_s::PX4_ADSB_FLAGS_VALID_ALTITUDE;
 
         if ((_adsb_conflict._transponder_report.flags & required_flags) == required_flags) {
             _adsb_conflict.detect_traffic_conflict(get_global_position()->lat, get_global_position()->lon,
@@ -1243,8 +1234,7 @@ bool Navigator::abort_landing() {
 }
 
 bool Navigator::force_vtol() {
-    return _vstatus.is_vtol &&
-           (_vstatus.vehicle_type == vehicle_status_s::VEHICLE_TYPE_FIXED_WING || _vstatus.in_transition_to_fw) && _param_nav_force_vt.get();
+    return _vstatus.is_vtol && (_vstatus.vehicle_type == vehicle_status_s::VEHICLE_TYPE_FIXED_WING || _vstatus.in_transition_to_fw) && _param_nav_force_vt.get();
 }
 
 int Navigator::custom_command(int argc, char *argv[]) {
@@ -1389,8 +1379,7 @@ void Navigator::stop_capturing_images() {
 }
 
 bool Navigator::geofence_allows_position(const vehicle_global_position_s &pos) {
-    if ((_geofence.getGeofenceAction() != geofence_result_s::GF_ACTION_NONE) &&
-        (_geofence.getGeofenceAction() != geofence_result_s::GF_ACTION_WARN)) {
+    if ((_geofence.getGeofenceAction() != geofence_result_s::GF_ACTION_NONE) && (_geofence.getGeofenceAction() != geofence_result_s::GF_ACTION_WARN)) {
         if (PX4_ISFINITE(pos.lat) && PX4_ISFINITE(pos.lon)) {
             return _geofence.check(pos, _gps_pos);
         }

@@ -21,6 +21,7 @@
  */
 
 #define LOG_TAG "mc_att_control"
+#define LOG_LVL LOG_LVL_INFO
 
 #include "mc_att_control.hpp"
 #include <hrtimer.h>
@@ -112,7 +113,7 @@ void MulticopterAttitudeControl::generate_attitude_setpoint(const Quatf &q, floa
     // we want to fly towards the direction of (roll, pitch)
     Vector2f v      = Vector2f(_man_roll_input_filter.update(_manual_control_setpoint.roll * _man_tilt_max),
                                -_man_pitch_input_filter.update(_manual_control_setpoint.pitch * _man_tilt_max));
-    float    v_norm = v.norm(); // the norm of v defines the tilt angle
+    float    v_norm = v.norm();   // the norm of v defines the tilt angle
 
     if (v_norm > _man_tilt_max) { // limit to the configured maximum tilt angle
         v *= _man_tilt_max / v_norm;
@@ -245,10 +246,7 @@ void MulticopterAttitudeControl::Run() {
 
         if (run_att_ctrl) {
             // Generate the attitude setpoint from stick inputs if we are in Manual/Stabilized mode
-            if (_vehicle_control_mode.flag_control_manual_enabled &&
-                !_vehicle_control_mode.flag_control_altitude_enabled &&
-                !_vehicle_control_mode.flag_control_velocity_enabled &&
-                !_vehicle_control_mode.flag_control_position_enabled) {
+            if (_vehicle_control_mode.flag_control_manual_enabled && !_vehicle_control_mode.flag_control_altitude_enabled && !_vehicle_control_mode.flag_control_velocity_enabled && !_vehicle_control_mode.flag_control_position_enabled) {
                 generate_attitude_setpoint(q, dt, _reset_yaw_sp);
                 attitude_setpoint_generated = true;
 
@@ -357,6 +355,7 @@ https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/154099/eth
 extern "C" __EXPORT int mc_att_control_main(int argc, char *argv[]) {
     return MulticopterAttitudeControl::main(argc, argv);
 }
+
 MSH_CMD_EXPORT_ALIAS(mc_att_control_main, mc_att_control, mc att control);
 
 int mc_att_control_start() {
@@ -366,4 +365,5 @@ int mc_att_control_start() {
     int         argc   = sizeof(argv) / sizeof(argv[0]);
     return MulticopterAttitudeControl::main(argc, (char **)argv);
 }
+
 INIT_APP_EXPORT(mc_att_control_start);

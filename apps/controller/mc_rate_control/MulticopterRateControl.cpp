@@ -9,6 +9,7 @@
  ******************************************************************/
 
 #define LOG_TAG "mc_rate_control"
+#define LOG_LVL LOG_LVL_INFO
 
 #include "MulticopterRateControl.hpp"
 #include <circuit_breaker/circuit_breaker.h>
@@ -308,6 +309,7 @@ The controller has a PID loop for angular rate error.
 extern "C" __EXPORT int mc_rate_control_main(int argc, char *argv[]) {
     return MulticopterRateControl::main(argc, argv);
 }
+
 MSH_CMD_EXPORT_ALIAS(mc_rate_control_main, mc_rate_control, mc rate control);
 
 int mc_rate_control_start() {
@@ -317,4 +319,5 @@ int mc_rate_control_start() {
     int         argc   = sizeof(argv) / sizeof(argv[0]);
     return MulticopterRateControl::main(argc, (char **)argv);
 }
+
 INIT_APP_EXPORT(mc_rate_control_start);

@@ -9,6 +9,7 @@
  ******************************************************************/
 
 #define LOG_TAG "fw_att_control"
+#define LOG_LVL LOG_LVL_INFO
 
 #include "FixedwingAttitudeControl.hpp"
 
@@ -261,8 +262,7 @@ void FixedwingAttitudeControl::Run() {
                     vehicle_local_position_s vehicle_local_position;
 
                     if (_local_pos_sub.copy(&vehicle_local_position)) {
-                        _groundspeed = sqrtf(vehicle_local_position.vx * vehicle_local_position.vx + vehicle_local_position.vy *
-                                                                                                         vehicle_local_position.vy);
+                        _groundspeed = sqrtf(vehicle_local_position.vx * vehicle_local_position.vx + vehicle_local_position.vy * vehicle_local_position.vy);
                     }
                 }
 
@@ -313,8 +313,8 @@ void FixedwingAttitudeControl::Run() {
 
                     if (_autotune_attitude_control_status_sub.copy(&pid_autotune)) {
                         if ((pid_autotune.state == autotune_attitude_control_status_s::STATE_ROLL || pid_autotune.state == autotune_attitude_control_status_s::STATE_PITCH || pid_autotune.state == autotune_attitude_control_status_s::STATE_YAW || pid_autotune.state == autotune_attitude_control_status_s::STATE_TEST) && ((hrt_absolute_time() - pid_autotune.timestamp) < 1_s)) {
-                            bodyrate_autotune_ff = matrix::Vector3f(pid_autotune.rate_sp);
-                            body_rates_setpoint += bodyrate_autotune_ff;
+                            bodyrate_autotune_ff  = matrix::Vector3f(pid_autotune.rate_sp);
+                            body_rates_setpoint  += bodyrate_autotune_ff;
                         }
                     }
 
@@ -362,9 +362,7 @@ void FixedwingAttitudeControl::Run() {
             // full manual
             _wheel_ctrl.reset_integrator();
 
-            _landing_gear_wheel.normalized_wheel_setpoint = PX4_ISFINITE(_manual_control_setpoint.yaw) ?
-                                                                _manual_control_setpoint.yaw :
-                                                                0.f;
+            _landing_gear_wheel.normalized_wheel_setpoint = PX4_ISFINITE(_manual_control_setpoint.yaw) ? _manual_control_setpoint.yaw : 0.f;
             _landing_gear_wheel.timestamp                 = hrt_absolute_time();
             _landing_gear_wheel_pub.publish(_landing_gear_wheel);
         }
@@ -435,6 +433,7 @@ fw_att_control is the fixed wing attitude controller.
 extern "C" __EXPORT int fw_att_control_main(int argc, char *argv[]) {
     return FixedwingAttitudeControl::main(argc, argv);
 }
+
 MSH_CMD_EXPORT_ALIAS(fw_att_control_main, fw_att_control, fw att control);
 
 int fw_att_control_start() {
@@ -444,4 +443,5 @@ int fw_att_control_start() {
     int         argc   = sizeof(argv) / sizeof(argv[0]);
     return FixedwingAttitudeControl::main(argc, (char **)argv);
 }
+
 INIT_APP_EXPORT(fw_att_control_start);

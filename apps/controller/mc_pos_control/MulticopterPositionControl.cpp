@@ -9,6 +9,7 @@
  ******************************************************************/
 
 #define LOG_TAG "mc_pos_control"
+#define LOG_LVL LOG_LVL_INFO
 
 #include <mathlib/mathlib.h>
 #include <matrix/matrix/math.hpp>

@@ -15,6 +15,7 @@
  */
 
 #define LOG_TAG "mc_hover_thrust_est"
+#define LOG_LVL LOG_LVL_INFO
 
 #include "MulticopterHoverThrustEstimator.hpp"
 #include <mathlib/mathlib.h>
@@ -147,9 +148,9 @@ void MulticopterHoverThrustEstimator::Run() {
                 const float meas_noise_coeff_z  = fmaxf((fabsf(local_pos.vz) - _param_hte_vz_thr.get()) + 1.f, 1.f);
                 const float meas_noise_coeff_xy = fmaxf((matrix::Vector2f(local_pos.vx,
                                                                           local_pos.vy)
-                                                             .norm() -
-                                                         _param_hte_vxy_thr.get()) +
-                                                            1.f,
+                                                             .norm()
+                                                         - _param_hte_vxy_thr.get())
+                                                            + 1.f,
                                                         1.f);
 
                 _hover_thrust_ekf.setMeasurementNoiseScale(fmaxf(meas_noise_coeff_xy, meas_noise_coeff_z));
@@ -276,6 +277,7 @@ int MulticopterHoverThrustEstimator::print_usage(const char *reason) {
 extern "C" __EXPORT int mc_hover_thrust_estimator_main(int argc, char *argv[]) {
     return MulticopterHoverThrustEstimator::main(argc, argv);
 }
+
 MSH_CMD_EXPORT_ALIAS(mc_hover_thrust_estimator_main, mc_hover_est, mc hover thrust estimator);
 
 int mc_hover_thrust_estimator_start() {
@@ -283,4 +285,5 @@ int mc_hover_thrust_estimator_start() {
     int         argc   = sizeof(argv) / sizeof(argv[0]);
     return MulticopterHoverThrustEstimator::main(argc, (char **)argv);
 }
+
 INIT_APP_EXPORT(mc_hover_thrust_estimator_start);
