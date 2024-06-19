@@ -541,14 +541,11 @@ void Sih::publish_ground_truth(const hrt_abstime &time_now_us) {
         vehicle_global_position_s global_position{};
         global_position.timestamp_sample = time_now_us;
         global_position.lat              = _LAT0 + degrees((double)_p_I(0) / CONSTANTS_RADIUS_OF_EARTH);
-        ;
-        global_position.lon = _LON0 + degrees((double)_p_I(1) / CONSTANTS_RADIUS_OF_EARTH) / _COS_LAT0;
-        ;
-        global_position.alt = _H0 - _p_I(2);
-        ;
-        global_position.alt_ellipsoid = global_position.alt;
-        global_position.terrain_alt   = -_p_I(2);
-        global_position.timestamp     = hrt_absolute_time();
+        global_position.lon              = _LON0 + degrees((double)_p_I(1) / CONSTANTS_RADIUS_OF_EARTH) / _COS_LAT0;
+        global_position.alt              = _H0 - _p_I(2);
+        global_position.alt_ellipsoid    = global_position.alt;
+        global_position.terrain_alt      = -_p_I(2);
+        global_position.timestamp        = hrt_absolute_time();
         _global_position_ground_truth_pub.publish(global_position);
     }
 }
