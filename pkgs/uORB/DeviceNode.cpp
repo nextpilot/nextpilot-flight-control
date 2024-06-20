@@ -68,20 +68,20 @@ DeviceNode *DeviceNode::advertise(const struct orb_metadata *meta, const void *d
     return node;
 }
 
-bool DeviceNode::unadvertise(DeviceNode *node) {
+int DeviceNode::unadvertise(DeviceNode *node) {
     if (!node) {
-        return -1;
+        return -RT_ERROR;
     }
 
     node->_advertised = false;
 
     if (node->_subscriber_count > 0) {
-        return 0;
+        return RT_EOK;
     }
 
     delete node;
 
-    return 0;
+    return RT_EOK;
 }
 
 DeviceNode *DeviceNode::getDeviceNodeLocked(const struct orb_metadata *meta, const uint8_t instance) {
@@ -250,16 +250,16 @@ int DeviceNode::update_queue_size(unsigned int queue_size)
 
 {
     if (_queue_size == queue_size) {
-        return 0;
+        return RT_EOK;
     }
 
     // queue size is limited to 255 for the single reason that we use uint8 to store it
     if (_data || _queue_size > queue_size || queue_size > 255) {
-        return -1;
+        return -RT_ERROR;
     }
 
     _queue_size = round_pow_of_two_8(queue_size);
-    return 0;
+    return RT_EOK;
 }
 
 unsigned DeviceNode::get_initial_generation() {

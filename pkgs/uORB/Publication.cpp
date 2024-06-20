@@ -55,11 +55,11 @@ int orb_publish(const struct orb_metadata *meta, orb_advert_t handle, const void
 //     if (!*node) {
 //         *node = orb_advertise_multi(meta, data, instance);
 //         if (*node) {
-//             return 0;
+//             return RT_EOK;
 //         }
 //     } else {
 //         return orb_publish(meta, *node, data);
 //     }
 
-//     return -1;
+//     return -RT_ERROR;
 // }

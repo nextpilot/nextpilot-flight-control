@@ -219,7 +219,7 @@ public:
     static AtomicBitset<ORB_TOPICS_COUNT>    _node_exist[ORB_MULTI_MAX_INSTANCES];
 
     static DeviceNode *advertise(const struct orb_metadata *meta, const void *data, int *instance, uint8_t queue_size = 1);
-    static bool        unadvertise(DeviceNode *handle);
+    static int         unadvertise(DeviceNode *handle);
 
     static DeviceNode *getDeviceNodeLocked(const struct orb_metadata *meta, const uint8_t instance);
     static DeviceNode *getDeviceNode(const struct orb_metadata *meta, const uint8_t instance);
