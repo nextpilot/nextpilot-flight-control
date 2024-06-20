@@ -422,8 +422,8 @@ void ControlAllocator::update_effectiveness_matrix_if_needed(EffectivenessUpdate
     if (_actuator_effectiveness->getEffectivenessMatrix(config, reason)) {
         _last_effectiveness_update = hrt_absolute_time();
 
-        memcpy(_control_allocation_selection_indexes, config.matrix_selection_indexes,
-               sizeof(_control_allocation_selection_indexes));
+        rt_memcpy(_control_allocation_selection_indexes, config.matrix_selection_indexes,
+                  sizeof(_control_allocation_selection_indexes));
 
         // Get the minimum and maximum depending on type and configuration
         ActuatorEffectiveness::ActuatorVector minimum[ActuatorEffectiveness::MAX_NUM_MATRICES];
@@ -445,49 +445,45 @@ void ControlAllocator::update_effectiveness_matrix_if_needed(EffectivenessUpdate
                     break;
                 }
 
-                // TODO: 卡死可能与数组越界有关，放开以下代码必现
-                // int selected_matrix = _control_allocation_selection_indexes[actuator_idx];
+                int selected_matrix = _control_allocation_selection_indexes[actuator_idx];
 
-                // if ((ActuatorType)actuator_type == ActuatorType::MOTORS) {
-                //     if (actuator_type_idx >= MAX_NUM_MOTORS) {
-                //         PX4_ERR("Too many motors");
-                //         _num_actuators[actuator_type] = 0;
-                //         break;
-                //     }
+                if ((ActuatorType)actuator_type == ActuatorType::MOTORS) {
+                    if (actuator_type_idx >= MAX_NUM_MOTORS) {
+                        PX4_ERR("Too many motors");
+                        _num_actuators[actuator_type] = 0;
+                        break;
+                    }
 
-                //     if (_param_r_rev.get() & (1u << actuator_type_idx)) {
-                //         minimum[selected_matrix](actuator_idx_matrix[selected_matrix]) = -1.f;
+                    if (_param_r_rev.get() & (1u << actuator_type_idx)) {
+                        minimum[selected_matrix](actuator_idx_matrix[selected_matrix]) = -1.f;
 
-                //     } else {
-                //         minimum[selected_matrix](actuator_idx_matrix[selected_matrix]) = 0.f;
-                //     }
+                    } else {
+                        minimum[selected_matrix](actuator_idx_matrix[selected_matrix]) = 0.f;
+                    }
 
-                //     slew_rate[selected_matrix](actuator_idx_matrix[selected_matrix]) = _params.slew_rate_motors[actuator_type_idx];
+                    slew_rate[selected_matrix](actuator_idx_matrix[selected_matrix]) = _params.slew_rate_motors[actuator_type_idx];
 
-                // } else if ((ActuatorType)actuator_type == ActuatorType::SERVOS) {
-                //     if (actuator_type_idx >= MAX_NUM_SERVOS) {
-                //         PX4_ERR("Too many servos");
-                //         _num_actuators[actuator_type] = 0;
-                //         break;
-                //     }
+                } else if ((ActuatorType)actuator_type == ActuatorType::SERVOS) {
+                    if (actuator_type_idx >= MAX_NUM_SERVOS) {
+                        PX4_ERR("Too many servos");
+                        _num_actuators[actuator_type] = 0;
+                        break;
+                    }
 
-                //     minimum[selected_matrix](actuator_idx_matrix[selected_matrix])   = -1.f;
-                //     slew_rate[selected_matrix](actuator_idx_matrix[selected_matrix]) = _params.slew_rate_servos[actuator_type_idx];
-                //     trims.trim[actuator_type_idx]                                    = config.trim[selected_matrix](actuator_idx_matrix[selected_matrix]);
+                    minimum[selected_matrix](actuator_idx_matrix[selected_matrix])   = -1.f;
+                    slew_rate[selected_matrix](actuator_idx_matrix[selected_matrix]) = _params.slew_rate_servos[actuator_type_idx];
+                    trims.trim[actuator_type_idx]                                    = config.trim[selected_matrix](actuator_idx_matrix[selected_matrix]);
 
-                // } else {
-                //     minimum[selected_matrix](actuator_idx_matrix[selected_matrix]) = -1.f;
-                // }
+                } else {
+                    minimum[selected_matrix](actuator_idx_matrix[selected_matrix]) = -1.f;
+                }
 
-                // maximum[selected_matrix](actuator_idx_matrix[selected_matrix]) = 1.f;
+                maximum[selected_matrix](actuator_idx_matrix[selected_matrix]) = 1.f;
 
-                // ++actuator_idx_matrix[selected_matrix];
-                // ++actuator_idx;
+                ++actuator_idx_matrix[selected_matrix];
+                ++actuator_idx;
             }
         }
-
-        // TODO: 待调试
-        return;
 
         // Handle failed actuators
         if (_handled_motor_failure_bitmask) {
