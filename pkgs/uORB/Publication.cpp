@@ -48,30 +48,7 @@ int orb_unadvertise(orb_advert_t node) {
 }
 
 int orb_publish(const struct orb_metadata *meta, orb_advert_t handle, const void *data) {
-    if (!data) {
-        return -1;
-    }
-
-    DeviceNode *node = (DeviceNode *)handle;
-
-    // 如果没有指定节点，则使用instance=0的节点
-    if (meta && node) {
-        if (meta != node->get_meta()) {
-            return -1;
-        } else {
-            return node->write(data);
-        }
-    } else if (!meta && node) {
-        return node->write(data);
-    } else if (meta && !node) {
-        node = DeviceNode::getDeviceNode(meta, 0);
-        if (node) {
-            return node->write(data);
-        }
-        return -1;
-    } else {
-        return -1;
-    }
+    return DeviceNode::publish(meta, handle, data);
 }
 
 // int orb_publish_auto(const struct orb_metadata *meta, orb_advert_t *node, const void *data, int *instance) {

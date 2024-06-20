@@ -15,12 +15,12 @@
 #include <stdint.h>
 
 #ifdef __cplusplus
-#include <atomic.hpp>
-#include <IntrusiveSortedList.hpp>
-#include <IntrusiveList.hpp>
-#include <atomic_bitset.hpp>
-#include <uORB.h>
-#include <uORB/topics/uORBTopics.hpp>
+#   include <atomic.hpp>
+#   include <IntrusiveSortedList.hpp>
+#   include <IntrusiveList.hpp>
+#   include <atomic_bitset.hpp>
+#   include <uORB.h>
+#   include <uORB/topics/uORBTopics.hpp>
 
 namespace nextpilot::uORB {
 
@@ -224,8 +224,9 @@ public:
     static DeviceNode *getDeviceNodeLocked(const struct orb_metadata *meta, const uint8_t instance);
     static DeviceNode *getDeviceNode(const struct orb_metadata *meta, const uint8_t instance);
     // static DeviceNode *getDeviceNode(const char *node_name);
-
     static bool deviceNodeExists(ORB_ID id, const uint8_t instance);
+    // 发布主题
+    static int publish(const orb_metadata *meta, orb_advert_t handle, const void *data);
 };
 
 } // namespace nextpilot::uORB

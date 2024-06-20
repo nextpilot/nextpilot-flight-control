@@ -13,7 +13,7 @@
 #include <rtdbg.h>
 
 // #define ORB_MULTI_MAX_INSTANCES 4
-#define ORB_TOPICS_COUNT 10
+#define ORB_TOPICS_COUNT  10
 
 #define ORB_BITS_PER_ELEM (32)
 #define ORB_TOTAL_BITS    (ORB_TOPICS_COUNT * ORB_MULTI_MAX_INSTANCES)
@@ -127,8 +127,7 @@ uorb_device_t uorb_device_find_node(const struct orb_metadata *meta, uint8_t ins
     rt_enter_critical();
     rt_list_for_each_safe(pos, temp_list, &_uorb_device_list) {
         uorb_device_t node = (uorb_device_t)pos;
-        if ((rt_strcmp(node->meta->o_name, meta->o_name) == 0) &&
-            (node->instance == instance)) {
+        if ((rt_strcmp(node->meta->o_name, meta->o_name) == 0) && (node->instance == instance)) {
             rt_exit_critical();
             return node;
         }
@@ -283,9 +282,9 @@ uorb_device_t uorb_device_advertise(const struct orb_metadata *meta, const void 
     if (!instance) {
         node = uorb_device_find_node(meta, 0); //  查找inst=0主题
         if (node) {
-            max_inst = 0; // 查找到不需要创建
+            max_inst = 0;                      // 查找到不需要创建
         } else {
-            max_inst = 1; // 没有查到到，后面代码创建
+            max_inst = 1;                      // 没有查到到，后面代码创建
         }
     }
 

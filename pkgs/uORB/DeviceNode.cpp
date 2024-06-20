@@ -124,6 +124,40 @@ bool DeviceNode::deviceNodeExists(ORB_ID id, const uint8_t instance) {
     return _node_exist[instance][(uint8_t)id];
 }
 
+int DeviceNode::publish(const orb_metadata *meta, orb_advert_t handle, const void *data) {
+    if (!data) {
+        return -RT_ERROR;
+    }
+
+    DeviceNode *node = (DeviceNode *)handle;
+
+    if (!meta && !node) {
+        return -RT_ERROR;
+    } else if (meta && !node) {
+        node = getDeviceNode(meta, 0);
+        if (!node) {
+            return -RT_ERROR;
+        }
+    } else if (meta && node) {
+        if (node->_meta->o_id != meta->o_id) {
+            return -RT_ERROR;
+        }
+    } else { // (!meta && node)
+        // using node
+    }
+
+    int ret = node->write(data);
+    if (ret < 0) {
+        return -RT_ERROR;
+    }
+
+    if (ret != (int)node->_meta->o_size) {
+        return -RT_ERROR;
+    }
+
+    return RT_EOK;
+}
+
 ssize_t DeviceNode::write(const void *data) {
     if (!data) {
         return 0;
@@ -135,7 +169,7 @@ ssize_t DeviceNode::write(const void *data) {
         // rt_exit_critical();
 
         /* failed or could not allocate */
-        if (_data) {
+        if (!_data) {
             return 0;
         }
     }
@@ -164,7 +198,40 @@ ssize_t DeviceNode::write(const void *data) {
 }
 
 bool DeviceNode::read(void *dst, unsigned &generation) {
-    return 0;
+    if (!dst || !_data) {
+        return false;
+    }
+
+    if (_queue_size == 1) {
+        // ATOMIC_ENTER;
+        rt_memcpy(dst, _data, _meta->o_size);
+        generation = _generation.load();
+        // ATOMIC_LEAVE;
+        return true;
+    } else {
+        // ATOMIC_ENTER;
+        const unsigned current_generation = _generation.load();
+
+        if (current_generation == generation) {
+            /* The subscriber already read the latest message, but nothing new was published yet.
+					* Return the previous message
+					*/
+            --generation;
+        }
+
+        // Compatible with normal and overflow conditions
+        if (!is_in_range(current_generation - _queue_size, generation, current_generation - 1)) {
+            // Reader is too far behind: some messages are lost
+            generation = current_generation - _queue_size;
+        }
+
+        rt_memcpy(dst, _data + (_meta->o_size * (generation % _queue_size)), _meta->o_size);
+        // ATOMIC_LEAVE;
+
+        ++generation;
+
+        return true;
+    }
 }
 
 void DeviceNode::add_internal_subscriber() {

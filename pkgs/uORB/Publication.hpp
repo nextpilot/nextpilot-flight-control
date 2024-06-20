@@ -114,7 +114,11 @@ public:
             advertise();
         }
 
-        return (orb_publish(get_topic(), _handle, &data) == 0);
+        if (advertised()) {
+            return _handle->write(&data) != 0;
+        }
+
+        return false;
     }
 };
 
@@ -197,7 +201,7 @@ public:
             advertise();
         }
 
-        return (orb_publish(get_topic(), _handle, &data) == 0);
+        return (orb_publish(get_topic(), _handle, &data) == RT_EOK);
     }
 
     int get_instance() {
