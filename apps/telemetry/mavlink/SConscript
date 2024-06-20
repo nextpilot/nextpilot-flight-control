@@ -5,7 +5,6 @@ from building import *
 
 cwd = GetCurrentDir()
 
-
 cmd = [
     sys.executable,
     os.path.join(cwd, "mavlink/pymavlink/tools/mavgen.py"),
@@ -27,8 +26,8 @@ inc = [
     os.path.join(cwd, "mavlink/generated"),
     os.path.join(cwd, "mavlink/generated/common"),
 ]
-src = Glob("*.cpp", exclude="*Test.cpp") + Glob("mavlink.c")
 
+src = Glob("*.cpp", exclude="*Test.cpp") + Glob("mavlink.c")
 
 if not GetDepend(["MAVLINK_USING_PARAM"]):
     SrcRemove(src, "mavlink_parameters.cpp")
