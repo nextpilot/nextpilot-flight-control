@@ -4,20 +4,6 @@
 
 using namespace nextpilot::uORB;
 
-uint8_t orb_get_queue_size(const orb_advert_t node) {
-    if (node) {
-        return static_cast<const DeviceNode *>(node)->get_queue_size();
-    }
-    return 0;
-}
-
-uint8_t orb_get_instance(const orb_advert_t node) {
-    if (node) {
-        return static_cast<const DeviceNode *>(node)->get_instance();
-    }
-    return 0;
-}
-
 // 广告新主题，并指定queue_size
 // 当instance=NULL是表示只广告instance=0的主题
 // 当instance!=NULL则公告新主题，返回instance

@@ -14,43 +14,17 @@
 
 using namespace nextpilot::uORB;
 
-// 查找对应的主题是否存在，且已经公告，没有公告advertised=false主题不能publish和copy数据
-int orb_exists(const struct orb_metadata *meta, int instance) {
-    if (!meta) {
-        return -RT_ERROR;
-    }
-
-    // instance valid range: [0, ORB_MULTI_MAX_INSTANCES)
-    if (instance < 0 || instance > (ORB_MULTI_MAX_INSTANCES - 1)) {
-        return -RT_ERROR;
-    }
-
-    DeviceNode *node = DeviceNode::getDeviceNode(meta, instance);
-
-    if (node && node->is_advertised()) {
-        return RT_EOK;
-    }
-
-    return -RT_ERROR;
-}
-
-int orb_group_count(const struct orb_metadata *meta) {
-    uint8_t instance = 0;
-
-    while (orb_exists(meta, instance) == 0) {
-        instance++;
-    }
-    return instance;
-}
-
+// 多实例订阅
 orb_subscr_t orb_subscribe_multi(const struct orb_metadata *meta, uint8_t instance) {
     return new SubscriptionInterval(meta, 0, instance);
 }
 
+// 订阅第0个实例
 orb_subscr_t orb_subscribe(const struct orb_metadata *meta) {
     return new SubscriptionInterval(meta, 0, 0);
 }
 
+// 取消订阅
 int orb_unsubscribe(orb_subscr_t handle) {
     if (!handle) {
         return -RT_ERROR;
@@ -191,4 +165,17 @@ int orb_get_interval(orb_subscr_t handle, unsigned *interval_ms) {
     *interval_ms              = sub->get_interval_us() / 1000UL;
 
     return RT_EOK;
+}
+
+bool orb_register_callback(void *node, SubscriptionCallback *callback_sub) {
+    if (node) {
+        return static_cast<DeviceNode *>(node)->register_callback(callback_sub);
+    }
+    return false;
+}
+
+void orb_unregister_callback(void *node, SubscriptionCallback *callback_sub) {
+    if (node) {
+        static_cast<DeviceNode *>(node)->unregister_callback(callback_sub);
+    }
 }

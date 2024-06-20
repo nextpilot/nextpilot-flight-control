@@ -75,16 +75,28 @@ int DeviceNode::unadvertise(DeviceNode *node) {
 
     node->_advertised = false;
 
-    if (node->_subscriber_count > 0) {
-        return RT_EOK;
+    if (node->_subscriber_count == 0) {
+        delete node;
     }
-
-    delete node;
 
     return RT_EOK;
 }
 
+// 节点是否已经创建
+bool DeviceNode::deviceNodeExists(ORB_ID id, const uint8_t instance) {
+    if ((id == ORB_ID::INVALID) || (instance > ORB_MULTI_MAX_INSTANCES - 1)) {
+        return false;
+    }
+
+    return _node_exist[instance][(uint8_t)id];
+}
+
+// 从_node_list中到meta和instance对应的node
 DeviceNode *DeviceNode::getDeviceNodeLocked(const struct orb_metadata *meta, const uint8_t instance) {
+    if (meta == nullptr) {
+        return nullptr;
+    }
+
     rt_enter_critical();
     for (DeviceNode *node : _node_list) {
         if ((rt_strcmp(node->get_name(), meta->o_name) == 0) && (node->get_instance() == instance)) {
@@ -97,6 +109,7 @@ DeviceNode *DeviceNode::getDeviceNodeLocked(const struct orb_metadata *meta, con
     return nullptr;
 }
 
+// 先根据_node_exist数组判断节点是否存在，存在才从_node_list中查找，节约资源
 DeviceNode *DeviceNode::getDeviceNode(const struct orb_metadata *meta, const uint8_t instance) {
     if (meta == nullptr) {
         return nullptr;
@@ -116,13 +129,6 @@ DeviceNode *DeviceNode::getDeviceNode(const struct orb_metadata *meta, const uin
 // DeviceNode *DeviceNode::getDeviceNode(const char *node_name) {
 // }
 
-bool DeviceNode::deviceNodeExists(ORB_ID id, const uint8_t instance) {
-    if ((id == ORB_ID::INVALID) || (instance > ORB_MULTI_MAX_INSTANCES - 1)) {
-        return false;
-    }
-
-    return _node_exist[instance][(uint8_t)id];
-}
 
 int DeviceNode::publish(const orb_metadata *meta, orb_advert_t handle, const void *data) {
     if (!data) {
@@ -151,7 +157,7 @@ int DeviceNode::publish(const orb_metadata *meta, orb_advert_t handle, const voi
         return -RT_ERROR;
     }
 
-    if (ret != (int)node->_meta->o_size) {
+    if (ret != (int)node->get_meta()->o_size) {
         return -RT_ERROR;
     }
 
