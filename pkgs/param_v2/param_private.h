@@ -64,7 +64,7 @@ struct param_storage_s {
 
 typedef struct {
     uint32_t check;
-    char     magic[4]; // "zhan"
+    char     magic[9]; // "nextpilot"
     uint64_t utc;      // 保存时间戳
     uint16_t count;    // 参数个数
 } param_header_t;

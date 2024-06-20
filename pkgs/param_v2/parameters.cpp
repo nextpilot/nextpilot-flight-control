@@ -25,31 +25,68 @@
 #include "param.h"
 
 
+static int                 reader_lock_holders = 0;
+static struct rt_semaphore reader_lock_holders_lock;
+static struct rt_semaphore param_sem;
+
+static void param_lock_reader() {
+    rt_sem_take(&reader_lock_holders_lock, RT_WAITING_FOREVER);
+
+    ++reader_lock_holders;
+
+    if (reader_lock_holders == 1) {
+        rt_sem_take(&param_sem, RT_WAITING_FOREVER);
+    }
+
+    rt_sem_release(&reader_lock_holders_lock);
+}
+
+static void param_unlock_reader() {
+    rt_sem_take(&reader_lock_holders_lock, RT_WAITING_FOREVER);
+
+    --reader_lock_holders;
+
+    if (reader_lock_holders == 0) {
+        // the last reader releases the lock
+        rt_sem_release(&param_sem);
+    }
+
+    rt_sem_release(&reader_lock_holders_lock);
+}
+
+static void param_lock_writer() {
+    rt_sem_take(&param_sem,RT_WAITING_FOREVER);
+}
+
+static void param_unlock_writer() {
+    rt_sem_release(&param_sem);
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////
 // UT_array接口定义
 ///////////////////////////////////////////////////////////////////////////////////////
 // 存储被修改的值
-UT_array *_param_changed_values = nullptr;
+UT_array *_utarray_param_values = nullptr;
 
 typedef struct param_wbuf_s {
     param_value_t value;
     // param_status_t status;
     param_t index;
-} param_changed_value_t;
+} utarray_param_value_t;
 
-const UT_icd _param_changed_values_icd = {sizeof(param_changed_value_t), nullptr, nullptr, nullptr};
+const UT_icd _utarray_param_values_icd = {sizeof(utarray_param_value_t), nullptr, nullptr, nullptr};
 
 // 存储被修改的状态
-UT_array *_param_changed_status = nullptr;
+UT_array *_utarray_param_status = nullptr;
 
-typedef struct param_changed_status_s {
+typedef struct utarray_param_status_s {
     param_status_t status;
     param_t        index;
-} param_changed_status_t;
+} utarray_param_status_t;
 
-const UT_icd _param_changed_status_icd = {sizeof(param_changed_status_t), nullptr, nullptr, nullptr};
+const UT_icd _utarray_param_status_icd = {sizeof(utarray_param_status_t), nullptr, nullptr, nullptr};
 
-static int param_compare_values(const void *a, const void *b) {
+static int utarray_compare_params(const void *a, const void *b) {
     struct param_wbuf_s *pa = (struct param_wbuf_s *)a;
     struct param_wbuf_s *pb = (struct param_wbuf_s *)b;
 
@@ -62,6 +99,57 @@ static int param_compare_values(const void *a, const void *b) {
     }
 
     return 0;
+}
+
+static struct param_wbuf_s *param_find_changed(param_t idx) {
+    if (_utarray_param_values) {
+        struct param_wbuf_s key {};
+
+        key.index = idx;
+        return (struct param_wbuf_s *)utarray_find(_utarray_param_values, &key, utarray_compare_params);
+    }
+
+    return nullptr;
+}
+
+// mode = 1表示如果不存在则创建一个
+static utarray_param_status_t *utarray_find_status(param_t idx, int mode = 0) {
+    if (!param_in_range(idx)) {
+        return nullptr;
+    }
+
+    // 状态数组是否创建
+    if (!_utarray_param_status && mode != 0) {
+        // 创建状态数组
+        utarray_new(_utarray_param_status, &_utarray_param_status_icd);
+        // 还是无效就是初始化失败了
+        if (!_utarray_param_status) {
+            LOG_E("fail to create param status array");
+            return nullptr;
+        }
+    }
+
+    if (!_utarray_param_status) {
+        return nullptr;
+    }
+
+    // 状态数组中查找
+    utarray_param_status_t key{};
+    key.index                 = idx;
+    utarray_param_status_t *s = (utarray_param_status_t *)utarray_find(_utarray_param_status, &key, utarray_compare_params);
+    if (!s && mode != 0) {
+        // 往数组里面push一个
+        key.status.value = 0;
+        utarray_push_back(_utarray_param_status, &key);
+        utarray_sort(_utarray_param_status, utarray_compare_params);
+        s = (utarray_param_status_t *)utarray_find(_utarray_param_status, &key, utarray_compare_params);
+        // 还是没找到就不对了
+        if (!s) {
+            LOG_E("status storage slot invalid");
+        }
+    }
+
+    return s;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -139,9 +227,9 @@ uint16_t param_get_count() {
 param_t param_get_count_used() {
     param_t count = 0;
 
-    if (_param_changed_status) {
-        param_changed_status_s *s = nullptr;
-        while ((s = (struct param_changed_status_s *)utarray_next(_param_changed_values, s)) != nullptr) {
+    if (_utarray_param_status) {
+        utarray_param_status_s *s = nullptr;
+        while ((s = (utarray_param_status_t *)utarray_next(_utarray_param_values, s)) != nullptr) {
             if (s->status.actived) {
                 count++;
             }
@@ -223,10 +311,11 @@ param_status_t param_get_status(param_t idx) {
     param_status_t status = {.value = 0};
 
     rt_enter_critical();
-    if (_param_changed_status) {
-        param_changed_status_s key{};
+    if (_utarray_param_status) {
+        utarray_param_status_t key{};
+
         key.index                    = idx;
-        param_changed_status_s *pbuf = (param_changed_status_s *)utarray_find(_param_changed_status, &key, param_compare_values);
+        utarray_param_status_s *pbuf = (utarray_param_status_t *)utarray_find(_utarray_param_status, &key, utarray_compare_params);
 
         if (pbuf) {
             status = pbuf->status;
@@ -259,54 +348,29 @@ int param_set_status_internal(param_t idx, const param_status_t *status, int act
         return -1;
     }
 
-    int                     ret = -1;
-    param_changed_status_t *s   = nullptr;
-    param_changed_status_t  key{};
+    int ret = -1;
 
     // 临界区保护
     rt_enter_critical();
-
-    // 如果数组指针是空则先初始化
-    if (!_param_changed_status) {
-        utarray_new(_param_changed_status, &_param_changed_status_icd);
+    utarray_param_status_t *s = utarray_find_status(idx, 1);
+    if (s) {
+        ret = 0;
+        // 根据action设置状态
+        if (action == 0) {        // set
+            s->status.value = status->value;
+        } else if (action == 1) { // bit set
+            s->status.value |= status->value;
+        } else if (action == 2) { // bit clear
+            s->status.value &= (~(status->value));
+        } else {
+            ret = -1;
+            LOG_I("invalid action value: %d", action);
+        }
     }
-    // 还是无效就是初始化失败了
-    if (!_param_changed_status) {
-        LOG_E("fail to create param status array");
-        goto __exit;
-    }
-
-    // 数组中查找是否已经存在
-    key.index = idx;
-    s         = (param_changed_status_t *)utarray_find(_param_changed_status, &key, param_compare_values);
-    // 没有查找到则push
-    if (!s) {
-        key.status = *status;
-        utarray_push_back(_param_changed_status, &key);
-        s = (param_changed_status_t *)utarray_find(_param_changed_status, &key, param_compare_values);
-    }
-    // 还是没找到就不对了
-    if (!s) {
-        LOG_E("status storage slot invalid");
-        goto __exit;
-    }
-    // 根据action设置状态
-    if (action == 0) {        // set
-        s->status.value = status->value;
-    } else if (action == 1) { // bit set
-        s->status.value |= status->value;
-    } else if (action == 2) { // bit clear
-        s->status.value &= (~(status->value));
-    } else {
-        LOG_I("invalid action value: %d", action);
-        goto __exit;
-    }
-
-    ret = 0;
-
-__exit:
     // 退出临界区
     rt_exit_critical();
+
+
     return ret;
 }
 
@@ -322,19 +386,8 @@ int param_set_used(param_t idx) {
 }
 
 ////////////////////////////////////////////////////////////////////////////
-// 设置/查询参数（set/get param）
+// 查找/查询/设置参数（get/set param）
 ////////////////////////////////////////////////////////////////////////////
-
-static struct param_wbuf_s *param_find_changed(param_t index) {
-    if (_param_changed_values) {
-        struct param_wbuf_s key {};
-
-        key.index = index;
-        return (struct param_wbuf_s *)utarray_find(_param_changed_values, &key, param_compare_values);
-    }
-
-    return nullptr;
-}
 
 int param_find_internal(const char *name, bool mark_used) {
     param_t idx    = PARAM_INVALID;
@@ -371,89 +424,6 @@ param_t param_find(const char *name) {
 
 param_t param_find_no_notification(const char *name) {
     return param_find_internal(name, false);
-}
-
-int param_set_internal(param_t idx, const param_value_t *val, bool mark_saved, bool notify) {
-    if (!param_in_range(idx)) {
-        return -1;
-    }
-
-    if (!val) {
-        return -1;
-    }
-
-    int                  ret = -1;
-    struct param_wbuf_s *s   = nullptr;
-
-    // 进入临界区保护
-    rt_enter_critical();
-
-    // 初始化param_values动态数组
-    if (!_param_changed_values) {
-        utarray_new(_param_changed_values, &_param_changed_values_icd);
-    }
-    // 还是空指针就不对了
-    if (!_param_changed_values) {
-        LOG_E("fail to allocate modified values array");
-        goto __exit;
-    }
-
-    // 在数组中查找是否已经存在
-    s = param_find_changed(idx);
-    // 如果没有找到则压入
-    if (!s) {
-        /* construct a new parameter */
-        struct param_wbuf_s buf {};
-
-        buf.index = idx;
-        /* add it to the array and sort */
-        utarray_push_back(_param_changed_values, &buf);
-        utarray_sort(_param_changed_values, param_compare_values);
-
-        /* find it after sorting */
-        s = param_find_changed(idx);
-    }
-    // 如果还是找不到就不对了哦
-    if (!s) {
-        LOG_I("error _param_changed_values storage slot invalid");
-        goto __exit;
-    }
-    // 将保存新数据
-    s->value = *val;
-
-    LOG_D("set param %s", param_get_name(idx));
-
-    ret = 0;
-
-__exit:
-    rt_exit_critical();
-
-    if (ret == 0) {
-        // 更改参数状态
-        param_status_t status{.value = 0};
-        status.changed         = true;
-        status.unsaved         = !mark_saved;
-        status.unsaved_to_ulog = true;
-        param_set_status_internal(idx, &status, 1);
-        // 发布param更新消息
-        if (notify) {
-            param_notify_changes();
-        }
-        //触发param自动保存
-        if (!mark_saved) {
-            param_notify_autosave();
-        }
-    }
-
-    return ret;
-}
-
-int param_set(param_t idx, const void *val) {
-    return param_set_internal(idx, (const param_value_t *)val, false, true);
-}
-
-int param_set_no_notification(param_t idx, const void *val) {
-    return param_set_internal(idx, (const param_value_t *)val, false, false);
 }
 
 static const void *param_get_value_ptr(param_t idx) {
@@ -535,23 +505,124 @@ int32_t param_get_int32(param_t idx) {
     }
 }
 
+int param_set_internal(param_t idx, const param_value_t *val, bool mark_saved, bool notify) {
+    if (!param_in_range(idx)) {
+        return -1;
+    }
+
+    if (!val) {
+        return -1;
+    }
+
+    int                     ret = -1;
+    struct param_wbuf_s    *s   = nullptr;
+    utarray_param_status_t *t   = nullptr;
+
+    // 进入临界区保护
+    rt_enter_critical();
+
+    // 初始化param_values动态数组
+    if (!_utarray_param_values) {
+        utarray_new(_utarray_param_values, &_utarray_param_values_icd);
+    }
+    // 还是空指针就不对了
+    if (!_utarray_param_values) {
+        LOG_E("fail to allocate modified values array");
+        goto __exit;
+    }
+
+    // 在数组中查找是否已经存在
+    s = param_find_changed(idx);
+    // 如果没有找到则压入
+    if (!s) {
+        /* construct a new parameter */
+        struct param_wbuf_s buf {};
+
+        buf.index = idx;
+        /* add it to the array and sort */
+        utarray_push_back(_utarray_param_values, &buf);
+        utarray_sort(_utarray_param_values, utarray_compare_params);
+
+        /* find it after sorting */
+        s = param_find_changed(idx);
+    }
+    // 如果还是找不到就不对了哦
+    if (!s) {
+        LOG_I("error _utarray_param_values storage slot invalid");
+        goto __exit;
+    }
+    // 将保存新数据
+    s->value = *val;
+
+    t = utarray_find_or_new_status(idx);
+    if (t) {
+        t->status.changed         = true;
+        t->status.unsaved         = !mark_saved;
+        t->status.unsaved_to_ulog = true;
+    }
+
+    LOG_D("set param %s", param_get_name(idx));
+
+    ret = 0;
+
+__exit:
+    rt_exit_critical();
+
+    if (ret == 0) {
+        // 发布param更新消息
+        if (notify) {
+            param_notify_changes();
+        }
+        //触发param自动保存
+        if (!mark_saved) {
+            param_notify_autosave();
+        }
+    }
+
+    return ret;
+}
+
+int param_set(param_t idx, const void *val) {
+    return param_set_internal(idx, (const param_value_t *)val, false, true);
+}
+
+int param_set_no_notification(param_t idx, const void *val) {
+    return param_set_internal(idx, (const param_value_t *)val, false, false);
+}
+
 ////////////////////////////////////////////////////////////////////////////
 // 重置参数（reset param）
 ////////////////////////////////////////////////////////////////////////////
 
-
 int param_reset_internal(param_t idx, bool notify) {
-    param_interface_t *api = param_get_whois(&idx);
-
-    if (!api) {
+    if (!param_in_range(idx)) {
         return -1;
     }
 
-    int ret = api->ops->reset(idx);
+    param_wbuf_s           *s = nullptr;
+    utarray_param_status_t *t = nullptr;
 
-    // LOG_D("reset param %s", param_get_name(idx));
+    rt_enter_critical();
 
-    if (ret == 0 && notify) {
+    // 数组中查找是否存在，存在则删除
+    s = param_find_changed(idx);
+    if (s) {
+        int pos = utarray_eltidx(_utarray_param_values, s);
+        utarray_erase(_utarray_param_values, pos, 1);
+    }
+
+    // 数组中查找是否存在，存在则重置
+    t = utarray_find_status(idx);
+    if (t) {
+        t->status.changed         = false;
+        t->status.unsaved         = true;
+        t->status.unsaved_to_ulog = true;
+    }
+
+    rt_exit_critical();
+
+
+    if (s != nullptr && notify) {
         param_notify_changes();
         param_notify_autosave();
     }
@@ -568,18 +639,28 @@ int param_reset_no_notification(param_t idx) {
 }
 
 void param_reset_all_internal(bool notify) {
-    for (param_t i = 0; i < param_get_count(); i++) {
-        // 重置过程中不发送param_update消息
-        param_reset_internal(i, false);
+    rt_enter_critical();
+    if (_utarray_param_values) {
+        utarray_free(_utarray_param_values);
     }
+    _utarray_param_values = nullptr;
 
-    LOG_I("reset all params");
+    // 重置状态
+    if (_utarray_param_status) {
+        utarray_param_status_s *s = nullptr;
+        while ((s = (utarray_param_status_t *)utarray_next(_utarray_param_values, s)) != nullptr) {
+            s->status.changed = false;
+        }
+    }
+    rt_exit_critical();
 
     // 重置结束之后发送param_update消息
     if (notify) {
         param_notify_autosave();
         param_notify_changes();
     }
+
+    LOG_I("reset all params");
 }
 
 void param_reset_all() {
@@ -598,7 +679,9 @@ void param_reset_excludes(const char *excludes[], int num_excludes) {
         for (int kk = 0; kk < num_excludes; kk++) {
             int len = rt_strlen(excludes[kk]);
 
-            if ((excludes[kk][len - 1] == '*' && rt_strncmp(name, excludes[kk], len - 1) == 0) || rt_strcmp(name, excludes[kk]) == 0) {
+            if ((excludes[kk][len - 1] == '*'
+                 && rt_strncmp(name, excludes[kk], len - 1) == 0)
+                || rt_strcmp(name, excludes[kk]) == 0) {
                 exclude = true;
                 break;
             }
@@ -626,7 +709,9 @@ void param_reset_specific(const char *resets[], int num_resets) {
         for (int kk = 0; kk < num_resets; kk++) {
             int len = rt_strlen(resets[kk]);
 
-            if ((resets[kk][len - 1] == '*' && rt_strncmp(name, resets[kk], len - 1) == 0) || rt_strcmp(name, resets[kk]) == 0) {
+            if ((resets[kk][len - 1] == '*'
+                 && rt_strncmp(name, resets[kk], len - 1) == 0)
+                || rt_strcmp(name, resets[kk]) == 0) {
                 reset = true;
                 break;
             }
@@ -662,19 +747,30 @@ void param_foreach(void (*func)(void *arg, param_t idx), void *arg, bool only_ch
 }
 
 uint32_t param_hash_check(void) {
-    return 0;
+    uint32_t hash = 0;
+
+    rt_enter_critical();
+    for (param_t idx = 0; idx < param_get_count(); idx++) {
+        if (!param_value_used(idx) /*|| param_is_volatile(idx)*/) {
+            continue;
+        }
+
+        const char *name  = param_get_name(idx);
+        const void *value = param_get_value_ptr(idx);
+
+        hash = crc32part((const uint8_t *)name, rt_strlen(name), hash);
+        hash = crc32part((const uint8_t *)value, param_get_size(idx), hash);
+    }
+    rt_exit_critical();
+
+    return hash;
 }
 
 /////////////////////////////////////////////////////////////
-// 以下是保存参数的
+// 导入/导出参数
 /////////////////////////////////////////////////////////////
 #define PARAM_MAX_DEV_COUNT 2
 static param_storage_t *__param_storage__[PARAM_MAX_DEV_COUNT] = {NULL, NULL};
-
-// static bool        _param_autosave_enable = true;
-// static rt_event_t  _param_autosave_event  = NULL;
-// static rt_thread_t _param_autosave_thread = NULL;
-// #define PARAM_EVENT_UPDATED (1 << 0)
 
 RT_WEAK uint32_t crc32part(const void *buff, int size, uint32_t crc) {
     for (int i = 0; i < size; i++) {
@@ -701,22 +797,54 @@ int param_storage_register(param_storage_t *dev) {
 }
 
 int param_export_internal(const char *devname, param_filter_func filter) {
+    if (!_utarray_param_values) {
+        return -1;
+    }
+
     param_storage_t *dev = __param_storage__[0];
 
     if (!dev) {
         return -1;
     }
+
     // 先打开设备
     if (dev->ops->open(dev, devname, 'w') != 0) {
         // LOG_E("open %s fail", devname);
         return -1;
     }
 
+
     // 写入所有修改的参数
     param_payload_t payload;
     param_status_t  status;
     uint16_t        count = 0;
     uint32_t        check = 0;
+
+    param_wbuf_s *s = nullptr;
+    while ((s = (struct param_wbuf_s *)utarray_next(_utarray_param_values, s)) != nullptr) {
+        if (filter && !filter(s->index)) {
+            continue;
+        }
+        // 对payload赋值
+        rt_memcpy(payload.name, param_get_name(s->index), sizeof(payload.name));
+        payload.type = param_get_type(s->index);
+        param_get(s->index, &payload.value);
+        // 写入到设备
+        dev->ops->write(dev, sizeof(param_header_t) + count * sizeof(payload), &payload, sizeof(payload));
+        // TODO:将参数标记为已保存
+
+        // 计算crc32
+        check = crc32part(&payload, sizeof(payload), check);
+
+
+        if (payload.type == PARAM_TYPE_INT32) {
+            LOG_D("export param %s, %s, %d", payload.name, param_type_cstr(payload.type), payload.value.i32);
+        } else if (payload.type == PARAM_TYPE_FLOAT) {
+            LOG_D("export param %s, %s, %g", payload.name, param_type_cstr(payload.type), payload.value.f32);
+        }
+
+        count++;
+    }
 
     for (uint16_t idx = 0; idx < param_get_count(); idx++) {
         status = param_get_status(idx);
@@ -749,7 +877,7 @@ int param_export_internal(const char *devname, param_filter_func filter) {
     header.check = check;
     header.count = count;
     header.utc   = time(NULL);
-    rt_memcpy(header.magic, "zhan", sizeof(header.magic));
+    rt_memcpy(header.magic, "nextpilot", sizeof(header.magic));
     dev->ops->write(dev, 0, &header, sizeof(header));
 
     LOG_D("write header, utc=%u, count=%u, crc=%u", header.utc, count, check);
