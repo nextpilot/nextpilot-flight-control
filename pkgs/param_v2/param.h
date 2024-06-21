@@ -191,7 +191,7 @@ bool param_value_changed(param_t idx);
  *
  * @param param		A handle returned by param_find or passed by param_foreach.
  */
-int param_set_used(param_t idx);
+void param_set_used(param_t idx);
 // int  param_set_saved(param_t idx);
 // int  param_set_saved_ulog(param_t idx);
 
