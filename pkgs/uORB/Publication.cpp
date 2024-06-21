@@ -4,20 +4,6 @@
 
 using namespace nextpilot::uORB;
 
-uint8_t orb_get_queue_size(const orb_advert_t node) {
-    if (node) {
-        return static_cast<const DeviceNode *>(node)->get_queue_size();
-    }
-    return 0;
-}
-
-uint8_t orb_get_instance(const orb_advert_t node) {
-    if (node) {
-        return static_cast<const DeviceNode *>(node)->get_instance();
-    }
-    return 0;
-}
-
 // 广告新主题，并指定queue_size
 // 当instance=NULL是表示只广告instance=0的主题
 // 当instance!=NULL则公告新主题，返回instance
@@ -48,41 +34,18 @@ int orb_unadvertise(orb_advert_t node) {
 }
 
 int orb_publish(const struct orb_metadata *meta, orb_advert_t handle, const void *data) {
-    if (!data) {
-        return -1;
-    }
-
-    DeviceNode *node = (DeviceNode *)handle;
-
-    // 如果没有指定节点，则使用instance=0的节点
-    if (meta && node) {
-        if (meta != node->get_meta()) {
-            return -1;
-        } else {
-            return node->write(data);
-        }
-    } else if (!meta && node) {
-        return node->write(data);
-    } else if (meta && !node) {
-        node = DeviceNode::getDeviceNode(meta, 0);
-        if (node) {
-            return node->write(data);
-        }
-        return -1;
-    } else {
-        return -1;
-    }
+    return DeviceNode::publish(meta, handle, data);
 }
 
 // int orb_publish_auto(const struct orb_metadata *meta, orb_advert_t *node, const void *data, int *instance) {
 //     if (!*node) {
 //         *node = orb_advertise_multi(meta, data, instance);
 //         if (*node) {
-//             return 0;
+//             return RT_EOK;
 //         }
 //     } else {
 //         return orb_publish(meta, *node, data);
 //     }
 
-//     return -1;
+//     return -RT_ERROR;
 // }

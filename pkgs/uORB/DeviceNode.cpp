@@ -68,23 +68,35 @@ DeviceNode *DeviceNode::advertise(const struct orb_metadata *meta, const void *d
     return node;
 }
 
-bool DeviceNode::unadvertise(DeviceNode *node) {
+int DeviceNode::unadvertise(DeviceNode *node) {
     if (!node) {
-        return -1;
+        return -RT_ERROR;
     }
 
     node->_advertised = false;
 
-    if (node->_subscriber_count > 0) {
-        return 0;
+    if (node->_subscriber_count == 0) {
+        delete node;
     }
 
-    delete node;
-
-    return 0;
+    return RT_EOK;
 }
 
+// 节点是否已经创建
+bool DeviceNode::deviceNodeExists(ORB_ID id, const uint8_t instance) {
+    if ((id == ORB_ID::INVALID) || (instance > ORB_MULTI_MAX_INSTANCES - 1)) {
+        return false;
+    }
+
+    return _node_exist[instance][(uint8_t)id];
+}
+
+// 从_node_list中到meta和instance对应的node
 DeviceNode *DeviceNode::getDeviceNodeLocked(const struct orb_metadata *meta, const uint8_t instance) {
+    if (meta == nullptr) {
+        return nullptr;
+    }
+
     rt_enter_critical();
     for (DeviceNode *node : _node_list) {
         if ((rt_strcmp(node->get_name(), meta->o_name) == 0) && (node->get_instance() == instance)) {
@@ -97,6 +109,7 @@ DeviceNode *DeviceNode::getDeviceNodeLocked(const struct orb_metadata *meta, con
     return nullptr;
 }
 
+// 先根据_node_exist数组判断节点是否存在，存在才从_node_list中查找，节约资源
 DeviceNode *DeviceNode::getDeviceNode(const struct orb_metadata *meta, const uint8_t instance) {
     if (meta == nullptr) {
         return nullptr;
@@ -116,12 +129,39 @@ DeviceNode *DeviceNode::getDeviceNode(const struct orb_metadata *meta, const uin
 // DeviceNode *DeviceNode::getDeviceNode(const char *node_name) {
 // }
 
-bool DeviceNode::deviceNodeExists(ORB_ID id, const uint8_t instance) {
-    if ((id == ORB_ID::INVALID) || (instance > ORB_MULTI_MAX_INSTANCES - 1)) {
-        return false;
+
+int DeviceNode::publish(const orb_metadata *meta, orb_advert_t handle, const void *data) {
+    if (!data) {
+        return -RT_ERROR;
     }
 
-    return _node_exist[instance][(uint8_t)id];
+    DeviceNode *node = (DeviceNode *)handle;
+
+    if (!meta && !node) {
+        return -RT_ERROR;
+    } else if (meta && !node) {
+        node = getDeviceNode(meta, 0);
+        if (!node) {
+            return -RT_ERROR;
+        }
+    } else if (meta && node) {
+        if (node->_meta->o_id != meta->o_id) {
+            return -RT_ERROR;
+        }
+    } else { // (!meta && node)
+        // using node
+    }
+
+    int ret = node->write(data);
+    if (ret < 0) {
+        return -RT_ERROR;
+    }
+
+    if (ret != (int)node->get_meta()->o_size) {
+        return -RT_ERROR;
+    }
+
+    return RT_EOK;
 }
 
 ssize_t DeviceNode::write(const void *data) {
@@ -135,7 +175,7 @@ ssize_t DeviceNode::write(const void *data) {
         // rt_exit_critical();
 
         /* failed or could not allocate */
-        if (_data) {
+        if (!_data) {
             return 0;
         }
     }
@@ -164,7 +204,40 @@ ssize_t DeviceNode::write(const void *data) {
 }
 
 bool DeviceNode::read(void *dst, unsigned &generation) {
-    return 0;
+    if (!dst || !_data) {
+        return false;
+    }
+
+    if (_queue_size == 1) {
+        // ATOMIC_ENTER;
+        rt_memcpy(dst, _data, _meta->o_size);
+        generation = _generation.load();
+        // ATOMIC_LEAVE;
+        return true;
+    } else {
+        // ATOMIC_ENTER;
+        const unsigned current_generation = _generation.load();
+
+        if (current_generation == generation) {
+            /* The subscriber already read the latest message, but nothing new was published yet.
+					* Return the previous message
+					*/
+            --generation;
+        }
+
+        // Compatible with normal and overflow conditions
+        if (!is_in_range(current_generation - _queue_size, generation, current_generation - 1)) {
+            // Reader is too far behind: some messages are lost
+            generation = current_generation - _queue_size;
+        }
+
+        rt_memcpy(dst, _data + (_meta->o_size * (generation % _queue_size)), _meta->o_size);
+        // ATOMIC_LEAVE;
+
+        ++generation;
+
+        return true;
+    }
 }
 
 void DeviceNode::add_internal_subscriber() {
@@ -183,16 +256,16 @@ int DeviceNode::update_queue_size(unsigned int queue_size)
 
 {
     if (_queue_size == queue_size) {
-        return 0;
+        return RT_EOK;
     }
 
     // queue size is limited to 255 for the single reason that we use uint8 to store it
     if (_data || _queue_size > queue_size || queue_size > 255) {
-        return -1;
+        return -RT_ERROR;
     }
 
     _queue_size = round_pow_of_two_8(queue_size);
-    return 0;
+    return RT_EOK;
 }
 
 unsigned DeviceNode::get_initial_generation() {

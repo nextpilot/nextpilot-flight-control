@@ -18,32 +18,34 @@
 #include "uORB.h"
 
 #ifdef __cplusplus
-#include <pthread.h>
-#include <IntrusiveList.hpp>
-#include <LockGuard.hpp>
-#ifdef PKG_USING_HRTIMER
-#include <hrtimer.h>
-#endif // PKG_USING_HRTIMER
-#include <uORB/topics/uORBTopics.hpp>
-#include <DeviceNode.hpp>
+#   include <pthread.h>
+#   include <IntrusiveList.hpp>
+#   include <LockGuard.hpp>
+#   ifdef PKG_USING_HRTIMER
+#      include <hrtimer.h>
+#   endif // PKG_USING_HRTIMER
+#   include <uORB/topics/uORBTopics.hpp>
+#   include <DeviceNode.hpp>
 
-#ifdef PKG_USING_WORKQUEUE
-#include "WorkItem.hpp"
-#endif // PKG_USING_WORKQUEUE
+#   ifdef PKG_USING_WORKQUEUE
+#      include "WorkItem.hpp"
+#   endif // PKG_USING_WORKQUEUE
 
 namespace nextpilot::uORB {
 
 class DeviceNode;
 
-#ifndef PKG_USING_HRTIMER
-typedef uint64_t       hrt_abstime;
+#   ifndef PKG_USING_HRTIMER
+typedef uint64_t hrt_abstime;
+
 static inline uint64_t hrt_absolute_time() {
     return rt_tick_get() * 1000ULL;
 }
+
 static inline uint64_t hrt_elapsed_time(uint64_t *time) {
     return rt_tick_get() * 1000ULL - (*time);
 }
-#endif // PKG_USING_HRTIMER
+#   endif // PKG_USING_HRTIMER
 
 class Subscription {
 public:
@@ -122,6 +124,7 @@ public:
 
         return false;
     }
+
     void unsubscribe() {
         if (_node != nullptr) {
             _node->remove_internal_subscriber();
@@ -437,6 +440,7 @@ public:
     Subscription &operator[](int i) {
         return _subscriptions[i];
     }
+
     const Subscription &operator[](int i) const {
         return _subscriptions[i];
     }
@@ -444,6 +448,7 @@ public:
     Subscription *begin() {
         return _subscriptions;
     }
+
     Subscription *end() {
         return _subscriptions + SIZE;
     }
@@ -451,6 +456,7 @@ public:
     const Subscription *begin() const {
         return _subscriptions;
     }
+
     const Subscription *end() const {
         return _subscriptions + SIZE;
     }
@@ -658,7 +664,7 @@ public:
             LOG_E("pthread_mutexattr_init failed, status=%d", ret_attr_init);
         }
 
-#if defined(PTHREAD_PRIO_NONE)
+#   if defined(PTHREAD_PRIO_NONE)
         // pthread_mutexattr_settype
         //  PTHREAD_PRIO_NONE not available on cygwin
         int ret_mutexattr_settype = pthread_mutexattr_settype(&attr, PTHREAD_PRIO_NONE);
@@ -667,7 +673,7 @@ public:
             LOG_E("pthread_mutexattr_settype failed, status=%d", ret_mutexattr_settype);
         }
 
-#endif // PTHREAD_PRIO_NONE
+#   endif // PTHREAD_PRIO_NONE
 
         // pthread_mutex_init
         int ret_mutex_init = pthread_mutex_init(&_mutex, &attr);
@@ -725,11 +731,11 @@ public:
                 // Calculate an absolute time in the future
                 struct timespec ts;
                 clock_gettime(CLOCK_REALTIME, &ts);
-                uint64_t                  nsecs   = ts.tv_nsec + (timeout_us * 1000);
-                static constexpr unsigned billion = (1000 * 1000 * 1000);
-                ts.tv_sec += nsecs / billion;
-                nsecs -= (nsecs / billion) * billion;
-                ts.tv_nsec = nsecs;
+                uint64_t                  nsecs    = ts.tv_nsec + (timeout_us * 1000);
+                static constexpr unsigned billion  = (1000 * 1000 * 1000);
+                ts.tv_sec                         += nsecs / billion;
+                nsecs                             -= (nsecs / billion) * billion;
+                ts.tv_nsec                         = nsecs;
 
                 if (pthread_cond_timedwait(&_cv, &_mutex, &ts) == 0) {
                     return updated();
@@ -760,7 +766,7 @@ private:
     pthread_cond_t  _cv    = PTHREAD_COND_INITIALIZER;
 };
 
-#ifdef PKG_USING_WORKQUEUE
+#   ifdef PKG_USING_WORKQUEUE
 
 // Subscription with callback that schedules a WorkItem
 class SubscriptionCallbackWorkItem : public SubscriptionCallback {
@@ -804,7 +810,7 @@ private:
     uint8_t _required_updates{0};
 };
 
-#endif // PKG_USING_WORKQUEUE
+#   endif // PKG_USING_WORKQUEUE
 
 } // namespace nextpilot::uORB
 #endif //__cplusplus

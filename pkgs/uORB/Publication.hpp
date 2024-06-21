@@ -14,13 +14,6 @@
 #include <stdint.h>
 #include <uORB.h>
 
-uint8_t orb_get_instance(const orb_advert_t node);
-uint8_t orb_get_queue_size(const orb_advert_t node);
-
-// orb_advert_t orb_advertise_multi_queue(const struct orb_metadata *meta, const void *data, int *instance, unsigned int queue_size);
-// orb_advert_t orb_advertise_queue(const struct orb_metadata *meta, const void *data, unsigned int queue_size);
-// int          orb_publish_auto(const struct orb_metadata *meta, orb_advert_t *node, const void *data, int *instance);
-
 #ifdef __cplusplus
 #   include <uORB/topics/uORBTopics.hpp>
 #   include "DeviceNode.hpp"
@@ -68,7 +61,7 @@ protected:
     ~PublicationBase() {
         if (_handle != nullptr) {
             // don't automatically unadvertise queued publications (eg vehicle_command)
-            if (orb_get_queue_size(_handle) == 1) {
+            if (_handle->get_queue_size() == 1) {
                 unadvertise();
             }
         }
@@ -110,11 +103,11 @@ public:
      * @param data The uORB message struct we are updating.
      */
     bool publish(const T &data) {
-        if (!advertised()) {
-            advertise();
+        if (advertise()) {
+            return _handle->write(&data) == (int)_handle->get_meta()->o_size;
         }
 
-        return (orb_publish(get_topic(), _handle, &data) == 0);
+        return false;
     }
 };
 
@@ -197,13 +190,13 @@ public:
             advertise();
         }
 
-        return (orb_publish(get_topic(), _handle, &data) == 0);
+        return (orb_publish(get_topic(), _handle, &data) == RT_EOK);
     }
 
     int get_instance() {
         // advertise if not already advertised
         if (advertise()) {
-            return orb_get_instance(_handle);
+            return _handle->get_instance();
         }
 
         return -1;

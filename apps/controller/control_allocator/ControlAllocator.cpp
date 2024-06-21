@@ -422,8 +422,8 @@ void ControlAllocator::update_effectiveness_matrix_if_needed(EffectivenessUpdate
     if (_actuator_effectiveness->getEffectivenessMatrix(config, reason)) {
         _last_effectiveness_update = hrt_absolute_time();
 
-        memcpy(_control_allocation_selection_indexes, config.matrix_selection_indexes,
-               sizeof(_control_allocation_selection_indexes));
+        rt_memcpy(_control_allocation_selection_indexes, config.matrix_selection_indexes,
+                  sizeof(_control_allocation_selection_indexes));
 
         // Get the minimum and maximum depending on type and configuration
         ActuatorEffectiveness::ActuatorVector minimum[ActuatorEffectiveness::MAX_NUM_MATRICES];
@@ -816,4 +816,4 @@ int control_allocator_start() {
     return ControlAllocator::main(argc, (char **)argv);
 }
 
-// INIT_APP_EXPORT(control_allocator_start);
+INIT_APP_EXPORT(control_allocator_start);
