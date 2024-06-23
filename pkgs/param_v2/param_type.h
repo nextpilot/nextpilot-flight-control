@@ -21,13 +21,7 @@
 
 typedef uint16_t param_t;
 
-// typedef enum {
-//     PARAM_INTERFACE_UNKONWN = 0,
-//     PARAM_INTERFACE_AUTOGEN,
-//     PARAM_INTERFACE_SECTION,
-//     PARAM_INTERFACE_SIMULINK,
-// } param_interface_t;
-
+// 参数取值类型
 typedef enum {
     PARAM_TYPE_UNKNOWN = 0,
     PARAM_TYPE_INT8,
@@ -43,6 +37,7 @@ typedef enum {
     PARAM_TYPE_MAX
 } param_type_t;
 
+// 参数值联合体
 typedef union {
     int8_t   i8;
     uint8_t  u8;
@@ -56,8 +51,10 @@ typedef union {
     // double      f64;
 } param_value_t;
 
+// 参数功能标志
 typedef union {
     uint8_t value;
+
     struct {
         uint8_t system_required : 1; // 只有系统可以修改
         uint8_t reboot_required : 1; // 修改，重启生效
@@ -65,16 +62,19 @@ typedef union {
     };
 } param_flag_t;
 
+// 参数当前状态
 typedef union {
     uint8_t value;
+
     struct {
-        uint8_t actived : 1;
-        uint8_t changed : 1;
-        uint8_t unsaved : 1;
+        uint8_t actived         : 1;
+        uint8_t changed         : 1;
+        uint8_t unsaved         : 1;
         uint8_t unsaved_to_ulog : 1;
     };
 } param_status_t;
 
+// 参数meta信息
 typedef struct param_info_s {
     const char   *name;
     param_type_t  type;
@@ -82,11 +82,22 @@ typedef struct param_info_s {
     param_flag_t  flag;
 } param_info_t;
 
-typedef struct param_data_s {
-    param_value_t  value;
-    param_status_t status;
-} param_data_t;
+// 存到文件的头部格式
+typedef struct {
+    uint32_t check;
+    char     magic[9]; // "nextpilot"
+    uint64_t utc;      // 保存时间戳
+    uint16_t count;    // 参数个数
+} param_header_t;
 
+// 存储到文件的参数格式
+typedef struct {
+    char          name[16];
+    param_type_t  type;
+    param_value_t value;
+} param_payload_t;
+
+// 参数值字节数
 static inline uint8_t param_type_size(param_type_t type) {
     switch (type) {
     case PARAM_TYPE_INT8:
@@ -108,6 +119,7 @@ static inline uint8_t param_type_size(param_type_t type) {
     }
 }
 
+// 参数类型字符串
 static inline const char *param_type_cstr(param_type_t type) {
     switch (type) {
     case PARAM_TYPE_INT8:

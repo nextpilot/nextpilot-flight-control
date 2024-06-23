@@ -20,13 +20,11 @@
 extern "C" {
 #endif //__cplusplus
 
-
 /**
  * Notify the system about parameter changes. Can be used for example after several calls to
  * param_set_no_notification() to avoid unnecessary system notifications.
  */
 void param_notify_changes();
-void param_notify_autosave();
 
 /**
  * Return the total number of parameters.
@@ -41,7 +39,13 @@ uint16_t param_get_count();
  * @return		The number of parameters.
  */
 uint16_t param_get_count_used();
-bool     param_in_range(param_t idx);
+
+/**
+ * Check the param is valid.
+ *
+ * @return		True if valid.
+ */
+bool param_in_range(param_t idx);
 
 static inline param_t param_for_index(int index) {
     return (param_t)index;
@@ -56,9 +60,80 @@ static inline param_t param_for_used_index(param_t index) {
 }
 
 ///////////////////////////////////////////////////
+// 获取meta信息
+///////////////////////////////////////////////////
+
+int param_get_info(param_t idx, param_info_t *info);
+
+/**
+ * Obtain the name of a parameter.
+ *
+ * @param param		A handle returned by param_find or passed by param_foreach.
+ * @return		The name assigned to the parameter, or NULL if the handle is invalid.
+ */
+const char *param_get_name(param_t idx);
+
+/**
+ * Obtain the type of a parameter.
+ *
+ * @param param		A handle returned by param_find or passed by param_foreach.
+ * @return		The type assigned to the parameter.
+ */
+param_type_t param_get_type(param_t idx);
+
+const char *param_get_type_cstr(param_t idx);
+
+/**
+ * Determine the size of a parameter.
+ *
+ * @param param		A handle returned by param_find or passed by param_foreach.
+ * @return		The size of the parameter's value.
+ */
+uint8_t param_get_type_size(param_t idx);
+
+/**
+ * Copy the (airframe-specific) default value of a parameter.
+ *
+ * @param param		A handle returned by param_find or passed by param_foreach.
+ * @param default_val		Where to return the value, assumed to point to suitable storage for the parameter type.
+ * @return		Zero if the parameter's deafult value could be returned, nonzero otherwise.
+ */
+int param_get_default_value(param_t idx, param_value_t *val);
+
+param_flag_t param_get_flag(param_t idx);
+
+bool param_is_volatile(param_t idx);
+
+bool param_reboot_required(param_t idx);
+
+bool param_disarm_required(param_t idx);
+
+
+////////////////////////////////////////////////////////////////////////////
+// 查询/设置状态（get/set status）
+////////////////////////////////////////////////////////////////////////////
+
+param_status_t param_get_status(param_t idx);
+
+bool param_value_used(param_t idx);
+
+bool param_value_unsaved(param_t idx);
+
+bool param_value_changed(param_t idx);
+
+void param_mark_changed(param_t idx);
+
+void param_mark_used(param_t idx);
+
+#define param_set_used param_mark_used
+
+
+///////////////////////////////////////////////////
 // 查找参数
 ///////////////////////////////////////////////////
+
 int param_find_internal(const char *name, bool mark_used);
+
 /**
  * Look up a parameter by name.
  *
@@ -77,50 +152,13 @@ param_t param_find(const char *name);
  */
 param_t param_find_no_notification(const char *name);
 
-///////////////////////////////////////////////////
-// 获取meta信息
-///////////////////////////////////////////////////
-int param_get_info(param_t idx, param_info_t *info);
-
-/**
- * Obtain the name of a parameter.
- *
- * @param param		A handle returned by param_find or passed by param_foreach.
- * @return		The name assigned to the parameter, or NULL if the handle is invalid.
- */
-const char *param_get_name(param_t idx);
-
-/**
- * Determine the size of a parameter.
- *
- * @param param		A handle returned by param_find or passed by param_foreach.
- * @return		The size of the parameter's value.
- */
-uint8_t param_get_size(param_t idx);
-
-/**
- * Obtain the type of a parameter.
- *
- * @param param		A handle returned by param_find or passed by param_foreach.
- * @return		The type assigned to the parameter.
- */
-param_type_t param_get_type(param_t idx);
-const char  *param_get_type_cstr(param_t idx);
-param_flag_t param_get_flag(param_t idx);
-
-/**
- * Copy the (airframe-specific) default value of a parameter.
- *
- * @param param		A handle returned by param_find or passed by param_foreach.
- * @param default_val		Where to return the value, assumed to point to suitable storage for the parameter type.
- * @return		Zero if the parameter's deafult value could be returned, nonzero otherwise.
- */
-int param_get_default_value(param_t idx, param_value_t *val);
 
 ///////////////////////////////////////////////////
 // 获取参数
 ///////////////////////////////////////////////////
+
 int param_get_internal(param_t idx, param_value_t *val, bool mark_used);
+
 /**
  * Copy the value of a parameter.
  *
@@ -137,7 +175,9 @@ int32_t param_get_int32(param_t idx);
 ///////////////////////////////////////////////////
 // 设置参数
 ///////////////////////////////////////////////////
+
 int param_set_internal(param_t idx, const param_value_t *val, bool mark_saved, bool notify_changes);
+
 /**
  * Set the value of a parameter.
  *
@@ -165,40 +205,11 @@ static inline int param_set_int32(param_t idx, int32_t val) {
 }
 
 ///////////////////////////////////////////////////
-// 设置/查询状态
-///////////////////////////////////////////////////
-param_status_t param_get_status(param_t idx);
-int            param_set_status(param_t idx, const param_status_t *status);
-
-/**
- * Test whether a parameter's value has been changed but not saved.
- *
- * @return		If true, the parameter's value has not been saved.
- */
-bool param_value_unsaved(param_t idx);
-
-/**
- * Wether a parameter is in use in the system.
- *
- * @return		True if it has been written or read
- */
-bool param_value_used(param_t idx);
-bool param_value_changed(param_t idx);
-
-/**
- * Mark a parameter as used. Only marked parameters will be sent to a GCS.
- * A call to param_find() will mark a param as used as well.
- *
- * @param param		A handle returned by param_find or passed by param_foreach.
- */
-void param_set_used(param_t idx);
-// int  param_set_saved(param_t idx);
-// int  param_set_saved_ulog(param_t idx);
-
-///////////////////////////////////////////////////
 // 重置参数
 ///////////////////////////////////////////////////
+
 int param_reset_internal(param_t idx, bool notify);
+
 /**
  * Reset a parameter to its default value.
  *
@@ -221,6 +232,7 @@ void param_reset_all_internal(bool notify);
  * Reset all parameters to their default values.
  */
 void param_reset_all();
+
 void param_reset_all_no_notification();
 
 /**
@@ -263,9 +275,10 @@ void param_foreach(void (*func)(void *arg, param_t param), void *arg, bool only_
  * @return		CRC32 hash of all param_ids and values
  */
 uint32_t param_hash_check(void);
-int      param_calc_hash();
-int      param_calc_hash_specific();
 
+/////////////////////////////////////////////////////////////
+// 参数导入/导出
+/////////////////////////////////////////////////////////////
 
 int param_export_internal(const char *devname, param_filter_func filter);
 
@@ -308,6 +321,10 @@ int param_load_default();
  * @return		Zero on success.
  */
 int param_save_default();
+
+
+void param_notify_autosave();
+
 
 /**
  * Enable/disable the param autosaving.

@@ -93,7 +93,7 @@ static AtomicBitset<_param_info_count> _params_changed;
 static AtomicBitset<_param_info_count> _params_unsaved;
 
 // 存储被修改的值
-UT_array *_utarray_param_values = nullptr;
+static UT_array *_utarray_param_values = nullptr;
 
 typedef struct param_wbuf_s {
     param_value_t value;
@@ -101,7 +101,7 @@ typedef struct param_wbuf_s {
     param_t index;
 } utarray_param_value_t;
 
-const UT_icd _utarray_param_values_icd = {sizeof(utarray_param_value_t), nullptr, nullptr, nullptr};
+static const UT_icd _utarray_param_values_icd = {sizeof(utarray_param_value_t), nullptr, nullptr, nullptr};
 
 static int utarray_param_compare(const void *a, const void *b) {
     struct param_wbuf_s *pa = (struct param_wbuf_s *)a;
@@ -176,6 +176,15 @@ bool param_in_range(param_t idx) {
 // 获取meta信息（get info）
 ////////////////////////////////////////////////////////////////////////////
 
+param_info_t param_get_info(param_t idx) {
+    if (param_in_range(idx)) {
+        return params_meta[idx];
+    }
+    param_info_t info{};
+
+    return info;
+}
+
 const char *param_get_name(param_t idx) {
     if (param_in_range(idx)) {
         return params_meta[idx].name;
@@ -191,7 +200,26 @@ param_type_t param_get_type(param_t idx) {
 }
 
 const char *param_get_type_cstr(param_t idx) {
-    return param_type_cstr(param_get_type(idx));
+    if (param_in_range(idx)) {
+        return param_type_cstr(param_get_type(idx));
+    }
+    return "unknown";
+}
+
+uint8_t param_get_type_size(param_t idx) {
+    if (param_in_range(idx)) {
+        return param_type_size(param_get_type(idx));
+    }
+    return 0;
+}
+
+int param_get_default_value(param_t idx, param_value_t *val) {
+    if (!param_in_range(idx) || !val) {
+        return -RT_ERROR;
+    }
+
+    *val = params_meta[idx].value;
+    return 0;
 }
 
 param_flag_t param_get_flag(param_t idx) {
@@ -224,18 +252,19 @@ bool param_disarm_required(param_t idx) {
     return false;
 }
 
-int param_get_default_value(param_t idx, param_value_t *val) {
-    if (!param_in_range(idx) || !val) {
-        return -RT_ERROR;
-    }
-
-    *val = params_meta[idx].value;
-    return 0;
-}
-
 ////////////////////////////////////////////////////////////////////////////
 // 查询/设置状态（get/set status）
 ////////////////////////////////////////////////////////////////////////////
+
+param_status_t param_get_status(param_t idx) {
+    param_status_t status{.value = 0};
+    if (param_in_range(idx)) {
+        status.actived = _params_active[idx];
+        status.changed = _params_changed[idx];
+        status.unsaved = _params_unsaved[idx];
+    }
+    return status;
+}
 
 bool param_value_used(param_t idx) {
     if (param_in_range(idx)) {
@@ -269,16 +298,6 @@ void param_mark_used(param_t idx) {
     if (param_in_range(idx)) {
         _params_active.set(idx, true);
     }
-}
-
-param_status_t param_get_status(param_t idx) {
-    param_status_t status{.value = 0};
-    if (param_in_range(idx)) {
-        status.actived = _params_active[idx];
-        status.changed = _params_changed[idx];
-        status.unsaved = _params_unsaved[idx];
-    }
-    return status;
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -649,7 +668,7 @@ uint32_t param_hash_check(void) {
         const void *value = param_get_value_ptr(idx);
 
         hash = crc32part((const uint8_t *)name, rt_strlen(name), hash);
-        hash = crc32part((const uint8_t *)value, param_get_size(idx), hash);
+        hash = crc32part((const uint8_t *)value, param_get_type_size(idx), hash);
     }
     param_unlock_reader();
 
@@ -657,8 +676,9 @@ uint32_t param_hash_check(void) {
 }
 
 /////////////////////////////////////////////////////////////
-// 导入/导出参数
+// 参数导入/导出
 /////////////////////////////////////////////////////////////
+
 #include "param_private.h"
 #define PARAM_MAX_DEV_COUNT 2
 static param_storage_t *__param_storage__[PARAM_MAX_DEV_COUNT] = {NULL, NULL};

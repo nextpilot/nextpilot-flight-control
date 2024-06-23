@@ -62,19 +62,6 @@ struct param_storage_s {
     };
 };
 
-typedef struct {
-    uint32_t check;
-    char     magic[9]; // "nextpilot"
-    uint64_t utc;      // 保存时间戳
-    uint16_t count;    // 参数个数
-} param_header_t;
-
-typedef struct {
-    char          name[16];
-    param_type_t  type;
-    param_value_t value;
-} param_payload_t;
-
 int param_storage_register(param_storage_t *dev);
 
 

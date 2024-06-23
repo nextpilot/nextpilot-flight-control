@@ -57,7 +57,7 @@ def generate(xml_file, dest="."):
     env = Environment(loader=FileSystemLoader(os.path.join(script_path, "templates")))
 
     if not os.path.isdir(dest):
-        os.path.mkdir(dest)
+        os.makedirs(dest)
 
     template_files = [
         "param_autogen.hpp.jinja",
