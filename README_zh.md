@@ -17,7 +17,7 @@ NextPilot飞控系统是一款功能丰富、高度扩展、稳定可靠的国�
 4. 高效的开发效率。支持 MATLAB/Simulink [基于模型的设计](https://www.mathworks.com/help/simulink/gs/model-based-design.html)，在统一的 Simulink 环境下完成设计、仿真、测试和一键代码生成，快速且经济高效地开发控制系统、信号处理系统和通信系统。
 5. 支持多种飞行仿真，如模型在环（Model in Loop）、软件在环（[Software in Loop](bsps/sitl/qemu/README.md)）、硬件在环（Hardware in Loop）和硬件内飞行仿真（[Simulation in Hardware](apps/simulation/sih/sih.cpp)），以及多机编队仿真。
 
-6. 支持多种飞控硬件，包括广泛使用的开源硬件 [Pixhawk FMUv5](bsps/px4/fmu-v5/README.md) 和 [NextPilot团队开发的硬件](bsps/nt//README.md)。
+6. 支持多种飞控硬件，包括广泛使用的开源硬件 [Pixhawk FMUv5](bsps/px4/fmu-v5/README.md) 和 [NextPilot团队开发的硬件](bsps/ndt//README.md)。
 
 7. 支持主流开发工具，包括 Gcc+VScode（[Windows](https://github.com/nextpilot/nextpilot-windows-toolchain)/[Ubuntu](https://github.com/nextpilot/nextpilot-ubuntu-toolchain)）、Keil 和 IAR等，通过 scons 工具生成多种 IDE 项目文件。
 
