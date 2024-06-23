@@ -2284,7 +2284,6 @@ int Mavlink::task_main(int argc, char *argv[]) {
 
     _task_running.store(true);
 
-    set_boot_complete();
     while (!should_exit()) {
         /* main loop */
         // px4_usleep(_main_loop_delay);
@@ -3414,6 +3413,8 @@ int mavlink_start() {
         ret     += mavlink_main(argc, (char **)argv);
     }
 
+    const char *argv1[]  = {"mavlink", "boot_complete"};
+    ret                 += mavlink_main(2, (char **)argv1);
     return ret;
 }
 
