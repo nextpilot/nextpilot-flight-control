@@ -98,7 +98,7 @@ cwd = GetCurrentDir()
 
 inc = [cwd]
 
-src = ["parameters.cpp"]
+src = Glob("*.cpp")
 
 # if GetDepend(["PARAM_USING_STORAGE_FILE"]):
 #     src += ["storage/param_storage_file.c"]

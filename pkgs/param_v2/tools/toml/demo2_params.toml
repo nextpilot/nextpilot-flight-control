@@ -1,0 +1,39 @@
+# [[parameters]]
+# group = ""
+# category = ""
+# short_desc = ""
+# long_desc = ""
+# min = 0
+# max = 100
+# unit = "m/s"
+# decimal = 2
+# increment = 0.01
+# values = ""
+# reboot_required = false
+# disarm_required = false
+# name = ""
+# type = ""               # int32, bool, enum, bit, float
+# default = 10
+
+
+[[parameters]]
+name = "MAV_${i}_RATE"
+default = [0, 2, 0]
+type = "int32"
+instance = 3
+reboot_required = true
+disarm_required = true
+values = """
+        0: Normal
+        1: Custom
+        2: Onboard
+        3: OSD
+        4: Magic
+        5: Config
+        #6: Iridium # as the user does not need to configure this, hide it from the UI
+        7: Minimal
+        8: External Vision
+        #9: External Vision Minimal # hidden
+        10: Gimbal
+        11: Onboard Low Bandwidth
+"""

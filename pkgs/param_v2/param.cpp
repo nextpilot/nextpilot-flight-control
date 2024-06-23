@@ -25,12 +25,16 @@
 #include <utarray.h>
 #include "param.h"
 
-#include "param_global_autogen.hpp"
+#include "param_autogen.hpp"
 
 using namespace nextpilot::global_params;
 
-static constexpr uint16_t param_info_count = sizeof(params_meta) / sizeof(param_info_s);
-
+RT_WEAK uint32_t crc32part(const void *buff, int size, uint32_t crc) {
+    for (int i = 0; i < size; i++) {
+        crc += ((uint8_t *)buff)[i];
+    }
+    return crc;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // 基于sem实现读写锁
@@ -82,9 +86,11 @@ static void param_assert_locked() {
 // UT_array接口定义
 ///////////////////////////////////////////////////////////////////////////////////////
 
-static AtomicBitset<param_info_count> _params_active;
-static AtomicBitset<param_info_count> _params_changed;
-static AtomicBitset<param_info_count> _params_unsaved;
+static constexpr uint16_t _param_info_count = sizeof(params_meta) / sizeof(param_info_s);
+
+static AtomicBitset<_param_info_count> _params_active;
+static AtomicBitset<_param_info_count> _params_changed;
+static AtomicBitset<_param_info_count> _params_unsaved;
 
 // 存储被修改的值
 UT_array *_utarray_param_values = nullptr;
@@ -102,7 +108,7 @@ static int utarray_param_compare(const void *a, const void *b) {
     struct param_wbuf_s *pb = (struct param_wbuf_s *)b;
 
     if (pa->index < pb->index) {
-        return -1;
+        return -RT_ERROR;
     }
 
     if (pa->index > pb->index) {
@@ -123,13 +129,6 @@ static struct param_wbuf_s *param_find_changed(param_t idx) {
     }
 
     return nullptr;
-}
-
-RT_WEAK uint32_t crc32part(const void *buff, int size, uint32_t crc) {
-    for (int i = 0; i < size; i++) {
-        crc += ((uint8_t *)buff)[i];
-    }
-    return crc;
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -162,7 +161,7 @@ void param_notify_changes() {
 ////////////////////////////////////////////////////////////////////////////
 
 uint16_t param_get_count() {
-    return param_info_count;
+    return _param_info_count;
 }
 
 param_t param_get_count_used() {
@@ -204,6 +203,27 @@ param_flag_t param_get_flag(param_t idx) {
     return flag;
 }
 
+bool param_is_volatile(param_t idx) {
+    if (param_in_range(idx)) {
+        return params_meta[idx].flag.system_required;
+    }
+    return false;
+}
+
+bool param_reboot_required(param_t idx) {
+    if (param_in_range(idx)) {
+        return params_meta[idx].flag.reboot_required;
+    }
+    return false;
+}
+
+bool param_disarm_required(param_t idx) {
+    if (param_in_range(idx)) {
+        return params_meta[idx].flag.disarm_required;
+    }
+    return false;
+}
+
 int param_get_default_value(param_t idx, param_value_t *val) {
     if (!param_in_range(idx) || !val) {
         return -RT_ERROR;
@@ -216,7 +236,6 @@ int param_get_default_value(param_t idx, param_value_t *val) {
 ////////////////////////////////////////////////////////////////////////////
 // 查询/设置状态（get/set status）
 ////////////////////////////////////////////////////////////////////////////
-
 
 bool param_value_used(param_t idx) {
     if (param_in_range(idx)) {
@@ -240,10 +259,26 @@ bool param_value_changed(param_t idx) {
     return false;
 }
 
-void param_set_used(param_t idx) {
+void param_mark_changed(param_t idx) {
+    if (param_in_range(idx)) {
+        _params_changed.set(idx, true);
+    }
+}
+
+void param_mark_used(param_t idx) {
     if (param_in_range(idx)) {
         _params_active.set(idx, true);
     }
+}
+
+param_status_t param_get_status(param_t idx) {
+    param_status_t status{.value = 0};
+    if (param_in_range(idx)) {
+        status.actived = _params_active[idx];
+        status.changed = _params_changed[idx];
+        status.unsaved = _params_unsaved[idx];
+    }
+    return status;
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -255,7 +290,7 @@ int param_find_internal(const char *name, bool mark_used) {
 
     param_t middle;
     param_t front = 0;
-    param_t last  = param_info_count;
+    param_t last  = _param_info_count;
 
     /* perform a binary search of the known parameters */
 
@@ -265,7 +300,7 @@ int param_find_internal(const char *name, bool mark_used) {
 
         if (ret == 0) {
             if (mark_used) {
-                param_set_used(middle);
+                param_mark_used(middle);
             }
 
             return middle;
@@ -314,14 +349,14 @@ static const void *param_get_value_ptr(param_t idx) {
 
 int param_get_internal(param_t idx, param_value_t *val, bool mark_used) {
     if (!param_in_range(idx)) {
-        return -1;
+        return -RT_ERROR;
     }
 
     if (!val) {
-        return -1;
+        return -RT_ERROR;
     }
 
-    int ret = -1;
+    int ret = -RT_ERROR;
 
     if (!_params_changed[idx]) {
         *val = params_meta[idx].value;
@@ -369,14 +404,14 @@ int32_t param_get_int32(param_t idx) {
 
 int param_set_internal(param_t idx, const param_value_t *val, bool mark_saved, bool notify) {
     if (!param_in_range(idx)) {
-        return -1;
+        return -RT_ERROR;
     }
 
     if (!val) {
-        return -1;
+        return -RT_ERROR;
     }
 
-    int                  ret = -1;
+    int                  ret = -RT_ERROR;
     struct param_wbuf_s *s   = nullptr;
 
     // 进入临界区保护
@@ -501,6 +536,7 @@ void param_reset_all_internal(bool notify) {
     if (_utarray_param_values) {
         utarray_free(_utarray_param_values);
     }
+    /*mark all unchanged*/
     _params_changed.reset();
     /* mark as reset / deleted */
     _utarray_param_values = nullptr;
@@ -588,7 +624,7 @@ void param_foreach(void (*func)(void *arg, param_t idx), void *arg, bool only_ch
 
     for (idx = 0; param_in_range(idx); idx++) {
         /* if requested, skip unchanged values */
-        if (only_changed && param_value_changed(idx)) {
+        if (only_changed && !param_find_changed(idx)) {
             continue;
         }
 
@@ -603,9 +639,9 @@ void param_foreach(void (*func)(void *arg, param_t idx), void *arg, bool only_ch
 uint32_t param_hash_check(void) {
     uint32_t hash = 0;
 
-    rt_enter_critical();
+    param_lock_reader();
     for (param_t idx = 0; idx < param_get_count(); idx++) {
-        if (!param_value_used(idx) /*|| param_is_volatile(idx)*/) {
+        if (!param_value_used(idx) || param_is_volatile(idx)) {
             continue;
         }
 
@@ -615,7 +651,7 @@ uint32_t param_hash_check(void) {
         hash = crc32part((const uint8_t *)name, rt_strlen(name), hash);
         hash = crc32part((const uint8_t *)value, param_get_size(idx), hash);
     }
-    rt_exit_critical();
+    param_unlock_reader();
 
     return hash;
 }
@@ -629,7 +665,7 @@ static param_storage_t *__param_storage__[PARAM_MAX_DEV_COUNT] = {NULL, NULL};
 
 int param_storage_register(param_storage_t *dev) {
     if (!dev) {
-        return -1;
+        return -RT_ERROR;
     }
 
     bool success = false;
@@ -641,26 +677,27 @@ int param_storage_register(param_storage_t *dev) {
         }
     }
 
-    return success ? 0 : -1;
+    return success ? 0 : -RT_ERROR;
 }
 
 int param_export_internal(const char *devname, param_filter_func filter) {
     if (!_utarray_param_values) {
-        return -1;
+        return -RT_ERROR;
     }
 
     param_storage_t *dev = __param_storage__[0];
 
     if (!dev) {
-        return -1;
+        return -RT_ERROR;
     }
 
     // 先打开设备
     if (dev->ops->open(dev, devname, 'w') != 0) {
         // LOG_E("open %s fail", devname);
-        return -1;
+        return -RT_ERROR;
     }
 
+    param_lock_reader();
 
     // 写入所有修改的参数
     param_payload_t payload;
@@ -679,7 +716,7 @@ int param_export_internal(const char *devname, param_filter_func filter) {
         // 写入到设备
         dev->ops->write(dev, sizeof(param_header_t) + count * sizeof(payload), &payload, sizeof(payload));
         // TODO:将参数标记为已保存
-
+        _params_unsaved.set(s->index, false);
         // 计算crc32
         check = crc32part(&payload, sizeof(payload), check);
 
@@ -692,29 +729,7 @@ int param_export_internal(const char *devname, param_filter_func filter) {
 
         count++;
     }
-
-    for (uint16_t idx = 0; idx < param_get_count(); idx++) {
-        if (_params_changed[idx]) {
-            // 对payload赋值
-            rt_memcpy(payload.name, param_get_name(idx), sizeof(payload.name));
-            payload.type = param_get_type(idx);
-            param_get(idx, &payload.value);
-            // 写入到设备
-            dev->ops->write(dev, sizeof(param_header_t) + count * sizeof(payload), &payload, sizeof(payload));
-            // 将参数标记为已保存
-            _params_unsaved.set(idx, false);
-            // 计算crc32
-            check = crc32part(&payload, sizeof(payload), check);
-            //
-            count++;
-
-            if (payload.type == PARAM_TYPE_INT32) {
-                LOG_D("export param %s, %s, %d", payload.name, param_type_cstr(payload.type), payload.value.i32);
-            } else if (payload.type == PARAM_TYPE_FLOAT) {
-                LOG_D("export param %s, %s, %g", payload.name, param_type_cstr(payload.type), payload.value.f32);
-            }
-        }
-    }
+    param_unlock_reader();
 
     // 写入头
     param_header_t header;
@@ -744,16 +759,16 @@ int param_import_internal(const char *devname, param_filter_func filter) {
     param_storage_t *dev = __param_storage__[0];
 
     if (!dev) {
-        return -1;
+        return -RT_ERROR;
     }
 
     // 先打开设备
     if (dev->ops->open(dev, devname, 'r') != 0) {
         // LOG_E("open %s fail", devname);
-        return -1;
+        return -RT_ERROR;
     }
 
-    int             ret = -1;
+    int             ret = -RT_ERROR;
     param_header_t  header;
     param_payload_t payload;
     uint32_t        check = 0;
@@ -764,9 +779,10 @@ int param_import_internal(const char *devname, param_filter_func filter) {
         goto __exit;
     }
     // 对比magic魔术字
-    if (rt_strncmp(header.magic, "zhan", 4) != 0 || // magic不对
-        header.utc < 1514764800LL ||                // 时间戳不对
-        header.count == 0) {                        // 长度为0
+    if (rt_strncmp(header.magic, "nextpilot", sizeof(header.magic)) != 0 || // magic不对
+        header.utc < 1514764800LL ||                                        // 时间戳不对
+        header.count == 0) {                                                // 长度为0
+        LOG_D("check header fail");
         goto __exit;
     }
     LOG_D("read header, utc=%u, count=%u, crc=%u", header.utc, header.count, header.check);
@@ -786,8 +802,9 @@ int param_import_internal(const char *devname, param_filter_func filter) {
         // 读取一个param
         dev->ops->read(dev, sizeof(header) + idx * sizeof(payload), &payload, sizeof(payload));
         // 查找系统中是否已存在
-        param_t pp = param_find_internal(payload.name, false);
+        param_t pp = param_find_no_notification(payload.name);
         if (pp == PARAM_INVALID || param_get_type(pp) != payload.type) {
+            LOG_W("ignoring unrecognised param %s", payload.name);
             continue;
         }
         // 更新到系统
@@ -801,7 +818,7 @@ int param_import_internal(const char *devname, param_filter_func filter) {
     }
 
     // 提醒参数已经更新
-    param_notify_autosave();
+    // param_notify_autosave();
     param_notify_changes();
 
     if (devname) {
@@ -909,13 +926,13 @@ static int param_init() {
 
     if (!_param_autosave_thread) {
         LOG_E("create autosave thread fail");
-        return -1;
+        return -RT_ERROR;
     }
 
     if (rt_thread_startup(_param_autosave_thread) != 0) {
         rt_thread_delete(_param_autosave_thread);
         LOG_E("startup autosave thread fail");
-        return -1;
+        return -RT_ERROR;
     }
 
     return 0;

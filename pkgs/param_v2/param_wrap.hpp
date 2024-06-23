@@ -18,7 +18,7 @@
 
 #include <float.h>
 #include <math.h>
-#include "param_global_autogen.hpp"
+#include "param_autogen.hpp"
 
 /**
  * get the parameter handle from a parameter enum
@@ -379,6 +379,7 @@ template <nextpilot::global_params::params_id p>
 class ParamInt {
     static_assert((int)p && false, "Do not use this class directly, use the DEFINE_PARAMETERS macro instead");
 };
+
 template <nextpilot::global_params::params_id p>
 class ParamFloat {
     static_assert((int)p && false, "Do not use this class directly, use the DEFINE_PARAMETERS macro instead");
