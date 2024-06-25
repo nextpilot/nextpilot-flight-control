@@ -31,6 +31,8 @@ using namespace math;
 using namespace matrix;
 using namespace time_literals;
 
+// #define SIH_DEBUG
+
 Sih::Sih() :
     ModuleParams(nullptr),
     ModuleThread(LOG_TAG, 2048, 16, 10) {
@@ -93,8 +95,8 @@ void Sih::lockstep_loop() {
 
     int rt_interval_us = int(roundf(sim_interval_us / speed_factor));
 
-    PX4_INFO("Simulation loop with %d Hz (%d us sim time interval)", rate, sim_interval_us);
-    PX4_INFO("Simulation with %.1fx speedup. Loop with (%d us wall time interval)", (double)speed_factor, rt_interval_us);
+    rt_kprintf("Simulation loop with %d Hz (%d us sim time interval\n)", rate, sim_interval_us);
+    rt_kprintf("Simulation with %.1fx speedup. Loop with (%d us wall time interval\n)", (double)speed_factor, rt_interval_us);
     uint64_t pre_compute_wall_time_us;
 
     while (!should_exit()) {
@@ -151,6 +153,12 @@ void Sih::realtime_loop() {
 
     while (!should_exit()) {
         rt_sem_take(&_data_semaphore, RT_WAITING_FOREVER); // periodic real time wakeup
+#ifdef SIH_DEBUG
+        static hrt_abstime last_us = hrt_absolute_time();
+        float              dt_ms   = (hrt_absolute_time() - last_us) * 1e-3f;
+        last_us                    = hrt_absolute_time();
+        LOG_I("sih dt: %.3fms", dt_ms);
+#endif // SIH_DEBUG
         perf_begin(_loop_perf);
         sensor_step();
         perf_end(_loop_perf);
@@ -586,40 +594,40 @@ Vector3f Sih::noiseGauss3f(float stdx, float stdy, float stdz) {
 
 int Sih::print_status() {
 #if defined(ENABLE_LOCKSTEP_SCHEDULER)
-    PX4_INFO("Running in lockstep mode");
-    PX4_INFO("Achieved speedup: %.2fX", (double)_achieved_speedup);
+    rt_kprintf("Running in lockstep mode\n");
+    rt_kprintf("Achieved speedup: %.2fX\n", (double)_achieved_speedup);
 #endif
 
     if (_vehicle == VehicleType::MC) {
-        PX4_INFO("Running MultiCopter");
+        rt_kprintf("Running MultiCopter\n");
 
     } else if (_vehicle == VehicleType::FW) {
-        PX4_INFO("Running Fixed-Wing");
+        rt_kprintf("Running Fixed-Wing\n");
 
     } else if (_vehicle == VehicleType::TS) {
-        PX4_INFO("Running TailSitter");
-        PX4_INFO("aoa [deg]: %d", (int)(degrees(_ts[4].get_aoa())));
-        PX4_INFO("v segment (m/s)");
+        rt_kprintf("Running TailSitter\n");
+        rt_kprintf("aoa [deg]: %d\n", (int)(degrees(_ts[4].get_aoa())));
+        rt_kprintf("v segment (m/s)\n");
         _ts[4].get_vS().print();
     }
 
-    PX4_INFO("vehicle landed: %d", _grounded);
-    PX4_INFO("inertial position NED (m)");
+    rt_kprintf("vehicle landed: %d\n", _grounded);
+    rt_kprintf("inertial position NED (m)\n");
     _p_I.print();
-    PX4_INFO("inertial velocity NED (m/s)");
+    rt_kprintf("inertial velocity NED (m/s)\n");
     _v_I.print();
-    PX4_INFO("attitude roll-pitch-yaw (deg)");
+    rt_kprintf("attitude roll-pitch-yaw (deg)\n");
     (Eulerf(_q) * 180.0f / M_PI_F).print();
-    PX4_INFO("angular acceleration roll-pitch-yaw (deg/s)");
+    rt_kprintf("angular acceleration roll-pitch-yaw (deg/s)\n");
     (_w_B * 180.0f / M_PI_F).print();
-    PX4_INFO("actuator signals");
+    rt_kprintf("actuator signals\n");
     Vector<float, 8> u = Vector<float, 8>(_u);
     u.transpose().print();
-    PX4_INFO("Aerodynamic forces NED inertial (N)");
+    rt_kprintf("Aerodynamic forces NED inertial (N)\n");
     _Fa_I.print();
-    PX4_INFO("Aerodynamic moments body frame (Nm)");
+    rt_kprintf("Aerodynamic moments body frame (Nm)\n");
     _Ma_B.print();
-    PX4_INFO("Thruster moments in body frame (Nm)");
+    rt_kprintf("Thruster moments in body frame (Nm)\n");
     _Mt_B.print();
     return 0;
 }
