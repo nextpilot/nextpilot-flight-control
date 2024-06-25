@@ -55,7 +55,7 @@ void Sih::Run() {
     _airspeed_time               = task_start;
     _dist_snsr_time              = task_start;
     _vehicle                     = (VehicleType)constrain(_sih_vtype.get(), static_cast<typeof _sih_vtype.get()>(0),
-                                                          static_cast<typeof _sih_vtype.get()>(2));
+                                                          static_cast<typeof _sih_vtype.get()>(3));
 
     _actuator_out_sub = uORB::Subscription{ORB_ID(actuator_outputs_sim)};
 
