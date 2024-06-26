@@ -31,7 +31,7 @@ using namespace math;
 using namespace matrix;
 using namespace time_literals;
 
-// #define SIH_DEBUG
+// #define DEBUG_SIH_MODULE
 
 Sih::Sih() :
     ModuleParams(nullptr),
@@ -56,6 +56,11 @@ void Sih::Run() {
     _dist_snsr_time              = task_start;
     _vehicle                     = (VehicleType)constrain(_sih_vtype.get(), static_cast<typeof _sih_vtype.get()>(0),
                                                           static_cast<typeof _sih_vtype.get()>(3));
+
+#ifdef DEBUG_SIH_MODULE
+    _vehicle = VehicleType::MC;
+    LOG_D("sih vehicle type: %d", _vehicle);
+#endif // DEBUG_SIH_MODULE
 
     _actuator_out_sub = uORB::Subscription{ORB_ID(actuator_outputs_sim)};
 
@@ -153,12 +158,6 @@ void Sih::realtime_loop() {
 
     while (!should_exit()) {
         rt_sem_take(&_data_semaphore, RT_WAITING_FOREVER); // periodic real time wakeup
-#ifdef SIH_DEBUG
-        static hrt_abstime last_us = hrt_absolute_time();
-        float              dt_ms   = (hrt_absolute_time() - last_us) * 1e-3f;
-        last_us                    = hrt_absolute_time();
-        LOG_I("sih dt: %.3fms", dt_ms);
-#endif // SIH_DEBUG
         perf_begin(_loop_perf);
         sensor_step();
         perf_end(_loop_perf);
@@ -185,6 +184,10 @@ void Sih::sensor_step() {
     const hrt_abstime now = hrt_absolute_time();
     const float       dt  = (now - _last_run) * 1e-6f;
     _last_run             = now;
+
+#ifdef DEBUG_SIH_MODULE
+    // LOG_D("delta dt: %.3fms", dt * 1e+3f);
+#endif // DEBUG_SIH_MODULE
 
     read_motors(dt);
 
@@ -254,25 +257,33 @@ void Sih::init_variables() {
 }
 
 void Sih::read_motors(const float dt) {
-    actuator_outputs_s actuators_out;
+    actuator_outputs_s actuators_out{};
 
+#ifndef DEBUG_SIH_MODULE
     if (_actuator_out_sub.update(&actuators_out)) {
+#else
+    if (1) {
+#endif // DEBUG_SIH_MODULE
+
         float u_sp                 = 0.0f;
         _last_actuator_output_time = actuators_out.timestamp;
-
 
         for (int i = 0; i < NB_MOTORS; i++) { // saturate the motor signals
             if (_vehicle == VehicleType::MC) {
                 u_sp  = actuators_out.output[i];
                 _u[i] = _u[i] + dt / _T_TAU * (u_sp - _u[i]); // first order transfer function with time constant tau
+
+#ifdef DEBUG_SIH_MODULE
+                _u[i] = 0.6f;
+#endif // DEBUG_SIH_MODULE
             }
 
-            if ((_vehicle == VehicleType::FW && i < 3) || (_vehicle == VehicleType::TS && i > 3)) {
-                _u[i] = actuators_out.output[i];
-            } else {
-                float u_sp = actuators_out.output[i];
-                _u[i]      = _u[i] + dt / _T_TAU * (u_sp - _u[i]); // first order transfer function with time constant tau
-            }
+            // if ((_vehicle == VehicleType::FW && i < 3) || (_vehicle == VehicleType::TS && i > 3)) {
+            //     _u[i] = actuators_out.output[i];
+            // } else {
+            //     float u_sp = actuators_out.output[i];
+            //     _u[i]      = _u[i] + dt / _T_TAU * (u_sp - _u[i]); // first order transfer function with time constant tau
+            // }
 
             // if (_vehicle == VehicleType::VTOL) {
             //     if (i < 8) { // MAIN
@@ -414,6 +425,10 @@ void Sih::equations_of_motion(const float dt) {
         // rk4_update(_p_I, _v_I, _q, _w_B);
         _w_B      = constrain(_w_B + _w_B_dot * dt, -6.0f * M_PI_F, 6.0f * M_PI_F);
         _grounded = false;
+
+#ifdef DEBUG_SIH_MODULE
+        LOG_D("pos: %.4f, %.4f, %.4f, vel: %.4f, %.4f, %.4f", _p_I(0), _p_I(1), _p_I(2), _v_I(0), _v_I(1), _v_I(2));
+#endif // DEBUG_SIH_MODULE
     }
 }
 
