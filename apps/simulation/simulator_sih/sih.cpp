@@ -257,16 +257,34 @@ void Sih::read_motors(const float dt) {
     actuator_outputs_s actuators_out;
 
     if (_actuator_out_sub.update(&actuators_out)) {
+        float u_sp                 = 0.0f;
         _last_actuator_output_time = actuators_out.timestamp;
 
+
         for (int i = 0; i < NB_MOTORS; i++) { // saturate the motor signals
+            if (_vehicle == VehicleType::MC) {
+                u_sp  = actuators_out.output[i];
+                _u[i] = _u[i] + dt / _T_TAU * (u_sp - _u[i]); // first order transfer function with time constant tau
+            }
+
             if ((_vehicle == VehicleType::FW && i < 3) || (_vehicle == VehicleType::TS && i > 3)) {
                 _u[i] = actuators_out.output[i];
-
             } else {
                 float u_sp = actuators_out.output[i];
                 _u[i]      = _u[i] + dt / _T_TAU * (u_sp - _u[i]); // first order transfer function with time constant tau
             }
+
+            // if (_vehicle == VehicleType::VTOL) {
+            //     if (i < 8) { // MAIN
+            //         u_sp  = math::constrain((actuators_out.output[i] - 1000) / (2000 - 1000), 0.0f, 1.0f);
+            //         _u[i] = _u[i] + dt / _T_TAU * (u_sp - _u[i]);
+            //     } else if (i < NB_MOTORS) { // Aux
+            //         _u[i] = math::constrain(2.0f * (actuators_out.output[i] - 1500) / 1000.0f, -1.0f, 1.0f);
+            //         if (i == 10) {
+            //             _u[i] = -_u[i];
+            //         }
+            //     }
+            // }
         }
     }
 }

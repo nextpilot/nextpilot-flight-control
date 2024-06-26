@@ -184,7 +184,8 @@ private:
     enum class VehicleType {
         MC,
         FW,
-        TS
+        TS,
+        VTOL
     };
     VehicleType _vehicle = VehicleType::MC;
 
