@@ -3,12 +3,12 @@
 name = "vtol_sih"
 id   = 1102
 
-[[parameters]]
+[[airframe.parameters]]
 name   = "RC_INPUT"
 value  = 12
 depend = ["a", "b"]
 
-[[outputs]]
+[[airframe.outputs]]
 name      = "left top"
 type      = "rotor"
 channel   = 1
@@ -18,7 +18,7 @@ direction = "clockwise" # colockwise
 ct        = 0.1
 cm        = 0.2
 
-[[outputs]]
+[[airframe.outputs]]
 name = "throttle"
 type = "simple"
 # output_scale = k-, k+, offset, min, max

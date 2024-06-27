@@ -9469,7 +9469,7 @@ static constexpr param_info_s params_meta[] = {
 	{
 		.name = "SDLOG_MODE",
 		.type = PARAM_TYPE_INT32,
-		.value = { .i32 = 0},
+		.value = { .i32 = 1},
 		.flag = { .value = 0 },
 	},
 	{

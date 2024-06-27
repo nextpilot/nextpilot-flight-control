@@ -9,6 +9,7 @@
  ******************************************************************/
 
 #define LOG_TAG "logger"
+#define LOG_LVL LOG_LVL_DBG
 
 #include <console_buffer/console_buffer.h>
 #include "defines.h"
@@ -554,6 +555,7 @@ void Logger::run() {
 
     if (_writer.backend() & LogWriter::BackendFile) {
         int mkdir_ret = mkdir(LOG_ROOT[(int)LogType::Full], S_IRWXU | S_IRWXG | S_IRWXO);
+
         if (mkdir_ret == 0) {
             PX4_INFO("log root dir created: %s", LOG_ROOT[(int)LogType::Full]);
         } else if (errno != -EEXIST) {
@@ -564,8 +566,7 @@ void Logger::run() {
             }
         }
 
-        if (util::check_free_space(LOG_ROOT[(int)LogType::Full], _param_sdlog_dirs_max.get(), _mavlink_log_pub,
-                                   _file_name[(int)LogType::Full].sess_dir_index)
+        if (util::check_free_space(LOG_ROOT[(int)LogType::Full], _param_sdlog_dirs_max.get(), _mavlink_log_pub, _file_name[(int)LogType::Full].sess_dir_index)
             == 1) {
             return;
         }
@@ -1195,7 +1196,7 @@ int Logger::create_log_dir(LogType type, tm *tt, char *log_dir, int log_dir_len)
         rt_strncpy(log_dir + n, file_name.log_dir, log_dir_len - n);
         int mkdir_ret = mkdir(log_dir, S_IRWXU | S_IRWXG | S_IRWXO);
 
-        if (mkdir_ret != OK && errno != EEXIST) {
+        if (mkdir_ret != OK && errno != -EEXIST) {
             PX4_ERR("failed creating new dir: %s", log_dir);
             return -1;
         }

@@ -1,0 +1,11 @@
+import os
+import rtconfig
+from building import *
+
+
+cwd = GetCurrentDir()
+
+inc = []
+src = Glob("*.cpp")
+
+objs = DefineGroup("air", src, depend=["SYS_USING_1102_SIH_STANDARD_VTOL"])

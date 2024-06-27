@@ -1,11 +1,11 @@
 menu "Nextpilot Firmware Config"
 config BOARD_CONSTRAINED_MEMORY
-	bool "Contrained memory"
+	bool
 	default n if BSP_USING_QEMU
 	default y
 
 config BOARD_CONSTRAINED_FLASH
-	bool "Contrained flash"
+	bool
 	default n if BSP_USING_QEMU
 	default y
 

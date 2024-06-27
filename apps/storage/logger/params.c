@@ -42,7 +42,7 @@ PARAM_DEFINE_INT32(SDLOG_UTC_OFFSET, 0);
  * @reboot_required true
  * @group SD Logging
  */
-PARAM_DEFINE_INT32(SDLOG_MODE, 0);
+PARAM_DEFINE_INT32(SDLOG_MODE, 1);
 
 /**
  * Battery-only Logging

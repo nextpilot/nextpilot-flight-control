@@ -1,3 +1,11 @@
 menu "Nextpilot Airframe Config"
-orsource "*/Kconfig"
+menuconfig SYS_USING_AIRFRAME
+    bool "airframe : reset param, mixer when change airframe"
+    select SYS_USING_PARAM
+    default n
+
+if SYS_USING_AIRFRAME
+    orsource "*/Kconfig"
+endif
+
 endmenu

@@ -5,6 +5,13 @@ from building import *
 cwd = GetCurrentDir()
 objs = []
 
+if not GetDepend(["SYS_USING_AIRFRAME"]):
+    Return("objs")
+
+
+src = Glob("*.cpp")
+objs += DefineGroup("air", src, depend=["SYS_USING_AIRFRAME"])
+
 for d in os.listdir(cwd):
     path = os.path.join(cwd, d)
     if os.path.isfile(os.path.join(path, "SConscript")):
