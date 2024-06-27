@@ -63,8 +63,8 @@ open-source hardware:
 
 - [CUAV Pixhawk V5+ (FMUv5)](https://docs.px4.io/main/en/flight_controller/cuav_v5_plus.html), [bsp code](bsps/px4/fmu-v5)
 - [CUAV Pixhawk V6X (FMUv6x)](https://docs.px4.io/main/en/flight_controller/cuav_pixhawk_v6x.html), to be done
-- [Holybro Pixhawk 5X (FMUv5X)](https://docs.px4.io/main/en/flight_controller/pixhawk5x.html), to be done
-- [Holybro Pixhawk 6X (FMUv6X)](https://docs.px4.io/main/en/flight_controller/pixhawk6x.html), to be done
+- [Holybro Pixhawk V5X (FMUv5X)](https://docs.px4.io/main/en/flight_controller/pixhawk5x.html), to be done
+- [Holybro Pixhawk V6X (FMUv6X)](https://docs.px4.io/main/en/flight_controller/pixhawk6x.html), to be done
 
 designed by NextPilot:
 
