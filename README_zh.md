@@ -54,8 +54,8 @@ Pixhawk开源硬件:
 
 - [CUAV Pixhawk V5+ (FMUv5)](https://docs.px4.io/main/en/flight_controller/cuav_v5_plus.html), [bsp code](bsps/px4/fmu-v5)
 - [CUAV Pixhawk V6X (FMUv6x)](https://docs.px4.io/main/en/flight_controller/cuav_pixhawk_v6x.html), 即将支持
-- [Holybro Pixhawk 5X (FMUv5X)](https://docs.px4.io/main/en/flight_controller/pixhawk5x.html), 即将支持
-- [Holybro Pixhawk 6X (FMUv6X)](https://docs.px4.io/main/en/flight_controller/pixhawk6x.html), 即将支持
+- [Holybro Pixhawk V5X (FMUv5X)](https://docs.px4.io/main/en/flight_controller/pixhawk5x.html), 即将支持
+- [Holybro Pixhawk V6X (FMUv6X)](https://docs.px4.io/main/en/flight_controller/pixhawk6x.html), 即将支持
 
 NextPilot设计硬件:
 
