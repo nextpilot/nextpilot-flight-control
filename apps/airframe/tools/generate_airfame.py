@@ -2,11 +2,10 @@ import os
 import sys
 import argparse
 
-
 script_path = os.path.dirname(os.path.realpath(__file__))
 
 
-def parse_airframe_toml(airframe_toml_dirs = [os.getcwd()], airframe_toml_files=set()):
+def parse_airframe_toml(airframe_toml_dirs=[os.getcwd()], airframe_toml_files=set()):
     import tomli
 
     # 搜索所有_params.toml文件
@@ -16,7 +15,7 @@ def parse_airframe_toml(airframe_toml_dirs = [os.getcwd()], airframe_toml_files=
                 if file.endswith(".toml"):
                     airframe_toml_files.add(os.path.join(root, file))
 
-    airframes =[]
+    airframes = []
     for file in airframe_toml_files:
         with open(file, "rb") as f:
             airframe_toml_dict = tomli.load(f)
