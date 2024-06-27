@@ -685,7 +685,7 @@ unsigned Mavlink::get_free_tx_buf() {
 #else
         // No FIONSPACE on Linux todo:use SIOCOUTQ  and queue size to emulate FIONSPACE
         // Linux cp210x does not support TIOCOUTQ
-        buf_free       = MAVLINK_MAX_PACKET_LEN;
+        buf_free = MAVLINK_MAX_PACKET_LEN;
 #endif
 
         if (_flow_control_mode == FLOW_CONTROL_AUTO && buf_free < FLOW_CONTROL_DISABLE_THRESHOLD) {
@@ -1046,7 +1046,7 @@ bool Mavlink::send_autopilot_capabilities() {
 #ifdef CONFIG_CDCACM_VENDORID
         msg.vendor_id = CONFIG_CDCACM_VENDORID;
 #else
-        msg.vendor_id  = 0;
+        msg.vendor_id = 0;
 #endif
 #ifdef CONFIG_CDCACM_PRODUCTID
         msg.product_id = CONFIG_CDCACM_PRODUCTID;
@@ -1775,7 +1775,7 @@ bool Mavlink::init_by_instance(int instance) {
         rt_snprintf(buff, sizeof(buff), "MAV_%d_REMOTE_IP", instance);
         param_get(param_find(buff), &remote_ip);
         rt_snprintf(ip, sizeof(ip), "%d.%d.%d.%d",
-                    (remote_ip >> 24) & 0xff, (remote_ip >> 16) & 0xff, (remote_ip >> 8) & 0xff, (remote_ip)&0xff);
+                    (remote_ip >> 24) & 0xff, (remote_ip >> 16) & 0xff, (remote_ip >> 8) & 0xff, (remote_ip) & 0xff);
         if (inet_aton(ip, &_src_addr.sin_addr)) {
             _src_addr.sin_family  = AF_INET;
             _src_addr_initialized = true;

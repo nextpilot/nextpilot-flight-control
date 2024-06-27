@@ -118,6 +118,8 @@
 
 #define TEL_USING_MAVLINK
 #define MAVLINK_DIALECT "common"
+#define MAVLINK_USING_PARAM
+#define MAVLINK_USING_MISSION
 /* end of Nextpilot Telemetry Config */
 /* end of Nextpilot Firmware Config */
 
