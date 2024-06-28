@@ -3389,11 +3389,11 @@ extern "C" __EXPORT int mavlink_main(int argc, char *argv[]) {
 MSH_CMD_EXPORT_ALIAS(mavlink_main, mavlink, mavlink);
 
 int mavlink_start() {
-    const char *inst[] = {"0", "1", "2", "3", "4", "5"};
+    static const char *inst[] = {"0", "1", "2", "3", "4", "5"};
+    static const char *argv[] = {"mavlink", "start", "-i", nullptr};
 
-    const char *argv[] = {"mavlink", "start", "-i", nullptr};
-    int         argc   = sizeof(argv) / sizeof(argv[0]);
-    int         ret    = 0;
+    int argc = sizeof(argv) / sizeof(argv[0]);
+    int ret  = 0;
 
 #ifdef BSP_USING_QEMU
     param_set_int32((param_t)params_id::MAV_0_CONFIG, 10);
@@ -3413,8 +3413,10 @@ int mavlink_start() {
         ret     += mavlink_main(argc, (char **)argv);
     }
 
-    const char *argv1[]  = {"mavlink", "boot_complete"};
-    ret                 += mavlink_main(2, (char **)argv1);
+    static const char *argv1[] = {"mavlink", "boot_complete"};
+
+    ret += mavlink_main(2, (char **)argv1);
+
     return ret;
 }
 

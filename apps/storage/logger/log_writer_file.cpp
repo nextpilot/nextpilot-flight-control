@@ -257,7 +257,7 @@ int LogWriterFile::thread_start() {
     param.sched_priority = 20;
     (void)pthread_attr_setschedparam(&thr_attr, &param);
 
-    pthread_attr_setstacksize(&thr_attr, 1024);
+    pthread_attr_setstacksize(&thr_attr, 2048);
 
     int ret = pthread_create(&_thread, &thr_attr, &LogWriterFile::run_helper, this);
     pthread_attr_destroy(&thr_attr);
