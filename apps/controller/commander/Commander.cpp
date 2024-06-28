@@ -450,12 +450,12 @@ extern "C" __EXPORT int commander_main(int argc, char *argv[]) {
 MSH_CMD_EXPORT_ALIAS(commander_main, commander, commander);
 
 static int command_start() {
-    const char *argv[] = {"commander", "start"};
-    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    static const char *argv[] = {"commander", "start"};
+    int                argc   = sizeof(argv) / sizeof(argv[0]);
     return Commander::main(argc, (char **)argv);
 }
 
-// INIT_APP_EXPORT(command_start);
+INIT_APP_EXPORT(command_start);
 
 bool Commander::shutdownIfAllowed() {
     return TRANSITION_DENIED != _arm_state_machine.arming_state_transition(_vehicle_status, vehicle_status_s::ARMING_STATE_SHUTDOWN, _actuator_armed, _health_and_arming_checks, false /* fRunPreArmChecks */, &_mavlink_log_pub, arm_disarm_reason_t::shutdown);

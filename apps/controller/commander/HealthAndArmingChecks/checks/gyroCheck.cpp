@@ -8,8 +8,10 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include "gyroCheck.hpp"
+#define LOG_TAG "gyro_check"
+#define LOG_LVL LOG_LVL_INFO
 
+#include "gyroCheck.hpp"
 #include <sensor_calibration/Utilities.hpp>
 
 using namespace time_literals;

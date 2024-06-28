@@ -9,7 +9,7 @@
  ******************************************************************/
 
 #define LOG_TAG "logger"
-#define LOG_LVL LOG_LVL_DBG
+#define LOG_LVL LOG_LVL_INFO
 
 #include <console_buffer/console_buffer.h>
 #include "defines.h"
@@ -123,8 +123,8 @@ int logger_main(int argc, char *argv[]) {
 MSH_CMD_EXPORT_ALIAS(logger_main, logger, logger);
 
 int logger_start() {
-    const char *argv[] = {"logger", "start"};
-    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    static const char *argv[] = {"logger", "start"};
+    int                argc   = sizeof(argv) / sizeof(argv[0]);
     return logger_main(argc, (char **)argv);
 }
 

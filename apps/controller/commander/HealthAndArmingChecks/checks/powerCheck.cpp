@@ -8,6 +8,9 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "power_check"
+#define LOG_LVL LOG_LVL_INFO
+
 #include "powerCheck.hpp"
 #include <circuit_breaker/circuit_breaker.h>
 

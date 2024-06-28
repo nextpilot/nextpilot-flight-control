@@ -1454,8 +1454,8 @@ extern "C" __EXPORT int navigator_main(int argc, char *argv[]) {
 MSH_CMD_EXPORT_ALIAS(navigator_main, navigator, navigator);
 
 int navigator_start() {
-    const char *argv[] = {"navigator", "start"};
-    int         argc   = sizeof(argv) / sizeof(argv[0]);
+    static const char *argv[] = {"navigator", "start"};
+    int                argc   = sizeof(argv) / sizeof(argv[0]);
     return Navigator::main(argc, (char **)argv);
 }
 

@@ -8,6 +8,9 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "mavlink_events"
+#define LOG_LVL LOG_LVL_INFO
+
 #include "mavlink_events.h"
 #include "mavlink_main.h"
 #include <ulog/log.h>

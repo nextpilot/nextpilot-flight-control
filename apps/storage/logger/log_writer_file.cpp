@@ -8,6 +8,9 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "log_writer_file"
+#define LOG_LVL LOG_LVL_INFO
+
 #include "log_writer_file.h"
 #include "messages.h"
 #include <fcntl.h>
