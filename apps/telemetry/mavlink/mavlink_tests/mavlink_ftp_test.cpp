@@ -63,10 +63,10 @@ void MavlinkFtpTest::_init() {
 
 bool MavlinkFtpTest::_create_test_files() {
     int ret = ::mkdir(PX4_MAVLINK_TEST_DATA_DIR, S_IRWXU | S_IRWXG | S_IRWXO);
-    ut_assert("mkdir failed", ret == 0 || errno == EEXIST);
+    ut_assert("mkdir failed", ret == 0 || errno == -EEXIST);
 
     ret = ::mkdir(PX4_MAVLINK_TEST_DATA_DIR "/empty_dir", S_IRWXU | S_IRWXG | S_IRWXO);
-    ut_assert("mkdir failed", ret == 0 || errno == EEXIST);
+    ut_assert("mkdir failed", ret == 0 || errno == -EEXIST);
 
     bool failed = false;
 

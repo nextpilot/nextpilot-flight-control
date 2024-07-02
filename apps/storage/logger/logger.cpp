@@ -501,7 +501,7 @@ bool Logger::initialize_topics() {
 
         int mkdir_ret = mkdir(LOG_ROOT[(int)LogType::Mission], S_IRWXU | S_IRWXG | S_IRWXO);
 
-        if (mkdir_ret != 0 && errno != EEXIST) {
+        if (mkdir_ret != 0 && errno != -EEXIST) {
             PX4_ERR("failed creating log root dir: %s (%i)", LOG_ROOT[(int)LogType::Mission], errno);
         }
     }
@@ -2289,21 +2289,21 @@ void Logger::write_changed_parameters(LogType type) {
 }
 
 void Logger::write_events_file(LogType type) {
-    int fd = open(PX4_ROOTFSDIR "/etc/extras/all_events.json.xz", O_RDONLY);
+    // int fd = open(PX4_ROOTFSDIR "/etc/extras/all_events.json.xz", O_RDONLY);
 
-    if (fd == -1) {
-        if (errno != ENOENT) {
-            PX4_ERR("open failed (%i)", errno);
-        }
+    // if (fd == -1) {
+    //     if (errno != ENOENT) {
+    //         PX4_ERR("open failed (%i)", errno);
+    //     }
 
-        return;
-    }
+    //     return;
+    // }
 
-    write_info_multiple(type, "metadata_events", fd);
+    // write_info_multiple(type, "metadata_events", fd);
 
-    close(fd);
+    // close(fd);
 
-    write_info(type, "metadata_events_sha256", component_information::all_events_sha256);
+    // write_info(type, "metadata_events_sha256", component_information::all_events_sha256);
 }
 
 void Logger::ack_vehicle_command(vehicle_command_s *cmd, uint32_t result) {
