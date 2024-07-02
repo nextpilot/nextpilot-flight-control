@@ -942,7 +942,7 @@ static int param_init() {
         return 0;
     }
 
-    _param_autosave_thread = rt_thread_create("param_autosave", param_autosave_entry, NULL, 2018, 20, 5);
+    _param_autosave_thread = rt_thread_create("param_autosave", param_autosave_entry, NULL, 2048, 20, 5);
 
     if (!_param_autosave_thread) {
         LOG_E("create autosave thread fail");
