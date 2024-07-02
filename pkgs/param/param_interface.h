@@ -59,7 +59,11 @@ uint16_t param_get_count_used();
 bool     param_in_range(param_t idx);
 
 static inline param_t param_for_index(int index) {
-    return (param_t)index;
+    if (index < param_get_count()) {
+        return (param_t)index;
+    }
+
+    return PARAM_INVALID;
 }
 
 static inline param_t param_get_used_index(param_t index) {
