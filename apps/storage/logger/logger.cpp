@@ -2064,8 +2064,7 @@ void Logger::write_parameter_defaults(LogType type) {
     do {
         // skip over all parameters which are not used
         do {
-            // param = param_for_index(param_idx);
-            param = param_idx;
+            param = param_for_index(param_idx);
             ++param_idx;
         } while (param != PARAM_INVALID && !param_value_used(param));
 
@@ -2161,8 +2160,7 @@ void Logger::write_parameters(LogType type) {
     do {
         // skip over all parameters which are not used
         do {
-            // param = param_for_index(param_idx);
-            param = param_idx;
+            param = param_for_index(param_idx);
             ++param_idx;
         } while (param != PARAM_INVALID && !param_value_used(param));
 
@@ -2230,8 +2228,7 @@ void Logger::write_changed_parameters(LogType type) {
     do {
         // skip over all parameters which are not used
         do {
-            // param = param_for_index(param_idx);
-            param = param_idx;
+            param = param_for_index(param_idx);
             ++param_idx;
         } while (param != PARAM_INVALID && !param_value_used(param));
 

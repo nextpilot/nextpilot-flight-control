@@ -47,17 +47,48 @@ uint16_t param_get_count_used();
  */
 bool param_in_range(param_t idx);
 
+/**
+ * Look up a parameter by index.
+ *
+ * @param index		An index from 0 to n, where n is param_count()-1.
+ * @return		A handle to the parameter, or PARAM_INVALID if the index is out of range.
+ */
 static inline param_t param_for_index(int index) {
-    return (param_t)index;
+    if (index < param_get_count()) {
+        return (param_t)index;
+    }
+    return PARAM_INVALID;
 }
 
-static inline param_t param_get_used_index(param_t index) {
-    return index;
+/**
+ * Look up the index of a parameter.
+ *
+ * @param param		The parameter to obtain the index for.
+ * @return		The index, or -1 if the parameter does not exist.
+ */
+static inline int param_get_index(param_t param) {
+    if (param < param_get_count()) {
+        return (unsigned)param;
+    }
+
+    return -1;
 }
 
-static inline param_t param_for_used_index(param_t index) {
-    return index;
-}
+/**
+ * Look up the index of an used parameter.
+ *
+ * @param param		The parameter to obtain the index for.
+ * @return		The index of the parameter in use, or -1 if the parameter does not exist.
+ */
+int param_get_used_index(param_t index);
+
+/**
+ * Look up an used parameter by index.
+ *
+ * @param index		The parameter to obtain the index for.
+ * @return		The index of the parameter in use, or -1 if the parameter does not exist.
+ */
+param_t param_for_used_index(unsigned index);
 
 ///////////////////////////////////////////////////
 // 获取meta信息

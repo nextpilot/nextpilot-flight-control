@@ -8,8 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#ifndef __PARAM_PRIVATE_H__
-#define __PARAM_PRIVATE_H__
+#ifndef __PARAM_DEVICE_H__
+#define __PARAM_DEVICE_H__
 
 
 #include <param_type.h>
@@ -41,20 +41,20 @@ int param_interface_register(param_interface_t *api);
 
 // param 存储接口
 
-typedef struct param_storage_s param_storage_t;
+typedef struct param_device_s param_device_t;
 
 typedef struct {
     int (*init)();
-    int (*open)(param_storage_t *dev, const char *name, uint8_t flag);
-    int (*read)(param_storage_t *dev, int32_t offset, void *buff, uint32_t size);
-    int (*write)(param_storage_t *dev, int32_t offset, void *buff, uint32_t size);
-    int (*close)(param_storage_t *dev);
-} param_storage_ops_t;
+    int (*open)(param_device_t *dev, const char *name, uint8_t flag);
+    int (*read)(param_device_t *dev, int32_t offset, void *buff, uint32_t size);
+    int (*write)(param_device_t *dev, int32_t offset, void *buff, uint32_t size);
+    int (*close)(param_device_t *dev);
+} param_device_ops_t;
 
-struct param_storage_s {
-    const char          *name;
-    uint8_t              type;
-    param_storage_ops_t *ops;
+struct param_device_s {
+    const char         *name;
+    uint8_t             type;
+    param_device_ops_t *ops;
 
     union {
         int         fid;
@@ -62,7 +62,7 @@ struct param_storage_s {
     };
 };
 
-int param_storage_register(param_storage_t *dev);
+int param_device_register(param_device_t *dev);
 
 
-#endif // __PARAM_PRIVATE_H__
+#endif // __PARAM_DEVICE_H__

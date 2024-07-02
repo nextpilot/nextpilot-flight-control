@@ -16,72 +16,71 @@
 #include <rtdbg.h>
 #include <fcntl.h>  // open
 #include <unistd.h> // read/write/lseek
-#include "param_file.h"
-#include "param_private.h"
+#include "param_device_file.h"
 
 #define SEEK_SET 0
 
-static char *param_default_file = NULL;
-static char *param_backup_file  = NULL;
+static char *_param_default_file = nullptr;
+static char *_param_backup_file  = nullptr;
 
 const char *param_get_default_file() {
-    if (param_default_file) {
-        return param_default_file;
+    if (_param_default_file) {
+        return _param_default_file;
     } else {
         return "/param.bin";
     }
 }
 
 int param_set_default_file(const char *filename) {
-    if ((param_backup_file && rt_strcmp(filename, param_backup_file) == 0)) {
+    if ((_param_backup_file && rt_strcmp(filename, _param_backup_file) == 0)) {
         LOG_E("default file can't be the same as the backup file %s", filename);
-        return -1;
+        return -RT_ERROR;
     }
 
-    if (param_default_file != NULL) {
+    if (_param_default_file != nullptr) {
         // we assume this is not in use by some other thread
-        rt_free(param_default_file);
-        param_default_file = NULL;
+        rt_free(_param_default_file);
+        _param_default_file = nullptr;
     }
 
     if (filename) {
-        param_default_file = rt_strdup(filename);
+        _param_default_file = rt_strdup(filename);
     }
 
-    return 0;
+    return RT_EOK;
 }
 
 int param_set_backup_file(const char *filename) {
-    if (param_default_file && strcmp(filename, param_default_file) == 0) {
+    if (_param_default_file && rt_strcmp(filename, _param_default_file) == 0) {
         LOG_E("backup file can't be the same as the default file %s", filename);
-        return -1;
+        return -RT_ERROR;
     }
 
-    if (param_backup_file != NULL) {
+    if (_param_backup_file != nullptr) {
         // we assume this is not in use by some other thread
-        rt_free(param_backup_file);
-        param_backup_file = NULL;
+        rt_free(_param_backup_file);
+        _param_backup_file = nullptr;
     }
 
     if (filename) {
-        param_backup_file = rt_strdup(filename);
+        _param_backup_file = rt_strdup(filename);
 
     } else {
-        param_backup_file = NULL; // backup disabled
+        _param_backup_file = nullptr; // backup disabled
     }
 
-    return 0;
+    return RT_EOK;
 }
 
 const char *param_get_backup_file() {
-    return param_backup_file;
+    return _param_backup_file;
 }
 
 static int _init() {
     return 0;
 }
 
-static int _open(param_storage_t *dev, const char *name, uint8_t flag) {
+static int _open(param_device_t *dev, const char *name, uint8_t flag) {
     if (!dev) {
         return -1;
     }
@@ -112,7 +111,7 @@ static int _open(param_storage_t *dev, const char *name, uint8_t flag) {
     return 0;
 }
 
-static int _read(param_storage_t *dev, int32_t offset, void *buff, uint32_t size) {
+static int _read(param_device_t *dev, int32_t offset, void *buff, uint32_t size) {
     if (!dev || !buff) {
         return -1;
     }
@@ -124,7 +123,7 @@ static int _read(param_storage_t *dev, int32_t offset, void *buff, uint32_t size
     return read(dev->fid, buff, size);
 }
 
-static int _write(param_storage_t *dev, int32_t offset, void *buff, uint32_t size) {
+static int _write(param_device_t *dev, int32_t offset, void *buff, uint32_t size) {
     if (!dev || !buff) {
         return -1;
     }
@@ -136,7 +135,7 @@ static int _write(param_storage_t *dev, int32_t offset, void *buff, uint32_t siz
     return write(dev->fid, buff, size);
 }
 
-static int _close(param_storage_t *dev) {
+static int _close(param_device_t *dev) {
     if (!dev) {
         return -1;
     }
@@ -144,7 +143,7 @@ static int _close(param_storage_t *dev) {
     return close(dev->fid);
 }
 
-static param_storage_ops_t _ops = {
+static param_device_ops_t _ops = {
     .init  = _init,
     .open  = _open,
     .read  = _read,
@@ -152,14 +151,8 @@ static param_storage_ops_t _ops = {
     .close = _close,
 };
 
-static param_storage_t _dev = {
-    .name = "",
+param_device_t _param_file_device = {
+    .name = "file",
     .type = 1,
     .ops  = &_ops,
 };
-
-static int param_storage_file_init() {
-    return param_storage_register(&_dev);
-}
-
-INIT_COMPONENT_EXPORT(param_storage_file_init);

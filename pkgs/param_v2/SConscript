@@ -101,10 +101,10 @@ inc = [cwd]
 src = Glob("*.cpp")
 
 # if GetDepend(["PARAM_USING_STORAGE_FILE"]):
-#     src += ["storage/param_storage_file.c"]
+#     src += ["storage/param_device_file.c"]
 
 # if GetDepend(["PARAM_USING_STORAGE_FM25V02"]):
-#     src += ["storage/param_storage_fm25v02.c"]
+#     src += ["storage/param_device_fm25v02.c"]
 
 # if GetDepend(["PARAM_USING_GLOBAL_AUTOGEN"]):
 #     src += ["interface/param_global_autogen.cpp"]

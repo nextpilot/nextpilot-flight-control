@@ -16,8 +16,7 @@
 #include <string.h>
 #include <ctype.h>
 #include "param.h"
-#include "param_file.h"
-#include "param_private.h"
+#include "param_device_file.h"
 
 static void param_print_status() {
     LOG_RAW("summary: %d/%d (used/total)\n", param_get_count_used(), param_get_count());
@@ -271,9 +270,9 @@ int param_main(int argc, char *argv[]) {
     if (argc >= 2) {
         if (!strcmp(argv[1], "export") || !strcmp(argv[1], "save")) {
             if (argc >= 3) {
-                return param_export_internal(argv[2], NULL);
+                // return param_export_internal(argv[2], NULL);
             } else {
-                return param_export_internal(NULL, NULL);
+                // return param_export_internal(NULL, NULL);
             }
         }
 

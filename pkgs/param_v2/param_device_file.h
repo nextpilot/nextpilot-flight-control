@@ -8,12 +8,16 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#ifndef __PARAM_STORAGE_FILE_H__
-#define __PARAM_STORAGE_FILE_H__
+#ifndef __PARAM_DEVICE_FILE_H__
+#define __PARAM_DEVICE_FILE_H__
+
+#include "param_device.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+extern param_device_t _param_file_device;
 
 /**
  * Get the default parameter file name.
@@ -22,7 +26,8 @@ extern "C" {
  *			a result of a call to param_set_default_file, or the
  *			built-in default.
  */
-const char *param_get_default_file();
+const char *
+param_get_default_file();
 
 /**
  * Set the default parameter file name.
@@ -54,4 +59,4 @@ int param_set_backup_file(const char *filename);
 }
 #endif
 
-#endif // __PARAM_STORAGE_FILE_H__
+#endif // __PARAM_DEVICE_FILE_H__
