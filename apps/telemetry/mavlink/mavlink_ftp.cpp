@@ -282,11 +282,11 @@ void MavlinkFTP::_reply(mavlink_file_transfer_protocol_t *ftp_req) {
 
     // keep a copy of the last sent response ((n)ack), so that if it gets lost and the GCS resends the request,
     // we can simply resend the response.
-    // we only keep small responses to reduce RAM usage and avoid large memcpy's. The larger responses are all data
+    // we only keep small responses to reduce RAM usage and avoid large rt_memcpy's. The larger responses are all data
     // retrievals without side-effects, meaning it's ok to reexecute them if a response gets lost
     if (payload->size <= sizeof(uint32_t)) {
         _last_reply_valid = true;
-        memcpy(_last_reply, ftp_req, sizeof(_last_reply));
+        rt_memcpy(_last_reply, ftp_req, sizeof(_last_reply));
     }
 
     // clear any not used payload data to correctly trim mavlink ftp message reply
@@ -502,7 +502,7 @@ MavlinkFTP::_workOpen(PayloadHeader *payload, int oflag) {
 
     payload->session = 0;
     payload->size    = sizeof(uint32_t);
-    std::memcpy(payload->data, &fileSize, payload->size);
+    rt_memcpy(payload->data, &fileSize, payload->size);
 
     return kErrNone;
 }
@@ -593,7 +593,7 @@ MavlinkFTP::_workWrite(PayloadHeader *payload) {
     }
 
     payload->size = sizeof(uint32_t);
-    std::memcpy(payload->data, &bytes_written, payload->size);
+    rt_memcpy(payload->data, &bytes_written, payload->size);
 
     return kErrNone;
 }
@@ -893,7 +893,7 @@ MavlinkFTP::_workCalcFileCRC32(PayloadHeader *payload) {
     ::close(fd);
 
     payload->size = sizeof(uint32_t);
-    std::memcpy(payload->data, &checksum, payload->size);
+    rt_memcpy(payload->data, &checksum, payload->size);
     return kErrNone;
 }
 

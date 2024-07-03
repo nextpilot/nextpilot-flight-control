@@ -792,7 +792,7 @@ void Mavlink::send_finish() {
 void Mavlink::send_bytes(const uint8_t *buf, unsigned packet_len) {
     if (!_tx_buffer_low) {
         if (_buf_fill + packet_len < sizeof(_buf)) {
-            memcpy(&_buf[_buf_fill], buf, packet_len);
+            rt_memcpy(&_buf[_buf_fill], buf, packet_len);
             _buf_fill += packet_len;
 
         } else {
@@ -1038,11 +1038,11 @@ bool Mavlink::send_autopilot_capabilities() {
         const uint64_t   fw_git_version_binary    = get_firmware_version_binary() & 0xFFFFFFFFFF000000;
         const uint64_t   fw_vendor_version        = get_firmware_vendor_version() >> 8;
         constexpr size_t fw_vendor_version_length = 3;
-        memcpy(&msg.flight_custom_version, &fw_git_version_binary, sizeof(msg.flight_custom_version));
-        memcpy(&msg.flight_custom_version, &fw_vendor_version, fw_vendor_version_length);
-        memcpy(&msg.middleware_custom_version, &fw_git_version_binary, sizeof(msg.middleware_custom_version));
+        rt_memcpy(&msg.flight_custom_version, &fw_git_version_binary, sizeof(msg.flight_custom_version));
+        rt_memcpy(&msg.flight_custom_version, &fw_vendor_version, fw_vendor_version_length);
+        rt_memcpy(&msg.middleware_custom_version, &fw_git_version_binary, sizeof(msg.middleware_custom_version));
         uint64_t os_git_version_binary = get_os_version_binary();
-        memcpy(&msg.os_custom_version, &os_git_version_binary, sizeof(msg.os_custom_version));
+        rt_memcpy(&msg.os_custom_version, &os_git_version_binary, sizeof(msg.os_custom_version));
 #ifdef CONFIG_CDCACM_VENDORID
         msg.vendor_id = CONFIG_CDCACM_VENDORID;
 #else
@@ -1061,7 +1061,7 @@ bool Mavlink::send_autopilot_capabilities() {
         //         px4_guid_t px4_guid;
         //         board_get_px4_guid(px4_guid);
         //         static_assert(sizeof(px4_guid_t) == sizeof(msg.uid2), "GUID byte length mismatch");
-        //         memcpy(&msg.uid2, &px4_guid, sizeof(msg.uid2));
+        //         rt_memcpy(&msg.uid2, &px4_guid, sizeof(msg.uid2));
         // #endif /* BOARD_HAS_NO_UUID */
 
 #ifdef CONFIG_ARCH_BOARD_PX4_SITL
@@ -1088,8 +1088,8 @@ void Mavlink::send_protocol_version() {
     msg.max_version                         = 200;
     uint64_t mavlink_lib_git_version_binary = get_mavlink_lib_version_binary();
     // TODO add when available
-    // memcpy(&msg.spec_version_hash, &mavlink_spec_git_version_binary, sizeof(msg.spec_version_hash));
-    memcpy(&msg.library_version_hash, &mavlink_lib_git_version_binary, sizeof(msg.library_version_hash));
+    // rt_memcpy(&msg.spec_version_hash, &mavlink_spec_git_version_binary, sizeof(msg.spec_version_hash));
+    rt_memcpy(&msg.library_version_hash, &mavlink_lib_git_version_binary, sizeof(msg.library_version_hash));
 
     // Switch to MAVLink 2
     int curr_proto_ver = _protocol_version;
@@ -2540,7 +2540,7 @@ int Mavlink::task_main(int argc, char *argv[]) {
                         e.log_levels   = orb_event.log_levels;
                         static_assert(sizeof(e.arguments) == sizeof(orb_event.arguments),
                                       "uorb message event: arguments size mismatch");
-                        memcpy(e.arguments, orb_event.arguments, sizeof(orb_event.arguments));
+                        rt_memcpy(e.arguments, orb_event.arguments, sizeof(orb_event.arguments));
                         _event_buffer->insert_event(e);
                     }
                 }

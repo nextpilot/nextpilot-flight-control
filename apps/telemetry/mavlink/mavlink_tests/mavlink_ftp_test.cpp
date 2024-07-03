@@ -819,7 +819,7 @@ void MavlinkFtpTest::receive_message_handler_generic(const mavlink_file_transfer
 
 void MavlinkFtpTest::_receive_message_handler_generic(const mavlink_file_transfer_protocol_t *ftp_req) {
     // Move the message into our own member variable
-    memcpy(&_reply_msg, ftp_req, sizeof(mavlink_file_transfer_protocol_t));
+    rt_memcpy(&_reply_msg, ftp_req, sizeof(mavlink_file_transfer_protocol_t));
 }
 
 /// Static method used as callback from MavlinkFTP for stream download testing. This method will be called by MavlinkFTP when
@@ -906,13 +906,13 @@ bool MavlinkFtpTest::_setup_ftp_msg(const MavlinkFTP::PayloadHeader *payload_hea
     uint8_t                    payload_bytes[MAVLINK_MSG_FILE_TRANSFER_PROTOCOL_FIELD_PAYLOAD_LEN] = {};
     MavlinkFTP::PayloadHeader *payload                                                             = reinterpret_cast<MavlinkFTP::PayloadHeader *>(payload_bytes);
 
-    memcpy(payload, payload_header, sizeof(MavlinkFTP::PayloadHeader));
+    rt_memcpy(payload, payload_header, sizeof(MavlinkFTP::PayloadHeader));
 
     payload->seq_number = _expected_seq_number++;
 
     if (data_len != 0) {
         ut_assert("payload size incorrect", data_len == payload->size);
-        memcpy(payload->data, data, data_len);
+        rt_memcpy(payload->data, data, data_len);
     }
 
     payload->burst_complete = 0;

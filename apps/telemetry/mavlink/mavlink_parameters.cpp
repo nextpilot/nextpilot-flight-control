@@ -116,7 +116,7 @@ void MavlinkParametersManager::handle_message(const mavlink_message_t *msg) {
 
             } else {
                 int32_t val;
-                memcpy(&val, &set.param_value, sizeof(int32_t));
+                rt_memcpy(&val, &set.param_value, sizeof(int32_t));
                 req.param_type = MAV_PARAM_TYPE_INT64;
                 req.int_value  = val;
             }
@@ -150,7 +150,7 @@ void MavlinkParametersManager::handle_message(const mavlink_message_t *msg) {
                     param_value.param_index = -1;
                     rt_strncpy(param_value.param_id, HASH_PARAM, MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN);
                     param_value.param_type = MAV_PARAM_TYPE_UINT32;
-                    memcpy(&param_value.param_value, &hash, sizeof(hash));
+                    rt_memcpy(&param_value.param_value, &hash, sizeof(hash));
                     mavlink_msg_param_value_send_struct(_mavlink->get_channel(), &param_value);
 
                 } else {
@@ -373,7 +373,7 @@ bool MavlinkParametersManager::send_one() {
             msg.param_index = -1;
             rt_strncpy(msg.param_id, HASH_PARAM, MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN);
             msg.param_type = MAV_PARAM_TYPE_UINT32;
-            memcpy(&msg.param_value, &hash, sizeof(hash));
+            rt_memcpy(&msg.param_value, &hash, sizeof(hash));
             mavlink_msg_param_value_send_struct(_mavlink->get_channel(), &msg);
 
             /* after this we should start sending all params */
@@ -432,7 +432,7 @@ int MavlinkParametersManager::send_param(param_t param, int component_id) {
             return 2;
         }
 
-        memcpy(&msg.param_value, &param_value, sizeof(param_value));
+        rt_memcpy(&msg.param_value, &param_value, sizeof(param_value));
 
     } else {
         float param_value;
@@ -531,7 +531,7 @@ bool MavlinkParametersManager::send_uavcan() {
 
         } else {
             int32_t val = (int32_t)value.int_value;
-            memcpy(&msg.param_value, &val, sizeof(int32_t));
+            rt_memcpy(&msg.param_value, &val, sizeof(int32_t));
             msg.param_type = MAVLINK_TYPE_INT32_T;
         }
 

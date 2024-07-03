@@ -88,7 +88,7 @@ int MavlinkULog::handle_update(mavlink_channel_t channel) {
                     msg.first_message_offset = ulog_data.first_message_offset;
                     msg.target_system        = _target_system;
                     msg.target_component     = _target_component;
-                    memcpy(msg.data, ulog_data.data, sizeof(msg.data));
+                    rt_memcpy(msg.data, ulog_data.data, sizeof(msg.data));
                     mavlink_msg_logging_data_acked_send_struct(channel, &msg);
                 }
             }
@@ -124,7 +124,7 @@ int MavlinkULog::handle_update(mavlink_channel_t channel) {
                 msg.first_message_offset = ulog_data.first_message_offset;
                 msg.target_system        = _target_system;
                 msg.target_component     = _target_component;
-                memcpy(msg.data, ulog_data.data, sizeof(msg.data));
+                rt_memcpy(msg.data, ulog_data.data, sizeof(msg.data));
                 mavlink_msg_logging_data_acked_send_struct(channel, &msg);
 
             } else {
@@ -134,7 +134,7 @@ int MavlinkULog::handle_update(mavlink_channel_t channel) {
                 msg.first_message_offset = ulog_data.first_message_offset;
                 msg.target_system        = _target_system;
                 msg.target_component     = _target_component;
-                memcpy(msg.data, ulog_data.data, sizeof(msg.data));
+                rt_memcpy(msg.data, ulog_data.data, sizeof(msg.data));
                 mavlink_msg_logging_data_send_struct(channel, &msg);
             }
         }

@@ -82,12 +82,12 @@ private:
                             unsigned chunk_size = math::min(text_size, max_chunk_size);
 
                             if (chunk_size < max_chunk_size) {
-                                memcpy(&msg.text[0], &text[0], chunk_size);
+                                rt_memcpy(&msg.text[0], &text[0], chunk_size);
                                 // pad with zeros
                                 memset(&msg.text[0] + chunk_size, 0, max_chunk_size - chunk_size);
 
                             } else {
-                                memcpy(&msg.text[0], &text[0], chunk_size);
+                                rt_memcpy(&msg.text[0], &text[0], chunk_size);
                             }
 
                             mavlink_msg_statustext_send_struct(_mavlink->get_channel(), &msg);

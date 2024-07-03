@@ -22,6 +22,7 @@ public:
     static constexpr const char *get_name_static() {
         return "OBSTACLE_DISTANCE";
     }
+
     static constexpr uint16_t get_id_static() {
         return MAVLINK_MSG_ID_OBSTACLE_DISTANCE;
     }
@@ -29,14 +30,13 @@ public:
     const char *get_name() const override {
         return get_name_static();
     }
+
     uint16_t get_id() override {
         return get_id_static();
     }
 
     unsigned get_size() override {
-        return _obstacle_distance_fused_sub.advertised() ? (MAVLINK_MSG_ID_OBSTACLE_DISTANCE_LEN +
-                                                            MAVLINK_NUM_NON_PAYLOAD_BYTES) :
-                                                           0;
+        return _obstacle_distance_fused_sub.advertised() ? (MAVLINK_MSG_ID_OBSTACLE_DISTANCE_LEN + MAVLINK_NUM_NON_PAYLOAD_BYTES) : 0;
     }
 
 private:
@@ -54,7 +54,7 @@ private:
 
             msg.time_usec   = obstacle_distance.timestamp;
             msg.sensor_type = obstacle_distance.sensor_type;
-            memcpy(msg.distances, obstacle_distance.distances, sizeof(msg.distances));
+            rt_memcpy(msg.distances, obstacle_distance.distances, sizeof(msg.distances));
             msg.increment    = 0;
             msg.min_distance = obstacle_distance.min_distance;
             msg.max_distance = obstacle_distance.max_distance;

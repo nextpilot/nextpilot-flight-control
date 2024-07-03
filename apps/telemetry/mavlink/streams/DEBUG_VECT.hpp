@@ -22,6 +22,7 @@ public:
     static constexpr const char *get_name_static() {
         return "DEBUG_VECT";
     }
+
     static constexpr uint16_t get_id_static() {
         return MAVLINK_MSG_ID_DEBUG_VECT;
     }
@@ -29,6 +30,7 @@ public:
     const char *get_name() const override {
         return get_name_static();
     }
+
     uint16_t get_id() override {
         return get_id_static();
     }
@@ -50,7 +52,7 @@ private:
         if (_debug_sub.update(&debug)) {
             mavlink_debug_vect_t msg{};
             msg.time_usec = debug.timestamp;
-            memcpy(msg.name, debug.name, sizeof(msg.name));
+            rt_memcpy(msg.name, debug.name, sizeof(msg.name));
             msg.name[sizeof(msg.name) - 1] = '\0'; // enforce null termination
             msg.x                          = debug.x;
             msg.y                          = debug.y;

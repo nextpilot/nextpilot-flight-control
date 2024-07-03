@@ -22,6 +22,7 @@ public:
     static constexpr const char *get_name_static() {
         return "NAMED_VALUE_FLOAT";
     }
+
     static constexpr uint16_t get_id_static() {
         return MAVLINK_MSG_ID_NAMED_VALUE_FLOAT;
     }
@@ -29,6 +30,7 @@ public:
     const char *get_name() const override {
         return get_name_static();
     }
+
     uint16_t get_id() override {
         return get_id_static();
     }
@@ -51,7 +53,7 @@ private:
             mavlink_named_value_float_t msg{};
 
             msg.time_boot_ms = debug.timestamp / 1000ULL;
-            memcpy(msg.name, debug.key, sizeof(msg.name));
+            rt_memcpy(msg.name, debug.key, sizeof(msg.name));
             msg.name[sizeof(msg.name) - 1] = '\0'; // enforce null termination
             msg.value                      = debug.value;
 

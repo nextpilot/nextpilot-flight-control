@@ -186,7 +186,7 @@ void SendProtocol::send_event(const Event &event) const {
     event_msg.sequence              = event.sequence;
     event_msg.log_levels            = event.log_levels;
     static_assert(sizeof(event_msg.arguments) >= sizeof(event.arguments), "MAVLink message arguments buffer too small");
-    memcpy(&event_msg.arguments, event.arguments, sizeof(event.arguments));
+    rt_memcpy(&event_msg.arguments, event.arguments, sizeof(event.arguments));
     mavlink_msg_event_send_struct(_mavlink.get_channel(), &event_msg);
 }
 

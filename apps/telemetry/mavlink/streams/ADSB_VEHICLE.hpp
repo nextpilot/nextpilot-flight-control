@@ -22,6 +22,7 @@ public:
     static constexpr const char *get_name_static() {
         return "ADSB_VEHICLE";
     }
+
     static constexpr uint16_t get_id_static() {
         return MAVLINK_MSG_ID_ADSB_VEHICLE;
     }
@@ -29,6 +30,7 @@ public:
     const char *get_name() const override {
         return get_name_static();
     }
+
     uint16_t get_id() override {
         return get_id_static();
     }
@@ -67,24 +69,36 @@ private:
             msg.heading       = (pos.heading + M_PI_F) / M_PI_F * 180.0f * 100.0f;
             msg.hor_velocity  = pos.hor_velocity * 100.0f;
             msg.ver_velocity  = pos.ver_velocity * 100.0f;
-            memcpy(&msg.callsign[0], &pos.callsign[0], sizeof(msg.callsign));
+            rt_memcpy(&msg.callsign[0], &pos.callsign[0], sizeof(msg.callsign));
             msg.emitter_type = pos.emitter_type;
             msg.tslc         = pos.tslc;
             msg.squawk       = pos.squawk;
 
             msg.flags = 0;
 
-            if (pos.flags & transponder_report_s::PX4_ADSB_FLAGS_VALID_COORDS) { msg.flags |= ADSB_FLAGS_VALID_COORDS; }
+            if (pos.flags & transponder_report_s::PX4_ADSB_FLAGS_VALID_COORDS) {
+                msg.flags |= ADSB_FLAGS_VALID_COORDS;
+            }
 
-            if (pos.flags & transponder_report_s::PX4_ADSB_FLAGS_VALID_ALTITUDE) { msg.flags |= ADSB_FLAGS_VALID_ALTITUDE; }
+            if (pos.flags & transponder_report_s::PX4_ADSB_FLAGS_VALID_ALTITUDE) {
+                msg.flags |= ADSB_FLAGS_VALID_ALTITUDE;
+            }
 
-            if (pos.flags & transponder_report_s::PX4_ADSB_FLAGS_VALID_HEADING) { msg.flags |= ADSB_FLAGS_VALID_HEADING; }
+            if (pos.flags & transponder_report_s::PX4_ADSB_FLAGS_VALID_HEADING) {
+                msg.flags |= ADSB_FLAGS_VALID_HEADING;
+            }
 
-            if (pos.flags & transponder_report_s::PX4_ADSB_FLAGS_VALID_VELOCITY) { msg.flags |= ADSB_FLAGS_VALID_VELOCITY; }
+            if (pos.flags & transponder_report_s::PX4_ADSB_FLAGS_VALID_VELOCITY) {
+                msg.flags |= ADSB_FLAGS_VALID_VELOCITY;
+            }
 
-            if (pos.flags & transponder_report_s::PX4_ADSB_FLAGS_VALID_CALLSIGN) { msg.flags |= ADSB_FLAGS_VALID_CALLSIGN; }
+            if (pos.flags & transponder_report_s::PX4_ADSB_FLAGS_VALID_CALLSIGN) {
+                msg.flags |= ADSB_FLAGS_VALID_CALLSIGN;
+            }
 
-            if (pos.flags & transponder_report_s::PX4_ADSB_FLAGS_VALID_SQUAWK) { msg.flags |= ADSB_FLAGS_VALID_SQUAWK; }
+            if (pos.flags & transponder_report_s::PX4_ADSB_FLAGS_VALID_SQUAWK) {
+                msg.flags |= ADSB_FLAGS_VALID_SQUAWK;
+            }
 
             mavlink_msg_adsb_vehicle_send_struct(_mavlink->get_channel(), &msg);
             sent = true;

@@ -22,6 +22,7 @@ public:
     static constexpr const char *get_name_static() {
         return "DEBUG_FLOAT_ARRAY";
     }
+
     static constexpr uint16_t get_id_static() {
         return MAVLINK_MSG_ID_DEBUG_FLOAT_ARRAY;
     }
@@ -29,6 +30,7 @@ public:
     const char *get_name() const override {
         return get_name_static();
     }
+
     uint16_t get_id() override {
         return get_id_static();
     }
@@ -52,7 +54,7 @@ private:
 
             msg.time_usec = debug.timestamp;
             msg.array_id  = debug.id;
-            memcpy(msg.name, debug.name, sizeof(msg.name));
+            rt_memcpy(msg.name, debug.name, sizeof(msg.name));
             msg.name[sizeof(msg.name) - 1] = '\0'; // enforce null termination
 
             for (size_t i = 0; i < debug_array_s::ARRAY_SIZE; i++) {

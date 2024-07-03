@@ -22,6 +22,7 @@ public:
     static constexpr const char *get_name_static() {
         return "GPS_RTCM_DATA";
     }
+
     static constexpr uint16_t get_id_static() {
         return MAVLINK_MSG_ID_GPS_RTCM_DATA;
     }
@@ -29,6 +30,7 @@ public:
     const char *get_name() const override {
         return get_name_static();
     }
+
     uint16_t get_id() override {
         return get_id_static();
     }
@@ -53,7 +55,7 @@ private:
 
             msg.len   = gps_inject_data.len;
             msg.flags = gps_inject_data.flags;
-            memcpy(msg.data, gps_inject_data.data, sizeof(msg.data));
+            rt_memcpy(msg.data, gps_inject_data.data, sizeof(msg.data));
 
             mavlink_msg_gps_rtcm_data_send_struct(_mavlink->get_channel(), &msg);
 

@@ -1735,7 +1735,7 @@ void MavlinkReceiver::handle_message_obstacle_distance(mavlink_message_t *msg) {
 
     obstacle_distance.timestamp   = hrt_absolute_time();
     obstacle_distance.sensor_type = mavlink_obstacle_distance.sensor_type;
-    memcpy(obstacle_distance.distances, mavlink_obstacle_distance.distances, sizeof(obstacle_distance.distances));
+    rt_memcpy(obstacle_distance.distances, mavlink_obstacle_distance.distances, sizeof(obstacle_distance.distances));
 
     if (mavlink_obstacle_distance.increment_f > 0.f) {
         obstacle_distance.increment = mavlink_obstacle_distance.increment_f;
@@ -1763,7 +1763,7 @@ void MavlinkReceiver::handle_message_tunnel(mavlink_message_t *msg) {
     tunnel.target_system    = mavlink_tunnel.target_system;
     tunnel.target_component = mavlink_tunnel.target_component;
     tunnel.payload_length   = mavlink_tunnel.payload_length;
-    memcpy(tunnel.payload, mavlink_tunnel.payload, sizeof(tunnel.payload));
+    rt_memcpy(tunnel.payload, mavlink_tunnel.payload, sizeof(tunnel.payload));
     static_assert(sizeof(tunnel.payload) == sizeof(mavlink_tunnel.payload), "mavlink_tunnel.payload size mismatch");
 
     _mavlink_tunnel_pub.publish(tunnel);
@@ -2326,7 +2326,7 @@ void MavlinkReceiver::handle_message_adsb_vehicle(mavlink_message_t *msg) {
     t.heading       = adsb.heading / 100.0f / 180.0f * M_PI_F - M_PI_F;
     t.hor_velocity  = adsb.hor_velocity / 100.0f;
     t.ver_velocity  = adsb.ver_velocity / 100.0f;
-    memcpy(&t.callsign[0], &adsb.callsign[0], sizeof(t.callsign));
+    rt_memcpy(&t.callsign[0], &adsb.callsign[0], sizeof(t.callsign));
     t.emitter_type = adsb.emitter_type;
     t.tslc         = adsb.tslc;
     t.squawk       = adsb.squawk;
@@ -2471,8 +2471,8 @@ void MavlinkReceiver::handle_message_gps_rtcm_data(mavlink_message_t *msg) {
     gps_inject_data_topic.len   = math::min((int)sizeof(gps_rtcm_data_msg.data),
                                             (int)sizeof(uint8_t) * gps_rtcm_data_msg.len);
     gps_inject_data_topic.flags = gps_rtcm_data_msg.flags;
-    memcpy(gps_inject_data_topic.data, gps_rtcm_data_msg.data,
-           math::min((int)sizeof(gps_inject_data_topic.data), (int)sizeof(uint8_t) * gps_inject_data_topic.len));
+    rt_memcpy(gps_inject_data_topic.data, gps_rtcm_data_msg.data,
+              math::min((int)sizeof(gps_inject_data_topic.data), (int)sizeof(uint8_t) * gps_inject_data_topic.len));
 
     gps_inject_data_topic.timestamp = hrt_absolute_time();
     _gps_inject_data_pub.publish(gps_inject_data_topic);
@@ -2617,7 +2617,7 @@ void MavlinkReceiver::handle_message_named_value_float(mavlink_message_t *msg) {
     debug_key_value_s debug_topic{};
 
     debug_topic.timestamp = hrt_absolute_time();
-    memcpy(debug_topic.key, debug_msg.name, sizeof(debug_topic.key));
+    rt_memcpy(debug_topic.key, debug_msg.name, sizeof(debug_topic.key));
     debug_topic.key[sizeof(debug_topic.key) - 1] = '\0'; // enforce null termination
     debug_topic.value                            = debug_msg.value;
 
@@ -2644,7 +2644,7 @@ void MavlinkReceiver::handle_message_debug_vect(mavlink_message_t *msg) {
     debug_vect_s debug_topic{};
 
     debug_topic.timestamp = hrt_absolute_time();
-    memcpy(debug_topic.name, debug_msg.name, sizeof(debug_topic.name));
+    rt_memcpy(debug_topic.name, debug_msg.name, sizeof(debug_topic.name));
     debug_topic.name[sizeof(debug_topic.name) - 1] = '\0'; // enforce null termination
     debug_topic.x                                  = debug_msg.x;
     debug_topic.y                                  = debug_msg.y;
@@ -2661,7 +2661,7 @@ void MavlinkReceiver::handle_message_debug_float_array(mavlink_message_t *msg) {
 
     debug_topic.timestamp = hrt_absolute_time();
     debug_topic.id        = debug_msg.array_id;
-    memcpy(debug_topic.name, debug_msg.name, sizeof(debug_topic.name));
+    rt_memcpy(debug_topic.name, debug_msg.name, sizeof(debug_topic.name));
     debug_topic.name[sizeof(debug_topic.name) - 1] = '\0'; // enforce null termination
 
     for (size_t i = 0; i < debug_array_s::ARRAY_SIZE; i++) {
@@ -2683,24 +2683,24 @@ void MavlinkReceiver::handle_message_onboard_computer_status(mavlink_message_t *
 
     onboard_computer_status_topic.type = status_msg.type;
 
-    memcpy(onboard_computer_status_topic.cpu_cores, status_msg.cpu_cores, sizeof(status_msg.cpu_cores));
-    memcpy(onboard_computer_status_topic.cpu_combined, status_msg.cpu_combined, sizeof(status_msg.cpu_combined));
-    memcpy(onboard_computer_status_topic.gpu_cores, status_msg.gpu_cores, sizeof(status_msg.gpu_cores));
-    memcpy(onboard_computer_status_topic.gpu_combined, status_msg.gpu_combined, sizeof(status_msg.gpu_combined));
+    rt_memcpy(onboard_computer_status_topic.cpu_cores, status_msg.cpu_cores, sizeof(status_msg.cpu_cores));
+    rt_memcpy(onboard_computer_status_topic.cpu_combined, status_msg.cpu_combined, sizeof(status_msg.cpu_combined));
+    rt_memcpy(onboard_computer_status_topic.gpu_cores, status_msg.gpu_cores, sizeof(status_msg.gpu_cores));
+    rt_memcpy(onboard_computer_status_topic.gpu_combined, status_msg.gpu_combined, sizeof(status_msg.gpu_combined));
     onboard_computer_status_topic.temperature_board = status_msg.temperature_board;
-    memcpy(onboard_computer_status_topic.temperature_core, status_msg.temperature_core,
-           sizeof(status_msg.temperature_core));
-    memcpy(onboard_computer_status_topic.fan_speed, status_msg.fan_speed, sizeof(status_msg.fan_speed));
+    rt_memcpy(onboard_computer_status_topic.temperature_core, status_msg.temperature_core,
+              sizeof(status_msg.temperature_core));
+    rt_memcpy(onboard_computer_status_topic.fan_speed, status_msg.fan_speed, sizeof(status_msg.fan_speed));
     onboard_computer_status_topic.ram_usage = status_msg.ram_usage;
     onboard_computer_status_topic.ram_total = status_msg.ram_total;
-    memcpy(onboard_computer_status_topic.storage_type, status_msg.storage_type, sizeof(status_msg.storage_type));
-    memcpy(onboard_computer_status_topic.storage_usage, status_msg.storage_usage, sizeof(status_msg.storage_usage));
-    memcpy(onboard_computer_status_topic.storage_total, status_msg.storage_total, sizeof(status_msg.storage_total));
-    memcpy(onboard_computer_status_topic.link_type, status_msg.link_type, sizeof(status_msg.link_type));
-    memcpy(onboard_computer_status_topic.link_tx_rate, status_msg.link_tx_rate, sizeof(status_msg.link_tx_rate));
-    memcpy(onboard_computer_status_topic.link_rx_rate, status_msg.link_rx_rate, sizeof(status_msg.link_rx_rate));
-    memcpy(onboard_computer_status_topic.link_tx_max, status_msg.link_tx_max, sizeof(status_msg.link_tx_max));
-    memcpy(onboard_computer_status_topic.link_rx_max, status_msg.link_rx_max, sizeof(status_msg.link_rx_max));
+    rt_memcpy(onboard_computer_status_topic.storage_type, status_msg.storage_type, sizeof(status_msg.storage_type));
+    rt_memcpy(onboard_computer_status_topic.storage_usage, status_msg.storage_usage, sizeof(status_msg.storage_usage));
+    rt_memcpy(onboard_computer_status_topic.storage_total, status_msg.storage_total, sizeof(status_msg.storage_total));
+    rt_memcpy(onboard_computer_status_topic.link_type, status_msg.link_type, sizeof(status_msg.link_type));
+    rt_memcpy(onboard_computer_status_topic.link_tx_rate, status_msg.link_tx_rate, sizeof(status_msg.link_tx_rate));
+    rt_memcpy(onboard_computer_status_topic.link_rx_rate, status_msg.link_rx_rate, sizeof(status_msg.link_rx_rate));
+    rt_memcpy(onboard_computer_status_topic.link_tx_max, status_msg.link_tx_max, sizeof(status_msg.link_tx_max));
+    rt_memcpy(onboard_computer_status_topic.link_rx_max, status_msg.link_rx_max, sizeof(status_msg.link_rx_max));
 
     _onboard_computer_status_pub.publish(onboard_computer_status_topic);
 }
@@ -2838,9 +2838,9 @@ void MavlinkReceiver::handle_message_gimbal_device_information(mavlink_message_t
                   "model_name length doesn't match");
     static_assert(sizeof(gimbal_information.custom_name) == sizeof(gimbal_device_info_msg.custom_name),
                   "custom_name length doesn't match");
-    memcpy(gimbal_information.vendor_name, gimbal_device_info_msg.vendor_name, sizeof(gimbal_information.vendor_name));
-    memcpy(gimbal_information.model_name, gimbal_device_info_msg.model_name, sizeof(gimbal_information.model_name));
-    memcpy(gimbal_information.custom_name, gimbal_device_info_msg.custom_name, sizeof(gimbal_information.custom_name));
+    rt_memcpy(gimbal_information.vendor_name, gimbal_device_info_msg.vendor_name, sizeof(gimbal_information.vendor_name));
+    rt_memcpy(gimbal_information.model_name, gimbal_device_info_msg.model_name, sizeof(gimbal_information.model_name));
+    rt_memcpy(gimbal_information.custom_name, gimbal_device_info_msg.custom_name, sizeof(gimbal_information.custom_name));
     gimbal_device_info_msg.vendor_name[sizeof(gimbal_device_info_msg.vendor_name) - 1] = '\0';
     gimbal_device_info_msg.model_name[sizeof(gimbal_device_info_msg.model_name) - 1]   = '\0';
     gimbal_device_info_msg.custom_name[sizeof(gimbal_device_info_msg.custom_name) - 1] = '\0';
