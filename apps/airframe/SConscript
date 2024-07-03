@@ -3,14 +3,11 @@ import rtconfig
 from building import *
 
 cwd = GetCurrentDir()
-objs = []
 
-if not GetDepend(["SYS_USING_AIRFRAME"]):
-    Return("objs")
+inc = [cwd]
+src = Glob("*.cpp") + Glob("1102_sih_standard_vtol/1102_sih_standard_vtol.cpp")
 
-
-src = Glob("*.cpp")
-objs += DefineGroup("air", src, depend=["SYS_USING_AIRFRAME"])
+objs = DefineGroup("air", src, depend=["SYS_USING_AIRFRAME"], CPPPATH=inc)
 
 for d in os.listdir(cwd):
     path = os.path.join(cwd, d)
