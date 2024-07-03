@@ -10,7 +10,7 @@
 
 
 #define LOG_TAG "mavlink.param"
-#define LOG_LVL LOG_INFO_LVL
+#define LOG_LVL LOG_LVL_INFO
 
 #include <stdio.h>
 #include "mavlink_parameters.h"
@@ -28,7 +28,7 @@ unsigned MavlinkParametersManager::get_size() {
 void MavlinkParametersManager::handle_message(const mavlink_message_t *msg) {
     switch (msg->msgid) {
     case MAVLINK_MSG_ID_PARAM_REQUEST_LIST: {
-        LOG_D("param request list");
+        LOG_D("request list");
         /* request all parameters */
         mavlink_param_request_list_t req_list;
         mavlink_msg_param_request_list_decode(msg, &req_list);
@@ -64,7 +64,7 @@ void MavlinkParametersManager::handle_message(const mavlink_message_t *msg) {
         /* set parameter */
         mavlink_param_set_t set;
         mavlink_msg_param_set_decode(msg, &set);
-        LOG_D("param request read %s", set.param_id);
+        LOG_D("request read %s", set.param_id);
 
         if (set.target_system == mavlink_system.sysid && (set.target_component == mavlink_system.compid || set.target_component == MAV_COMP_ID_ALL)) {
             /* local name buffer to enforce null-terminated string */
@@ -133,7 +133,7 @@ void MavlinkParametersManager::handle_message(const mavlink_message_t *msg) {
         /* request one parameter */
         mavlink_param_request_read_t req_read;
         mavlink_msg_param_request_read_decode(msg, &req_read);
-        LOG_D("param request read %s", req_read.param_id);
+        LOG_D("request read %s", req_read.param_id);
 
         if (req_read.target_system == mavlink_system.sysid
             && (req_read.target_component == mavlink_system.compid || req_read.target_component == MAV_COMP_ID_ALL)) {
@@ -483,7 +483,7 @@ int MavlinkParametersManager::send_param(param_t param, int component_id) {
     /* default component ID */
     if (component_id < 0) {
         mavlink_msg_param_value_send_struct(_mavlink->get_channel(), &msg);
-
+        LOG_D("send %s (idx=%d)", param_get_name(param), param);
     } else {
         // Re-pack the message with a different component ID
         mavlink_message_t mavlink_packet;
