@@ -109,7 +109,7 @@ static int param_do_export(const char *param_file_name) {
         param_save_default();
     } else {
 #ifdef PARAM_USING_DEVICE_FILE
-        _param_file_device.ops->open(&_param_file_device, param_file_name, 'r');
+        _param_file_device.ops->open(&_param_file_device, param_file_name, 'w');
         param_export_internal(&_param_file_device, (param_filter_func) nullptr);
         _param_file_device.ops->close(&_param_file_device);
 #endif // PARAM_USING_DEVICE_FILE

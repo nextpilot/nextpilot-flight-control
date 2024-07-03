@@ -948,22 +948,22 @@ int param_load_default() {
 
         // 最多尝试3次
         for (int attempt = 1; attempt < 3; attempt++) {
-            // 先打开设备
-            if (dev->ops->open(dev, nullptr, 'r') != RT_EOK) {
-                continue;
-            }
+            bool success = false;
 
-            // 重置并导入参数
-            if (param_import_internal(dev, nullptr) != RT_EOK) {
-                continue;
+            // 先打开设备
+            bool opened = (dev->ops->open(dev, nullptr, 'r') == RT_EOK);
+
+            if (opened) {
+                success = (param_import_internal(dev, nullptr) == RT_EOK);
             }
 
             // 关闭设备
-            if (dev->ops->close(dev) != RT_EOK) {
-                continue;
-            }
+            dev->ops->close(dev);
 
-            break;
+            // 导入成功就跳出循环
+            if (success) {
+                break;
+            }
         }
     }
 
@@ -981,22 +981,23 @@ int param_save_default() {
 
         // 最多尝试3次
         for (int attempt = 1; attempt < 3; attempt++) {
+            bool success = false;
+
             // 先打开设备
-            if (dev->ops->open(dev, nullptr, 'r') != RT_EOK) {
-                continue;
-            }
+            bool opened = (dev->ops->open(dev, nullptr, 'w') == RT_EOK);
 
             // 导出param
-            if (param_export_internal(dev, nullptr) != RT_EOK) {
-                continue;
+            if (opened) {
+                success = param_export_internal(dev, nullptr) == RT_EOK;
             }
 
             // 关闭设备
-            if (dev->ops->close(dev) != RT_EOK) {
-                continue;
-            }
+            dev->ops->close(dev);
 
-            break;
+            // 保存成功就跳出循环
+            if (success) {
+                break;
+            }
         }
     }
 
