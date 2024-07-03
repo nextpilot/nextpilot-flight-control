@@ -1133,4 +1133,4 @@ static int param_init() {
     return RT_EOK;
 }
 
-INIT_EXPORT(param_init, "5.2");
+INIT_EXPORT(param_init, "5.0.2");
