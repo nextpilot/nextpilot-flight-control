@@ -10,8 +10,12 @@
 
 #include "airframe.h"
 
-// static param_config_s _params[] = {
-//     PARAM_CONFIG_INT32(SYS_HITL, 2),
-//     PARAM_CONFIG_INT32(SIH_VEHICLE_TYPE, 3),
-//     PARAM_CONFIG_INT32(MAV_0_CONFIG, 0),
-// };
+static param_list_t _params[] = {
+    PARAM_CONFIG_INT32(SYS_HITL, 2),
+    PARAM_CONFIG_INT32(SIH_VEHICLE_TYPE, 3),
+    PARAM_CONFIG_INT32(MAV_0_CONFIG, 0),
+
+    PARAM_CONFIG_INT32(BAT_N_CELLS, 6),
+    PARAM_CONFIG_FLOAT(BAT_V_CHARGED, 4.2),
+    PARAM_CONFIG_FLOAT(BAT_V_EMPTY, 3.7),
+};

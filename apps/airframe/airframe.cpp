@@ -155,14 +155,15 @@ void print_airframe_info() {
 static int airframe_param_init() {
     airframe_section_init();
 
-    // // TODO: 当前情况下只要选择仿真，就只使用1102这一个机架，根据需要，后续再修改这部分逻辑
-    // #ifdef BSP_SITL_QEMU
-    //     int32_t sys_autoconfig = 1;
-    //     param_set_int32(param_find("SYS_AUTOSTART"), 1102);
-    // #else
+// // TODO: 当前情况下只要选择仿真，就只使用1102这一个机架，根据需要，后续再修改这部分逻辑
+#ifdef BSP_SITL_QEMU
+    int32_t sys_autoconfig = 1;
+    param_set_int32(param_find("SYS_AUTOSTART"), 1102);
+    param_set_int32(param_find("SYS_HITL"), 2);
+#else
     int32_t sys_autoconfig = 0;
     param_get(param_find("SYS_AUTOCONFIG"), &sys_autoconfig);
-    // #endif // BSP_SITL_QEMU
+#endif // BSP_SITL_QEMU
 
     if (sys_autoconfig != 0) {
         // reset all param to default, exclued the next
@@ -173,16 +174,13 @@ static int airframe_param_init() {
         if (info && info->params.list) {
             for (uint8_t i = 0; i < info->params.count; i++) {
                 param_set(param_find(info->params.list[i].name), &info->params.list[i].value);
+                // TODO: 该版本无此函数
                 // param_print(param_find(info->params.list[i].name), i == 0);
             }
             LOG_W("reset airframe(id=%d) parameters", info->id);
         }
         param_set_int32(param_find("SYS_AUTOCONFIG"), 0);
     }
-
-#ifdef BSP_SITL_QEMU
-    // param_set_int32(param_find("SYS_HITL"), 2);
-#endif
 
     int32_t sys_autostart = 0;
     param_get(param_find("SYS_AUTOSTART"), &sys_autostart);
