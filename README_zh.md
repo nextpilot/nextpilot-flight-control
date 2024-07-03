@@ -12,7 +12,7 @@ NextPilot飞控系统是一款功能丰富、高度扩展、稳定可靠的国�
 
 2. 丰富的自动驾驶功能。核心算法移植于著名开源飞控软件 [PX4 V1.14.2](https://github.com/PX4/PX4-Autopilot/tree/v1.14.2)，它由来自全世界工业界和学术界的开发者维护，支持多旋翼、复合翼、固定翼、潜水艇等。
 
-3. 高度的可扩展性。拥有良好的软件架构（[uORB](pkgs/uORB/uORB.h)、[PARAM](pkgs/PARAM/PARAM.h)、[AIRFRAME](apps/airframe/README.md)）、代码松耦合（[自动初始化机制](https://www.rt-thread.org/document/site/#/rt-线程版本/rt线程标准/编程手册/basic/basic？id=rt线程-%e8%87%aa%e5%8a%a8%e5%88%9d%e5%a7%8b%e5%8c%96%e6%9c%ba%e5%88%b6)），充分模块化（每个文件夹对应一个独立模块），易于定制和扩展等特性。
+3. 高度的可扩展性。拥有良好的软件架构（[uORB](pkgs/uORB/uORB.h)、[PARAM](pkgs/param/param.h)、[AIRFRAME](apps/airframe/README.md)）、代码松耦合（[自动初始化机制](https://www.rt-thread.org/document/site/#/rt-线程版本/rt线程标准/编程手册/basic/basic？id=rt线程-%e8%87%aa%e5%8a%a8%e5%88%9d%e5%a7%8b%e5%8c%96%e6%9c%ba%e5%88%b6)），充分模块化（每个文件夹对应一个独立模块），易于定制和扩展等特性。
 
 4. 高效的开发效率。支持 MATLAB/Simulink [基于模型的设计](https://www.mathworks.com/help/simulink/gs/model-based-design.html)，在统一的 Simulink 环境下完成设计、仿真、测试和一键代码生成，快速且经济高效地开发控制系统、信号处理系统和通信系统。
 5. 支持多种飞行仿真，如模型在环（Model in Loop）、软件在环（[Software in Loop](bsps/sitl/qemu/README.md)）、硬件在环（Hardware in Loop）和硬件内飞行仿真（[Simulation in Hardware](apps/simulation/sih/sih.cpp)），以及多机编队仿真。
