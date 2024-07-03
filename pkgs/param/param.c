@@ -8,7 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#define LOG_TAG "param.main"
+#define LOG_TAG "param_main"
+#define LOG_LVL LOG_INFO_LVL
 
 #include <rtthread.h>
 #include <rtdbg.h>
@@ -270,8 +271,7 @@ int param_do_show(const char *search_string, bool only_changed) {
 
 int param_main(int argc, char *argv[]) {
     if (argc >= 2) {
-        if (!strcmp(argv[1], "export") ||
-            !strcmp(argv[1], "save")) {
+        if (!strcmp(argv[1], "export") || !strcmp(argv[1], "save")) {
             if (argc >= 3) {
                 return param_export_internal(argv[2], NULL);
             } else {
@@ -288,8 +288,7 @@ int param_main(int argc, char *argv[]) {
         //     }
         // }
 
-        if (!strcmp(argv[1], "import") ||
-            !strcmp(argv[1], "load")) {
+        if (!strcmp(argv[1], "import") || !strcmp(argv[1], "load")) {
             if (argc >= 3) {
                 return param_import_internal(argv[2], NULL);
             } else {

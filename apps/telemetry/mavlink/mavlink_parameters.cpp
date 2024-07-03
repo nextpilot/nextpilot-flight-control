@@ -386,11 +386,12 @@ bool MavlinkParametersManager::send_one() {
         /* look for the first parameter which is used */
         param_t p;
 
-        do {
-            /* walk through all parameters, including unused ones */
-            p = param_for_index(_send_all_index);
-            _send_all_index++;
-        } while (p != PARAM_INVALID && !param_value_used(p));
+        // TODO: We are currently in the debugging phase, delivering all parameters.
+        // do {
+        /* walk through all parameters, including unused ones */
+        p = param_for_index(_send_all_index);
+        _send_all_index++;
+        // } while (p != PARAM_INVALID && !param_value_used(p));
 
         if (p != PARAM_INVALID) {
             send_param(p);

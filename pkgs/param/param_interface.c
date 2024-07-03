@@ -13,6 +13,8 @@
 
 #include <rtthread.h>
 #include <rtdbg.h>
+#include <string.h>
+#include "crc32.h"
 #include "param_interface.h"
 #ifdef PKG_USING_HRTIMER
 #   include <hrtimer.h>
@@ -286,7 +288,11 @@ int param_set_used(param_t idx) {
 }
 
 bool param_value_used(param_t idx) {
-    return param_get_status(idx).actived;
+    if (param_in_range(idx)) {
+        return param_get_status(idx).actived;
+    }
+
+    return false;
 }
 
 bool param_value_unsaved(param_t idx) {
