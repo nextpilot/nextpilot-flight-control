@@ -70,17 +70,13 @@ typedef struct param_config_s {
 #   define AIRFRAME_EXPORT RT_USED const airframe_info_t RT_SECTION("NextpilotAirframeTab")
 #endif
 
-#define AIRFRAME_DEFINE_ALL(_name, _id, _param, _mixer)  \
+#define AIRFRAME_DEFINE_ALL(_name, _id, _param)          \
     AIRFRAME_EXPORT __airframe_##_name = {               \
         .name   = #_name,                                \
         .id     = _id,                                   \
         .params = {                                      \
             .count = sizeof(_param) / sizeof(_param[0]), \
             .point = _param,                             \
-        },                                               \
-        .mixers = {                                      \
-            .count = sizeof(_mixer) / sizeof(_mixer[0]), \
-            .point = _mixer,                             \
         },                                               \
     }
 

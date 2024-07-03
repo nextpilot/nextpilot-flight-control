@@ -19,3 +19,5 @@ static param_config_t _params[] = {
     PARAM_CONFIG_FLOAT(BAT_V_CHARGED, 4.2),
     PARAM_CONFIG_FLOAT(BAT_V_EMPTY, 3.7),
 };
+
+AIRFRAME_DEFINE_ALL(sih_standard_vtol, 1102, _params);

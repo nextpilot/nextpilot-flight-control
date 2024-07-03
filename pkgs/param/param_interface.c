@@ -336,7 +336,7 @@ void param_reset_all_internal(bool notify) {
         param_reset_internal(i, false);
     }
 
-    LOG_I("reset all params");
+    LOG_W("reset all params");
 
     // 重置结束之后发送param_update消息
     if (notify) {

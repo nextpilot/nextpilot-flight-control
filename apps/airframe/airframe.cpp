@@ -221,7 +221,7 @@ static int airframe_param_init() {
         if (params && count > 0) {
             LOG_I("reset airframe %d params", sys_autostart);
 
-            for (uint8_t i = 0; i < count; i++) {
+            for (param_t i = 0; i < count; i++) {
                 param_t index = param_find(params[i].name);
                 if (index == PARAM_INVALID) {
                     continue;
