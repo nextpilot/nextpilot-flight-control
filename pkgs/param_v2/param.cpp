@@ -853,18 +853,11 @@ int param_export_internal(param_device_t *dev, param_filter_func filter) {
     return 0;
 }
 
-int param_import_internal(const char *devname, param_filter_func filter) {
-    param_device_t *dev = __param_device__[0];
-
+int param_import_internal(param_device_t *dev, param_filter_func filter) {
     if (!dev) {
         return -RT_ERROR;
     }
 
-    // 先打开设备
-    if (dev->ops->open(dev, devname, 'r') != 0) {
-        // LOG_E("open %s fail", devname);
-        return -RT_ERROR;
-    }
 
     int             ret = -RT_ERROR;
     param_header_t  header;
@@ -878,7 +871,7 @@ int param_import_internal(const char *devname, param_filter_func filter) {
     }
     // 对比magic魔术字
     if (rt_strncmp(header.magic, "nextpilot", sizeof(header.magic)) != 0 || // magic不对
-        header.utc < 1514764800LL ||                                        // 时间戳不对
+        header.utc < 1514764800ULL ||                                       // 时间戳不对
         header.count == 0) {                                                // 长度为0
         LOG_D("check header fail");
         goto __exit;
@@ -898,7 +891,9 @@ int param_import_internal(const char *devname, param_filter_func filter) {
     // 读取param并写入系统
     for (uint16_t idx = 0; idx < header.count; idx++) {
         // 读取一个param
-        dev->ops->read(dev, sizeof(header) + idx * sizeof(payload), &payload, sizeof(payload));
+        if (dev->ops->read(dev, sizeof(header) + idx * sizeof(payload), &payload, sizeof(payload)) != sizeof(payload)) {
+            continue;
+        }
         // 查找系统中是否已存在
         param_t pp = param_find_no_notification(payload.name);
         if (pp == PARAM_INVALID || param_get_type(pp) != payload.type) {
@@ -919,9 +914,7 @@ int param_import_internal(const char *devname, param_filter_func filter) {
     // param_notify_autosave();
     param_notify_changes();
 
-    if (devname) {
-        LOG_I("import params from %s", devname);
-    } else if (dev->name) {
+    if (dev->name) {
         LOG_I("import params from %s", dev->name);
     } else {
         LOG_I("import params from %s", "default");
@@ -930,23 +923,51 @@ int param_import_internal(const char *devname, param_filter_func filter) {
     ret = 0;
 
 __exit:
-    // 关闭设备
-    dev->ops->close(dev);
+
     return ret;
 }
 
-int param_reset_and_import(const char *devname) {
-    // 如果devname=NULL表示使用默认文件路径
-
+int param_reset_and_import(param_device_t *dev) {
     // 先重置所有参数，但是不发送param_update
     param_reset_all_no_notification();
 
     // 然后从设备中加载参数，并发送param_update
-    return param_import_internal(devname, nullptr);
+    return param_import_internal(dev, nullptr);
 }
 
 int param_load_default() {
-    return param_reset_and_import(nullptr);
+    // 先重置所有参数，但是不发送param_update
+    param_reset_all_no_notification();
+
+    // 然后从设备中加载参数，并发送param_update
+    for (unsigned i = 0; i < sizeof(__param_device__) / sizeof(__param_device__[0]); i++) {
+        param_device_t *dev = __param_device__[i];
+        if (!dev) {
+            continue;
+        }
+
+        // 最多尝试3次
+        for (int attempt = 1; attempt < 3; attempt++) {
+            // 先打开设备
+            if (dev->ops->open(dev, nullptr, 'r') != RT_EOK) {
+                continue;
+            }
+
+            // 重置并导入参数
+            if (param_import_internal(dev, nullptr) != RT_EOK) {
+                continue;
+            }
+
+            // 关闭设备
+            if (dev->ops->close(dev) != RT_EOK) {
+                continue;
+            }
+
+            break;
+        }
+    }
+
+    return RT_EOK;
 }
 
 int param_save_default() {
@@ -958,10 +979,10 @@ int param_save_default() {
             continue;
         }
 
-        // 尝试3次
+        // 最多尝试3次
         for (int attempt = 1; attempt < 3; attempt++) {
             // 先打开设备
-            if (dev->ops->open(dev, nullptr, 'r') != 0) {
+            if (dev->ops->open(dev, nullptr, 'r') != RT_EOK) {
                 continue;
             }
 
@@ -982,6 +1003,45 @@ int param_save_default() {
     // rt_sem_release(&_param_sem_save);
 
     return 0;
+}
+
+void param_print_status() {
+    LOG_RAW("summary: %d/%d (used/total)\n", param_get_count_used(), param_get_count());
+
+#ifndef PARAM_USING_DEVICE_FILE
+    const char *filename = param_get_default_file();
+
+    if (filename != NULL) {
+        LOG_RAW("file: %s\n", param_get_default_file());
+    }
+
+    if (param_get_backup_file()) {
+        LOG_RAW("backup file: %s\n", param_get_backup_file());
+    }
+
+#endif /* PARAM_USING_DEVICE_FILE */
+
+    // if (param_values != NULL) {
+    //     PX4_INFO("storage array: %d/%d elements (%zu bytes total)",
+    //              utarray_len(param_values), param_values->n, param_values->n * sizeof(UT_icd));
+    // }
+
+    // if (param_custom_default_values != NULL) {
+    //     PX4_INFO("storage array (custom defaults): %d/%d elements (%zu bytes total)",
+    //              utarray_len(param_custom_default_values), param_custom_default_values->n,
+    //              param_custom_default_values->n * sizeof(UT_icd));
+    // }
+
+    // LOG_RAW("auto save: %s\n", autosave_disabled ? "off" : "on");
+
+    // if (!autosave_disabled && (last_autosave_timestamp > 0)) {
+    //     LOG_RAW("last auto save: %.3f seconds ago", hrt_elapsed_time(&last_autosave_timestamp) * 1e-6);
+    // }
+
+    // perf_print_counter(param_export_perf);
+    // perf_print_counter(param_find_perf);
+    // perf_print_counter(param_get_perf);
+    // perf_print_counter(param_set_perf);
 }
 
 static bool        _param_autosave_enable = true;
@@ -1029,7 +1089,7 @@ static void param_autosave_entry(void *param) {
     }
 }
 
-RT_WEAK void board_param_init() {
+RT_WEAK void param_board_init() {
 }
 
 static int param_init() {
@@ -1043,17 +1103,17 @@ static int param_init() {
     // param_set_perf    = perf_alloc(PC_ELAPSED, "param: set");
 
     // 从默认设备加载param
-    if (param_load_default() == 0) {
+    if (param_load_default() == RT_EOK) {
         LOG_D("load param from default");
     }
 
     // 加载板级参数
-    // board_param_init();
+    // param_board_init();
 
     _param_autosave_event = rt_event_create("param_autosave", RT_IPC_FLAG_PRIO);
     if (!_param_autosave_event) {
         LOG_E("create autosave event fail");
-        return 0;
+        return -RT_ERROR;
     }
 
     _param_autosave_thread = rt_thread_create("param_autosave", param_autosave_entry, nullptr, 2048, 20, 5);
@@ -1063,13 +1123,13 @@ static int param_init() {
         return -RT_ERROR;
     }
 
-    if (rt_thread_startup(_param_autosave_thread) != 0) {
+    if (rt_thread_startup(_param_autosave_thread) != RT_EOK) {
         rt_thread_delete(_param_autosave_thread);
         LOG_E("startup autosave thread fail");
         return -RT_ERROR;
     }
 
-    return 0;
+    return RT_EOK;
 }
 
 INIT_EXPORT(param_init, "5.2");

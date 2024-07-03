@@ -15,6 +15,7 @@
 #include <rtdbg.h>
 #include <stdlib.h>
 #include "param_type.h"
+#include "param_device.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -307,11 +308,17 @@ void param_foreach(void (*func)(void *arg, param_t param), void *arg, bool only_
  */
 uint32_t param_hash_check(void);
 
+/**
+ * Print the status of the param system
+ *
+ */
+void param_print_status(void);
+
 /////////////////////////////////////////////////////////////
 // 参数导入/导出
 /////////////////////////////////////////////////////////////
 
-int param_export_internal(const char *devname, param_filter_func filter);
+int param_export_internal(param_device_t *dev, param_filter_func filter);
 
 /**
  * Export changed parameters to a file.
@@ -322,7 +329,7 @@ int param_export_internal(const char *devname, param_filter_func filter);
  * 			the parameter should be exported. No filtering if nullptr is passed.
  * @return		Zero on success, nonzero on failure.
  */
-int param_import_internal(const char *devname, param_filter_func filter);
+int param_import_internal(param_device_t *dev, param_filter_func filter);
 
 /**
  * Load parameters from a file.
@@ -334,7 +341,7 @@ int param_import_internal(const char *devname, param_filter_func filter);
  * @return		Zero on success, nonzero if an error occurred during import.
  *			Note that in the failure case, parameters may be inconsistent.
  */
-int param_reset_and_import(const char *devname);
+int param_reset_and_import(param_device_t *dev);
 
 /**
  * Load parameters from the default parameter file.

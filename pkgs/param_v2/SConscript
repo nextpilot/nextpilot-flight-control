@@ -98,13 +98,13 @@ subprocess.call(cmd)
 
 inc = [cwd]
 
-src = Glob("*.cpp")
+src = ["param.cpp", "param_cmd.cpp"]
 
-# if GetDepend(["PARAM_USING_STORAGE_FILE"]):
-#     src += ["storage/param_device_file.c"]
+if GetDepend(["PARAM_USING_DEVICE_FILE"]):
+    src += ["param_device_file.cpp"]
 
-# if GetDepend(["PARAM_USING_STORAGE_FM25V02"]):
-#     src += ["storage/param_device_fm25v02.c"]
+if GetDepend(["PARAM_USING_DEVICE_FM25V02"]):
+    src += ["param_device_fm25v02.cpp"]
 
 # if GetDepend(["PARAM_USING_GLOBAL_AUTOGEN"]):
 #     src += ["interface/param_global_autogen.cpp"]

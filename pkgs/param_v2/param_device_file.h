@@ -26,8 +26,7 @@ extern param_device_t _param_file_device;
  *			a result of a call to param_set_default_file, or the
  *			built-in default.
  */
-const char *
-param_get_default_file();
+const char *param_get_default_file();
 
 /**
  * Set the default parameter file name.
