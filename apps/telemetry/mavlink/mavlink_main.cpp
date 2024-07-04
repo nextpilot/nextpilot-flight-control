@@ -2287,7 +2287,7 @@ int Mavlink::task_main(int argc, char *argv[]) {
     while (!should_exit()) {
         /* main loop */
         // px4_usleep(_main_loop_delay);
-        rt_thread_mdelay(10);
+        rt_thread_mdelay(5);
 
         if (!should_transmit()) {
             check_requested_subscriptions();
@@ -2311,7 +2311,9 @@ int Mavlink::task_main(int argc, char *argv[]) {
             mavlink_update_parameters();
         }
 
+#if 0
         configure_sik_radio();
+#endif /* 0 */
 
         if (_vehicle_status_sub.updated()) {
             vehicle_status_s vehicle_status;
@@ -2337,6 +2339,7 @@ int Mavlink::task_main(int argc, char *argv[]) {
             }
         }
 
+#if 0
         // MAVLINK_MODE_IRIDIUM: handle VEHICLE_CMD_CONTROL_HIGH_LATENCY
         if (_mode == MAVLINK_MODE_IRIDIUM) {
             int vehicle_command_updates = 0;
@@ -2390,11 +2393,11 @@ int Mavlink::task_main(int argc, char *argv[]) {
             }
         }
 
-#ifdef MAVLINK_USING_LOG_STREAM
+#   ifdef MAVLINK_USING_LOG_STREAM
         /* send command ACK */
         bool cmd_logging_start_acknowledgement = false;
         bool cmd_logging_stop_acknowledgement  = false;
-#endif // MAVLINK_USING_LOG_STREAM
+#   endif // MAVLINK_USING_LOG_STREAM
 
         if (_vehicle_command_ack_sub.updated()) {
             static constexpr size_t COMMAND_ACK_TOTAL_LEN = MAVLINK_MSG_ID_COMMAND_ACK_LEN + MAVLINK_NUM_NON_PAYLOAD_BYTES;
@@ -2421,14 +2424,14 @@ int Mavlink::task_main(int argc, char *argv[]) {
                         msg.target_component = command_ack.target_component;
 
                         mavlink_msg_command_ack_send_struct(get_channel(), &msg);
-#ifdef MAVLINK_USING_LOG_STREAM
+#   ifdef MAVLINK_USING_LOG_STREAM
                         if (command_ack.command == vehicle_command_s::VEHICLE_CMD_LOGGING_START) {
                             cmd_logging_start_acknowledgement = true;
 
                         } else if (command_ack.command == vehicle_command_s::VEHICLE_CMD_LOGGING_STOP && command_ack.result == vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED) {
                             cmd_logging_stop_acknowledgement = true;
                         }
-#endif // MAVLINK_USING_LOG_STREAM
+#   endif // MAVLINK_USING_LOG_STREAM
                     }
                 }
             }
@@ -2457,6 +2460,7 @@ int Mavlink::task_main(int argc, char *argv[]) {
 
             mavlink_msg_command_long_send_struct(get_channel(), &msg);
         }
+#endif    /* 0 */
 
 #ifdef MAVLINK_USING_SHELL
         /* check for shell output */

@@ -2991,10 +2991,13 @@ void MavlinkReceiver::run() {
                     /* handle generic messages and commands */
                     handle_message(&msg);
 
-#ifdef MAVLINK_USING_MISSION
+#if 0
+#   ifdef MAVLINK_USING_MISSION
                     /* handle packet with mission manager */
                     _mission_manager.handle_message(&msg);
-#endif // MAVLINK_USING_MISSION
+#   endif // MAVLINK_USING_MISSION
+#endif    /* 0 */
+
                     /* handle packet with parameter component */
                     if (_mavlink->boot_complete()) {
 #ifdef MAVLINK_USING_PARAM
