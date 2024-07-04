@@ -198,10 +198,10 @@ static int airframe_param_init() {
 #ifdef BSP_USING_QEMU
     // qemu模式如果不是仿真机架，重置为1102
     if ((sys_autostart < 1100) || (sys_autostart > 1104)) {
-        param_set_int32((param_t)params_id::SYS_AUTOSTART, 1102);
-        sys_autostart  = 1102;
+        param_set_int32((param_t)params_id::SYS_AUTOSTART, 1103);
+        sys_autostart  = 1103;
         sys_autoconfig = 1;
-        LOG_W("wrong airframe for qemu, change to 1102");
+        LOG_W("wrong airframe for qemu, change to 1103");
     }
 #endif // BSP_USING_QEMU
 

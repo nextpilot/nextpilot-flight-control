@@ -1,0 +1,3 @@
+menuconfig SYS_USING_1101_PLANE_AERT
+    bool "1101_plane_aert"
+    default n

@@ -1,0 +1,3 @@
+menuconfig SYS_USING_1100_QUAD_X
+    bool "1100_sih_quad_x"
+    default n

@@ -10,9 +10,9 @@
 
 #include "airframe.h"
 
-static param_config_t _params[] = {
+static param_config_s _params[] = {
     PARAM_CONFIG_INT32(SYS_HITL, 2),
-    PARAM_CONFIG_INT32(SIH_VEHICLE_TYPE, 3),
+    PARAM_CONFIG_INT32(SIH_VEHICLE_TYPE, 1),
     PARAM_CONFIG_INT32(MAV_0_CONFIG, 0),
 
     // Battery
@@ -27,4 +27,4 @@ static param_config_t _params[] = {
     PARAM_CONFIG_INT32(RC_MAP_THROTTLE, 4),
 };
 
-AIRFRAME_DEFINE_ALL(sih_standard_vtol, 1102, _params);
+AIRFRAME_DEFINE_ALL(sih_plane_aert, 1101, _params);

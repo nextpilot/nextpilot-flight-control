@@ -1,6 +1,6 @@
 menu "Nextpilot Airframe Config"
 menuconfig SYS_USING_AIRFRAME
-    bool "airframe : reset param, mixer when change airframe"
+    bool "airframe : reset params when change airframe"
     select SYS_USING_PARAM
     default n
 

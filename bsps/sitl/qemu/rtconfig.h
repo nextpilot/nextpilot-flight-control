@@ -22,7 +22,7 @@
 /* Nextpilot Airframe Config */
 
 #define SYS_USING_AIRFRAME
-#define SYS_USING_1102_SIH_STANDARD_VTOL
+#define SYS_USING_1103_SIH_STANDARD_VTOL
 /* end of Nextpilot Airframe Config */
 
 /* Nextpilot Bootloader Config */

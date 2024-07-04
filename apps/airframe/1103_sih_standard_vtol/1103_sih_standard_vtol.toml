@@ -1,7 +1,7 @@
 
 [info]
 name = "vtol_sih"
-id   = 1102
+id   = 1103
 
 [[airframe.parameters]]
 name   = "RC_INPUT"

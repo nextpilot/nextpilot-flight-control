@@ -32,7 +32,7 @@ graph TB
 
 在airframe文件中增加一个新的`xxx_yyy.cpp`文件，其中：
 
-- xxx：是机架编号，比如`1102`
+- xxx：是机架编号，比如`1103`
 - yyy：是机架名称，比如`sih_standard_vtol`
 
 `1102_sih_standard_vtol`主要是定义`_param`和`_mixer`两个结构体数组。
@@ -53,7 +53,7 @@ graph TB
 `AIRFRAME_DEFINE_ALL`宏有4个参数，第1个是机架名称，第2个是机架编号，第3个是参数定义，第4个是混控定义：
 
 ```c
-AIRFRAME_DEFINE_ALL(sih_standard_vtol, 1102, _param, _mixer);
+AIRFRAME_DEFINE_ALL(sih_standard_vtol, 1103, _param, _mixer);
 
 ```
 
@@ -174,7 +174,7 @@ static mixer_config_t _mixer[] = {
 
 };
 
-AIRFRAME_DEFINE_ALL(sih_standard_vtol, 1102, _param, _mixer);
+AIRFRAME_DEFINE_ALL(sih_standard_vtol, 1103, _param, _mixer);
 ```### 定义机架参数
 
 ### 定义机架混控
@@ -191,7 +191,7 @@ AIRFRAME_DEFINE_ALL(sih_standard_vtol, 1102, _param, _mixer);
 `AIRFRAME_DEFINE_ALL`宏有4个参数，第1个是机架名称，第2个是机架编号，第3个是参数定义，第4个是混控定义：
 
 ```c
-AIRFRAME_DEFINE_ALL(sih_standard_vtol, 1102, _param, _mixer);
+AIRFRAME_DEFINE_ALL(sih_standard_vtol, 1103, _param, _mixer);
 
 ```
 
@@ -312,7 +312,7 @@ static mixer_config_t _mixer[] = {
 
 };
 
-AIRFRAME_DEFINE_ALL(sih_standard_vtol, 1102, _param, _mixer);
+AIRFRAME_DEFINE_ALL(sih_standard_vtol, 1103, _param, _mixer);
 ```
 
 ## 机架编号分配

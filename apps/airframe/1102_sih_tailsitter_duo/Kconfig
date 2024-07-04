@@ -1,0 +1,3 @@
+menuconfig SYS_USING_1102_TAILSITTER_DUO
+    bool "1102_sih_tailsitter_duo"
+    default n

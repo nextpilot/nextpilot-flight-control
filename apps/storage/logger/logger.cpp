@@ -1280,7 +1280,7 @@ int Logger::get_log_file_name(LogType type, char *file_name, size_t file_name_si
         rt_snprintf(file_name + n, file_name_size - n, "/%s", log_file_name);
 
         if (notify) {
-            mavlink_log_info(&_mavlink_log_pub, "[logger] %s\t", file_name);
+            mavlink_log_info(&_mavlink_log_pub, "%s\t", file_name);
             uint16_t year  = 0;
             uint8_t  month = 0;
             uint8_t  day   = 0;

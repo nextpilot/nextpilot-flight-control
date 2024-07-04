@@ -1,0 +1,3 @@
+menuconfig SYS_USING_1103_SIH_STANDARD_VTOL
+    bool "1103_sih_standard_vtol"
+    default n

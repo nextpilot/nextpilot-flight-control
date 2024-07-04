@@ -5,7 +5,13 @@ from building import *
 cwd = GetCurrentDir()
 
 inc = [cwd]
-src = Glob("*.cpp") + Glob("1102_sih_standard_vtol/1102_sih_standard_vtol.cpp")
+src = (
+    Glob("*.cpp")
+    + Glob("1100_sih_quad_x/1100_sih_quad_x.cpp")
+    + Glob("1101_sih_plane_aert/1101_sih_plane_aert.cpp")
+    + Glob("1102_sih_tailsitter_duo/1102_sih_tailsitter_duo.cpp")
+    + Glob("1103_sih_standard_vtol/1103_sih_standard_vtol.cpp")
+)
 
 objs = DefineGroup("air", src, depend=["SYS_USING_AIRFRAME"], CPPPATH=inc)
 
