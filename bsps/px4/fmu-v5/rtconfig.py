@@ -113,7 +113,7 @@ elif PLATFORM == "armclang":
     CFLAGS += " -gdwarf-3 -ffunction-sections "
     AFLAGS = DEVICE + " --apcs=interwork "
     LFLAGS = DEVICE + " --info sizes --info totals --info unused --info veneers "
-    LFLAGS += " --list build/{MAP_FILE} ".format{**OPTIONS}
+    LFLAGS += " --list build/{MAP_FILE} ".format(**OPTIONS)
     LFLAGS += r' --strict --scatter "{LINKER_FILE}" '.format(**OPTIONS)
     CFLAGS += " -I" + EXEC_PATH + "/ARM/ARMCLANG/include"
     LFLAGS += " --libpath=" + EXEC_PATH + "/ARM/ARMCLANG/lib"
