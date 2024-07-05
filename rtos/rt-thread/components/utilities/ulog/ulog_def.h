@@ -201,7 +201,7 @@ typedef struct ulog_frame *ulog_frame_t;
 
 struct ulog_backend
 {
-    char name[RT_NAME_MAX];
+    char name[32 /*RT_NAME_MAX*/];
     rt_bool_t support_color;
     rt_uint32_t out_level;
     void (*init)  (struct ulog_backend *backend);

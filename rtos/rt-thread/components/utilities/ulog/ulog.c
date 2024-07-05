@@ -22,6 +22,8 @@
 
 #ifdef ULOG_USING_ASYNC_OUTPUT
 #include <rtdevice.h>
+#else
+#include <stdlib.h>
 #endif
 
 #ifdef RT_USING_ULOG
@@ -1274,7 +1276,7 @@ rt_err_t ulog_backend_register(ulog_backend_t backend, const char *name, rt_bool
 
     backend->support_color = support_color;
     backend->out_level = LOG_FILTER_LVL_ALL;
-    rt_strncpy(backend->name, name, RT_NAME_MAX);
+    rt_strncpy(backend->name, name, 32 /*RT_NAME_MAX*/);
 
     level = rt_hw_interrupt_disable();
     rt_slist_append(&ulog.backend_list, &backend->list);

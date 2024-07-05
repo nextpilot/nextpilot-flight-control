@@ -319,11 +319,11 @@
 #endif
 
 /*
- * You can re-define following setting in rtcofnig.h to overwrite the default
+ * You can re-define following setting in rtconfig.h to overwrite the default
  * setting in the lwip opts.h
  */
 /* MEMP_NUM_NETBUF: the number of struct netbufs. */
-// #define MEMP_NUM_NETBUF             2
+#define MEMP_NUM_NETBUF             10
 /* MEMP_NUM_NETCONN: the number of struct netconns. */
 // #define MEMP_NUM_NETCONN            4
 
@@ -481,7 +481,7 @@
 
 #define LWIP_UDPLITE                0
 #define UDP_TTL                     255
-#define DEFAULT_UDP_RECVMBOX_SIZE   1
+#define DEFAULT_UDP_RECVMBOX_SIZE   10
 
 /* ---------- RAW options ---------- */
 #ifdef RT_LWIP_RAW
@@ -490,7 +490,7 @@
 #define LWIP_RAW                    0
 #endif
 
-#define DEFAULT_RAW_RECVMBOX_SIZE   1
+#define DEFAULT_RAW_RECVMBOX_SIZE   10
 #define DEFAULT_ACCEPTMBOX_SIZE     10
 
 /* ---------- Statistics options ---------- */
