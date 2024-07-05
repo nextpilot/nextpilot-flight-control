@@ -9,7 +9,7 @@
  ******************************************************************/
 
 #define LOG_TAG "mavlink.receiver"
-#define LOG_LVL LOG_LVL_INFO
+#define LOG_LVL LOG_LVL_DBG
 
 #include <airspeed/airspeed.h>
 #include <conversion/rotation.h>
@@ -440,6 +440,8 @@ void MavlinkReceiver::handle_message_command_both(mavlink_message_t *msg, const 
     bool    send_ack  = true;
     uint8_t result    = vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED;
     uint8_t progress  = 0; // TODO: should be 255, 0 for backwards compatibility
+
+    LOG_D("handle command %d", cmd_mavlink.command);
 
     if (!target_ok) {
         // Reject alien commands only if there is no forwarding or we've never seen target component before
