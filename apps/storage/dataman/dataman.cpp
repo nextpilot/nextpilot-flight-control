@@ -19,6 +19,8 @@
  */
 
 #define LOG_TAG        "dataman"
+#define LOG_LVL        LOG_LVL_INFO
+
 #define PX4_STORAGEDIR ""
 
 #include <defines.h>
@@ -171,7 +173,7 @@ static perf_counter_t _dm_read_perf{nullptr};
 static perf_counter_t _dm_write_perf{nullptr};
 
 /* The data manager store file handle and file name */
-static const char *default_device_path        = PX4_STORAGEDIR "/dataman";
+static const char *default_device_path        = PX4_STORAGEDIR "/dataman.bin";
 static char       *k_data_manager_device_path = nullptr;
 
 static enum {
