@@ -22,6 +22,9 @@
 /* Nextpilot Airframe Config */
 
 #define SYS_USING_AIRFRAME
+#define SYS_USING_1100_QUAD_X
+#define SYS_USING_1101_PLANE_AERT
+#define SYS_USING_1102_TAILSITTER_DUO
 #define SYS_USING_1103_SIH_STANDARD_VTOL
 /* end of Nextpilot Airframe Config */
 
@@ -143,6 +146,7 @@
 #define PARAM_USING_GLOBAL_AUTOGEN
 #define PARAM_USING_STORAGE_FILE
 #define PARAM_DEFAULT_FILE_PATH "/param.bin"
+#define PARAM_USING_DEVICE_FILE
 #define PKG_USING_PERF
 #define PKG_USING_QUEUE
 #define PKG_USING_RING_BUFFER
