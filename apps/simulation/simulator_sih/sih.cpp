@@ -274,7 +274,10 @@ void Sih::read_motors(const float dt) {
                 _u[i] = _u[i] + dt / _T_TAU * (u_sp - _u[i]); // first order transfer function with time constant tau
 
 #ifdef DEBUG_SIH_MODULE
-                _u[i] = 0.6f;
+                _u[0] = 0.44f;
+                _u[1] = 0.44f;
+                _u[2] = 0.55f;
+                _u[3] = 0.55f;
 #endif // DEBUG_SIH_MODULE
             }
 
