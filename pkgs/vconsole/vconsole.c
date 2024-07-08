@@ -28,6 +28,7 @@
 
 int rt_posix_stdio_get_console(void);
 int rt_posix_stdio_set_console(const char *device_name, int mode);
+int sys_dup2(int oldfd, int new);
 
 static rt_err_t _fops_rx_ind(rt_device_t dev, rt_size_t size) {
     rt_wqueue_wakeup(&(dev->wait_queue), (void *)POLLIN);
@@ -37,7 +38,7 @@ static rt_err_t _fops_rx_ind(rt_device_t dev, rt_size_t size) {
 static int _fops_open(struct dfs_file *fd) {
     rt_uint16_t flags = 0;
 
-    rt_device_t device = (rt_device_t)fd->data;
+    rt_device_t device = (rt_device_t)fd->vnode->data;
     RT_ASSERT(device != RT_NULL);
 
     switch (fd->flags & O_ACCMODE) {
@@ -66,8 +67,8 @@ static int _fops_open(struct dfs_file *fd) {
 }
 
 static int _fops_close(struct dfs_file *fd) {
-    rt_device_t device = (rt_device_t)fd->data;
-
+    rt_device_t device = (rt_device_t)fd->vnode->data;
+    RT_ASSERT(device != RT_NULL);
     rt_device_set_rx_indicate(device, RT_NULL);
     rt_device_close(device);
 
@@ -75,7 +76,8 @@ static int _fops_close(struct dfs_file *fd) {
 }
 
 static int _fops_ioctl(struct dfs_file *fd, int cmd, void *args) {
-    rt_device_t device = (rt_device_t)fd->data;
+    rt_device_t device = (rt_device_t)fd->vnode->data;
+    RT_ASSERT(device != RT_NULL);
     switch (cmd) {
     case FIONREAD:
         break;
@@ -95,7 +97,8 @@ static ssize_t _fops_read(struct dfs_file *fd, void *buf, size_t count, off_t *p
 #   endif // RT_USING_DFS_V1
 {
     ssize_t     size   = 0;
-    rt_device_t device = (rt_device_t)fd->data;
+    rt_device_t device = (rt_device_t)fd->vnode->data;
+    RT_ASSERT(device != RT_NULL);
     do {
         size = rt_device_read(device, -1, buf, count);
         if (size <= 0) {
@@ -118,7 +121,8 @@ static ssize_t _fops_write(struct dfs_file *fd, const void *buf, size_t count)
 static ssize_t _fops_write(struct dfs_file *fd, const void *buf, size_t count, off_t *pos)
 #   endif // RT_USING_DFS_V1
 {
-    rt_device_t device = (rt_device_t)fd->data;
+    rt_device_t device = (rt_device_t)fd->vnode->data;
+    RT_ASSERT(device != RT_NULL);
     return rt_device_write(device, -1, buf, count);
 }
 
@@ -126,7 +130,7 @@ static int _fops_poll(struct dfs_file *fd, struct rt_pollreq *req) {
     int mask  = 0;
     int flags = 0;
 
-    rt_device_t device = (rt_device_t)fd->data;
+    rt_device_t device = (rt_device_t)fd->vnode->data;
     RT_ASSERT(device != RT_NULL);
 
     rt_vconsole_device_t vcom = (rt_vconsole_device_t)device;
@@ -350,20 +354,26 @@ rt_device_t rt_console_change_device(const char *name) {
         return RT_NULL;
     }
 
-    // 设置新的shell设备
+    // 设置新的console设备（rt_kprintf输出）
     old_device = rt_console_set_device(name);
 
+    // 设置新的shell设备
 #ifdef RT_USING_POSIX_STDIO
-    // 由于STDIO会阻塞shell线程，需要取消阻塞
-    int fd, flags;
-    fd = rt_posix_stdio_get_console();
-    // 老设备取消阻塞，允许没有读到数据可返回
-    flags = ioctl(fd, F_GETFL, 0);
-    ioctl(fd, F_SETFL, (void *)(flags | O_NONBLOCK));
     // 将新设备设置为STDIO
-    rt_posix_stdio_set_console(name, O_RDWR);
+    int new_fd = rt_posix_stdio_set_console(name, O_RDWR);
+    /* set fd (0, 1, 2) */
+    sys_dup2(new_fd, 0);
+    sys_dup2(new_fd, 1);
+    sys_dup2(new_fd, 2);
+
+    // 由于STDIO的read默认是阻塞的，需要取消阻塞
+    int old_fd = rt_posix_stdio_get_console();
+    int flags  = ioctl(old_fd, F_GETFL, 0);
+    ioctl(old_fd, F_SETFL, (void *)(flags | O_NONBLOCK));
     // 唤醒老设备，不要继续等待了
     rt_wqueue_wakeup(&(old_device->wait_queue), (void *)POLLERR);
+
+    // 延时下
     rt_thread_mdelay(20);
 #else
     // finsh_set_device会自动关闭老设备
