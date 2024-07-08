@@ -8,16 +8,21 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#pragma once
 
 #include <stddef.h>
 #include <stdint.h>
 #include <atomic/atomic.hpp>
+#include <vconsole/vconsole.h>
 
-#pragma once
+class Mavlink;
 
 class MavlinkShell {
 public:
-    MavlinkShell() = default;
+    MavlinkShell(Mavlink *mavlink) :
+        _mavlink(mavlink) {
+
+        };
 
     ~MavlinkShell();
 
@@ -27,6 +32,8 @@ public:
      * @return		0 on success.
      */
     int start();
+
+    int stop();
 
     /**
      * Write to the shell
@@ -60,15 +67,15 @@ public:
     }
 
 private:
+    Mavlink *_mavlink;
+
     atomic<uint8_t> _target_sysid{};
     atomic<uint8_t> _target_compid{};
 
-    int        _to_shell_fd   = -1;       /** fd to write to the shell */
-    int        _from_shell_fd = -1;       /** fd to read from the shell */
-    int        _shell_fds[2]  = {-1, -1}; /** stdin & out used by the shell */
-    px4_task_t _task;
 
-    static int shell_start_thread(int argc, char *argv[]);
+    char                       _name[RT_NAME_MAX];
+    struct rt_vconsole_device *_vconsole{nullptr};
+    rt_device_t                _old_console{nullptr};
 
     /* do not allow copying this class */
     MavlinkShell(const MavlinkShell &)           = delete;

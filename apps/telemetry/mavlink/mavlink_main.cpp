@@ -15,7 +15,6 @@
 #   include <termios.h>
 #endif
 
-
 #include <containers/LockGuard.hpp>
 #include <geo/geo.h>
 #include <mathlib/mathlib.h>
@@ -1190,7 +1189,7 @@ void Mavlink::pass_message(const mavlink_message_t *msg) {
 #ifdef MAVLINK_USING_SHELL
 MavlinkShell *Mavlink::get_shell() {
     if (!_mavlink_shell) {
-        MavlinkShell *shell = new MavlinkShell();
+        MavlinkShell *shell = new MavlinkShell(this);
 
         if (!shell) {
             PX4_ERR("Failed to allocate a shell");
