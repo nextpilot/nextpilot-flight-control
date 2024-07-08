@@ -9,7 +9,7 @@
  ******************************************************************/
 
 #define LOG_TAG "mavlink.receiver"
-#define LOG_LVL LOG_LVL_DBG
+#define LOG_LVL LOG_LVL_INFO
 
 #include <airspeed/airspeed.h>
 #include <conversion/rotation.h>
