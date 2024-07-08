@@ -28,7 +28,7 @@ CONFIG_RT_DEBUG=y
 
 ![构建配置系统](./figures/buildconfig2.png)
 
-Kconfig文件在源码中呈现树形结构，需要**在工程的根目录下存在一份顶层Kconfig文件**，顶层Kconfig文件在文件中通过source语句显示地调用各子目录下的Kconfig文件。Env在根目录下执行menuconfig命令后会递归解析各级Kconfig文件，然后提供如下配置界面，完成相应的配置后并保存，根目录下会存在一份.config文件保存当前选择的配置项，并将.config文件转为Nextpilot的系统配置文件rtconfig.h。
+Kconfig文件在源码中呈现树形结构，需要 **在工程的根目录下存在一份顶层Kconfig文件** ，顶层Kconfig文件在文件中通过source语句显示地调用各子目录下的Kconfig文件。Env在根目录下执行menuconfig命令后会递归解析各级Kconfig文件，然后提供如下配置界面，完成相应的配置后并保存，根目录下会存在一份.config文件保存当前选择的配置项，并将.config文件转为Nextpilot的系统配置文件rtconfig.h。
 
 ![构建配置系统](./figures/buildconfig3.png)
 
@@ -400,7 +400,7 @@ depends和select都需要注意的是：depends 和 select 后面的宏定义必
 可以这样理解他们之间的区别：
 
 - select：开启 BSP_USING_UART3 需要依赖 RT_USING_SERIAL，RT_USING_SERIAL 功能会被自动选定；
-- depends on：在 BSP_USING_UART 已经选定的情况下，系统会**显示** BSP_USING_UART3 的配置菜单选项，至于 BSP_USING_UART3 默认是否被选定，取决于 default 。
+- depends on：在 BSP_USING_UART 已经选定的情况下，系统会 **显示** BSP_USING_UART3 的配置菜单选项，至于 BSP_USING_UART3 默认是否被选定，取决于 default 。
 
 ### [depends on 高级用法](https://download.rt-thread.org/ci-agent/artifacts/113728/309584/artifacts/docs-online/#/development-tools/kconfig/kconfig?id=depends-on-高级用法)
 
