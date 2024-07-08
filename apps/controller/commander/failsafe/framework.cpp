@@ -33,6 +33,7 @@ FailsafeBase::FailsafeBase(ModuleParams *parent) :
 uint8_t FailsafeBase::update(const hrt_abstime &time_us, const State &state, bool user_intended_mode_updated,
                              bool                    rc_sticks_takeover_request,
                              const failsafe_flags_s &status_flags) {
+#if 0 // TODO: 临时屏蔽
     if (_last_update == 0) {
         _last_update = time_us;
     }
@@ -81,6 +82,7 @@ uint8_t FailsafeBase::update(const hrt_abstime &time_us, const State &state, boo
     _last_update             = time_us;
     _last_status_flags       = status_flags;
     _last_armed              = state.armed;
+#endif
     return _last_user_intended_mode;
 }
 

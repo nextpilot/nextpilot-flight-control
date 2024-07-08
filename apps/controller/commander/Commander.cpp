@@ -530,8 +530,15 @@ transition_result_t Commander::arm(arm_disarm_reason_t calling_reason, bool run_
                 return TRANSITION_DENIED;
             }
 
-            if (!_vehicle_control_mode.flag_control_climb_rate_enabled && !_failsafe_flags.manual_control_signal_lost && !_is_throttle_low && _vehicle_status.vehicle_type != vehicle_status_s::VEHICLE_TYPE_ROVER) {
-                mavlink_log_critical(&_mavlink_log_pub, "Arming denied: high throttle\t");
+            if (!_vehicle_control_mode.flag_control_climb_rate_enabled
+                && !_failsafe_flags.manual_control_signal_lost
+                && !_is_throttle_low
+                && _vehicle_status.vehicle_type != vehicle_status_s::VEHICLE_TYPE_ROVER) {
+                mavlink_log_critical(&_mavlink_log_pub, "Arming denied: high throttle, %d, %d, %d, %d\t",
+                                     _vehicle_control_mode.flag_control_climb_rate_enabled,
+                                     _failsafe_flags.manual_control_signal_lost,
+                                     _is_throttle_low,
+                                     _vehicle_status.vehicle_type);
                 events::send(events::ID("commander_arm_denied_throttle_high"),
                              {events::Log::Critical, events::LogInternal::Info},
                              "Arming denied: high throttle");
@@ -1518,12 +1525,15 @@ void Commander::updateParameters() {
     /* disable manual override for all systems that rely on electronic stabilization */
     if (is_rotary) {
         _vehicle_status.vehicle_type = vehicle_status_s::VEHICLE_TYPE_ROTARY_WING;
+        LOG_D("is_rotary");
 
     } else if (is_fixed) {
         _vehicle_status.vehicle_type = vehicle_status_s::VEHICLE_TYPE_FIXED_WING;
+        LOG_D("is_fixed");
 
     } else if (is_ground) {
         _vehicle_status.vehicle_type = vehicle_status_s::VEHICLE_TYPE_ROVER;
+        LOG_D("is_ground");
     }
 
     _vehicle_status.is_vtol            = is_vtol(_vehicle_status);
@@ -1574,8 +1584,10 @@ void Commander::Run() {
         /* update parameters */
         const bool params_updated = _parameter_update_sub.updated();
 
+        // TODO: 参数没更新，_vehicle_status.vehicle_type不对？
         if (params_updated) {
             // clear update
+            LOG_D("params updated");
             parameter_update_s update;
             _parameter_update_sub.copy(&update);
 
@@ -1656,6 +1668,8 @@ void Commander::Run() {
                 if (_vehicle_command_sub.get_last_generation() != last_generation + 1) {
                     PX4_ERR("vehicle_command lost, generation %u -> %u", last_generation, _vehicle_command_sub.get_last_generation());
                 }
+
+                LOG_D("handle cmd: %d", cmd.command);
 
                 if (handle_command(cmd)) {
                     _status_changed = true;
