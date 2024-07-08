@@ -1,4 +1,4 @@
-# CUAV V5+
+# CUAV V5+ 开源飞控硬件
 
 ![](docs/cuav_v5_plus.png)
 

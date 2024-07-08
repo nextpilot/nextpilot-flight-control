@@ -27,4 +27,4 @@ static param_config_s _params[] = {
     PARAM_CONFIG_INT32(RC_MAP_THROTTLE, 4),
 };
 
-AIRFRAME_DEFINE_ALL(sih_quad_x, 1100, _params);
+AIRFRAME_DEFINE_PARAM(sih_quad_x, 1100, _params);

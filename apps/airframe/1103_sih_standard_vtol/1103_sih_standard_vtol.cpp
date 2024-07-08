@@ -27,4 +27,4 @@ static param_config_t _params[] = {
     PARAM_CONFIG_INT32(RC_MAP_THROTTLE, 4),
 };
 
-AIRFRAME_DEFINE_ALL(sih_standard_vtol, 1103, _params);
+AIRFRAME_DEFINE_PARAM(sih_standard_vtol, 1103, _params);

@@ -27,4 +27,4 @@ static param_config_s _params[] = {
     PARAM_CONFIG_INT32(RC_MAP_THROTTLE, 4),
 };
 
-AIRFRAME_DEFINE_ALL(sih_plane_aert, 1101, _params);
+AIRFRAME_DEFINE_PARAM(sih_plane_aert, 1101, _params);

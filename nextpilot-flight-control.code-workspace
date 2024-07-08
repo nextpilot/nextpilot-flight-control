@@ -4,6 +4,9 @@
 			"path": "."
 		},
 		{
+			"path": "bsps/px4/fmu-v5"
+		},
+		{
 			"path": "bsps/sitl/qemu"
 		}
 	],
