@@ -1584,7 +1584,6 @@ void Commander::Run() {
         /* update parameters */
         const bool params_updated = _parameter_update_sub.updated();
 
-        // TODO: 参数没更新，_vehicle_status.vehicle_type不对？
         if (params_updated) {
             // clear update
             LOG_D("params updated");
