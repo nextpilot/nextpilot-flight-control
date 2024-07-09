@@ -11,8 +11,12 @@
 #include "airframe.h"
 
 static param_config_t _params[] = {
+    // SITL
     PARAM_CONFIG_INT32(SYS_HITL, 2),
     PARAM_CONFIG_INT32(SIH_VEHICLE_TYPE, 2),
+
+    // MAVLINK
+    PARAM_CONFIG_INT32(MAV_TYPE, 19),
     PARAM_CONFIG_INT32(MAV_0_CONFIG, 0),
 
     // Battery
