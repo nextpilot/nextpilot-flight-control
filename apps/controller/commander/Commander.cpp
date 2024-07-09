@@ -534,7 +534,7 @@ transition_result_t Commander::arm(arm_disarm_reason_t calling_reason, bool run_
                 && !_failsafe_flags.manual_control_signal_lost
                 && !_is_throttle_low
                 && _vehicle_status.vehicle_type != vehicle_status_s::VEHICLE_TYPE_ROVER) {
-                mavlink_log_critical(&_mavlink_log_pub, "Arming denied: high throttle, %d, %d, %d, %d\t",
+                mavlink_log_critical(&_mavlink_log_pub, "Arming denied: high throttle: %d, %d, %d, %d\t",
                                      _vehicle_control_mode.flag_control_climb_rate_enabled,
                                      _failsafe_flags.manual_control_signal_lost,
                                      _is_throttle_low,
@@ -651,7 +651,8 @@ Commander::~Commander() {
 
 bool Commander::handle_command(const vehicle_command_s &cmd) {
     /* only handle commands that are meant to be handled by this system and component, or broadcast */
-    if (((cmd.target_system != _vehicle_status.system_id) && (cmd.target_system != 0)) || ((cmd.target_component != _vehicle_status.component_id) && (cmd.target_component != 0))) {
+    if (((cmd.target_system != _vehicle_status.system_id) && (cmd.target_system != 0))
+        || ((cmd.target_component != _vehicle_status.component_id) && (cmd.target_component != 0))) {
         return false;
     }
 
@@ -1586,12 +1587,9 @@ void Commander::Run() {
 
         if (params_updated) {
             // clear update
-            LOG_D("params updated");
             parameter_update_s update;
             _parameter_update_sub.copy(&update);
-
             updateParameters();
-
             _status_changed = true;
         }
 
@@ -1717,7 +1715,10 @@ void Commander::Run() {
         _actuator_armed.prearmed = getPrearmState();
 
         // publish states (armed, control_mode, vehicle_status, failure_detector_status) at 2 Hz or immediately when changed
-        if ((now >= _vehicle_status.timestamp + 500_ms) || _status_changed || nav_state_or_failsafe_changed || !(_actuator_armed == actuator_armed_prev)) {
+        if ((now >= _vehicle_status.timestamp + 500_ms)
+            || _status_changed
+            || nav_state_or_failsafe_changed
+            || !(_actuator_armed == actuator_armed_prev)) {
             // publish actuator_armed first (used by output modules)
             _actuator_armed.armed        = _arm_state_machine.isArmed();
             _actuator_armed.ready_to_arm = _arm_state_machine.isArmed() || _arm_state_machine.isStandby();
