@@ -112,6 +112,6 @@ path = [cwd + '/STM32F4xx_HAL_Driver/Inc',
     cwd + '/CMSIS/Device/ST/STM32F4xx/Include']
 
 CPPDEFINES = ['USE_HAL_DRIVER']
-group = DefineGroup('Libraries', src, depend = [''], CPPPATH = path, CPPDEFINES = CPPDEFINES)
+group = DefineGroup('Libraries', src, depend = ['SOC_SERIES_STM32F4'], CPPPATH = path, CPPDEFINES = CPPDEFINES)
 
 Return('group')

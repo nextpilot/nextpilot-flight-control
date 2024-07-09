@@ -531,7 +531,7 @@ menu "On-chip Peripheral Drivers"
             default n
     endif
 
-   source "$SDK_DIR/Kconfig"
+   #source "$SDK_DIR/Kconfig"
 
 endmenu
 

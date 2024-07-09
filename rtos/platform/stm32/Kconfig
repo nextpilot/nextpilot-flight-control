@@ -1,3 +1,4 @@
+menu "RT-Thread HAL Drivers"
 config SOC_FAMILY_STM32
     bool
 
@@ -90,5 +91,17 @@ config SOC_SERIES_STM32WB
     bool
     select ARCH_ARM_CORTEX_M4
     select SOC_FAMILY_STM32
+  
+if SOC_SERIES_STM32H7
+    config BSP_SCB_ENABLE_I_CACHE
+        bool "Enable SCB I CACHE"
+        default y if RT_USING_SDIO
 
+    config BSP_SCB_ENABLE_D_CACHE
+        bool "Enable SCB D CACHE"
+        default y if RT_USING_SDIO
+endif
 
+rsource "HAL_Drivers/Kconfig"
+
+endmenu

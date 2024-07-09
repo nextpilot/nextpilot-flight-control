@@ -600,11 +600,10 @@ def build(target=None):
         pass
 
     # include libraries
-    if os.path.exists(os.path.join(__options__["SDK_ROOT"], "SConscript")):
-        objs += SConscript(os.path.join(__options__["SDK_ROOT"], "SConscript"))
+    # if os.path.exists(os.path.join(__options__["SDK_ROOT"], "SConscript")):
+    #    objs += SConscript(os.path.join(__options__["SDK_ROOT"], "SConscript"))
 
     # include application
-    # building.AddDepend()
     if os.path.exists(os.path.join(__options__["PRJ_ROOT"], "SConscript")):
         objs += SConscript(os.path.join(__options__["PRJ_ROOT"], "SConscript"))
 

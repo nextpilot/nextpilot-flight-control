@@ -100,12 +100,24 @@ if GetDepend(['BSP_USING_LTDC']):
     src += ['STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma2d.c']
     src += ['STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_dma2d.c']
     src += ['STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dsi.c']
+    
+import rtconfig
+
+if rtconfig.PLATFORM in ['gcc']:
+    cross_tool = "gcc"
+elif rtconfig.PLATFORM in ['armcc', 'armclang']:
+    cross_tool = "arm"
+elif rtconfig.PLATFORM in ['iccarm']:
+    cross_tool = "iar"
+
+src += ["CMSIS/Device/ST/STM32F7xx/Source/Templates/" + cross_tool + "/" + rtconfig.OPTIONS["STARTUP_FILE"]]    
+
 
 path = [cwd + '/STM32F7xx_HAL_Driver/Inc',
     cwd + '/CMSIS/Device/ST/STM32F7xx/Include']
 
 CPPDEFINES = ['USE_HAL_DRIVER']
-group = DefineGroup('Libraries', src, depend = [''], CPPPATH = path, CPPDEFINES = CPPDEFINES)
+group = DefineGroup('hal/stm32f7', src, depend = ['SOC_SERIES_STM32F7'], CPPPATH = path, CPPDEFINES = CPPDEFINES)
 
 Return('group')
 

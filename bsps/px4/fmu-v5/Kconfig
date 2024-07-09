@@ -26,8 +26,10 @@ config PKGS_DIR
     default "../../../apps/package"
 
 
-source "$RTT_DIR/Kconfig"
-source "$PKGS_DIR/Kconfig"
+
+source "../../../rtos/Kconfig"
+#source "../../../rtos/packages"
 #source "$SDK_DIR/Kconfig"
-source "board/Kconfig"
+source "*/Kconfig"
 source "../../../apps/Kconfig"
+source "../../../pkgs/Kconfig"
