@@ -36,7 +36,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: build-sitl-qemu
+    name: build-all-bsps
 
     strategy:
       fail-fast: false
