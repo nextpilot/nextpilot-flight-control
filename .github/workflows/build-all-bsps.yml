@@ -42,7 +42,7 @@ jobs:
       fail-fast: false
       matrix:
         legs:
-          - { bsp: "bsps/fmu-v5", config: "default" }
+          - { bsp: "bsps/px4/fmu-v5", config: "default" }
 
     steps:
       - uses: actions/checkout@v4
@@ -80,4 +80,4 @@ jobs:
         shell: bash
         run: |
           source ~/.env/env.sh
-          scons -C $BSP_ROOT $BSP_CONFIG
+          scons -C $BSP_ROOT $BSP_CONFIG -j$(nproc)
