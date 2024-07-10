@@ -1,7 +1,8 @@
 click
+kconfiglib
 empy==3.3.4
 future
-Jinja2
+jinja2
 matplotlib
 mkdocs
 mkdocs-material
