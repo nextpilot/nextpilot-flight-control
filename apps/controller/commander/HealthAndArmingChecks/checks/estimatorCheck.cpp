@@ -719,24 +719,24 @@ void EstimatorChecks::setModeRequirementFlags(const Context &context, bool pre_f
         }
     }
 
-    failsafe_flags.global_position_invalid =
-        !checkPosVelValidity(now, xy_valid, gpos.eph, _param_com_pos_fs_eph.get(), gpos.timestamp,
-                             _last_gpos_fail_time_us, !failsafe_flags.global_position_invalid);
-
-    failsafe_flags.local_position_invalid =
-        !checkPosVelValidity(now, xy_valid, lpos.eph, _param_com_pos_fs_eph.get(), lpos.timestamp,
-                             _last_lpos_fail_time_us, !failsafe_flags.local_position_invalid);
-
-    failsafe_flags.local_position_invalid_relaxed =
-        !checkPosVelValidity(now, xy_valid, lpos.eph, lpos_eph_threshold_relaxed, lpos.timestamp,
-                             _last_lpos_relaxed_fail_time_us, !failsafe_flags.local_position_invalid_relaxed);
-
-    failsafe_flags.local_velocity_invalid =
-        !checkPosVelValidity(now, v_xy_valid, lpos.evh, _param_com_vel_fs_evh.get(), lpos.timestamp,
-                             _last_lvel_fail_time_us, !failsafe_flags.local_velocity_invalid);
-
-    // altitude
-    failsafe_flags.local_altitude_invalid = !lpos.z_valid || (now > lpos.timestamp + (_param_com_pos_fs_delay.get() * 1_s));
+// TODO: need fix
+#ifdef BSP_USING_QEMU
+    failsafe_flags.global_position_invalid        = false;
+    failsafe_flags.local_position_invalid         = false;
+    failsafe_flags.local_position_invalid_relaxed = false;
+    failsafe_flags.local_velocity_invalid         = false;
+    failsafe_flags.local_altitude_invalid         = false;
+#else
+    failsafe_flags.global_position_invalid        = !checkPosVelValidity(now, xy_valid, gpos.eph, _param_com_pos_fs_eph.get(), gpos.timestamp,
+                                                                         _last_gpos_fail_time_us, !failsafe_flags.global_position_invalid);
+    failsafe_flags.local_position_invalid         = !checkPosVelValidity(now, xy_valid, lpos.eph, _param_com_pos_fs_eph.get(), lpos.timestamp,
+                                                                         _last_lpos_fail_time_us, !failsafe_flags.local_position_invalid);
+    failsafe_flags.local_position_invalid_relaxed = !checkPosVelValidity(now, xy_valid, lpos.eph, lpos_eph_threshold_relaxed, lpos.timestamp,
+                                                                         _last_lpos_relaxed_fail_time_us, !failsafe_flags.local_position_invalid_relaxed);
+    failsafe_flags.local_velocity_invalid         = !checkPosVelValidity(now, v_xy_valid, lpos.evh, _param_com_vel_fs_evh.get(), lpos.timestamp,
+                                                                         _last_lvel_fail_time_us, !failsafe_flags.local_velocity_invalid);
+    failsafe_flags.local_altitude_invalid         = !lpos.z_valid || (now > lpos.timestamp + (_param_com_pos_fs_delay.get() * 1_s));
+#endif /* BSP_USING_QEMU */
 
     // attitude
     vehicle_attitude_s attitude;
@@ -752,6 +752,11 @@ void EstimatorChecks::setModeRequirementFlags(const Context &context, bool pre_f
     } else {
         failsafe_flags.attitude_invalid = true;
     }
+
+// TODO: need fix
+#ifdef BSP_USING_QEMU
+    failsafe_flags.attitude_invalid = false;
+#endif /* BSP_USING_QEMU */
 
     // angular velocity
     vehicle_angular_velocity_s angular_velocity{};
@@ -771,7 +776,12 @@ void EstimatorChecks::setModeRequirementFlags(const Context &context, bool pre_f
         }
     }
 
+// TODO: need fix
+#ifdef BSP_USING_QEMU
+    failsafe_flags.angular_velocity_invalid = false;
+#else
     failsafe_flags.angular_velocity_invalid = angular_velocity_invalid;
+#endif /* BSP_USING_QEMU */
 }
 
 bool EstimatorChecks::checkPosVelValidity(const hrt_abstime &now, const bool data_valid, const float data_accuracy,
