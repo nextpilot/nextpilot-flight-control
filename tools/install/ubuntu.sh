@@ -12,14 +12,12 @@ echo '*'
 echo '* Copyright All Reserved 2015-2023 NextPilot Development Team'
 echo '******************************************************************'
 
-
 ################################################################
 # 判断网络环境
 ################################################################
 # 通过ping google.com自动判断网络环境
 gitee=0
-for arg in "$@"
-do
+for arg in "$@"; do
     if [[ $arg == "--gitee" ]]; then
         gitee=1
     fi
@@ -37,18 +35,15 @@ else
     rtt_url=https://github.com/RT-Thread/rt-thread.git
 fi
 
-
 ################################################################
 # 判断是否ci环境使用
 ################################################################
 ci=0
-for arg in "$@"
-do
+for arg in "$@"; do
     if [[ $arg == "--ci" ]]; then
         ci=1
     fi
 done
-
 
 ################################################################
 # 准备安装目录
@@ -56,17 +51,16 @@ done
 # env install path
 rtt_dir=$HOME/.env
 # shell file dirctory
-shell_dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+shell_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 mkdir -p $rtt_dir
-echo "export ENV_ROOT=$rtt_dir" > $rtt_dir/env.sh
-
+echo "export ENV_ROOT=$rtt_dir" >$rtt_dir/env.sh
 
 echo
 echo "################################################################"
-echo  install ubuntu dependencies
+echo install ubuntu dependencies
 echo "################################################################"
-echo "Current Ubuntu Version `lsb_release -rs`"
+echo "Current Ubuntu Version $(lsb_release -rs)"
 # check ubuntu version
 ubuntu_release="$(lsb_release -rs)"
 if [[ "${ubuntu_release}" == "22.04" ]]; then
@@ -103,7 +97,6 @@ if [ -n "$USER" ]; then
     sudo usermod -a -G dialout $USER
 fi
 
-
 echo
 echo "################################################################"
 echo install python3 dependencies
@@ -121,8 +114,7 @@ else
     python3 -m pip install --user scons==4.4.0 requests psutil
     python3 -m pip install --user -U pyocd
 fi
-echo 'export PATH=`python3 -m site --user-base`/bin:$PATH' >> $rtt_dir/env.sh
-
+echo 'export PATH=`python3 -m site --user-base`/bin:$PATH' >>$rtt_dir/env.sh
 
 echo
 echo "################################################################"
@@ -148,10 +140,9 @@ else
     gcc_arm_dir=$rtt_dir/toolchain/gcc-arm/gcc-arm-none-eabi-$gcc_arm_ver/bin
 fi
 #
-echo "export PATH=$rtt_dir/toolchain/gcc-arm/gcc-arm-none-eabi-$gcc_arm_ver/bin:\$PATH" >> $rtt_dir/env.sh
-echo "export RTT_EXEC_PATH=$rtt_dir/toolchain/gcc-arm/gcc-arm-none-eabi-$gcc_arm_ver/bin" >> $rtt_dir/env.sh
-echo "export RTT_CC=gcc" >> $rtt_dir/env.sh
-
+echo "export PATH=$rtt_dir/toolchain/gcc-arm/gcc-arm-none-eabi-$gcc_arm_ver/bin:\$PATH" >>$rtt_dir/env.sh
+echo "export RTT_EXEC_PATH=$rtt_dir/toolchain/gcc-arm/gcc-arm-none-eabi-$gcc_arm_ver/bin" >>$rtt_dir/env.sh
+echo "export RTT_CC=gcc" >>$rtt_dir/env.sh
 
 echo
 echo "################################################################"
@@ -170,8 +161,8 @@ else
     rm -rf $pkg_dir
     git clone $pkg_url $pkg_dir
 fi
-echo 'source "$PKGS_DIR/Kconfig"' > $rtt_dir/rtthread/pkg/Kconfig
-echo "export PKGS_DIR=$rtt_dir/rtthread/pkg" >> $rtt_dir/env.sh
+echo 'source "$PKGS_DIR/Kconfig"' >$rtt_dir/rtthread/pkg/Kconfig
+echo "export PKGS_DIR=$rtt_dir/rtthread/pkg" >>$rtt_dir/env.sh
 
 # 下载rtt-env到$HOME/.env/scripts/
 env_dir=$rtt_dir/rtthread/env
@@ -187,19 +178,18 @@ else
 fi
 # echo "export PATH=$env_dir:\$PATH" >> $rtt_dir/env.sh
 
-
 echo
 echo "################################################################"
 echo show toolchain info
 echo "################################################################"
 # load env.sh
 source ~/.env/env.sh
-echo "python: `python3 -V`, `which python3`"
+echo "python: $(python3 -V), $(which python3)"
 echo "----------------------------------------------------------------"
-echo "pip: `pip3 -V`"
+echo "pip: $(pip3 -V)"
 echo "----------------------------------------------------------------"
-echo "scons: `which scons`"
-echo "`scons --version`"
+echo "scons: $(which scons)"
+echo "$(scons --version)"
 echo "----------------------------------------------------------------"
-echo "gcc: `which arm-none-eabi-gcc`"
-echo "`arm-none-eabi-gcc --version`"
+echo "gcc: $(which arm-none-eabi-gcc)"
+echo "$(arm-none-eabi-gcc --version)"
