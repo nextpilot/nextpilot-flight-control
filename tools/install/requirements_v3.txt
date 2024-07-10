@@ -27,3 +27,4 @@ wheel
 clang-format
 pre-commit
 setuptools
+jsonschema
