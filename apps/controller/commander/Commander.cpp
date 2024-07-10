@@ -1636,6 +1636,7 @@ void Commander::Run() {
 
         const hrt_abstime now = hrt_absolute_time();
 
+        // 处理模式切换和失控保护
         const bool nav_state_or_failsafe_changed = handleModeIntentionAndFailsafe();
 
         // Run arming checks @ 10Hz

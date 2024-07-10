@@ -17,6 +17,10 @@
 using namespace time_literals;
 
 void PowerChecks::checkAndReport(const Context &context, Report &reporter) {
+#ifdef BSP_USING_QEMU
+    return;
+#endif /* BSP_USING_QEMU */
+
     if (circuit_breaker_enabled_by_val(_param_cbrk_supply_chk.get(), CBRK_SUPPLY_CHK_KEY)) {
         return;
     }

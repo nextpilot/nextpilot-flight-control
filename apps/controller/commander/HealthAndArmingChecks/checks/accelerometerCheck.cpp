@@ -17,6 +17,10 @@
 using namespace time_literals;
 
 void AccelerometerChecks::checkAndReport(const Context &context, Report &reporter) {
+#ifdef BSP_USING_QEMU
+    return;
+#endif /* BSP_USING_QEMU */
+
     for (int instance = 0; instance < _sensor_accel_sub.size(); instance++) {
         const bool is_required = instance == 0 || isAccelRequired(instance);
 

@@ -9,7 +9,7 @@
  ******************************************************************/
 
 #define LOG_TAG "cmder.framework"
-#define LOG_LVL LOG_LVL_INFO
+#define LOG_LVL LOG_LVL_DBG
 
 #include "framework.h"
 #define DEFINE_GET_CUSTOM_MODE
@@ -37,7 +37,8 @@ uint8_t FailsafeBase::update(const hrt_abstime &time_us, const State &state, boo
         _last_update = time_us;
     }
 
-    if ((_last_armed && !state.armed) || (!_last_armed && state.armed)) { // Disarming or Arming
+    // Disarming or Arming
+    if ((_last_armed && !state.armed) || (!_last_armed && state.armed)) {
         removeActions(ClearCondition::OnDisarm);
         removeActions(ClearCondition::OnModeChangeOrDisarm);
         _user_takeover_active = false;
@@ -49,7 +50,10 @@ uint8_t FailsafeBase::update(const hrt_abstime &time_us, const State &state, boo
         removeActions(ClearCondition::OnModeChangeOrDisarm);
     }
 
-    if (_defer_failsafes && _failsafe_defer_started != 0 && _defer_timeout > 0 && time_us > _failsafe_defer_started + _defer_timeout) {
+    if (_defer_failsafes
+        && _failsafe_defer_started != 0
+        && _defer_timeout > 0
+        && time_us > _failsafe_defer_started + _defer_timeout) {
         _defer_failsafes = false;
     }
 
@@ -69,6 +73,8 @@ uint8_t FailsafeBase::update(const hrt_abstime &time_us, const State &state, boo
 
     // Notify user if the action is worse than before, or a new action got added
     if (action_state.action > _selected_action || (action_state.action != Action::None && _notification_required)) {
+        // LOG_W("a: %d, %d, %d", action_state.action, _selected_action, _notification_required);
+        // LOG_W("b: %d, %d, %d, %d", state.user_intended_mode, action_state.action, action_state.delayed_action, action_state.cause);
         notifyUser(state.user_intended_mode, action_state.action, action_state.delayed_action, action_state.cause);
     }
 
@@ -428,7 +434,11 @@ void FailsafeBase::getSelectedAction(const State &state, const failsafe_flags_s 
     }
 
     // Check if we should enter delayed Hold
-    if (_current_delay > 0 && !_user_takeover_active && allow_user_takeover <= UserTakeoverAllowed::AlwaysModeSwitchOnly && selected_action != Action::Disarm && selected_action != Action::Terminate) {
+    if (_current_delay > 0
+        && !_user_takeover_active
+        && allow_user_takeover <= UserTakeoverAllowed::AlwaysModeSwitchOnly
+        && selected_action != Action::Disarm
+        && selected_action != Action::Terminate) {
         returned_state.delayed_action = selected_action;
         selected_action               = Action::Hold;
         allow_user_takeover           = UserTakeoverAllowed::AlwaysModeSwitchOnly;
@@ -608,7 +618,45 @@ bool FailsafeBase::modeCanRun(const failsafe_flags_s &status_flags, uint8_t mode
     uint32_t mode_mask = 1u << mode;
     // mode_req_wind_and_flight_time_compliance: does not need to be handled here (these are separate failsafe triggers)
     // mode_req_manual_control: is handled separately
-    return (!status_flags.angular_velocity_invalid || ((status_flags.mode_req_angular_velocity & mode_mask) == 0)) && (!status_flags.attitude_invalid || ((status_flags.mode_req_attitude & mode_mask) == 0)) && (!status_flags.local_position_invalid || ((status_flags.mode_req_local_position & mode_mask) == 0)) && (!status_flags.local_position_invalid_relaxed || ((status_flags.mode_req_local_position_relaxed & mode_mask) == 0)) && (!status_flags.global_position_invalid || ((status_flags.mode_req_global_position & mode_mask) == 0)) && (!status_flags.local_altitude_invalid || ((status_flags.mode_req_local_alt & mode_mask) == 0)) && (!status_flags.auto_mission_missing || ((status_flags.mode_req_mission & mode_mask) == 0)) && (!status_flags.offboard_control_signal_lost || ((status_flags.mode_req_offboard_signal & mode_mask) == 0)) && (!status_flags.home_position_invalid || ((status_flags.mode_req_home_position & mode_mask) == 0)) && ((status_flags.mode_req_other & mode_mask) == 0);
+
+#if 0
+    bool ret_sets[10] = {};
+    ret_sets[0]       = (!status_flags.angular_velocity_invalid || ((status_flags.mode_req_angular_velocity & mode_mask) == 0));
+    ret_sets[1]       = (!status_flags.attitude_invalid || ((status_flags.mode_req_attitude & mode_mask) == 0));
+    ret_sets[2]       = (!status_flags.local_position_invalid || ((status_flags.mode_req_local_position & mode_mask) == 0));
+    ret_sets[3]       = (!status_flags.local_position_invalid_relaxed || ((status_flags.mode_req_local_position_relaxed & mode_mask) == 0));
+    ret_sets[4]       = (!status_flags.global_position_invalid || ((status_flags.mode_req_global_position & mode_mask) == 0));
+    ret_sets[5]       = (!status_flags.local_altitude_invalid || ((status_flags.mode_req_local_alt & mode_mask) == 0));
+    ret_sets[6]       = (!status_flags.auto_mission_missing || ((status_flags.mode_req_mission & mode_mask) == 0));
+    ret_sets[7]       = (!status_flags.offboard_control_signal_lost || ((status_flags.mode_req_offboard_signal & mode_mask) == 0));
+    ret_sets[8]       = (!status_flags.home_position_invalid || ((status_flags.mode_req_home_position & mode_mask) == 0));
+    ret_sets[9]       = ((status_flags.mode_req_other & mode_mask) == 0);
+    // 0 1 2 4 5
+    for (int ret_index = 0; ret_index < 10; ret_index++) {
+        // LOG_D("ret_sets[%d]: %d", ret_index, ret_sets[ret_index]);
+        if (ret_sets[ret_index] != 1) {
+            LOG_D("ret error index: %d", ret_index);
+        }
+    }
+    LOG_D("*******************************************");
+    LOG_D("mode_mask: 0x%x", mode_mask);
+    LOG_D("ret[0]: %d, %d", status_flags.angular_velocity_invalid, (status_flags.mode_req_angular_velocity & mode_mask) == 0);
+    LOG_D("ret[1]: %d, %d", status_flags.attitude_invalid, (status_flags.mode_req_attitude & mode_mask) == 0);
+    LOG_D("ret[2]: %d, %d", status_flags.local_position_invalid, (status_flags.mode_req_local_position & mode_mask) == 0);
+    LOG_D("ret[4]: %d, %d", status_flags.global_position_invalid, (status_flags.mode_req_global_position & mode_mask) == 0);
+    LOG_D("ret[5]: %d, %d", status_flags.local_altitude_invalid, (status_flags.mode_req_local_alt & mode_mask) == 0);
+#endif /* 0 */
+
+    return (!status_flags.angular_velocity_invalid || ((status_flags.mode_req_angular_velocity & mode_mask) == 0))
+        && (!status_flags.attitude_invalid || ((status_flags.mode_req_attitude & mode_mask) == 0))
+        && (!status_flags.local_position_invalid || ((status_flags.mode_req_local_position & mode_mask) == 0))
+        && (!status_flags.local_position_invalid_relaxed || ((status_flags.mode_req_local_position_relaxed & mode_mask) == 0))
+        && (!status_flags.global_position_invalid || ((status_flags.mode_req_global_position & mode_mask) == 0))
+        && (!status_flags.local_altitude_invalid || ((status_flags.mode_req_local_alt & mode_mask) == 0))
+        && (!status_flags.auto_mission_missing || ((status_flags.mode_req_mission & mode_mask) == 0))
+        && (!status_flags.offboard_control_signal_lost || ((status_flags.mode_req_offboard_signal & mode_mask) == 0))
+        && (!status_flags.home_position_invalid || ((status_flags.mode_req_home_position & mode_mask) == 0))
+        && ((status_flags.mode_req_other & mode_mask) == 0);
 }
 
 bool FailsafeBase::deferFailsafes(bool enabled, int timeout_s) {

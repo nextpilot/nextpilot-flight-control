@@ -49,7 +49,9 @@ void EstimatorChecks::checkAndReport(const Context &context, Report &reporter) {
         estimator_selector_status_s estimator_selector_status;
 
         if (_estimator_selector_status_sub.copy(&estimator_selector_status)) {
-            bool instance_changed = _estimator_status_sub.ChangeInstance(estimator_selector_status.primary_instance) && _estimator_sensor_bias_sub.ChangeInstance(estimator_selector_status.primary_instance) && _estimator_status_flags_sub.ChangeInstance(estimator_selector_status.primary_instance);
+            bool instance_changed = _estimator_status_sub.ChangeInstance(estimator_selector_status.primary_instance)
+                                 && _estimator_sensor_bias_sub.ChangeInstance(estimator_selector_status.primary_instance)
+                                 && _estimator_status_flags_sub.ChangeInstance(estimator_selector_status.primary_instance);
 
             if (!instance_changed) {
                 missing_data = true;

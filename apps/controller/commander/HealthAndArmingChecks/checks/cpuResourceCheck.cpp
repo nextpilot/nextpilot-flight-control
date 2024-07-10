@@ -16,6 +16,10 @@
 using namespace time_literals;
 
 void CpuResourceChecks::checkAndReport(const Context &context, Report &reporter) {
+#ifdef BSP_USING_QEMU
+    return;
+#endif /* BSP_USING_QEMU */
+
     if (_param_com_cpu_max.get() < FLT_EPSILON) {
         return;
     }

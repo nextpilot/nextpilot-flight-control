@@ -25,7 +25,24 @@ int Ekf2Fake::init() {
 
 void Ekf2Fake::Run() {
     hrt_abstime now_us = hrt_absolute_time();
-    LOG_D("is running");
+
+    // publish vehicle_gyroscope_s
+    if (_sensor_gyro_sub.update(&_s_gyro)) {
+        vehicle_angular_velocity_s        vehicle_angular_velocity{};
+        static vehicle_angular_velocity_s vehicle_angular_velocity_prev{};
+        vehicle_angular_velocity.timestamp        = now_us;
+        vehicle_angular_velocity.timestamp_sample = vehicle_angular_velocity.timestamp;
+        vehicle_angular_velocity.xyz[0]           = _s_gyro.x;
+        vehicle_angular_velocity.xyz[1]           = _s_gyro.y;
+        vehicle_angular_velocity.xyz[2]           = _s_gyro.z;
+        for (int axis = 0; axis < 3; axis++) {
+            vehicle_angular_velocity.xyz_derivative[axis] =
+                (vehicle_angular_velocity.xyz[axis] - vehicle_angular_velocity_prev.xyz[axis])
+                / (EKF2_FAKE_PERIOD_MS / 1000.0f);
+        }
+        vehicle_angular_velocity_prev = vehicle_angular_velocity;
+        _v_ang_pub.publish(vehicle_angular_velocity);
+    }
 
     // publish vehicle_acceleration_s
     if (_sensor_acc_sub.update(&_s_accel)) {
@@ -36,6 +53,13 @@ void Ekf2Fake::Run() {
         vehicle_acceleration.xyz[1]           = _s_accel.y;
         vehicle_acceleration.xyz[2]           = _s_accel.z;
         _v_acc_pub.publish(vehicle_acceleration);
+    }
+
+    // publish vehicle gps position
+    if (_sensor_gps_sub.update(&_s_gps)) {
+        sensor_gps_s vehicle_gps_pos{};
+        vehicle_gps_pos = _s_gps;
+        _v_gps_pos_pub.publish(vehicle_gps_pos);
     }
 
     // publish vehicle angular velocity
@@ -76,4 +100,43 @@ void Ekf2Fake::Run() {
         rt_memcpy(&global_position, &_v_glob_pos_groundtruth, sizeof(vehicle_global_position_s));
         _v_glob_pos_pub.publish(global_position);
     }
+
+    // publish estimator status
+    _esttimator_status.timestamp        = now_us;
+    _esttimator_status.timestamp_sample = now_us;
+    // uint64_t control_mode_flags; // TODO:
+    for (int i = 0; i < 3; i++) {
+        _esttimator_status.output_tracking_error[i] = 0;
+    }
+    _esttimator_status.filter_fault_flags               = 0;
+    _esttimator_status.pos_horiz_accuracy               = 0.1f;
+    _esttimator_status.pos_vert_accuracy                = 0.1f;
+    _esttimator_status.mag_test_ratio                   = 0.1f;
+    _esttimator_status.vel_test_ratio                   = 0.1f;
+    _esttimator_status.pos_test_ratio                   = 0.1f;
+    _esttimator_status.hgt_test_ratio                   = 0.1f;
+    _esttimator_status.tas_test_ratio                   = 0.1f;
+    _esttimator_status.hagl_test_ratio                  = 0.1f;
+    _esttimator_status.beta_test_ratio                  = 0.1f;
+    _esttimator_status.time_slip                        = 0;
+    _esttimator_status.accel_device_id                  = 0xFF;
+    _esttimator_status.gyro_device_id                   = 0xFF;
+    _esttimator_status.baro_device_id                   = 0xFF;
+    _esttimator_status.mag_device_id                    = 0xFF;
+    _esttimator_status.gps_check_fail_flags             = 0;
+    _esttimator_status.innovation_check_flags           = 0;
+    _esttimator_status.solution_status_flags            = 0;
+    _esttimator_status.reset_count_vel_ne               = 0;
+    _esttimator_status.reset_count_vel_d                = 0;
+    _esttimator_status.reset_count_pos_ne               = 0;
+    _esttimator_status.reset_count_pod_d                = 0;
+    _esttimator_status.reset_count_quat                 = 0;
+    _esttimator_status.pre_flt_fail_innov_heading       = false;
+    _esttimator_status.pre_flt_fail_innov_vel_horiz     = false;
+    _esttimator_status.pre_flt_fail_innov_vel_vert      = false;
+    _esttimator_status.pre_flt_fail_innov_height        = false;
+    _esttimator_status.pre_flt_fail_mag_field_disturbed = false;
+    _esttimator_status.health_flags                     = 0;
+    _esttimator_status.timeout_flags                    = 0;
+    _estimator_status_pub.publish(_esttimator_status);
 }

@@ -36,9 +36,7 @@ bool HealthAndArmingChecks::update(bool force_reporting) {
             break;
         }
 
-#ifndef BSP_USING_QEMU
         _checks[i]->checkAndReport(_context, _reporter);
-#endif /* BSP_USING_QEMU */
     }
 
     const bool results_changed = _reporter.finalize();
@@ -59,9 +57,7 @@ bool HealthAndArmingChecks::update(bool force_reporting) {
                 break;
             }
 
-#ifndef BSP_USING_QEMU
             _checks[i]->checkAndReport(_context, _reporter);
-#endif /* BSP_USING_QEMU */
         }
 
         _reporter.finalize();

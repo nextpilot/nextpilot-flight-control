@@ -8,6 +8,9 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "failsafe"
+#define LOG_LVL LOG_LVL_INFO
+
 #include "failsafe.h"
 #include <defines.h>
 #include <ulog/log.h>
@@ -312,11 +315,8 @@ void Failsafe::checkStateAndMode(const hrt_abstime &time_us, const State &state,
     const bool rc_loss_ignored_mission  = state.user_intended_mode == vehicle_status_s::NAVIGATION_STATE_AUTO_MISSION && (_param_com_rcl_except.get() & (int)ManualControlLossExceptionBits::Mission);
     const bool rc_loss_ignored_loiter   = state.user_intended_mode == vehicle_status_s::NAVIGATION_STATE_AUTO_LOITER && (_param_com_rcl_except.get() & (int)ManualControlLossExceptionBits::Hold);
     const bool rc_loss_ignored_offboard = state.user_intended_mode == vehicle_status_s::NAVIGATION_STATE_OFFBOARD && (_param_com_rcl_except.get() & (int)ManualControlLossExceptionBits::Offboard);
-    const bool rc_loss_ignored_takeoff  = (state.user_intended_mode == vehicle_status_s::NAVIGATION_STATE_AUTO_TAKEOFF ||
-                                          state.user_intended_mode == vehicle_status_s::NAVIGATION_STATE_AUTO_VTOL_TAKEOFF) &&
-                                         (_param_com_rcl_except.get() & (int)ManualControlLossExceptionBits::Hold);
-    const bool rc_loss_ignored = rc_loss_ignored_mission || rc_loss_ignored_loiter || rc_loss_ignored_offboard ||
-                                 rc_loss_ignored_takeoff || ignore_link_failsafe || _manual_control_lost_at_arming;
+    const bool rc_loss_ignored_takeoff  = (state.user_intended_mode == vehicle_status_s::NAVIGATION_STATE_AUTO_TAKEOFF || state.user_intended_mode == vehicle_status_s::NAVIGATION_STATE_AUTO_VTOL_TAKEOFF) && (_param_com_rcl_except.get() & (int)ManualControlLossExceptionBits::Hold);
+    const bool rc_loss_ignored          = rc_loss_ignored_mission || rc_loss_ignored_loiter || rc_loss_ignored_offboard || rc_loss_ignored_takeoff || ignore_link_failsafe || _manual_control_lost_at_arming;
 
     if (_param_com_rc_in_mode.get() != int32_t(offboard_loss_failsafe_mode::Land_mode) && !rc_loss_ignored) {
         CHECK_FAILSAFE(status_flags, manual_control_signal_lost,
@@ -324,8 +324,7 @@ void Failsafe::checkStateAndMode(const hrt_abstime &time_us, const State &state,
     }
 
     // GCS connection loss
-    const bool gcs_connection_loss_ignored = state.user_intended_mode == vehicle_status_s::NAVIGATION_STATE_AUTO_LAND ||
-                                             state.user_intended_mode == vehicle_status_s::NAVIGATION_STATE_AUTO_PRECLAND || ignore_link_failsafe;
+    const bool gcs_connection_loss_ignored = state.user_intended_mode == vehicle_status_s::NAVIGATION_STATE_AUTO_LAND || state.user_intended_mode == vehicle_status_s::NAVIGATION_STATE_AUTO_PRECLAND || ignore_link_failsafe;
 
     if (_param_nav_dll_act.get() != int32_t(gcs_connection_loss_failsafe_mode::Disabled) && !gcs_connection_loss_ignored) {
         CHECK_FAILSAFE(status_flags, gcs_connection_lost,
@@ -333,10 +332,7 @@ void Failsafe::checkStateAndMode(const hrt_abstime &time_us, const State &state,
     }
 
     // VTOL transition failure (quadchute)
-    if (state.user_intended_mode == vehicle_status_s::NAVIGATION_STATE_AUTO_MISSION ||
-        state.user_intended_mode == vehicle_status_s::NAVIGATION_STATE_AUTO_LOITER ||
-        state.user_intended_mode == vehicle_status_s::NAVIGATION_STATE_AUTO_TAKEOFF ||
-        state.user_intended_mode == vehicle_status_s::NAVIGATION_STATE_AUTO_VTOL_TAKEOFF) {
+    if (state.user_intended_mode == vehicle_status_s::NAVIGATION_STATE_AUTO_MISSION || state.user_intended_mode == vehicle_status_s::NAVIGATION_STATE_AUTO_LOITER || state.user_intended_mode == vehicle_status_s::NAVIGATION_STATE_AUTO_TAKEOFF || state.user_intended_mode == vehicle_status_s::NAVIGATION_STATE_AUTO_VTOL_TAKEOFF) {
         CHECK_FAILSAFE(status_flags, vtol_fixed_wing_system_failure, fromQuadchuteActParam(_param_com_qc_act.get()));
     }
 
@@ -357,8 +353,7 @@ void Failsafe::checkStateAndMode(const hrt_abstime &time_us, const State &state,
     CHECK_FAILSAFE(status_flags, flight_time_limit_exceeded, ActionOptions(Action::RTL).cannotBeDeferred());
 
     // trigger RTL if low position accurancy is detected
-    if (state.user_intended_mode == vehicle_status_s::NAVIGATION_STATE_AUTO_MISSION ||
-        state.user_intended_mode == vehicle_status_s::NAVIGATION_STATE_AUTO_LOITER) {
+    if (state.user_intended_mode == vehicle_status_s::NAVIGATION_STATE_AUTO_MISSION || state.user_intended_mode == vehicle_status_s::NAVIGATION_STATE_AUTO_LOITER) {
         CHECK_FAILSAFE(status_flags, local_position_accuracy_low, ActionOptions(Action::RTL));
     }
 
@@ -411,9 +406,16 @@ void Failsafe::checkStateAndMode(const hrt_abstime &time_us, const State &state,
 
     // Mode fallback (last)
     Action mode_fallback_action = checkModeFallback(status_flags, state.user_intended_mode);
-    _last_state_mode_fallback   = checkFailsafe(_caller_id_mode_fallback, _last_state_mode_fallback,
-                                                mode_fallback_action != Action::None,
-                                                ActionOptions(mode_fallback_action).allowUserTakeover(UserTakeoverAllowed::Always).cannotBeDeferred());
+
+#if 0
+    if (mode_fallback_action != Action::None) {
+        LOG_W("mode_fallback_action: %d, state.user_intended_mode: %d", mode_fallback_action, state.user_intended_mode);
+    }
+#endif /* 0 */
+
+    _last_state_mode_fallback = checkFailsafe(_caller_id_mode_fallback, _last_state_mode_fallback,
+                                              mode_fallback_action != Action::None,
+                                              ActionOptions(mode_fallback_action).allowUserTakeover(UserTakeoverAllowed::Always).cannotBeDeferred());
 }
 
 void Failsafe::updateArmingState(const hrt_abstime &time_us, bool armed, const failsafe_flags_s &status_flags) {

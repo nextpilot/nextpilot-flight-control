@@ -17,6 +17,10 @@
 using namespace time_literals;
 
 void MagnetometerChecks::checkAndReport(const Context &context, Report &reporter) {
+#ifdef BSP_USING_QEMU
+    return;
+#endif /* BSP_USING_QEMU */
+
     if (_param_sys_has_mag.get() == 0) {
         return;
     }
