@@ -35,8 +35,9 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     name: build-all-bsps
+
+    runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
@@ -47,7 +48,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Setup Python Tools
         uses: actions/setup-python@v5
         with:
           python-version: 3.x
