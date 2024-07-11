@@ -3,13 +3,10 @@ import sys
 import rtconfig
 from building import *
 
-
 cwd = GetCurrentDir()
 
 inc = [cwd]
 src = Glob("*.cpp")
-
 objs = DefineGroup("pkg/workq", src, depend=["PKG_USING_WORKQUEUE"], CPPPATH=inc)
-
 
 Return("objs")
