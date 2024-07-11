@@ -763,7 +763,8 @@ void EstimatorChecks::setModeRequirementFlags(const Context &context, bool pre_f
     _vehicle_angular_velocity_sub.copy(&angular_velocity);
     const bool condition_angular_velocity_time_valid = angular_velocity.timestamp != 0 && (now < angular_velocity.timestamp + 1_s);
     const bool condition_angular_velocity_finite     = matrix::Vector3f(angular_velocity.xyz).isAllFinite();
-    const bool angular_velocity_invalid              = !condition_angular_velocity_time_valid || !condition_angular_velocity_finite;
+    const bool angular_velocity_invalid              = !condition_angular_velocity_time_valid
+                                       || !condition_angular_velocity_finite;
 
     if (!failsafe_flags.angular_velocity_invalid && angular_velocity_invalid) {
         const char err_str[]{"angular velocity no longer valid"};
@@ -776,12 +777,7 @@ void EstimatorChecks::setModeRequirementFlags(const Context &context, bool pre_f
         }
     }
 
-// TODO: need fix
-#ifdef BSP_USING_QEMU
-    failsafe_flags.angular_velocity_invalid = false;
-#else
     failsafe_flags.angular_velocity_invalid = angular_velocity_invalid;
-#endif /* BSP_USING_QEMU */
 }
 
 bool EstimatorChecks::checkPosVelValidity(const hrt_abstime &now, const bool data_valid, const float data_accuracy,
