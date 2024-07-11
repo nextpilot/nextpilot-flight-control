@@ -719,24 +719,25 @@ void EstimatorChecks::setModeRequirementFlags(const Context &context, bool pre_f
         }
     }
 
-// TODO: need fix
-#ifdef BSP_USING_QEMU
-    failsafe_flags.global_position_invalid        = false;
-    failsafe_flags.local_position_invalid         = false;
-    failsafe_flags.local_position_invalid_relaxed = false;
-    failsafe_flags.local_velocity_invalid         = false;
-    failsafe_flags.local_altitude_invalid         = false;
-#else
-    failsafe_flags.global_position_invalid        = !checkPosVelValidity(now, xy_valid, gpos.eph, _param_com_pos_fs_eph.get(), gpos.timestamp,
-                                                                         _last_gpos_fail_time_us, !failsafe_flags.global_position_invalid);
-    failsafe_flags.local_position_invalid         = !checkPosVelValidity(now, xy_valid, lpos.eph, _param_com_pos_fs_eph.get(), lpos.timestamp,
-                                                                         _last_lpos_fail_time_us, !failsafe_flags.local_position_invalid);
-    failsafe_flags.local_position_invalid_relaxed = !checkPosVelValidity(now, xy_valid, lpos.eph, lpos_eph_threshold_relaxed, lpos.timestamp,
-                                                                         _last_lpos_relaxed_fail_time_us, !failsafe_flags.local_position_invalid_relaxed);
-    failsafe_flags.local_velocity_invalid         = !checkPosVelValidity(now, v_xy_valid, lpos.evh, _param_com_vel_fs_evh.get(), lpos.timestamp,
-                                                                         _last_lvel_fail_time_us, !failsafe_flags.local_velocity_invalid);
-    failsafe_flags.local_altitude_invalid         = !lpos.z_valid || (now > lpos.timestamp + (_param_com_pos_fs_delay.get() * 1_s));
-#endif /* BSP_USING_QEMU */
+    failsafe_flags.global_position_invalid =
+        !checkPosVelValidity(now, xy_valid, gpos.eph, _param_com_pos_fs_eph.get(), gpos.timestamp,
+                             _last_gpos_fail_time_us, !failsafe_flags.global_position_invalid);
+
+    failsafe_flags.local_position_invalid =
+        !checkPosVelValidity(now, xy_valid, lpos.eph, _param_com_pos_fs_eph.get(), lpos.timestamp,
+                             _last_lpos_fail_time_us, !failsafe_flags.local_position_invalid);
+
+    failsafe_flags.local_position_invalid_relaxed =
+        !checkPosVelValidity(now, xy_valid, lpos.eph, lpos_eph_threshold_relaxed, lpos.timestamp,
+                             _last_lpos_relaxed_fail_time_us, !failsafe_flags.local_position_invalid_relaxed);
+
+    failsafe_flags.local_velocity_invalid =
+        !checkPosVelValidity(now, v_xy_valid, lpos.evh, _param_com_vel_fs_evh.get(), lpos.timestamp,
+                             _last_lvel_fail_time_us, !failsafe_flags.local_velocity_invalid);
+
+
+    // altitude
+    failsafe_flags.local_altitude_invalid = !lpos.z_valid || (now > lpos.timestamp + (_param_com_pos_fs_delay.get() * 1_s));
 
     // attitude
     vehicle_attitude_s attitude;
@@ -761,9 +762,10 @@ void EstimatorChecks::setModeRequirementFlags(const Context &context, bool pre_f
     // angular velocity
     vehicle_angular_velocity_s angular_velocity{};
     _vehicle_angular_velocity_sub.copy(&angular_velocity);
-    const bool condition_angular_velocity_time_valid = angular_velocity.timestamp != 0 && (now < angular_velocity.timestamp + 1_s);
-    const bool condition_angular_velocity_finite     = matrix::Vector3f(angular_velocity.xyz).isAllFinite();
-    const bool angular_velocity_invalid              = !condition_angular_velocity_time_valid
+    const bool condition_angular_velocity_time_valid = angular_velocity.timestamp != 0
+                                                    && (now < angular_velocity.timestamp + 1_s);
+    const bool condition_angular_velocity_finite = matrix::Vector3f(angular_velocity.xyz).isAllFinite();
+    const bool angular_velocity_invalid          = !condition_angular_velocity_time_valid
                                        || !condition_angular_velocity_finite;
 
     if (!failsafe_flags.angular_velocity_invalid && angular_velocity_invalid) {

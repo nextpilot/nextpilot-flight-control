@@ -21,7 +21,7 @@ static void ekf2_fake_run(void *parameter) {
     _instance->init();
     while (1) {
         _instance->Run();
-        rt_thread_mdelay(5);
+        rt_thread_mdelay(EKF2_FAKE_PERIOD_MS);
     }
 }
 

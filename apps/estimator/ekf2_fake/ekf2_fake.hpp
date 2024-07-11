@@ -16,6 +16,8 @@ using namespace nextpilot;
 using namespace time_literals;
 using namespace nextpilot::global_params;
 
+#define EKF2_FAKE_PERIOD_MS 5
+
 class Ekf2Fake {
 public:
     Ekf2Fake();
@@ -24,14 +26,13 @@ public:
     void Run();
 
 private:
-    static constexpr int EKF2_FAKE_PERIOD_MS = 5;
-    uORB::Subscription   _sensor_gyro_sub{ORB_ID(sensor_gyro)};
-    uORB::Subscription   _sensor_acc_sub{ORB_ID(sensor_accel)};
-    uORB::Subscription   _sensor_gps_sub{ORB_ID(sensor_gps)};
-    uORB::Subscription   _v_ang_vel_groundtruth_sub{ORB_ID(vehicle_angular_velocity_groundtruth)};
-    uORB::Subscription   _v_att_groundtruth_sub{ORB_ID(vehicle_attitude_groundtruth)};
-    uORB::Subscription   _v_loc_pos_groundtruth_sub{ORB_ID(vehicle_local_position_groundtruth)};
-    uORB::Subscription   _v_glob_pos_groundtruth_sub{ORB_ID(vehicle_global_position_groundtruth)};
+    uORB::Subscription _sensor_gyro_sub{ORB_ID(sensor_gyro)};
+    uORB::Subscription _sensor_acc_sub{ORB_ID(sensor_accel)};
+    uORB::Subscription _sensor_gps_sub{ORB_ID(sensor_gps)};
+    uORB::Subscription _v_ang_vel_groundtruth_sub{ORB_ID(vehicle_angular_velocity_groundtruth)};
+    uORB::Subscription _v_att_groundtruth_sub{ORB_ID(vehicle_attitude_groundtruth)};
+    uORB::Subscription _v_loc_pos_groundtruth_sub{ORB_ID(vehicle_local_position_groundtruth)};
+    uORB::Subscription _v_glob_pos_groundtruth_sub{ORB_ID(vehicle_global_position_groundtruth)};
 
     sensor_gyro_s              _s_gyro{};
     sensor_accel_s             _s_accel{};

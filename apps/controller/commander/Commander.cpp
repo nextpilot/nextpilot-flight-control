@@ -1577,6 +1577,9 @@ void Commander::Run() {
 
     arm_auth_init(&_mavlink_log_pub, &_vehicle_status.system_id);
 
+    // Wait 1s until the ekf2 is ready in the simulation environment
+    rt_thread_mdelay(1000);
+
     while (!should_exit()) {
         perf_begin(_loop_perf);
 
