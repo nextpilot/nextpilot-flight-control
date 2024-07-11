@@ -18,8 +18,11 @@ AirspeedChecks::AirspeedChecks() :
 }
 
 void AirspeedChecks::checkAndReport(const Context &context, Report &reporter) {
-    if (circuit_breaker_enabled_by_val(_param_cbrk_airspd_chk.get(), CBRK_AIRSPD_CHK_KEY) ||
-        (context.status().vehicle_type != vehicle_status_s::VEHICLE_TYPE_FIXED_WING && !context.status().is_vtol)) {
+#ifdef BSP_USING_QEMU
+    return;
+#endif /* BSP_USING_QEMU */
+
+    if (circuit_breaker_enabled_by_val(_param_cbrk_airspd_chk.get(), CBRK_AIRSPD_CHK_KEY) || (context.status().vehicle_type != vehicle_status_s::VEHICLE_TYPE_FIXED_WING && !context.status().is_vtol)) {
         return;
     }
 
