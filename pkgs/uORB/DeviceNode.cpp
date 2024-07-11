@@ -187,10 +187,10 @@ ssize_t DeviceNode::write(const void *data) {
     rt_enter_critical();
     rt_memcpy(_data + (_meta->o_size * (generation % _queue_size)), data, _meta->o_size);
 
-    // 注册callback
-    // for (auto item : _callbacks) {
-    //     item->call();
-    // }
+    // callback
+    for (auto item : _callbacks) {
+        item->call();
+    }
 
     /* Mark at least one data has been published */
     _data_valid = true;
