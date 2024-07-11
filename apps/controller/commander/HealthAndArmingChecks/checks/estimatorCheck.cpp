@@ -744,19 +744,19 @@ void EstimatorChecks::setModeRequirementFlags(const Context &context, bool pre_f
     if (_vehicle_attitude_sub.copy(&attitude)) {
         const matrix::Quatf q{attitude.q};
         const float         eps                        = 1e-5f;
-        const bool          no_element_larger_than_one = (fabsf(q(0)) <= 1.f + eps) && (fabsf(q(1)) <= 1.f + eps) && (fabsf(q(2)) <= 1.f + eps) && (fabsf(q(3)) <= 1.f + eps);
-        const bool          norm_in_tolerance          = fabsf(1.f - q.norm()) <= eps;
+        const bool          no_element_larger_than_one = (fabsf(q(0)) <= 1.f + eps)
+                                             && (fabsf(q(1)) <= 1.f + eps)
+                                             && (fabsf(q(2)) <= 1.f + eps)
+                                             && (fabsf(q(3)) <= 1.f + eps);
+        const bool norm_in_tolerance = fabsf(1.f - q.norm()) <= eps;
 
-        failsafe_flags.attitude_invalid = (now > attitude.timestamp + 1_s) || !norm_in_tolerance || !no_element_larger_than_one;
+        failsafe_flags.attitude_invalid = (now > attitude.timestamp + 1_s)
+                                       || !norm_in_tolerance
+                                       || !no_element_larger_than_one;
 
     } else {
         failsafe_flags.attitude_invalid = true;
     }
-
-// TODO: need fix
-#ifdef BSP_USING_QEMU
-    failsafe_flags.attitude_invalid = false;
-#endif /* BSP_USING_QEMU */
 
     // angular velocity
     vehicle_angular_velocity_s angular_velocity{};
