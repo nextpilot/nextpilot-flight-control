@@ -8,11 +8,13 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "flightime_check"
+#define LOG_LVL LOG_LVL_INFO
+
 #include "flightTimeCheck.hpp"
 
 void FlightTimeChecks::checkAndReport(const Context &context, Report &reporter) {
-    if (_param_com_flt_time_max.get() > FLT_EPSILON && context.status().takeoff_time != 0 &&
-        (hrt_absolute_time() - context.status().takeoff_time) > (1_s * _param_com_flt_time_max.get())) {
+    if (_param_com_flt_time_max.get() > FLT_EPSILON && context.status().takeoff_time != 0 && (hrt_absolute_time() - context.status().takeoff_time) > (1_s * _param_com_flt_time_max.get())) {
         reporter.failsafeFlags().flight_time_limit_exceeded = true;
         /* EVENT
          * @description
@@ -34,9 +36,9 @@ void FlightTimeChecks::checkAndReport(const Context &context, Report &reporter) 
 
     // report warning when approaching max flight time
     if (!reporter.failsafeFlags().flight_time_limit_exceeded && context.status().takeoff_time != 0 && _param_com_flt_time_max.get() > 0) {
-        const float remaining_flight_time_sec = (context.status().takeoff_time < hrt_absolute_time()) ?
-                                                    _param_com_flt_time_max.get() - 1.e-6f * (hrt_absolute_time() - context.status().takeoff_time) :
-                                                    _param_com_flt_time_max.get();
+        const float remaining_flight_time_sec = (context.status().takeoff_time < hrt_absolute_time())
+                                                  ? _param_com_flt_time_max.get() - 1.e-6f * (hrt_absolute_time() - context.status().takeoff_time)
+                                                  : _param_com_flt_time_max.get();
 
         if (remaining_flight_time_sec < 0.1f * _param_com_flt_time_max.get()) {
             // send warnings every minute until RTL

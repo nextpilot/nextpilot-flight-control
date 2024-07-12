@@ -8,6 +8,9 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "rc_check"
+#define LOG_LVL LOG_LVL_INFO
+
 #include "manualControlCheck.hpp"
 
 using namespace time_literals;

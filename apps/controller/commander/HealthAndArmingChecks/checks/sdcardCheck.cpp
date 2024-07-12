@@ -7,16 +7,19 @@
  *
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
+#define LOG_TAG "sdcard_check"
+#define LOG_LVL LOG_LVL_INFO
+
 
 #include "sdcardCheck.hpp"
 #include <dirent.h>
 #include <string.h>
 
 #ifdef __PX4_DARWIN
-#include <sys/param.h>
-#include <sys/mount.h>
+#   include <sys/param.h>
+#   include <sys/mount.h>
 #elif defined(PX4_STORAGEDIR)
-#include <sys/statfs.h>
+#   include <sys/statfs.h>
 #endif
 
 void SdCardChecks::checkAndReport(const Context &context, Report &reporter) {
@@ -56,7 +59,7 @@ void SdCardChecks::checkAndReport(const Context &context, Report &reporter) {
         }
     }
 
-#ifdef __PX4_NUTTX
+#   ifdef __PX4_NUTTX
     // Check for hardfault files
 
     if (!_hardfault_checked_once && _param_com_arm_hardfault_check.get()) {
@@ -99,6 +102,6 @@ void SdCardChecks::checkAndReport(const Context &context, Report &reporter) {
         }
     }
 
-#endif /* __PX4_NUTTX */
-#endif /* PX4_STORAGEDIR */
+#   endif /* __PX4_NUTTX */
+#endif    /* PX4_STORAGEDIR */
 }

@@ -8,6 +8,9 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "airspd_check"
+#define LOG_LVL LOG_LVL_INFO
+
 #include "airspeedCheck.hpp"
 #include <circuit_breaker/circuit_breaker.h>
 
@@ -18,8 +21,8 @@ AirspeedChecks::AirspeedChecks() :
 }
 
 void AirspeedChecks::checkAndReport(const Context &context, Report &reporter) {
-    if (circuit_breaker_enabled_by_val(_param_cbrk_airspd_chk.get(), CBRK_AIRSPD_CHK_KEY) ||
-        (context.status().vehicle_type != vehicle_status_s::VEHICLE_TYPE_FIXED_WING && !context.status().is_vtol)) {
+    if (circuit_breaker_enabled_by_val(_param_cbrk_airspd_chk.get(), CBRK_AIRSPD_CHK_KEY)
+        || (context.status().vehicle_type != vehicle_status_s::VEHICLE_TYPE_FIXED_WING && !context.status().is_vtol)) {
         return;
     }
 

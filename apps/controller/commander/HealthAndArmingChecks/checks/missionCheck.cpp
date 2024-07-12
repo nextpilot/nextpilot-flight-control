@@ -8,6 +8,9 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "mission_check"
+#define LOG_LVL LOG_LVL_INFO
+
 #include "missionCheck.hpp"
 
 void MissionChecks::checkAndReport(const Context &context, Report &reporter) {
