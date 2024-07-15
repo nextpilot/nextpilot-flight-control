@@ -8,6 +8,9 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "baro_check"
+#define LOG_LVL LOG_LVL_INFO
+
 #include "baroCheck.hpp"
 
 using namespace time_literals;

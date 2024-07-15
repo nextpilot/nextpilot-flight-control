@@ -8,6 +8,9 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "imu_check"
+#define LOG_LVL LOG_LVL_INFO
+
 #include "imuConsistencyCheck.hpp"
 
 void ImuConsistencyChecks::checkAndReport(const Context &context, Report &reporter) {

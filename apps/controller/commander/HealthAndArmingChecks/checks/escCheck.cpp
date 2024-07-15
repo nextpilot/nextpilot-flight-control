@@ -8,6 +8,9 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "esc_check"
+#define LOG_LVL LOG_LVL_INFO
+
 #include "escCheck.hpp"
 #include <events/events.h>
 #include <uORB/topics/actuator_motors.h>
@@ -16,27 +19,38 @@ using namespace time_literals;
 
 using esc_fault_reason_t = events::px4::enums::esc_fault_reason_t;
 static_assert(esc_report_s::ESC_FAILURE_COUNT == (static_cast<uint8_t>(esc_fault_reason_t::_max) + 1), "ESC fault flags mismatch!");
+
 static constexpr const char *esc_fault_reason_str(esc_fault_reason_t esc_fault_reason) {
     switch (esc_fault_reason) {
-    case esc_fault_reason_t::over_current: return "over current";
+    case esc_fault_reason_t::over_current:
+        return "over current";
 
-    case esc_fault_reason_t::over_voltage: return "over voltage";
+    case esc_fault_reason_t::over_voltage:
+        return "over voltage";
 
-    case esc_fault_reason_t::motor_over_temp: return "motor critical temperature";
+    case esc_fault_reason_t::motor_over_temp:
+        return "motor critical temperature";
 
-    case esc_fault_reason_t::over_rpm: return "over RPM";
+    case esc_fault_reason_t::over_rpm:
+        return "over RPM";
 
-    case esc_fault_reason_t::inconsistent_cmd: return "control failure";
+    case esc_fault_reason_t::inconsistent_cmd:
+        return "control failure";
 
-    case esc_fault_reason_t::motor_stuck: return "motor stall";
+    case esc_fault_reason_t::motor_stuck:
+        return "motor stall";
 
-    case esc_fault_reason_t::failure_generic: return "hardware failure";
+    case esc_fault_reason_t::failure_generic:
+        return "hardware failure";
 
-    case esc_fault_reason_t::motor_warn_temp: return "motor over temperature";
+    case esc_fault_reason_t::motor_warn_temp:
+        return "motor over temperature";
 
-    case esc_fault_reason_t::esc_warn_temp: return "over temperature";
+    case esc_fault_reason_t::esc_warn_temp:
+        return "over temperature";
 
-    case esc_fault_reason_t::esc_over_temp: return "critical temperature";
+    case esc_fault_reason_t::esc_over_temp:
+        return "critical temperature";
     }
 
     return "";
