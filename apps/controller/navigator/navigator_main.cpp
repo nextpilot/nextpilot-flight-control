@@ -577,7 +577,11 @@ void Navigator::Run() {
                 // TODO: handle responses for supported DO_CHANGE_SPEED options?
                 publish_vehicle_command_ack(cmd, vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED);
 
-            } else if (cmd.command == vehicle_command_s::VEHICLE_CMD_DO_SET_ROI || cmd.command == vehicle_command_s::VEHICLE_CMD_NAV_ROI || cmd.command == vehicle_command_s::VEHICLE_CMD_DO_SET_ROI_LOCATION || cmd.command == vehicle_command_s::VEHICLE_CMD_DO_SET_ROI_WPNEXT_OFFSET || cmd.command == vehicle_command_s::VEHICLE_CMD_DO_SET_ROI_NONE) {
+            } else if (cmd.command == vehicle_command_s::VEHICLE_CMD_DO_SET_ROI
+                       || cmd.command == vehicle_command_s::VEHICLE_CMD_NAV_ROI
+                       || cmd.command == vehicle_command_s::VEHICLE_CMD_DO_SET_ROI_LOCATION
+                       || cmd.command == vehicle_command_s::VEHICLE_CMD_DO_SET_ROI_WPNEXT_OFFSET
+                       || cmd.command == vehicle_command_s::VEHICLE_CMD_DO_SET_ROI_NONE) {
                 _vroi = {};
 
                 switch (cmd.command) {
@@ -615,7 +619,8 @@ void Navigator::Run() {
 
                 publish_vehicle_command_ack(cmd, vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED);
 
-            } else if (cmd.command == vehicle_command_s::VEHICLE_CMD_DO_VTOL_TRANSITION && get_vstatus()->nav_state != vehicle_status_s::NAVIGATION_STATE_AUTO_VTOL_TAKEOFF) {
+            } else if (cmd.command == vehicle_command_s::VEHICLE_CMD_DO_VTOL_TRANSITION
+                       && get_vstatus()->nav_state != vehicle_status_s::NAVIGATION_STATE_AUTO_VTOL_TAKEOFF) {
                 // reset cruise speed and throttle to default when transitioning (VTOL Takeoff handles it separately)
                 reset_cruising_speed();
                 set_cruising_throttle();
@@ -826,14 +831,17 @@ void Navigator::Run() {
             }
 
             // transition to hover in Descend mode
-            if (_vstatus.nav_state == vehicle_status_s::NAVIGATION_STATE_DESCEND && _vstatus.is_vtol && _vstatus.vehicle_type == vehicle_status_s::VEHICLE_TYPE_FIXED_WING && force_vtol()) {
+            if (_vstatus.nav_state == vehicle_status_s::NAVIGATION_STATE_DESCEND
+                && _vstatus.is_vtol
+                && _vstatus.vehicle_type == vehicle_status_s::VEHICLE_TYPE_FIXED_WING
+                && force_vtol()) {
                 vehicle_command_s vcmd = {};
                 vcmd.command           = NAV_CMD_DO_VTOL_TRANSITION;
                 vcmd.param1            = vtol_vehicle_status_s::VEHICLE_VTOL_STATE_MC;
                 publish_vehicle_cmd(&vcmd);
                 mavlink_log_info(&_mavlink_log_pub, "Transition to hover mode and descend.\t");
-                // events::send(events::ID("navigator_transition_descend"), events::Log::Critical,
-                // "Transition to hover mode and descend");
+                events::send(events::ID("navigator_transition_descend"), events::Log::Critical,
+                             "Transition to hover mode and descend");
             }
         }
 

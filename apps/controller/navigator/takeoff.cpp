@@ -15,8 +15,12 @@
  * @author Lorenz Meier <lorenz@px4.io>
  */
 
+#define LOG_TAG "takeoff"
+#define LOG_LVL LOG_LVL_INFO
+
 #include "takeoff.h"
 #include "navigator.h"
+
 // #include <events.h>
 
 Takeoff::Takeoff(Navigator *navigator) :
@@ -91,7 +95,7 @@ void Takeoff::set_takeoff_position() {
         if (abs_altitude < min_abs_altitude) {
             if (abs_altitude < min_abs_altitude - 0.1f) { // don't complain if difference is smaller than 10cm
                 mavlink_log_critical(_navigator->get_mavlink_log_pub(),
-                                     "Using minimum takeoff altitude: %.2f m\t", (double)_navigator->get_takeoff_min_alt());
+                                     "Using minimum takeoff altitude I: %.2f m\t", (double)_navigator->get_takeoff_min_alt());
                 // log_level = events::LogLevel::Warning;
             }
 
@@ -102,7 +106,7 @@ void Takeoff::set_takeoff_position() {
         // Use home + minimum clearance but only notify.
         abs_altitude = min_abs_altitude;
         mavlink_log_info(_navigator->get_mavlink_log_pub(),
-                         "Using minimum takeoff altitude: %.2f m\t", (double)_navigator->get_takeoff_min_alt());
+                         "Using minimum takeoff altitude II: %.2f m\t", (double)_navigator->get_takeoff_min_alt());
         // log_level = events::LogLevel::Info;
     }
 

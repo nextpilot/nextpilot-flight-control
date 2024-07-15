@@ -787,11 +787,11 @@ public:
 
     void call() override {
         // schedule immediately if updated (queue depth or subscription interval)
-        if ((_required_updates == 0) || (updates_available() >= _required_updates)) {
-            if (updated()) {
-                _work_item->ScheduleNow();
-            }
-        }
+        // if ((_required_updates == 0) || (uorb_device_updates_available(get_node(), get_last_generation()) >= _required_updates)) {
+        //     if (updated()) {
+        //         _work_item->ScheduleNow();
+        //     }
+        // }
     }
 
     /**

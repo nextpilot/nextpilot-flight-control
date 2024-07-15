@@ -11,6 +11,9 @@
  * @file FlightTaskAuto.cpp
  */
 
+#define LOG_TAG "flight_task_auto"
+#define LOG_LVL LOG_LVL_INFO
+
 #include "FlightTaskAuto.hpp"
 #include <mathlib/mathlib.h>
 #include <float.h>
@@ -35,13 +38,19 @@ bool FlightTaskAuto::activate(const trajectory_setpoint_s &last_setpoint) {
 
     for (int i = 0; i < 3; i++) {
         // If the position setpoint is unknown, set to the current position
-        if (!PX4_ISFINITE(pos_prev(i))) { pos_prev(i) = _position(i); }
+        if (!PX4_ISFINITE(pos_prev(i))) {
+            pos_prev(i) = _position(i);
+        }
 
         // If the velocity setpoint is unknown, set to the current velocity
-        if (!PX4_ISFINITE(vel_prev(i))) { vel_prev(i) = _velocity(i); }
+        if (!PX4_ISFINITE(vel_prev(i))) {
+            vel_prev(i) = _velocity(i);
+        }
 
         // No acceleration estimate available, set to zero if the setpoint is NAN
-        if (!PX4_ISFINITE(accel_prev(i))) { accel_prev(i) = 0.f; }
+        if (!PX4_ISFINITE(accel_prev(i))) {
+            accel_prev(i) = 0.f;
+        }
     }
 
     _position_smoothing.reset(accel_prev, vel_prev, pos_prev);
@@ -97,7 +106,7 @@ bool FlightTaskAuto::update() {
     switch (_type) {
     case WaypointType::idle:
         // Send zero thrust setpoint
-        _position_setpoint.setNaN(); // Don't require any position/velocity setpoints
+        _position_setpoint.setNaN();                        // Don't require any position/velocity setpoints
         _velocity_setpoint.setNaN();
         _acceleration_setpoint = Vector3f(0.f, 0.f, 100.f); // High downwards acceleration to make sure there's no thrust
         break;
@@ -147,13 +156,12 @@ bool FlightTaskAuto::update() {
     const bool force_zero_velocity_setpoint = should_wait_for_yaw_align || _is_emergency_braking_active;
     _updateTrajConstraints();
     PositionSmoothing::PositionSmoothingSetpoints smoothed_setpoints;
-    _position_smoothing.generateSetpoints(
-        _position,
-        waypoints,
-        _velocity_setpoint,
-        _deltatime,
-        force_zero_velocity_setpoint,
-        smoothed_setpoints);
+    _position_smoothing.generateSetpoints(_position,
+                                          waypoints,
+                                          _velocity_setpoint,
+                                          _deltatime,
+                                          force_zero_velocity_setpoint,
+                                          smoothed_setpoints);
 
     _jerk_setpoint         = smoothed_setpoints.jerk;
     _acceleration_setpoint = smoothed_setpoints.acceleration;
@@ -377,9 +385,14 @@ bool FlightTaskAuto::_evaluateTriplets() {
     // TODO This is a hack and it would be much better if the navigator only sends out a waypoints once they have changed.
 
     bool       triplet_update             = true;
-    const bool prev_next_validity_changed = (_prev_was_valid != _sub_triplet_setpoint.get().previous.valid) || (_next_was_valid != _sub_triplet_setpoint.get().next.valid);
+    const bool prev_next_validity_changed = (_prev_was_valid != _sub_triplet_setpoint.get().previous.valid)
+                                         || (_next_was_valid != _sub_triplet_setpoint.get().next.valid);
 
-    if (_triplet_target.isAllFinite() && fabsf(_triplet_target(0) - tmp_target(0)) < 0.001f && fabsf(_triplet_target(1) - tmp_target(1)) < 0.001f && fabsf(_triplet_target(2) - tmp_target(2)) < 0.001f && !prev_next_validity_changed) {
+    if (_triplet_target.isAllFinite()
+        && fabsf(_triplet_target(0) - tmp_target(0)) < 0.001f
+        && fabsf(_triplet_target(1) - tmp_target(1)) < 0.001f
+        && fabsf(_triplet_target(2) - tmp_target(2)) < 0.001f
+        && !prev_next_validity_changed) {
         // Nothing has changed: just keep old waypoints.
         triplet_update = false;
 
@@ -583,8 +596,7 @@ State FlightTaskAuto::_getCurrentState() {
     const Vector2f pos_to_target_xy    = Vector2f(_triplet_target - _position);
     const Vector2f prev_to_pos_xy      = Vector2f(_position - _triplet_prev_wp);
     // Calculate the closest point to the vehicle position on the line prev_wp - target
-    const Vector2f closest_pt_xy = Vector2f(_triplet_prev_wp) + u_prev_to_target_xy * (prev_to_pos_xy *
-                                                                                       u_prev_to_target_xy);
+    const Vector2f closest_pt_xy = Vector2f(_triplet_prev_wp) + u_prev_to_target_xy * (prev_to_pos_xy * u_prev_to_target_xy);
     _closest_pt                  = Vector3f(closest_pt_xy(0), closest_pt_xy(1), _triplet_target(2));
 
     State return_state = State::none;
@@ -685,11 +697,9 @@ void FlightTaskAuto::_checkEmergencyBraking() {
     if (!_is_emergency_braking_active) {
         // activate emergency braking if significantly outside of velocity bounds
         const float factor                     = 1.3f;
-        const bool  is_vertical_speed_exceeded = _position_smoothing.getCurrentVelocityZ() >
-                                                    (factor * _param_mpc_z_vel_max_dn.get()) ||
-                                                _position_smoothing.getCurrentVelocityZ() < -(factor * _param_mpc_z_vel_max_up.get());
-        const bool is_horizontal_speed_exceeded = _position_smoothing.getCurrentVelocityXY().longerThan(
-            factor * _param_mpc_xy_vel_max.get());
+        const bool  is_vertical_speed_exceeded = _position_smoothing.getCurrentVelocityZ() > (factor * _param_mpc_z_vel_max_dn.get())
+                                             || _position_smoothing.getCurrentVelocityZ() < -(factor * _param_mpc_z_vel_max_up.get());
+        const bool is_horizontal_speed_exceeded = _position_smoothing.getCurrentVelocityXY().longerThan(factor * _param_mpc_xy_vel_max.get());
 
         if (is_vertical_speed_exceeded || is_horizontal_speed_exceeded) {
             _is_emergency_braking_active = true;
@@ -697,7 +707,9 @@ void FlightTaskAuto::_checkEmergencyBraking() {
 
     } else {
         // deactivate emergency braking when the vehicle has come to a full stop
-        if (_position_smoothing.getCurrentVelocityZ() < 0.01f && _position_smoothing.getCurrentVelocityZ() > -0.01f && !_position_smoothing.getCurrentVelocityXY().longerThan(0.01f)) {
+        if (_position_smoothing.getCurrentVelocityZ() < 0.01f
+            && _position_smoothing.getCurrentVelocityZ() > -0.01f
+            && !_position_smoothing.getCurrentVelocityXY().longerThan(0.01f)) {
             _is_emergency_braking_active = false;
         }
     }
@@ -708,8 +720,7 @@ bool FlightTaskAuto::_generateHeadingAlongTraj() {
     Vector2f vel_sp_xy(_velocity_setpoint);
     Vector2f traj_to_target = Vector2f(_target) - Vector2f(_position);
 
-    if ((vel_sp_xy.longerThan(.1f)) &&
-        (traj_to_target.longerThan(2.f))) {
+    if ((vel_sp_xy.longerThan(.1f)) && (traj_to_target.longerThan(2.f))) {
         // Generate heading from velocity vector, only if it is long enough
         // and if the drone is far enough from the target
         _compute_heading_from_2D_vector(_yaw_setpoint, vel_sp_xy);
