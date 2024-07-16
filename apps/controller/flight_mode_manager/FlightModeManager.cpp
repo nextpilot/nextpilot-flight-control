@@ -9,6 +9,7 @@
  ******************************************************************/
 
 #define LOG_TAG "flight_mode_manager"
+#define LOG_LVL LOG_LVL_INFO
 
 #include "FlightModeManager.hpp"
 #include <mathlib/mathlib.h>
@@ -382,8 +383,8 @@ FlightTaskError FlightModeManager::switchTask(FlightTaskIndex new_task_index) {
 
 FlightTaskError FlightModeManager::switchTask(int new_task_index) {
     // make sure we are in range of the enumeration before casting
-    if (static_cast<int>(FlightTaskIndex::None) <= new_task_index &&
-        static_cast<int>(FlightTaskIndex::Count) > new_task_index) {
+    if (static_cast<int>(FlightTaskIndex::None) <= new_task_index
+        && static_cast<int>(FlightTaskIndex::Count) > new_task_index) {
         return switchTask(FlightTaskIndex(new_task_index));
     }
 
@@ -393,11 +394,14 @@ FlightTaskError FlightModeManager::switchTask(int new_task_index) {
 
 const char *FlightModeManager::errorToString(const FlightTaskError error) {
     switch (error) {
-    case FlightTaskError::NoError: return "No Error";
+    case FlightTaskError::NoError:
+        return "No Error";
 
-    case FlightTaskError::InvalidTask: return "Invalid Task";
+    case FlightTaskError::InvalidTask:
+        return "Invalid Task";
 
-    case FlightTaskError::ActivationFailed: return "Activation Failed";
+    case FlightTaskError::ActivationFailed:
+        return "Activation Failed";
     }
 
     return "This error is not mapped to a string or is unknown.";
@@ -465,6 +469,7 @@ and outputs setpoints for controllers.
 extern "C" __EXPORT int flight_mode_manager_main(int argc, char *argv[]) {
     return FlightModeManager::main(argc, argv);
 }
+
 MSH_CMD_EXPORT_ALIAS(flight_mode_manager_main, flight_mode_manager, flight mode manager);
 
 int flight_mode_manager_start() {
@@ -472,4 +477,5 @@ int flight_mode_manager_start() {
     int         argc   = sizeof(argv) / sizeof(argv[0]);
     return FlightModeManager::main(argc, (char **)argv);
 }
+
 INIT_APP_EXPORT(flight_mode_manager_start);
