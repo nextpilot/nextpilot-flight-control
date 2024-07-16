@@ -146,10 +146,12 @@ void FlightTask::_evaluateVehicleLocalPositionSetpoint() {
     vehicle_local_position_setpoint_s vehicle_local_position_setpoint;
 
     // Only use data that is received within a certain timestamp
-    if (_vehicle_local_position_setpoint_sub.copy(&vehicle_local_position_setpoint) && (_time_stamp_current - vehicle_local_position_setpoint.timestamp) < _timeout) {
+    if (_vehicle_local_position_setpoint_sub.copy(&vehicle_local_position_setpoint)
+        && (_time_stamp_current - vehicle_local_position_setpoint.timestamp) < _timeout) {
         // Inform about the input and output of the velocity controller
         // This is used to properly initialize the velocity setpoint when onpening the position loop (position unlock)
-        _velocity_setpoint_feedback     = matrix::Vector3f(vehicle_local_position_setpoint.vx, vehicle_local_position_setpoint.vy,
+        _velocity_setpoint_feedback     = matrix::Vector3f(vehicle_local_position_setpoint.vx,
+                                                           vehicle_local_position_setpoint.vy,
                                                            vehicle_local_position_setpoint.vz);
         _acceleration_setpoint_feedback = matrix::Vector3f(vehicle_local_position_setpoint.acceleration);
 
