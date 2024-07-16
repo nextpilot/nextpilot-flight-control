@@ -80,8 +80,8 @@ void MulticopterPositionControl::parameters_update(bool force) {
                 num_changed += _param_mpc_tiltmax_air.commit_no_notification(45.f);
 
             } else {
-                num_changed += _param_mpc_tiltmax_air.commit_no_notification(math::min(MAX_SAFE_TILT_DEG, math::lerp(45.f, 70.f,
-                                                                                                                     (responsiveness - 0.5f) * 2.f)));
+                num_changed += _param_mpc_tiltmax_air.commit_no_notification(math::min(MAX_SAFE_TILT_DEG,
+                                                                                       math::lerp(45.f, 70.f, (responsiveness - 0.5f) * 2.f)));
             }
 
             num_changed += _param_mpc_acc_down_max.commit_no_notification(math::lerp(0.8f, 15.f, responsiveness));
@@ -306,8 +306,7 @@ void MulticopterPositionControl::Run() {
     vehicle_local_position_s vehicle_local_position;
 
     if (_local_pos_sub.update(&vehicle_local_position)) {
-        const float dt =
-            math::constrain(((vehicle_local_position.timestamp_sample - _time_stamp_last_loop) * 1e-6f), 0.002f, 0.04f);
+        const float dt        = math::constrain(((vehicle_local_position.timestamp_sample - _time_stamp_last_loop) * 1e-6f), 0.002f, 0.04f);
         _time_stamp_last_loop = vehicle_local_position.timestamp_sample;
 
         // set _dt in controllib Block for BlockDerivative
@@ -455,8 +454,9 @@ void MulticopterPositionControl::Run() {
             const float tilt_limit_deg = (_takeoff.getTakeoffState() < TakeoffState::flight) ? _param_mpc_tiltmax_lnd.get() : _param_mpc_tiltmax_air.get();
             _control.setTiltLimit(_tilt_limit_slew_rate.update(math::radians(tilt_limit_deg), dt));
 
-            const float speed_up   = _takeoff.updateRamp(dt,
-                                                       PX4_ISFINITE(_vehicle_constraints.speed_up) ? _vehicle_constraints.speed_up : _param_mpc_z_vel_max_up.get());
+            const float speed_up   = _takeoff.updateRamp(dt, PX4_ISFINITE(_vehicle_constraints.speed_up)
+                                                                 ? _vehicle_constraints.speed_up
+                                                                 : _param_mpc_z_vel_max_up.get());
             const float speed_down = PX4_ISFINITE(_vehicle_constraints.speed_down) ? _vehicle_constraints.speed_down : _param_mpc_z_vel_max_dn.get();
 
             // Allow ramping from zero thrust on takeoff
@@ -477,7 +477,12 @@ void MulticopterPositionControl::Run() {
             _control.setInputSetpoint(_setpoint);
 
             // update states
-            if (!PX4_ISFINITE(_setpoint.position[2]) && PX4_ISFINITE(_setpoint.velocity[2]) && (fabsf(_setpoint.velocity[2]) > FLT_EPSILON) && PX4_ISFINITE(vehicle_local_position.z_deriv) && vehicle_local_position.z_valid && vehicle_local_position.v_z_valid) {
+            if (!PX4_ISFINITE(_setpoint.position[2])
+                && PX4_ISFINITE(_setpoint.velocity[2])
+                && (fabsf(_setpoint.velocity[2]) > FLT_EPSILON)
+                && PX4_ISFINITE(vehicle_local_position.z_deriv)
+                && vehicle_local_position.z_valid
+                && vehicle_local_position.v_z_valid) {
                 // A change in velocity is demanded and the altitude is not controlled.
                 // Set velocity to the derivative of position
                 // because it has less bias but blend it in across the landing speed range
@@ -522,7 +527,9 @@ void MulticopterPositionControl::Run() {
         // Publish takeoff status
         const uint8_t takeoff_state = static_cast<uint8_t>(_takeoff.getTakeoffState());
 
-        if (takeoff_state != _takeoff_status_pub.get().takeoff_state || !isEqualF(_tilt_limit_slew_rate.getState(), _takeoff_status_pub.get().tilt_limit)) {
+        if (takeoff_state != _takeoff_status_pub.get().takeoff_state
+            || !isEqualF(_tilt_limit_slew_rate.getState(),
+                         _takeoff_status_pub.get().tilt_limit)) {
             _takeoff_status_pub.get().takeoff_state = takeoff_state;
             _takeoff_status_pub.get().tilt_limit    = _tilt_limit_slew_rate.getState();
             _takeoff_status_pub.get().timestamp     = hrt_absolute_time();
