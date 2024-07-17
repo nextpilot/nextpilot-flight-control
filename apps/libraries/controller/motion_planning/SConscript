@@ -2,10 +2,9 @@ import os
 import rtconfig
 from building import *
 
-
 cwd = GetCurrentDir()
-
 inc = [cwd]
+
 src = [
     "ManualVelocitySmoothingXY.cpp",
     "ManualVelocitySmoothingZ.cpp",
@@ -14,6 +13,5 @@ src = [
 ]
 
 objs = DefineGroup("lib/control", src, depend=["PKG_USING_MOTION_PLANNING"], CPPPATH=inc)
-
 
 Return("objs")
