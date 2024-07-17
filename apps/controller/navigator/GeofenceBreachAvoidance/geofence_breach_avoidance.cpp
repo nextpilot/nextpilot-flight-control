@@ -8,6 +8,9 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "geo_breach_avoid"
+#define LOG_LVL LOG_LVL_INFO
+
 #include "geofence_breach_avoidance.h"
 #include <geo/geo.h>
 #include <motion_planning/VelocitySmoothing.hpp>
@@ -56,7 +59,7 @@ matrix::Vector2<double> GeofenceBreachAvoidance::waypointFromBearingAndDistance(
     // TODO: Remove this once the underlying geo function has been fixed
     if (test_point_distance < 0.0f) {
         test_point_distance *= -1.0f;
-        test_point_bearing = matrix::wrap_2pi(test_point_bearing + M_PI_F);
+        test_point_bearing   = matrix::wrap_2pi(test_point_bearing + M_PI_F);
     }
 
     double fence_violation_test_point_lat, fence_violation_test_point_lon;
@@ -188,8 +191,7 @@ float GeofenceBreachAvoidance::computeBrakingDistanceMultirotor() {
     predictor.updateDurations(0.f);
     predictor.updateTraj(predictor.getTotalTime());
 
-    _multirotor_braking_distance = predictor.getCurrentPosition() + (GEOFENCE_CHECK_INTERVAL_US / 1e6f) *
-                                                                        _velocity_hor_abs;
+    _multirotor_braking_distance = predictor.getCurrentPosition() + (GEOFENCE_CHECK_INTERVAL_US / 1e6f) * _velocity_hor_abs;
 
     return _multirotor_braking_distance;
 }
@@ -205,8 +207,7 @@ float GeofenceBreachAvoidance::computeVerticalBrakingDistanceMultirotor() {
     predictor.updateDurations(0.f);
     predictor.updateTraj(predictor.getTotalTime());
 
-    _multirotor_vertical_braking_distance = predictor.getCurrentPosition() + (GEOFENCE_CHECK_INTERVAL_US / 1e6f) *
-                                                                                 vertical_vel_abs;
+    _multirotor_vertical_braking_distance = predictor.getCurrentPosition() + (GEOFENCE_CHECK_INTERVAL_US / 1e6f) * vertical_vel_abs;
 
     _multirotor_vertical_braking_distance = matrix::sign(_climbrate) * _multirotor_vertical_braking_distance;
 
