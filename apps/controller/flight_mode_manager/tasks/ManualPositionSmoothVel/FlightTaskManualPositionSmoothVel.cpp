@@ -8,6 +8,9 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "manual_pos_smooth_vel"
+#define LOG_LVL LOG_LVL_INFO
+
 #include "FlightTaskManualPositionSmoothVel.hpp"
 
 #include <mathlib/mathlib.h>
@@ -25,13 +28,19 @@ bool FlightTaskManualPositionSmoothVel::activate(const trajectory_setpoint_s &la
 
     for (int i = 0; i < 3; i++) {
         // If the position setpoint is unknown, set to the current postion
-        if (!PX4_ISFINITE(pos_prev(i))) { pos_prev(i) = _position(i); }
+        if (!PX4_ISFINITE(pos_prev(i))) {
+            pos_prev(i) = _position(i);
+        }
 
         // If the velocity setpoint is unknown, set to the current velocity
-        if (!PX4_ISFINITE(vel_prev(i))) { vel_prev(i) = _velocity(i); }
+        if (!PX4_ISFINITE(vel_prev(i))) {
+            vel_prev(i) = _velocity(i);
+        }
 
         // No acceleration estimate available, set to zero if the setpoint is NAN
-        if (!PX4_ISFINITE(accel_prev(i))) { accel_prev(i) = 0.f; }
+        if (!PX4_ISFINITE(accel_prev(i))) {
+            accel_prev(i) = 0.f;
+        }
     }
 
     _smoothing_xy.reset(Vector2f{accel_prev}, Vector2f{vel_prev}, Vector2f{pos_prev});
