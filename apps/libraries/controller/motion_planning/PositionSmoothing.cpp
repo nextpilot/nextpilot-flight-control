@@ -8,12 +8,14 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "pos_smooth"
+#define LOG_LVL LOG_LVL_INFO
+
 #include "PositionSmoothing.hpp"
 #include "TrajectoryConstraints.hpp"
 #include <mathlib/mathlib.h>
 #include <matrix/matrix/math.hpp>
 #include <matrix/matrix/helper_functions.hpp>
-
 
 void PositionSmoothing::_generateSetpoints(
 	const Vector3f &position,
@@ -43,10 +45,8 @@ void PositionSmoothing::_generateSetpoints(
 
 bool PositionSmoothing::_isTurning(const Vector3f &target) const
 {
-	const Vector2f vel_traj(_trajectory[0].getCurrentVelocity(),
-				_trajectory[1].getCurrentVelocity());
-	const Vector2f pos_traj(_trajectory[0].getCurrentPosition(),
-				_trajectory[1].getCurrentPosition());
+	const Vector2f vel_traj(_trajectory[0].getCurrentVelocity(), _trajectory[1].getCurrentVelocity());
+	const Vector2f pos_traj(_trajectory[0].getCurrentPosition(), _trajectory[1].getCurrentPosition());
 	const Vector2f target_xy(target);
 	const Vector2f u_vel_traj = vel_traj.unit_or_zero();
 	const Vector2f pos_to_target = Vector2f(target_xy - pos_traj);

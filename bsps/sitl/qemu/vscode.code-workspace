@@ -1,0 +1,719 @@
+{
+    "folders": [
+        {
+            "path": "."
+        },
+        {
+            "path": "..\\..\\..\\apps\\airframe",
+            "name": "rtthread/apps/airframe"
+        },
+        {
+            "path": "..\\..\\..\\apps\\airframe\\1100_sih_quad_x",
+            "name": "rtthread/apps/airframe/1100_sih_quad_x"
+        },
+        {
+            "path": "..\\..\\..\\apps\\airframe\\1101_sih_plane_aert",
+            "name": "rtthread/apps/airframe/1101_sih_plane_aert"
+        },
+        {
+            "path": "..\\..\\..\\apps\\airframe\\1102_sih_tailsitter_duo",
+            "name": "rtthread/apps/airframe/1102_sih_tailsitter_duo"
+        },
+        {
+            "path": "..\\..\\..\\apps\\airframe\\1103_sih_standard_vtol",
+            "name": "rtthread/apps/airframe/1103_sih_standard_vtol"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\commander",
+            "name": "rtthread/apps/controller/commander"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\commander\\Arming\\ArmAuthorization",
+            "name": "rtthread/apps/controller/commander/Arming/ArmAuthorization"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\commander\\Arming\\ArmStateMachine",
+            "name": "rtthread/apps/controller/commander/Arming/ArmStateMachine"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\commander\\HealthAndArmingChecks",
+            "name": "rtthread/apps/controller/commander/HealthAndArmingChecks"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\commander\\HealthAndArmingChecks\\checks",
+            "name": "rtthread/apps/controller/commander/HealthAndArmingChecks/checks"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\commander\\ModeUtil",
+            "name": "rtthread/apps/controller/commander/ModeUtil"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\commander\\failsafe",
+            "name": "rtthread/apps/controller/commander/failsafe"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\commander\\failure_detector",
+            "name": "rtthread/apps/controller/commander/failure_detector"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\control_allocator",
+            "name": "rtthread/apps/controller/control_allocator"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\control_allocator\\ActuatorEffectiveness",
+            "name": "rtthread/apps/controller/control_allocator/ActuatorEffectiveness"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\control_allocator\\ControlAllocation",
+            "name": "rtthread/apps/controller/control_allocator/ControlAllocation"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\flight_mode_manager",
+            "name": "rtthread/apps/controller/flight_mode_manager"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\flight_mode_manager\\tasks\\Auto",
+            "name": "rtthread/apps/controller/flight_mode_manager/tasks/Auto"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\flight_mode_manager\\tasks\\AutoFollowTarget",
+            "name": "rtthread/apps/controller/flight_mode_manager/tasks/AutoFollowTarget"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\flight_mode_manager\\tasks\\AutoFollowTarget\\follow_target_estimator",
+            "name": "rtthread/apps/controller/flight_mode_manager/tasks/AutoFollowTarget/follow_target_estimator"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\flight_mode_manager\\tasks\\Descend",
+            "name": "rtthread/apps/controller/flight_mode_manager/tasks/Descend"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\flight_mode_manager\\tasks\\Failsafe",
+            "name": "rtthread/apps/controller/flight_mode_manager/tasks/Failsafe"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\flight_mode_manager\\tasks\\FlightTask",
+            "name": "rtthread/apps/controller/flight_mode_manager/tasks/FlightTask"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\flight_mode_manager\\tasks\\ManualAcceleration",
+            "name": "rtthread/apps/controller/flight_mode_manager/tasks/ManualAcceleration"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\flight_mode_manager\\tasks\\ManualAltitude",
+            "name": "rtthread/apps/controller/flight_mode_manager/tasks/ManualAltitude"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\flight_mode_manager\\tasks\\ManualAltitudeSmoothVel",
+            "name": "rtthread/apps/controller/flight_mode_manager/tasks/ManualAltitudeSmoothVel"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\flight_mode_manager\\tasks\\ManualPosition",
+            "name": "rtthread/apps/controller/flight_mode_manager/tasks/ManualPosition"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\flight_mode_manager\\tasks\\ManualPositionSmoothVel",
+            "name": "rtthread/apps/controller/flight_mode_manager/tasks/ManualPositionSmoothVel"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\flight_mode_manager\\tasks\\Orbit",
+            "name": "rtthread/apps/controller/flight_mode_manager/tasks/Orbit"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\flight_mode_manager\\tasks\\Transition",
+            "name": "rtthread/apps/controller/flight_mode_manager/tasks/Transition"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\flight_mode_manager\\tasks\\Utility",
+            "name": "rtthread/apps/controller/flight_mode_manager/tasks/Utility"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\fw_att_control",
+            "name": "rtthread/apps/controller/fw_att_control"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\fw_autotune_attitude_control",
+            "name": "rtthread/apps/controller/fw_autotune_attitude_control"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\fw_pos_control",
+            "name": "rtthread/apps/controller/fw_pos_control"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\fw_pos_control\\launchdetection",
+            "name": "rtthread/apps/controller/fw_pos_control/launchdetection"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\fw_pos_control\\runway_takeoff",
+            "name": "rtthread/apps/controller/fw_pos_control/runway_takeoff"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\fw_rate_control",
+            "name": "rtthread/apps/controller/fw_rate_control"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\land_detector",
+            "name": "rtthread/apps/controller/land_detector"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\manual_control",
+            "name": "rtthread/apps/controller/manual_control"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\mc_att_control",
+            "name": "rtthread/apps/controller/mc_att_control"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\mc_att_control\\AttitudeControl",
+            "name": "rtthread/apps/controller/mc_att_control/AttitudeControl"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\mc_autotune_attitude_control",
+            "name": "rtthread/apps/controller/mc_autotune_attitude_control"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\mc_hover_thrust_estimator",
+            "name": "rtthread/apps/controller/mc_hover_thrust_estimator"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\mc_pos_control",
+            "name": "rtthread/apps/controller/mc_pos_control"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\mc_pos_control\\PositionControl",
+            "name": "rtthread/apps/controller/mc_pos_control/PositionControl"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\mc_pos_control\\Takeoff",
+            "name": "rtthread/apps/controller/mc_pos_control/Takeoff"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\mc_rate_control",
+            "name": "rtthread/apps/controller/mc_rate_control"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\navigator",
+            "name": "rtthread/apps/controller/navigator"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\navigator\\GeofenceBreachAvoidance",
+            "name": "rtthread/apps/controller/navigator/GeofenceBreachAvoidance"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\navigator\\MissionFeasibility",
+            "name": "rtthread/apps/controller/navigator/MissionFeasibility"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\rc_update",
+            "name": "rtthread/apps/controller/rc_update"
+        },
+        {
+            "path": "..\\..\\..\\apps\\controller\\vtol_att_control",
+            "name": "rtthread/apps/controller/vtol_att_control"
+        },
+        {
+            "path": "..\\..\\..\\apps\\estimator\\ekf2_fake",
+            "name": "rtthread/apps/estimator/ekf2_fake"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\controller\\adsb",
+            "name": "rtthread/apps/libraries/controller/adsb"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\controller\\avoidance",
+            "name": "rtthread/apps/libraries/controller/avoidance"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\controller\\bezier",
+            "name": "rtthread/apps/libraries/controller/bezier"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\controller\\circuit_breaker",
+            "name": "rtthread/apps/libraries/controller/circuit_breaker"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\controller\\collision_prevention",
+            "name": "rtthread/apps/libraries/controller/collision_prevention"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\controller\\controllib",
+            "name": "rtthread/apps/libraries/controller/controllib"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\controller\\controllib\\block",
+            "name": "rtthread/apps/libraries/controller/controllib/block"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\controller\\conversion",
+            "name": "rtthread/apps/libraries/controller/conversion"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\controller\\geo",
+            "name": "rtthread/apps/libraries/controller/geo"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\controller\\hysteresis",
+            "name": "rtthread/apps/libraries/controller/hysteresis"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\controller\\mixer_module",
+            "name": "rtthread/apps/libraries/controller/mixer_module"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\controller\\motion_planning",
+            "name": "rtthread/apps/libraries/controller/motion_planning"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\controller\\npfg",
+            "name": "rtthread/apps/libraries/controller/npfg"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\controller\\rate_control",
+            "name": "rtthread/apps/libraries/controller/rate_control"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\controller\\system_identification",
+            "name": "rtthread/apps/libraries/controller/system_identification"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\controller\\tecs",
+            "name": "rtthread/apps/libraries/controller/tecs"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\controller\\weather_vane",
+            "name": "rtthread/apps/libraries/controller/weather_vane"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\estimator\\sensor_calibration",
+            "name": "rtthread/apps/libraries/estimator/sensor_calibration"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\estimator\\wind_estimator",
+            "name": "rtthread/apps/libraries/estimator/wind_estimator"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\estimator\\world_magnetic_model",
+            "name": "rtthread/apps/libraries/estimator/world_magnetic_model"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\peripheral\\battery\\battery",
+            "name": "rtthread/apps/libraries/peripheral/battery/battery"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\peripheral\\notification\\tunes",
+            "name": "rtthread/apps/libraries/peripheral/notification/tunes"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\peripheral\\sensor\\accelerometer",
+            "name": "rtthread/apps/libraries/peripheral/sensor/accelerometer"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\peripheral\\sensor\\airspeed",
+            "name": "rtthread/apps/libraries/peripheral/sensor/airspeed"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\peripheral\\sensor\\gyroscope",
+            "name": "rtthread/apps/libraries/peripheral/sensor/gyroscope"
+        },
+        {
+            "path": "..\\..\\..\\apps\\libraries\\peripheral\\sensor\\magnetometer",
+            "name": "rtthread/apps/libraries/peripheral/sensor/magnetometer"
+        },
+        {
+            "path": "..\\..\\..\\apps\\simulation\\battery_simulator",
+            "name": "rtthread/apps/simulation/battery_simulator"
+        },
+        {
+            "path": "..\\..\\..\\apps\\simulation\\pwm_out_sim",
+            "name": "rtthread/apps/simulation/pwm_out_sim"
+        },
+        {
+            "path": "..\\..\\..\\apps\\simulation\\sensor_airspeed_sim",
+            "name": "rtthread/apps/simulation/sensor_airspeed_sim"
+        },
+        {
+            "path": "..\\..\\..\\apps\\simulation\\sensor_baro_sim",
+            "name": "rtthread/apps/simulation/sensor_baro_sim"
+        },
+        {
+            "path": "..\\..\\..\\apps\\simulation\\sensor_gps_sim",
+            "name": "rtthread/apps/simulation/sensor_gps_sim"
+        },
+        {
+            "path": "..\\..\\..\\apps\\simulation\\sensor_mag_sim",
+            "name": "rtthread/apps/simulation/sensor_mag_sim"
+        },
+        {
+            "path": "..\\..\\..\\apps\\simulation\\simulator_sih",
+            "name": "rtthread/apps/simulation/simulator_sih"
+        },
+        {
+            "path": "..\\..\\..\\apps\\storage\\dataman",
+            "name": "rtthread/apps/storage/dataman"
+        },
+        {
+            "path": "..\\..\\..\\apps\\storage\\logger",
+            "name": "rtthread/apps/storage/logger"
+        },
+        {
+            "path": "..\\..\\..\\apps\\telemetry\\mavlink",
+            "name": "rtthread/apps/telemetry/mavlink"
+        },
+        {
+            "path": "..\\..\\..\\pkgs\\cpuload",
+            "name": "rtthread/pkgs/cpuload"
+        },
+        {
+            "path": "..\\..\\..\\pkgs\\events",
+            "name": "rtthread/pkgs/events"
+        },
+        {
+            "path": "..\\..\\..\\pkgs\\getopt",
+            "name": "rtthread/pkgs/getopt"
+        },
+        {
+            "path": "..\\..\\..\\pkgs\\hrtimer\\V3",
+            "name": "rtthread/pkgs/hrtimer/V3"
+        },
+        {
+            "path": "..\\..\\..\\pkgs\\kservice\\rt_memcpy_cm",
+            "name": "rtthread/pkgs/kservice/rt_memcpy_cm"
+        },
+        {
+            "path": "..\\..\\..\\pkgs\\kservice\\rt_vsnprintf_full",
+            "name": "rtthread/pkgs/kservice/rt_vsnprintf_full"
+        },
+        {
+            "path": "..\\..\\..\\pkgs\\libcrc",
+            "name": "rtthread/pkgs/libcrc"
+        },
+        {
+            "path": "..\\..\\..\\pkgs\\param",
+            "name": "rtthread/pkgs/param"
+        },
+        {
+            "path": "..\\..\\..\\pkgs\\param\\interface",
+            "name": "rtthread/pkgs/param/interface"
+        },
+        {
+            "path": "..\\..\\..\\pkgs\\param\\storage",
+            "name": "rtthread/pkgs/param/storage"
+        },
+        {
+            "path": "..\\..\\..\\pkgs\\perf",
+            "name": "rtthread/pkgs/perf"
+        },
+        {
+            "path": "..\\..\\..\\pkgs\\queue",
+            "name": "rtthread/pkgs/queue"
+        },
+        {
+            "path": "..\\..\\..\\pkgs\\ringbuffer",
+            "name": "rtthread/pkgs/ringbuffer"
+        },
+        {
+            "path": "..\\..\\..\\pkgs\\uORB",
+            "name": "rtthread/pkgs/uORB"
+        },
+        {
+            "path": "..\\..\\..\\pkgs\\uORB\\topics",
+            "name": "rtthread/pkgs/uORB/topics"
+        },
+        {
+            "path": "..\\..\\..\\pkgs\\variable_length_ringbuffer",
+            "name": "rtthread/pkgs/variable_length_ringbuffer"
+        },
+        {
+            "path": "..\\..\\..\\pkgs\\vconsole",
+            "name": "rtthread/pkgs/vconsole"
+        },
+        {
+            "path": "..\\..\\..\\pkgs\\version",
+            "name": "rtthread/pkgs/version"
+        },
+        {
+            "path": "..\\..\\..\\pkgs\\workq",
+            "name": "rtthread/pkgs/workq"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\dfs\\dfs_v2\\filesystems\\devfs",
+            "name": "rtthread/rtos/rt-thread/components/dfs/dfs_v2/filesystems/devfs"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\dfs\\dfs_v2\\filesystems\\elmfat",
+            "name": "rtthread/rtos/rt-thread/components/dfs/dfs_v2/filesystems/elmfat"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\dfs\\dfs_v2\\filesystems\\mqueue",
+            "name": "rtthread/rtos/rt-thread/components/dfs/dfs_v2/filesystems/mqueue"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\dfs\\dfs_v2\\filesystems\\romfs",
+            "name": "rtthread/rtos/rt-thread/components/dfs/dfs_v2/filesystems/romfs"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\dfs\\dfs_v2\\filesystems\\tmpfs",
+            "name": "rtthread/rtos/rt-thread/components/dfs/dfs_v2/filesystems/tmpfs"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\dfs\\dfs_v2\\include",
+            "name": "rtthread/rtos/rt-thread/components/dfs/dfs_v2/include"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\dfs\\dfs_v2\\src",
+            "name": "rtthread/rtos/rt-thread/components/dfs/dfs_v2/src"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\core",
+            "name": "rtthread/rtos/rt-thread/components/drivers/core"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\i2c",
+            "name": "rtthread/rtos/rt-thread/components/drivers/i2c"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\include",
+            "name": "rtthread/rtos/rt-thread/components/drivers/include"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\ipc",
+            "name": "rtthread/rtos/rt-thread/components/drivers/ipc"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\ktime",
+            "name": "rtthread/rtos/rt-thread/components/drivers/ktime"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\ktime\\inc",
+            "name": "rtthread/rtos/rt-thread/components/drivers/ktime/inc"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\ktime\\src",
+            "name": "rtthread/rtos/rt-thread/components/drivers/ktime/src"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\misc",
+            "name": "rtthread/rtos/rt-thread/components/drivers/misc"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\mtd",
+            "name": "rtthread/rtos/rt-thread/components/drivers/mtd"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\rtc",
+            "name": "rtthread/rtos/rt-thread/components/drivers/rtc"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\sdio",
+            "name": "rtthread/rtos/rt-thread/components/drivers/sdio"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\serial",
+            "name": "rtthread/rtos/rt-thread/components/drivers/serial"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\spi",
+            "name": "rtthread/rtos/rt-thread/components/drivers/spi"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\spi\\sfud\\inc",
+            "name": "rtthread/rtos/rt-thread/components/drivers/spi/sfud/inc"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\spi\\sfud\\src",
+            "name": "rtthread/rtos/rt-thread/components/drivers/spi/sfud/src"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\drivers\\watchdog",
+            "name": "rtthread/rtos/rt-thread/components/drivers/watchdog"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\finsh",
+            "name": "rtthread/rtos/rt-thread/components/finsh"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\legacy",
+            "name": "rtthread/rtos/rt-thread/components/legacy"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\legacy\\dfs",
+            "name": "rtthread/rtos/rt-thread/components/legacy/dfs"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\legacy\\ipc",
+            "name": "rtthread/rtos/rt-thread/components/legacy/ipc"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\compilers\\common",
+            "name": "rtthread/rtos/rt-thread/components/libc/compilers/common"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\compilers\\common\\include",
+            "name": "rtthread/rtos/rt-thread/components/libc/compilers/common/include"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\cplusplus",
+            "name": "rtthread/rtos/rt-thread/components/libc/cplusplus"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\posix\\delay",
+            "name": "rtthread/rtos/rt-thread/components/libc/posix/delay"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\posix\\io\\aio",
+            "name": "rtthread/rtos/rt-thread/components/libc/posix/io/aio"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\posix\\io\\epoll",
+            "name": "rtthread/rtos/rt-thread/components/libc/posix/io/epoll"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\posix\\io\\eventfd",
+            "name": "rtthread/rtos/rt-thread/components/libc/posix/io/eventfd"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\posix\\io\\poll",
+            "name": "rtthread/rtos/rt-thread/components/libc/posix/io/poll"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\posix\\io\\stdio",
+            "name": "rtthread/rtos/rt-thread/components/libc/posix/io/stdio"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\posix\\io\\termios",
+            "name": "rtthread/rtos/rt-thread/components/libc/posix/io/termios"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\posix\\ipc",
+            "name": "rtthread/rtos/rt-thread/components/libc/posix/ipc"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\libc\\posix\\pthreads",
+            "name": "rtthread/rtos/rt-thread/components/libc/posix/pthreads"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\mm",
+            "name": "rtthread/rtos/rt-thread/components/mm"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\net\\lwip\\lwip-2.0.3\\src\\api",
+            "name": "rtthread/rtos/rt-thread/components/net/lwip/lwip-2.0.3/src/api"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\net\\lwip\\lwip-2.0.3\\src\\apps\\ping",
+            "name": "rtthread/rtos/rt-thread/components/net/lwip/lwip-2.0.3/src/apps/ping"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\net\\lwip\\lwip-2.0.3\\src\\core",
+            "name": "rtthread/rtos/rt-thread/components/net/lwip/lwip-2.0.3/src/core"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\net\\lwip\\lwip-2.0.3\\src\\core\\ipv4",
+            "name": "rtthread/rtos/rt-thread/components/net/lwip/lwip-2.0.3/src/core/ipv4"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\net\\lwip\\lwip-2.0.3\\src\\include",
+            "name": "rtthread/rtos/rt-thread/components/net/lwip/lwip-2.0.3/src/include"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\net\\lwip\\lwip-2.0.3\\src\\include\\ipv4",
+            "name": "rtthread/rtos/rt-thread/components/net/lwip/lwip-2.0.3/src/include/ipv4"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\net\\lwip\\lwip-2.0.3\\src\\include\\netif",
+            "name": "rtthread/rtos/rt-thread/components/net/lwip/lwip-2.0.3/src/include/netif"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\net\\lwip\\lwip-2.0.3\\src\\netif",
+            "name": "rtthread/rtos/rt-thread/components/net/lwip/lwip-2.0.3/src/netif"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\net\\lwip\\port",
+            "name": "rtthread/rtos/rt-thread/components/net/lwip/port"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\net\\netdev\\include",
+            "name": "rtthread/rtos/rt-thread/components/net/netdev/include"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\net\\netdev\\src",
+            "name": "rtthread/rtos/rt-thread/components/net/netdev/src"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\net\\sal\\dfs_net",
+            "name": "rtthread/rtos/rt-thread/components/net/sal/dfs_net"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\net\\sal\\impl",
+            "name": "rtthread/rtos/rt-thread/components/net/sal/impl"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\net\\sal\\include",
+            "name": "rtthread/rtos/rt-thread/components/net/sal/include"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\net\\sal\\include\\dfs_net",
+            "name": "rtthread/rtos/rt-thread/components/net/sal/include/dfs_net"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\net\\sal\\include\\socket",
+            "name": "rtthread/rtos/rt-thread/components/net/sal/include/socket"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\net\\sal\\include\\socket\\sys_socket",
+            "name": "rtthread/rtos/rt-thread/components/net/sal/include/socket/sys_socket"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\net\\sal\\socket",
+            "name": "rtthread/rtos/rt-thread/components/net/sal/socket"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\net\\sal\\src",
+            "name": "rtthread/rtos/rt-thread/components/net/sal/src"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\utilities\\libadt\\avl",
+            "name": "rtthread/rtos/rt-thread/components/utilities/libadt/avl"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\utilities\\libadt\\bitmap",
+            "name": "rtthread/rtos/rt-thread/components/utilities/libadt/bitmap"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\utilities\\libadt\\hashmap",
+            "name": "rtthread/rtos/rt-thread/components/utilities/libadt/hashmap"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\utilities\\libadt\\ref",
+            "name": "rtthread/rtos/rt-thread/components/utilities/libadt/ref"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\utilities\\resource",
+            "name": "rtthread/rtos/rt-thread/components/utilities/resource"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\utilities\\ulog",
+            "name": "rtthread/rtos/rt-thread/components/utilities/ulog"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\components\\utilities\\ulog\\backend",
+            "name": "rtthread/rtos/rt-thread/components/utilities/ulog/backend"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\include",
+            "name": "rtthread/rtos/rt-thread/include"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\libcpu\\arm\\common",
+            "name": "rtthread/rtos/rt-thread/libcpu/arm/common"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\libcpu\\arm\\cortex-a",
+            "name": "rtthread/rtos/rt-thread/libcpu/arm/cortex-a"
+        },
+        {
+            "path": "..\\..\\..\\rtos\\rt-thread\\src",
+            "name": "rtthread/rtos/rt-thread/src"
+        }
+    ]
+}

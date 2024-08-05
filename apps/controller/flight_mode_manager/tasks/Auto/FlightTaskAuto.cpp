@@ -23,8 +23,6 @@ using namespace matrix;
 bool FlightTaskAuto::activate(const trajectory_setpoint_s &last_setpoint) {
     bool ret = FlightTask::activate(last_setpoint);
 
-    _position_setpoint = _position;
-    _velocity_setpoint = _velocity;
     _yaw_setpoint      = _yaw;
     _yawspeed_setpoint = 0.0f;
 
@@ -90,9 +88,8 @@ bool FlightTaskAuto::update() {
     // always reset constraints because they might change depending on the type
     _setDefaultConstraints();
 
-    // The only time a thrust set-point is sent out is during
-    // idle. Hence, reset thrust set-point to NAN in case the
-    // vehicle exits idle.
+    // The only time a thrust set-point is sent out is during idle.
+    // Hence, reset thrust set-point to NAN in case the vehicle exits idle.
     if (_type_previous == WaypointType::idle) {
         _acceleration_setpoint.setNaN();
     }
@@ -140,8 +137,7 @@ bool FlightTaskAuto::update() {
 
     if (_param_com_obs_avoid.get()) {
         _obstacle_avoidance.updateAvoidanceDesiredSetpoints(_position_setpoint, _velocity_setpoint, (int)_type);
-        _obstacle_avoidance.injectAvoidanceSetpoints(_position_setpoint, _velocity_setpoint, _yaw_setpoint,
-                                                     _yawspeed_setpoint);
+        _obstacle_avoidance.injectAvoidanceSetpoints(_position_setpoint, _velocity_setpoint, _yaw_setpoint, _yawspeed_setpoint);
     }
 
     _checkEmergencyBraking();
