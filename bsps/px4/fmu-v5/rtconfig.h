@@ -472,6 +472,12 @@
 /* Nextpilot Telemetry Config */
 
 /* end of Nextpilot Telemetry Config */
+
+/* NextPilot Test Config */
+
+#define TEST_CREATE_THREAD
+#define TEST_UORB
+/* end of NextPilot Test Config */
 /* end of Nextpilot Firmware Config */
 
 /* Nextpilot Packages Config */

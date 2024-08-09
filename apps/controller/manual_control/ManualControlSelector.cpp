@@ -29,6 +29,9 @@ void ManualControlSelector::updateWithNewInputSample(uint64_t now, const manual_
     const bool start_using_new_input = !_setpoint.valid;
 
     // Switch to new input if it's valid and we don't already have a valid one
+    bool ret = isInputValid(input, now);
+    rt_kprintf("%d, %d, %d\n", ret, update_existing_input, start_using_new_input); // 1 1 0
+
     if (isInputValid(input, now) && (update_existing_input || start_using_new_input)) {
         _setpoint           = input;
         _setpoint.valid     = true;
@@ -53,7 +56,19 @@ bool ManualControlSelector::isInputValid(const manual_control_setpoint_s &input,
     const bool source_any_matched     = (_rc_in_mode == 2);
     const bool source_first_matched   = (_rc_in_mode == 3) && (input.data_source == _first_valid_source || _first_valid_source == manual_control_setpoint_s::SOURCE_UNKNOWN);
 
-    return sample_from_the_past && sample_newer_than_timeout && (source_rc_matched || source_mavlink_matched || source_any_matched || source_first_matched);
+    // // 正常情况下返回 true
+    // LOG_I("all ret: %d, %d, %d, %d, %d, %d",
+    //       sample_from_the_past,      // ok
+    //       sample_newer_than_timeout, // error
+    //       source_rc_matched,
+    //       source_mavlink_matched,
+    //       source_any_matched,
+    //       source_first_matched);
+
+    // LOG_I("now: %llu, input.timestamp_sample: %llu, _timeout: %llu", now, input.timestamp_sample, _timeout);
+
+    return (sample_from_the_past && sample_newer_than_timeout
+            && (source_rc_matched || source_mavlink_matched || source_any_matched || source_first_matched));
 }
 
 manual_control_setpoint_s &ManualControlSelector::setpoint() {

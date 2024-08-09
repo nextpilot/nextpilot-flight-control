@@ -16,7 +16,7 @@ using namespace nextpilot;
 using namespace time_literals;
 using namespace nextpilot::global_params;
 
-// #define USING_COMMANDER_FAKE
+#define USING_COMMANDER_FAKE
 
 class EKF2FAKE {
 public:

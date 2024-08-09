@@ -1,0 +1,6 @@
+menuconfig TEST_UORB
+    bool "test uorb"
+    default n
+
+if TEST_UORB
+endif
