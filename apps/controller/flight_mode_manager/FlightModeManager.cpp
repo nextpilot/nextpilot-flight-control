@@ -8,7 +8,7 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#define LOG_TAG "fmm"
+#define LOG_TAG "flight_mode_manager"
 #define LOG_LVL LOG_LVL_INFO
 
 #include "FlightModeManager.hpp"
@@ -19,7 +19,7 @@ using namespace time_literals;
 
 FlightModeManager::FlightModeManager() :
     ModuleParams(nullptr),
-    WorkItemScheduled(MODULE_NAME, wq_configurations::nav_and_controllers) { // TODO: 调度与PX4不一样
+    WorkItem(MODULE_NAME, wq_configurations::nav_and_controllers) {
     updateParams();
 
     // initialize all flight-tasks
@@ -49,8 +49,6 @@ int FlightModeManager::init() {
     // limit to every other vehicle_local_position update (50 Hz)
     _vehicle_local_position_sub.set_interval_us(20_ms);
     _time_stamp_last_loop = hrt_absolute_time();
-
-    ScheduleOnInterval(10_ms);
     return 0;
 }
 
@@ -290,7 +288,6 @@ void FlightModeManager::generateTrajectorySetpoint(const float                  
 
     if (_current_task.task->updateInitialize() && _current_task.task->update()) {
         // setpoints and constraints for the position controller from flighttask
-
         setpoint    = _current_task.task->getTrajectorySetpoint();
         constraints = _current_task.task->getConstraints();
     }
@@ -330,9 +327,7 @@ void FlightModeManager::generateTrajectorySetpoint(const float                  
 
 void FlightModeManager::limitAltitude(trajectory_setpoint_s          &setpoint,
                                       const vehicle_local_position_s &vehicle_local_position) {
-    if (_param_lndmc_alt_max.get() < 0.0f
-        || !_home_position_sub.get().valid_alt
-        || !vehicle_local_position.z_valid || !vehicle_local_position.v_z_valid) {
+    if (_param_lndmc_alt_max.get() < 0.0f || !_home_position_sub.get().valid_alt || !vehicle_local_position.z_valid || !vehicle_local_position.v_z_valid) {
         // there is no altitude limitation present or the required information not available
         return;
     }
