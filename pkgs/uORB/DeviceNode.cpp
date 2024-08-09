@@ -190,7 +190,7 @@ ssize_t DeviceNode::write(const void *data) {
     // callback
     for (auto item : _callbacks) {
         // TODO：暂时屏蔽uORB的callback
-        // item->call();
+        item->call();
     }
 
     /* Mark at least one data has been published */

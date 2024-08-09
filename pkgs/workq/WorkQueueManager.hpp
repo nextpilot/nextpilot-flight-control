@@ -23,7 +23,8 @@ struct wq_config_t {
 };
 
 namespace wq_configurations {
-static constexpr wq_config_t rate_ctrl{"wq:rate_ctrl", 4096, 0}; // PX4 inner loop highest priority
+// static constexpr wq_config_t rate_ctrl{"wq:rate_ctrl", 4096, 0}; // PX4 inner loop highest priority // TODO:
+static constexpr wq_config_t rate_ctrl{"wq:rate_ctrl", 4096 * 10, 0}; // PX4 inner loop highest priority
 
 static constexpr wq_config_t SPI0{"wq:SPI0", 2392, -1};
 static constexpr wq_config_t SPI1{"wq:SPI1", 2392, -2};

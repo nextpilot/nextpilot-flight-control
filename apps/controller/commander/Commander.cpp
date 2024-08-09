@@ -615,7 +615,8 @@ transition_result_t Commander::disarm(arm_disarm_reason_t calling_reason, bool f
 }
 
 Commander::Commander() :
-    ModuleParams(nullptr), ModuleThread("commander", 4096, 15, 100) {
+    // ModuleParams(nullptr), ModuleThread("commander", 4096, 15, 100) { // TODO:
+    ModuleParams(nullptr), ModuleThread("commander", 4096 * 10, 15, 100) {
     _vehicle_land_detected.landed = true;
 
     _vehicle_status.system_id    = 1;
