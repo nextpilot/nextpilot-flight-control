@@ -40,7 +40,7 @@ enum class FlightTaskError : int {
     ActivationFailed = -2
 };
 
-class FlightModeManager : public ModuleCommand<FlightModeManager>, public ModuleParams, public WorkItemScheduled {
+class FlightModeManager : public ModuleCommand<FlightModeManager>, public ModuleParams, public WorkItem {
 public:
     FlightModeManager();
     ~FlightModeManager() override;
