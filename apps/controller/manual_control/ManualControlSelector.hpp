@@ -10,7 +10,6 @@
 
 #pragma once
 
-#include "nextpilot.h"
 #include <stdint.h>
 #include <uORB/topics/manual_control_setpoint.h>
 
