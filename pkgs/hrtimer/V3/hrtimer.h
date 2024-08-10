@@ -208,7 +208,8 @@ __EXPORT extern void hrt_call_delay(struct hrt_call *entry, hrt_abstime delay);
 /*
  * update with the new expiry
  */
-__EXPORT extern int hrt_next_expiry(uint32_t timeout_us);
+__EXPORT extern int hrt_call_isr_after(uint32_t timeout_us);
+__EXPORT extern int hrt_call_isr_every(uint32_t period_us);
 
 __EXPORT extern int hrt_call_isr(int status);
 
@@ -221,8 +222,7 @@ __EXPORT extern void lockstep_progress(int component);
 __EXPORT extern void lockstep_wait_for_components(void);
 
 #else
-static inline int
-lockstep_register_component(void) {
+static inline int lockstep_register_component(void) {
     return 0;
 }
 

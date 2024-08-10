@@ -68,18 +68,33 @@ const uint16_t    latency_buckets[LATENCY_BUCKET_COUNT] = {1, 2, 5, 10, 20, 50, 
 __EXPORT uint32_t latency_counters[LATENCY_BUCKET_COUNT + 1];
 
 /* timer-specific functions */
-// static void hrt_tim_init(void);
-// static int  hrt_call_isr(int irq, void *context, void *arg);
 static void hrt_latency_update(void);
-
 /* callout list manipulation */
 static void hrt_call_internal(struct hrt_call *entry, hrt_abstime deadline, hrt_abstime interval, hrt_callout callout, void *arg);
 static void hrt_call_enter(struct hrt_call *entry);
 static void hrt_call_reschedule(void);
 static void hrt_call_invoke(void);
 
-// int hrt_ioctl(unsigned int cmd, unsigned long arg);
+/**
+ * Fetch a never-wrapping absolute time value in microseconds from
+ * some arbitrary epoch shortly after system start.
+ */
+rt_weak hrt_abstime hrt_absolute_time(void) {
+    uint64_t tick = rt_tick_get();
+    return 1000000ULL * tick / RT_TICK_PER_SECOND;
+}
 
+rt_weak int hrt_call_isr_after(uint32_t timeout_us) {
+    (void)timeout_us;
+    LOG_E("hrt_call_isr_after() must be implemented in another file");
+    return 0;
+}
+
+rt_weak int hrt_call_isr_every(uint32_t period_us) {
+    (void)period_us;
+    LOG_E("hrt_call_isr_every() must be implemented in another file");
+    return 0;
+}
 
 /**
  * Handle the compare interrupt by calling the callout dispatcher
@@ -89,32 +104,16 @@ int hrt_call_isr(int status) {
     /* grab the timer for latency tracking purposes */
     latency_actual = hrt_absolute_time();
 
+    /* do latency calculations */
+    hrt_latency_update();
 
-#ifdef HRT_PPM_CHANNEL
+    /* run any callouts that have met their deadline */
+    hrt_call_invoke();
 
-    /* was this a PPM edge? */
-    if (status & (SR_INT_PPM | SR_OVF_PPM)) {
-        /* if required, flip edge sensitivity */
-#   ifdef PPM_EDGE_FLIP
-        rCCER ^= CCER_PPM_FLIP;
-#   endif
-
-        hrt_ppm_decode(status);
-    }
-
-#endif
-
-    /* was this a timer tick? */
-    if (status == 1) {
-        /* do latency calculations */
-        hrt_latency_update();
-
-        /* run any callouts that have met their deadline */
-        hrt_call_invoke();
-
-        /* and schedule the next interrupt */
-        hrt_call_reschedule();
-    }
+    /* and schedule the next interrupt */
+    // rt_base_t flags = rt_hw_interrupt_disable();
+    hrt_call_reschedule();
+    // rt_hw_interrupt_enable(flags);
 
     return 0;
 }
@@ -209,7 +208,6 @@ static void hrt_call_enter(struct hrt_call *entry) {
         hrtinfo("call enter at head, reschedule\n");
         /* we changed the next deadline, reschedule the timer event */
         hrt_call_reschedule();
-
     } else {
         do {
             next = (struct hrt_call *)sq_next(&call->link);
@@ -314,7 +312,7 @@ static void hrt_call_reschedule() {
     latency_baseline = deadline;
 
     // Remove the existing expiry and update with the new expiry
-    hrt_next_expiry(deadline - now);
+    hrt_call_isr_after(deadline - now);
 }
 
 static void hrt_latency_update(void) {
