@@ -10,6 +10,7 @@
 
 #pragma once
 
+#include "nextpilot.h"
 #include <stdint.h>
 #include <uORB/topics/manual_control_setpoint.h>
 
@@ -18,13 +19,16 @@ public:
     void setRcInMode(int32_t rc_in_mode) {
         _rc_in_mode = rc_in_mode;
     }
+
     void setTimeout(uint64_t timeout) {
         _timeout = timeout;
     }
+
     void                       updateValidityOfChosenInput(uint64_t now);
     void                       updateWithNewInputSample(uint64_t now, const manual_control_setpoint_s &input, int instance);
     manual_control_setpoint_s &setpoint();
-    int                        instance() const {
+
+    int instance() const {
         return _instance;
     };
 

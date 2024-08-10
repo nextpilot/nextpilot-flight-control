@@ -19,7 +19,7 @@
 #ifdef PKG_USING_HRTIMER
 #   include <hrtimer.h>
 #endif // PKG_USING_HRTIMER
-#ifdef PKG_USING_UORB_
+#ifdef PKG_USING_UORB
 #   include <uORB.h>
 #   include <topics/parameter_update.h>
 #endif // PKG_USING_UORB_
@@ -52,8 +52,9 @@ int param_interface_init() {
 }
 
 void param_notify_changes() {
-#ifdef PKG_USING_UORB_
-    static uint32_t           param_instance = 0;
+#ifdef PKG_USING_UORB
+    static orb_advert_t       param_update_pub = NULL;
+    static uint32_t           param_instance   = 0;
     struct parameter_update_s pup;
     pup.instance = param_instance++;
 #   ifdef PKG_USING_HRTIMER
@@ -61,9 +62,14 @@ void param_notify_changes() {
 #   else
     pup.timestamp = rt_tick_get() * 1000ULL;
 #   endif // PKG_USING_HRTIMER
-    orb_publish(ORB_ID(parameter_update), NULL, &pup);
-#endif    // PKG_USING_UORB
-    LOG_D("notify param updated");
+    if (!param_update_pub) {
+        param_update_pub = orb_advertise(ORB_ID(parameter_update), NULL);
+    }
+    if (param_update_pub) {
+        orb_publish(ORB_ID(parameter_update), param_update_pub, &pup);
+        LOG_D("notify param updated");
+    }
+#endif // PKG_USING_UORB
 }
 
 uint16_t param_get_count() {

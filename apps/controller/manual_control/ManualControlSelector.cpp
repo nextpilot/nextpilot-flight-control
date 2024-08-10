@@ -8,6 +8,10 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
+#define LOG_TAG "ManualControlSelector"
+#define LOG_LVL LOG_LVL_INFO
+
+
 #include "ManualControlSelector.hpp"
 
 void ManualControlSelector::updateValidityOfChosenInput(uint64_t now) {
@@ -45,11 +49,9 @@ bool ManualControlSelector::isInputValid(const manual_control_setpoint_s &input,
 
     // Check if source matches the configuration
     const bool source_rc_matched      = (_rc_in_mode == 0) && (input.data_source == manual_control_setpoint_s::SOURCE_RC);
-    const bool source_mavlink_matched = (_rc_in_mode == 1) &&
-                                        (input.data_source == manual_control_setpoint_s::SOURCE_MAVLINK_0 || input.data_source == manual_control_setpoint_s::SOURCE_MAVLINK_1 || input.data_source == manual_control_setpoint_s::SOURCE_MAVLINK_2 || input.data_source == manual_control_setpoint_s::SOURCE_MAVLINK_3 || input.data_source == manual_control_setpoint_s::SOURCE_MAVLINK_4 || input.data_source == manual_control_setpoint_s::SOURCE_MAVLINK_5);
-    const bool source_any_matched   = (_rc_in_mode == 2);
-    const bool source_first_matched = (_rc_in_mode == 3) &&
-                                      (input.data_source == _first_valid_source || _first_valid_source == manual_control_setpoint_s::SOURCE_UNKNOWN);
+    const bool source_mavlink_matched = (_rc_in_mode == 1) && (input.data_source == manual_control_setpoint_s::SOURCE_MAVLINK_0 || input.data_source == manual_control_setpoint_s::SOURCE_MAVLINK_1 || input.data_source == manual_control_setpoint_s::SOURCE_MAVLINK_2 || input.data_source == manual_control_setpoint_s::SOURCE_MAVLINK_3 || input.data_source == manual_control_setpoint_s::SOURCE_MAVLINK_4 || input.data_source == manual_control_setpoint_s::SOURCE_MAVLINK_5);
+    const bool source_any_matched     = (_rc_in_mode == 2);
+    const bool source_first_matched   = (_rc_in_mode == 3) && (input.data_source == _first_valid_source || _first_valid_source == manual_control_setpoint_s::SOURCE_UNKNOWN);
 
     return sample_from_the_past && sample_newer_than_timeout && (source_rc_matched || source_mavlink_matched || source_any_matched || source_first_matched);
 }

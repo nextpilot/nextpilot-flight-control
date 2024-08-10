@@ -9,12 +9,14 @@
  ******************************************************************/
 
 #define LOG_TAG "manual_control"
+#define LOG_LVL LOG_LVL_INFO
 
 #include "ManualControl.hpp"
 
 #include <events/events.h>
 #include <ulog/mavlink_log.h>
 #include <uORB/topics/vehicle_command.h>
+
 ManualControl::ManualControl() :
     ModuleParams(nullptr),
     WorkItemScheduled(MODULE_NAME, wq_configurations::hp_default) {
@@ -271,7 +273,6 @@ void ManualControl::Run() {
         }
 
         _manual_control_switches_sub.registerCallback();
-
     } else {
         if (!_published_invalid_once) {
             _published_invalid_once = true;
@@ -480,21 +481,36 @@ Module consuming manual_control_inputs publishing one manual_control_setpoint.
 
 int8_t ManualControl::navStateFromParam(int32_t param_value) {
     switch (param_value) {
-    case 0: return vehicle_status_s::NAVIGATION_STATE_MANUAL;
-    case 1: return vehicle_status_s::NAVIGATION_STATE_ALTCTL;
-    case 2: return vehicle_status_s::NAVIGATION_STATE_POSCTL;
-    case 3: return vehicle_status_s::NAVIGATION_STATE_AUTO_MISSION;
-    case 4: return vehicle_status_s::NAVIGATION_STATE_AUTO_LOITER;
-    case 5: return vehicle_status_s::NAVIGATION_STATE_AUTO_RTL;
-    case 6: return vehicle_status_s::NAVIGATION_STATE_ACRO;
-    case 7: return vehicle_status_s::NAVIGATION_STATE_OFFBOARD;
-    case 8: return vehicle_status_s::NAVIGATION_STATE_STAB;
-    case 10: return vehicle_status_s::NAVIGATION_STATE_AUTO_TAKEOFF;
-    case 11: return vehicle_status_s::NAVIGATION_STATE_AUTO_LAND;
-    case 12: return vehicle_status_s::NAVIGATION_STATE_AUTO_FOLLOW_TARGET;
-    case 13: return vehicle_status_s::NAVIGATION_STATE_AUTO_PRECLAND;
-    case 14: return vehicle_status_s::NAVIGATION_STATE_ORBIT;
-    case 15: return vehicle_status_s::NAVIGATION_STATE_AUTO_VTOL_TAKEOFF;
+    case 0:
+        return vehicle_status_s::NAVIGATION_STATE_MANUAL;
+    case 1:
+        return vehicle_status_s::NAVIGATION_STATE_ALTCTL;
+    case 2:
+        return vehicle_status_s::NAVIGATION_STATE_POSCTL;
+    case 3:
+        return vehicle_status_s::NAVIGATION_STATE_AUTO_MISSION;
+    case 4:
+        return vehicle_status_s::NAVIGATION_STATE_AUTO_LOITER;
+    case 5:
+        return vehicle_status_s::NAVIGATION_STATE_AUTO_RTL;
+    case 6:
+        return vehicle_status_s::NAVIGATION_STATE_ACRO;
+    case 7:
+        return vehicle_status_s::NAVIGATION_STATE_OFFBOARD;
+    case 8:
+        return vehicle_status_s::NAVIGATION_STATE_STAB;
+    case 10:
+        return vehicle_status_s::NAVIGATION_STATE_AUTO_TAKEOFF;
+    case 11:
+        return vehicle_status_s::NAVIGATION_STATE_AUTO_LAND;
+    case 12:
+        return vehicle_status_s::NAVIGATION_STATE_AUTO_FOLLOW_TARGET;
+    case 13:
+        return vehicle_status_s::NAVIGATION_STATE_AUTO_PRECLAND;
+    case 14:
+        return vehicle_status_s::NAVIGATION_STATE_ORBIT;
+    case 15:
+        return vehicle_status_s::NAVIGATION_STATE_AUTO_VTOL_TAKEOFF;
     }
     return -1;
 }
@@ -502,6 +518,7 @@ int8_t ManualControl::navStateFromParam(int32_t param_value) {
 extern "C" __EXPORT int manual_control_main(int argc, char *argv[]) {
     return ManualControl::main(argc, argv);
 }
+
 MSH_CMD_EXPORT_ALIAS(manual_control_main, manual_control, manual control);
 
 int manual_control_start() {
@@ -509,4 +526,5 @@ int manual_control_start() {
     int         argc   = sizeof(argv) / sizeof(argv[0]);
     return ManualControl::main(argc, (char **)argv);
 }
+
 INIT_APP_EXPORT(manual_control_start);

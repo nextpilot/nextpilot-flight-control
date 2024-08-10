@@ -1,6 +1,169 @@
 #ifndef RT_CONFIG_H__
 #define RT_CONFIG_H__
 
+/* Nextpilot Hardware Config */
+
+/* Hardware Driver Config */
+
+#define BSP_USING_QEMU
+#define SOC_VEXPRESS_A9
+
+/* Onboard Peripheral Drivers */
+
+#define RT_USING_UART0
+#define RT_USING_UART1
+#define BSP_DRV_EMAC
+/* end of Onboard Peripheral Drivers */
+/* end of Hardware Driver Config */
+/* end of Nextpilot Hardware Config */
+
+/* Nextpilot Firmware Config */
+
+/* Nextpilot Airframe Config */
+
+#define SYS_USING_AIRFRAME
+#define SYS_USING_1100_QUAD_X
+#define SYS_USING_1101_PLANE_AERT
+#define SYS_USING_1102_TAILSITTER_DUO
+#define SYS_USING_1103_SIH_STANDARD_VTOL
+/* end of Nextpilot Airframe Config */
+
+/* Nextpilot Bootloader Config */
+
+/* Nextpilot Controller Config */
+
+#define FCS_USING_COMMANDER
+#define FCS_USING_CONTROL_ALLOCATOR
+#define FCS_USING_FLIGHT_MODE_MANAGER
+#define FCS_USING_FW_ATT_CONTROL
+#define FCS_USING_FW_AUTOTUNE_ATTITUDE_CONTROL
+#define FCS_UISNG_FW_POS_CONTROL
+#define FCS_USING_FW_RATE_CONTROL
+#define FCS_USING_LAND_DETECTOR
+#define FCS_USING_MANUAL_CONTROL
+#define FCS_USING_MC_ATT_CONTROL
+#define FCS_MC_AUTOTUNE_ATTITUDE_CONTROL
+#define FCS_USING_MC_HOVER_THRUST_ESTIMATOR
+#define FCS_USING_MC_POS_CONTROL
+#define FCS_USING_MC_RATE_CONTROL
+#define FCS_USING_NAVIGATOR
+#define FCS_USING_RC_UPDATE
+#define FCS_USING_VTOL_ATT_CONTROL
+/* end of Nextpilot Controller Config */
+
+/* Nextpilot Estimator Config */
+
+#define INS_USING_EKF2_FAKE
+/* end of Nextpilot Estimator Config */
+
+/* Nextpilot Libraries Config */
+
+/* Controller Libraries Config */
+
+#define PKG_USING_ADSB
+#define PKG_USING_AVOIDANCE
+#define PKG_USING_BEZIER
+#define PKG_USING_CIRCUIT_BREAKER
+#define PKG_USING_COLLISION_PREVENTION
+#define PKG_USING_CONTROLLIB
+#define PKG_USING_ROTATION
+#define PKG_USING_GEO
+#define PKG_USING_HYSTERESIS
+#define PKG_USING_MIXER_MODULE
+#define PKG_USING_MOTION_PLANNING
+#define PKG_USING_NPFG
+#define PKG_USING_PID_DESIGN
+#define PKG_USING_RATE_CONTROL
+#define PKG_USING_SLEW_RATE
+#define PKG_USING_SYSTEM_IDENTIFICATION
+#define PKG_USING_TECS
+#define PKG_USING_WEATHER_VANE
+/* end of Controller Libraries Config */
+
+/* Estimator Libraries Config */
+
+#define PKG_USING_SENSOR_CALIBRATION
+#define PKG_USING_WIND_ESTIMATOR
+#define PKG_USING_WORLD_MAGNETIC_MODEL
+/* end of Estimator Libraries Config */
+
+/* Peripheral Libraries Config */
+
+#define PKG_USING_BATTERY
+#define PKG_USING_TUNES
+#define PKG_USING_ACCELEROMETER
+#define PKG_USING_AIRSPEED
+#define PKG_USING_GYROSCOPE
+#define PKG_USING_MAGNETOMETER
+/* end of Peripheral Libraries Config */
+/* end of Nextpilot Libraries Config */
+
+/* Nextpilot Peripheral Config */
+
+/* Nextpilot Simulation Config */
+
+#define SIM_USING_BATTERY
+#define SIM_USING_PWM_OUT
+#define SIM_USING_SENSOR_AIRSPEED
+#define SIM_USING_SENSOR_BARO
+#define SIM_USING_SENSOR_GPS
+#define SIM_USING_SENSOR_MAG
+#define SIM_USING_SIH
+/* end of Nextpilot Simulation Config */
+
+/* Nextpilot Storage Config */
+
+#define SYS_USING_DATAMAN
+#define DATAMAN_DEFAULT_FILE_PATH "/dataman.bin"
+#define SYS_USING_LOGGER
+#define LOGGER_FULL_LOG_ROOT_PATH "/log"
+#define LOGGER_LESS_LOG_ROOT_PATH "/mission_log"
+/* end of Nextpilot Storage Config */
+
+/* Nextpilot Telemetry Config */
+
+#define TEL_USING_MAVLINK
+#define MAVLINK_DIALECT "common"
+#define MAVLINK_USING_PARAM
+#define MAVLINK_USING_MISSION
+/* end of Nextpilot Telemetry Config */
+/* end of Nextpilot Firmware Config */
+
+/* Nextpilot Packages Config */
+
+#define PKG_USING_CONTAINER
+#define PKG_USING_CPULOAD
+#define PKG_USING_EVENTS
+#define PKG_USING_GETOPT
+#define PKG_USING_HRTIMER
+#define PKG_USING_HRTIMER_V3
+#define HRT_USING_OSTICK
+#define HRT_USING_OSTIMER
+#define PKG_USING_LIBCRC
+#define PKG_USING_MATHLIB
+#define PKG_USING_MATRIX
+#define PKG_USING_PARAM
+#define PARAM_USING_GLOBAL_AUTOGEN
+#define PARAM_USING_STORAGE_FILE
+#define PARAM_DEFAULT_FILE_PATH "/param.bin"
+#define PARAM_USING_DEVICE_FILE
+#define PKG_USING_PERF
+#define PKG_USING_QUEUE
+#define PKG_USING_RING_BUFFER
+#define PKG_USING_SHUTDOWN
+#define PKG_USING_UORB
+
+/* ULog backend */
+
+/* end of ULog backend */
+#define PKG_USING_VAR_LEN_RINGBUFFER
+#define PKG_USING_VCONSOLE_V2
+#define PKG_USING_BOARD_VERSION
+#define BOARD_TYPE_NAME "sitl-qemu-default"
+#define BOARD_CHIP_NAME "cortex-A9"
+#define PKG_USING_WORKQUEUE
+/* end of Nextpilot Packages Config */
+
 /* RT-Thread Kernel */
 
 #define RT_NAME_MAX 16
@@ -496,154 +659,5 @@
 
 /* end of Arduino libraries */
 /* end of RT-Thread online packages */
-
-/* RT-Thread HAL Drivers */
-
-/* end of RT-Thread HAL Drivers */
-
-/* Nextpilot Hardware Config */
-
-/* Hardware Driver Config */
-
-#define BSP_USING_QEMU
-#define SOC_VEXPRESS_A9
-
-/* Onboard Peripheral Drivers */
-
-#define RT_USING_UART0
-#define RT_USING_UART1
-#define BSP_DRV_EMAC
-/* end of Onboard Peripheral Drivers */
-/* end of Hardware Driver Config */
-/* end of Nextpilot Hardware Config */
-
-/* Nextpilot Firmware Config */
-
-/* Nextpilot Airframe Config */
-
-#define SYS_USING_AIRFRAME
-#define SYS_USING_1100_QUAD_X
-#define SYS_USING_1101_PLANE_AERT
-#define SYS_USING_1102_TAILSITTER_DUO
-#define SYS_USING_1103_SIH_STANDARD_VTOL
-/* end of Nextpilot Airframe Config */
-
-/* Nextpilot Bootloader Config */
-
-/* Nextpilot Controller Config */
-
-#define FCS_USING_CONTROL_ALLOCATOR
-#define FCS_USING_LAND_DETECTOR
-#define FCS_USING_MANUAL_CONTROL
-#define FCS_USING_MC_ATT_CONTROL
-#define FCS_USING_MC_RATE_CONTROL
-/* end of Nextpilot Controller Config */
-
-/* Nextpilot Estimator Config */
-
-#define INS_USING_EKF2_FAKE
-/* end of Nextpilot Estimator Config */
-
-/* Nextpilot Libraries Config */
-
-/* Controller Libraries Config */
-
-#define PKG_USING_ADSB
-#define PKG_USING_AVOIDANCE
-#define PKG_USING_BEZIER
-#define PKG_USING_CIRCUIT_BREAKER
-#define PKG_USING_COLLISION_PREVENTION
-#define PKG_USING_CONTROLLIB
-#define PKG_USING_ROTATION
-#define PKG_USING_GEO
-#define PKG_USING_HYSTERESIS
-#define PKG_USING_MIXER_MODULE
-#define PKG_USING_MOTION_PLANNING
-#define PKG_USING_NPFG
-#define PKG_USING_PID_DESIGN
-#define PKG_USING_RATE_CONTROL
-#define PKG_USING_SLEW_RATE
-#define PKG_USING_SYSTEM_IDENTIFICATION
-#define PKG_USING_TECS
-#define PKG_USING_WEATHER_VANE
-/* end of Controller Libraries Config */
-
-/* Estimator Libraries Config */
-
-#define PKG_USING_SENSOR_CALIBRATION
-#define PKG_USING_WIND_ESTIMATOR
-#define PKG_USING_WORLD_MAGNETIC_MODEL
-/* end of Estimator Libraries Config */
-
-/* Peripheral Libraries Config */
-
-#define PKG_USING_BATTERY
-#define PKG_USING_TUNES
-#define PKG_USING_ACCELEROMETER
-#define PKG_USING_AIRSPEED
-#define PKG_USING_GYROSCOPE
-#define PKG_USING_MAGNETOMETER
-/* end of Peripheral Libraries Config */
-/* end of Nextpilot Libraries Config */
-
-/* Nextpilot Peripheral Config */
-
-/* Nextpilot Simulation Config */
-
-#define SIM_USING_BATTERY
-#define SIM_USING_PWM_OUT
-#define SIM_USING_SENSOR_AIRSPEED
-#define SIM_USING_SENSOR_BARO
-#define SIM_USING_SENSOR_GPS
-#define SIM_USING_SENSOR_MAG
-#define SIM_USING_SIH
-/* end of Nextpilot Simulation Config */
-
-/* Nextpilot Storage Config */
-
-/* end of Nextpilot Storage Config */
-
-/* Nextpilot Telemetry Config */
-
-#define TEL_USING_MAVLINK
-#define MAVLINK_DIALECT "common"
-#define MAVLINK_USING_PARAM
-/* end of Nextpilot Telemetry Config */
-/* end of Nextpilot Firmware Config */
-
-/* Nextpilot Packages Config */
-
-#define PKG_USING_CONTAINER
-#define PKG_USING_CPULOAD
-#define PKG_USING_EVENTS
-#define PKG_USING_GETOPT
-#define PKG_USING_HRTIMER
-#define PKG_USING_HRTIMER_V3
-#define HRT_USING_OSTICK
-#define HRT_USING_OSTIMER
-#define PKG_USING_LIBCRC
-#define PKG_USING_MATHLIB
-#define PKG_USING_MATRIX
-#define PKG_USING_PARAM
-#define PARAM_USING_GLOBAL_AUTOGEN
-#define PARAM_USING_STORAGE_FILE
-#define PARAM_DEFAULT_FILE_PATH "/param.bin"
-#define PARAM_USING_DEVICE_FILE
-#define PKG_USING_PERF
-#define PKG_USING_QUEUE
-#define PKG_USING_RING_BUFFER
-#define PKG_USING_SHUTDOWN
-#define PKG_USING_UORB
-
-/* ULog backend */
-
-/* end of ULog backend */
-#define PKG_USING_VAR_LEN_RINGBUFFER
-#define PKG_USING_VCONSOLE_V2
-#define PKG_USING_BOARD_VERSION
-#define BOARD_TYPE_NAME "sitl-qemu-default"
-#define BOARD_CHIP_NAME "cortex-A9"
-#define PKG_USING_WORKQUEUE
-/* end of Nextpilot Packages Config */
 
 #endif

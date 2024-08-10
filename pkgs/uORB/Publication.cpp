@@ -34,6 +34,15 @@ int orb_unadvertise(orb_advert_t node) {
 }
 
 int orb_publish(const struct orb_metadata *meta, orb_advert_t handle, const void *data) {
+    // 如果handle不存在，先查找meta对应的第0个节点
+    // if (!handle) {
+    //     handle = DeviceNode::getDeviceNode(meta, 0);
+    // }
+    // 如果没有找到，则创建meta的第0个节点
+    // if (!handle) {
+    //     handle = DeviceNode::advertise(meta, data, nullptr, 1);
+    // }
+
     return DeviceNode::publish(meta, handle, data);
 }
 

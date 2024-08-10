@@ -16,39 +16,64 @@ using namespace nextpilot;
 using namespace time_literals;
 using namespace nextpilot::global_params;
 
-#define EKF2_FAKE_PERIOD_MS 5
+// #define USING_COMMANDER_FAKE
 
-class Ekf2Fake {
+class EKF2FAKE {
 public:
-    Ekf2Fake();
-    ~Ekf2Fake();
+    EKF2FAKE();
+    ~EKF2FAKE();
+
     int  init();
     void Run();
+    void publish_imu_data(const hrt_abstime now_us);
+    void publish_gps_data(const hrt_abstime now_us);
+    void publish_ekf_data(const hrt_abstime now_us);
+    void publish_est_data(const hrt_abstime now_us);
+#ifdef USING_COMMANDER_FAKE
+    void publish_cmd_data(const hrt_abstime now_us);
+#endif // USING_COMMANDER_FAKE
 
 private:
-    uORB::Subscription _sensor_gyro_sub{ORB_ID(sensor_gyro)};
-    uORB::Subscription _sensor_acc_sub{ORB_ID(sensor_accel)};
-    uORB::Subscription _sensor_gps_sub{ORB_ID(sensor_gps)};
-    uORB::Subscription _v_ang_vel_groundtruth_sub{ORB_ID(vehicle_angular_velocity_groundtruth)};
-    uORB::Subscription _v_att_groundtruth_sub{ORB_ID(vehicle_attitude_groundtruth)};
-    uORB::Subscription _v_loc_pos_groundtruth_sub{ORB_ID(vehicle_local_position_groundtruth)};
-    uORB::Subscription _v_glob_pos_groundtruth_sub{ORB_ID(vehicle_global_position_groundtruth)};
-
-    sensor_gyro_s              _s_gyro{};
-    sensor_accel_s             _s_accel{};
-    sensor_gps_s               _s_gps{};
-    vehicle_angular_velocity_s _v_ang_vel_groundtruth{};
-    vehicle_attitude_s         _v_att_groundtruth{};
-    vehicle_local_position_s   _v_loc_pos_groundtruth{};
-    vehicle_global_position_s  _v_glob_pos_groundtruth{};
-    estimator_status_s         _esttimator_status{};
-
-    uORB::Publication<vehicle_angular_velocity_s> _v_ang_pub{ORB_ID(vehicle_angular_velocity)};     /**< vehicle angular velocity publication */
-    uORB::Publication<vehicle_acceleration_s>     _v_acc_pub{ORB_ID(vehicle_acceleration)};         /**< vehicle acceleration publication */
-    uORB::Publication<sensor_gps_s>               _v_gps_pos_pub{ORB_ID(vehicle_gps_position)};     /**< vehicle gps position publication */
-    uORB::Publication<vehicle_angular_velocity_s> _v_ang_vel_pub{ORB_ID(vehicle_angular_velocity)}; /**< vehicle angular velocity publication */
-    uORB::Publication<vehicle_attitude_s>         _v_att_pub{ORB_ID(vehicle_attitude)};             /**< vehicle attitude publication */
-    uORB::Publication<vehicle_local_position_s>   _v_loc_pos_pub{ORB_ID(vehicle_local_position)};   /**< vehicle local position publication */
-    uORB::Publication<vehicle_global_position_s>  _v_glob_pos_pub{ORB_ID(vehicle_global_position)}; /**< vehicle global position publication */
-    uORB::Publication<estimator_status_s>         _estimator_status_pub{ORB_ID(estimator_status)};  /**< estimator status publication */
+    sensor_accel_s             _sacc{};
+    uORB::Subscription         _sacc_sub{ORB_ID(sensor_accel)};
+    sensor_gps_s               _sgps{};
+    uORB::Subscription         _sgps_sub{ORB_ID(sensor_gps)};
+    vehicle_angular_velocity_s _vangvel_gt{};
+    uORB::Subscription         _vangvel_gt_sub{ORB_ID(vehicle_angular_velocity_groundtruth)};
+    vehicle_attitude_s         _vatt_gt{};
+    uORB::Subscription         _vatt_gt_sub{ORB_ID(vehicle_attitude_groundtruth)};
+    vehicle_local_position_s   _vlpos_gt{};
+    uORB::Subscription         _vlpos_gt_sub{ORB_ID(vehicle_local_position_groundtruth)};
+    vehicle_global_position_s  _vgpos_gt{};
+    uORB::Subscription         _vgpos_gt_sub{ORB_ID(vehicle_global_position_groundtruth)};
+    /***********************************************************************************************/
+    vehicle_angular_velocity_s                    _vangvel{};
+    uORB::Publication<vehicle_angular_velocity_s> _vangvel_pub{ORB_ID(vehicle_angular_velocity)};
+    vehicle_acceleration_s                        _vacc{};
+    uORB::Publication<vehicle_acceleration_s>     _vacc_pub{ORB_ID(vehicle_acceleration)};
+    sensor_gps_s                                  _vgpspos{};
+    uORB::Publication<sensor_gps_s>               _vgpspos_pub{ORB_ID(vehicle_gps_position)};
+    vehicle_attitude_s                            _vatt{};
+    uORB::Publication<vehicle_attitude_s>         _vatt_pub{ORB_ID(vehicle_attitude)};
+    vehicle_local_position_s                      _vlpos{};
+    uORB::Publication<vehicle_local_position_s>   _vlpos_pub{ORB_ID(vehicle_local_position)};
+    vehicle_global_position_s                     _vgpos{};
+    uORB::Publication<vehicle_global_position_s>  _vgpos_pub{ORB_ID(vehicle_global_position)};
+    estimator_status_s                            _est_status{};
+    uORB::Publication<estimator_status_s>         _est_status_pub{ORB_ID(estimator_status)};
+    /***********************************************************************************************/
+#ifdef USING_COMMANDER_FAKE
+    actuator_armed_s                             _armed{};
+    uORB::Publication<actuator_armed_s>          _armed_pub{ORB_ID(actuator_armed)};
+    actuator_test_s                              _actuator_test{};
+    uORB::Publication<actuator_test_s>           _actuator_test_pub{ORB_ID(actuator_test)};
+    failure_detector_status_s                    _fd_status{};
+    uORB::Publication<failure_detector_status_s> _fd_status_pub{ORB_ID(failure_detector_status)};
+    vehicle_command_ack_s                        _vcmd_ack{};
+    uORB::Publication<vehicle_command_ack_s>     _vcmd_ack_pub{ORB_ID(vehicle_command_ack)};
+    vehicle_control_mode_s                       _vctr_mode{};
+    uORB::Publication<vehicle_control_mode_s>    _vctr_mode_pub{ORB_ID(vehicle_control_mode)};
+    vehicle_status_s                             _vstatus{};
+    uORB::Publication<vehicle_status_s>          _vstatus_pub{ORB_ID(vehicle_status)};
+#endif // USING_COMMANDER_FAKE
 };
