@@ -21,7 +21,7 @@ $ sudo adduser $USER wireshark
 ubuntu下通过输入命令启动wireshark
 
 ```shell
-$ wireshark
+wireshark
 ```
 
 ## 插件生成与配置
@@ -59,8 +59,6 @@ udp_dissector_table:add(14580, mavlink_proto)
 
 gazebo：18570  <---->  GCS：14550
 
-
-
 ## 使用方法
 
 ### 导入插件
@@ -88,7 +86,7 @@ gazebo：18570  <---->  GCS：14550
   并将生成的插件**mavlink_2_common.lua**文件拷贝至该路径下即可。  ubuntu下可以通过cp命令拷贝：
 
   ```shell
-  $ sudo cp mavlink_2_common.lua /usr/lib/x86_64-linux-gnu/wireshark/plugins/
+  sudo cp mavlink_2_common.lua /usr/lib/x86_64-linux-gnu/wireshark/plugins/
   ```
 
 - 重启wireshark

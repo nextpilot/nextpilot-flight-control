@@ -3,7 +3,7 @@
 
 [代码仓库](https://github.com/nextpilot/nextpilot-flight-control) | [开发指南](./develop/README.md) | [用户手册](./manual/README.md)
 
-NextPilot飞控系统是一款功能丰富、高度扩展、稳定可靠的国产先进自动驾驶仪。目标是便捷的应用于教育、研究和工业等领域，让工程师专注于自己的擅长领域（比如嵌入式、控制算法、应用业务）进行高效的开发。
+NextPilot飞控系统是一款功能丰富、高度扩展、稳定可靠的国产先进自动驾驶仪。能够便捷的应用于教育、研究和工业等领域，让工程师专注于自己的擅长领域（比如嵌入式、控制算法、应用业务）进行高效的开发。
 
 1. 出色的嵌入式性能。基于 [RT-Thread V5.0.2](https://github.com/RT-Thread/rt-thread/tree/v5.0.2) 国产实时操作系统，它资源占用极低、超低功耗设计、支持高性能应用，拥有活跃的社区、丰富的组件（如FINSH、DFS、ULOG等）、繁荣发展的软件包生态。
 
