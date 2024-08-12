@@ -1,8 +1,8 @@
-# CUAV V5+ 开源飞控硬件
+# CUAV V5+ 开源飞控硬件（FMUv5）
 
 ![](docs/cuav_v5_plus.png)
 
-[CUAV V5+](https://docs.px4.io/main/en/flight_controller/cuav_v5_plus.html) 是由 [雷迅CUAV](https://www.cuav.net/) 参照 [PX4 FMUv5](./docs/FMUv5_stm32_pinout.xlsx) 标准设计的开源飞控硬件，所有外部接口采用了 [Pixhawk Connector Standard](https://pixhawk.org/pixhawk-connector-standard/)。
+[CUAV V5+](https://docs.px4.io/main/en/flight_controller/cuav_v5_plus.html) 是由 [雷迅CUAV](https://www.cuav.net/) 参照 [PX4 FMUv5](https://docs.google.com/spreadsheets/d/1-n0__BYDedQrc_2NHqBenG1DNepAgnHpSGglke-QQwY/edit#gid=912976165) 标准设计的开源飞控硬件，所有外部接口采用了 [Pixhawk Connector Standard](https://pixhawk.org/pixhawk-connector-standard/)。
 
 ## 硬件设计
 
@@ -40,6 +40,8 @@
 |UART7|uart7|调试串口|
 |UART8|uart8|连接IO板|
 
+外设接口定义如下：[请点击这里](./docs/cuav_v5_plus_pinouts.png)
+
 ## 如何使用
 
 ```shell
@@ -54,4 +56,4 @@ scons -j10  # 10个线程编译
 
 - [CUAV V5+ 开源硬件原理图](https://github.com/cuav/hardware/tree/master/V5_Autopilot/V5%2B)
 - [CUAV V5+ 用户使用说明书](http://manual.cuav.net/V5-Plus.pdf)
-- [FMUv5 参考设计管脚定义](./docs/FMUv5_stm32_pinout.xlsx)，最新版[点击这里](https://docs.google.com/spreadsheets/d/1-n0__BYDedQrc_2NHqBenG1DNepAgnHpSGglke-QQwY/edit#gid=912976165)
+- [FMUv5 参考设计管脚定义](https://docs.google.com/spreadsheets/d/1-n0__BYDedQrc_2NHqBenG1DNepAgnHpSGglke-QQwY/edit#gid=912976165)

@@ -2,7 +2,7 @@
 
 ## 支持硬件
 
-> 注意：从Pixhawk FMU V5版本开始只是提供[硬件设计标准](https://github.com/pixhawk/Pixhawk-Standards)，不再开放硬件原理图了。也就是规定了MCU管脚定义，以及Payload接口、IMU接口等。
+> 注意：从Pixhawk FMU V5版本开始，PX4官方只是提供[硬件设计标准](https://github.com/pixhawk/Pixhawk-Standards)，不再开放硬件原理图了。也就是规定了MCU管脚定义，以及Payload接口、IMU接口等。
 
 NextPilot 支持以下 Pixhawk 开源硬件：
 
