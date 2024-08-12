@@ -25,10 +25,7 @@ config PKGS_DIR
     option env="PKGS_ROOT"
     default "../../../apps/package"
 
-
-
 source "../../../rtos/Kconfig"
-#source "../../../rtos/packages"
 #source "$SDK_DIR/Kconfig"
 source "*/Kconfig"
 source "../../../apps/Kconfig"

@@ -25,7 +25,7 @@ static int rt_bsp_icm20602_init() {
     // 设备片选
     rt_pin_mode(ICM20602_CS, PIN_MODE_OUTPUT);
     // 挂载设备
-    rt_err_t ret = rt_hw_spi_device_attach("spi1", ICM20602_DEVICE_NAME, ICM20602_CS_PORT, ICM20602_CS_PIN);
+    rt_err_t ret = rt_hw_spi_device_attach("spi1", ICM20602_DEVICE_NAME, ICM20602_CS);
     if (ret != RT_EOK) {
         LOG_E("icm20602 attach to spi1 failed");
     }
@@ -42,7 +42,7 @@ static int rt_bsp_bmi055_init() {
     // 设备片选
     rt_pin_mode(BMI055_ACCEL_CS, PIN_MODE_OUTPUT);
     // 挂载设备
-    rt_err_t ret = rt_hw_spi_device_attach("spi1", BMI055_ACCEL_DEVICE_NAME, BMI055_ACCEL_CS_PORT, BMI055_ACCEL_CS_PIN);
+    rt_err_t ret = rt_hw_spi_device_attach("spi1", BMI055_ACCEL_DEVICE_NAME, BMI055_ACCEL_CS);
     if (ret != RT_EOK) {
         LOG_E("bmi055_accel attach to spi1 failed");
         return -RT_ERROR;
@@ -55,7 +55,7 @@ static int rt_bsp_bmi055_init() {
     // 设备片选
     rt_pin_mode(BMI055_GYRO_CS, PIN_MODE_OUTPUT);
     // 挂载设备
-    ret = rt_hw_spi_device_attach("spi1", BMI055_GYRO_DEVICE_NAME, BMI055_GYRO_CS_PORT, BMI055_GYRO_CS_PIN);
+    ret = rt_hw_spi_device_attach("spi1", BMI055_GYRO_DEVICE_NAME, BMI055_GYRO_CS);
     if (ret != RT_EOK) {
         LOG_E("bmi055_gyro attach to spi1 failed");
         return -RT_ERROR;
@@ -88,7 +88,7 @@ static int rt_bsp_ms5611_init() {
     // 设备片选
     rt_pin_mode(MS5611_CS, PIN_MODE_OUTPUT);
     // 挂载设备
-    rt_err_t ret = rt_hw_spi_device_attach("spi4", MS5611_DEVICE_NAME, MS5611_CS_PORT, MS5611_CS_PIN);
+    rt_err_t ret = rt_hw_spi_device_attach("spi4", MS5611_DEVICE_NAME, MS5611_CS);
     if (ret != RT_EOK) {
         LOG_E("ms5611 attach to spi4 failed");
     }
@@ -104,7 +104,7 @@ static int rt_bsp_adis16488_init() {
     // 设备片选
     rt_pin_mode(ADIS16488_CS, PIN_MODE_OUTPUT);
     // 挂载设备
-    rt_err_t ret = rt_hw_spi_device_attach("spi5", ADIS16488_DEVICE_NAME, ADIS16488_CS_PORT, ADIS16488_CS_PIN);
+    rt_err_t ret = rt_hw_spi_device_attach("spi5", ADIS16488_DEVICE_NAME, ADIS16488_CS);
     if (ret != RT_EOK) {
         LOG_E("adis16488 attach to spi5 failed");
     }
@@ -120,7 +120,7 @@ static int rt_bsp_fm25v20_init(void) {
     //__HAL_RCC_GPIOF_CLK_ENABLE();
     rt_pin_mode(FM25V02A_CS, PIN_MODE_OUTPUT);
 
-    rt_err_t ret = rt_hw_spi_device_attach("spi2", FM25V02A_DEVICE_NAME, FM25V02A_CS_PORT, FM25V02A_CS_PIN);
+    rt_err_t ret = rt_hw_spi_device_attach("spi2", FM25V02A_DEVICE_NAME, FM25V02A_CS);
     if (ret != RT_EOK) {
         LOG_E("fm25v02 attach to spi2 failed");
     }

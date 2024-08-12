@@ -8,7 +8,7 @@ cwd = GetCurrentDir()
 src = []
 inc = [cwd]
 
-if GetDepend(["RT_USING_SPI"]):
+if GetDepend(["BSP_USING_SPI"]):
     src += ["spi_init.c"]
 
 if GetDepend(["RT_USING_SDIO"]):

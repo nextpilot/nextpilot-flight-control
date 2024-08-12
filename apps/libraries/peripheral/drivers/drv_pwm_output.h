@@ -18,8 +18,8 @@
 #include <defines.h>
 
 #include <stdint.h>
-#include <sys/ioctl.h>
-#include <board.h>
+// #include <sys/ioctl.h>
+// #include <board.h>
 
 #include "drv_orb_dev.h"
 

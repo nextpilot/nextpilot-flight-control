@@ -13,7 +13,7 @@ src = (
     + Glob("1103_sih_standard_vtol/1103_sih_standard_vtol.cpp")
 )
 
-objs = DefineGroup("air", src, depend=["SYS_USING_AIRFRAME"], CPPPATH=inc)
+objs = DefineGroup("sys/airframe", src, depend=["SYS_USING_AIRFRAME"], CPPPATH=inc)
 
 for d in os.listdir(cwd):
     path = os.path.join(cwd, d)

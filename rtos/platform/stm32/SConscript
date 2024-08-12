@@ -3,6 +3,7 @@ import rtconfig
 from building import *
 
 objs = []
+
 if not GetDepend(["SOC_FAMILY_STM32"]):
     Return("objs")
 

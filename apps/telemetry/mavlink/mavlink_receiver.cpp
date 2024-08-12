@@ -16,7 +16,7 @@
 #include <math.h>
 #include <poll.h>
 
-#ifndef RT_USING_POSIX_TERMIOS
+#ifdef RT_USING_POSIX_TERMIOS
 #   include <termios.h>
 #endif
 

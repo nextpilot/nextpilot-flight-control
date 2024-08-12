@@ -11,7 +11,7 @@
 #define LOG_TAG "mavlink.main"
 #define LOG_LVL LOG_LVL_INFO
 
-#ifndef RT_USING_POSIX_TERMIOS
+#ifdef RT_USING_POSIX_TERMIOS
 #   include <termios.h>
 #endif
 
