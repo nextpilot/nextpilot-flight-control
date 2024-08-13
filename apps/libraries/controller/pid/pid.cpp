@@ -20,9 +20,9 @@
  * @author Julian Oes <joes@student.ethz.ch>
  */
 
-#include "pid.h"
 #include <math.h>
 #include <defines.h>
+#include "pid.h"
 
 #define SIGMA 0.000001f
 
