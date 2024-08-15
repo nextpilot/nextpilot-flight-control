@@ -27,6 +27,10 @@ int hrt_call_isr_after(uint32_t timeout_us) {
 
     rt_int32_t tick = rt_tick_from_millisecond(timeout_us / 1000);
 
+    if (tick == 0) {
+        tick = 1;
+    }
+
     ret += rt_timer_control(_delay_timer, RT_TIMER_CTRL_SET_TIME, &tick);
     ret += rt_timer_start(_delay_timer);
 
