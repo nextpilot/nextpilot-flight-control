@@ -157,7 +157,7 @@ void param_mark_changed(param_t idx);
 
 void param_mark_used(param_t idx);
 
-#define param_set_used param_mark_used
+void param_set_used(param_t idx);
 
 
 ///////////////////////////////////////////////////
@@ -174,7 +174,13 @@ int param_find_internal(const char *name, bool mark_used);
  *			This call will also set the parameter as "used" in the system, which is used
  *			to e.g. show the parameter via the RC interface
  */
-param_t param_find(const char *name);
+static inline param_t param_find(const char *name) {
+    param_t idx = param_find_internal(name, true);
+    if (idx == PARAM_INVALID) {
+        LOG_W("can't find %s", name);
+    }
+    return idx;
+}
 
 /**
  * Look up a parameter by name.

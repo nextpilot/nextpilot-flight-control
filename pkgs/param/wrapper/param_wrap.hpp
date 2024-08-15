@@ -18,7 +18,7 @@
 
 #include <float.h>
 #include <math.h>
-#include "param_global_autogen.hpp"
+#include "param_autogen.hpp"
 
 /**
  * get the parameter handle from a parameter enum

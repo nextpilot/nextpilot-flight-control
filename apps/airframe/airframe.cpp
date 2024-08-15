@@ -14,7 +14,7 @@
 #include <rtdbg.h>
 #include "airframe.h"
 #include "stdlib.h"
-#include "param_global_autogen.hpp"
+#include "param_autogen.hpp"
 
 // 获取section的首位地址
 #if defined(__ARMCC_VERSION) /* ARM C Compiler */

@@ -52,13 +52,13 @@ int FactoryCalibrationStorage::store() {
         return 0;
     }
 
-    int ret = param_export_internal(CALIBRATION_STORAGE, filter_calibration_params);
+    // int ret = param_export_internal(CALIBRATION_STORAGE, filter_calibration_params);
 
-    if (ret != 0) {
-        PX4_ERR("param export failed (%i)", ret);
-    }
+    // if (ret != 0) {
+    //     PX4_ERR("param export failed (%i)", ret);
+    // }
 
-    return ret;
+    return 0 /*ret*/;
 }
 
 void FactoryCalibrationStorage::cleanup() {

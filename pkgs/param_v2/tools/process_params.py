@@ -67,7 +67,14 @@ def main():
         metavar="FILENAME",
         help="Inject additional param XML file" " (default FILENAME: parameters_injected.xml)",
     )
-    parser.add_argument("-b", "--board", nargs="?", const="", metavar="BOARD", help="Board to create xml parameter xml for")
+    parser.add_argument(
+        "-b",
+        "--board",
+        nargs="?",
+        const="",
+        metavar="BOARD",
+        help="Board to create xml parameter xml for",
+    )
     parser.add_argument(
         "-m",
         "--markdown",
@@ -84,8 +91,18 @@ def main():
         metavar="FILENAME",
         help="Create Json file" " (default FILENAME: parameters.json)",
     )
-    parser.add_argument("-v", "--verbose", action="store_true", help="verbose output")
-    parser.add_argument("-c", "--compress", action="store_true", help="compress parameter file")
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="verbose output",
+    )
+    parser.add_argument(
+        "-c",
+        "--compress",
+        action="store_true",
+        help="compress parameter file",
+    )
     parser.add_argument(
         "-o", "--overrides", default="{}", metavar="OVERRIDES", help="a dict of overrides in the form of a json string"
     )

@@ -4,6 +4,7 @@ menuconfig FCS_USING_COMMANDER
 	select PKG_USING_EVENTS
 	select PKG_USING_TUNES
 	select PKG_USING_WORLD_MAGNETIC_MODEL
+	select PKG_USING_GETOPT
 	default n
 	---help---
 		Enable support for commander

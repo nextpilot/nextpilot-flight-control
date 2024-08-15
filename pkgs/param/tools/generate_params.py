@@ -60,7 +60,7 @@ def generate(xml_file, dest="."):
         os.mkdir(dest)
 
     template_files = [
-        "param_global_autogen.hpp.jinja",
+        "param_autogen.hpp.jinja",
     ]
     for template_file in template_files:
         template = env.get_template(template_file)

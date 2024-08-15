@@ -337,6 +337,10 @@ void param_mark_used(param_t idx) {
     }
 }
 
+void param_set_used(param_t idx) {
+    param_mark_used(idx);
+}
+
 param_t param_for_used_index(unsigned index) {
     // walk all params and count used params
     if (index < _param_info_count) {
@@ -424,13 +428,13 @@ int param_find_internal(const char *name, bool mark_used) {
     return PARAM_INVALID;
 }
 
-param_t param_find(const char *name) {
-    param_t idx = param_find_internal(name, true);
-    if (idx == PARAM_INVALID) {
-        LOG_W("can't find %s", name);
-    }
-    return idx;
-}
+// param_t param_find(const char *name) {
+//     param_t idx = param_find_internal(name, true);
+//     if (idx == PARAM_INVALID) {
+//         LOG_W("can't find %s", name);
+//     }
+//     return idx;
+// }
 
 param_t param_find_no_notification(const char *name) {
     return param_find_internal(name, false);

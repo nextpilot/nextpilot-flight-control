@@ -1,5 +1,5 @@
 menuconfig PKG_USING_PARAM
-    bool "param: global parameter store manage"
+    bool "param: global parameter store manage v1"
     default n
 
 if PKG_USING_PARAM

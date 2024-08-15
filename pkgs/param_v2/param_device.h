@@ -51,7 +51,7 @@ typedef struct {
     int (*close)(param_device_t *dev);
 } param_device_ops_t;
 
-struct param_device_s {
+typedef struct param_device_s {
     const char         *name;
     uint8_t             type;
     param_device_ops_t *ops;
@@ -60,7 +60,7 @@ struct param_device_s {
         int         fid;
         rt_device_t dev;
     };
-};
+} param_device_t;
 
 int param_device_register(param_device_t *dev);
 

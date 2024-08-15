@@ -267,7 +267,7 @@ void MavlinkParametersManager::send() {
         param_find("SENS_BOARD_Y_OFF");
         param_find("SENS_BOARD_Z_OFF");
         param_find("SENS_DPRES_OFF");
-        param_find("TRIG_MODE");
+        // param_find("TRIG_MODE");
         param_find("UAVCAN_ENABLE");
 
         _first_send = true;

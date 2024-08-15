@@ -12,7 +12,7 @@
 #include <rtdbg.h>
 #include <string.h>
 #include "param_interface.h"
-#include "param_global_autogen.hpp"
+#include "param_autogen.hpp"
 
 namespace nextpilot::global_params {
 
