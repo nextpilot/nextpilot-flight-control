@@ -5,6 +5,9 @@ import subprocess
 from building import *
 
 objs = []
+
+Return("objs")
+
 cwd = GetCurrentDir()
 
 
@@ -35,7 +38,7 @@ for root, dirs, files in os.walk(prj_root):
 #     "-config-files",
 # ] + modules_config_file
 
-# subprocess.call(cmd)
+# subprocess.call(cmd, cwd=cwd)
 
 if GetDepend(["RT_LWIP_UDP"]):
     ethernet = ["--ethernet"]
@@ -50,7 +53,7 @@ cmd = (
         # "--verbose,
         # "--board-with-io",
         "--params-file",
-        File("#/build/module_params.c").abspath,
+        os.path.join(cwd, "module_params.c"),
         "--board",
         "nextpilot",
         # "--timer-config", "xxxx",
@@ -61,10 +64,10 @@ cmd = (
 )
 
 if sys.version_info > (3, 0):
-    subprocess.call(cmd)
+    subprocess.call(cmd, cwd=cwd)
 
 # 由于xxx_params.c生成parameters.xml文件
-params_source_dir.add(Dir("#/build").abspath)
+# params_source_dir.add(Dir("#/build").abspath)
 cmd = [
     sys.executable,
     os.path.join(cwd, "tools/process_params.py"),
@@ -81,7 +84,7 @@ cmd = [
     "--src-path",
 ] + list(params_source_dir)
 
-subprocess.call(cmd)
+subprocess.call(cmd, cwd=cwd)
 
 # 由parameters.xml生成parameters.hpp文件
 cmd = [
@@ -93,7 +96,7 @@ cmd = [
     cwd,
 ]
 
-subprocess.call(cmd)
+subprocess.call(cmd, cwd=cwd)
 
 
 inc = [cwd]
