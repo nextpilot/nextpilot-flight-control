@@ -117,9 +117,10 @@ plugins:
   - search
   - tags
   - autorefs
-  #     - literate-nav:
-  #         nav_file: README.md
-  #         implicit_index: true
+  - literate-nav:
+      nav_file: SUMMARY.md
+      implicit_index: false
+      tab_length: 2
   # - mkdocstrings:
   #     handlers:
   #       python:
@@ -141,6 +142,9 @@ plugins:
           build: true
   # - git-revision-date-localized:
   #     enable_creation_date: true
+
+not_in_nav: |
+  /**/SUMMARY.md
 
 extra:
   version:
