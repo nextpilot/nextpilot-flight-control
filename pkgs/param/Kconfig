@@ -1,5 +1,8 @@
 menuconfig PKG_USING_PARAM
     bool "param: global parameter store manage v1"
+    select PKG_USING_UORB
+    select PKG_USING_HRTIMER
+    select PKG_USING_LIBCRC
     default n
 
 if PKG_USING_PARAM

@@ -1,6 +1,14 @@
 menuconfig TEL_USING_MAVLINK
 	bool "mavlink"
 	select PKG_USING_VAR_LEN_RINGBUFFER
+	select PKG_USING_UORB
+	select PKG_USING_PARAM
+	select PKG_USING_BOARD_VERSION
+	select PKG_USING_ACCELEROMETER
+	select PKG_USING_GYROSCOPE
+	select PKG_USING_MAGNETOMETER
+	select PKG_USING_GEO
+	select PKG_USING_SENSOR_CALIBRATION
 	default n
 	---help---
 		Enable support for mavlink
@@ -51,6 +59,7 @@ if TEL_USING_MAVLINK
 
 	config MAVLINK_USING_SHELL
 		bool "enable mavlink shell service"
+		select PKG_USING_VCONSOLE_V2
 		default n
 
     config MAVLINK_USING_LOG_DOWNLOAD

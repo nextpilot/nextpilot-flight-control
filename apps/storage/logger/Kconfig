@@ -2,6 +2,8 @@ menuconfig SYS_USING_LOGGER
     bool "logger : save uorb and ulog message to file"
     select PKG_USING_SHUTDOWN
     select PKG_USING_CPULOAD
+    select PKG_USING_EVENTS
+    select PKG_USING_MATHLIB
     default n
 
 if SYS_USING_LOGGER

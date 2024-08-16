@@ -1,5 +1,6 @@
 menuconfig SYS_USING_DATAMAN
     bool "dataman : geofense, mission data manage"
+    select PKG_USING_PERF
     default n
 
 if SYS_USING_DATAMAN

@@ -1,3 +1,4 @@
 menuconfig PKG_USING_ACCELEROMETER
     bool "accelerometer"
+    select PKG_USING_ROTATION
     default n

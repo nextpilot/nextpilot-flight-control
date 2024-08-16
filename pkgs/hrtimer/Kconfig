@@ -1,5 +1,6 @@
 menuconfig PKG_USING_HRTIMER
     bool "hrtimer: high-resolution timer with callouts and timekeeping"
+    select PKG_USING_QUEUE
     default n
 
 if PKG_USING_HRTIMER

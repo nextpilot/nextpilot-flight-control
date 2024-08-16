@@ -432,35 +432,12 @@
 
 /* Nextpilot Airframe Config */
 
-#define SYS_USING_AIRFRAME
-#define SYS_USING_1100_QUAD_X
-#define SYS_USING_1101_PLANE_AERT
-#define SYS_USING_1102_TAILSITTER_DUO
-#define SYS_USING_1103_SIH_STANDARD_VTOL
 /* end of Nextpilot Airframe Config */
 
 /* Nextpilot Bootloader Config */
 
 /* Nextpilot Controller Config */
 
-#define FCS_USING_COMMANDER
-#define FCS_USING_CONTROL_ALLOCATOR
-#define FCS_USING_FLIGHT_MODE_MANAGER
-#define FCS_USING_FW_ATT_CONTROL
-#define FCS_USING_FW_AUTOTUNE_ATTITUDE_CONTROL
-#define FCS_UISNG_FW_POS_CONTROL
-#define FCS_USING_FW_RATE_CONTROL
-#define FCS_USING_LAND_DETECTOR
-#define FCS_USING_LANDING_TARGET_ESTIMATOR
-#define FCS_USING_MANUAL_CONTROL
-#define FCS_USING_MC_ATT_CONTROL
-#define FCS_MC_AUTOTUNE_ATTITUDE_CONTROL
-#define FCS_USING_MC_HOVER_THRUST_ESTIMATOR
-#define FCS_USING_MC_POS_CONTROL
-#define FCS_USING_MC_RATE_CONTROL
-#define FCS_USING_NAVIGATOR
-#define FCS_USING_RC_UPDATE
-#define FCS_USING_VTOL_ATT_CONTROL
 /* end of Nextpilot Controller Config */
 
 /* Nextpilot Estimator Config */
@@ -471,46 +448,21 @@
 
 /* Controller Libraries Config */
 
-#define PKG_USING_ADSB
-#define PKG_USING_AVOIDANCE
-#define PKG_USING_BEZIER
-#define PKG_USING_CIRCUIT_BREAKER
-#define PKG_USING_COLLISION_PREVENTION
-#define PKG_USING_CONTROLLIB
 #define PKG_USING_ROTATION
 #define PKG_USING_GEO
-#define PKG_USING_HYSTERESIS
-#define PKG_USING_ECL
-#define PKG_USING_MIXER_MODULE
-#define PKG_USING_MOTION_PLANNING
-#define PKG_USING_NPFG
-#define PKG_USING_PID
-#define PKG_USING_PID_DESIGN
-#define PKG_USING_RATE_CONTROL
-#define PKG_USING_SLEW_RATE
-#define PKG_USING_SYSTEM_IDENTIFICATION
-#define PKG_USING_TECS
-#define PKG_USING_WEATHER_VANE
 /* end of Controller Libraries Config */
 
 /* Estimator Libraries Config */
 
 #define PKG_USING_SENSOR_CALIBRATION
-#define PKG_USING_WIND_ESTIMATOR
-#define PKG_USING_WORLD_MAGNETIC_MODEL
 /* end of Estimator Libraries Config */
 
 /* Peripheral Libraries Config */
 
-#define PKG_USING_TUNES
 #define PKG_USING_ACCELEROMETER
-#define PKG_USING_AIRSPEED
 #define PKG_USING_GYROSCOPE
 #define PKG_USING_MAGNETOMETER
-#define PKG_USING_RANGEFINDER
 /* end of Peripheral Libraries Config */
-#define PKG_USING_BUTTON_PUBLISHER
-#define PKG_USING_TIMESYNC
 /* end of Nextpilot Libraries Config */
 
 /* Nextpilot Peripheral Config */
@@ -533,17 +485,14 @@
 #define TEL_USING_MAVLINK
 #define MAVLINK_DIALECT "common"
 #define MAVLINK_USING_PARAM
-#define MAVLINK_USING_MISSION
 /* end of Nextpilot Telemetry Config */
 /* end of Nextpilot Firmware Config */
 
 /* Nextpilot Packages Config */
 
-#define PKG_USING_CONSOLE_BUFFER
 #define PKG_USING_CONTAINER
 #define PKG_USING_CPULOAD
 #define PKG_USING_EVENTS
-#define PKG_USING_GETOPT
 #define PKG_USING_HRTIMER
 #define PKG_USING_HRTIMER_V3
 #define HRT_USING_OSTICK
@@ -566,11 +515,9 @@
 
 /* end of ULog backend */
 #define PKG_USING_VAR_LEN_RINGBUFFER
-#define PKG_USING_VCONSOLE_V2
 #define PKG_USING_BOARD_VERSION
 #define BOARD_TYPE_NAME "unkown"
 #define BOARD_CHIP_NAME "unkown"
-#define PKG_USING_WORKQUEUE
 /* end of Nextpilot Packages Config */
 
 #endif
