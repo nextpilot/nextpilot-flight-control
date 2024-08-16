@@ -121,9 +121,9 @@ static inline hrt_abstime ts_to_abstime(const struct timespec *ts) {
  * Convert absolute time to a timespec.
  */
 static inline void abstime_to_ts(struct timespec *ts, hrt_abstime abstime) {
-    ts->tv_sec   = (typeof(ts->tv_sec))(abstime / 1000000);
+    ts->tv_sec   = /*(typeof(ts->tv_sec))*/ (abstime / 1000000);
     abstime     -= (hrt_abstime)(ts->tv_sec) * 1000000;
-    ts->tv_nsec  = (typeof(ts->tv_nsec))(abstime * 1000);
+    ts->tv_nsec  = /*(typeof(ts->tv_nsec))*/ (abstime * 1000);
 }
 
 /**
