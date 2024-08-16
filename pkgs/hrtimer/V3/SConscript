@@ -8,9 +8,7 @@ cwd = GetCurrentDir()
 inc = [cwd]
 src = ["hrtimer.c"]
 
-if GetDepend(["HRT_USING_OSTICK"]):
-    src += ["timestamp_using_ostick.c"]
-elif GetDepend(["HRT_USING_SYSTICK"]):
+if GetDepend(["HRT_USING_SYSTICK"]):
     src += ["timestamp_using_systick.c"]
 elif GetDepend(["HRT_USING_TIM"]):
     src += ["timestamp_using_tim.c"]
@@ -18,6 +16,9 @@ elif GetDepend(["HRT_USING_DWT"]):
     src += ["timestamp_using_dwt.c"]
 elif GetDepend(["HRT_USING_TSG"]):
     src += ["timestamp_using_tsg.c"]
+else:  # HRT_USING_OSTICK
+    src += ["timestamp_using_ostick.c"]
+
 
 if GetDepend(["HRT_USING_OSTIMER"]):
     src += ["callout_using_ostimer.c"]

@@ -495,7 +495,7 @@
 #define PKG_USING_EVENTS
 #define PKG_USING_HRTIMER
 #define PKG_USING_HRTIMER_V3
-#define HRT_USING_OSTICK
+#define HRT_USING_SYSTICK
 #define HRT_USING_OSTIMER
 #define PKG_USING_LIBCRC
 #define PKG_USING_MATHLIB
@@ -516,8 +516,8 @@
 /* end of ULog backend */
 #define PKG_USING_VAR_LEN_RINGBUFFER
 #define PKG_USING_BOARD_VERSION
-#define BOARD_TYPE_NAME "unkown"
-#define BOARD_CHIP_NAME "unkown"
+#define BOARD_TYPE_NAME "PX4-FMUv5-DEFAULT"
+#define BOARD_CHIP_NAME "STM32F765IIK"
 /* end of Nextpilot Packages Config */
 
 #endif
