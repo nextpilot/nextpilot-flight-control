@@ -1,3 +1,0 @@
-# MAVSDK
-
-coming soon ....
