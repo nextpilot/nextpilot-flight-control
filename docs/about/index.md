@@ -10,4 +10,4 @@
 
 扫码加入`NextPilot社区支持`群，我们会提供相关技术支持，全力为大家答疑解惑。
 
-![](../community/add-qq-group.jpg)  ![](../community/add-weixin-group.png)
+<img src="../community/add-to-group.jpeg"  width="450" height="250"/>

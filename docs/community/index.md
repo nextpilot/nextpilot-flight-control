@@ -12,4 +12,4 @@
 
 扫码加入`NextPilot社区支持`群，我们会提供相关技术支持，全力为大家答疑解惑。
 
-![QQ群](./add-qq-group.jpg)   ![微信群](./add-weixin-group.png)
+<img src="./add-to-group.jpeg"  width="450" height="250"/>
