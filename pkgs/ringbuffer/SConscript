@@ -8,6 +8,6 @@ cwd = GetCurrentDir()
 inc = [cwd]
 src = ["Ringbuffer.cpp"]
 
-objs = DefineGroup("lib/ring_buffer", src, depend=["PKG_USING_RING_BUFFER"], CPPPATH=inc)
+objs = DefineGroup("pkg/ring_buffer", src, depend=["PKG_USING_RING_BUFFER"], CPPPATH=inc)
 
 Return("objs")

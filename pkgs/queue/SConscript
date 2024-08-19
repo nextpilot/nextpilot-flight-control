@@ -8,6 +8,6 @@ cwd = GetCurrentDir()
 src = Glob("*.c") + Glob("*.cpp")
 inc = [cwd]
 
-objs = DefineGroup("pkg/common", src, depend=["PKG_USING_QUEUE"], CPPPATH=inc)
+objs = DefineGroup("pkg/queue", src, depend=["PKG_USING_QUEUE"], CPPPATH=inc)
 
 Return("objs")

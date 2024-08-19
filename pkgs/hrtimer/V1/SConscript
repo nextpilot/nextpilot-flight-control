@@ -8,7 +8,7 @@ cwd = GetCurrentDir()
 inc = [cwd]
 src = Glob("*.c")
 
-objs = DefineGroup("lib/common", src, depend=["PKG_USING_HRTIMER_V1"], CPPPATH=inc)
+objs = DefineGroup("pkg/hrtimer", src, depend=["PKG_USING_HRTIMER_V1"], CPPPATH=inc)
 
 
 Return("objs")
