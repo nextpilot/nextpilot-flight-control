@@ -102,7 +102,7 @@ if GetDepend(["BSP_USING_WDT"]):
 if GetDepend(["BSP_USING_SDIO"]):
     if (
         GetDepend("SOC_SERIES_STM32H7")
-        or GetDepend("SOC_SERIES_STM32F7")
+        # or GetDepend("SOC_SERIES_STM32F7")
         or GetDepend("SOC_SERIES_STM32L4")
         or GetDepend("SOC_SERIES_STM32L5")
     ):

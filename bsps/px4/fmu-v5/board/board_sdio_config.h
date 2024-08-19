@@ -18,20 +18,20 @@ extern "C" {
 #endif
 
 #if defined(BSP_USING_SDIO)
-#ifndef SDIO_BUS_CONFIG
-#define SDIO_BUS_CONFIG                          \
-    {                                            \
-        .Instance        = SDMMC1,               \
-        .dma_rx.dma_rcc  = SDIO_RX_DMA_RCC,      \
-        .dma_tx.dma_rcc  = SDIO_TX_DMA_RCC,      \
-        .dma_rx.Instance = SDIO_RX_DMA_INSTANCE, \
-        .dma_rx.channel  = SDIO_RX_DMA_CHANNEL,  \
-        .dma_rx.dma_irq  = SDIO_RX_DMA_IRQ,      \
-        .dma_tx.Instance = SDIO_TX_DMA_INSTANCE, \
-        .dma_tx.channel  = SDIO_TX_DMA_CHANNEL,  \
-        .dma_tx.dma_irq  = SDIO_TX_DMA_IRQ,      \
-    }
-#endif
+#   ifndef SDIO_BUS_CONFIG
+#      define SDIO_BUS_CONFIG                        \
+          {                                          \
+              .Instance        = SDMMC1,             \
+              .dma_rx.dma_rcc  = RCC_AHB1ENR_DMA2EN, \
+              .dma_tx.dma_rcc  = RCC_AHB1ENR_DMA2EN, \
+              .dma_rx.Instance = DMA2_Stream3,       \
+              .dma_rx.channel  = DMA_CHANNEL_4,      \
+              .dma_rx.dma_irq  = DMA2_Stream3_IRQn,  \
+              .dma_tx.Instance = DMA2_Stream6,       \
+              .dma_tx.channel  = DMA_CHANNEL_4,      \
+              .dma_tx.dma_irq  = DMA2_Stream6_IRQn,  \
+          }
+#   endif
 #endif
 
 #ifdef __cplusplus
