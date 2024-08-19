@@ -21,6 +21,7 @@
 #include <sys/types.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <defines.h>
 
 /**
  * Object metadata.

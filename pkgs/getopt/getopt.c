@@ -116,7 +116,7 @@ static int reorder(int argc, char **argv, const char *options) {
 // Argv is changed to put all options and option args at the beginning,
 // followed by non-options.
 //
-__EXPORT int getopt(int argc, char *argv[], const char *options, int *myoptind, const char **myoptarg) {
+int getopt(int argc, char *argv[], const char *options, int *myoptind, const char **myoptarg) {
     char *p;
     char  c;
     int   takesarg;

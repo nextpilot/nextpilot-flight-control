@@ -448,20 +448,14 @@
 
 /* Controller Libraries Config */
 
-#define PKG_USING_ROTATION
-#define PKG_USING_GEO
 /* end of Controller Libraries Config */
 
 /* Estimator Libraries Config */
 
-#define PKG_USING_SENSOR_CALIBRATION
 /* end of Estimator Libraries Config */
 
 /* Peripheral Libraries Config */
 
-#define PKG_USING_ACCELEROMETER
-#define PKG_USING_GYROSCOPE
-#define PKG_USING_MAGNETOMETER
 /* end of Peripheral Libraries Config */
 /* end of Nextpilot Libraries Config */
 
@@ -473,26 +467,19 @@
 
 /* Nextpilot Storage Config */
 
-#define SYS_USING_DATAMAN
-#define DATAMAN_DEFAULT_FILE_PATH "/dataman.bin"
-#define SYS_USING_LOGGER
-#define LOGGER_FULL_LOG_ROOT_PATH "/log"
-#define LOGGER_LESS_LOG_ROOT_PATH "/mission_log"
 /* end of Nextpilot Storage Config */
 
 /* Nextpilot Telemetry Config */
 
-#define TEL_USING_MAVLINK
-#define MAVLINK_DIALECT "common"
-#define MAVLINK_USING_PARAM
 /* end of Nextpilot Telemetry Config */
 /* end of Nextpilot Firmware Config */
 
 /* Nextpilot Packages Config */
 
+#define PKG_USING_CONSOLE_BUFFER
 #define PKG_USING_CONTAINER
-#define PKG_USING_CPULOAD
 #define PKG_USING_EVENTS
+#define PKG_USING_GETOPT
 #define PKG_USING_HRTIMER
 #define PKG_USING_HRTIMER_V3
 #define HRT_USING_SYSTICK
@@ -515,9 +502,11 @@
 
 /* end of ULog backend */
 #define PKG_USING_VAR_LEN_RINGBUFFER
+#define PKG_USING_VCONSOLE_V2
 #define PKG_USING_BOARD_VERSION
-#define BOARD_TYPE_NAME "PX4-FMUv5-DEFAULT"
-#define BOARD_CHIP_NAME "STM32F765IIK"
+#define BOARD_TYPE_NAME "px4-fmuv5"
+#define BOARD_CHIP_NAME "stm32f765iik"
+#define PKG_USING_WORKQUEUE
 /* end of Nextpilot Packages Config */
 
 #endif
