@@ -1,2842 +1,339 @@
 
 /**
- * UAVCAN ESC 1 Output Function
+ * MAVLink Config for instance 0
  *
- * Select what should be output on UAVCAN ESC 1.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
+ * The MAVLink Config defines device(uart/udp/tcp) used by MAVLink instance
  * 
  *
- * @group Actuator Outputs
+ * @group MAVLink
  * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
+ * @value 1 Uart1
+ * @value 2 Uart2
+ * @value 3 Uart3
+ * @value 4 Uart4
+ * @value 5 Uart5
+ * @value 6 Uart6
+ * @value 7 Uart7
+ * @value 8 Uart8
+ * @value 20 UBS1
+ * @value 21 USB2
+ * @value 30 UDP
+ * @value 31 TCP
+ * @reboot_required True
  */
-PARAM_DEFINE_INT32(UAVCAN_EC_FUNC1, 0);
+PARAM_DEFINE_INT32(MAV_0_CONFIG, 0);
 
 /**
- * UAVCAN ESC 2 Output Function
+ * MAVLink Config for instance 1
  *
- * Select what should be output on UAVCAN ESC 2.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
+ * The MAVLink Config defines device(uart/udp/tcp) used by MAVLink instance
  * 
  *
- * @group Actuator Outputs
+ * @group MAVLink
  * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
+ * @value 1 Uart1
+ * @value 2 Uart2
+ * @value 3 Uart3
+ * @value 4 Uart4
+ * @value 5 Uart5
+ * @value 6 Uart6
+ * @value 7 Uart7
+ * @value 8 Uart8
+ * @value 20 UBS1
+ * @value 21 USB2
+ * @value 30 UDP
+ * @value 31 TCP
+ * @reboot_required True
  */
-PARAM_DEFINE_INT32(UAVCAN_EC_FUNC2, 0);
+PARAM_DEFINE_INT32(MAV_1_CONFIG, 0);
 
 /**
- * UAVCAN ESC 3 Output Function
+ * MAVLink Config for instance 2
  *
- * Select what should be output on UAVCAN ESC 3.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
+ * The MAVLink Config defines device(uart/udp/tcp) used by MAVLink instance
  * 
  *
- * @group Actuator Outputs
+ * @group MAVLink
  * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
+ * @value 1 Uart1
+ * @value 2 Uart2
+ * @value 3 Uart3
+ * @value 4 Uart4
+ * @value 5 Uart5
+ * @value 6 Uart6
+ * @value 7 Uart7
+ * @value 8 Uart8
+ * @value 20 UBS1
+ * @value 21 USB2
+ * @value 30 UDP
+ * @value 31 TCP
+ * @reboot_required True
  */
-PARAM_DEFINE_INT32(UAVCAN_EC_FUNC3, 0);
+PARAM_DEFINE_INT32(MAV_2_CONFIG, 0);
 
 /**
- * UAVCAN ESC 4 Output Function
+ * MAVLink Mode for instance 0
  *
- * Select what should be output on UAVCAN ESC 4.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
+ * The MAVLink Mode defines the set of streamed messages (for example the
+ * vehicle's attitude) and their sending rates.
  * 
  *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
+ * @group MAVLink
+ * @value 0 Normal
+ * @value 1 Custom
+ * @value 2 Onboard
+ * @value 3 OSD
+ * @value 4 Magic
+ * @value 5 Config
+ * @value 7 Minimal
+ * @value 8 External Vision
+ * @value 10 Gimbal
+ * @value 11 Onboard Low Bandwidth
+ * @value 12 uAvionix
+ * @reboot_required True
  */
-PARAM_DEFINE_INT32(UAVCAN_EC_FUNC4, 0);
+PARAM_DEFINE_INT32(MAV_0_MODE, 0);
 
 /**
- * UAVCAN ESC 5 Output Function
+ * MAVLink Mode for instance 1
  *
- * Select what should be output on UAVCAN ESC 5.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
+ * The MAVLink Mode defines the set of streamed messages (for example the
+ * vehicle's attitude) and their sending rates.
  * 
  *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
+ * @group MAVLink
+ * @value 0 Normal
+ * @value 1 Custom
+ * @value 2 Onboard
+ * @value 3 OSD
+ * @value 4 Magic
+ * @value 5 Config
+ * @value 7 Minimal
+ * @value 8 External Vision
+ * @value 10 Gimbal
+ * @value 11 Onboard Low Bandwidth
+ * @value 12 uAvionix
+ * @reboot_required True
  */
-PARAM_DEFINE_INT32(UAVCAN_EC_FUNC5, 0);
+PARAM_DEFINE_INT32(MAV_1_MODE, 2);
 
 /**
- * UAVCAN ESC 6 Output Function
+ * MAVLink Mode for instance 2
  *
- * Select what should be output on UAVCAN ESC 6.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
+ * The MAVLink Mode defines the set of streamed messages (for example the
+ * vehicle's attitude) and their sending rates.
  * 
  *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
+ * @group MAVLink
+ * @value 0 Normal
+ * @value 1 Custom
+ * @value 2 Onboard
+ * @value 3 OSD
+ * @value 4 Magic
+ * @value 5 Config
+ * @value 7 Minimal
+ * @value 8 External Vision
+ * @value 10 Gimbal
+ * @value 11 Onboard Low Bandwidth
+ * @value 12 uAvionix
+ * @reboot_required True
  */
-PARAM_DEFINE_INT32(UAVCAN_EC_FUNC6, 0);
+PARAM_DEFINE_INT32(MAV_2_MODE, 0);
 
 /**
- * UAVCAN ESC 7 Output Function
+ * Maximum MAVLink sending rate for instance 0
  *
- * Select what should be output on UAVCAN ESC 7.
+ * Configure the maximum sending rate for the MAVLink streams in Bytes/sec.
+ * If the configured streams exceed the maximum rate, the sending rate of
+ * each stream is automatically decreased.
  * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_FUNC7, 0);
-
-/**
- * UAVCAN ESC 8 Output Function
- *
- * Select what should be output on UAVCAN ESC 8.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
+ * If this is set to 0 a value of half of the theoretical maximum bandwidth is used.
+ * This corresponds to baudrate/20 Bytes/s (baudrate/10 = maximum data rate on
+ * 8N1-configured links).
  * 
  *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_FUNC8, 0);
-
-/**
- * UAVCAN ESC 1 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
+ * @group MAVLink
  * @min 0
- * @max 8191
+ * @unit B/s
+ * @reboot_required True
  */
-PARAM_DEFINE_INT32(UAVCAN_EC_MIN1, 1);
+PARAM_DEFINE_INT32(MAV_0_RATE, 1200);
 
 /**
- * UAVCAN ESC 2 Minimum Value
+ * Maximum MAVLink sending rate for instance 1
  *
- * Minimum output value (when not disarmed).
+ * Configure the maximum sending rate for the MAVLink streams in Bytes/sec.
+ * If the configured streams exceed the maximum rate, the sending rate of
+ * each stream is automatically decreased.
+ * 
+ * If this is set to 0 a value of half of the theoretical maximum bandwidth is used.
+ * This corresponds to baudrate/20 Bytes/s (baudrate/10 = maximum data rate on
+ * 8N1-configured links).
  * 
  *
- * @group Actuator Outputs
+ * @group MAVLink
  * @min 0
- * @max 8191
+ * @unit B/s
+ * @reboot_required True
  */
-PARAM_DEFINE_INT32(UAVCAN_EC_MIN2, 1);
+PARAM_DEFINE_INT32(MAV_1_RATE, 0);
 
 /**
- * UAVCAN ESC 3 Minimum Value
+ * Maximum MAVLink sending rate for instance 2
  *
- * Minimum output value (when not disarmed).
+ * Configure the maximum sending rate for the MAVLink streams in Bytes/sec.
+ * If the configured streams exceed the maximum rate, the sending rate of
+ * each stream is automatically decreased.
+ * 
+ * If this is set to 0 a value of half of the theoretical maximum bandwidth is used.
+ * This corresponds to baudrate/20 Bytes/s (baudrate/10 = maximum data rate on
+ * 8N1-configured links).
  * 
  *
- * @group Actuator Outputs
+ * @group MAVLink
  * @min 0
- * @max 8191
+ * @unit B/s
+ * @reboot_required True
  */
-PARAM_DEFINE_INT32(UAVCAN_EC_MIN3, 1);
+PARAM_DEFINE_INT32(MAV_2_RATE, 0);
 
 /**
- * UAVCAN ESC 4 Minimum Value
+ * Enable MAVLink Message forwarding for instance 0
  *
- * Minimum output value (when not disarmed).
+ * If enabled, forward incoming MAVLink messages to other MAVLink ports if the
+ * message is either broadcast or the target is not the autopilot.
  * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MIN4, 1);
-
-/**
- * UAVCAN ESC 5 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MIN5, 1);
-
-/**
- * UAVCAN ESC 6 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MIN6, 1);
-
-/**
- * UAVCAN ESC 7 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MIN7, 1);
-
-/**
- * UAVCAN ESC 8 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MIN8, 1);
-
-/**
- * UAVCAN ESC 1 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MAX1, 8191);
-
-/**
- * UAVCAN ESC 2 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MAX2, 8191);
-
-/**
- * UAVCAN ESC 3 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MAX3, 8191);
-
-/**
- * UAVCAN ESC 4 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MAX4, 8191);
-
-/**
- * UAVCAN ESC 5 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MAX5, 8191);
-
-/**
- * UAVCAN ESC 6 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MAX6, 8191);
-
-/**
- * UAVCAN ESC 7 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MAX7, 8191);
-
-/**
- * UAVCAN ESC 8 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MAX8, 8191);
-
-/**
- * UAVCAN ESC 1 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC1).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_FAIL1, -1);
-
-/**
- * UAVCAN ESC 2 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC2).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_FAIL2, -1);
-
-/**
- * UAVCAN ESC 3 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC3).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_FAIL3, -1);
-
-/**
- * UAVCAN ESC 4 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC4).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_FAIL4, -1);
-
-/**
- * UAVCAN ESC 5 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC5).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_FAIL5, -1);
-
-/**
- * UAVCAN ESC 6 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC6).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_FAIL6, -1);
-
-/**
- * UAVCAN ESC 7 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC7).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_FAIL7, -1);
-
-/**
- * UAVCAN ESC 8 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC8).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_FAIL8, -1);
-
-/**
- * UAVCAN Servo 1 Output Function
- *
- * Select what should be output on UAVCAN Servo 1.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FUNC1, 0);
-
-/**
- * UAVCAN Servo 2 Output Function
- *
- * Select what should be output on UAVCAN Servo 2.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FUNC2, 0);
-
-/**
- * UAVCAN Servo 3 Output Function
- *
- * Select what should be output on UAVCAN Servo 3.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FUNC3, 0);
-
-/**
- * UAVCAN Servo 4 Output Function
- *
- * Select what should be output on UAVCAN Servo 4.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FUNC4, 0);
-
-/**
- * UAVCAN Servo 5 Output Function
- *
- * Select what should be output on UAVCAN Servo 5.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FUNC5, 0);
-
-/**
- * UAVCAN Servo 6 Output Function
- *
- * Select what should be output on UAVCAN Servo 6.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FUNC6, 0);
-
-/**
- * UAVCAN Servo 7 Output Function
- *
- * Select what should be output on UAVCAN Servo 7.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FUNC7, 0);
-
-/**
- * UAVCAN Servo 8 Output Function
- *
- * Select what should be output on UAVCAN Servo 8.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FUNC8, 0);
-
-/**
- * UAVCAN Servo 1 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_DIS1, 500);
-
-/**
- * UAVCAN Servo 2 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_DIS2, 500);
-
-/**
- * UAVCAN Servo 3 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_DIS3, 500);
-
-/**
- * UAVCAN Servo 4 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_DIS4, 500);
-
-/**
- * UAVCAN Servo 5 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_DIS5, 500);
-
-/**
- * UAVCAN Servo 6 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_DIS6, 500);
-
-/**
- * UAVCAN Servo 7 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_DIS7, 500);
-
-/**
- * UAVCAN Servo 8 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_DIS8, 500);
-
-/**
- * UAVCAN Servo 1 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_MIN1, 0);
-
-/**
- * UAVCAN Servo 2 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_MIN2, 0);
-
-/**
- * UAVCAN Servo 3 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_MIN3, 0);
-
-/**
- * UAVCAN Servo 4 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_MIN4, 0);
-
-/**
- * UAVCAN Servo 5 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_MIN5, 0);
-
-/**
- * UAVCAN Servo 6 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_MIN6, 0);
-
-/**
- * UAVCAN Servo 7 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_MIN7, 0);
-
-/**
- * UAVCAN Servo 8 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_MIN8, 0);
-
-/**
- * UAVCAN Servo 1 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_MAX1, 1000);
-
-/**
- * UAVCAN Servo 2 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_MAX2, 1000);
-
-/**
- * UAVCAN Servo 3 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_MAX3, 1000);
-
-/**
- * UAVCAN Servo 4 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_MAX4, 1000);
-
-/**
- * UAVCAN Servo 5 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_MAX5, 1000);
-
-/**
- * UAVCAN Servo 6 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_MAX6, 1000);
-
-/**
- * UAVCAN Servo 7 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_MAX7, 1000);
-
-/**
- * UAVCAN Servo 8 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_MAX8, 1000);
-
-/**
- * UAVCAN Servo 1 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC1).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FAIL1, -1);
-
-/**
- * UAVCAN Servo 2 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC2).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FAIL2, -1);
-
-/**
- * UAVCAN Servo 3 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC3).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FAIL3, -1);
-
-/**
- * UAVCAN Servo 4 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC4).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FAIL4, -1);
-
-/**
- * UAVCAN Servo 5 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC5).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FAIL5, -1);
-
-/**
- * UAVCAN Servo 6 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC6).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FAIL6, -1);
-
-/**
- * UAVCAN Servo 7 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC7).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FAIL7, -1);
-
-/**
- * UAVCAN Servo 8 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC8).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FAIL8, -1);
-
-/**
- * Reverse Output Range for UAVCAN
- *
- * Allows to reverse the output range for each channel.
- * Note: this is only useful for servos.
- * 
- *
- * @group Actuator Outputs
- * @bit 0 UAVCAN ESC 1
- * @bit 1 UAVCAN ESC 2
- * @bit 2 UAVCAN ESC 3
- * @bit 3 UAVCAN ESC 4
- * @bit 4 UAVCAN ESC 5
- * @bit 5 UAVCAN ESC 6
- * @bit 6 UAVCAN ESC 7
- * @bit 7 UAVCAN ESC 8
- * @min 0
- * @max 255
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_REV, 0);
-
-/**
- * Reverse Output Range for UAVCAN
- *
- * Allows to reverse the output range for each channel.
- * Note: this is only useful for servos.
- * 
- *
- * @group Actuator Outputs
- * @bit 0 UAVCAN Servo 1
- * @bit 1 UAVCAN Servo 2
- * @bit 2 UAVCAN Servo 3
- * @bit 3 UAVCAN Servo 4
- * @bit 4 UAVCAN Servo 5
- * @bit 5 UAVCAN Servo 6
- * @bit 6 UAVCAN Servo 7
- * @bit 7 UAVCAN Servo 8
- * @min 0
- * @max 255
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_REV, 0);
-
-/**
- * HIL Channel 1 Output Function
- *
- * Select what should be output on HIL Channel 1.
+ * This allows for example a GCS to talk to a camera that is connected to the
+ * autopilot via MAVLink (on a different link than the GCS).
  * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(HIL_ACT_FUNC1, 0);
-
-/**
- * HIL Channel 2 Output Function
- *
- * Select what should be output on HIL Channel 2.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(HIL_ACT_FUNC2, 0);
-
-/**
- * HIL Channel 3 Output Function
- *
- * Select what should be output on HIL Channel 3.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(HIL_ACT_FUNC3, 0);
-
-/**
- * HIL Channel 4 Output Function
- *
- * Select what should be output on HIL Channel 4.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(HIL_ACT_FUNC4, 0);
-
-/**
- * HIL Channel 5 Output Function
- *
- * Select what should be output on HIL Channel 5.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
  *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
+ * @group MAVLink
+ * @boolean
+ * @reboot_required True
  */
-PARAM_DEFINE_INT32(HIL_ACT_FUNC5, 0);
+PARAM_DEFINE_INT32(MAV_0_FORWARD, 1);
 
 /**
- * HIL Channel 6 Output Function
+ * Enable MAVLink Message forwarding for instance 1
  *
- * Select what should be output on HIL Channel 6.
+ * If enabled, forward incoming MAVLink messages to other MAVLink ports if the
+ * message is either broadcast or the target is not the autopilot.
  * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
+ * This allows for example a GCS to talk to a camera that is connected to the
+ * autopilot via MAVLink (on a different link than the GCS).
  * 
  *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
+ * @group MAVLink
+ * @boolean
+ * @reboot_required True
  */
-PARAM_DEFINE_INT32(HIL_ACT_FUNC6, 0);
+PARAM_DEFINE_INT32(MAV_1_FORWARD, 0);
 
 /**
- * HIL Channel 7 Output Function
+ * Enable MAVLink Message forwarding for instance 2
  *
- * Select what should be output on HIL Channel 7.
+ * If enabled, forward incoming MAVLink messages to other MAVLink ports if the
+ * message is either broadcast or the target is not the autopilot.
  * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
+ * This allows for example a GCS to talk to a camera that is connected to the
+ * autopilot via MAVLink (on a different link than the GCS).
  * 
  *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
+ * @group MAVLink
+ * @boolean
+ * @reboot_required True
  */
-PARAM_DEFINE_INT32(HIL_ACT_FUNC7, 0);
+PARAM_DEFINE_INT32(MAV_2_FORWARD, 0);
 
 /**
- * HIL Channel 8 Output Function
+ * Enable software throttling of mavlink on instance 0
  *
- * Select what should be output on HIL Channel 8.
+ * If enabled, MAVLink messages will be throttled according to
+ * `txbuf` field reported by radio_status.
  * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
+ * Requires a radio to send the mavlink message RADIO_STATUS.
  * 
  *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
+ * @group MAVLink
+ * @boolean
+ * @reboot_required True
  */
-PARAM_DEFINE_INT32(HIL_ACT_FUNC8, 0);
+PARAM_DEFINE_INT32(MAV_0_RADIO_CTL, 1);
 
 /**
- * HIL Channel 9 Output Function
+ * Enable software throttling of mavlink on instance 1
  *
- * Select what should be output on HIL Channel 9.
+ * If enabled, MAVLink messages will be throttled according to
+ * `txbuf` field reported by radio_status.
  * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
+ * Requires a radio to send the mavlink message RADIO_STATUS.
  * 
  *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
+ * @group MAVLink
+ * @boolean
+ * @reboot_required True
  */
-PARAM_DEFINE_INT32(HIL_ACT_FUNC9, 0);
+PARAM_DEFINE_INT32(MAV_1_RADIO_CTL, 1);
 
 /**
- * HIL Channel 10 Output Function
+ * Enable software throttling of mavlink on instance 2
  *
- * Select what should be output on HIL Channel 10.
+ * If enabled, MAVLink messages will be throttled according to
+ * `txbuf` field reported by radio_status.
  * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
+ * Requires a radio to send the mavlink message RADIO_STATUS.
  * 
  *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
+ * @group MAVLink
+ * @boolean
+ * @reboot_required True
  */
-PARAM_DEFINE_INT32(HIL_ACT_FUNC10, 0);
+PARAM_DEFINE_INT32(MAV_2_RADIO_CTL, 1);
 
 /**
- * HIL Channel 11 Output Function
+ * Enable serial flow control for instance 0
  *
- * Select what should be output on HIL Channel 11.
+ * This is used to force flow control on or off for the the mavlink
+ * instance. By default it is auto detected. Use when auto detection fails.
  * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(HIL_ACT_FUNC11, 0);
-
-/**
- * HIL Channel 12 Output Function
- *
- * Select what should be output on HIL Channel 12.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(HIL_ACT_FUNC12, 0);
-
-/**
- * HIL Channel 13 Output Function
- *
- * Select what should be output on HIL Channel 13.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
  *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
+ * @group MAVLink
+ * @value 0 Force off
+ * @value 1 Force on
+ * @value 2 Auto-detected
+ * @reboot_required True
  */
-PARAM_DEFINE_INT32(HIL_ACT_FUNC13, 0);
+PARAM_DEFINE_INT32(MAV_0_FLOW_CTRL, 2);
 
 /**
- * HIL Channel 14 Output Function
+ * Enable serial flow control for instance 1
  *
- * Select what should be output on HIL Channel 14.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(HIL_ACT_FUNC14, 0);
-
-/**
- * HIL Channel 15 Output Function
- *
- * Select what should be output on HIL Channel 15.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(HIL_ACT_FUNC15, 0);
-
-/**
- * HIL Channel 16 Output Function
- *
- * Select what should be output on HIL Channel 16.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
+ * This is used to force flow control on or off for the the mavlink
+ * instance. By default it is auto detected. Use when auto detection fails.
  * 
  *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
+ * @group MAVLink
+ * @value 0 Force off
+ * @value 1 Force on
+ * @value 2 Auto-detected
+ * @reboot_required True
  */
-PARAM_DEFINE_INT32(HIL_ACT_FUNC16, 0);
+PARAM_DEFINE_INT32(MAV_1_FLOW_CTRL, 2);
 
 /**
- * Reverse Output Range for HIL
+ * Enable serial flow control for instance 2
  *
- * Allows to reverse the output range for each channel.
- * Note: this is only useful for servos.
+ * This is used to force flow control on or off for the the mavlink
+ * instance. By default it is auto detected. Use when auto detection fails.
  * 
  *
- * @group Actuator Outputs
- * @bit 0 HIL Channel 1
- * @bit 1 HIL Channel 2
- * @bit 2 HIL Channel 3
- * @bit 3 HIL Channel 4
- * @bit 4 HIL Channel 5
- * @bit 5 HIL Channel 6
- * @bit 6 HIL Channel 7
- * @bit 7 HIL Channel 8
- * @bit 8 HIL Channel 9
- * @bit 9 HIL Channel 10
- * @bit 10 HIL Channel 11
- * @bit 11 HIL Channel 12
- * @bit 12 HIL Channel 13
- * @bit 13 HIL Channel 14
- * @bit 14 HIL Channel 15
- * @bit 15 HIL Channel 16
- * @min 0
- * @max 65535
+ * @group MAVLink
+ * @value 0 Force off
+ * @value 1 Force on
+ * @value 2 Auto-detected
+ * @reboot_required True
  */
-PARAM_DEFINE_INT32(HIL_ACT_REV, 0);
+PARAM_DEFINE_INT32(MAV_2_FLOW_CTRL, 2);
 
 /**
  * Empty cell voltage (5C load)
@@ -3101,43 +598,2008 @@ PARAM_DEFINE_INT32(BAT1_SOURCE, 0);
 PARAM_DEFINE_INT32(BAT2_SOURCE, -1);
 
 /**
- * Enable Gripper actuation in Payload Deliverer
+ * Battery 1 voltage divider (V divider)
  *
+ * This is the divider from battery 1 voltage to ADC voltage.
+ * If using e.g. Mauch power modules the value from the datasheet
+ * can be applied straight here. A value of -1 means to use
+ * the board default.
  * 
  *
- * @group Payload Deliverer
- * @boolean
+ * @group Battery Calibration
+ * @decimal 8
  * @reboot_required True
  */
-PARAM_DEFINE_INT32(PD_GRIPPER_EN, 0);
+PARAM_DEFINE_FLOAT(BAT1_V_DIV, -1.0);
 
 /**
- * Type of Gripper (Servo, etc.)
+ * Battery 2 voltage divider (V divider)
  *
+ * This is the divider from battery 2 voltage to ADC voltage.
+ * If using e.g. Mauch power modules the value from the datasheet
+ * can be applied straight here. A value of -1 means to use
+ * the board default.
  * 
  *
- * @group Payload Deliverer
- * @value -1 Undefined
- * @value 0 Servo
- * @min -1
- * @max 0
+ * @group Battery Calibration
+ * @decimal 8
+ * @reboot_required True
  */
-PARAM_DEFINE_INT32(PD_GRIPPER_TYPE, 0);
+PARAM_DEFINE_FLOAT(BAT2_V_DIV, -1.0);
 
 /**
- * Timeout for successful gripper actuation acknowledgement
+ * Battery 1 current per volt (A/V)
  *
- * Maximum time Gripper will wait while the successful griper actuation isn't recognised.
- * If the gripper has no feedback sensor, it will simply wait for
- * this time before considering gripper actuation successful and publish a
- * 'VehicleCommandAck' signaling successful gripper action
+ * The voltage seen by the ADC multiplied by this factor
+ * will determine the battery current. A value of -1 means to use
+ * the board default.
  * 
  *
- * @group Payload Deliverer
+ * @group Battery Calibration
+ * @decimal 8
+ * @reboot_required True
+ */
+PARAM_DEFINE_FLOAT(BAT1_A_PER_V, -1.0);
+
+/**
+ * Battery 2 current per volt (A/V)
+ *
+ * The voltage seen by the ADC multiplied by this factor
+ * will determine the battery current. A value of -1 means to use
+ * the board default.
+ * 
+ *
+ * @group Battery Calibration
+ * @decimal 8
+ * @reboot_required True
+ */
+PARAM_DEFINE_FLOAT(BAT2_A_PER_V, -1.0);
+
+/**
+ * Battery 1 Voltage ADC Channel
+ *
+ * This parameter specifies the ADC channel used to monitor voltage of main power battery.
+ * A value of -1 means to use the board default.
+ * 
+ *
+ * @group Battery Calibration
+ * @reboot_required True
+ */
+PARAM_DEFINE_INT32(BAT1_V_CHANNEL, -1);
+
+/**
+ * Battery 2 Voltage ADC Channel
+ *
+ * This parameter specifies the ADC channel used to monitor voltage of main power battery.
+ * A value of -1 means to use the board default.
+ * 
+ *
+ * @group Battery Calibration
+ * @reboot_required True
+ */
+PARAM_DEFINE_INT32(BAT2_V_CHANNEL, -1);
+
+/**
+ * Battery 1 Current ADC Channel
+ *
+ * This parameter specifies the ADC channel used to monitor current of main power battery.
+ * A value of -1 means to use the board default.
+ * 
+ *
+ * @group Battery Calibration
+ * @reboot_required True
+ */
+PARAM_DEFINE_INT32(BAT1_I_CHANNEL, -1);
+
+/**
+ * Battery 2 Current ADC Channel
+ *
+ * This parameter specifies the ADC channel used to monitor current of main power battery.
+ * A value of -1 means to use the board default.
+ * 
+ *
+ * @group Battery Calibration
+ * @reboot_required True
+ */
+PARAM_DEFINE_INT32(BAT2_I_CHANNEL, -1);
+
+/**
+ * SIM_GZ ESC 1 Output Function
+ *
+ * Select what should be output on SIM_GZ ESC 1.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC1, 0);
+
+/**
+ * SIM_GZ ESC 2 Output Function
+ *
+ * Select what should be output on SIM_GZ ESC 2.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC2, 0);
+
+/**
+ * SIM_GZ ESC 3 Output Function
+ *
+ * Select what should be output on SIM_GZ ESC 3.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC3, 0);
+
+/**
+ * SIM_GZ ESC 4 Output Function
+ *
+ * Select what should be output on SIM_GZ ESC 4.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC4, 0);
+
+/**
+ * SIM_GZ ESC 5 Output Function
+ *
+ * Select what should be output on SIM_GZ ESC 5.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC5, 0);
+
+/**
+ * SIM_GZ ESC 6 Output Function
+ *
+ * Select what should be output on SIM_GZ ESC 6.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC6, 0);
+
+/**
+ * SIM_GZ ESC 7 Output Function
+ *
+ * Select what should be output on SIM_GZ ESC 7.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC7, 0);
+
+/**
+ * SIM_GZ ESC 8 Output Function
+ *
+ * Select what should be output on SIM_GZ ESC 8.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC8, 0);
+
+/**
+ * SIM_GZ ESC 1 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
  * @min 0
- * @unit s
+ * @max 1000
  */
-PARAM_DEFINE_FLOAT(PD_GRIPPER_TO, 3);
+PARAM_DEFINE_INT32(SIM_GZ_EC_DIS1, 0);
+
+/**
+ * SIM_GZ ESC 2 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_DIS2, 0);
+
+/**
+ * SIM_GZ ESC 3 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_DIS3, 0);
+
+/**
+ * SIM_GZ ESC 4 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_DIS4, 0);
+
+/**
+ * SIM_GZ ESC 5 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_DIS5, 0);
+
+/**
+ * SIM_GZ ESC 6 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_DIS6, 0);
+
+/**
+ * SIM_GZ ESC 7 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_DIS7, 0);
+
+/**
+ * SIM_GZ ESC 8 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_DIS8, 0);
+
+/**
+ * SIM_GZ ESC 1 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_MIN1, 0);
+
+/**
+ * SIM_GZ ESC 2 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_MIN2, 0);
+
+/**
+ * SIM_GZ ESC 3 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_MIN3, 0);
+
+/**
+ * SIM_GZ ESC 4 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_MIN4, 0);
+
+/**
+ * SIM_GZ ESC 5 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_MIN5, 0);
+
+/**
+ * SIM_GZ ESC 6 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_MIN6, 0);
+
+/**
+ * SIM_GZ ESC 7 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_MIN7, 0);
+
+/**
+ * SIM_GZ ESC 8 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_MIN8, 0);
+
+/**
+ * SIM_GZ ESC 1 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_MAX1, 1000);
+
+/**
+ * SIM_GZ ESC 2 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_MAX2, 1000);
+
+/**
+ * SIM_GZ ESC 3 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_MAX3, 1000);
+
+/**
+ * SIM_GZ ESC 4 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_MAX4, 1000);
+
+/**
+ * SIM_GZ ESC 5 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_MAX5, 1000);
+
+/**
+ * SIM_GZ ESC 6 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_MAX6, 1000);
+
+/**
+ * SIM_GZ ESC 7 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_MAX7, 1000);
+
+/**
+ * SIM_GZ ESC 8 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_MAX8, 1000);
+
+/**
+ * SIM_GZ ESC 1 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC1).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL1, -1);
+
+/**
+ * SIM_GZ ESC 2 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC2).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL2, -1);
+
+/**
+ * SIM_GZ ESC 3 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC3).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL3, -1);
+
+/**
+ * SIM_GZ ESC 4 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC4).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL4, -1);
+
+/**
+ * SIM_GZ ESC 5 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC5).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL5, -1);
+
+/**
+ * SIM_GZ ESC 6 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC6).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL6, -1);
+
+/**
+ * SIM_GZ ESC 7 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC7).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL7, -1);
+
+/**
+ * SIM_GZ ESC 8 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC8).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL8, -1);
+
+/**
+ * SIM_GZ Servo 1 Output Function
+ *
+ * Select what should be output on SIM_GZ Servo 1.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC1, 0);
+
+/**
+ * SIM_GZ Servo 2 Output Function
+ *
+ * Select what should be output on SIM_GZ Servo 2.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC2, 0);
+
+/**
+ * SIM_GZ Servo 3 Output Function
+ *
+ * Select what should be output on SIM_GZ Servo 3.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC3, 0);
+
+/**
+ * SIM_GZ Servo 4 Output Function
+ *
+ * Select what should be output on SIM_GZ Servo 4.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC4, 0);
+
+/**
+ * SIM_GZ Servo 5 Output Function
+ *
+ * Select what should be output on SIM_GZ Servo 5.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC5, 0);
+
+/**
+ * SIM_GZ Servo 6 Output Function
+ *
+ * Select what should be output on SIM_GZ Servo 6.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC6, 0);
+
+/**
+ * SIM_GZ Servo 7 Output Function
+ *
+ * Select what should be output on SIM_GZ Servo 7.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC7, 0);
+
+/**
+ * SIM_GZ Servo 8 Output Function
+ *
+ * Select what should be output on SIM_GZ Servo 8.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC8, 0);
+
+/**
+ * SIM_GZ Servo 1 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_DIS1, 500);
+
+/**
+ * SIM_GZ Servo 2 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_DIS2, 500);
+
+/**
+ * SIM_GZ Servo 3 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_DIS3, 500);
+
+/**
+ * SIM_GZ Servo 4 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_DIS4, 500);
+
+/**
+ * SIM_GZ Servo 5 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_DIS5, 500);
+
+/**
+ * SIM_GZ Servo 6 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_DIS6, 500);
+
+/**
+ * SIM_GZ Servo 7 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_DIS7, 500);
+
+/**
+ * SIM_GZ Servo 8 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_DIS8, 500);
+
+/**
+ * SIM_GZ Servo 1 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MIN1, 0);
+
+/**
+ * SIM_GZ Servo 2 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MIN2, 0);
+
+/**
+ * SIM_GZ Servo 3 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MIN3, 0);
+
+/**
+ * SIM_GZ Servo 4 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MIN4, 0);
+
+/**
+ * SIM_GZ Servo 5 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MIN5, 0);
+
+/**
+ * SIM_GZ Servo 6 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MIN6, 0);
+
+/**
+ * SIM_GZ Servo 7 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MIN7, 0);
+
+/**
+ * SIM_GZ Servo 8 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MIN8, 0);
+
+/**
+ * SIM_GZ Servo 1 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MAX1, 1000);
+
+/**
+ * SIM_GZ Servo 2 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MAX2, 1000);
+
+/**
+ * SIM_GZ Servo 3 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MAX3, 1000);
+
+/**
+ * SIM_GZ Servo 4 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MAX4, 1000);
+
+/**
+ * SIM_GZ Servo 5 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MAX5, 1000);
+
+/**
+ * SIM_GZ Servo 6 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MAX6, 1000);
+
+/**
+ * SIM_GZ Servo 7 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MAX7, 1000);
+
+/**
+ * SIM_GZ Servo 8 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MAX8, 1000);
+
+/**
+ * SIM_GZ Servo 1 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC1).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL1, -1);
+
+/**
+ * SIM_GZ Servo 2 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC2).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL2, -1);
+
+/**
+ * SIM_GZ Servo 3 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC3).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL3, -1);
+
+/**
+ * SIM_GZ Servo 4 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC4).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL4, -1);
+
+/**
+ * SIM_GZ Servo 5 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC5).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL5, -1);
+
+/**
+ * SIM_GZ Servo 6 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC6).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL6, -1);
+
+/**
+ * SIM_GZ Servo 7 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC7).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL7, -1);
+
+/**
+ * SIM_GZ Servo 8 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC8).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL8, -1);
+
+/**
+ * Reverse Output Range for SIM_GZ
+ *
+ * Allows to reverse the output range for each channel.
+ * Note: this is only useful for servos.
+ * 
+ *
+ * @group Actuator Outputs
+ * @bit 0 SIM_GZ ESC 1
+ * @bit 1 SIM_GZ ESC 2
+ * @bit 2 SIM_GZ ESC 3
+ * @bit 3 SIM_GZ ESC 4
+ * @bit 4 SIM_GZ ESC 5
+ * @bit 5 SIM_GZ ESC 6
+ * @bit 6 SIM_GZ ESC 7
+ * @bit 7 SIM_GZ ESC 8
+ * @min 0
+ * @max 255
+ */
+PARAM_DEFINE_INT32(SIM_GZ_EC_REV, 0);
+
+/**
+ * Reverse Output Range for SIM_GZ
+ *
+ * Allows to reverse the output range for each channel.
+ * Note: this is only useful for servos.
+ * 
+ *
+ * @group Actuator Outputs
+ * @bit 0 SIM_GZ Servo 1
+ * @bit 1 SIM_GZ Servo 2
+ * @bit 2 SIM_GZ Servo 3
+ * @bit 3 SIM_GZ Servo 4
+ * @bit 4 SIM_GZ Servo 5
+ * @bit 5 SIM_GZ Servo 6
+ * @bit 6 SIM_GZ Servo 7
+ * @bit 7 SIM_GZ Servo 8
+ * @min 0
+ * @max 255
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_REV, 0);
 
 /**
  * Airframe selection
@@ -6510,3497 +5972,6 @@ PARAM_DEFINE_INT32(CA_HELI_YAW_CCW, 0);
 PARAM_DEFINE_INT32(CA_FAILURE_MODE, 0);
 
 /**
- * SIM_GZ ESC 1 Output Function
- *
- * Select what should be output on SIM_GZ ESC 1.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC1, 0);
-
-/**
- * SIM_GZ ESC 2 Output Function
- *
- * Select what should be output on SIM_GZ ESC 2.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC2, 0);
-
-/**
- * SIM_GZ ESC 3 Output Function
- *
- * Select what should be output on SIM_GZ ESC 3.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC3, 0);
-
-/**
- * SIM_GZ ESC 4 Output Function
- *
- * Select what should be output on SIM_GZ ESC 4.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC4, 0);
-
-/**
- * SIM_GZ ESC 5 Output Function
- *
- * Select what should be output on SIM_GZ ESC 5.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC5, 0);
-
-/**
- * SIM_GZ ESC 6 Output Function
- *
- * Select what should be output on SIM_GZ ESC 6.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC6, 0);
-
-/**
- * SIM_GZ ESC 7 Output Function
- *
- * Select what should be output on SIM_GZ ESC 7.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC7, 0);
-
-/**
- * SIM_GZ ESC 8 Output Function
- *
- * Select what should be output on SIM_GZ ESC 8.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC8, 0);
-
-/**
- * SIM_GZ ESC 1 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_DIS1, 0);
-
-/**
- * SIM_GZ ESC 2 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_DIS2, 0);
-
-/**
- * SIM_GZ ESC 3 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_DIS3, 0);
-
-/**
- * SIM_GZ ESC 4 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_DIS4, 0);
-
-/**
- * SIM_GZ ESC 5 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_DIS5, 0);
-
-/**
- * SIM_GZ ESC 6 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_DIS6, 0);
-
-/**
- * SIM_GZ ESC 7 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_DIS7, 0);
-
-/**
- * SIM_GZ ESC 8 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_DIS8, 0);
-
-/**
- * SIM_GZ ESC 1 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MIN1, 0);
-
-/**
- * SIM_GZ ESC 2 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MIN2, 0);
-
-/**
- * SIM_GZ ESC 3 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MIN3, 0);
-
-/**
- * SIM_GZ ESC 4 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MIN4, 0);
-
-/**
- * SIM_GZ ESC 5 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MIN5, 0);
-
-/**
- * SIM_GZ ESC 6 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MIN6, 0);
-
-/**
- * SIM_GZ ESC 7 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MIN7, 0);
-
-/**
- * SIM_GZ ESC 8 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MIN8, 0);
-
-/**
- * SIM_GZ ESC 1 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MAX1, 1000);
-
-/**
- * SIM_GZ ESC 2 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MAX2, 1000);
-
-/**
- * SIM_GZ ESC 3 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MAX3, 1000);
-
-/**
- * SIM_GZ ESC 4 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MAX4, 1000);
-
-/**
- * SIM_GZ ESC 5 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MAX5, 1000);
-
-/**
- * SIM_GZ ESC 6 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MAX6, 1000);
-
-/**
- * SIM_GZ ESC 7 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MAX7, 1000);
-
-/**
- * SIM_GZ ESC 8 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MAX8, 1000);
-
-/**
- * SIM_GZ ESC 1 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC1).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL1, -1);
-
-/**
- * SIM_GZ ESC 2 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC2).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL2, -1);
-
-/**
- * SIM_GZ ESC 3 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC3).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL3, -1);
-
-/**
- * SIM_GZ ESC 4 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC4).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL4, -1);
-
-/**
- * SIM_GZ ESC 5 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC5).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL5, -1);
-
-/**
- * SIM_GZ ESC 6 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC6).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL6, -1);
-
-/**
- * SIM_GZ ESC 7 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC7).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL7, -1);
-
-/**
- * SIM_GZ ESC 8 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC8).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL8, -1);
-
-/**
- * SIM_GZ Servo 1 Output Function
- *
- * Select what should be output on SIM_GZ Servo 1.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC1, 0);
-
-/**
- * SIM_GZ Servo 2 Output Function
- *
- * Select what should be output on SIM_GZ Servo 2.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC2, 0);
-
-/**
- * SIM_GZ Servo 3 Output Function
- *
- * Select what should be output on SIM_GZ Servo 3.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC3, 0);
-
-/**
- * SIM_GZ Servo 4 Output Function
- *
- * Select what should be output on SIM_GZ Servo 4.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC4, 0);
-
-/**
- * SIM_GZ Servo 5 Output Function
- *
- * Select what should be output on SIM_GZ Servo 5.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC5, 0);
-
-/**
- * SIM_GZ Servo 6 Output Function
- *
- * Select what should be output on SIM_GZ Servo 6.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC6, 0);
-
-/**
- * SIM_GZ Servo 7 Output Function
- *
- * Select what should be output on SIM_GZ Servo 7.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC7, 0);
-
-/**
- * SIM_GZ Servo 8 Output Function
- *
- * Select what should be output on SIM_GZ Servo 8.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC8, 0);
-
-/**
- * SIM_GZ Servo 1 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_DIS1, 500);
-
-/**
- * SIM_GZ Servo 2 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_DIS2, 500);
-
-/**
- * SIM_GZ Servo 3 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_DIS3, 500);
-
-/**
- * SIM_GZ Servo 4 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_DIS4, 500);
-
-/**
- * SIM_GZ Servo 5 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_DIS5, 500);
-
-/**
- * SIM_GZ Servo 6 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_DIS6, 500);
-
-/**
- * SIM_GZ Servo 7 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_DIS7, 500);
-
-/**
- * SIM_GZ Servo 8 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_DIS8, 500);
-
-/**
- * SIM_GZ Servo 1 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MIN1, 0);
-
-/**
- * SIM_GZ Servo 2 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MIN2, 0);
-
-/**
- * SIM_GZ Servo 3 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MIN3, 0);
-
-/**
- * SIM_GZ Servo 4 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MIN4, 0);
-
-/**
- * SIM_GZ Servo 5 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MIN5, 0);
-
-/**
- * SIM_GZ Servo 6 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MIN6, 0);
-
-/**
- * SIM_GZ Servo 7 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MIN7, 0);
-
-/**
- * SIM_GZ Servo 8 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MIN8, 0);
-
-/**
- * SIM_GZ Servo 1 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MAX1, 1000);
-
-/**
- * SIM_GZ Servo 2 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MAX2, 1000);
-
-/**
- * SIM_GZ Servo 3 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MAX3, 1000);
-
-/**
- * SIM_GZ Servo 4 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MAX4, 1000);
-
-/**
- * SIM_GZ Servo 5 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MAX5, 1000);
-
-/**
- * SIM_GZ Servo 6 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MAX6, 1000);
-
-/**
- * SIM_GZ Servo 7 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MAX7, 1000);
-
-/**
- * SIM_GZ Servo 8 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MAX8, 1000);
-
-/**
- * SIM_GZ Servo 1 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC1).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL1, -1);
-
-/**
- * SIM_GZ Servo 2 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC2).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL2, -1);
-
-/**
- * SIM_GZ Servo 3 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC3).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL3, -1);
-
-/**
- * SIM_GZ Servo 4 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC4).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL4, -1);
-
-/**
- * SIM_GZ Servo 5 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC5).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL5, -1);
-
-/**
- * SIM_GZ Servo 6 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC6).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL6, -1);
-
-/**
- * SIM_GZ Servo 7 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC7).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL7, -1);
-
-/**
- * SIM_GZ Servo 8 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC8).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL8, -1);
-
-/**
- * Reverse Output Range for SIM_GZ
- *
- * Allows to reverse the output range for each channel.
- * Note: this is only useful for servos.
- * 
- *
- * @group Actuator Outputs
- * @bit 0 SIM_GZ ESC 1
- * @bit 1 SIM_GZ ESC 2
- * @bit 2 SIM_GZ ESC 3
- * @bit 3 SIM_GZ ESC 4
- * @bit 4 SIM_GZ ESC 5
- * @bit 5 SIM_GZ ESC 6
- * @bit 6 SIM_GZ ESC 7
- * @bit 7 SIM_GZ ESC 8
- * @min 0
- * @max 255
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_REV, 0);
-
-/**
- * Reverse Output Range for SIM_GZ
- *
- * Allows to reverse the output range for each channel.
- * Note: this is only useful for servos.
- * 
- *
- * @group Actuator Outputs
- * @bit 0 SIM_GZ Servo 1
- * @bit 1 SIM_GZ Servo 2
- * @bit 2 SIM_GZ Servo 3
- * @bit 3 SIM_GZ Servo 4
- * @bit 4 SIM_GZ Servo 5
- * @bit 5 SIM_GZ Servo 6
- * @bit 6 SIM_GZ Servo 7
- * @bit 7 SIM_GZ Servo 8
- * @min 0
- * @max 255
- */
-PARAM_DEFINE_INT32(SIM_GZ_SV_REV, 0);
-
-/**
- * SIM Channel 1 Output Function
- *
- * Select what should be output on SIM Channel 1.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(PWM_MAIN_FUNC1, 0);
-
-/**
- * SIM Channel 2 Output Function
- *
- * Select what should be output on SIM Channel 2.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(PWM_MAIN_FUNC2, 0);
-
-/**
- * SIM Channel 3 Output Function
- *
- * Select what should be output on SIM Channel 3.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(PWM_MAIN_FUNC3, 0);
-
-/**
- * SIM Channel 4 Output Function
- *
- * Select what should be output on SIM Channel 4.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(PWM_MAIN_FUNC4, 0);
-
-/**
- * SIM Channel 5 Output Function
- *
- * Select what should be output on SIM Channel 5.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(PWM_MAIN_FUNC5, 0);
-
-/**
- * SIM Channel 6 Output Function
- *
- * Select what should be output on SIM Channel 6.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(PWM_MAIN_FUNC6, 0);
-
-/**
- * SIM Channel 7 Output Function
- *
- * Select what should be output on SIM Channel 7.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(PWM_MAIN_FUNC7, 0);
-
-/**
- * SIM Channel 8 Output Function
- *
- * Select what should be output on SIM Channel 8.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(PWM_MAIN_FUNC8, 0);
-
-/**
- * SIM Channel 9 Output Function
- *
- * Select what should be output on SIM Channel 9.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(PWM_MAIN_FUNC9, 0);
-
-/**
- * SIM Channel 10 Output Function
- *
- * Select what should be output on SIM Channel 10.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(PWM_MAIN_FUNC10, 0);
-
-/**
- * SIM Channel 11 Output Function
- *
- * Select what should be output on SIM Channel 11.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(PWM_MAIN_FUNC11, 0);
-
-/**
- * SIM Channel 12 Output Function
- *
- * Select what should be output on SIM Channel 12.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(PWM_MAIN_FUNC12, 0);
-
-/**
- * SIM Channel 13 Output Function
- *
- * Select what should be output on SIM Channel 13.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(PWM_MAIN_FUNC13, 0);
-
-/**
- * SIM Channel 14 Output Function
- *
- * Select what should be output on SIM Channel 14.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(PWM_MAIN_FUNC14, 0);
-
-/**
- * SIM Channel 15 Output Function
- *
- * Select what should be output on SIM Channel 15.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(PWM_MAIN_FUNC15, 0);
-
-/**
- * SIM Channel 16 Output Function
- *
- * Select what should be output on SIM Channel 16.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(PWM_MAIN_FUNC16, 0);
-
-/**
- * Reverse Output Range for SIM
- *
- * Allows to reverse the output range for each channel.
- * Note: this is only useful for servos.
- * 
- *
- * @group Actuator Outputs
- * @bit 0 SIM Channel 1
- * @bit 1 SIM Channel 2
- * @bit 2 SIM Channel 3
- * @bit 3 SIM Channel 4
- * @bit 4 SIM Channel 5
- * @bit 5 SIM Channel 6
- * @bit 6 SIM Channel 7
- * @bit 7 SIM Channel 8
- * @bit 8 SIM Channel 9
- * @bit 9 SIM Channel 10
- * @bit 10 SIM Channel 11
- * @bit 11 SIM Channel 12
- * @bit 12 SIM Channel 13
- * @bit 13 SIM Channel 14
- * @bit 14 SIM Channel 15
- * @bit 15 SIM Channel 16
- * @min 0
- * @max 65535
- */
-PARAM_DEFINE_INT32(PWM_MAIN_REV, 0);
-
-/**
- * MAVLink Config for instance 0
- *
- * The MAVLink Config defines device(uart/udp/tcp) used by MAVLink instance
- * 
- *
- * @group MAVLink
- * @value 0 Disabled
- * @value 1 Uart1
- * @value 2 Uart2
- * @value 3 Uart3
- * @value 4 Uart4
- * @value 5 Uart5
- * @value 6 Uart6
- * @value 7 Uart7
- * @value 8 Uart8
- * @value 20 UBS1
- * @value 21 USB2
- * @value 30 UDP
- * @value 31 TCP
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_0_CONFIG, 0);
-
-/**
- * MAVLink Config for instance 1
- *
- * The MAVLink Config defines device(uart/udp/tcp) used by MAVLink instance
- * 
- *
- * @group MAVLink
- * @value 0 Disabled
- * @value 1 Uart1
- * @value 2 Uart2
- * @value 3 Uart3
- * @value 4 Uart4
- * @value 5 Uart5
- * @value 6 Uart6
- * @value 7 Uart7
- * @value 8 Uart8
- * @value 20 UBS1
- * @value 21 USB2
- * @value 30 UDP
- * @value 31 TCP
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_1_CONFIG, 0);
-
-/**
- * MAVLink Config for instance 2
- *
- * The MAVLink Config defines device(uart/udp/tcp) used by MAVLink instance
- * 
- *
- * @group MAVLink
- * @value 0 Disabled
- * @value 1 Uart1
- * @value 2 Uart2
- * @value 3 Uart3
- * @value 4 Uart4
- * @value 5 Uart5
- * @value 6 Uart6
- * @value 7 Uart7
- * @value 8 Uart8
- * @value 20 UBS1
- * @value 21 USB2
- * @value 30 UDP
- * @value 31 TCP
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_2_CONFIG, 0);
-
-/**
- * MAVLink Mode for instance 0
- *
- * The MAVLink Mode defines the set of streamed messages (for example the
- * vehicle's attitude) and their sending rates.
- * 
- *
- * @group MAVLink
- * @value 0 Normal
- * @value 1 Custom
- * @value 2 Onboard
- * @value 3 OSD
- * @value 4 Magic
- * @value 5 Config
- * @value 7 Minimal
- * @value 8 External Vision
- * @value 10 Gimbal
- * @value 11 Onboard Low Bandwidth
- * @value 12 uAvionix
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_0_MODE, 0);
-
-/**
- * MAVLink Mode for instance 1
- *
- * The MAVLink Mode defines the set of streamed messages (for example the
- * vehicle's attitude) and their sending rates.
- * 
- *
- * @group MAVLink
- * @value 0 Normal
- * @value 1 Custom
- * @value 2 Onboard
- * @value 3 OSD
- * @value 4 Magic
- * @value 5 Config
- * @value 7 Minimal
- * @value 8 External Vision
- * @value 10 Gimbal
- * @value 11 Onboard Low Bandwidth
- * @value 12 uAvionix
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_1_MODE, 2);
-
-/**
- * MAVLink Mode for instance 2
- *
- * The MAVLink Mode defines the set of streamed messages (for example the
- * vehicle's attitude) and their sending rates.
- * 
- *
- * @group MAVLink
- * @value 0 Normal
- * @value 1 Custom
- * @value 2 Onboard
- * @value 3 OSD
- * @value 4 Magic
- * @value 5 Config
- * @value 7 Minimal
- * @value 8 External Vision
- * @value 10 Gimbal
- * @value 11 Onboard Low Bandwidth
- * @value 12 uAvionix
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_2_MODE, 0);
-
-/**
- * Maximum MAVLink sending rate for instance 0
- *
- * Configure the maximum sending rate for the MAVLink streams in Bytes/sec.
- * If the configured streams exceed the maximum rate, the sending rate of
- * each stream is automatically decreased.
- * 
- * If this is set to 0 a value of half of the theoretical maximum bandwidth is used.
- * This corresponds to baudrate/20 Bytes/s (baudrate/10 = maximum data rate on
- * 8N1-configured links).
- * 
- *
- * @group MAVLink
- * @min 0
- * @unit B/s
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_0_RATE, 1200);
-
-/**
- * Maximum MAVLink sending rate for instance 1
- *
- * Configure the maximum sending rate for the MAVLink streams in Bytes/sec.
- * If the configured streams exceed the maximum rate, the sending rate of
- * each stream is automatically decreased.
- * 
- * If this is set to 0 a value of half of the theoretical maximum bandwidth is used.
- * This corresponds to baudrate/20 Bytes/s (baudrate/10 = maximum data rate on
- * 8N1-configured links).
- * 
- *
- * @group MAVLink
- * @min 0
- * @unit B/s
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_1_RATE, 0);
-
-/**
- * Maximum MAVLink sending rate for instance 2
- *
- * Configure the maximum sending rate for the MAVLink streams in Bytes/sec.
- * If the configured streams exceed the maximum rate, the sending rate of
- * each stream is automatically decreased.
- * 
- * If this is set to 0 a value of half of the theoretical maximum bandwidth is used.
- * This corresponds to baudrate/20 Bytes/s (baudrate/10 = maximum data rate on
- * 8N1-configured links).
- * 
- *
- * @group MAVLink
- * @min 0
- * @unit B/s
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_2_RATE, 0);
-
-/**
- * Enable MAVLink Message forwarding for instance 0
- *
- * If enabled, forward incoming MAVLink messages to other MAVLink ports if the
- * message is either broadcast or the target is not the autopilot.
- * 
- * This allows for example a GCS to talk to a camera that is connected to the
- * autopilot via MAVLink (on a different link than the GCS).
- * 
- *
- * @group MAVLink
- * @boolean
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_0_FORWARD, 1);
-
-/**
- * Enable MAVLink Message forwarding for instance 1
- *
- * If enabled, forward incoming MAVLink messages to other MAVLink ports if the
- * message is either broadcast or the target is not the autopilot.
- * 
- * This allows for example a GCS to talk to a camera that is connected to the
- * autopilot via MAVLink (on a different link than the GCS).
- * 
- *
- * @group MAVLink
- * @boolean
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_1_FORWARD, 0);
-
-/**
- * Enable MAVLink Message forwarding for instance 2
- *
- * If enabled, forward incoming MAVLink messages to other MAVLink ports if the
- * message is either broadcast or the target is not the autopilot.
- * 
- * This allows for example a GCS to talk to a camera that is connected to the
- * autopilot via MAVLink (on a different link than the GCS).
- * 
- *
- * @group MAVLink
- * @boolean
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_2_FORWARD, 0);
-
-/**
- * Enable software throttling of mavlink on instance 0
- *
- * If enabled, MAVLink messages will be throttled according to
- * `txbuf` field reported by radio_status.
- * 
- * Requires a radio to send the mavlink message RADIO_STATUS.
- * 
- *
- * @group MAVLink
- * @boolean
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_0_RADIO_CTL, 1);
-
-/**
- * Enable software throttling of mavlink on instance 1
- *
- * If enabled, MAVLink messages will be throttled according to
- * `txbuf` field reported by radio_status.
- * 
- * Requires a radio to send the mavlink message RADIO_STATUS.
- * 
- *
- * @group MAVLink
- * @boolean
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_1_RADIO_CTL, 1);
-
-/**
- * Enable software throttling of mavlink on instance 2
- *
- * If enabled, MAVLink messages will be throttled according to
- * `txbuf` field reported by radio_status.
- * 
- * Requires a radio to send the mavlink message RADIO_STATUS.
- * 
- *
- * @group MAVLink
- * @boolean
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_2_RADIO_CTL, 1);
-
-/**
- * MAVLink Network Port for instance 0
- *
- * If ethernet enabled and selected as configuration for MAVLink instance 0,
- * selected udp port will be set and used in MAVLink instance 0.
- * 
- *
- * @group MAVLink
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_0_UDP_PRT, 14556);
-
-/**
- * MAVLink Network Port for instance 1
- *
- * If ethernet enabled and selected as configuration for MAVLink instance 1,
- * selected udp port will be set and used in MAVLink instance 1.
- * 
- *
- * @group MAVLink
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_1_UDP_PRT, 0);
-
-/**
- * MAVLink Network Port for instance 2
- *
- * If ethernet enabled and selected as configuration for MAVLink instance 2,
- * selected udp port will be set and used in MAVLink instance 2.
- * 
- *
- * @group MAVLink
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_2_UDP_PRT, 0);
-
-/**
- * MAVLink Remote IP for instance 0
- *
- * If ethernet enabled and selected as configuration for MAVLink instance 0,
- * selected remote IP will be set and used in MAVLink instance 0.
- * 
- *
- * @group MAVLink
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_0_REMOTE_IP, 0);
-
-/**
- * MAVLink Remote IP for instance 1
- *
- * If ethernet enabled and selected as configuration for MAVLink instance 1,
- * selected remote IP will be set and used in MAVLink instance 1.
- * 
- *
- * @group MAVLink
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_1_REMOTE_IP, 0);
-
-/**
- * MAVLink Remote IP for instance 2
- *
- * If ethernet enabled and selected as configuration for MAVLink instance 2,
- * selected remote IP will be set and used in MAVLink instance 2.
- * 
- *
- * @group MAVLink
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_2_REMOTE_IP, 0);
-
-/**
- * MAVLink Remote Port for instance 0
- *
- * If ethernet enabled and selected as configuration for MAVLink instance 0,
- * selected remote port will be set and used in MAVLink instance 0.
- * 
- *
- * @group MAVLink
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_0_REMOTE_PRT, 14550);
-
-/**
- * MAVLink Remote Port for instance 1
- *
- * If ethernet enabled and selected as configuration for MAVLink instance 1,
- * selected remote port will be set and used in MAVLink instance 1.
- * 
- *
- * @group MAVLink
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_1_REMOTE_PRT, 0);
-
-/**
- * MAVLink Remote Port for instance 2
- *
- * If ethernet enabled and selected as configuration for MAVLink instance 2,
- * selected remote port will be set and used in MAVLink instance 2.
- * 
- *
- * @group MAVLink
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_2_REMOTE_PRT, 0);
-
-/**
- * Broadcast heartbeats on local network for MAVLink instance 0
- *
- * This allows a ground control station to automatically find the drone
- * on the local network.
- * 
- *
- * @group MAVLink
- * @value 0 Never broadcast
- * @value 1 Always broadcast
- * @value 2 Only multicast
- */
-PARAM_DEFINE_INT32(MAV_0_BROADCAST, 1);
-
-/**
- * Broadcast heartbeats on local network for MAVLink instance 1
- *
- * This allows a ground control station to automatically find the drone
- * on the local network.
- * 
- *
- * @group MAVLink
- * @value 0 Never broadcast
- * @value 1 Always broadcast
- * @value 2 Only multicast
- */
-PARAM_DEFINE_INT32(MAV_1_BROADCAST, 0);
-
-/**
- * Broadcast heartbeats on local network for MAVLink instance 2
- *
- * This allows a ground control station to automatically find the drone
- * on the local network.
- * 
- *
- * @group MAVLink
- * @value 0 Never broadcast
- * @value 1 Always broadcast
- * @value 2 Only multicast
- */
-PARAM_DEFINE_INT32(MAV_2_BROADCAST, 0);
-
-/**
- * Enable serial flow control for instance 0
- *
- * This is used to force flow control on or off for the the mavlink
- * instance. By default it is auto detected. Use when auto detection fails.
- * 
- *
- * @group MAVLink
- * @value 0 Force off
- * @value 1 Force on
- * @value 2 Auto-detected
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_0_FLOW_CTRL, 2);
-
-/**
- * Enable serial flow control for instance 1
- *
- * This is used to force flow control on or off for the the mavlink
- * instance. By default it is auto detected. Use when auto detection fails.
- * 
- *
- * @group MAVLink
- * @value 0 Force off
- * @value 1 Force on
- * @value 2 Auto-detected
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_1_FLOW_CTRL, 2);
-
-/**
- * Enable serial flow control for instance 2
- *
- * This is used to force flow control on or off for the the mavlink
- * instance. By default it is auto detected. Use when auto detection fails.
- * 
- *
- * @group MAVLink
- * @value 0 Force off
- * @value 1 Force on
- * @value 2 Auto-detected
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_2_FLOW_CTRL, 2);
-
-/**
- * uXRCE-DDS domain ID
- *
- * uXRCE-DDS domain ID
- *
- * @group UXRCE-DDS Client
- * @category System
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(UXRCE_DDS_DOM_ID, 0);
-
-/**
- * uXRCE-DDS Session key
- *
- * uXRCE-DDS key, must be different from zero.
- * In a single agent - multi client configuration, each client
- * must have a unique session key.
- * 
- *
- * @group UXRCE-DDS Client
- * @category System
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(UXRCE_DDS_KEY, 1);
-
-/**
- * uXRCE-DDS UDP Port
- *
- * If ethernet enabled and selected as configuration for uXRCE-DDS,
- * selected udp port will be set and used.
- * 
- *
- * @group UXRCE-DDS Client
- * @min 0
- * @max 65535
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(UXRCE_DDS_PRT, 8888);
-
-/**
- * uXRCE-DDS Agent IP address
- *
- * If ethernet enabled and selected as configuration for uXRCE-DDS,
- * selected Agent IP address will be set and used.
- * Decimal dot notation is not supported. IP address must be provided
- * in int32 format. For example, 192.168.1.2 is mapped to -1062731518;
- * 127.0.0.1 is mapped to 2130706433.
- * 
- *
- * @group UXRCE-DDS Client
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(UXRCE_DDS_AG_IP, 2130706433);
-
-/**
  * Accelerometer 0 calibration device ID
  *
  * Device ID of the accelerometer this calibration applies to.
@@ -12297,107 +8268,3957 @@ PARAM_DEFINE_FLOAT(CAL_MAG2_ZCOMP, 0.0);
 PARAM_DEFINE_FLOAT(CAL_MAG3_ZCOMP, 0.0);
 
 /**
- * Battery 1 voltage divider (V divider)
+ * HIL Channel 1 Output Function
  *
- * This is the divider from battery 1 voltage to ADC voltage.
- * If using e.g. Mauch power modules the value from the datasheet
- * can be applied straight here. A value of -1 means to use
- * the board default.
+ * Select what should be output on HIL Channel 1.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
  * 
  *
- * @group Battery Calibration
- * @decimal 8
- * @reboot_required True
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_FLOAT(BAT1_V_DIV, -1.0);
+PARAM_DEFINE_INT32(HIL_ACT_FUNC1, 0);
 
 /**
- * Battery 2 voltage divider (V divider)
+ * HIL Channel 2 Output Function
  *
- * This is the divider from battery 2 voltage to ADC voltage.
- * If using e.g. Mauch power modules the value from the datasheet
- * can be applied straight here. A value of -1 means to use
- * the board default.
+ * Select what should be output on HIL Channel 2.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
  * 
  *
- * @group Battery Calibration
- * @decimal 8
- * @reboot_required True
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_FLOAT(BAT2_V_DIV, -1.0);
+PARAM_DEFINE_INT32(HIL_ACT_FUNC2, 0);
 
 /**
- * Battery 1 current per volt (A/V)
+ * HIL Channel 3 Output Function
  *
- * The voltage seen by the ADC multiplied by this factor
- * will determine the battery current. A value of -1 means to use
- * the board default.
+ * Select what should be output on HIL Channel 3.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
  * 
  *
- * @group Battery Calibration
- * @decimal 8
- * @reboot_required True
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_FLOAT(BAT1_A_PER_V, -1.0);
+PARAM_DEFINE_INT32(HIL_ACT_FUNC3, 0);
 
 /**
- * Battery 2 current per volt (A/V)
+ * HIL Channel 4 Output Function
  *
- * The voltage seen by the ADC multiplied by this factor
- * will determine the battery current. A value of -1 means to use
- * the board default.
+ * Select what should be output on HIL Channel 4.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
  * 
  *
- * @group Battery Calibration
- * @decimal 8
- * @reboot_required True
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_FLOAT(BAT2_A_PER_V, -1.0);
+PARAM_DEFINE_INT32(HIL_ACT_FUNC4, 0);
 
 /**
- * Battery 1 Voltage ADC Channel
+ * HIL Channel 5 Output Function
  *
- * This parameter specifies the ADC channel used to monitor voltage of main power battery.
- * A value of -1 means to use the board default.
+ * Select what should be output on HIL Channel 5.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
  * 
  *
- * @group Battery Calibration
- * @reboot_required True
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(BAT1_V_CHANNEL, -1);
+PARAM_DEFINE_INT32(HIL_ACT_FUNC5, 0);
 
 /**
- * Battery 2 Voltage ADC Channel
+ * HIL Channel 6 Output Function
  *
- * This parameter specifies the ADC channel used to monitor voltage of main power battery.
- * A value of -1 means to use the board default.
+ * Select what should be output on HIL Channel 6.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
  * 
  *
- * @group Battery Calibration
- * @reboot_required True
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(BAT2_V_CHANNEL, -1);
+PARAM_DEFINE_INT32(HIL_ACT_FUNC6, 0);
 
 /**
- * Battery 1 Current ADC Channel
+ * HIL Channel 7 Output Function
  *
- * This parameter specifies the ADC channel used to monitor current of main power battery.
- * A value of -1 means to use the board default.
+ * Select what should be output on HIL Channel 7.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
  * 
  *
- * @group Battery Calibration
- * @reboot_required True
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(BAT1_I_CHANNEL, -1);
+PARAM_DEFINE_INT32(HIL_ACT_FUNC7, 0);
 
 /**
- * Battery 2 Current ADC Channel
+ * HIL Channel 8 Output Function
  *
- * This parameter specifies the ADC channel used to monitor current of main power battery.
- * A value of -1 means to use the board default.
+ * Select what should be output on HIL Channel 8.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
  * 
  *
- * @group Battery Calibration
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(HIL_ACT_FUNC8, 0);
+
+/**
+ * HIL Channel 9 Output Function
+ *
+ * Select what should be output on HIL Channel 9.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(HIL_ACT_FUNC9, 0);
+
+/**
+ * HIL Channel 10 Output Function
+ *
+ * Select what should be output on HIL Channel 10.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(HIL_ACT_FUNC10, 0);
+
+/**
+ * HIL Channel 11 Output Function
+ *
+ * Select what should be output on HIL Channel 11.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(HIL_ACT_FUNC11, 0);
+
+/**
+ * HIL Channel 12 Output Function
+ *
+ * Select what should be output on HIL Channel 12.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(HIL_ACT_FUNC12, 0);
+
+/**
+ * HIL Channel 13 Output Function
+ *
+ * Select what should be output on HIL Channel 13.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(HIL_ACT_FUNC13, 0);
+
+/**
+ * HIL Channel 14 Output Function
+ *
+ * Select what should be output on HIL Channel 14.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(HIL_ACT_FUNC14, 0);
+
+/**
+ * HIL Channel 15 Output Function
+ *
+ * Select what should be output on HIL Channel 15.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(HIL_ACT_FUNC15, 0);
+
+/**
+ * HIL Channel 16 Output Function
+ *
+ * Select what should be output on HIL Channel 16.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(HIL_ACT_FUNC16, 0);
+
+/**
+ * Reverse Output Range for HIL
+ *
+ * Allows to reverse the output range for each channel.
+ * Note: this is only useful for servos.
+ * 
+ *
+ * @group Actuator Outputs
+ * @bit 0 HIL Channel 1
+ * @bit 1 HIL Channel 2
+ * @bit 2 HIL Channel 3
+ * @bit 3 HIL Channel 4
+ * @bit 4 HIL Channel 5
+ * @bit 5 HIL Channel 6
+ * @bit 6 HIL Channel 7
+ * @bit 7 HIL Channel 8
+ * @bit 8 HIL Channel 9
+ * @bit 9 HIL Channel 10
+ * @bit 10 HIL Channel 11
+ * @bit 11 HIL Channel 12
+ * @bit 12 HIL Channel 13
+ * @bit 13 HIL Channel 14
+ * @bit 14 HIL Channel 15
+ * @bit 15 HIL Channel 16
+ * @min 0
+ * @max 65535
+ */
+PARAM_DEFINE_INT32(HIL_ACT_REV, 0);
+
+/**
+ * UAVCAN ESC 1 Output Function
+ *
+ * Select what should be output on UAVCAN ESC 1.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_FUNC1, 0);
+
+/**
+ * UAVCAN ESC 2 Output Function
+ *
+ * Select what should be output on UAVCAN ESC 2.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_FUNC2, 0);
+
+/**
+ * UAVCAN ESC 3 Output Function
+ *
+ * Select what should be output on UAVCAN ESC 3.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_FUNC3, 0);
+
+/**
+ * UAVCAN ESC 4 Output Function
+ *
+ * Select what should be output on UAVCAN ESC 4.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_FUNC4, 0);
+
+/**
+ * UAVCAN ESC 5 Output Function
+ *
+ * Select what should be output on UAVCAN ESC 5.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_FUNC5, 0);
+
+/**
+ * UAVCAN ESC 6 Output Function
+ *
+ * Select what should be output on UAVCAN ESC 6.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_FUNC6, 0);
+
+/**
+ * UAVCAN ESC 7 Output Function
+ *
+ * Select what should be output on UAVCAN ESC 7.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_FUNC7, 0);
+
+/**
+ * UAVCAN ESC 8 Output Function
+ *
+ * Select what should be output on UAVCAN ESC 8.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_FUNC8, 0);
+
+/**
+ * UAVCAN ESC 1 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_MIN1, 1);
+
+/**
+ * UAVCAN ESC 2 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_MIN2, 1);
+
+/**
+ * UAVCAN ESC 3 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_MIN3, 1);
+
+/**
+ * UAVCAN ESC 4 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_MIN4, 1);
+
+/**
+ * UAVCAN ESC 5 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_MIN5, 1);
+
+/**
+ * UAVCAN ESC 6 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_MIN6, 1);
+
+/**
+ * UAVCAN ESC 7 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_MIN7, 1);
+
+/**
+ * UAVCAN ESC 8 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_MIN8, 1);
+
+/**
+ * UAVCAN ESC 1 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_MAX1, 8191);
+
+/**
+ * UAVCAN ESC 2 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_MAX2, 8191);
+
+/**
+ * UAVCAN ESC 3 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_MAX3, 8191);
+
+/**
+ * UAVCAN ESC 4 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_MAX4, 8191);
+
+/**
+ * UAVCAN ESC 5 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_MAX5, 8191);
+
+/**
+ * UAVCAN ESC 6 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_MAX6, 8191);
+
+/**
+ * UAVCAN ESC 7 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_MAX7, 8191);
+
+/**
+ * UAVCAN ESC 8 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_MAX8, 8191);
+
+/**
+ * UAVCAN ESC 1 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC1).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_FAIL1, -1);
+
+/**
+ * UAVCAN ESC 2 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC2).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_FAIL2, -1);
+
+/**
+ * UAVCAN ESC 3 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC3).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_FAIL3, -1);
+
+/**
+ * UAVCAN ESC 4 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC4).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_FAIL4, -1);
+
+/**
+ * UAVCAN ESC 5 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC5).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_FAIL5, -1);
+
+/**
+ * UAVCAN ESC 6 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC6).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_FAIL6, -1);
+
+/**
+ * UAVCAN ESC 7 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC7).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_FAIL7, -1);
+
+/**
+ * UAVCAN ESC 8 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC8).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 8191
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_FAIL8, -1);
+
+/**
+ * UAVCAN Servo 1 Output Function
+ *
+ * Select what should be output on UAVCAN Servo 1.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_FUNC1, 0);
+
+/**
+ * UAVCAN Servo 2 Output Function
+ *
+ * Select what should be output on UAVCAN Servo 2.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_FUNC2, 0);
+
+/**
+ * UAVCAN Servo 3 Output Function
+ *
+ * Select what should be output on UAVCAN Servo 3.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_FUNC3, 0);
+
+/**
+ * UAVCAN Servo 4 Output Function
+ *
+ * Select what should be output on UAVCAN Servo 4.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_FUNC4, 0);
+
+/**
+ * UAVCAN Servo 5 Output Function
+ *
+ * Select what should be output on UAVCAN Servo 5.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_FUNC5, 0);
+
+/**
+ * UAVCAN Servo 6 Output Function
+ *
+ * Select what should be output on UAVCAN Servo 6.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_FUNC6, 0);
+
+/**
+ * UAVCAN Servo 7 Output Function
+ *
+ * Select what should be output on UAVCAN Servo 7.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_FUNC7, 0);
+
+/**
+ * UAVCAN Servo 8 Output Function
+ *
+ * Select what should be output on UAVCAN Servo 8.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_FUNC8, 0);
+
+/**
+ * UAVCAN Servo 1 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_DIS1, 500);
+
+/**
+ * UAVCAN Servo 2 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_DIS2, 500);
+
+/**
+ * UAVCAN Servo 3 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_DIS3, 500);
+
+/**
+ * UAVCAN Servo 4 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_DIS4, 500);
+
+/**
+ * UAVCAN Servo 5 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_DIS5, 500);
+
+/**
+ * UAVCAN Servo 6 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_DIS6, 500);
+
+/**
+ * UAVCAN Servo 7 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_DIS7, 500);
+
+/**
+ * UAVCAN Servo 8 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_DIS8, 500);
+
+/**
+ * UAVCAN Servo 1 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_MIN1, 0);
+
+/**
+ * UAVCAN Servo 2 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_MIN2, 0);
+
+/**
+ * UAVCAN Servo 3 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_MIN3, 0);
+
+/**
+ * UAVCAN Servo 4 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_MIN4, 0);
+
+/**
+ * UAVCAN Servo 5 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_MIN5, 0);
+
+/**
+ * UAVCAN Servo 6 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_MIN6, 0);
+
+/**
+ * UAVCAN Servo 7 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_MIN7, 0);
+
+/**
+ * UAVCAN Servo 8 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_MIN8, 0);
+
+/**
+ * UAVCAN Servo 1 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_MAX1, 1000);
+
+/**
+ * UAVCAN Servo 2 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_MAX2, 1000);
+
+/**
+ * UAVCAN Servo 3 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_MAX3, 1000);
+
+/**
+ * UAVCAN Servo 4 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_MAX4, 1000);
+
+/**
+ * UAVCAN Servo 5 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_MAX5, 1000);
+
+/**
+ * UAVCAN Servo 6 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_MAX6, 1000);
+
+/**
+ * UAVCAN Servo 7 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_MAX7, 1000);
+
+/**
+ * UAVCAN Servo 8 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_MAX8, 1000);
+
+/**
+ * UAVCAN Servo 1 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC1).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_FAIL1, -1);
+
+/**
+ * UAVCAN Servo 2 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC2).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_FAIL2, -1);
+
+/**
+ * UAVCAN Servo 3 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC3).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_FAIL3, -1);
+
+/**
+ * UAVCAN Servo 4 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC4).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_FAIL4, -1);
+
+/**
+ * UAVCAN Servo 5 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC5).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_FAIL5, -1);
+
+/**
+ * UAVCAN Servo 6 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC6).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_FAIL6, -1);
+
+/**
+ * UAVCAN Servo 7 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC7).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_FAIL7, -1);
+
+/**
+ * UAVCAN Servo 8 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC8).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_FAIL8, -1);
+
+/**
+ * Reverse Output Range for UAVCAN
+ *
+ * Allows to reverse the output range for each channel.
+ * Note: this is only useful for servos.
+ * 
+ *
+ * @group Actuator Outputs
+ * @bit 0 UAVCAN ESC 1
+ * @bit 1 UAVCAN ESC 2
+ * @bit 2 UAVCAN ESC 3
+ * @bit 3 UAVCAN ESC 4
+ * @bit 4 UAVCAN ESC 5
+ * @bit 5 UAVCAN ESC 6
+ * @bit 6 UAVCAN ESC 7
+ * @bit 7 UAVCAN ESC 8
+ * @min 0
+ * @max 255
+ */
+PARAM_DEFINE_INT32(UAVCAN_EC_REV, 0);
+
+/**
+ * Reverse Output Range for UAVCAN
+ *
+ * Allows to reverse the output range for each channel.
+ * Note: this is only useful for servos.
+ * 
+ *
+ * @group Actuator Outputs
+ * @bit 0 UAVCAN Servo 1
+ * @bit 1 UAVCAN Servo 2
+ * @bit 2 UAVCAN Servo 3
+ * @bit 3 UAVCAN Servo 4
+ * @bit 4 UAVCAN Servo 5
+ * @bit 5 UAVCAN Servo 6
+ * @bit 6 UAVCAN Servo 7
+ * @bit 7 UAVCAN Servo 8
+ * @min 0
+ * @max 255
+ */
+PARAM_DEFINE_INT32(UAVCAN_SV_REV, 0);
+
+/**
+ * SIM Channel 1 Output Function
+ *
+ * Select what should be output on SIM Channel 1.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(PWM_MAIN_FUNC1, 0);
+
+/**
+ * SIM Channel 2 Output Function
+ *
+ * Select what should be output on SIM Channel 2.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(PWM_MAIN_FUNC2, 0);
+
+/**
+ * SIM Channel 3 Output Function
+ *
+ * Select what should be output on SIM Channel 3.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(PWM_MAIN_FUNC3, 0);
+
+/**
+ * SIM Channel 4 Output Function
+ *
+ * Select what should be output on SIM Channel 4.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(PWM_MAIN_FUNC4, 0);
+
+/**
+ * SIM Channel 5 Output Function
+ *
+ * Select what should be output on SIM Channel 5.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(PWM_MAIN_FUNC5, 0);
+
+/**
+ * SIM Channel 6 Output Function
+ *
+ * Select what should be output on SIM Channel 6.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(PWM_MAIN_FUNC6, 0);
+
+/**
+ * SIM Channel 7 Output Function
+ *
+ * Select what should be output on SIM Channel 7.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(PWM_MAIN_FUNC7, 0);
+
+/**
+ * SIM Channel 8 Output Function
+ *
+ * Select what should be output on SIM Channel 8.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(PWM_MAIN_FUNC8, 0);
+
+/**
+ * SIM Channel 9 Output Function
+ *
+ * Select what should be output on SIM Channel 9.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(PWM_MAIN_FUNC9, 0);
+
+/**
+ * SIM Channel 10 Output Function
+ *
+ * Select what should be output on SIM Channel 10.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(PWM_MAIN_FUNC10, 0);
+
+/**
+ * SIM Channel 11 Output Function
+ *
+ * Select what should be output on SIM Channel 11.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(PWM_MAIN_FUNC11, 0);
+
+/**
+ * SIM Channel 12 Output Function
+ *
+ * Select what should be output on SIM Channel 12.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(PWM_MAIN_FUNC12, 0);
+
+/**
+ * SIM Channel 13 Output Function
+ *
+ * Select what should be output on SIM Channel 13.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(PWM_MAIN_FUNC13, 0);
+
+/**
+ * SIM Channel 14 Output Function
+ *
+ * Select what should be output on SIM Channel 14.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(PWM_MAIN_FUNC14, 0);
+
+/**
+ * SIM Channel 15 Output Function
+ *
+ * Select what should be output on SIM Channel 15.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(PWM_MAIN_FUNC15, 0);
+
+/**
+ * SIM Channel 16 Output Function
+ *
+ * Select what should be output on SIM Channel 16.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(PWM_MAIN_FUNC16, 0);
+
+/**
+ * Reverse Output Range for SIM
+ *
+ * Allows to reverse the output range for each channel.
+ * Note: this is only useful for servos.
+ * 
+ *
+ * @group Actuator Outputs
+ * @bit 0 SIM Channel 1
+ * @bit 1 SIM Channel 2
+ * @bit 2 SIM Channel 3
+ * @bit 3 SIM Channel 4
+ * @bit 4 SIM Channel 5
+ * @bit 5 SIM Channel 6
+ * @bit 6 SIM Channel 7
+ * @bit 7 SIM Channel 8
+ * @bit 8 SIM Channel 9
+ * @bit 9 SIM Channel 10
+ * @bit 10 SIM Channel 11
+ * @bit 11 SIM Channel 12
+ * @bit 12 SIM Channel 13
+ * @bit 13 SIM Channel 14
+ * @bit 14 SIM Channel 15
+ * @bit 15 SIM Channel 16
+ * @min 0
+ * @max 65535
+ */
+PARAM_DEFINE_INT32(PWM_MAIN_REV, 0);
+
+/**
+ * uXRCE-DDS domain ID
+ *
+ * uXRCE-DDS domain ID
+ *
+ * @group UXRCE-DDS Client
+ * @category System
  * @reboot_required True
  */
-PARAM_DEFINE_INT32(BAT2_I_CHANNEL, -1);
+PARAM_DEFINE_INT32(UXRCE_DDS_DOM_ID, 0);
+
+/**
+ * uXRCE-DDS Session key
+ *
+ * uXRCE-DDS key, must be different from zero.
+ * In a single agent - multi client configuration, each client
+ * must have a unique session key.
+ * 
+ *
+ * @group UXRCE-DDS Client
+ * @category System
+ * @reboot_required True
+ */
+PARAM_DEFINE_INT32(UXRCE_DDS_KEY, 1);
+
+/**
+ * Enable Gripper actuation in Payload Deliverer
+ *
+ * 
+ *
+ * @group Payload Deliverer
+ * @boolean
+ * @reboot_required True
+ */
+PARAM_DEFINE_INT32(PD_GRIPPER_EN, 0);
+
+/**
+ * Type of Gripper (Servo, etc.)
+ *
+ * 
+ *
+ * @group Payload Deliverer
+ * @value -1 Undefined
+ * @value 0 Servo
+ * @min -1
+ * @max 0
+ */
+PARAM_DEFINE_INT32(PD_GRIPPER_TYPE, 0);
+
+/**
+ * Timeout for successful gripper actuation acknowledgement
+ *
+ * Maximum time Gripper will wait while the successful griper actuation isn't recognised.
+ * If the gripper has no feedback sensor, it will simply wait for
+ * this time before considering gripper actuation successful and publish a
+ * 'VehicleCommandAck' signaling successful gripper action
+ * 
+ *
+ * @group Payload Deliverer
+ * @min 0
+ * @unit s
+ */
+PARAM_DEFINE_FLOAT(PD_GRIPPER_TO, 3);

@@ -1,0 +1,6 @@
+menuconfig TEST_CREATE_THREAD
+    bool "test create thread"
+    default n
+
+if TEST_RT_THREAD
+endif
