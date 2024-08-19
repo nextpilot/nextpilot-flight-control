@@ -56,4 +56,4 @@ bsp使用了cubemx生成的文件有：
 - Core/Src/main.c，仅用到SystemClock_Config()函数，cubemx**不要**`生成main()函数`
 - Core/Src/stm32h7xx_hal_msp.c，包含了外设的管脚配置初始化
 
-详细过程请参考：<https://docs.nextpilot.cn/develop/>
+详细过程请参考：<https://www.nextpilot.org/develop/>

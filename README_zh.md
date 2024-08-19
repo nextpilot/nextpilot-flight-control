@@ -75,7 +75,7 @@ NextPilot设计硬件:
 
 ## 用户手册
 
-[快速入门](https://docs.nextpilot.cn/manual) | [飞行模式](https://docs.nextpilot.cn/manual/05.%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/01.%E9%A3%9E%E8%A1%8C%E6%A8%A1%E5%BC%8F/index.html) |[高级调参]() | [飞行仿真]()  |  [日志分析]()
+[快速入门](https://www.nextpilot.org/manual) | [飞行模式](https://www.nextpilot.org/manual/05.%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/01.%E9%A3%9E%E8%A1%8C%E6%A8%A1%E5%BC%8F/index.html) |[高级调参]() | [飞行仿真]()  |  [日志分析]()
 
 <!-- # 社区支持
 
@@ -88,7 +88,7 @@ NextPilot 主要支持以下 IDE:
 - KEIL MDK
 - ARM GCC + VSCode,  [Windows](https://github.com/nextpilot/nextpilot-windows-toolchain) | [Ubuntu](https://github.com/nextpilot/nextpilot-ubuntu-toolchain)
 
-您可以通过 [开发指南](https://docs.nextpilot.cn/develop) 了解如何进行NextPilot开发，比如：[搭建开发环境](https://docs.nextpilot.cn/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/01.setup-develop-environment.html)， [如何添加代码](https://docs.nextpilot.cn/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/99.add-new-code.html)， [系统底层框架]()等。
+您可以通过 [开发指南](https://www.nextpilot.org/develop) 了解如何进行NextPilot开发，比如：[搭建开发环境](https://www.nextpilot.org/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/01.setup-develop-environment.html)， [如何添加代码](https://www.nextpilot.org/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/99.add-new-code.html)， [系统底层框架]()等。
 
 # 许可协议
 

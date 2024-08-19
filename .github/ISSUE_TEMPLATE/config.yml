@@ -4,8 +4,8 @@ contact_links:
     url: https://github.com/nextpilot/nextpilot-flight-control/discussions
     about: For questions about NextPilot or related components, please use the discuss forum
   - name: Getting Started
-    url: https://docs.nextpilot.cn/manul
+    url: https://www.nextpilot.org/manul
     about: How to begin NextPilot, please visit user guide
   - name: Develop Center
-    url: https://docs.nextpilot.cn/develop
+    url: https://www.nextpilot.org/develop
     about: How to develop NextPilot, please visit develop center

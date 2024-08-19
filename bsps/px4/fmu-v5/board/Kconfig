@@ -522,6 +522,15 @@ menu "On-chip Peripheral Drivers"
         default y
 
     if BSP_USING_SDIO
+        config SDIO_DEVICE_NAME
+            string "SD-Card device name"
+            default "sd0"
+
+        config SDIO_MOUNT_POINT
+            string "SD-Card mount point"
+            default "/"
+            default "/mnt/microsd" if RT_USING_ROMFS
+
         config BSP_SDIO_RX_USING_DMA
             bool "Enable SDIO RX DMA"
             default n

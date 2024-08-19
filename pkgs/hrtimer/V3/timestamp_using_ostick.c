@@ -16,7 +16,7 @@
  * Fetch a never-wrapping absolute time value in microseconds from
  * some arbitrary epoch shortly after system start.
  */
-rt_weak hrt_abstime hrt_absolute_time(void) {
+hrt_abstime hrt_absolute_time(void) {
     uint64_t tick = rt_tick_get();
     return 1000000ULL * tick / RT_TICK_PER_SECOND;
 }

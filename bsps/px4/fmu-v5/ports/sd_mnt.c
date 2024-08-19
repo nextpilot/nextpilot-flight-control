@@ -17,35 +17,62 @@
 #include <dfs_elm.h>
 #include <unistd.h>
 
-#define SDCARD_DEVICE_NAME "sd0"
+#ifndef SDIO_DEVICE_NAME
+#   define SDIO_DEVICE_NAME "sd0"
+#endif // SDIO_DEVICE_NAME
 
-#ifdef SYS_USING_ROMFS
-#define SDCARD_MOUNT_POINT "/mnt/microsd"
-#else
-#define SDCARD_MOUNT_POINT "/"
-#endif // SYS_USING_ROMFS
+#ifndef SDIO_MOUNT_POINT
+#   ifdef RT_USING_ROMFS
+#      define SDIO_MOUNT_POINT "/mnt/microsd"
+#   else
+#      define SDIO_MOUNT_POINT "/"
+#   endif // RT_USING_ROMFS
+#endif    //SDIO_MOUNT_POINT
 
-#ifdef RT_USING_SDIO
+#ifdef BSP_USING_SDIO
 static int rt_bsp_microsd_mount() {
-    // 最多尝试3次
-    for (int attempt = 0; attempt < 3; attempt++) {
-        if (rt_device_find(SDCARD_DEVICE_NAME) != RT_NULL) {
-            if (dfs_mount(SDCARD_DEVICE_NAME, SDCARD_MOUNT_POINT, "elm", 0, 0) == RT_EOK) {
-                LOG_I("mount microsd to '%s'", SDCARD_MOUNT_POINT);
-                return RT_EOK;
-            } else if (dfs_mkfs("elm", SDCARD_DEVICE_NAME) == RT_EOK) {
-                LOG_I("mkfs microsd ok");
-            } else {
-                LOG_W("mount/mkfs microsd fail, try again");
-            }
-        } else {
-            // LOG_D("can't find microsd device, try again");
+    int       found = 0;
+    rt_tick_t start = rt_tick_get();
+    while (rt_tick_get() - start < 3000) {
+        if (rt_device_find(SDIO_DEVICE_NAME)) {
+            found = 1;
+            break;
         }
-        // usleep(500000);
-        rt_thread_mdelay(500);
+        rt_thread_mdelay(10);
     }
-    LOG_E("mount microsd fail");
-    return -RT_ERROR;
+
+    if (!found) {
+        LOG_E("can't find %s", SDIO_DEVICE_NAME);
+        return -RT_ERROR;
+    }
+
+    // 挂载sd，挂载失败则格式化
+    if (dfs_mount(SDIO_DEVICE_NAME, SDIO_MOUNT_POINT, "elm", 0, 0) != RT_EOK) {
+        // 格式化sd
+        if (dfs_mkfs("elm", SDIO_DEVICE_NAME) != RT_EOK) {
+            LOG_E("mkfs SD fail");
+            return -RT_ERROR;
+        }
+
+        // 再次挂载
+        if (dfs_mount(SDIO_DEVICE_NAME, SDIO_MOUNT_POINT, "elm", 0, 0) != RT_EOK) {
+            LOG_I("mount SD fail", SDIO_MOUNT_POINT);
+            return -RT_ERROR;
+        }
+    }
+
+
+    // 创建etc目录和log目录
+    if (access(SDIO_MOUNT_POINT "/etc", 0) < 0) {
+        mkdir(SDIO_MOUNT_POINT "/etc", 0);
+    }
+    if (access(SDIO_MOUNT_POINT "/log", 0) < 0) {
+        mkdir(SDIO_MOUNT_POINT "/log", 0);
+    }
+
+    LOG_E("microsd init ok");
+    return RT_EOK;
 }
+
 INIT_ENV_EXPORT(rt_bsp_microsd_mount);
-#endif // RT_USING_SDIO
+#endif // BSP_USING_SDIO
