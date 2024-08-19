@@ -85,11 +85,11 @@ key design point:
 
 ## User Manual
 
-[Getting Started](https://docs.nextpilot.cn/manual) | [Flight Mode](https://docs.nextpilot.cn/manual/05.%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/01.%E9%A3%9E%E8%A1%8C%E6%A8%A1%E5%BC%8F/index.html) | [Simulation]()
+[Getting Started](https://www.nextpilot.org/manual) | [Flight Mode](https://www.nextpilot.org/manual/05.%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/01.%E9%A3%9E%E8%A1%8C%E6%A8%A1%E5%BC%8F/index.html) | [Simulation]()
 
 ## Develeop Guide
 
-[Getting Started](https://docs.nextpilot.cn/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/01.setup-develop-environment.html) | [System Startup](https://docs.nextpilot.cn/develop/03.%E7%B3%BB%E7%BB%9F%E6%A1%86%E6%9E%B6/03.system-startup.html) | [Build Tools](https://docs.nextpilot.cn/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E6%9E%84%E5%BB%BA%E9%85%8D%E7%BD%AE%E7%B3%BB%E7%BB%9F/Kconfig.html)
+[Getting Started](https://www.nextpilot.org/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/01.setup-develop-environment.html) | [System Startup](https://www.nextpilot.org/develop/03.%E7%B3%BB%E7%BB%9F%E6%A1%86%E6%9E%B6/03.system-startup.html) | [Build Tools](https://www.nextpilot.org/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E6%9E%84%E5%BB%BA%E9%85%8D%E7%BD%AE%E7%B3%BB%E7%BB%9F/Kconfig.html)
 
 The main IDE/compilers supported by NextPilot are:
 
