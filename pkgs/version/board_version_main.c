@@ -34,7 +34,7 @@ int show_version_info(void) {
     LOG_RAW("HW ARCH: %s(ver %d, rev %d)\n", get_board_name(), board_get_hw_version(), board_get_hw_revision());
     mcu_info_t info;
     if (board_get_mcu_info(&info) == 0) {
-        LOG_RAW("MCU IDC: %s(dev 0x%X, rev 0x%X, flash %dkB)\n", info.name, info.devid, info.revid, info.flash_size);
+        LOG_RAW("MCU IDC: %s(dev 0x%X, rev 0x%X, flash %ukB)\n", info.name, info.devid, info.revid, info.flash_size);
         LOG_RAW("MCU UID: 0x%X%X%X\n", info.guid[2], info.guid[1], info.guid[0]);
     } else {
         LOG_RAW("MCU IDC: %s\n", "Unkown");
@@ -60,9 +60,11 @@ int show_version_info(void) {
     ulog_flush();
     return 0;
 }
+
 INIT_EXPORT(show_version_info, "3.1");
 
 static int board_version_main(int argc, char *argv[]) {
     return show_version_info();
 }
+
 MSH_CMD_EXPORT_ALIAS(board_version_main, ver, show version info);
