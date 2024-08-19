@@ -16,7 +16,7 @@
 #include <rtthread.h>
 #include <string.h>
 
-#define THREADS_NUM 2
+#define THREADS_NUM 10
 
 static bool should_exit_flag{false};
 
@@ -73,4 +73,4 @@ extern "C" int thread_test02(int argc, char *argv[]) {
     return 0;
 }
 
-MSH_CMD_EXPORT_ALIAS(thread_test02, utest02, thread test02 useage);
+MSH_CMD_EXPORT_ALIAS(thread_test02, utest_th02, thread test02 useage);

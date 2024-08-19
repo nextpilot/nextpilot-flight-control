@@ -41,4 +41,4 @@ extern "C" int thread_test01_test(int argc, char *argv[]) {
     return 0;
 }
 
-MSH_CMD_EXPORT_ALIAS(thread_test01_test, test01, thread test01 useage);
+MSH_CMD_EXPORT_ALIAS(thread_test01_test, utest_th01, thread test01 useage);
