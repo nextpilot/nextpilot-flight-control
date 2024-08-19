@@ -23,6 +23,9 @@ if PKG_USING_HRTIMER_V3
         config HRT_USING_RTC
             bool "RTC: Real Time Clock, 1s"
 
+        config HRT_USING_OTHER
+            bool "Other: defined by bsp"
+
     endchoice
 
     choice

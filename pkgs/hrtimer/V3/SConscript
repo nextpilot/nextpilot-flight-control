@@ -16,7 +16,7 @@ elif GetDepend(["HRT_USING_DWT"]):
     src += ["timestamp_using_dwt.c"]
 elif GetDepend(["HRT_USING_TSG"]):
     src += ["timestamp_using_tsg.c"]
-else:  # HRT_USING_OSTICK
+elif GetDepend(["HRT_USING_OSTICK"]):
     src += ["timestamp_using_ostick.c"]
 
 
