@@ -10,7 +10,7 @@
 
 `NextPilot Flight Control System` is a powerfull, scalable and advanced autopilot, which is designed to be easily used in education, research, and industry.
 
-## Feature
+## Main Feature
 
 1. Excellent performance. RTOS based on [RT-Thread V5.0.2](https://github.com/RT-Thread/rt-thread/tree/v5.0.2) with active community and rich components, such as FINSH, DFS, ULOG etc.
 
@@ -82,12 +82,12 @@ The main IDE/compilers supported by NextPilot are:
 - Sensor Vote:
 - Wind estimator:
 
-### Telemetry
+## Telemetry
 
 - mavlink
 - uavcan
 
-### Simulation
+## Simulation
 
 - [SITL: qemu + SIH](bsps/sitl/qemu/README.md)
 - HITL: stm32 + SIH

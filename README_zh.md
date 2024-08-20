@@ -58,14 +58,14 @@ NextPilot 设计硬件:
 - 遥控器：s.bus
 - 告  警：led/tunes
 
-## 编译器支持
+## 编译支持
 
-NextPilot 主要支持以下 IDE:
+NextPilot 主要支持以下 IDE/编译器:
 
 - KEIL MDK
 - ARM GCC + VSCode,  （[Windows](https://github.com/nextpilot/nextpilot-windows-toolchain) | [Ubuntu](https://github.com/nextpilot/nextpilot-ubuntu-toolchain)）
 
-使用基于 Python 的 scons 进行命令行生成 Keil 等功能，使用 Kconfig 进行系统裁剪和配置。
+使用基于 Python 的 scons 进行命令行生成 Keil 等工程，使用 Kconfig 进行系统裁剪和配置。
 
 # 功能清单
 
