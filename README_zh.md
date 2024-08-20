@@ -6,7 +6,11 @@
 
 [English](README.md) | [中文](README_zh.md) | [Español](README_es.md) | [Deutsch](README_de.md)
 
+# 简介
+
 NextPilot飞控系统是一款功能丰富、高度扩展、稳定可靠的国产先进自动驾驶仪。目标是便捷的应用于教育、研究和工业等领域，让工程师专注于自己的擅长领域（比如嵌入式、控制算法、应用业务）进行高效的开发。
+
+## 特色亮点
 
 1. 出色的嵌入式性能。基于 [RT-Thread V5.0.2](https://github.com/RT-Thread/rt-thread/tree/v5.0.2) 国产实时操作系统，它资源占用极低、超低功耗设计、支持高性能应用，拥有活跃的社区、丰富的组件（如FINSH、DFS、ULOG等）、繁荣发展的软件包生态。
 
@@ -21,7 +25,7 @@ NextPilot飞控系统是一款功能丰富、高度扩展、稳定可靠的国�
 
 7. 支持主流开发工具，包括 Gcc+VScode（[Windows](https://github.com/nextpilot/nextpilot-windows-toolchain)/[Ubuntu](https://github.com/nextpilot/nextpilot-ubuntu-toolchain)）、Keil 和 IAR等，通过 scons 工具生成多种 IDE 项目文件。
 
-# 系统框架
+## 系统框架
 
 ![](./docs/develop/03.系统框架/architecture.png)
 
@@ -31,33 +35,16 @@ NextPilot飞控系统是一款功能丰富、高度扩展、稳定可靠的国�
 - 固定翼：plane
 - 垂  起：standard, tailsitter, tiltrotor
 
-## 功能支持
-
-### 飞行控制
-
-- 飞行模式：手动, 特技, 姿态, 定高, 定点; 起飞, 着陆, 任务, 悬停, 返航, 跟随; 外部控制等
-- 安全保护：地理围栏, 低电量保护, GNSS失锁, 遥控失联, 链路失联, 发动机故障等
-
-### 组合导航
-
-输出姿态和位置，并支持风速估计、地形估计、多传感器表决、振动频率估计等，具备融合gps、imu、mag、baro等传感器数据。
-
-### 飞行仿真
-
-- [软件在环]((bsps/sitl/qemu/README.md))：运行于qemu环境（支持windows和ubuntu），飞控集成了飞行动力学仿真，传感器采用仿真数据，地面站通过UDP连接飞控
-
-- 硬件在环：运行于stm32硬件上，飞控集成了飞行动力学仿真，传感器采用仿真数据，地面站通过UART连接飞控
-
 ## 硬件支持
 
-Pixhawk开源硬件:
+Pixhawk 开源硬件:
 
 - [CUAV Pixhawk V5+ (FMUv5)](https://docs.px4.io/main/en/flight_controller/cuav_v5_plus.html), [bsp code](bsps/px4/fmu-v5)
 - [CUAV Pixhawk V6X (FMUv6x)](https://docs.px4.io/main/en/flight_controller/cuav_pixhawk_v6x.html), 即将支持
 - [Holybro Pixhawk V5X (FMUv5X)](https://docs.px4.io/main/en/flight_controller/pixhawk5x.html), 即将支持
 - [Holybro Pixhawk V6X (FMUv6X)](https://docs.px4.io/main/en/flight_controller/pixhawk6x.html), 即将支持
 
-NextPilot设计硬件:
+NextPilot 设计硬件:
 
 - fcs-v1, 飞行控制计算机
 - ins-v1, 组合导航计算机
@@ -71,24 +58,54 @@ NextPilot设计硬件:
 - 遥控器：s.bus
 - 告  警：led/tunes
 
-# 文档资料
-
-## 用户手册
-
-[快速入门](https://www.nextpilot.org/manual) | [飞行模式](https://www.nextpilot.org/manual/05.%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/01.%E9%A3%9E%E8%A1%8C%E6%A8%A1%E5%BC%8F/index.html) |[高级调参]() | [飞行仿真]()  |  [日志分析]()
-
-<!-- # 社区支持
-
-NextPilot 非常感谢所有社区小伙伴的支持，在使用 NextPilot 的过程中若您有任何的想法，建议或疑问都可通过以下方式联系到 NextPilot，我们也实时在这些频道更新 NextPilot 的最新讯息。同时，任何问题都可以在 [论坛](h) 中提出，社区成员将回答这些问题。 -->
-
-## 开发指南
+## 编译器支持
 
 NextPilot 主要支持以下 IDE:
 
 - KEIL MDK
-- ARM GCC + VSCode,  [Windows](https://github.com/nextpilot/nextpilot-windows-toolchain) | [Ubuntu](https://github.com/nextpilot/nextpilot-ubuntu-toolchain)
+- ARM GCC + VSCode,  （[Windows](https://github.com/nextpilot/nextpilot-windows-toolchain) | [Ubuntu](https://github.com/nextpilot/nextpilot-ubuntu-toolchain)）
 
-您可以通过 [开发指南](https://www.nextpilot.org/develop) 了解如何进行NextPilot开发，比如：[搭建开发环境](https://www.nextpilot.org/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/01.setup-develop-environment.html)， [如何添加代码](https://www.nextpilot.org/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/99.add-new-code.html)， [系统底层框架]()等。
+使用基于 Python 的 scons 进行命令行生成 Keil 等功能，使用 Kconfig 进行系统裁剪和配置。
+
+# 功能清单
+
+## 飞行控制
+
+- 飞行模式：手动, 特技, 姿态, 定高, 定点; 起飞, 着陆, 任务, 悬停, 返航, 跟随; 外部控制等
+- 安全保护：地理围栏, 低电量保护, GNSS失锁, 遥控失联, 链路失联, 发动机故障等
+
+## 组合导航
+
+输出姿态和位置，并支持风速估计、地形估计、多传感器表决、振动频率估计等，具备融合gps、imu、mag、baro等传感器数据。
+
+## 飞行仿真
+
+- [软件在环]((bsps/sitl/qemu/README.md))：运行于qemu环境（支持windows和ubuntu），飞控集成了飞行动力学仿真，传感器采用仿真数据，地面站通过UDP连接飞控
+
+- 硬件在环：运行于stm32硬件上，飞控集成了飞行动力学仿真，传感器采用仿真数据，地面站通过UART连接飞控
+
+# 资源文档
+
+## 用户手册
+
+[NextPilot 用户手册](https://www.nextpilot.org/manual)，可以带您 [快速入门](https://www.nextpilot.org/manual)，并了解 NextPilot的 [飞行模式](https://www.nextpilot.org/manual/05.%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/01.%E9%A3%9E%E8%A1%8C%E6%A8%A1%E5%BC%8F/index.html)、[高级调参]()、[飞行仿真]()、[日志分析]()等。
+
+## 开发指南
+
+您可以通过 [NextPilot 开发指南](https://www.nextpilot.org/develop) 了解如何进行 NextPilot 开发，比如：[搭建开发环境](https://www.nextpilot.org/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/01.setup-develop-environment.html)， [如何添加代码](https://www.nextpilot.org/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/99.add-new-code.html)， [系统底层框架]()等。
+
+# 社区支持
+
+NextPilot 非常感谢所有社区小伙伴的支持，在使用 NextPilot 的过程中若您有任何的想法，建议或疑问都可通过以下方式联系到 NextPilot，我们也实时在这些频道更新 NextPilot 的最新讯息。
+
+- 官方网站：<https://www.nextpilot.org>
+- 交流论坛：<https://github.com/nextpilot/nextpilot-flight-control/discussions>
+- 问题反馈：<https://github.com/nextpilot/nextpilot-flight-control/issues>
+- 联系方式：<nextpilot@qq.com>
+
+扫码加入`NextPilot社区支持`群，我们会提供相关技术支持，全力为大家答疑解惑。
+
+<img src="./docs/community/add-to-group.jpeg" height="250" width="450" />
 
 # 许可协议
 
@@ -97,6 +114,8 @@ NextPilot 系统完全开源，遵循[BSD 3-Clause License](./LICENSE) 开源许
 # 贡献代码
 
 如果您对 NextPilot 感兴趣，希望参与 NextPilot 的开发并成为代码贡献者，请参阅[代码贡献指南](.github/CONTRIBUTING.md)。
+
+提交代码：<https://github.com/nextpilot/nextpilot-flight-control/pulls>
 
 感谢以下小伙伴对本仓库的贡献！
 

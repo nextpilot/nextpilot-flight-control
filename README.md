@@ -6,7 +6,11 @@
 
 [English](README.md) | [中文](README_zh.md) | [Español](README_es.md) | [Deutsch](README_de.md)
 
+# Overview
+
 `NextPilot Flight Control System` is a powerfull, scalable and advanced autopilot, which is designed to be easily used in education, research, and industry.
+
+## Feature
 
 1. Excellent performance. RTOS based on [RT-Thread V5.0.2](https://github.com/RT-Thread/rt-thread/tree/v5.0.2) with active community and rich components, such as FINSH, DFS, ULOG etc.
 
@@ -34,29 +38,6 @@
 
 NextPilot use [airframe](apps/airframe/README.md) set Vehicle parameters and start modules.
 
-## Supported Function
-
-### Controller
-
-- Flight Mode: manul, arco, att, alt, pos; takeoff, land, mission, loiter, rtl, follow; offboard
-- Safety: geofence, low power, gnss loss, rc loss, datalink loss, engine failure, etc
-
-### Estimator
-
-- Gyro fft:
-- Sensor Vote:
-- Wind estimator:
-
-### Telemetry
-
-- mavlink
-- uavcan
-
-### Simulation
-
-- [SITL: qemu + SIH](bsps/sitl/qemu/README.md)
-- HITL: stm32 + SIH
-
 ## Supported Hardware
 
 open-source hardware:
@@ -81,6 +62,36 @@ key design point:
 - radio control: s.bus
 - notification: led, tunes, safety_button
 
+## Supported IDE/Compiler
+
+The main IDE/compilers supported by NextPilot are:
+
+- KEIL MDK
+- ARM GCC + VSCode, [Windows](https://github.com/nextpilot/nextpilot-windows-toolchain) | [Ubuntu](https://github.com/nextpilot/nextpilot-ubuntu-toolchain)
+
+# Function
+
+## Controller
+
+- Flight Mode: manul, arco, att, alt, pos; takeoff, land, mission, loiter, rtl, follow; offboard
+- Safety: geofence, low power, gnss loss, rc loss, datalink loss, engine failure, etc
+
+## Estimator
+
+- Gyro fft:
+- Sensor Vote:
+- Wind estimator:
+
+### Telemetry
+
+- mavlink
+- uavcan
+
+### Simulation
+
+- [SITL: qemu + SIH](bsps/sitl/qemu/README.md)
+- HITL: stm32 + SIH
+
 # Document
 
 ## User Manual
@@ -91,10 +102,18 @@ key design point:
 
 [Getting Started](https://www.nextpilot.org/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/01.setup-develop-environment.html) | [System Startup](https://www.nextpilot.org/develop/03.%E7%B3%BB%E7%BB%9F%E6%A1%86%E6%9E%B6/03.system-startup.html) | [Build Tools](https://www.nextpilot.org/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E6%9E%84%E5%BB%BA%E9%85%8D%E7%BD%AE%E7%B3%BB%E7%BB%9F/Kconfig.html)
 
-The main IDE/compilers supported by NextPilot are:
+# Comunity
 
-- KEIL MDK
-- ARM GCC + VSCode, [Windows](https://github.com/nextpilot/nextpilot-windows-toolchain) | [Ubuntu](https://github.com/nextpilot/nextpilot-ubuntu-toolchain)
+NextPilot is very grateful for the support from all community users and developers, and if you have any ideas, suggestions or questions in the process of using NextPilot, NextPilot can be reached by the following means, and we are also updating NextPilot in real time on these channels.
+
+- homepage：<https://www.nextpilot.org>
+- discuss：<https://github.com/nextpilot/nextpilot-flight-control/discussions>
+- issues：<https://github.com/nextpilot/nextpilot-flight-control/issues>
+- email：<nextpilot@qq.com>
+
+Scan the QR code to join the `NextPilot Community Support` group, we will do our best to answer your questions.
+
+<img src="./docs/community/add-to-group.jpeg" height="250" width="450" />
 
 # License
 
