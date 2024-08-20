@@ -1,6 +1,6 @@
 # PX4开源飞控定制开发
 
-<img src="./px4.png"  height="200"/>
+<img src="./px4.png" width="300" height="200"/>
 
 ## 技术支持与咨询
 
