@@ -43,23 +43,33 @@ public:
         return 0;
     }
 
+    rt_tick_t _last_tick;
+
 private:
     void Run() override {
-        static uint32_t cnt = 0;
+        static uint32_t cnt   = 0;
+        static double   total = 0.0f;
         if (should_exit()) {
         }
         // rt_thread_mdelay(1000);
+
+        /* 1. 计时等待 */
         rt_tick_t start = rt_tick_get();
-        while (rt_tick_get() - start <= 2) {
+        while (rt_tick_get() - start <= 5) {
+            total += 1.0;
         }
-        // static double total = 0.0f;
-        // // 执行一些很耗时的操作
+
+        /* 2. 执行一些很耗时的操作*/
         // for (uint32_t sleep = 0; sleep < 500000; ++sleep) {
         //     total += 1.0 / sleep;
         // }
-        // if (_idx == 0) {
-        //     rt_kprintf("======idx=%d, %ld, %d\n", _idx, rt_tick_get(), cnt++);
-        // }
+
+        if ((_idx == 0) && (cnt % 10 == 0)) {
+            rt_tick_t current_tick = rt_tick_get();
+            rt_kprintf("======idx=%d, t=%ld, dt=%ld, cnt=%d\n", _idx, current_tick, current_tick - _last_tick, cnt);
+            _last_tick = rt_tick_get();
+        }
+        cnt++;
     }
 
     int _idx;
