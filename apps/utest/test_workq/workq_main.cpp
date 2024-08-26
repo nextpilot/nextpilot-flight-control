@@ -17,7 +17,7 @@ static wq_config_t sim_rate_ctrl{"wq:sim_rate_ctrl", 4096 * 10, 0};
  * @brief 模拟IMU，用于发布角速率数据
  *
  */
-class SimIMU : public ModuleCommand<SimIMU, 6>, public nextpilot::WorkItemScheduled {
+class SimIMU : public ModuleCommand<SimIMU>, public nextpilot::WorkItemScheduled {
 public:
     SimIMU(int instance) :
         WorkItemScheduled(MODULE_NAME, sim_rate_ctrl),
@@ -49,6 +49,8 @@ public:
         return 0;
     }
 
+    rt_tick_t tick_buff[50];
+
     void Run() override {
         hrt_abstime now_us        = hrt_absolute_time();
         _vangvel.timestamp        = now_us;
@@ -60,9 +62,12 @@ public:
         _vangvel_pub.publish(_vangvel);
 
 
+        static int kk      = 0;
+        tick_buff[kk % 50] = rt_tick_get();
+        kk++;
         //
         static int cnt = 0;
-        if ((_instance == 0) && (cnt % 10 == 0)) {
+        if ((_instance == 0) && (cnt % 20 == 0)) {
             rt_tick_t current_tick = rt_tick_get();
             rt_kprintf("[SimIMU]>>>instance=%d, t=%ld, dt=%ld, cnt=%d\n", _instance, current_tick, current_tick - _last_tick, cnt);
             _last_tick = current_tick;
@@ -75,7 +80,7 @@ private:
     rt_tick_t _last_tick{};
 
     //
-    struct vehicle_angular_velocity_s _vangvel;
+    struct vehicle_angular_velocity_s _vangvel {};
 
     uORB::Publication<vehicle_angular_velocity_s> _vangvel_pub{ORB_ID(vehicle_angular_velocity)};
 };
@@ -83,9 +88,8 @@ private:
 /**
  * @brief 模拟角速率控制，订阅角速率
  *
- * ModuleCommand<SimRateControl, 6>: 最多创建6个实例
  */
-class SimRateControl : public ModuleCommand<SimRateControl, 6>, public nextpilot::WorkItem {
+class SimRateControl : public ModuleCommand<SimRateControl>, public nextpilot::WorkItem {
 public:
     SimRateControl(int instance) :
         WorkItem(MODULE_NAME, sim_rate_ctrl) {
@@ -133,25 +137,18 @@ private:
         static double   total = 0.0f;
         if (should_exit()) {
         }
-        // rt_thread_mdelay(1000);
+        // rt_thread_mdelay(10); workqueue中不能有delay
 
-        /* 1. 计时等待 */
-        // rt_tick_t start = rt_tick_get();
-        // while (rt_tick_get() - start <= 5) {
-        //     total += 1.0;
-        // }
-
-        /* 2. 执行一些很耗时的操作*/
-        // for (uint32_t sleep = 0; sleep < 500000; ++sleep) {
-        //     total += 1.0 / sleep;
-        // }
-
-        if ((_instance == 0) && (cnt % 10 == 0)) {
-            rt_tick_t current_tick = rt_tick_get();
-            rt_kprintf("[SimRateControl]>>>instance=%d, t=%ld, dt=%ld, cnt=%d\n", _instance, current_tick, current_tick - _last_tick, cnt);
-            _last_tick = current_tick;
+        vehicle_angular_velocity_s angular_velocity;
+        if (_vehicle_angular_velocity_sub.update(&angular_velocity)) {
+            if ((_instance == 0) && (cnt % 20 == 0)) {
+                rt_tick_t current_tick = rt_tick_get();
+                rt_kprintf("[SimRateControl]>>>instance=%d, t=%ld, dt=%ld, cnt=%d\n", _instance, current_tick, current_tick - _last_tick, cnt);
+                rt_kprintf("[SimRateControl]>>>msg pub time=%llu\n", angular_velocity.timestamp);
+                _last_tick = current_tick;
+            }
+            cnt++;
         }
-        cnt++;
     }
 };
 
@@ -164,7 +161,7 @@ int sim_imu_start() {
     return ret;
 }
 
-// INIT_APP_EXPORT(sim_imu_start);
+INIT_APP_EXPORT(sim_imu_start);
 
 int sim_rate_ctrl_start() {
     int         ret;
@@ -175,4 +172,4 @@ int sim_rate_ctrl_start() {
     return ret;
 }
 
-// INIT_APP_EXPORT(sim_rate_ctrl_start);
+INIT_APP_EXPORT(sim_rate_ctrl_start);
