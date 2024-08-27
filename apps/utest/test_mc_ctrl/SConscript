@@ -1,0 +1,22 @@
+
+import os
+import rtconfig
+from building import *
+
+cwd = GetCurrentDir()
+group = []
+
+
+# 添加当前文件夹下的代码
+src = Glob("*.c") + Glob("*.cpp")
+inc = [cwd]
+
+group += DefineGroup("utest", src, depend = [''], CPPPATH = inc)
+
+for d in os.listdir(cwd):
+    path = os.path.join(cwd, d)
+    if os.path.isfile(os.path.join(path, "SConscript")):
+        # print(os.path.join(d, 'SConscript'))
+        group += SConscript(os.path.join(d, "SConscript"))
+
+Return("group")

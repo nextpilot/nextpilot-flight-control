@@ -1,0 +1,6 @@
+menuconfig TEST_MC_CTRL
+    bool "sim a mc controller"
+    default n
+
+if TEST_MC_CTRL
+endif
