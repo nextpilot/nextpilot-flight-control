@@ -20,7 +20,7 @@ static wq_config_t sim_rate_ctrl{"wq:sim_rate_ctrl", 4096 * 10, 0};
 class SimIMU : public ModuleCommand<SimIMU>, public nextpilot::WorkItemScheduled {
 public:
     SimIMU(int instance) :
-        WorkItemScheduled(MODULE_NAME, sim_rate_ctrl),
+        WorkItemScheduled("hhhhh", sim_rate_ctrl),
         _instance(instance) {
     }
 
@@ -69,8 +69,11 @@ public:
         static int cnt = 0;
         if ((_instance == 0) && (cnt % 20 == 0)) {
             rt_tick_t current_tick = rt_tick_get();
-            rt_kprintf("[SimIMU]>>>instance=%d, t=%ld, dt=%ld, cnt=%d\n", _instance, current_tick, current_tick - _last_tick, cnt);
-            _last_tick = current_tick;
+            uint64_t  _start       = hrt_absolute_time();
+            LOG_I("[SimIMU]>>>instance=%d, t=%ld, dt=%ld, cnt=%d\n", _instance, current_tick, current_tick - _last_tick, cnt);
+
+            uint64_t _delta = hrt_absolute_time() - _start;
+            _last_tick      = current_tick;
         }
         cnt++;
     }
@@ -143,8 +146,8 @@ private:
         if (_vehicle_angular_velocity_sub.update(&angular_velocity)) {
             if ((_instance == 0) && (cnt % 20 == 0)) {
                 rt_tick_t current_tick = rt_tick_get();
-                rt_kprintf("[SimRateControl]>>>instance=%d, t=%ld, dt=%ld, cnt=%d\n", _instance, current_tick, current_tick - _last_tick, cnt);
-                rt_kprintf("[SimRateControl]>>>msg pub time=%llu\n", angular_velocity.timestamp);
+                LOG_I("[SimRateControl]>>>instance=%d, t=%ld, dt=%ld, cnt=%d\n", _instance, current_tick, current_tick - _last_tick, cnt);
+                LOG_I("[SimRateControl]>>>msg pub time=%llu\n", angular_velocity.timestamp);
                 _last_tick = current_tick;
             }
             cnt++;

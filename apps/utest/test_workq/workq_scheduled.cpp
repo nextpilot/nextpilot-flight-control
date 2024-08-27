@@ -92,4 +92,4 @@ int workq_scheduled_start() {
     return ret;
 }
 
-INIT_APP_EXPORT(workq_scheduled_start);
+// INIT_APP_EXPORT(workq_scheduled_start);
