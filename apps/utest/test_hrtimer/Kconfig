@@ -1,0 +1,3 @@
+menuconfig TEST_PKG_HRTIMER
+    bool "test hrtimer package"
+    default n

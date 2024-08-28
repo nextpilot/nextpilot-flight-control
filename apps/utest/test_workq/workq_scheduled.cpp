@@ -1,4 +1,14 @@
-#define LOG_TAG "utest_wq"
+/*****************************************************************
+ *     _   __             __   ____   _  __        __
+ *    / | / /___   _  __ / /_ / __ \ (_)/ /____   / /_
+ *   /  |/ // _ \ | |/_// __// /_/ // // // __ \ / __/
+ *  / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
+ * /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
+ *
+ * Copyright All Reserved © 2015-2024 NextPilot Development Team
+ ******************************************************************/
+
+#define LOG_TAG "test_interval"
 #define LOG_LVL LOG_LVL_INFO
 
 #include <nextpilot.h>
@@ -6,8 +16,6 @@
 
 using namespace time_literals;
 using namespace nextpilot;
-
-static wq_config_t workq_scheduled{"wq:workq_scheduled", 4096 * 10, 0};
 
 /**
  * @brief
@@ -17,7 +25,7 @@ static wq_config_t workq_scheduled{"wq:workq_scheduled", 4096 * 10, 0};
 class UTestWorkqScheduled : public ModuleCommand<UTestWorkqScheduled, 6>, public nextpilot::WorkItemScheduled {
 public:
     UTestWorkqScheduled(int idx) :
-        WorkItemScheduled(MODULE_NAME, workq_scheduled) {
+        WorkItemScheduled(MODULE_NAME, wq_configurations::rate_ctrl) {
         instance = idx;
     }
 
