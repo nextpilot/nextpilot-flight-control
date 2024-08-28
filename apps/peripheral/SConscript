@@ -4,7 +4,7 @@ from building import *
 
 objs = []
 
-# 在qemu环境下不编译所有已经驱动
+# 在qemu环境下不编译所有硬件驱动
 if GetDepend(["BSP_USING_QEMU"]):
     Return("objs")
 

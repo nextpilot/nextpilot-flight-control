@@ -13,15 +13,22 @@ prj_root = os.path.abspath(os.path.join(cwd, "../../"))
 
 # 搜索包含*_params.c文件的目录
 params_source_dir = set()
+params_source_dir.add(cwd)
 
 # 搜索名称module.yaml的文件
 modules_config_file = set()
 
 for root, dirs, files in os.walk(prj_root):
     for file in files:
+        if file == "module_params.c":
+            continue
+        if "rtos" in root:
+            continue
+
         if file.endswith(".yaml") and "module" in file:
             modules_config_file.add(os.path.join(root, file))
-        if file.endswith(".c") and "param" in file and "rtos" not in root:
+
+        if file.endswith(".c") and "param" in file:
             params_source_dir.add(root)
 
 # Generating serial_params.c from modules.yaml
