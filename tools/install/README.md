@@ -31,18 +31,15 @@ git clone --recursive https://gitee.com/nextpilot/nextpilot-windows-toolchain.gi
 
 ## Ubuntu
 
-请在终端中直接运行`ubuntu.sh`即可安装ubuntu下的开发环境：
-
-```shell
-sudo chmod 777 tools/ubuntu.sh
-./tools/ubuntu.sh
-```
-
-以上脚本，会将所需的工具和脚本下载到`~/.ndt`目录，开发所需的环境变量配置在`~/.ndt/ndt.sh`里面。
-
-当然NextPilot开发团队也为您准好了`到手用的`工具链，请下载<ttps://gitee.com/nextpilot/nextpilot-ubuntun-toolchain>，您直接clone到`~/.ndt`即可：
+针对Ubuntu开发环境，NextPilot开发团队也为您准好了`开箱即用`工具链，请下载<ttps://gitee.com/nextpilot/nextpilot-ubuntun-toolchain>，您直接clone到`~/.ndt`即可：
 
 ```shell
 # 下载开发工具链
 git clone --recursive https://gitee.com/nextpilot/nextpilot-ubuntun-toolchain.git ~/.ndt
+```
+
+在使用之前，请先执行`~/.ndt/init.sh`
+
+```shell
+source ~/.ndt/init.sh
 ```
