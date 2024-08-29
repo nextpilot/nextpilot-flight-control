@@ -5,14 +5,6 @@ from building import *
 cwd = GetCurrentDir()
 objs = []
 
-src = Glob("*.cpp")
-inc = [cwd]
-
-
-defs = []
-
-
-objs += DefineGroup(name="utest", src=src, depend=[], CPPPATH=inc, CPPDEFINES=defs)
 
 for d in os.listdir(cwd):
     path = os.path.join(cwd, d)

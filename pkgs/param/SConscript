@@ -22,10 +22,11 @@ for root, dirs, files in os.walk(prj_root):
     for file in files:
         if file == "module_params.c":
             continue
+
         if "rtos" in root:
             continue
 
-        if file.endswith(".yaml") and "module" in file:
+        if file == "module.yaml":  # file.endswith(".yaml") and "module" in file:
             modules_config_file.add(os.path.join(root, file))
 
         if file.endswith(".c") and "param" in file:

@@ -102,6 +102,10 @@ int orb_poll(orb_subscr_t *handle[], int len, int timeout_us) {
     int                 ret_attr_init  = pthread_mutexattr_init(&attr);
     int                 ret_mutex_init = pthread_mutex_init(&_mutex, &attr);
 
+    if (ret_attr_init != 0 && ret_mutex_init != 0) {
+        return -1;
+    }
+
     for (int i = 0; i < len; i++) {
         sub[i].register_callback(&_cv);
     }

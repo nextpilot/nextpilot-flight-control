@@ -1,4 +1,4 @@
-menuconfig TEST_UORB
+menuconfig TEST_PKG_UORB
     bool "test uorb"
     default n
 

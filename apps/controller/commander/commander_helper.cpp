@@ -89,7 +89,7 @@ bool is_ground_vehicle(const vehicle_status_s &current_status) {
 
 // End time for currently blinking LED message, 0 if no blink message
 static hrt_abstime blink_msg_end = 0;
-static int         fd_leds{-1};
+// static int         fd_leds{-1};
 
 static led_control_s led_control{};
 static orb_advert_t  led_control_pub = nullptr;

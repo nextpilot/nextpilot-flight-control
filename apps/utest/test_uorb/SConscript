@@ -3,16 +3,11 @@ import rtconfig
 from building import *
 
 cwd = GetCurrentDir()
-group = []
 
 src = Glob("*.c") + Glob("*.cpp")
-inc = [cwd]
+inc = []
 
-group += DefineGroup("utest", src, depend=[""], CPPPATH=inc)
+objs = DefineGroup("utest", src, depend=["TEST_PKG_UORB"], CPPPATH=inc)
 
-for d in os.listdir(cwd):
-    path = os.path.join(cwd, d)
-    if os.path.isfile(os.path.join(path, "SConscript")):
-        group += SConscript(os.path.join(d, "SConscript"))
 
-Return("group")
+Return("objs")

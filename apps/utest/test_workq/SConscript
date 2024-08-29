@@ -1,4 +1,3 @@
-
 import os
 import rtconfig
 from building import *
@@ -9,14 +8,8 @@ group = []
 
 # 添加当前文件夹下的代码
 src = Glob("*.c") + Glob("*.cpp")
-inc = [cwd]
+inc = []
 
-group += DefineGroup("utest", src, depend = [''], CPPPATH = inc)
-
-for d in os.listdir(cwd):
-    path = os.path.join(cwd, d)
-    if os.path.isfile(os.path.join(path, "SConscript")):
-        # print(os.path.join(d, 'SConscript'))
-        group += SConscript(os.path.join(d, "SConscript"))
+group += DefineGroup("utest", src, depend=["TEST_WORK_QUEUE"], CPPPATH=inc)
 
 Return("group")
