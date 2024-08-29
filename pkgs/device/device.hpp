@@ -157,7 +157,7 @@ protected:
 
     bool _registered{false};
 
-    // 驱动的名称，比如ist8310
+    // 驱动的名称，比如i2c1
     const char *_bus_name{nullptr};
     rt_device_t _bus_device{nullptr};
 };

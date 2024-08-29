@@ -1,5 +1,5 @@
-menuconfig DRIVERS_PWM_OUT
-	bool "pwm_out"
+menuconfig DRV_USING_PWM_OUT
+	bool "pwm out"
 	default n
 	---help---
 		Enable support for pwm_out

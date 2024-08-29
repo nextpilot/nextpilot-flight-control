@@ -25,7 +25,6 @@
 #define RT_USING_DEBUG
 #define RT_DEBUGING_COLOR
 #define RT_DEBUGING_CONTEXT
-#define RT_DEBUGING_INIT
 
 /* Inter-Thread communication */
 
@@ -601,6 +600,35 @@
 
 /* Nextpilot Peripheral Config */
 
+/* actuator */
+
+/* end of actuator */
+
+/* battery */
+
+/* end of battery */
+
+/* notification */
+
+/* end of notification */
+
+/* payload */
+
+/* end of payload */
+
+/* radio control */
+
+/* end of radio control */
+
+/* sensor */
+
+
+/* Optical flow */
+
+/* end of Optical flow */
+/* end of sensor */
+/* end of Nextpilot Peripheral Config */
+
 /* Nextpilot Simulation Config */
 
 #define SIM_USING_BATTERY
@@ -628,6 +656,10 @@
 #define MAVLINK_USING_PARAM
 #define MAVLINK_USING_MISSION
 /* end of Nextpilot Telemetry Config */
+
+/* NextPilot UnitTest Config */
+
+/* end of NextPilot UnitTest Config */
 /* end of Nextpilot Firmware Config */
 
 /* Nextpilot Packages Config */
@@ -638,23 +670,25 @@
 #define PKG_USING_GETOPT
 #define PKG_USING_HRTIMER
 #define PKG_USING_HRTIMER_V3
-#define HRT_USING_OSTICK
+#define HRT_USING_OTHER
 #define HRT_USING_OSTIMER
 #define PKG_USING_LIBCRC
 #define PKG_USING_MATHLIB
 #define PKG_USING_MATRIX
-#define PARAM_DEFAULT_FILE_PATH "/param.bin"
 #define PKG_USING_PARAM
+#define PARAM_USING_GLOBAL_AUTOGEN
+#define PARAM_USING_STORAGE_FILE
+#define PARAM_DEFAULT_FILE_PATH "/param.bin"
 #define PARAM_USING_DEVICE_FILE
 #define PKG_USING_PERF
 #define PKG_USING_QUEUE
 #define PKG_USING_RING_BUFFER
 #define PKG_USING_SHUTDOWN
-#define PKG_USING_UORB
 
 /* ULog backend */
 
 /* end of ULog backend */
+#define PKG_USING_UORB
 #define PKG_USING_VAR_LEN_RINGBUFFER
 #define PKG_USING_VCONSOLE_V2
 #define PKG_USING_BOARD_VERSION

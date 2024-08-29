@@ -1,35 +1,12 @@
-/****************************************************************************
+/*****************************************************************
+ *     _   __             __   ____   _  __        __
+ *    / | / /___   _  __ / /_ / __ \ (_)/ /____   / /_
+ *   /  |/ // _ \ | |/_// __// /_/ // // // __ \ / __/
+ *  / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
+ * /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
  *
- *   Copyright (c) 2018 PX4 Development Team. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- * 3. Neither the name PX4 nor the names of its contributors may be
- *    used to endorse or promote products derived from this software
- *    without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
- * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
- * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- *
- ****************************************************************************/
+ * Copyright All Reserved © 2015-2024 NextPilot Development Team
+ ******************************************************************/
 
 /**
  * @file camera_capture.hpp
@@ -55,97 +32,95 @@
 #include <uORB/topics/vehicle_command.h>
 #include <uORB/topics/vehicle_command_ack.h>
 
-class CameraCapture : public px4::ScheduledWorkItem
-{
+class CameraCapture : public px4::ScheduledWorkItem {
 public:
-	/**
+    /**
 	 * Constructor
 	 */
-	CameraCapture();
+    CameraCapture();
 
-	/**
+    /**
 	 * Destructor, also kills task.
 	 */
-	~CameraCapture();
+    ~CameraCapture();
 
-	/**
+    /**
 	 * Start the task.
 	 */
-	int			start();
+    int start();
 
-	/**
+    /**
 	 * Stop the task.
 	 */
-	void			stop();
+    void stop();
 
-	void 			status();
+    void status();
 
-	// Low-rate command handling loop
-	void			Run() override;
+    // Low-rate command handling loop
+    void Run() override;
 
-	static void		capture_trampoline(void *context, uint32_t chan_index, hrt_abstime edge_time, uint32_t edge_state,
-			uint32_t overflow);
+    static void capture_trampoline(void *context, uint32_t chan_index, hrt_abstime edge_time, uint32_t edge_state,
+                                   uint32_t overflow);
 
-	void 			set_capture_control(bool enabled);
+    void set_capture_control(bool enabled);
 
-	void			reset_statistics(bool reset_seq);
+    void reset_statistics(bool reset_seq);
 
-	void			publish_trigger();
+    void publish_trigger();
 
 
-	static struct work_s	_work_publisher;
+    static struct work_s _work_publisher;
 
 private:
-	int _capture_channel = 5; ///< by default, use FMU output 6
+    int _capture_channel = 5; ///< by default, use FMU output 6
 
-	// Publishers
-	uORB::Publication<vehicle_command_ack_s>	_command_ack_pub{ORB_ID(vehicle_command_ack)};
-	uORB::Publication<camera_trigger_s>		_trigger_pub{ORB_ID(camera_trigger)};
+    // Publishers
+    uORB::Publication<vehicle_command_ack_s> _command_ack_pub{ORB_ID(vehicle_command_ack)};
+    uORB::Publication<camera_trigger_s>      _trigger_pub{ORB_ID(camera_trigger)};
 
-	// Subscribers
-	uORB::Subscription				_command_sub{ORB_ID(vehicle_command)};
-	uORB::Subscription				_pps_capture_sub{ORB_ID(pps_capture)};
+    // Subscribers
+    uORB::Subscription _command_sub{ORB_ID(vehicle_command)};
+    uORB::Subscription _pps_capture_sub{ORB_ID(pps_capture)};
 
-	// Trigger Buffer
-	struct _trig_s {
-		uint32_t chan_index;
-		hrt_abstime hrt_edge_time;
-		uint32_t edge_state;
-		uint32_t overflow;
-	} _trigger{};
+    // Trigger Buffer
+    struct _trig_s {
+        uint32_t    chan_index;
+        hrt_abstime hrt_edge_time;
+        uint32_t    edge_state;
+        uint32_t    overflow;
+    } _trigger{};
 
-	bool			_capture_enabled{false};
-	bool			_gpio_capture{false};
+    bool _capture_enabled{false};
+    bool _gpio_capture{false};
 
-	// Parameters
-	param_t 		_p_strobe_delay{PARAM_INVALID};
-	float			_strobe_delay{0.0f};
-	param_t			_p_camera_capture_mode{PARAM_INVALID};
-	int32_t			_camera_capture_mode{0};
-	param_t			_p_camera_capture_edge{PARAM_INVALID};
-	int32_t			_camera_capture_edge{0};
+    // Parameters
+    param_t _p_strobe_delay{PARAM_INVALID};
+    float   _strobe_delay{0.0f};
+    param_t _p_camera_capture_mode{PARAM_INVALID};
+    int32_t _camera_capture_mode{0};
+    param_t _p_camera_capture_edge{PARAM_INVALID};
+    int32_t _camera_capture_edge{0};
 
-	// Signal capture statistics
-	uint32_t		_capture_seq{0};
-	hrt_abstime		_last_trig_begin_time{0};
-	hrt_abstime		_last_exposure_time{0};
-	hrt_abstime		_last_trig_time{0};
-	uint32_t 		_capture_overflows{0};
+    // Signal capture statistics
+    uint32_t    _capture_seq{0};
+    hrt_abstime _last_trig_begin_time{0};
+    hrt_abstime _last_exposure_time{0};
+    hrt_abstime _last_trig_time{0};
+    uint32_t    _capture_overflows{0};
 
-	hrt_abstime	_pps_hrt_timestamp{0};
-	uint64_t		_pps_rtc_timestamp{0};
-	uint8_t			_trigger_rate_exceeded_counter{0};
-	px4::atomic<bool> _trigger_rate_failure{false};
+    hrt_abstime       _pps_hrt_timestamp{0};
+    uint64_t          _pps_rtc_timestamp{0};
+    uint8_t           _trigger_rate_exceeded_counter{0};
+    px4::atomic<bool> _trigger_rate_failure{false};
 
-	orb_advert_t _mavlink_log_pub{nullptr};
+    orb_advert_t _mavlink_log_pub{nullptr};
 
-	// Signal capture callback
-	void			capture_callback(uint32_t chan_index, hrt_abstime edge_time, uint32_t edge_state, uint32_t overflow);
+    // Signal capture callback
+    void capture_callback(uint32_t chan_index, hrt_abstime edge_time, uint32_t edge_state, uint32_t overflow);
 
-	// GPIO interrupt routine
-	static int		gpio_interrupt_routine(int irq, void *context, void *arg);
+    // GPIO interrupt routine
+    static int gpio_interrupt_routine(int irq, void *context, void *arg);
 
-	// Signal capture publish
-	static void		publish_trigger_trampoline(void *arg);
-
+    // Signal capture publish
+    static void publish_trigger_trampoline(void *arg);
 };
