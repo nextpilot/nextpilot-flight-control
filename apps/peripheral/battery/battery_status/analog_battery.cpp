@@ -25,6 +25,17 @@ static constexpr int DEFAULT_V_CHANNEL[1] = {-1};
 static constexpr int DEFAULT_I_CHANNEL[1] = {-1};
 #endif
 
+/* Define the default Under voltage Window on the LTC4417 as set by resistors on the
+ * board. Default is that of the FMUv2 at 3.7V
+ */
+#ifndef BOARD_VALID_UV
+#   define BOARD_VALID_UV (3.7f)
+#endif // BOARD_VALID_UV
+/* HW has to large of R termination on ADC todo:change when HW value is chosen */
+#ifndef BOARD_ADC_OPEN_CIRCUIT_V
+#   define BOARD_ADC_OPEN_CIRCUIT_V (5.6f)
+#endif // BOARD_ADC_OPEN_CIRCUIT_V
+
 AnalogBattery::AnalogBattery(int index, ModuleParams *parent, const int sample_interval_us, const uint8_t source,
                              const uint8_t priority) :
     Battery(index, parent, sample_interval_us, source) {

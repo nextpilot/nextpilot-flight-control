@@ -11,7 +11,20 @@
 #pragma once
 
 #include <battery/battery.h>
-#include <parameters/param.h>
+#include <param/param.h>
+#include "battery_config.h"
+
+#ifndef BOARD_NUMBER_BRICKS
+#   define BOARD_NUMBER_BRICKS 1
+#endif // BOARD_NUMBER_BRICKS
+
+#ifndef BOARD_BATT_V_LIST
+#   define BOARD_BATT_V_LIST {-1}
+#endif // BOARD_BATT_V_LIST
+
+#ifndef BOARD_BATT_I_LIST
+#   define BOARD_BATT_I_LIST {-1}
+#endif // BOARD_BATT_I_LIST
 
 class AnalogBattery : public Battery {
 public:

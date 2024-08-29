@@ -352,13 +352,13 @@ https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/154099/eth
 /**
  * Multicopter attitude control app start / stop handling function
  */
-extern "C" __EXPORT int mc_att_control_main(int argc, char *argv[]) {
+static int mc_att_control_main(int argc, char *argv[]) {
     return MulticopterAttitudeControl::main(argc, argv);
 }
 
 MSH_CMD_EXPORT_ALIAS(mc_att_control_main, mc_att_control, mc att control);
 
-int mc_att_control_start() {
+static int mc_att_control_start() {
     int32_t type = param_get_int32((param_t)params_id::SYS_VEHICLE_TYPE);
 
     const char *argv[] = {"mc_att_control", "start", (type == 2) ? "vtol" : ""};

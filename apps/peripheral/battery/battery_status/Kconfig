@@ -1,8 +1,57 @@
 menuconfig DRV_USING_BATTERY_STATUS
 	bool "battery_status"
+	select PKG_USING_BATTERY
 	default n
 	---help---
 		Enable support for battery_status
+
+if DRV_USING_BATTERY_STATUS
+	config BOARD_NUMBER_BRICKS
+		int "board number bricks"
+		range 1 2
+		default 1
+
+    config ADC_BATTERY_DEVICE_NAME
+        string "adc device name for battery monitor"
+        default "adc1"
+
+    if BOARD_NUMBER_BRICKS > 0
+       config ADC_BATTERY1_VOLTAGE_CHANNEL
+           int "battery 1 voltage adc channel"
+           default 0
+
+       config ADC_BATTERY1_CURRENT_CHANNEL
+           int "battery 1 current adc channel"
+           default 1
+
+        # config BOARD_BATTERY1_V_DIV
+        #     float "battery 1 voltage divider"
+        #     default 21.0
+
+        # config BOARD_BATTERY1_A_PER_V
+        #     float "battery 1 current per voltage"
+        #     default 36.367515152
+
+    endif
+
+    if BOARD_NUMBER_BRICKS > 1
+       config ADC_BATTERY2_VOLTAGE_CHANNEL
+           int "battery 2 voltage adc channel"
+           default 2
+
+       config ADC_BATTERY2_CURRENT_CHANNEL
+           int "battery 2 current adc channel"
+           default 3
+
+        # config BOARD_BATTERY2_V_DIV
+        #     float "battery 2 voltage divider"
+        #     default 21.0
+
+        # config BOARD_BATTERY2_A_PER_V
+        #     float "battery 2 current per voltage"
+        #     default 36.367515152
+    endif
+endif
 
 # menuconfig USER_BATTERY_STATUS
 # 	bool "battery_status running as userspace module"
