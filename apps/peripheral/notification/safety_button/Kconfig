@@ -1,5 +1,18 @@
-menuconfig DRIVERS_SAFETY_BUTTON
+menuconfig DRV_USING_SAFETY_BUTTON
 	bool "safety_button"
+    select PKG_USING_BUTTON_PUBLISHER
 	default n
 	---help---
 		Enable support for safety_button
+
+if DRV_USING_SAFETY_BUTTON
+    comment "fast get pin number: (x - A) * 16 + n"
+    config GPIO_SAFETY_SWITCH_IN
+       int "safety button in pin (PE10=74)"
+       default 74
+
+    config GPIO_SAFETY_SWITCH_LED
+        int "safety led out pin (PE12=76)"
+        default 76
+
+endif
