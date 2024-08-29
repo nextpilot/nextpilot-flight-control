@@ -1,5 +1,0 @@
-menuconfig DRIVERS_LIGHTS_RGBLED
-	bool "rgbled"
-	default n
-	---help---
-		Enable support for rgbled

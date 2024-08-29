@@ -26,8 +26,11 @@
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/led_control.h>
 #include <uORB/topics/parameter_update.h>
+#include <mathlib/mathlib.h>
 
 using namespace time_literals;
+using namespace nextpilot;
+using namespace nextpilot::global_params;
 
 struct LedControlDataSingle {
 	uint8_t color{led_control_s::COLOR_OFF}; ///< one of led_control_s::COLOR_*

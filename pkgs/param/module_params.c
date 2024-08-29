@@ -1,44 +1,5 @@
 
 /**
- * Enable Gripper actuation in Payload Deliverer
- *
- * 
- *
- * @group Payload Deliverer
- * @boolean
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(PD_GRIPPER_EN, 0);
-
-/**
- * Type of Gripper (Servo, etc.)
- *
- * 
- *
- * @group Payload Deliverer
- * @value -1 Undefined
- * @value 0 Servo
- * @min -1
- * @max 0
- */
-PARAM_DEFINE_INT32(PD_GRIPPER_TYPE, 0);
-
-/**
- * Timeout for successful gripper actuation acknowledgement
- *
- * Maximum time Gripper will wait while the successful griper actuation isn't recognised.
- * If the gripper has no feedback sensor, it will simply wait for
- * this time before considering gripper actuation successful and publish a
- * 'VehicleCommandAck' signaling successful gripper action
- * 
- *
- * @group Payload Deliverer
- * @min 0
- * @unit s
- */
-PARAM_DEFINE_FLOAT(PD_GRIPPER_TO, 3);
-
-/**
  * Battery 1 voltage divider (V divider)
  *
  * This is the divider from battery 1 voltage to ADC voltage.
@@ -143,6 +104,2302 @@ PARAM_DEFINE_INT32(BAT1_I_CHANNEL, -1);
  * @reboot_required True
  */
 PARAM_DEFINE_INT32(BAT2_I_CHANNEL, -1);
+
+/**
+ * Accelerometer 0 calibration device ID
+ *
+ * Device ID of the accelerometer this calibration applies to.
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_ACC0_ID, 0);
+
+/**
+ * Accelerometer 1 calibration device ID
+ *
+ * Device ID of the accelerometer this calibration applies to.
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_ACC1_ID, 0);
+
+/**
+ * Accelerometer 2 calibration device ID
+ *
+ * Device ID of the accelerometer this calibration applies to.
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_ACC2_ID, 0);
+
+/**
+ * Accelerometer 3 calibration device ID
+ *
+ * Device ID of the accelerometer this calibration applies to.
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_ACC3_ID, 0);
+
+/**
+ * Accelerometer 0 priority
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Uninitialized
+ * @value 0 Disabled
+ * @value 1 Min
+ * @value 25 Low
+ * @value 50 Medium (Default)
+ * @value 75 High
+ * @value 100 Max
+ * @decimal 3
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_ACC0_PRIO, -1);
+
+/**
+ * Accelerometer 1 priority
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Uninitialized
+ * @value 0 Disabled
+ * @value 1 Min
+ * @value 25 Low
+ * @value 50 Medium (Default)
+ * @value 75 High
+ * @value 100 Max
+ * @decimal 3
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_ACC1_PRIO, -1);
+
+/**
+ * Accelerometer 2 priority
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Uninitialized
+ * @value 0 Disabled
+ * @value 1 Min
+ * @value 25 Low
+ * @value 50 Medium (Default)
+ * @value 75 High
+ * @value 100 Max
+ * @decimal 3
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_ACC2_PRIO, -1);
+
+/**
+ * Accelerometer 3 priority
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Uninitialized
+ * @value 0 Disabled
+ * @value 1 Min
+ * @value 25 Low
+ * @value 50 Medium (Default)
+ * @value 75 High
+ * @value 100 Max
+ * @decimal 3
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_ACC3_PRIO, -1);
+
+/**
+ * Accelerometer 0 rotation relative to airframe
+ *
+ * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Internal
+ * @value 0 No rotation
+ * @value 1 Yaw 45°
+ * @value 2 Yaw 90°
+ * @value 3 Yaw 135°
+ * @value 4 Yaw 180°
+ * @value 5 Yaw 225°
+ * @value 6 Yaw 270°
+ * @value 7 Yaw 315°
+ * @value 8 Roll 180°
+ * @value 9 Roll 180°, Yaw 45°
+ * @value 10 Roll 180°, Yaw 90°
+ * @value 11 Roll 180°, Yaw 135°
+ * @value 12 Pitch 180°
+ * @value 13 Roll 180°, Yaw 225°
+ * @value 14 Roll 180°, Yaw 270°
+ * @value 15 Roll 180°, Yaw 315°
+ * @value 16 Roll 90°
+ * @value 17 Roll 90°, Yaw 45°
+ * @value 18 Roll 90°, Yaw 90°
+ * @value 19 Roll 90°, Yaw 135°
+ * @value 20 Roll 270°
+ * @value 21 Roll 270°, Yaw 45°
+ * @value 22 Roll 270°, Yaw 90°
+ * @value 23 Roll 270°, Yaw 135°
+ * @value 24 Pitch 90°
+ * @value 25 Pitch 270°
+ * @value 26 Pitch 180°, Yaw 90°
+ * @value 27 Pitch 180°, Yaw 270°
+ * @value 28 Roll 90°, Pitch 90°
+ * @value 29 Roll 180°, Pitch 90°
+ * @value 30 Roll 270°, Pitch 90°
+ * @value 31 Roll 90°, Pitch 180°
+ * @value 32 Roll 270°, Pitch 180°
+ * @value 33 Roll 90°, Pitch 270°
+ * @value 34 Roll 180°, Pitch 270°
+ * @value 35 Roll 270°, Pitch 270°
+ * @value 36 Roll 90°, Pitch 180°, Yaw 90°
+ * @value 37 Roll 90°, Yaw 270°
+ * @value 38 Roll 90°, Pitch 68°, Yaw 293°
+ * @value 39 Pitch 315°
+ * @value 40 Roll 90°, Pitch 315°
+ * @category System
+ * @min -1
+ * @max 40
+ */
+PARAM_DEFINE_INT32(CAL_ACC0_ROT, -1);
+
+/**
+ * Accelerometer 1 rotation relative to airframe
+ *
+ * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Internal
+ * @value 0 No rotation
+ * @value 1 Yaw 45°
+ * @value 2 Yaw 90°
+ * @value 3 Yaw 135°
+ * @value 4 Yaw 180°
+ * @value 5 Yaw 225°
+ * @value 6 Yaw 270°
+ * @value 7 Yaw 315°
+ * @value 8 Roll 180°
+ * @value 9 Roll 180°, Yaw 45°
+ * @value 10 Roll 180°, Yaw 90°
+ * @value 11 Roll 180°, Yaw 135°
+ * @value 12 Pitch 180°
+ * @value 13 Roll 180°, Yaw 225°
+ * @value 14 Roll 180°, Yaw 270°
+ * @value 15 Roll 180°, Yaw 315°
+ * @value 16 Roll 90°
+ * @value 17 Roll 90°, Yaw 45°
+ * @value 18 Roll 90°, Yaw 90°
+ * @value 19 Roll 90°, Yaw 135°
+ * @value 20 Roll 270°
+ * @value 21 Roll 270°, Yaw 45°
+ * @value 22 Roll 270°, Yaw 90°
+ * @value 23 Roll 270°, Yaw 135°
+ * @value 24 Pitch 90°
+ * @value 25 Pitch 270°
+ * @value 26 Pitch 180°, Yaw 90°
+ * @value 27 Pitch 180°, Yaw 270°
+ * @value 28 Roll 90°, Pitch 90°
+ * @value 29 Roll 180°, Pitch 90°
+ * @value 30 Roll 270°, Pitch 90°
+ * @value 31 Roll 90°, Pitch 180°
+ * @value 32 Roll 270°, Pitch 180°
+ * @value 33 Roll 90°, Pitch 270°
+ * @value 34 Roll 180°, Pitch 270°
+ * @value 35 Roll 270°, Pitch 270°
+ * @value 36 Roll 90°, Pitch 180°, Yaw 90°
+ * @value 37 Roll 90°, Yaw 270°
+ * @value 38 Roll 90°, Pitch 68°, Yaw 293°
+ * @value 39 Pitch 315°
+ * @value 40 Roll 90°, Pitch 315°
+ * @category System
+ * @min -1
+ * @max 40
+ */
+PARAM_DEFINE_INT32(CAL_ACC1_ROT, -1);
+
+/**
+ * Accelerometer 2 rotation relative to airframe
+ *
+ * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Internal
+ * @value 0 No rotation
+ * @value 1 Yaw 45°
+ * @value 2 Yaw 90°
+ * @value 3 Yaw 135°
+ * @value 4 Yaw 180°
+ * @value 5 Yaw 225°
+ * @value 6 Yaw 270°
+ * @value 7 Yaw 315°
+ * @value 8 Roll 180°
+ * @value 9 Roll 180°, Yaw 45°
+ * @value 10 Roll 180°, Yaw 90°
+ * @value 11 Roll 180°, Yaw 135°
+ * @value 12 Pitch 180°
+ * @value 13 Roll 180°, Yaw 225°
+ * @value 14 Roll 180°, Yaw 270°
+ * @value 15 Roll 180°, Yaw 315°
+ * @value 16 Roll 90°
+ * @value 17 Roll 90°, Yaw 45°
+ * @value 18 Roll 90°, Yaw 90°
+ * @value 19 Roll 90°, Yaw 135°
+ * @value 20 Roll 270°
+ * @value 21 Roll 270°, Yaw 45°
+ * @value 22 Roll 270°, Yaw 90°
+ * @value 23 Roll 270°, Yaw 135°
+ * @value 24 Pitch 90°
+ * @value 25 Pitch 270°
+ * @value 26 Pitch 180°, Yaw 90°
+ * @value 27 Pitch 180°, Yaw 270°
+ * @value 28 Roll 90°, Pitch 90°
+ * @value 29 Roll 180°, Pitch 90°
+ * @value 30 Roll 270°, Pitch 90°
+ * @value 31 Roll 90°, Pitch 180°
+ * @value 32 Roll 270°, Pitch 180°
+ * @value 33 Roll 90°, Pitch 270°
+ * @value 34 Roll 180°, Pitch 270°
+ * @value 35 Roll 270°, Pitch 270°
+ * @value 36 Roll 90°, Pitch 180°, Yaw 90°
+ * @value 37 Roll 90°, Yaw 270°
+ * @value 38 Roll 90°, Pitch 68°, Yaw 293°
+ * @value 39 Pitch 315°
+ * @value 40 Roll 90°, Pitch 315°
+ * @category System
+ * @min -1
+ * @max 40
+ */
+PARAM_DEFINE_INT32(CAL_ACC2_ROT, -1);
+
+/**
+ * Accelerometer 3 rotation relative to airframe
+ *
+ * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Internal
+ * @value 0 No rotation
+ * @value 1 Yaw 45°
+ * @value 2 Yaw 90°
+ * @value 3 Yaw 135°
+ * @value 4 Yaw 180°
+ * @value 5 Yaw 225°
+ * @value 6 Yaw 270°
+ * @value 7 Yaw 315°
+ * @value 8 Roll 180°
+ * @value 9 Roll 180°, Yaw 45°
+ * @value 10 Roll 180°, Yaw 90°
+ * @value 11 Roll 180°, Yaw 135°
+ * @value 12 Pitch 180°
+ * @value 13 Roll 180°, Yaw 225°
+ * @value 14 Roll 180°, Yaw 270°
+ * @value 15 Roll 180°, Yaw 315°
+ * @value 16 Roll 90°
+ * @value 17 Roll 90°, Yaw 45°
+ * @value 18 Roll 90°, Yaw 90°
+ * @value 19 Roll 90°, Yaw 135°
+ * @value 20 Roll 270°
+ * @value 21 Roll 270°, Yaw 45°
+ * @value 22 Roll 270°, Yaw 90°
+ * @value 23 Roll 270°, Yaw 135°
+ * @value 24 Pitch 90°
+ * @value 25 Pitch 270°
+ * @value 26 Pitch 180°, Yaw 90°
+ * @value 27 Pitch 180°, Yaw 270°
+ * @value 28 Roll 90°, Pitch 90°
+ * @value 29 Roll 180°, Pitch 90°
+ * @value 30 Roll 270°, Pitch 90°
+ * @value 31 Roll 90°, Pitch 180°
+ * @value 32 Roll 270°, Pitch 180°
+ * @value 33 Roll 90°, Pitch 270°
+ * @value 34 Roll 180°, Pitch 270°
+ * @value 35 Roll 270°, Pitch 270°
+ * @value 36 Roll 90°, Pitch 180°, Yaw 90°
+ * @value 37 Roll 90°, Yaw 270°
+ * @value 38 Roll 90°, Pitch 68°, Yaw 293°
+ * @value 39 Pitch 315°
+ * @value 40 Roll 90°, Pitch 315°
+ * @category System
+ * @min -1
+ * @max 40
+ */
+PARAM_DEFINE_INT32(CAL_ACC3_ROT, -1);
+
+/**
+ * Accelerometer 0 X-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit m/s^2
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC0_XOFF, 0.0);
+
+/**
+ * Accelerometer 1 X-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit m/s^2
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC1_XOFF, 0.0);
+
+/**
+ * Accelerometer 2 X-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit m/s^2
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC2_XOFF, 0.0);
+
+/**
+ * Accelerometer 3 X-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit m/s^2
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC3_XOFF, 0.0);
+
+/**
+ * Accelerometer 0 Y-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit m/s^2
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC0_YOFF, 0.0);
+
+/**
+ * Accelerometer 1 Y-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit m/s^2
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC1_YOFF, 0.0);
+
+/**
+ * Accelerometer 2 Y-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit m/s^2
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC2_YOFF, 0.0);
+
+/**
+ * Accelerometer 3 Y-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit m/s^2
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC3_YOFF, 0.0);
+
+/**
+ * Accelerometer 0 Z-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit m/s^2
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC0_ZOFF, 0.0);
+
+/**
+ * Accelerometer 1 Z-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit m/s^2
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC1_ZOFF, 0.0);
+
+/**
+ * Accelerometer 2 Z-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit m/s^2
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC2_ZOFF, 0.0);
+
+/**
+ * Accelerometer 3 Z-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit m/s^2
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC3_ZOFF, 0.0);
+
+/**
+ * Accelerometer 0 X-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC0_XSCALE, 1.0);
+
+/**
+ * Accelerometer 1 X-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC1_XSCALE, 1.0);
+
+/**
+ * Accelerometer 2 X-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC2_XSCALE, 1.0);
+
+/**
+ * Accelerometer 3 X-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC3_XSCALE, 1.0);
+
+/**
+ * Accelerometer 0 Y-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC0_YSCALE, 1.0);
+
+/**
+ * Accelerometer 1 Y-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC1_YSCALE, 1.0);
+
+/**
+ * Accelerometer 2 Y-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC2_YSCALE, 1.0);
+
+/**
+ * Accelerometer 3 Y-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC3_YSCALE, 1.0);
+
+/**
+ * Accelerometer 0 Z-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC0_ZSCALE, 1.0);
+
+/**
+ * Accelerometer 1 Z-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC1_ZSCALE, 1.0);
+
+/**
+ * Accelerometer 2 Z-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC2_ZSCALE, 1.0);
+
+/**
+ * Accelerometer 3 Z-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_ACC3_ZSCALE, 1.0);
+
+/**
+ * Barometer 0 calibration device ID
+ *
+ * Device ID of the barometer this calibration applies to.
+ *
+ * @group Sensor Calibration
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_BARO0_ID, 0);
+
+/**
+ * Barometer 1 calibration device ID
+ *
+ * Device ID of the barometer this calibration applies to.
+ *
+ * @group Sensor Calibration
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_BARO1_ID, 0);
+
+/**
+ * Barometer 2 calibration device ID
+ *
+ * Device ID of the barometer this calibration applies to.
+ *
+ * @group Sensor Calibration
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_BARO2_ID, 0);
+
+/**
+ * Barometer 3 calibration device ID
+ *
+ * Device ID of the barometer this calibration applies to.
+ *
+ * @group Sensor Calibration
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_BARO3_ID, 0);
+
+/**
+ * Barometer 0 priority
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Uninitialized
+ * @value 0 Disabled
+ * @value 1 Min
+ * @value 25 Low
+ * @value 50 Medium (Default)
+ * @value 75 High
+ * @value 100 Max
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_BARO0_PRIO, -1);
+
+/**
+ * Barometer 1 priority
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Uninitialized
+ * @value 0 Disabled
+ * @value 1 Min
+ * @value 25 Low
+ * @value 50 Medium (Default)
+ * @value 75 High
+ * @value 100 Max
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_BARO1_PRIO, -1);
+
+/**
+ * Barometer 2 priority
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Uninitialized
+ * @value 0 Disabled
+ * @value 1 Min
+ * @value 25 Low
+ * @value 50 Medium (Default)
+ * @value 75 High
+ * @value 100 Max
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_BARO2_PRIO, -1);
+
+/**
+ * Barometer 3 priority
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Uninitialized
+ * @value 0 Disabled
+ * @value 1 Min
+ * @value 25 Low
+ * @value 50 Medium (Default)
+ * @value 75 High
+ * @value 100 Max
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_BARO3_PRIO, -1);
+
+/**
+ * Barometer 0 offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_BARO0_OFF, 0.0);
+
+/**
+ * Barometer 1 offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_BARO1_OFF, 0.0);
+
+/**
+ * Barometer 2 offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_BARO2_OFF, 0.0);
+
+/**
+ * Barometer 3 offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_BARO3_OFF, 0.0);
+
+/**
+ * Gyroscope 0 calibration device ID
+ *
+ * Device ID of the gyroscope this calibration applies to.
+ *
+ * @group Sensor Calibration
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_GYRO0_ID, 0);
+
+/**
+ * Gyroscope 1 calibration device ID
+ *
+ * Device ID of the gyroscope this calibration applies to.
+ *
+ * @group Sensor Calibration
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_GYRO1_ID, 0);
+
+/**
+ * Gyroscope 2 calibration device ID
+ *
+ * Device ID of the gyroscope this calibration applies to.
+ *
+ * @group Sensor Calibration
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_GYRO2_ID, 0);
+
+/**
+ * Gyroscope 3 calibration device ID
+ *
+ * Device ID of the gyroscope this calibration applies to.
+ *
+ * @group Sensor Calibration
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_GYRO3_ID, 0);
+
+/**
+ * Gyroscope 0 priority
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Uninitialized
+ * @value 0 Disabled
+ * @value 1 Min
+ * @value 25 Low
+ * @value 50 Medium (Default)
+ * @value 75 High
+ * @value 100 Max
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_GYRO0_PRIO, -1);
+
+/**
+ * Gyroscope 1 priority
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Uninitialized
+ * @value 0 Disabled
+ * @value 1 Min
+ * @value 25 Low
+ * @value 50 Medium (Default)
+ * @value 75 High
+ * @value 100 Max
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_GYRO1_PRIO, -1);
+
+/**
+ * Gyroscope 2 priority
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Uninitialized
+ * @value 0 Disabled
+ * @value 1 Min
+ * @value 25 Low
+ * @value 50 Medium (Default)
+ * @value 75 High
+ * @value 100 Max
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_GYRO2_PRIO, -1);
+
+/**
+ * Gyroscope 3 priority
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Uninitialized
+ * @value 0 Disabled
+ * @value 1 Min
+ * @value 25 Low
+ * @value 50 Medium (Default)
+ * @value 75 High
+ * @value 100 Max
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_GYRO3_PRIO, -1);
+
+/**
+ * Gyroscope 0 rotation relative to airframe
+ *
+ * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Internal
+ * @value 0 No rotation
+ * @value 1 Yaw 45°
+ * @value 2 Yaw 90°
+ * @value 3 Yaw 135°
+ * @value 4 Yaw 180°
+ * @value 5 Yaw 225°
+ * @value 6 Yaw 270°
+ * @value 7 Yaw 315°
+ * @value 8 Roll 180°
+ * @value 9 Roll 180°, Yaw 45°
+ * @value 10 Roll 180°, Yaw 90°
+ * @value 11 Roll 180°, Yaw 135°
+ * @value 12 Pitch 180°
+ * @value 13 Roll 180°, Yaw 225°
+ * @value 14 Roll 180°, Yaw 270°
+ * @value 15 Roll 180°, Yaw 315°
+ * @value 16 Roll 90°
+ * @value 17 Roll 90°, Yaw 45°
+ * @value 18 Roll 90°, Yaw 90°
+ * @value 19 Roll 90°, Yaw 135°
+ * @value 20 Roll 270°
+ * @value 21 Roll 270°, Yaw 45°
+ * @value 22 Roll 270°, Yaw 90°
+ * @value 23 Roll 270°, Yaw 135°
+ * @value 24 Pitch 90°
+ * @value 25 Pitch 270°
+ * @value 26 Pitch 180°, Yaw 90°
+ * @value 27 Pitch 180°, Yaw 270°
+ * @value 28 Roll 90°, Pitch 90°
+ * @value 29 Roll 180°, Pitch 90°
+ * @value 30 Roll 270°, Pitch 90°
+ * @value 31 Roll 90°, Pitch 180°
+ * @value 32 Roll 270°, Pitch 180°
+ * @value 33 Roll 90°, Pitch 270°
+ * @value 34 Roll 180°, Pitch 270°
+ * @value 35 Roll 270°, Pitch 270°
+ * @value 36 Roll 90°, Pitch 180°, Yaw 90°
+ * @value 37 Roll 90°, Yaw 270°
+ * @value 38 Roll 90°, Pitch 68°, Yaw 293°
+ * @value 39 Pitch 315°
+ * @value 40 Roll 90°, Pitch 315°
+ * @category System
+ * @min -1
+ * @max 40
+ */
+PARAM_DEFINE_INT32(CAL_GYRO0_ROT, -1);
+
+/**
+ * Gyroscope 1 rotation relative to airframe
+ *
+ * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Internal
+ * @value 0 No rotation
+ * @value 1 Yaw 45°
+ * @value 2 Yaw 90°
+ * @value 3 Yaw 135°
+ * @value 4 Yaw 180°
+ * @value 5 Yaw 225°
+ * @value 6 Yaw 270°
+ * @value 7 Yaw 315°
+ * @value 8 Roll 180°
+ * @value 9 Roll 180°, Yaw 45°
+ * @value 10 Roll 180°, Yaw 90°
+ * @value 11 Roll 180°, Yaw 135°
+ * @value 12 Pitch 180°
+ * @value 13 Roll 180°, Yaw 225°
+ * @value 14 Roll 180°, Yaw 270°
+ * @value 15 Roll 180°, Yaw 315°
+ * @value 16 Roll 90°
+ * @value 17 Roll 90°, Yaw 45°
+ * @value 18 Roll 90°, Yaw 90°
+ * @value 19 Roll 90°, Yaw 135°
+ * @value 20 Roll 270°
+ * @value 21 Roll 270°, Yaw 45°
+ * @value 22 Roll 270°, Yaw 90°
+ * @value 23 Roll 270°, Yaw 135°
+ * @value 24 Pitch 90°
+ * @value 25 Pitch 270°
+ * @value 26 Pitch 180°, Yaw 90°
+ * @value 27 Pitch 180°, Yaw 270°
+ * @value 28 Roll 90°, Pitch 90°
+ * @value 29 Roll 180°, Pitch 90°
+ * @value 30 Roll 270°, Pitch 90°
+ * @value 31 Roll 90°, Pitch 180°
+ * @value 32 Roll 270°, Pitch 180°
+ * @value 33 Roll 90°, Pitch 270°
+ * @value 34 Roll 180°, Pitch 270°
+ * @value 35 Roll 270°, Pitch 270°
+ * @value 36 Roll 90°, Pitch 180°, Yaw 90°
+ * @value 37 Roll 90°, Yaw 270°
+ * @value 38 Roll 90°, Pitch 68°, Yaw 293°
+ * @value 39 Pitch 315°
+ * @value 40 Roll 90°, Pitch 315°
+ * @category System
+ * @min -1
+ * @max 40
+ */
+PARAM_DEFINE_INT32(CAL_GYRO1_ROT, -1);
+
+/**
+ * Gyroscope 2 rotation relative to airframe
+ *
+ * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Internal
+ * @value 0 No rotation
+ * @value 1 Yaw 45°
+ * @value 2 Yaw 90°
+ * @value 3 Yaw 135°
+ * @value 4 Yaw 180°
+ * @value 5 Yaw 225°
+ * @value 6 Yaw 270°
+ * @value 7 Yaw 315°
+ * @value 8 Roll 180°
+ * @value 9 Roll 180°, Yaw 45°
+ * @value 10 Roll 180°, Yaw 90°
+ * @value 11 Roll 180°, Yaw 135°
+ * @value 12 Pitch 180°
+ * @value 13 Roll 180°, Yaw 225°
+ * @value 14 Roll 180°, Yaw 270°
+ * @value 15 Roll 180°, Yaw 315°
+ * @value 16 Roll 90°
+ * @value 17 Roll 90°, Yaw 45°
+ * @value 18 Roll 90°, Yaw 90°
+ * @value 19 Roll 90°, Yaw 135°
+ * @value 20 Roll 270°
+ * @value 21 Roll 270°, Yaw 45°
+ * @value 22 Roll 270°, Yaw 90°
+ * @value 23 Roll 270°, Yaw 135°
+ * @value 24 Pitch 90°
+ * @value 25 Pitch 270°
+ * @value 26 Pitch 180°, Yaw 90°
+ * @value 27 Pitch 180°, Yaw 270°
+ * @value 28 Roll 90°, Pitch 90°
+ * @value 29 Roll 180°, Pitch 90°
+ * @value 30 Roll 270°, Pitch 90°
+ * @value 31 Roll 90°, Pitch 180°
+ * @value 32 Roll 270°, Pitch 180°
+ * @value 33 Roll 90°, Pitch 270°
+ * @value 34 Roll 180°, Pitch 270°
+ * @value 35 Roll 270°, Pitch 270°
+ * @value 36 Roll 90°, Pitch 180°, Yaw 90°
+ * @value 37 Roll 90°, Yaw 270°
+ * @value 38 Roll 90°, Pitch 68°, Yaw 293°
+ * @value 39 Pitch 315°
+ * @value 40 Roll 90°, Pitch 315°
+ * @category System
+ * @min -1
+ * @max 40
+ */
+PARAM_DEFINE_INT32(CAL_GYRO2_ROT, -1);
+
+/**
+ * Gyroscope 3 rotation relative to airframe
+ *
+ * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Internal
+ * @value 0 No rotation
+ * @value 1 Yaw 45°
+ * @value 2 Yaw 90°
+ * @value 3 Yaw 135°
+ * @value 4 Yaw 180°
+ * @value 5 Yaw 225°
+ * @value 6 Yaw 270°
+ * @value 7 Yaw 315°
+ * @value 8 Roll 180°
+ * @value 9 Roll 180°, Yaw 45°
+ * @value 10 Roll 180°, Yaw 90°
+ * @value 11 Roll 180°, Yaw 135°
+ * @value 12 Pitch 180°
+ * @value 13 Roll 180°, Yaw 225°
+ * @value 14 Roll 180°, Yaw 270°
+ * @value 15 Roll 180°, Yaw 315°
+ * @value 16 Roll 90°
+ * @value 17 Roll 90°, Yaw 45°
+ * @value 18 Roll 90°, Yaw 90°
+ * @value 19 Roll 90°, Yaw 135°
+ * @value 20 Roll 270°
+ * @value 21 Roll 270°, Yaw 45°
+ * @value 22 Roll 270°, Yaw 90°
+ * @value 23 Roll 270°, Yaw 135°
+ * @value 24 Pitch 90°
+ * @value 25 Pitch 270°
+ * @value 26 Pitch 180°, Yaw 90°
+ * @value 27 Pitch 180°, Yaw 270°
+ * @value 28 Roll 90°, Pitch 90°
+ * @value 29 Roll 180°, Pitch 90°
+ * @value 30 Roll 270°, Pitch 90°
+ * @value 31 Roll 90°, Pitch 180°
+ * @value 32 Roll 270°, Pitch 180°
+ * @value 33 Roll 90°, Pitch 270°
+ * @value 34 Roll 180°, Pitch 270°
+ * @value 35 Roll 270°, Pitch 270°
+ * @value 36 Roll 90°, Pitch 180°, Yaw 90°
+ * @value 37 Roll 90°, Yaw 270°
+ * @value 38 Roll 90°, Pitch 68°, Yaw 293°
+ * @value 39 Pitch 315°
+ * @value 40 Roll 90°, Pitch 315°
+ * @category System
+ * @min -1
+ * @max 40
+ */
+PARAM_DEFINE_INT32(CAL_GYRO3_ROT, -1);
+
+/**
+ * Gyroscope 0 X-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit rad/s
+ */
+PARAM_DEFINE_FLOAT(CAL_GYRO0_XOFF, 0.0);
+
+/**
+ * Gyroscope 1 X-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit rad/s
+ */
+PARAM_DEFINE_FLOAT(CAL_GYRO1_XOFF, 0.0);
+
+/**
+ * Gyroscope 2 X-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit rad/s
+ */
+PARAM_DEFINE_FLOAT(CAL_GYRO2_XOFF, 0.0);
+
+/**
+ * Gyroscope 3 X-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit rad/s
+ */
+PARAM_DEFINE_FLOAT(CAL_GYRO3_XOFF, 0.0);
+
+/**
+ * Gyroscope 0 Y-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit rad/s
+ */
+PARAM_DEFINE_FLOAT(CAL_GYRO0_YOFF, 0.0);
+
+/**
+ * Gyroscope 1 Y-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit rad/s
+ */
+PARAM_DEFINE_FLOAT(CAL_GYRO1_YOFF, 0.0);
+
+/**
+ * Gyroscope 2 Y-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit rad/s
+ */
+PARAM_DEFINE_FLOAT(CAL_GYRO2_YOFF, 0.0);
+
+/**
+ * Gyroscope 3 Y-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit rad/s
+ */
+PARAM_DEFINE_FLOAT(CAL_GYRO3_YOFF, 0.0);
+
+/**
+ * Gyroscope 0 Z-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit rad/s
+ */
+PARAM_DEFINE_FLOAT(CAL_GYRO0_ZOFF, 0.0);
+
+/**
+ * Gyroscope 1 Z-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit rad/s
+ */
+PARAM_DEFINE_FLOAT(CAL_GYRO1_ZOFF, 0.0);
+
+/**
+ * Gyroscope 2 Z-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit rad/s
+ */
+PARAM_DEFINE_FLOAT(CAL_GYRO2_ZOFF, 0.0);
+
+/**
+ * Gyroscope 3 Z-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit rad/s
+ */
+PARAM_DEFINE_FLOAT(CAL_GYRO3_ZOFF, 0.0);
+
+/**
+ * Magnetometer 0 calibration device ID
+ *
+ * Device ID of the magnetometer this calibration applies to.
+ *
+ * @group Sensor Calibration
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_MAG0_ID, 0);
+
+/**
+ * Magnetometer 1 calibration device ID
+ *
+ * Device ID of the magnetometer this calibration applies to.
+ *
+ * @group Sensor Calibration
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_MAG1_ID, 0);
+
+/**
+ * Magnetometer 2 calibration device ID
+ *
+ * Device ID of the magnetometer this calibration applies to.
+ *
+ * @group Sensor Calibration
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_MAG2_ID, 0);
+
+/**
+ * Magnetometer 3 calibration device ID
+ *
+ * Device ID of the magnetometer this calibration applies to.
+ *
+ * @group Sensor Calibration
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_MAG3_ID, 0);
+
+/**
+ * Magnetometer 0 priority
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Uninitialized
+ * @value 0 Disabled
+ * @value 1 Min
+ * @value 25 Low
+ * @value 50 Medium (Default)
+ * @value 75 High
+ * @value 100 Max
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_MAG0_PRIO, -1);
+
+/**
+ * Magnetometer 1 priority
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Uninitialized
+ * @value 0 Disabled
+ * @value 1 Min
+ * @value 25 Low
+ * @value 50 Medium (Default)
+ * @value 75 High
+ * @value 100 Max
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_MAG1_PRIO, -1);
+
+/**
+ * Magnetometer 2 priority
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Uninitialized
+ * @value 0 Disabled
+ * @value 1 Min
+ * @value 25 Low
+ * @value 50 Medium (Default)
+ * @value 75 High
+ * @value 100 Max
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_MAG2_PRIO, -1);
+
+/**
+ * Magnetometer 3 priority
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Uninitialized
+ * @value 0 Disabled
+ * @value 1 Min
+ * @value 25 Low
+ * @value 50 Medium (Default)
+ * @value 75 High
+ * @value 100 Max
+ * @category System
+ */
+PARAM_DEFINE_INT32(CAL_MAG3_PRIO, -1);
+
+/**
+ * Magnetometer 0 rotation relative to airframe
+ *
+ * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Internal
+ * @value 0 No rotation
+ * @value 1 Yaw 45°
+ * @value 2 Yaw 90°
+ * @value 3 Yaw 135°
+ * @value 4 Yaw 180°
+ * @value 5 Yaw 225°
+ * @value 6 Yaw 270°
+ * @value 7 Yaw 315°
+ * @value 8 Roll 180°
+ * @value 9 Roll 180°, Yaw 45°
+ * @value 10 Roll 180°, Yaw 90°
+ * @value 11 Roll 180°, Yaw 135°
+ * @value 12 Pitch 180°
+ * @value 13 Roll 180°, Yaw 225°
+ * @value 14 Roll 180°, Yaw 270°
+ * @value 15 Roll 180°, Yaw 315°
+ * @value 16 Roll 90°
+ * @value 17 Roll 90°, Yaw 45°
+ * @value 18 Roll 90°, Yaw 90°
+ * @value 19 Roll 90°, Yaw 135°
+ * @value 20 Roll 270°
+ * @value 21 Roll 270°, Yaw 45°
+ * @value 22 Roll 270°, Yaw 90°
+ * @value 23 Roll 270°, Yaw 135°
+ * @value 24 Pitch 90°
+ * @value 25 Pitch 270°
+ * @value 26 Pitch 180°, Yaw 90°
+ * @value 27 Pitch 180°, Yaw 270°
+ * @value 28 Roll 90°, Pitch 90°
+ * @value 29 Roll 180°, Pitch 90°
+ * @value 30 Roll 270°, Pitch 90°
+ * @value 31 Roll 90°, Pitch 180°
+ * @value 32 Roll 270°, Pitch 180°
+ * @value 33 Roll 90°, Pitch 270°
+ * @value 34 Roll 180°, Pitch 270°
+ * @value 35 Roll 270°, Pitch 270°
+ * @value 36 Roll 90°, Pitch 180°, Yaw 90°
+ * @value 37 Roll 90°, Yaw 270°
+ * @value 38 Roll 90°, Pitch 68°, Yaw 293°
+ * @value 39 Pitch 315°
+ * @value 40 Roll 90°, Pitch 315°
+ * @category System
+ * @min -1
+ * @max 40
+ */
+PARAM_DEFINE_INT32(CAL_MAG0_ROT, -1);
+
+/**
+ * Magnetometer 1 rotation relative to airframe
+ *
+ * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Internal
+ * @value 0 No rotation
+ * @value 1 Yaw 45°
+ * @value 2 Yaw 90°
+ * @value 3 Yaw 135°
+ * @value 4 Yaw 180°
+ * @value 5 Yaw 225°
+ * @value 6 Yaw 270°
+ * @value 7 Yaw 315°
+ * @value 8 Roll 180°
+ * @value 9 Roll 180°, Yaw 45°
+ * @value 10 Roll 180°, Yaw 90°
+ * @value 11 Roll 180°, Yaw 135°
+ * @value 12 Pitch 180°
+ * @value 13 Roll 180°, Yaw 225°
+ * @value 14 Roll 180°, Yaw 270°
+ * @value 15 Roll 180°, Yaw 315°
+ * @value 16 Roll 90°
+ * @value 17 Roll 90°, Yaw 45°
+ * @value 18 Roll 90°, Yaw 90°
+ * @value 19 Roll 90°, Yaw 135°
+ * @value 20 Roll 270°
+ * @value 21 Roll 270°, Yaw 45°
+ * @value 22 Roll 270°, Yaw 90°
+ * @value 23 Roll 270°, Yaw 135°
+ * @value 24 Pitch 90°
+ * @value 25 Pitch 270°
+ * @value 26 Pitch 180°, Yaw 90°
+ * @value 27 Pitch 180°, Yaw 270°
+ * @value 28 Roll 90°, Pitch 90°
+ * @value 29 Roll 180°, Pitch 90°
+ * @value 30 Roll 270°, Pitch 90°
+ * @value 31 Roll 90°, Pitch 180°
+ * @value 32 Roll 270°, Pitch 180°
+ * @value 33 Roll 90°, Pitch 270°
+ * @value 34 Roll 180°, Pitch 270°
+ * @value 35 Roll 270°, Pitch 270°
+ * @value 36 Roll 90°, Pitch 180°, Yaw 90°
+ * @value 37 Roll 90°, Yaw 270°
+ * @value 38 Roll 90°, Pitch 68°, Yaw 293°
+ * @value 39 Pitch 315°
+ * @value 40 Roll 90°, Pitch 315°
+ * @category System
+ * @min -1
+ * @max 40
+ */
+PARAM_DEFINE_INT32(CAL_MAG1_ROT, -1);
+
+/**
+ * Magnetometer 2 rotation relative to airframe
+ *
+ * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Internal
+ * @value 0 No rotation
+ * @value 1 Yaw 45°
+ * @value 2 Yaw 90°
+ * @value 3 Yaw 135°
+ * @value 4 Yaw 180°
+ * @value 5 Yaw 225°
+ * @value 6 Yaw 270°
+ * @value 7 Yaw 315°
+ * @value 8 Roll 180°
+ * @value 9 Roll 180°, Yaw 45°
+ * @value 10 Roll 180°, Yaw 90°
+ * @value 11 Roll 180°, Yaw 135°
+ * @value 12 Pitch 180°
+ * @value 13 Roll 180°, Yaw 225°
+ * @value 14 Roll 180°, Yaw 270°
+ * @value 15 Roll 180°, Yaw 315°
+ * @value 16 Roll 90°
+ * @value 17 Roll 90°, Yaw 45°
+ * @value 18 Roll 90°, Yaw 90°
+ * @value 19 Roll 90°, Yaw 135°
+ * @value 20 Roll 270°
+ * @value 21 Roll 270°, Yaw 45°
+ * @value 22 Roll 270°, Yaw 90°
+ * @value 23 Roll 270°, Yaw 135°
+ * @value 24 Pitch 90°
+ * @value 25 Pitch 270°
+ * @value 26 Pitch 180°, Yaw 90°
+ * @value 27 Pitch 180°, Yaw 270°
+ * @value 28 Roll 90°, Pitch 90°
+ * @value 29 Roll 180°, Pitch 90°
+ * @value 30 Roll 270°, Pitch 90°
+ * @value 31 Roll 90°, Pitch 180°
+ * @value 32 Roll 270°, Pitch 180°
+ * @value 33 Roll 90°, Pitch 270°
+ * @value 34 Roll 180°, Pitch 270°
+ * @value 35 Roll 270°, Pitch 270°
+ * @value 36 Roll 90°, Pitch 180°, Yaw 90°
+ * @value 37 Roll 90°, Yaw 270°
+ * @value 38 Roll 90°, Pitch 68°, Yaw 293°
+ * @value 39 Pitch 315°
+ * @value 40 Roll 90°, Pitch 315°
+ * @category System
+ * @min -1
+ * @max 40
+ */
+PARAM_DEFINE_INT32(CAL_MAG2_ROT, -1);
+
+/**
+ * Magnetometer 3 rotation relative to airframe
+ *
+ * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
+ * 
+ *
+ * @group Sensor Calibration
+ * @value -1 Internal
+ * @value 0 No rotation
+ * @value 1 Yaw 45°
+ * @value 2 Yaw 90°
+ * @value 3 Yaw 135°
+ * @value 4 Yaw 180°
+ * @value 5 Yaw 225°
+ * @value 6 Yaw 270°
+ * @value 7 Yaw 315°
+ * @value 8 Roll 180°
+ * @value 9 Roll 180°, Yaw 45°
+ * @value 10 Roll 180°, Yaw 90°
+ * @value 11 Roll 180°, Yaw 135°
+ * @value 12 Pitch 180°
+ * @value 13 Roll 180°, Yaw 225°
+ * @value 14 Roll 180°, Yaw 270°
+ * @value 15 Roll 180°, Yaw 315°
+ * @value 16 Roll 90°
+ * @value 17 Roll 90°, Yaw 45°
+ * @value 18 Roll 90°, Yaw 90°
+ * @value 19 Roll 90°, Yaw 135°
+ * @value 20 Roll 270°
+ * @value 21 Roll 270°, Yaw 45°
+ * @value 22 Roll 270°, Yaw 90°
+ * @value 23 Roll 270°, Yaw 135°
+ * @value 24 Pitch 90°
+ * @value 25 Pitch 270°
+ * @value 26 Pitch 180°, Yaw 90°
+ * @value 27 Pitch 180°, Yaw 270°
+ * @value 28 Roll 90°, Pitch 90°
+ * @value 29 Roll 180°, Pitch 90°
+ * @value 30 Roll 270°, Pitch 90°
+ * @value 31 Roll 90°, Pitch 180°
+ * @value 32 Roll 270°, Pitch 180°
+ * @value 33 Roll 90°, Pitch 270°
+ * @value 34 Roll 180°, Pitch 270°
+ * @value 35 Roll 270°, Pitch 270°
+ * @value 36 Roll 90°, Pitch 180°, Yaw 90°
+ * @value 37 Roll 90°, Yaw 270°
+ * @value 38 Roll 90°, Pitch 68°, Yaw 293°
+ * @value 39 Pitch 315°
+ * @value 40 Roll 90°, Pitch 315°
+ * @category System
+ * @min -1
+ * @max 40
+ */
+PARAM_DEFINE_INT32(CAL_MAG3_ROT, -1);
+
+/**
+ * Magnetometer 0 X-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit gauss
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG0_XOFF, 0.0);
+
+/**
+ * Magnetometer 1 X-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit gauss
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG1_XOFF, 0.0);
+
+/**
+ * Magnetometer 2 X-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit gauss
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG2_XOFF, 0.0);
+
+/**
+ * Magnetometer 3 X-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit gauss
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG3_XOFF, 0.0);
+
+/**
+ * Magnetometer 0 Y-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit gauss
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG0_YOFF, 0.0);
+
+/**
+ * Magnetometer 1 Y-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit gauss
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG1_YOFF, 0.0);
+
+/**
+ * Magnetometer 2 Y-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit gauss
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG2_YOFF, 0.0);
+
+/**
+ * Magnetometer 3 Y-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit gauss
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG3_YOFF, 0.0);
+
+/**
+ * Magnetometer 0 Z-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit gauss
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG0_ZOFF, 0.0);
+
+/**
+ * Magnetometer 1 Z-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit gauss
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG1_ZOFF, 0.0);
+
+/**
+ * Magnetometer 2 Z-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit gauss
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG2_ZOFF, 0.0);
+
+/**
+ * Magnetometer 3 Z-axis offset
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @unit gauss
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG3_ZOFF, 0.0);
+
+/**
+ * Magnetometer 0 X-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG0_XSCALE, 1.0);
+
+/**
+ * Magnetometer 1 X-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG1_XSCALE, 1.0);
+
+/**
+ * Magnetometer 2 X-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG2_XSCALE, 1.0);
+
+/**
+ * Magnetometer 3 X-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG3_XSCALE, 1.0);
+
+/**
+ * Magnetometer 0 Y-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG0_YSCALE, 1.0);
+
+/**
+ * Magnetometer 1 Y-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG1_YSCALE, 1.0);
+
+/**
+ * Magnetometer 2 Y-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG2_YSCALE, 1.0);
+
+/**
+ * Magnetometer 3 Y-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG3_YSCALE, 1.0);
+
+/**
+ * Magnetometer 0 Z-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG0_ZSCALE, 1.0);
+
+/**
+ * Magnetometer 1 Z-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG1_ZSCALE, 1.0);
+
+/**
+ * Magnetometer 2 Z-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG2_ZSCALE, 1.0);
+
+/**
+ * Magnetometer 3 Z-axis scaling factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ * @min 0.1
+ * @max 3.0
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG3_ZSCALE, 1.0);
+
+/**
+ * Magnetometer 0 X-axis off diagonal scale factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG0_XODIAG, 0.0);
+
+/**
+ * Magnetometer 1 X-axis off diagonal scale factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG1_XODIAG, 0.0);
+
+/**
+ * Magnetometer 2 X-axis off diagonal scale factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG2_XODIAG, 0.0);
+
+/**
+ * Magnetometer 3 X-axis off diagonal scale factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG3_XODIAG, 0.0);
+
+/**
+ * Magnetometer 0 Y-axis off diagonal scale factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG0_YODIAG, 0.0);
+
+/**
+ * Magnetometer 1 Y-axis off diagonal scale factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG1_YODIAG, 0.0);
+
+/**
+ * Magnetometer 2 Y-axis off diagonal scale factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG2_YODIAG, 0.0);
+
+/**
+ * Magnetometer 3 Y-axis off diagonal scale factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG3_YODIAG, 0.0);
+
+/**
+ * Magnetometer 0 Z-axis off diagonal scale factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG0_ZODIAG, 0.0);
+
+/**
+ * Magnetometer 1 Z-axis off diagonal scale factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG1_ZODIAG, 0.0);
+
+/**
+ * Magnetometer 2 Z-axis off diagonal scale factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG2_ZODIAG, 0.0);
+
+/**
+ * Magnetometer 3 Z-axis off diagonal scale factor
+ *
+ * 
+ *
+ * @group Sensor Calibration
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG3_ZODIAG, 0.0);
+
+/**
+ * Magnetometer 0 X Axis throttle compensation
+ *
+ * Coefficient describing linear relationship between
+ * X component of magnetometer in body frame axis
+ * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
+ * Unit for throttle-based compensation is [G] and
+ * for current-based compensation [G/kA]
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG0_XCOMP, 0.0);
+
+/**
+ * Magnetometer 1 X Axis throttle compensation
+ *
+ * Coefficient describing linear relationship between
+ * X component of magnetometer in body frame axis
+ * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
+ * Unit for throttle-based compensation is [G] and
+ * for current-based compensation [G/kA]
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG1_XCOMP, 0.0);
+
+/**
+ * Magnetometer 2 X Axis throttle compensation
+ *
+ * Coefficient describing linear relationship between
+ * X component of magnetometer in body frame axis
+ * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
+ * Unit for throttle-based compensation is [G] and
+ * for current-based compensation [G/kA]
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG2_XCOMP, 0.0);
+
+/**
+ * Magnetometer 3 X Axis throttle compensation
+ *
+ * Coefficient describing linear relationship between
+ * X component of magnetometer in body frame axis
+ * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
+ * Unit for throttle-based compensation is [G] and
+ * for current-based compensation [G/kA]
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG3_XCOMP, 0.0);
+
+/**
+ * Magnetometer 0 Y Axis throttle compensation
+ *
+ * Coefficient describing linear relationship between
+ * Y component of magnetometer in body frame axis
+ * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
+ * Unit for throttle-based compensation is [G] and
+ * for current-based compensation [G/kA]
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG0_YCOMP, 0.0);
+
+/**
+ * Magnetometer 1 Y Axis throttle compensation
+ *
+ * Coefficient describing linear relationship between
+ * Y component of magnetometer in body frame axis
+ * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
+ * Unit for throttle-based compensation is [G] and
+ * for current-based compensation [G/kA]
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG1_YCOMP, 0.0);
+
+/**
+ * Magnetometer 2 Y Axis throttle compensation
+ *
+ * Coefficient describing linear relationship between
+ * Y component of magnetometer in body frame axis
+ * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
+ * Unit for throttle-based compensation is [G] and
+ * for current-based compensation [G/kA]
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG2_YCOMP, 0.0);
+
+/**
+ * Magnetometer 3 Y Axis throttle compensation
+ *
+ * Coefficient describing linear relationship between
+ * Y component of magnetometer in body frame axis
+ * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
+ * Unit for throttle-based compensation is [G] and
+ * for current-based compensation [G/kA]
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG3_YCOMP, 0.0);
+
+/**
+ * Magnetometer 0 Z Axis throttle compensation
+ *
+ * Coefficient describing linear relationship between
+ * Z component of magnetometer in body frame axis
+ * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
+ * Unit for throttle-based compensation is [G] and
+ * for current-based compensation [G/kA]
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG0_ZCOMP, 0.0);
+
+/**
+ * Magnetometer 1 Z Axis throttle compensation
+ *
+ * Coefficient describing linear relationship between
+ * Z component of magnetometer in body frame axis
+ * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
+ * Unit for throttle-based compensation is [G] and
+ * for current-based compensation [G/kA]
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG1_ZCOMP, 0.0);
+
+/**
+ * Magnetometer 2 Z Axis throttle compensation
+ *
+ * Coefficient describing linear relationship between
+ * Z component of magnetometer in body frame axis
+ * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
+ * Unit for throttle-based compensation is [G] and
+ * for current-based compensation [G/kA]
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG2_ZCOMP, 0.0);
+
+/**
+ * Magnetometer 3 Z Axis throttle compensation
+ *
+ * Coefficient describing linear relationship between
+ * Z component of magnetometer in body frame axis
+ * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
+ * Unit for throttle-based compensation is [G] and
+ * for current-based compensation [G/kA]
+ * 
+ *
+ * @group Sensor Calibration
+ * @decimal 3
+ * @category System
+ * @volatile True
+ */
+PARAM_DEFINE_FLOAT(CAL_MAG3_ZCOMP, 0.0);
 
 /**
  * Empty cell voltage (5C load)
@@ -432,33 +2689,65 @@ PARAM_DEFINE_INT32(UXRCE_DDS_DOM_ID, 0);
 PARAM_DEFINE_INT32(UXRCE_DDS_KEY, 1);
 
 /**
- * uXRCE-DDS UDP Port
+ * RC input protocol
  *
- * If ethernet enabled and selected as configuration for uXRCE-DDS,
- * selected udp port will be set and used.
+ * Select your RC input protocol or auto to scan.
  * 
  *
- * @group UXRCE-DDS Client
- * @min 0
- * @max 65535
- * @reboot_required True
+ * @group RC Input
+ * @value -1 Auto
+ * @value 0 None
+ * @value 1 PPM
+ * @value 2 SBUS
+ * @value 3 DSM
+ * @value 4 ST24
+ * @value 5 SUMD
+ * @value 6 CRSF
+ * @value 7 GHST
+ * @category System
+ * @min -1
+ * @max 7
  */
-PARAM_DEFINE_INT32(UXRCE_DDS_PRT, 8888);
+PARAM_DEFINE_INT32(RC_INPUT_PROTO, -1);
 
 /**
- * uXRCE-DDS Agent IP address
+ * Enable Gripper actuation in Payload Deliverer
  *
- * If ethernet enabled and selected as configuration for uXRCE-DDS,
- * selected Agent IP address will be set and used.
- * Decimal dot notation is not supported. IP address must be provided
- * in int32 format. For example, 192.168.1.2 is mapped to -1062731518;
- * 127.0.0.1 is mapped to 2130706433.
  * 
  *
- * @group UXRCE-DDS Client
+ * @group Payload Deliverer
+ * @boolean
  * @reboot_required True
  */
-PARAM_DEFINE_INT32(UXRCE_DDS_AG_IP, 2130706433);
+PARAM_DEFINE_INT32(PD_GRIPPER_EN, 0);
+
+/**
+ * Type of Gripper (Servo, etc.)
+ *
+ * 
+ *
+ * @group Payload Deliverer
+ * @value -1 Undefined
+ * @value 0 Servo
+ * @min -1
+ * @max 0
+ */
+PARAM_DEFINE_INT32(PD_GRIPPER_TYPE, 0);
+
+/**
+ * Timeout for successful gripper actuation acknowledgement
+ *
+ * Maximum time Gripper will wait while the successful griper actuation isn't recognised.
+ * If the gripper has no feedback sensor, it will simply wait for
+ * this time before considering gripper actuation successful and publish a
+ * 'VehicleCommandAck' signaling successful gripper action
+ * 
+ *
+ * @group Payload Deliverer
+ * @min 0
+ * @unit s
+ */
+PARAM_DEFINE_FLOAT(PD_GRIPPER_TO, 3);
 
 /**
  * MAVLink Config for instance 0
@@ -752,156 +3041,6 @@ PARAM_DEFINE_INT32(MAV_1_RADIO_CTL, 1);
 PARAM_DEFINE_INT32(MAV_2_RADIO_CTL, 1);
 
 /**
- * MAVLink Network Port for instance 0
- *
- * If ethernet enabled and selected as configuration for MAVLink instance 0,
- * selected udp port will be set and used in MAVLink instance 0.
- * 
- *
- * @group MAVLink
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_0_UDP_PRT, 14556);
-
-/**
- * MAVLink Network Port for instance 1
- *
- * If ethernet enabled and selected as configuration for MAVLink instance 1,
- * selected udp port will be set and used in MAVLink instance 1.
- * 
- *
- * @group MAVLink
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_1_UDP_PRT, 0);
-
-/**
- * MAVLink Network Port for instance 2
- *
- * If ethernet enabled and selected as configuration for MAVLink instance 2,
- * selected udp port will be set and used in MAVLink instance 2.
- * 
- *
- * @group MAVLink
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_2_UDP_PRT, 0);
-
-/**
- * MAVLink Remote IP for instance 0
- *
- * If ethernet enabled and selected as configuration for MAVLink instance 0,
- * selected remote IP will be set and used in MAVLink instance 0.
- * 
- *
- * @group MAVLink
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_0_REMOTE_IP, 0);
-
-/**
- * MAVLink Remote IP for instance 1
- *
- * If ethernet enabled and selected as configuration for MAVLink instance 1,
- * selected remote IP will be set and used in MAVLink instance 1.
- * 
- *
- * @group MAVLink
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_1_REMOTE_IP, 0);
-
-/**
- * MAVLink Remote IP for instance 2
- *
- * If ethernet enabled and selected as configuration for MAVLink instance 2,
- * selected remote IP will be set and used in MAVLink instance 2.
- * 
- *
- * @group MAVLink
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_2_REMOTE_IP, 0);
-
-/**
- * MAVLink Remote Port for instance 0
- *
- * If ethernet enabled and selected as configuration for MAVLink instance 0,
- * selected remote port will be set and used in MAVLink instance 0.
- * 
- *
- * @group MAVLink
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_0_REMOTE_PRT, 14550);
-
-/**
- * MAVLink Remote Port for instance 1
- *
- * If ethernet enabled and selected as configuration for MAVLink instance 1,
- * selected remote port will be set and used in MAVLink instance 1.
- * 
- *
- * @group MAVLink
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_1_REMOTE_PRT, 0);
-
-/**
- * MAVLink Remote Port for instance 2
- *
- * If ethernet enabled and selected as configuration for MAVLink instance 2,
- * selected remote port will be set and used in MAVLink instance 2.
- * 
- *
- * @group MAVLink
- * @reboot_required True
- */
-PARAM_DEFINE_INT32(MAV_2_REMOTE_PRT, 0);
-
-/**
- * Broadcast heartbeats on local network for MAVLink instance 0
- *
- * This allows a ground control station to automatically find the drone
- * on the local network.
- * 
- *
- * @group MAVLink
- * @value 0 Never broadcast
- * @value 1 Always broadcast
- * @value 2 Only multicast
- */
-PARAM_DEFINE_INT32(MAV_0_BROADCAST, 1);
-
-/**
- * Broadcast heartbeats on local network for MAVLink instance 1
- *
- * This allows a ground control station to automatically find the drone
- * on the local network.
- * 
- *
- * @group MAVLink
- * @value 0 Never broadcast
- * @value 1 Always broadcast
- * @value 2 Only multicast
- */
-PARAM_DEFINE_INT32(MAV_1_BROADCAST, 0);
-
-/**
- * Broadcast heartbeats on local network for MAVLink instance 2
- *
- * This allows a ground control station to automatically find the drone
- * on the local network.
- * 
- *
- * @group MAVLink
- * @value 0 Never broadcast
- * @value 1 Always broadcast
- * @value 2 Only multicast
- */
-PARAM_DEFINE_INT32(MAV_2_BROADCAST, 0);
-
-/**
  * Enable serial flow control for instance 0
  *
  * This is used to force flow control on or off for the the mavlink
@@ -947,9 +3086,9 @@ PARAM_DEFINE_INT32(MAV_1_FLOW_CTRL, 2);
 PARAM_DEFINE_INT32(MAV_2_FLOW_CTRL, 2);
 
 /**
- * SIM_GZ ESC 1 Output Function
+ * UAVCAN ESC 1 Output Function
  *
- * Select what should be output on SIM_GZ ESC 1.
+ * Select what should be output on UAVCAN ESC 1.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -1008,12 +3147,12 @@ PARAM_DEFINE_INT32(MAV_2_FLOW_CTRL, 2);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC1, 0);
+PARAM_DEFINE_INT32(UAVCAN_EC_FUNC1, 0);
 
 /**
- * SIM_GZ ESC 2 Output Function
+ * UAVCAN ESC 2 Output Function
  *
- * Select what should be output on SIM_GZ ESC 2.
+ * Select what should be output on UAVCAN ESC 2.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -1072,12 +3211,12 @@ PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC1, 0);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC2, 0);
+PARAM_DEFINE_INT32(UAVCAN_EC_FUNC2, 0);
 
 /**
- * SIM_GZ ESC 3 Output Function
+ * UAVCAN ESC 3 Output Function
  *
- * Select what should be output on SIM_GZ ESC 3.
+ * Select what should be output on UAVCAN ESC 3.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -1136,12 +3275,12 @@ PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC2, 0);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC3, 0);
+PARAM_DEFINE_INT32(UAVCAN_EC_FUNC3, 0);
 
 /**
- * SIM_GZ ESC 4 Output Function
+ * UAVCAN ESC 4 Output Function
  *
- * Select what should be output on SIM_GZ ESC 4.
+ * Select what should be output on UAVCAN ESC 4.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -1200,12 +3339,12 @@ PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC3, 0);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC4, 0);
+PARAM_DEFINE_INT32(UAVCAN_EC_FUNC4, 0);
 
 /**
- * SIM_GZ ESC 5 Output Function
+ * UAVCAN ESC 5 Output Function
  *
- * Select what should be output on SIM_GZ ESC 5.
+ * Select what should be output on UAVCAN ESC 5.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -1264,12 +3403,12 @@ PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC4, 0);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC5, 0);
+PARAM_DEFINE_INT32(UAVCAN_EC_FUNC5, 0);
 
 /**
- * SIM_GZ ESC 6 Output Function
+ * UAVCAN ESC 6 Output Function
  *
- * Select what should be output on SIM_GZ ESC 6.
+ * Select what should be output on UAVCAN ESC 6.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -1328,12 +3467,12 @@ PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC5, 0);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC6, 0);
+PARAM_DEFINE_INT32(UAVCAN_EC_FUNC6, 0);
 
 /**
- * SIM_GZ ESC 7 Output Function
+ * UAVCAN ESC 7 Output Function
  *
- * Select what should be output on SIM_GZ ESC 7.
+ * Select what should be output on UAVCAN ESC 7.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -1392,12 +3531,12 @@ PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC6, 0);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC7, 0);
+PARAM_DEFINE_INT32(UAVCAN_EC_FUNC7, 0);
 
 /**
- * SIM_GZ ESC 8 Output Function
+ * UAVCAN ESC 8 Output Function
  *
- * Select what should be output on SIM_GZ ESC 8.
+ * Select what should be output on UAVCAN ESC 8.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -1456,428 +3595,316 @@ PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC7, 0);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC8, 0);
+PARAM_DEFINE_INT32(UAVCAN_EC_FUNC8, 0);
 
 /**
- * SIM_GZ ESC 1 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_DIS1, 0);
-
-/**
- * SIM_GZ ESC 2 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_DIS2, 0);
-
-/**
- * SIM_GZ ESC 3 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_DIS3, 0);
-
-/**
- * SIM_GZ ESC 4 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_DIS4, 0);
-
-/**
- * SIM_GZ ESC 5 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_DIS5, 0);
-
-/**
- * SIM_GZ ESC 6 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_DIS6, 0);
-
-/**
- * SIM_GZ ESC 7 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_DIS7, 0);
-
-/**
- * SIM_GZ ESC 8 Disarmed Value
- *
- * This is the output value that is set when not armed.
- * 
- * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 1000
- */
-PARAM_DEFINE_INT32(SIM_GZ_EC_DIS8, 0);
-
-/**
- * SIM_GZ ESC 1 Minimum Value
+ * UAVCAN ESC 1 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
  *
  * @group Actuator Outputs
  * @min 0
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MIN1, 0);
+PARAM_DEFINE_INT32(UAVCAN_EC_MIN1, 1);
 
 /**
- * SIM_GZ ESC 2 Minimum Value
+ * UAVCAN ESC 2 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
  *
  * @group Actuator Outputs
  * @min 0
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MIN2, 0);
+PARAM_DEFINE_INT32(UAVCAN_EC_MIN2, 1);
 
 /**
- * SIM_GZ ESC 3 Minimum Value
+ * UAVCAN ESC 3 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
  *
  * @group Actuator Outputs
  * @min 0
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MIN3, 0);
+PARAM_DEFINE_INT32(UAVCAN_EC_MIN3, 1);
 
 /**
- * SIM_GZ ESC 4 Minimum Value
+ * UAVCAN ESC 4 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
  *
  * @group Actuator Outputs
  * @min 0
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MIN4, 0);
+PARAM_DEFINE_INT32(UAVCAN_EC_MIN4, 1);
 
 /**
- * SIM_GZ ESC 5 Minimum Value
+ * UAVCAN ESC 5 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
  *
  * @group Actuator Outputs
  * @min 0
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MIN5, 0);
+PARAM_DEFINE_INT32(UAVCAN_EC_MIN5, 1);
 
 /**
- * SIM_GZ ESC 6 Minimum Value
+ * UAVCAN ESC 6 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
  *
  * @group Actuator Outputs
  * @min 0
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MIN6, 0);
+PARAM_DEFINE_INT32(UAVCAN_EC_MIN6, 1);
 
 /**
- * SIM_GZ ESC 7 Minimum Value
+ * UAVCAN ESC 7 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
  *
  * @group Actuator Outputs
  * @min 0
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MIN7, 0);
+PARAM_DEFINE_INT32(UAVCAN_EC_MIN7, 1);
 
 /**
- * SIM_GZ ESC 8 Minimum Value
+ * UAVCAN ESC 8 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
  *
  * @group Actuator Outputs
  * @min 0
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MIN8, 0);
+PARAM_DEFINE_INT32(UAVCAN_EC_MIN8, 1);
 
 /**
- * SIM_GZ ESC 1 Maximum Value
+ * UAVCAN ESC 1 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
  *
  * @group Actuator Outputs
  * @min 0
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MAX1, 1000);
+PARAM_DEFINE_INT32(UAVCAN_EC_MAX1, 8191);
 
 /**
- * SIM_GZ ESC 2 Maximum Value
+ * UAVCAN ESC 2 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
  *
  * @group Actuator Outputs
  * @min 0
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MAX2, 1000);
+PARAM_DEFINE_INT32(UAVCAN_EC_MAX2, 8191);
 
 /**
- * SIM_GZ ESC 3 Maximum Value
+ * UAVCAN ESC 3 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
  *
  * @group Actuator Outputs
  * @min 0
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MAX3, 1000);
+PARAM_DEFINE_INT32(UAVCAN_EC_MAX3, 8191);
 
 /**
- * SIM_GZ ESC 4 Maximum Value
+ * UAVCAN ESC 4 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
  *
  * @group Actuator Outputs
  * @min 0
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MAX4, 1000);
+PARAM_DEFINE_INT32(UAVCAN_EC_MAX4, 8191);
 
 /**
- * SIM_GZ ESC 5 Maximum Value
+ * UAVCAN ESC 5 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
  *
  * @group Actuator Outputs
  * @min 0
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MAX5, 1000);
+PARAM_DEFINE_INT32(UAVCAN_EC_MAX5, 8191);
 
 /**
- * SIM_GZ ESC 6 Maximum Value
+ * UAVCAN ESC 6 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
  *
  * @group Actuator Outputs
  * @min 0
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MAX6, 1000);
+PARAM_DEFINE_INT32(UAVCAN_EC_MAX6, 8191);
 
 /**
- * SIM_GZ ESC 7 Maximum Value
+ * UAVCAN ESC 7 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
  *
  * @group Actuator Outputs
  * @min 0
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MAX7, 1000);
+PARAM_DEFINE_INT32(UAVCAN_EC_MAX7, 8191);
 
 /**
- * SIM_GZ ESC 8 Maximum Value
+ * UAVCAN ESC 8 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
  *
  * @group Actuator Outputs
  * @min 0
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_MAX8, 1000);
+PARAM_DEFINE_INT32(UAVCAN_EC_MAX8, 8191);
 
 /**
- * SIM_GZ ESC 1 Failsafe Value
+ * UAVCAN ESC 1 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC1).
+ * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC1).
  * 
  *
  * @group Actuator Outputs
  * @min -1
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL1, -1);
+PARAM_DEFINE_INT32(UAVCAN_EC_FAIL1, -1);
 
 /**
- * SIM_GZ ESC 2 Failsafe Value
+ * UAVCAN ESC 2 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC2).
+ * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC2).
  * 
  *
  * @group Actuator Outputs
  * @min -1
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL2, -1);
+PARAM_DEFINE_INT32(UAVCAN_EC_FAIL2, -1);
 
 /**
- * SIM_GZ ESC 3 Failsafe Value
+ * UAVCAN ESC 3 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC3).
+ * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC3).
  * 
  *
  * @group Actuator Outputs
  * @min -1
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL3, -1);
+PARAM_DEFINE_INT32(UAVCAN_EC_FAIL3, -1);
 
 /**
- * SIM_GZ ESC 4 Failsafe Value
+ * UAVCAN ESC 4 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC4).
+ * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC4).
  * 
  *
  * @group Actuator Outputs
  * @min -1
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL4, -1);
+PARAM_DEFINE_INT32(UAVCAN_EC_FAIL4, -1);
 
 /**
- * SIM_GZ ESC 5 Failsafe Value
+ * UAVCAN ESC 5 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC5).
+ * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC5).
  * 
  *
  * @group Actuator Outputs
  * @min -1
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL5, -1);
+PARAM_DEFINE_INT32(UAVCAN_EC_FAIL5, -1);
 
 /**
- * SIM_GZ ESC 6 Failsafe Value
+ * UAVCAN ESC 6 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC6).
+ * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC6).
  * 
  *
  * @group Actuator Outputs
  * @min -1
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL6, -1);
+PARAM_DEFINE_INT32(UAVCAN_EC_FAIL6, -1);
 
 /**
- * SIM_GZ ESC 7 Failsafe Value
+ * UAVCAN ESC 7 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC7).
+ * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC7).
  * 
  *
  * @group Actuator Outputs
  * @min -1
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL7, -1);
+PARAM_DEFINE_INT32(UAVCAN_EC_FAIL7, -1);
 
 /**
- * SIM_GZ ESC 8 Failsafe Value
+ * UAVCAN ESC 8 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC8).
+ * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC8).
  * 
  *
  * @group Actuator Outputs
  * @min -1
- * @max 1000
+ * @max 8191
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL8, -1);
+PARAM_DEFINE_INT32(UAVCAN_EC_FAIL8, -1);
 
 /**
- * SIM_GZ Servo 1 Output Function
+ * UAVCAN Servo 1 Output Function
  *
- * Select what should be output on SIM_GZ Servo 1.
+ * Select what should be output on UAVCAN Servo 1.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -1936,12 +3963,12 @@ PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL8, -1);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC1, 0);
+PARAM_DEFINE_INT32(UAVCAN_SV_FUNC1, 0);
 
 /**
- * SIM_GZ Servo 2 Output Function
+ * UAVCAN Servo 2 Output Function
  *
- * Select what should be output on SIM_GZ Servo 2.
+ * Select what should be output on UAVCAN Servo 2.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -2000,12 +4027,12 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC1, 0);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC2, 0);
+PARAM_DEFINE_INT32(UAVCAN_SV_FUNC2, 0);
 
 /**
- * SIM_GZ Servo 3 Output Function
+ * UAVCAN Servo 3 Output Function
  *
- * Select what should be output on SIM_GZ Servo 3.
+ * Select what should be output on UAVCAN Servo 3.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -2064,12 +4091,12 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC2, 0);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC3, 0);
+PARAM_DEFINE_INT32(UAVCAN_SV_FUNC3, 0);
 
 /**
- * SIM_GZ Servo 4 Output Function
+ * UAVCAN Servo 4 Output Function
  *
- * Select what should be output on SIM_GZ Servo 4.
+ * Select what should be output on UAVCAN Servo 4.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -2128,12 +4155,12 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC3, 0);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC4, 0);
+PARAM_DEFINE_INT32(UAVCAN_SV_FUNC4, 0);
 
 /**
- * SIM_GZ Servo 5 Output Function
+ * UAVCAN Servo 5 Output Function
  *
- * Select what should be output on SIM_GZ Servo 5.
+ * Select what should be output on UAVCAN Servo 5.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -2192,12 +4219,12 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC4, 0);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC5, 0);
+PARAM_DEFINE_INT32(UAVCAN_SV_FUNC5, 0);
 
 /**
- * SIM_GZ Servo 6 Output Function
+ * UAVCAN Servo 6 Output Function
  *
- * Select what should be output on SIM_GZ Servo 6.
+ * Select what should be output on UAVCAN Servo 6.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -2256,12 +4283,12 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC5, 0);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC6, 0);
+PARAM_DEFINE_INT32(UAVCAN_SV_FUNC6, 0);
 
 /**
- * SIM_GZ Servo 7 Output Function
+ * UAVCAN Servo 7 Output Function
  *
- * Select what should be output on SIM_GZ Servo 7.
+ * Select what should be output on UAVCAN Servo 7.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -2320,12 +4347,12 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC6, 0);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC7, 0);
+PARAM_DEFINE_INT32(UAVCAN_SV_FUNC7, 0);
 
 /**
- * SIM_GZ Servo 8 Output Function
+ * UAVCAN Servo 8 Output Function
  *
- * Select what should be output on SIM_GZ Servo 8.
+ * Select what should be output on UAVCAN Servo 8.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -2384,10 +4411,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC7, 0);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC8, 0);
+PARAM_DEFINE_INT32(UAVCAN_SV_FUNC8, 0);
 
 /**
- * SIM_GZ Servo 1 Disarmed Value
+ * UAVCAN Servo 1 Disarmed Value
  *
  * This is the output value that is set when not armed.
  * 
@@ -2398,10 +4425,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC8, 0);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_DIS1, 500);
+PARAM_DEFINE_INT32(UAVCAN_SV_DIS1, 500);
 
 /**
- * SIM_GZ Servo 2 Disarmed Value
+ * UAVCAN Servo 2 Disarmed Value
  *
  * This is the output value that is set when not armed.
  * 
@@ -2412,10 +4439,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_DIS1, 500);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_DIS2, 500);
+PARAM_DEFINE_INT32(UAVCAN_SV_DIS2, 500);
 
 /**
- * SIM_GZ Servo 3 Disarmed Value
+ * UAVCAN Servo 3 Disarmed Value
  *
  * This is the output value that is set when not armed.
  * 
@@ -2426,10 +4453,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_DIS2, 500);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_DIS3, 500);
+PARAM_DEFINE_INT32(UAVCAN_SV_DIS3, 500);
 
 /**
- * SIM_GZ Servo 4 Disarmed Value
+ * UAVCAN Servo 4 Disarmed Value
  *
  * This is the output value that is set when not armed.
  * 
@@ -2440,10 +4467,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_DIS3, 500);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_DIS4, 500);
+PARAM_DEFINE_INT32(UAVCAN_SV_DIS4, 500);
 
 /**
- * SIM_GZ Servo 5 Disarmed Value
+ * UAVCAN Servo 5 Disarmed Value
  *
  * This is the output value that is set when not armed.
  * 
@@ -2454,10 +4481,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_DIS4, 500);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_DIS5, 500);
+PARAM_DEFINE_INT32(UAVCAN_SV_DIS5, 500);
 
 /**
- * SIM_GZ Servo 6 Disarmed Value
+ * UAVCAN Servo 6 Disarmed Value
  *
  * This is the output value that is set when not armed.
  * 
@@ -2468,10 +4495,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_DIS5, 500);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_DIS6, 500);
+PARAM_DEFINE_INT32(UAVCAN_SV_DIS6, 500);
 
 /**
- * SIM_GZ Servo 7 Disarmed Value
+ * UAVCAN Servo 7 Disarmed Value
  *
  * This is the output value that is set when not armed.
  * 
@@ -2482,10 +4509,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_DIS6, 500);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_DIS7, 500);
+PARAM_DEFINE_INT32(UAVCAN_SV_DIS7, 500);
 
 /**
- * SIM_GZ Servo 8 Disarmed Value
+ * UAVCAN Servo 8 Disarmed Value
  *
  * This is the output value that is set when not armed.
  * 
@@ -2496,10 +4523,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_DIS7, 500);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_DIS8, 500);
+PARAM_DEFINE_INT32(UAVCAN_SV_DIS8, 500);
 
 /**
- * SIM_GZ Servo 1 Minimum Value
+ * UAVCAN Servo 1 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
@@ -2508,10 +4535,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_DIS8, 500);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MIN1, 0);
+PARAM_DEFINE_INT32(UAVCAN_SV_MIN1, 0);
 
 /**
- * SIM_GZ Servo 2 Minimum Value
+ * UAVCAN Servo 2 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
@@ -2520,10 +4547,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_MIN1, 0);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MIN2, 0);
+PARAM_DEFINE_INT32(UAVCAN_SV_MIN2, 0);
 
 /**
- * SIM_GZ Servo 3 Minimum Value
+ * UAVCAN Servo 3 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
@@ -2532,10 +4559,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_MIN2, 0);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MIN3, 0);
+PARAM_DEFINE_INT32(UAVCAN_SV_MIN3, 0);
 
 /**
- * SIM_GZ Servo 4 Minimum Value
+ * UAVCAN Servo 4 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
@@ -2544,10 +4571,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_MIN3, 0);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MIN4, 0);
+PARAM_DEFINE_INT32(UAVCAN_SV_MIN4, 0);
 
 /**
- * SIM_GZ Servo 5 Minimum Value
+ * UAVCAN Servo 5 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
@@ -2556,10 +4583,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_MIN4, 0);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MIN5, 0);
+PARAM_DEFINE_INT32(UAVCAN_SV_MIN5, 0);
 
 /**
- * SIM_GZ Servo 6 Minimum Value
+ * UAVCAN Servo 6 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
@@ -2568,10 +4595,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_MIN5, 0);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MIN6, 0);
+PARAM_DEFINE_INT32(UAVCAN_SV_MIN6, 0);
 
 /**
- * SIM_GZ Servo 7 Minimum Value
+ * UAVCAN Servo 7 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
@@ -2580,10 +4607,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_MIN6, 0);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MIN7, 0);
+PARAM_DEFINE_INT32(UAVCAN_SV_MIN7, 0);
 
 /**
- * SIM_GZ Servo 8 Minimum Value
+ * UAVCAN Servo 8 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
@@ -2592,10 +4619,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_MIN7, 0);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MIN8, 0);
+PARAM_DEFINE_INT32(UAVCAN_SV_MIN8, 0);
 
 /**
- * SIM_GZ Servo 1 Maximum Value
+ * UAVCAN Servo 1 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
@@ -2604,10 +4631,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_MIN8, 0);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MAX1, 1000);
+PARAM_DEFINE_INT32(UAVCAN_SV_MAX1, 1000);
 
 /**
- * SIM_GZ Servo 2 Maximum Value
+ * UAVCAN Servo 2 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
@@ -2616,10 +4643,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_MAX1, 1000);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MAX2, 1000);
+PARAM_DEFINE_INT32(UAVCAN_SV_MAX2, 1000);
 
 /**
- * SIM_GZ Servo 3 Maximum Value
+ * UAVCAN Servo 3 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
@@ -2628,10 +4655,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_MAX2, 1000);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MAX3, 1000);
+PARAM_DEFINE_INT32(UAVCAN_SV_MAX3, 1000);
 
 /**
- * SIM_GZ Servo 4 Maximum Value
+ * UAVCAN Servo 4 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
@@ -2640,10 +4667,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_MAX3, 1000);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MAX4, 1000);
+PARAM_DEFINE_INT32(UAVCAN_SV_MAX4, 1000);
 
 /**
- * SIM_GZ Servo 5 Maximum Value
+ * UAVCAN Servo 5 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
@@ -2652,10 +4679,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_MAX4, 1000);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MAX5, 1000);
+PARAM_DEFINE_INT32(UAVCAN_SV_MAX5, 1000);
 
 /**
- * SIM_GZ Servo 6 Maximum Value
+ * UAVCAN Servo 6 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
@@ -2664,10 +4691,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_MAX5, 1000);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MAX6, 1000);
+PARAM_DEFINE_INT32(UAVCAN_SV_MAX6, 1000);
 
 /**
- * SIM_GZ Servo 7 Maximum Value
+ * UAVCAN Servo 7 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
@@ -2676,10 +4703,10 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_MAX6, 1000);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MAX7, 1000);
+PARAM_DEFINE_INT32(UAVCAN_SV_MAX7, 1000);
 
 /**
- * SIM_GZ Servo 8 Maximum Value
+ * UAVCAN Servo 8 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
@@ -2688,183 +4715,161 @@ PARAM_DEFINE_INT32(SIM_GZ_SV_MAX7, 1000);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_MAX8, 1000);
+PARAM_DEFINE_INT32(UAVCAN_SV_MAX8, 1000);
 
 /**
- * SIM_GZ Servo 1 Failsafe Value
+ * UAVCAN Servo 1 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC1).
+ * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC1).
  * 
  *
  * @group Actuator Outputs
  * @min -1
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL1, -1);
+PARAM_DEFINE_INT32(UAVCAN_SV_FAIL1, -1);
 
 /**
- * SIM_GZ Servo 2 Failsafe Value
+ * UAVCAN Servo 2 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC2).
+ * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC2).
  * 
  *
  * @group Actuator Outputs
  * @min -1
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL2, -1);
+PARAM_DEFINE_INT32(UAVCAN_SV_FAIL2, -1);
 
 /**
- * SIM_GZ Servo 3 Failsafe Value
+ * UAVCAN Servo 3 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC3).
+ * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC3).
  * 
  *
  * @group Actuator Outputs
  * @min -1
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL3, -1);
+PARAM_DEFINE_INT32(UAVCAN_SV_FAIL3, -1);
 
 /**
- * SIM_GZ Servo 4 Failsafe Value
+ * UAVCAN Servo 4 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC4).
+ * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC4).
  * 
  *
  * @group Actuator Outputs
  * @min -1
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL4, -1);
+PARAM_DEFINE_INT32(UAVCAN_SV_FAIL4, -1);
 
 /**
- * SIM_GZ Servo 5 Failsafe Value
+ * UAVCAN Servo 5 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC5).
+ * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC5).
  * 
  *
  * @group Actuator Outputs
  * @min -1
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL5, -1);
+PARAM_DEFINE_INT32(UAVCAN_SV_FAIL5, -1);
 
 /**
- * SIM_GZ Servo 6 Failsafe Value
+ * UAVCAN Servo 6 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC6).
+ * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC6).
  * 
  *
  * @group Actuator Outputs
  * @min -1
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL6, -1);
+PARAM_DEFINE_INT32(UAVCAN_SV_FAIL6, -1);
 
 /**
- * SIM_GZ Servo 7 Failsafe Value
+ * UAVCAN Servo 7 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC7).
+ * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC7).
  * 
  *
  * @group Actuator Outputs
  * @min -1
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL7, -1);
+PARAM_DEFINE_INT32(UAVCAN_SV_FAIL7, -1);
 
 /**
- * SIM_GZ Servo 8 Failsafe Value
+ * UAVCAN Servo 8 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC8).
+ * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC8).
  * 
  *
  * @group Actuator Outputs
  * @min -1
  * @max 1000
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL8, -1);
+PARAM_DEFINE_INT32(UAVCAN_SV_FAIL8, -1);
 
 /**
- * Reverse Output Range for SIM_GZ
+ * Reverse Output Range for UAVCAN
  *
  * Allows to reverse the output range for each channel.
  * Note: this is only useful for servos.
  * 
  *
  * @group Actuator Outputs
- * @bit 0 SIM_GZ ESC 1
- * @bit 1 SIM_GZ ESC 2
- * @bit 2 SIM_GZ ESC 3
- * @bit 3 SIM_GZ ESC 4
- * @bit 4 SIM_GZ ESC 5
- * @bit 5 SIM_GZ ESC 6
- * @bit 6 SIM_GZ ESC 7
- * @bit 7 SIM_GZ ESC 8
+ * @bit 0 UAVCAN ESC 1
+ * @bit 1 UAVCAN ESC 2
+ * @bit 2 UAVCAN ESC 3
+ * @bit 3 UAVCAN ESC 4
+ * @bit 4 UAVCAN ESC 5
+ * @bit 5 UAVCAN ESC 6
+ * @bit 6 UAVCAN ESC 7
+ * @bit 7 UAVCAN ESC 8
  * @min 0
  * @max 255
  */
-PARAM_DEFINE_INT32(SIM_GZ_EC_REV, 0);
+PARAM_DEFINE_INT32(UAVCAN_EC_REV, 0);
 
 /**
- * Reverse Output Range for SIM_GZ
+ * Reverse Output Range for UAVCAN
  *
  * Allows to reverse the output range for each channel.
  * Note: this is only useful for servos.
  * 
  *
  * @group Actuator Outputs
- * @bit 0 SIM_GZ Servo 1
- * @bit 1 SIM_GZ Servo 2
- * @bit 2 SIM_GZ Servo 3
- * @bit 3 SIM_GZ Servo 4
- * @bit 4 SIM_GZ Servo 5
- * @bit 5 SIM_GZ Servo 6
- * @bit 6 SIM_GZ Servo 7
- * @bit 7 SIM_GZ Servo 8
+ * @bit 0 UAVCAN Servo 1
+ * @bit 1 UAVCAN Servo 2
+ * @bit 2 UAVCAN Servo 3
+ * @bit 3 UAVCAN Servo 4
+ * @bit 4 UAVCAN Servo 5
+ * @bit 5 UAVCAN Servo 6
+ * @bit 6 UAVCAN Servo 7
+ * @bit 7 UAVCAN Servo 8
  * @min 0
  * @max 255
  */
-PARAM_DEFINE_INT32(SIM_GZ_SV_REV, 0);
-
-/**
- * RC input protocol
- *
- * Select your RC input protocol or auto to scan.
- * 
- *
- * @group RC Input
- * @value -1 Auto
- * @value 0 None
- * @value 1 PPM
- * @value 2 SBUS
- * @value 3 DSM
- * @value 4 ST24
- * @value 5 SUMD
- * @value 6 CRSF
- * @value 7 GHST
- * @category System
- * @min -1
- * @max 7
- */
-PARAM_DEFINE_INT32(RC_INPUT_PROTO, -1);
+PARAM_DEFINE_INT32(UAVCAN_SV_REV, 0);
 
 /**
  * Airframe selection
@@ -6237,2305 +8242,9 @@ PARAM_DEFINE_INT32(CA_HELI_YAW_CCW, 0);
 PARAM_DEFINE_INT32(CA_FAILURE_MODE, 0);
 
 /**
- * Accelerometer 0 calibration device ID
+ * SIM_GZ ESC 1 Output Function
  *
- * Device ID of the accelerometer this calibration applies to.
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_ACC0_ID, 0);
-
-/**
- * Accelerometer 1 calibration device ID
- *
- * Device ID of the accelerometer this calibration applies to.
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_ACC1_ID, 0);
-
-/**
- * Accelerometer 2 calibration device ID
- *
- * Device ID of the accelerometer this calibration applies to.
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_ACC2_ID, 0);
-
-/**
- * Accelerometer 3 calibration device ID
- *
- * Device ID of the accelerometer this calibration applies to.
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_ACC3_ID, 0);
-
-/**
- * Accelerometer 0 priority
- *
- * 
- *
- * @group Sensor Calibration
- * @value -1 Uninitialized
- * @value 0 Disabled
- * @value 1 Min
- * @value 25 Low
- * @value 50 Medium (Default)
- * @value 75 High
- * @value 100 Max
- * @decimal 3
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_ACC0_PRIO, -1);
-
-/**
- * Accelerometer 1 priority
- *
- * 
- *
- * @group Sensor Calibration
- * @value -1 Uninitialized
- * @value 0 Disabled
- * @value 1 Min
- * @value 25 Low
- * @value 50 Medium (Default)
- * @value 75 High
- * @value 100 Max
- * @decimal 3
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_ACC1_PRIO, -1);
-
-/**
- * Accelerometer 2 priority
- *
- * 
- *
- * @group Sensor Calibration
- * @value -1 Uninitialized
- * @value 0 Disabled
- * @value 1 Min
- * @value 25 Low
- * @value 50 Medium (Default)
- * @value 75 High
- * @value 100 Max
- * @decimal 3
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_ACC2_PRIO, -1);
-
-/**
- * Accelerometer 3 priority
- *
- * 
- *
- * @group Sensor Calibration
- * @value -1 Uninitialized
- * @value 0 Disabled
- * @value 1 Min
- * @value 25 Low
- * @value 50 Medium (Default)
- * @value 75 High
- * @value 100 Max
- * @decimal 3
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_ACC3_PRIO, -1);
-
-/**
- * Accelerometer 0 rotation relative to airframe
- *
- * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
- * 
- *
- * @group Sensor Calibration
- * @value -1 Internal
- * @value 0 No rotation
- * @value 1 Yaw 45°
- * @value 2 Yaw 90°
- * @value 3 Yaw 135°
- * @value 4 Yaw 180°
- * @value 5 Yaw 225°
- * @value 6 Yaw 270°
- * @value 7 Yaw 315°
- * @value 8 Roll 180°
- * @value 9 Roll 180°, Yaw 45°
- * @value 10 Roll 180°, Yaw 90°
- * @value 11 Roll 180°, Yaw 135°
- * @value 12 Pitch 180°
- * @value 13 Roll 180°, Yaw 225°
- * @value 14 Roll 180°, Yaw 270°
- * @value 15 Roll 180°, Yaw 315°
- * @value 16 Roll 90°
- * @value 17 Roll 90°, Yaw 45°
- * @value 18 Roll 90°, Yaw 90°
- * @value 19 Roll 90°, Yaw 135°
- * @value 20 Roll 270°
- * @value 21 Roll 270°, Yaw 45°
- * @value 22 Roll 270°, Yaw 90°
- * @value 23 Roll 270°, Yaw 135°
- * @value 24 Pitch 90°
- * @value 25 Pitch 270°
- * @value 26 Pitch 180°, Yaw 90°
- * @value 27 Pitch 180°, Yaw 270°
- * @value 28 Roll 90°, Pitch 90°
- * @value 29 Roll 180°, Pitch 90°
- * @value 30 Roll 270°, Pitch 90°
- * @value 31 Roll 90°, Pitch 180°
- * @value 32 Roll 270°, Pitch 180°
- * @value 33 Roll 90°, Pitch 270°
- * @value 34 Roll 180°, Pitch 270°
- * @value 35 Roll 270°, Pitch 270°
- * @value 36 Roll 90°, Pitch 180°, Yaw 90°
- * @value 37 Roll 90°, Yaw 270°
- * @value 38 Roll 90°, Pitch 68°, Yaw 293°
- * @value 39 Pitch 315°
- * @value 40 Roll 90°, Pitch 315°
- * @category System
- * @min -1
- * @max 40
- */
-PARAM_DEFINE_INT32(CAL_ACC0_ROT, -1);
-
-/**
- * Accelerometer 1 rotation relative to airframe
- *
- * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
- * 
- *
- * @group Sensor Calibration
- * @value -1 Internal
- * @value 0 No rotation
- * @value 1 Yaw 45°
- * @value 2 Yaw 90°
- * @value 3 Yaw 135°
- * @value 4 Yaw 180°
- * @value 5 Yaw 225°
- * @value 6 Yaw 270°
- * @value 7 Yaw 315°
- * @value 8 Roll 180°
- * @value 9 Roll 180°, Yaw 45°
- * @value 10 Roll 180°, Yaw 90°
- * @value 11 Roll 180°, Yaw 135°
- * @value 12 Pitch 180°
- * @value 13 Roll 180°, Yaw 225°
- * @value 14 Roll 180°, Yaw 270°
- * @value 15 Roll 180°, Yaw 315°
- * @value 16 Roll 90°
- * @value 17 Roll 90°, Yaw 45°
- * @value 18 Roll 90°, Yaw 90°
- * @value 19 Roll 90°, Yaw 135°
- * @value 20 Roll 270°
- * @value 21 Roll 270°, Yaw 45°
- * @value 22 Roll 270°, Yaw 90°
- * @value 23 Roll 270°, Yaw 135°
- * @value 24 Pitch 90°
- * @value 25 Pitch 270°
- * @value 26 Pitch 180°, Yaw 90°
- * @value 27 Pitch 180°, Yaw 270°
- * @value 28 Roll 90°, Pitch 90°
- * @value 29 Roll 180°, Pitch 90°
- * @value 30 Roll 270°, Pitch 90°
- * @value 31 Roll 90°, Pitch 180°
- * @value 32 Roll 270°, Pitch 180°
- * @value 33 Roll 90°, Pitch 270°
- * @value 34 Roll 180°, Pitch 270°
- * @value 35 Roll 270°, Pitch 270°
- * @value 36 Roll 90°, Pitch 180°, Yaw 90°
- * @value 37 Roll 90°, Yaw 270°
- * @value 38 Roll 90°, Pitch 68°, Yaw 293°
- * @value 39 Pitch 315°
- * @value 40 Roll 90°, Pitch 315°
- * @category System
- * @min -1
- * @max 40
- */
-PARAM_DEFINE_INT32(CAL_ACC1_ROT, -1);
-
-/**
- * Accelerometer 2 rotation relative to airframe
- *
- * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
- * 
- *
- * @group Sensor Calibration
- * @value -1 Internal
- * @value 0 No rotation
- * @value 1 Yaw 45°
- * @value 2 Yaw 90°
- * @value 3 Yaw 135°
- * @value 4 Yaw 180°
- * @value 5 Yaw 225°
- * @value 6 Yaw 270°
- * @value 7 Yaw 315°
- * @value 8 Roll 180°
- * @value 9 Roll 180°, Yaw 45°
- * @value 10 Roll 180°, Yaw 90°
- * @value 11 Roll 180°, Yaw 135°
- * @value 12 Pitch 180°
- * @value 13 Roll 180°, Yaw 225°
- * @value 14 Roll 180°, Yaw 270°
- * @value 15 Roll 180°, Yaw 315°
- * @value 16 Roll 90°
- * @value 17 Roll 90°, Yaw 45°
- * @value 18 Roll 90°, Yaw 90°
- * @value 19 Roll 90°, Yaw 135°
- * @value 20 Roll 270°
- * @value 21 Roll 270°, Yaw 45°
- * @value 22 Roll 270°, Yaw 90°
- * @value 23 Roll 270°, Yaw 135°
- * @value 24 Pitch 90°
- * @value 25 Pitch 270°
- * @value 26 Pitch 180°, Yaw 90°
- * @value 27 Pitch 180°, Yaw 270°
- * @value 28 Roll 90°, Pitch 90°
- * @value 29 Roll 180°, Pitch 90°
- * @value 30 Roll 270°, Pitch 90°
- * @value 31 Roll 90°, Pitch 180°
- * @value 32 Roll 270°, Pitch 180°
- * @value 33 Roll 90°, Pitch 270°
- * @value 34 Roll 180°, Pitch 270°
- * @value 35 Roll 270°, Pitch 270°
- * @value 36 Roll 90°, Pitch 180°, Yaw 90°
- * @value 37 Roll 90°, Yaw 270°
- * @value 38 Roll 90°, Pitch 68°, Yaw 293°
- * @value 39 Pitch 315°
- * @value 40 Roll 90°, Pitch 315°
- * @category System
- * @min -1
- * @max 40
- */
-PARAM_DEFINE_INT32(CAL_ACC2_ROT, -1);
-
-/**
- * Accelerometer 3 rotation relative to airframe
- *
- * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
- * 
- *
- * @group Sensor Calibration
- * @value -1 Internal
- * @value 0 No rotation
- * @value 1 Yaw 45°
- * @value 2 Yaw 90°
- * @value 3 Yaw 135°
- * @value 4 Yaw 180°
- * @value 5 Yaw 225°
- * @value 6 Yaw 270°
- * @value 7 Yaw 315°
- * @value 8 Roll 180°
- * @value 9 Roll 180°, Yaw 45°
- * @value 10 Roll 180°, Yaw 90°
- * @value 11 Roll 180°, Yaw 135°
- * @value 12 Pitch 180°
- * @value 13 Roll 180°, Yaw 225°
- * @value 14 Roll 180°, Yaw 270°
- * @value 15 Roll 180°, Yaw 315°
- * @value 16 Roll 90°
- * @value 17 Roll 90°, Yaw 45°
- * @value 18 Roll 90°, Yaw 90°
- * @value 19 Roll 90°, Yaw 135°
- * @value 20 Roll 270°
- * @value 21 Roll 270°, Yaw 45°
- * @value 22 Roll 270°, Yaw 90°
- * @value 23 Roll 270°, Yaw 135°
- * @value 24 Pitch 90°
- * @value 25 Pitch 270°
- * @value 26 Pitch 180°, Yaw 90°
- * @value 27 Pitch 180°, Yaw 270°
- * @value 28 Roll 90°, Pitch 90°
- * @value 29 Roll 180°, Pitch 90°
- * @value 30 Roll 270°, Pitch 90°
- * @value 31 Roll 90°, Pitch 180°
- * @value 32 Roll 270°, Pitch 180°
- * @value 33 Roll 90°, Pitch 270°
- * @value 34 Roll 180°, Pitch 270°
- * @value 35 Roll 270°, Pitch 270°
- * @value 36 Roll 90°, Pitch 180°, Yaw 90°
- * @value 37 Roll 90°, Yaw 270°
- * @value 38 Roll 90°, Pitch 68°, Yaw 293°
- * @value 39 Pitch 315°
- * @value 40 Roll 90°, Pitch 315°
- * @category System
- * @min -1
- * @max 40
- */
-PARAM_DEFINE_INT32(CAL_ACC3_ROT, -1);
-
-/**
- * Accelerometer 0 X-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit m/s^2
- */
-PARAM_DEFINE_FLOAT(CAL_ACC0_XOFF, 0.0);
-
-/**
- * Accelerometer 1 X-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit m/s^2
- */
-PARAM_DEFINE_FLOAT(CAL_ACC1_XOFF, 0.0);
-
-/**
- * Accelerometer 2 X-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit m/s^2
- */
-PARAM_DEFINE_FLOAT(CAL_ACC2_XOFF, 0.0);
-
-/**
- * Accelerometer 3 X-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit m/s^2
- */
-PARAM_DEFINE_FLOAT(CAL_ACC3_XOFF, 0.0);
-
-/**
- * Accelerometer 0 Y-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit m/s^2
- */
-PARAM_DEFINE_FLOAT(CAL_ACC0_YOFF, 0.0);
-
-/**
- * Accelerometer 1 Y-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit m/s^2
- */
-PARAM_DEFINE_FLOAT(CAL_ACC1_YOFF, 0.0);
-
-/**
- * Accelerometer 2 Y-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit m/s^2
- */
-PARAM_DEFINE_FLOAT(CAL_ACC2_YOFF, 0.0);
-
-/**
- * Accelerometer 3 Y-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit m/s^2
- */
-PARAM_DEFINE_FLOAT(CAL_ACC3_YOFF, 0.0);
-
-/**
- * Accelerometer 0 Z-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit m/s^2
- */
-PARAM_DEFINE_FLOAT(CAL_ACC0_ZOFF, 0.0);
-
-/**
- * Accelerometer 1 Z-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit m/s^2
- */
-PARAM_DEFINE_FLOAT(CAL_ACC1_ZOFF, 0.0);
-
-/**
- * Accelerometer 2 Z-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit m/s^2
- */
-PARAM_DEFINE_FLOAT(CAL_ACC2_ZOFF, 0.0);
-
-/**
- * Accelerometer 3 Z-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit m/s^2
- */
-PARAM_DEFINE_FLOAT(CAL_ACC3_ZOFF, 0.0);
-
-/**
- * Accelerometer 0 X-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_ACC0_XSCALE, 1.0);
-
-/**
- * Accelerometer 1 X-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_ACC1_XSCALE, 1.0);
-
-/**
- * Accelerometer 2 X-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_ACC2_XSCALE, 1.0);
-
-/**
- * Accelerometer 3 X-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_ACC3_XSCALE, 1.0);
-
-/**
- * Accelerometer 0 Y-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_ACC0_YSCALE, 1.0);
-
-/**
- * Accelerometer 1 Y-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_ACC1_YSCALE, 1.0);
-
-/**
- * Accelerometer 2 Y-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_ACC2_YSCALE, 1.0);
-
-/**
- * Accelerometer 3 Y-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_ACC3_YSCALE, 1.0);
-
-/**
- * Accelerometer 0 Z-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_ACC0_ZSCALE, 1.0);
-
-/**
- * Accelerometer 1 Z-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_ACC1_ZSCALE, 1.0);
-
-/**
- * Accelerometer 2 Z-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_ACC2_ZSCALE, 1.0);
-
-/**
- * Accelerometer 3 Z-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_ACC3_ZSCALE, 1.0);
-
-/**
- * Barometer 0 calibration device ID
- *
- * Device ID of the barometer this calibration applies to.
- *
- * @group Sensor Calibration
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_BARO0_ID, 0);
-
-/**
- * Barometer 1 calibration device ID
- *
- * Device ID of the barometer this calibration applies to.
- *
- * @group Sensor Calibration
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_BARO1_ID, 0);
-
-/**
- * Barometer 2 calibration device ID
- *
- * Device ID of the barometer this calibration applies to.
- *
- * @group Sensor Calibration
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_BARO2_ID, 0);
-
-/**
- * Barometer 3 calibration device ID
- *
- * Device ID of the barometer this calibration applies to.
- *
- * @group Sensor Calibration
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_BARO3_ID, 0);
-
-/**
- * Barometer 0 priority
- *
- * 
- *
- * @group Sensor Calibration
- * @value -1 Uninitialized
- * @value 0 Disabled
- * @value 1 Min
- * @value 25 Low
- * @value 50 Medium (Default)
- * @value 75 High
- * @value 100 Max
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_BARO0_PRIO, -1);
-
-/**
- * Barometer 1 priority
- *
- * 
- *
- * @group Sensor Calibration
- * @value -1 Uninitialized
- * @value 0 Disabled
- * @value 1 Min
- * @value 25 Low
- * @value 50 Medium (Default)
- * @value 75 High
- * @value 100 Max
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_BARO1_PRIO, -1);
-
-/**
- * Barometer 2 priority
- *
- * 
- *
- * @group Sensor Calibration
- * @value -1 Uninitialized
- * @value 0 Disabled
- * @value 1 Min
- * @value 25 Low
- * @value 50 Medium (Default)
- * @value 75 High
- * @value 100 Max
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_BARO2_PRIO, -1);
-
-/**
- * Barometer 3 priority
- *
- * 
- *
- * @group Sensor Calibration
- * @value -1 Uninitialized
- * @value 0 Disabled
- * @value 1 Min
- * @value 25 Low
- * @value 50 Medium (Default)
- * @value 75 High
- * @value 100 Max
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_BARO3_PRIO, -1);
-
-/**
- * Barometer 0 offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_BARO0_OFF, 0.0);
-
-/**
- * Barometer 1 offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_BARO1_OFF, 0.0);
-
-/**
- * Barometer 2 offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_BARO2_OFF, 0.0);
-
-/**
- * Barometer 3 offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_BARO3_OFF, 0.0);
-
-/**
- * Gyroscope 0 calibration device ID
- *
- * Device ID of the gyroscope this calibration applies to.
- *
- * @group Sensor Calibration
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_GYRO0_ID, 0);
-
-/**
- * Gyroscope 1 calibration device ID
- *
- * Device ID of the gyroscope this calibration applies to.
- *
- * @group Sensor Calibration
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_GYRO1_ID, 0);
-
-/**
- * Gyroscope 2 calibration device ID
- *
- * Device ID of the gyroscope this calibration applies to.
- *
- * @group Sensor Calibration
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_GYRO2_ID, 0);
-
-/**
- * Gyroscope 3 calibration device ID
- *
- * Device ID of the gyroscope this calibration applies to.
- *
- * @group Sensor Calibration
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_GYRO3_ID, 0);
-
-/**
- * Gyroscope 0 priority
- *
- * 
- *
- * @group Sensor Calibration
- * @value -1 Uninitialized
- * @value 0 Disabled
- * @value 1 Min
- * @value 25 Low
- * @value 50 Medium (Default)
- * @value 75 High
- * @value 100 Max
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_GYRO0_PRIO, -1);
-
-/**
- * Gyroscope 1 priority
- *
- * 
- *
- * @group Sensor Calibration
- * @value -1 Uninitialized
- * @value 0 Disabled
- * @value 1 Min
- * @value 25 Low
- * @value 50 Medium (Default)
- * @value 75 High
- * @value 100 Max
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_GYRO1_PRIO, -1);
-
-/**
- * Gyroscope 2 priority
- *
- * 
- *
- * @group Sensor Calibration
- * @value -1 Uninitialized
- * @value 0 Disabled
- * @value 1 Min
- * @value 25 Low
- * @value 50 Medium (Default)
- * @value 75 High
- * @value 100 Max
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_GYRO2_PRIO, -1);
-
-/**
- * Gyroscope 3 priority
- *
- * 
- *
- * @group Sensor Calibration
- * @value -1 Uninitialized
- * @value 0 Disabled
- * @value 1 Min
- * @value 25 Low
- * @value 50 Medium (Default)
- * @value 75 High
- * @value 100 Max
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_GYRO3_PRIO, -1);
-
-/**
- * Gyroscope 0 rotation relative to airframe
- *
- * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
- * 
- *
- * @group Sensor Calibration
- * @value -1 Internal
- * @value 0 No rotation
- * @value 1 Yaw 45°
- * @value 2 Yaw 90°
- * @value 3 Yaw 135°
- * @value 4 Yaw 180°
- * @value 5 Yaw 225°
- * @value 6 Yaw 270°
- * @value 7 Yaw 315°
- * @value 8 Roll 180°
- * @value 9 Roll 180°, Yaw 45°
- * @value 10 Roll 180°, Yaw 90°
- * @value 11 Roll 180°, Yaw 135°
- * @value 12 Pitch 180°
- * @value 13 Roll 180°, Yaw 225°
- * @value 14 Roll 180°, Yaw 270°
- * @value 15 Roll 180°, Yaw 315°
- * @value 16 Roll 90°
- * @value 17 Roll 90°, Yaw 45°
- * @value 18 Roll 90°, Yaw 90°
- * @value 19 Roll 90°, Yaw 135°
- * @value 20 Roll 270°
- * @value 21 Roll 270°, Yaw 45°
- * @value 22 Roll 270°, Yaw 90°
- * @value 23 Roll 270°, Yaw 135°
- * @value 24 Pitch 90°
- * @value 25 Pitch 270°
- * @value 26 Pitch 180°, Yaw 90°
- * @value 27 Pitch 180°, Yaw 270°
- * @value 28 Roll 90°, Pitch 90°
- * @value 29 Roll 180°, Pitch 90°
- * @value 30 Roll 270°, Pitch 90°
- * @value 31 Roll 90°, Pitch 180°
- * @value 32 Roll 270°, Pitch 180°
- * @value 33 Roll 90°, Pitch 270°
- * @value 34 Roll 180°, Pitch 270°
- * @value 35 Roll 270°, Pitch 270°
- * @value 36 Roll 90°, Pitch 180°, Yaw 90°
- * @value 37 Roll 90°, Yaw 270°
- * @value 38 Roll 90°, Pitch 68°, Yaw 293°
- * @value 39 Pitch 315°
- * @value 40 Roll 90°, Pitch 315°
- * @category System
- * @min -1
- * @max 40
- */
-PARAM_DEFINE_INT32(CAL_GYRO0_ROT, -1);
-
-/**
- * Gyroscope 1 rotation relative to airframe
- *
- * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
- * 
- *
- * @group Sensor Calibration
- * @value -1 Internal
- * @value 0 No rotation
- * @value 1 Yaw 45°
- * @value 2 Yaw 90°
- * @value 3 Yaw 135°
- * @value 4 Yaw 180°
- * @value 5 Yaw 225°
- * @value 6 Yaw 270°
- * @value 7 Yaw 315°
- * @value 8 Roll 180°
- * @value 9 Roll 180°, Yaw 45°
- * @value 10 Roll 180°, Yaw 90°
- * @value 11 Roll 180°, Yaw 135°
- * @value 12 Pitch 180°
- * @value 13 Roll 180°, Yaw 225°
- * @value 14 Roll 180°, Yaw 270°
- * @value 15 Roll 180°, Yaw 315°
- * @value 16 Roll 90°
- * @value 17 Roll 90°, Yaw 45°
- * @value 18 Roll 90°, Yaw 90°
- * @value 19 Roll 90°, Yaw 135°
- * @value 20 Roll 270°
- * @value 21 Roll 270°, Yaw 45°
- * @value 22 Roll 270°, Yaw 90°
- * @value 23 Roll 270°, Yaw 135°
- * @value 24 Pitch 90°
- * @value 25 Pitch 270°
- * @value 26 Pitch 180°, Yaw 90°
- * @value 27 Pitch 180°, Yaw 270°
- * @value 28 Roll 90°, Pitch 90°
- * @value 29 Roll 180°, Pitch 90°
- * @value 30 Roll 270°, Pitch 90°
- * @value 31 Roll 90°, Pitch 180°
- * @value 32 Roll 270°, Pitch 180°
- * @value 33 Roll 90°, Pitch 270°
- * @value 34 Roll 180°, Pitch 270°
- * @value 35 Roll 270°, Pitch 270°
- * @value 36 Roll 90°, Pitch 180°, Yaw 90°
- * @value 37 Roll 90°, Yaw 270°
- * @value 38 Roll 90°, Pitch 68°, Yaw 293°
- * @value 39 Pitch 315°
- * @value 40 Roll 90°, Pitch 315°
- * @category System
- * @min -1
- * @max 40
- */
-PARAM_DEFINE_INT32(CAL_GYRO1_ROT, -1);
-
-/**
- * Gyroscope 2 rotation relative to airframe
- *
- * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
- * 
- *
- * @group Sensor Calibration
- * @value -1 Internal
- * @value 0 No rotation
- * @value 1 Yaw 45°
- * @value 2 Yaw 90°
- * @value 3 Yaw 135°
- * @value 4 Yaw 180°
- * @value 5 Yaw 225°
- * @value 6 Yaw 270°
- * @value 7 Yaw 315°
- * @value 8 Roll 180°
- * @value 9 Roll 180°, Yaw 45°
- * @value 10 Roll 180°, Yaw 90°
- * @value 11 Roll 180°, Yaw 135°
- * @value 12 Pitch 180°
- * @value 13 Roll 180°, Yaw 225°
- * @value 14 Roll 180°, Yaw 270°
- * @value 15 Roll 180°, Yaw 315°
- * @value 16 Roll 90°
- * @value 17 Roll 90°, Yaw 45°
- * @value 18 Roll 90°, Yaw 90°
- * @value 19 Roll 90°, Yaw 135°
- * @value 20 Roll 270°
- * @value 21 Roll 270°, Yaw 45°
- * @value 22 Roll 270°, Yaw 90°
- * @value 23 Roll 270°, Yaw 135°
- * @value 24 Pitch 90°
- * @value 25 Pitch 270°
- * @value 26 Pitch 180°, Yaw 90°
- * @value 27 Pitch 180°, Yaw 270°
- * @value 28 Roll 90°, Pitch 90°
- * @value 29 Roll 180°, Pitch 90°
- * @value 30 Roll 270°, Pitch 90°
- * @value 31 Roll 90°, Pitch 180°
- * @value 32 Roll 270°, Pitch 180°
- * @value 33 Roll 90°, Pitch 270°
- * @value 34 Roll 180°, Pitch 270°
- * @value 35 Roll 270°, Pitch 270°
- * @value 36 Roll 90°, Pitch 180°, Yaw 90°
- * @value 37 Roll 90°, Yaw 270°
- * @value 38 Roll 90°, Pitch 68°, Yaw 293°
- * @value 39 Pitch 315°
- * @value 40 Roll 90°, Pitch 315°
- * @category System
- * @min -1
- * @max 40
- */
-PARAM_DEFINE_INT32(CAL_GYRO2_ROT, -1);
-
-/**
- * Gyroscope 3 rotation relative to airframe
- *
- * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
- * 
- *
- * @group Sensor Calibration
- * @value -1 Internal
- * @value 0 No rotation
- * @value 1 Yaw 45°
- * @value 2 Yaw 90°
- * @value 3 Yaw 135°
- * @value 4 Yaw 180°
- * @value 5 Yaw 225°
- * @value 6 Yaw 270°
- * @value 7 Yaw 315°
- * @value 8 Roll 180°
- * @value 9 Roll 180°, Yaw 45°
- * @value 10 Roll 180°, Yaw 90°
- * @value 11 Roll 180°, Yaw 135°
- * @value 12 Pitch 180°
- * @value 13 Roll 180°, Yaw 225°
- * @value 14 Roll 180°, Yaw 270°
- * @value 15 Roll 180°, Yaw 315°
- * @value 16 Roll 90°
- * @value 17 Roll 90°, Yaw 45°
- * @value 18 Roll 90°, Yaw 90°
- * @value 19 Roll 90°, Yaw 135°
- * @value 20 Roll 270°
- * @value 21 Roll 270°, Yaw 45°
- * @value 22 Roll 270°, Yaw 90°
- * @value 23 Roll 270°, Yaw 135°
- * @value 24 Pitch 90°
- * @value 25 Pitch 270°
- * @value 26 Pitch 180°, Yaw 90°
- * @value 27 Pitch 180°, Yaw 270°
- * @value 28 Roll 90°, Pitch 90°
- * @value 29 Roll 180°, Pitch 90°
- * @value 30 Roll 270°, Pitch 90°
- * @value 31 Roll 90°, Pitch 180°
- * @value 32 Roll 270°, Pitch 180°
- * @value 33 Roll 90°, Pitch 270°
- * @value 34 Roll 180°, Pitch 270°
- * @value 35 Roll 270°, Pitch 270°
- * @value 36 Roll 90°, Pitch 180°, Yaw 90°
- * @value 37 Roll 90°, Yaw 270°
- * @value 38 Roll 90°, Pitch 68°, Yaw 293°
- * @value 39 Pitch 315°
- * @value 40 Roll 90°, Pitch 315°
- * @category System
- * @min -1
- * @max 40
- */
-PARAM_DEFINE_INT32(CAL_GYRO3_ROT, -1);
-
-/**
- * Gyroscope 0 X-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit rad/s
- */
-PARAM_DEFINE_FLOAT(CAL_GYRO0_XOFF, 0.0);
-
-/**
- * Gyroscope 1 X-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit rad/s
- */
-PARAM_DEFINE_FLOAT(CAL_GYRO1_XOFF, 0.0);
-
-/**
- * Gyroscope 2 X-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit rad/s
- */
-PARAM_DEFINE_FLOAT(CAL_GYRO2_XOFF, 0.0);
-
-/**
- * Gyroscope 3 X-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit rad/s
- */
-PARAM_DEFINE_FLOAT(CAL_GYRO3_XOFF, 0.0);
-
-/**
- * Gyroscope 0 Y-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit rad/s
- */
-PARAM_DEFINE_FLOAT(CAL_GYRO0_YOFF, 0.0);
-
-/**
- * Gyroscope 1 Y-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit rad/s
- */
-PARAM_DEFINE_FLOAT(CAL_GYRO1_YOFF, 0.0);
-
-/**
- * Gyroscope 2 Y-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit rad/s
- */
-PARAM_DEFINE_FLOAT(CAL_GYRO2_YOFF, 0.0);
-
-/**
- * Gyroscope 3 Y-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit rad/s
- */
-PARAM_DEFINE_FLOAT(CAL_GYRO3_YOFF, 0.0);
-
-/**
- * Gyroscope 0 Z-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit rad/s
- */
-PARAM_DEFINE_FLOAT(CAL_GYRO0_ZOFF, 0.0);
-
-/**
- * Gyroscope 1 Z-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit rad/s
- */
-PARAM_DEFINE_FLOAT(CAL_GYRO1_ZOFF, 0.0);
-
-/**
- * Gyroscope 2 Z-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit rad/s
- */
-PARAM_DEFINE_FLOAT(CAL_GYRO2_ZOFF, 0.0);
-
-/**
- * Gyroscope 3 Z-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit rad/s
- */
-PARAM_DEFINE_FLOAT(CAL_GYRO3_ZOFF, 0.0);
-
-/**
- * Magnetometer 0 calibration device ID
- *
- * Device ID of the magnetometer this calibration applies to.
- *
- * @group Sensor Calibration
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_MAG0_ID, 0);
-
-/**
- * Magnetometer 1 calibration device ID
- *
- * Device ID of the magnetometer this calibration applies to.
- *
- * @group Sensor Calibration
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_MAG1_ID, 0);
-
-/**
- * Magnetometer 2 calibration device ID
- *
- * Device ID of the magnetometer this calibration applies to.
- *
- * @group Sensor Calibration
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_MAG2_ID, 0);
-
-/**
- * Magnetometer 3 calibration device ID
- *
- * Device ID of the magnetometer this calibration applies to.
- *
- * @group Sensor Calibration
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_MAG3_ID, 0);
-
-/**
- * Magnetometer 0 priority
- *
- * 
- *
- * @group Sensor Calibration
- * @value -1 Uninitialized
- * @value 0 Disabled
- * @value 1 Min
- * @value 25 Low
- * @value 50 Medium (Default)
- * @value 75 High
- * @value 100 Max
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_MAG0_PRIO, -1);
-
-/**
- * Magnetometer 1 priority
- *
- * 
- *
- * @group Sensor Calibration
- * @value -1 Uninitialized
- * @value 0 Disabled
- * @value 1 Min
- * @value 25 Low
- * @value 50 Medium (Default)
- * @value 75 High
- * @value 100 Max
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_MAG1_PRIO, -1);
-
-/**
- * Magnetometer 2 priority
- *
- * 
- *
- * @group Sensor Calibration
- * @value -1 Uninitialized
- * @value 0 Disabled
- * @value 1 Min
- * @value 25 Low
- * @value 50 Medium (Default)
- * @value 75 High
- * @value 100 Max
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_MAG2_PRIO, -1);
-
-/**
- * Magnetometer 3 priority
- *
- * 
- *
- * @group Sensor Calibration
- * @value -1 Uninitialized
- * @value 0 Disabled
- * @value 1 Min
- * @value 25 Low
- * @value 50 Medium (Default)
- * @value 75 High
- * @value 100 Max
- * @category System
- */
-PARAM_DEFINE_INT32(CAL_MAG3_PRIO, -1);
-
-/**
- * Magnetometer 0 rotation relative to airframe
- *
- * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
- * 
- *
- * @group Sensor Calibration
- * @value -1 Internal
- * @value 0 No rotation
- * @value 1 Yaw 45°
- * @value 2 Yaw 90°
- * @value 3 Yaw 135°
- * @value 4 Yaw 180°
- * @value 5 Yaw 225°
- * @value 6 Yaw 270°
- * @value 7 Yaw 315°
- * @value 8 Roll 180°
- * @value 9 Roll 180°, Yaw 45°
- * @value 10 Roll 180°, Yaw 90°
- * @value 11 Roll 180°, Yaw 135°
- * @value 12 Pitch 180°
- * @value 13 Roll 180°, Yaw 225°
- * @value 14 Roll 180°, Yaw 270°
- * @value 15 Roll 180°, Yaw 315°
- * @value 16 Roll 90°
- * @value 17 Roll 90°, Yaw 45°
- * @value 18 Roll 90°, Yaw 90°
- * @value 19 Roll 90°, Yaw 135°
- * @value 20 Roll 270°
- * @value 21 Roll 270°, Yaw 45°
- * @value 22 Roll 270°, Yaw 90°
- * @value 23 Roll 270°, Yaw 135°
- * @value 24 Pitch 90°
- * @value 25 Pitch 270°
- * @value 26 Pitch 180°, Yaw 90°
- * @value 27 Pitch 180°, Yaw 270°
- * @value 28 Roll 90°, Pitch 90°
- * @value 29 Roll 180°, Pitch 90°
- * @value 30 Roll 270°, Pitch 90°
- * @value 31 Roll 90°, Pitch 180°
- * @value 32 Roll 270°, Pitch 180°
- * @value 33 Roll 90°, Pitch 270°
- * @value 34 Roll 180°, Pitch 270°
- * @value 35 Roll 270°, Pitch 270°
- * @value 36 Roll 90°, Pitch 180°, Yaw 90°
- * @value 37 Roll 90°, Yaw 270°
- * @value 38 Roll 90°, Pitch 68°, Yaw 293°
- * @value 39 Pitch 315°
- * @value 40 Roll 90°, Pitch 315°
- * @category System
- * @min -1
- * @max 40
- */
-PARAM_DEFINE_INT32(CAL_MAG0_ROT, -1);
-
-/**
- * Magnetometer 1 rotation relative to airframe
- *
- * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
- * 
- *
- * @group Sensor Calibration
- * @value -1 Internal
- * @value 0 No rotation
- * @value 1 Yaw 45°
- * @value 2 Yaw 90°
- * @value 3 Yaw 135°
- * @value 4 Yaw 180°
- * @value 5 Yaw 225°
- * @value 6 Yaw 270°
- * @value 7 Yaw 315°
- * @value 8 Roll 180°
- * @value 9 Roll 180°, Yaw 45°
- * @value 10 Roll 180°, Yaw 90°
- * @value 11 Roll 180°, Yaw 135°
- * @value 12 Pitch 180°
- * @value 13 Roll 180°, Yaw 225°
- * @value 14 Roll 180°, Yaw 270°
- * @value 15 Roll 180°, Yaw 315°
- * @value 16 Roll 90°
- * @value 17 Roll 90°, Yaw 45°
- * @value 18 Roll 90°, Yaw 90°
- * @value 19 Roll 90°, Yaw 135°
- * @value 20 Roll 270°
- * @value 21 Roll 270°, Yaw 45°
- * @value 22 Roll 270°, Yaw 90°
- * @value 23 Roll 270°, Yaw 135°
- * @value 24 Pitch 90°
- * @value 25 Pitch 270°
- * @value 26 Pitch 180°, Yaw 90°
- * @value 27 Pitch 180°, Yaw 270°
- * @value 28 Roll 90°, Pitch 90°
- * @value 29 Roll 180°, Pitch 90°
- * @value 30 Roll 270°, Pitch 90°
- * @value 31 Roll 90°, Pitch 180°
- * @value 32 Roll 270°, Pitch 180°
- * @value 33 Roll 90°, Pitch 270°
- * @value 34 Roll 180°, Pitch 270°
- * @value 35 Roll 270°, Pitch 270°
- * @value 36 Roll 90°, Pitch 180°, Yaw 90°
- * @value 37 Roll 90°, Yaw 270°
- * @value 38 Roll 90°, Pitch 68°, Yaw 293°
- * @value 39 Pitch 315°
- * @value 40 Roll 90°, Pitch 315°
- * @category System
- * @min -1
- * @max 40
- */
-PARAM_DEFINE_INT32(CAL_MAG1_ROT, -1);
-
-/**
- * Magnetometer 2 rotation relative to airframe
- *
- * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
- * 
- *
- * @group Sensor Calibration
- * @value -1 Internal
- * @value 0 No rotation
- * @value 1 Yaw 45°
- * @value 2 Yaw 90°
- * @value 3 Yaw 135°
- * @value 4 Yaw 180°
- * @value 5 Yaw 225°
- * @value 6 Yaw 270°
- * @value 7 Yaw 315°
- * @value 8 Roll 180°
- * @value 9 Roll 180°, Yaw 45°
- * @value 10 Roll 180°, Yaw 90°
- * @value 11 Roll 180°, Yaw 135°
- * @value 12 Pitch 180°
- * @value 13 Roll 180°, Yaw 225°
- * @value 14 Roll 180°, Yaw 270°
- * @value 15 Roll 180°, Yaw 315°
- * @value 16 Roll 90°
- * @value 17 Roll 90°, Yaw 45°
- * @value 18 Roll 90°, Yaw 90°
- * @value 19 Roll 90°, Yaw 135°
- * @value 20 Roll 270°
- * @value 21 Roll 270°, Yaw 45°
- * @value 22 Roll 270°, Yaw 90°
- * @value 23 Roll 270°, Yaw 135°
- * @value 24 Pitch 90°
- * @value 25 Pitch 270°
- * @value 26 Pitch 180°, Yaw 90°
- * @value 27 Pitch 180°, Yaw 270°
- * @value 28 Roll 90°, Pitch 90°
- * @value 29 Roll 180°, Pitch 90°
- * @value 30 Roll 270°, Pitch 90°
- * @value 31 Roll 90°, Pitch 180°
- * @value 32 Roll 270°, Pitch 180°
- * @value 33 Roll 90°, Pitch 270°
- * @value 34 Roll 180°, Pitch 270°
- * @value 35 Roll 270°, Pitch 270°
- * @value 36 Roll 90°, Pitch 180°, Yaw 90°
- * @value 37 Roll 90°, Yaw 270°
- * @value 38 Roll 90°, Pitch 68°, Yaw 293°
- * @value 39 Pitch 315°
- * @value 40 Roll 90°, Pitch 315°
- * @category System
- * @min -1
- * @max 40
- */
-PARAM_DEFINE_INT32(CAL_MAG2_ROT, -1);
-
-/**
- * Magnetometer 3 rotation relative to airframe
- *
- * An internal sensor will force a value of -1, so a GCS should only attempt to configure the rotation if the value is greater than or equal to zero.
- * 
- *
- * @group Sensor Calibration
- * @value -1 Internal
- * @value 0 No rotation
- * @value 1 Yaw 45°
- * @value 2 Yaw 90°
- * @value 3 Yaw 135°
- * @value 4 Yaw 180°
- * @value 5 Yaw 225°
- * @value 6 Yaw 270°
- * @value 7 Yaw 315°
- * @value 8 Roll 180°
- * @value 9 Roll 180°, Yaw 45°
- * @value 10 Roll 180°, Yaw 90°
- * @value 11 Roll 180°, Yaw 135°
- * @value 12 Pitch 180°
- * @value 13 Roll 180°, Yaw 225°
- * @value 14 Roll 180°, Yaw 270°
- * @value 15 Roll 180°, Yaw 315°
- * @value 16 Roll 90°
- * @value 17 Roll 90°, Yaw 45°
- * @value 18 Roll 90°, Yaw 90°
- * @value 19 Roll 90°, Yaw 135°
- * @value 20 Roll 270°
- * @value 21 Roll 270°, Yaw 45°
- * @value 22 Roll 270°, Yaw 90°
- * @value 23 Roll 270°, Yaw 135°
- * @value 24 Pitch 90°
- * @value 25 Pitch 270°
- * @value 26 Pitch 180°, Yaw 90°
- * @value 27 Pitch 180°, Yaw 270°
- * @value 28 Roll 90°, Pitch 90°
- * @value 29 Roll 180°, Pitch 90°
- * @value 30 Roll 270°, Pitch 90°
- * @value 31 Roll 90°, Pitch 180°
- * @value 32 Roll 270°, Pitch 180°
- * @value 33 Roll 90°, Pitch 270°
- * @value 34 Roll 180°, Pitch 270°
- * @value 35 Roll 270°, Pitch 270°
- * @value 36 Roll 90°, Pitch 180°, Yaw 90°
- * @value 37 Roll 90°, Yaw 270°
- * @value 38 Roll 90°, Pitch 68°, Yaw 293°
- * @value 39 Pitch 315°
- * @value 40 Roll 90°, Pitch 315°
- * @category System
- * @min -1
- * @max 40
- */
-PARAM_DEFINE_INT32(CAL_MAG3_ROT, -1);
-
-/**
- * Magnetometer 0 X-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit gauss
- */
-PARAM_DEFINE_FLOAT(CAL_MAG0_XOFF, 0.0);
-
-/**
- * Magnetometer 1 X-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit gauss
- */
-PARAM_DEFINE_FLOAT(CAL_MAG1_XOFF, 0.0);
-
-/**
- * Magnetometer 2 X-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit gauss
- */
-PARAM_DEFINE_FLOAT(CAL_MAG2_XOFF, 0.0);
-
-/**
- * Magnetometer 3 X-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit gauss
- */
-PARAM_DEFINE_FLOAT(CAL_MAG3_XOFF, 0.0);
-
-/**
- * Magnetometer 0 Y-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit gauss
- */
-PARAM_DEFINE_FLOAT(CAL_MAG0_YOFF, 0.0);
-
-/**
- * Magnetometer 1 Y-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit gauss
- */
-PARAM_DEFINE_FLOAT(CAL_MAG1_YOFF, 0.0);
-
-/**
- * Magnetometer 2 Y-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit gauss
- */
-PARAM_DEFINE_FLOAT(CAL_MAG2_YOFF, 0.0);
-
-/**
- * Magnetometer 3 Y-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit gauss
- */
-PARAM_DEFINE_FLOAT(CAL_MAG3_YOFF, 0.0);
-
-/**
- * Magnetometer 0 Z-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit gauss
- */
-PARAM_DEFINE_FLOAT(CAL_MAG0_ZOFF, 0.0);
-
-/**
- * Magnetometer 1 Z-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit gauss
- */
-PARAM_DEFINE_FLOAT(CAL_MAG1_ZOFF, 0.0);
-
-/**
- * Magnetometer 2 Z-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit gauss
- */
-PARAM_DEFINE_FLOAT(CAL_MAG2_ZOFF, 0.0);
-
-/**
- * Magnetometer 3 Z-axis offset
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @unit gauss
- */
-PARAM_DEFINE_FLOAT(CAL_MAG3_ZOFF, 0.0);
-
-/**
- * Magnetometer 0 X-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_MAG0_XSCALE, 1.0);
-
-/**
- * Magnetometer 1 X-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_MAG1_XSCALE, 1.0);
-
-/**
- * Magnetometer 2 X-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_MAG2_XSCALE, 1.0);
-
-/**
- * Magnetometer 3 X-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_MAG3_XSCALE, 1.0);
-
-/**
- * Magnetometer 0 Y-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_MAG0_YSCALE, 1.0);
-
-/**
- * Magnetometer 1 Y-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_MAG1_YSCALE, 1.0);
-
-/**
- * Magnetometer 2 Y-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_MAG2_YSCALE, 1.0);
-
-/**
- * Magnetometer 3 Y-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_MAG3_YSCALE, 1.0);
-
-/**
- * Magnetometer 0 Z-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_MAG0_ZSCALE, 1.0);
-
-/**
- * Magnetometer 1 Z-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_MAG1_ZSCALE, 1.0);
-
-/**
- * Magnetometer 2 Z-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_MAG2_ZSCALE, 1.0);
-
-/**
- * Magnetometer 3 Z-axis scaling factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- * @min 0.1
- * @max 3.0
- */
-PARAM_DEFINE_FLOAT(CAL_MAG3_ZSCALE, 1.0);
-
-/**
- * Magnetometer 0 X-axis off diagonal scale factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG0_XODIAG, 0.0);
-
-/**
- * Magnetometer 1 X-axis off diagonal scale factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG1_XODIAG, 0.0);
-
-/**
- * Magnetometer 2 X-axis off diagonal scale factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG2_XODIAG, 0.0);
-
-/**
- * Magnetometer 3 X-axis off diagonal scale factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG3_XODIAG, 0.0);
-
-/**
- * Magnetometer 0 Y-axis off diagonal scale factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG0_YODIAG, 0.0);
-
-/**
- * Magnetometer 1 Y-axis off diagonal scale factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG1_YODIAG, 0.0);
-
-/**
- * Magnetometer 2 Y-axis off diagonal scale factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG2_YODIAG, 0.0);
-
-/**
- * Magnetometer 3 Y-axis off diagonal scale factor
- *
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG3_YODIAG, 0.0);
-
-/**
- * Magnetometer 0 Z-axis off diagonal scale factor
- *
- * 
- *
- * @group Sensor Calibration
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG0_ZODIAG, 0.0);
-
-/**
- * Magnetometer 1 Z-axis off diagonal scale factor
- *
- * 
- *
- * @group Sensor Calibration
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG1_ZODIAG, 0.0);
-
-/**
- * Magnetometer 2 Z-axis off diagonal scale factor
- *
- * 
- *
- * @group Sensor Calibration
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG2_ZODIAG, 0.0);
-
-/**
- * Magnetometer 3 Z-axis off diagonal scale factor
- *
- * 
- *
- * @group Sensor Calibration
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG3_ZODIAG, 0.0);
-
-/**
- * Magnetometer 0 X Axis throttle compensation
- *
- * Coefficient describing linear relationship between
- * X component of magnetometer in body frame axis
- * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
- * Unit for throttle-based compensation is [G] and
- * for current-based compensation [G/kA]
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG0_XCOMP, 0.0);
-
-/**
- * Magnetometer 1 X Axis throttle compensation
- *
- * Coefficient describing linear relationship between
- * X component of magnetometer in body frame axis
- * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
- * Unit for throttle-based compensation is [G] and
- * for current-based compensation [G/kA]
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG1_XCOMP, 0.0);
-
-/**
- * Magnetometer 2 X Axis throttle compensation
- *
- * Coefficient describing linear relationship between
- * X component of magnetometer in body frame axis
- * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
- * Unit for throttle-based compensation is [G] and
- * for current-based compensation [G/kA]
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG2_XCOMP, 0.0);
-
-/**
- * Magnetometer 3 X Axis throttle compensation
- *
- * Coefficient describing linear relationship between
- * X component of magnetometer in body frame axis
- * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
- * Unit for throttle-based compensation is [G] and
- * for current-based compensation [G/kA]
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG3_XCOMP, 0.0);
-
-/**
- * Magnetometer 0 Y Axis throttle compensation
- *
- * Coefficient describing linear relationship between
- * Y component of magnetometer in body frame axis
- * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
- * Unit for throttle-based compensation is [G] and
- * for current-based compensation [G/kA]
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG0_YCOMP, 0.0);
-
-/**
- * Magnetometer 1 Y Axis throttle compensation
- *
- * Coefficient describing linear relationship between
- * Y component of magnetometer in body frame axis
- * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
- * Unit for throttle-based compensation is [G] and
- * for current-based compensation [G/kA]
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG1_YCOMP, 0.0);
-
-/**
- * Magnetometer 2 Y Axis throttle compensation
- *
- * Coefficient describing linear relationship between
- * Y component of magnetometer in body frame axis
- * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
- * Unit for throttle-based compensation is [G] and
- * for current-based compensation [G/kA]
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG2_YCOMP, 0.0);
-
-/**
- * Magnetometer 3 Y Axis throttle compensation
- *
- * Coefficient describing linear relationship between
- * Y component of magnetometer in body frame axis
- * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
- * Unit for throttle-based compensation is [G] and
- * for current-based compensation [G/kA]
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG3_YCOMP, 0.0);
-
-/**
- * Magnetometer 0 Z Axis throttle compensation
- *
- * Coefficient describing linear relationship between
- * Z component of magnetometer in body frame axis
- * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
- * Unit for throttle-based compensation is [G] and
- * for current-based compensation [G/kA]
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG0_ZCOMP, 0.0);
-
-/**
- * Magnetometer 1 Z Axis throttle compensation
- *
- * Coefficient describing linear relationship between
- * Z component of magnetometer in body frame axis
- * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
- * Unit for throttle-based compensation is [G] and
- * for current-based compensation [G/kA]
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG1_ZCOMP, 0.0);
-
-/**
- * Magnetometer 2 Z Axis throttle compensation
- *
- * Coefficient describing linear relationship between
- * Z component of magnetometer in body frame axis
- * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
- * Unit for throttle-based compensation is [G] and
- * for current-based compensation [G/kA]
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG2_ZCOMP, 0.0);
-
-/**
- * Magnetometer 3 Z Axis throttle compensation
- *
- * Coefficient describing linear relationship between
- * Z component of magnetometer in body frame axis
- * and either current or throttle depending on value of CAL_MAG_COMP_TYP.
- * Unit for throttle-based compensation is [G] and
- * for current-based compensation [G/kA]
- * 
- *
- * @group Sensor Calibration
- * @decimal 3
- * @category System
- * @volatile True
- */
-PARAM_DEFINE_FLOAT(CAL_MAG3_ZCOMP, 0.0);
-
-/**
- * UAVCAN ESC 1 Output Function
- *
- * Select what should be output on UAVCAN ESC 1.
+ * Select what should be output on SIM_GZ ESC 1.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -8594,12 +8303,12 @@ PARAM_DEFINE_FLOAT(CAL_MAG3_ZCOMP, 0.0);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(UAVCAN_EC_FUNC1, 0);
+PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC1, 0);
 
 /**
- * UAVCAN ESC 2 Output Function
+ * SIM_GZ ESC 2 Output Function
  *
- * Select what should be output on UAVCAN ESC 2.
+ * Select what should be output on SIM_GZ ESC 2.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -8658,12 +8367,12 @@ PARAM_DEFINE_INT32(UAVCAN_EC_FUNC1, 0);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(UAVCAN_EC_FUNC2, 0);
+PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC2, 0);
 
 /**
- * UAVCAN ESC 3 Output Function
+ * SIM_GZ ESC 3 Output Function
  *
- * Select what should be output on UAVCAN ESC 3.
+ * Select what should be output on SIM_GZ ESC 3.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -8722,12 +8431,12 @@ PARAM_DEFINE_INT32(UAVCAN_EC_FUNC2, 0);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(UAVCAN_EC_FUNC3, 0);
+PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC3, 0);
 
 /**
- * UAVCAN ESC 4 Output Function
+ * SIM_GZ ESC 4 Output Function
  *
- * Select what should be output on UAVCAN ESC 4.
+ * Select what should be output on SIM_GZ ESC 4.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -8786,12 +8495,12 @@ PARAM_DEFINE_INT32(UAVCAN_EC_FUNC3, 0);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(UAVCAN_EC_FUNC4, 0);
+PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC4, 0);
 
 /**
- * UAVCAN ESC 5 Output Function
+ * SIM_GZ ESC 5 Output Function
  *
- * Select what should be output on UAVCAN ESC 5.
+ * Select what should be output on SIM_GZ ESC 5.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -8850,12 +8559,12 @@ PARAM_DEFINE_INT32(UAVCAN_EC_FUNC4, 0);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(UAVCAN_EC_FUNC5, 0);
+PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC5, 0);
 
 /**
- * UAVCAN ESC 6 Output Function
+ * SIM_GZ ESC 6 Output Function
  *
- * Select what should be output on UAVCAN ESC 6.
+ * Select what should be output on SIM_GZ ESC 6.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -8914,12 +8623,12 @@ PARAM_DEFINE_INT32(UAVCAN_EC_FUNC5, 0);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(UAVCAN_EC_FUNC6, 0);
+PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC6, 0);
 
 /**
- * UAVCAN ESC 7 Output Function
+ * SIM_GZ ESC 7 Output Function
  *
- * Select what should be output on UAVCAN ESC 7.
+ * Select what should be output on SIM_GZ ESC 7.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -8978,12 +8687,12 @@ PARAM_DEFINE_INT32(UAVCAN_EC_FUNC6, 0);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(UAVCAN_EC_FUNC7, 0);
+PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC7, 0);
 
 /**
- * UAVCAN ESC 8 Output Function
+ * SIM_GZ ESC 8 Output Function
  *
- * Select what should be output on UAVCAN ESC 8.
+ * Select what should be output on SIM_GZ ESC 8.
  * 
  * The default failsafe value is set according to the selected function:
  * - 'Min' for ConstantMin
@@ -9042,826 +8751,10 @@ PARAM_DEFINE_INT32(UAVCAN_EC_FUNC7, 0);
  * @value 430 Gripper
  * @value 440 Landing Gear Wheel
  */
-PARAM_DEFINE_INT32(UAVCAN_EC_FUNC8, 0);
+PARAM_DEFINE_INT32(SIM_GZ_EC_FUNC8, 0);
 
 /**
- * UAVCAN ESC 1 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MIN1, 1);
-
-/**
- * UAVCAN ESC 2 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MIN2, 1);
-
-/**
- * UAVCAN ESC 3 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MIN3, 1);
-
-/**
- * UAVCAN ESC 4 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MIN4, 1);
-
-/**
- * UAVCAN ESC 5 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MIN5, 1);
-
-/**
- * UAVCAN ESC 6 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MIN6, 1);
-
-/**
- * UAVCAN ESC 7 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MIN7, 1);
-
-/**
- * UAVCAN ESC 8 Minimum Value
- *
- * Minimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MIN8, 1);
-
-/**
- * UAVCAN ESC 1 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MAX1, 8191);
-
-/**
- * UAVCAN ESC 2 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MAX2, 8191);
-
-/**
- * UAVCAN ESC 3 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MAX3, 8191);
-
-/**
- * UAVCAN ESC 4 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MAX4, 8191);
-
-/**
- * UAVCAN ESC 5 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MAX5, 8191);
-
-/**
- * UAVCAN ESC 6 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MAX6, 8191);
-
-/**
- * UAVCAN ESC 7 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MAX7, 8191);
-
-/**
- * UAVCAN ESC 8 Maximum Value
- *
- * Maxmimum output value (when not disarmed).
- * 
- *
- * @group Actuator Outputs
- * @min 0
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_MAX8, 8191);
-
-/**
- * UAVCAN ESC 1 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC1).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_FAIL1, -1);
-
-/**
- * UAVCAN ESC 2 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC2).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_FAIL2, -1);
-
-/**
- * UAVCAN ESC 3 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC3).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_FAIL3, -1);
-
-/**
- * UAVCAN ESC 4 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC4).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_FAIL4, -1);
-
-/**
- * UAVCAN ESC 5 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC5).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_FAIL5, -1);
-
-/**
- * UAVCAN ESC 6 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC6).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_FAIL6, -1);
-
-/**
- * UAVCAN ESC 7 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC7).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_FAIL7, -1);
-
-/**
- * UAVCAN ESC 8 Failsafe Value
- *
- * This is the output value that is set when in failsafe mode.
- * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_EC_FUNC8).
- * 
- *
- * @group Actuator Outputs
- * @min -1
- * @max 8191
- */
-PARAM_DEFINE_INT32(UAVCAN_EC_FAIL8, -1);
-
-/**
- * UAVCAN Servo 1 Output Function
- *
- * Select what should be output on UAVCAN Servo 1.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FUNC1, 0);
-
-/**
- * UAVCAN Servo 2 Output Function
- *
- * Select what should be output on UAVCAN Servo 2.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FUNC2, 0);
-
-/**
- * UAVCAN Servo 3 Output Function
- *
- * Select what should be output on UAVCAN Servo 3.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FUNC3, 0);
-
-/**
- * UAVCAN Servo 4 Output Function
- *
- * Select what should be output on UAVCAN Servo 4.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FUNC4, 0);
-
-/**
- * UAVCAN Servo 5 Output Function
- *
- * Select what should be output on UAVCAN Servo 5.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FUNC5, 0);
-
-/**
- * UAVCAN Servo 6 Output Function
- *
- * Select what should be output on UAVCAN Servo 6.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FUNC6, 0);
-
-/**
- * UAVCAN Servo 7 Output Function
- *
- * Select what should be output on UAVCAN Servo 7.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FUNC7, 0);
-
-/**
- * UAVCAN Servo 8 Output Function
- *
- * Select what should be output on UAVCAN Servo 8.
- * 
- * The default failsafe value is set according to the selected function:
- * - 'Min' for ConstantMin
- * - 'Max' for ConstantMax
- * - 'Max' for Parachute
- * - ('Max'+'Min')/2 for Servos
- * - 'Disarmed' for the rest
- * 
- *
- * @group Actuator Outputs
- * @value 0 Disabled
- * @value 1 Constant Min
- * @value 2 Constant Max
- * @value 101 Motor 1
- * @value 102 Motor 2
- * @value 103 Motor 3
- * @value 104 Motor 4
- * @value 105 Motor 5
- * @value 106 Motor 6
- * @value 107 Motor 7
- * @value 108 Motor 8
- * @value 109 Motor 9
- * @value 110 Motor 10
- * @value 111 Motor 11
- * @value 112 Motor 12
- * @value 201 Servo 1
- * @value 202 Servo 2
- * @value 203 Servo 3
- * @value 204 Servo 4
- * @value 205 Servo 5
- * @value 206 Servo 6
- * @value 207 Servo 7
- * @value 208 Servo 8
- * @value 301 Offboard Actuator Set 1
- * @value 302 Offboard Actuator Set 2
- * @value 303 Offboard Actuator Set 3
- * @value 304 Offboard Actuator Set 4
- * @value 305 Offboard Actuator Set 5
- * @value 306 Offboard Actuator Set 6
- * @value 400 Landing Gear
- * @value 401 Parachute
- * @value 402 RC Roll
- * @value 403 RC Pitch
- * @value 404 RC Throttle
- * @value 405 RC Yaw
- * @value 406 RC Flaps
- * @value 407 RC AUX 1
- * @value 408 RC AUX 2
- * @value 409 RC AUX 3
- * @value 410 RC AUX 4
- * @value 411 RC AUX 5
- * @value 412 RC AUX 6
- * @value 420 Gimbal Roll
- * @value 421 Gimbal Pitch
- * @value 422 Gimbal Yaw
- * @value 430 Gripper
- * @value 440 Landing Gear Wheel
- */
-PARAM_DEFINE_INT32(UAVCAN_SV_FUNC8, 0);
-
-/**
- * UAVCAN Servo 1 Disarmed Value
+ * SIM_GZ ESC 1 Disarmed Value
  *
  * This is the output value that is set when not armed.
  * 
@@ -9872,10 +8765,10 @@ PARAM_DEFINE_INT32(UAVCAN_SV_FUNC8, 0);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_DIS1, 500);
+PARAM_DEFINE_INT32(SIM_GZ_EC_DIS1, 0);
 
 /**
- * UAVCAN Servo 2 Disarmed Value
+ * SIM_GZ ESC 2 Disarmed Value
  *
  * This is the output value that is set when not armed.
  * 
@@ -9886,10 +8779,10 @@ PARAM_DEFINE_INT32(UAVCAN_SV_DIS1, 500);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_DIS2, 500);
+PARAM_DEFINE_INT32(SIM_GZ_EC_DIS2, 0);
 
 /**
- * UAVCAN Servo 3 Disarmed Value
+ * SIM_GZ ESC 3 Disarmed Value
  *
  * This is the output value that is set when not armed.
  * 
@@ -9900,10 +8793,10 @@ PARAM_DEFINE_INT32(UAVCAN_SV_DIS2, 500);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_DIS3, 500);
+PARAM_DEFINE_INT32(SIM_GZ_EC_DIS3, 0);
 
 /**
- * UAVCAN Servo 4 Disarmed Value
+ * SIM_GZ ESC 4 Disarmed Value
  *
  * This is the output value that is set when not armed.
  * 
@@ -9914,10 +8807,10 @@ PARAM_DEFINE_INT32(UAVCAN_SV_DIS3, 500);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_DIS4, 500);
+PARAM_DEFINE_INT32(SIM_GZ_EC_DIS4, 0);
 
 /**
- * UAVCAN Servo 5 Disarmed Value
+ * SIM_GZ ESC 5 Disarmed Value
  *
  * This is the output value that is set when not armed.
  * 
@@ -9928,10 +8821,10 @@ PARAM_DEFINE_INT32(UAVCAN_SV_DIS4, 500);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_DIS5, 500);
+PARAM_DEFINE_INT32(SIM_GZ_EC_DIS5, 0);
 
 /**
- * UAVCAN Servo 6 Disarmed Value
+ * SIM_GZ ESC 6 Disarmed Value
  *
  * This is the output value that is set when not armed.
  * 
@@ -9942,10 +8835,10 @@ PARAM_DEFINE_INT32(UAVCAN_SV_DIS5, 500);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_DIS6, 500);
+PARAM_DEFINE_INT32(SIM_GZ_EC_DIS6, 0);
 
 /**
- * UAVCAN Servo 7 Disarmed Value
+ * SIM_GZ ESC 7 Disarmed Value
  *
  * This is the output value that is set when not armed.
  * 
@@ -9956,10 +8849,10 @@ PARAM_DEFINE_INT32(UAVCAN_SV_DIS6, 500);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_DIS7, 500);
+PARAM_DEFINE_INT32(SIM_GZ_EC_DIS7, 0);
 
 /**
- * UAVCAN Servo 8 Disarmed Value
+ * SIM_GZ ESC 8 Disarmed Value
  *
  * This is the output value that is set when not armed.
  * 
@@ -9970,10 +8863,10 @@ PARAM_DEFINE_INT32(UAVCAN_SV_DIS7, 500);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_DIS8, 500);
+PARAM_DEFINE_INT32(SIM_GZ_EC_DIS8, 0);
 
 /**
- * UAVCAN Servo 1 Minimum Value
+ * SIM_GZ ESC 1 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
@@ -9982,10 +8875,10 @@ PARAM_DEFINE_INT32(UAVCAN_SV_DIS8, 500);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_MIN1, 0);
+PARAM_DEFINE_INT32(SIM_GZ_EC_MIN1, 0);
 
 /**
- * UAVCAN Servo 2 Minimum Value
+ * SIM_GZ ESC 2 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
@@ -9994,10 +8887,10 @@ PARAM_DEFINE_INT32(UAVCAN_SV_MIN1, 0);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_MIN2, 0);
+PARAM_DEFINE_INT32(SIM_GZ_EC_MIN2, 0);
 
 /**
- * UAVCAN Servo 3 Minimum Value
+ * SIM_GZ ESC 3 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
@@ -10006,10 +8899,10 @@ PARAM_DEFINE_INT32(UAVCAN_SV_MIN2, 0);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_MIN3, 0);
+PARAM_DEFINE_INT32(SIM_GZ_EC_MIN3, 0);
 
 /**
- * UAVCAN Servo 4 Minimum Value
+ * SIM_GZ ESC 4 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
@@ -10018,10 +8911,10 @@ PARAM_DEFINE_INT32(UAVCAN_SV_MIN3, 0);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_MIN4, 0);
+PARAM_DEFINE_INT32(SIM_GZ_EC_MIN4, 0);
 
 /**
- * UAVCAN Servo 5 Minimum Value
+ * SIM_GZ ESC 5 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
@@ -10030,10 +8923,10 @@ PARAM_DEFINE_INT32(UAVCAN_SV_MIN4, 0);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_MIN5, 0);
+PARAM_DEFINE_INT32(SIM_GZ_EC_MIN5, 0);
 
 /**
- * UAVCAN Servo 6 Minimum Value
+ * SIM_GZ ESC 6 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
@@ -10042,10 +8935,10 @@ PARAM_DEFINE_INT32(UAVCAN_SV_MIN5, 0);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_MIN6, 0);
+PARAM_DEFINE_INT32(SIM_GZ_EC_MIN6, 0);
 
 /**
- * UAVCAN Servo 7 Minimum Value
+ * SIM_GZ ESC 7 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
@@ -10054,10 +8947,10 @@ PARAM_DEFINE_INT32(UAVCAN_SV_MIN6, 0);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_MIN7, 0);
+PARAM_DEFINE_INT32(SIM_GZ_EC_MIN7, 0);
 
 /**
- * UAVCAN Servo 8 Minimum Value
+ * SIM_GZ ESC 8 Minimum Value
  *
  * Minimum output value (when not disarmed).
  * 
@@ -10066,10 +8959,10 @@ PARAM_DEFINE_INT32(UAVCAN_SV_MIN7, 0);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_MIN8, 0);
+PARAM_DEFINE_INT32(SIM_GZ_EC_MIN8, 0);
 
 /**
- * UAVCAN Servo 1 Maximum Value
+ * SIM_GZ ESC 1 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
@@ -10078,10 +8971,10 @@ PARAM_DEFINE_INT32(UAVCAN_SV_MIN8, 0);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_MAX1, 1000);
+PARAM_DEFINE_INT32(SIM_GZ_EC_MAX1, 1000);
 
 /**
- * UAVCAN Servo 2 Maximum Value
+ * SIM_GZ ESC 2 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
@@ -10090,10 +8983,10 @@ PARAM_DEFINE_INT32(UAVCAN_SV_MAX1, 1000);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_MAX2, 1000);
+PARAM_DEFINE_INT32(SIM_GZ_EC_MAX2, 1000);
 
 /**
- * UAVCAN Servo 3 Maximum Value
+ * SIM_GZ ESC 3 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
@@ -10102,10 +8995,10 @@ PARAM_DEFINE_INT32(UAVCAN_SV_MAX2, 1000);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_MAX3, 1000);
+PARAM_DEFINE_INT32(SIM_GZ_EC_MAX3, 1000);
 
 /**
- * UAVCAN Servo 4 Maximum Value
+ * SIM_GZ ESC 4 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
@@ -10114,10 +9007,10 @@ PARAM_DEFINE_INT32(UAVCAN_SV_MAX3, 1000);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_MAX4, 1000);
+PARAM_DEFINE_INT32(SIM_GZ_EC_MAX4, 1000);
 
 /**
- * UAVCAN Servo 5 Maximum Value
+ * SIM_GZ ESC 5 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
@@ -10126,10 +9019,10 @@ PARAM_DEFINE_INT32(UAVCAN_SV_MAX4, 1000);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_MAX5, 1000);
+PARAM_DEFINE_INT32(SIM_GZ_EC_MAX5, 1000);
 
 /**
- * UAVCAN Servo 6 Maximum Value
+ * SIM_GZ ESC 6 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
@@ -10138,10 +9031,10 @@ PARAM_DEFINE_INT32(UAVCAN_SV_MAX5, 1000);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_MAX6, 1000);
+PARAM_DEFINE_INT32(SIM_GZ_EC_MAX6, 1000);
 
 /**
- * UAVCAN Servo 7 Maximum Value
+ * SIM_GZ ESC 7 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
@@ -10150,10 +9043,10 @@ PARAM_DEFINE_INT32(UAVCAN_SV_MAX6, 1000);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_MAX7, 1000);
+PARAM_DEFINE_INT32(SIM_GZ_EC_MAX7, 1000);
 
 /**
- * UAVCAN Servo 8 Maximum Value
+ * SIM_GZ ESC 8 Maximum Value
  *
  * Maxmimum output value (when not disarmed).
  * 
@@ -10162,158 +9055,1086 @@ PARAM_DEFINE_INT32(UAVCAN_SV_MAX7, 1000);
  * @min 0
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_MAX8, 1000);
+PARAM_DEFINE_INT32(SIM_GZ_EC_MAX8, 1000);
 
 /**
- * UAVCAN Servo 1 Failsafe Value
+ * SIM_GZ ESC 1 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC1).
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC1).
  * 
  *
  * @group Actuator Outputs
  * @min -1
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_FAIL1, -1);
+PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL1, -1);
 
 /**
- * UAVCAN Servo 2 Failsafe Value
+ * SIM_GZ ESC 2 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC2).
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC2).
  * 
  *
  * @group Actuator Outputs
  * @min -1
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_FAIL2, -1);
+PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL2, -1);
 
 /**
- * UAVCAN Servo 3 Failsafe Value
+ * SIM_GZ ESC 3 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC3).
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC3).
  * 
  *
  * @group Actuator Outputs
  * @min -1
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_FAIL3, -1);
+PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL3, -1);
 
 /**
- * UAVCAN Servo 4 Failsafe Value
+ * SIM_GZ ESC 4 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC4).
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC4).
  * 
  *
  * @group Actuator Outputs
  * @min -1
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_FAIL4, -1);
+PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL4, -1);
 
 /**
- * UAVCAN Servo 5 Failsafe Value
+ * SIM_GZ ESC 5 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC5).
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC5).
  * 
  *
  * @group Actuator Outputs
  * @min -1
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_FAIL5, -1);
+PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL5, -1);
 
 /**
- * UAVCAN Servo 6 Failsafe Value
+ * SIM_GZ ESC 6 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC6).
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC6).
  * 
  *
  * @group Actuator Outputs
  * @min -1
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_FAIL6, -1);
+PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL6, -1);
 
 /**
- * UAVCAN Servo 7 Failsafe Value
+ * SIM_GZ ESC 7 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC7).
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC7).
  * 
  *
  * @group Actuator Outputs
  * @min -1
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_FAIL7, -1);
+PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL7, -1);
 
 /**
- * UAVCAN Servo 8 Failsafe Value
+ * SIM_GZ ESC 8 Failsafe Value
  *
  * This is the output value that is set when in failsafe mode.
  * 
- * When set to -1 (default), the value depends on the function (see UAVCAN_SV_FUNC8).
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_EC_FUNC8).
  * 
  *
  * @group Actuator Outputs
  * @min -1
  * @max 1000
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_FAIL8, -1);
+PARAM_DEFINE_INT32(SIM_GZ_EC_FAIL8, -1);
 
 /**
- * Reverse Output Range for UAVCAN
+ * SIM_GZ Servo 1 Output Function
+ *
+ * Select what should be output on SIM_GZ Servo 1.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC1, 0);
+
+/**
+ * SIM_GZ Servo 2 Output Function
+ *
+ * Select what should be output on SIM_GZ Servo 2.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC2, 0);
+
+/**
+ * SIM_GZ Servo 3 Output Function
+ *
+ * Select what should be output on SIM_GZ Servo 3.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC3, 0);
+
+/**
+ * SIM_GZ Servo 4 Output Function
+ *
+ * Select what should be output on SIM_GZ Servo 4.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC4, 0);
+
+/**
+ * SIM_GZ Servo 5 Output Function
+ *
+ * Select what should be output on SIM_GZ Servo 5.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC5, 0);
+
+/**
+ * SIM_GZ Servo 6 Output Function
+ *
+ * Select what should be output on SIM_GZ Servo 6.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC6, 0);
+
+/**
+ * SIM_GZ Servo 7 Output Function
+ *
+ * Select what should be output on SIM_GZ Servo 7.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC7, 0);
+
+/**
+ * SIM_GZ Servo 8 Output Function
+ *
+ * Select what should be output on SIM_GZ Servo 8.
+ * 
+ * The default failsafe value is set according to the selected function:
+ * - 'Min' for ConstantMin
+ * - 'Max' for ConstantMax
+ * - 'Max' for Parachute
+ * - ('Max'+'Min')/2 for Servos
+ * - 'Disarmed' for the rest
+ * 
+ *
+ * @group Actuator Outputs
+ * @value 0 Disabled
+ * @value 1 Constant Min
+ * @value 2 Constant Max
+ * @value 101 Motor 1
+ * @value 102 Motor 2
+ * @value 103 Motor 3
+ * @value 104 Motor 4
+ * @value 105 Motor 5
+ * @value 106 Motor 6
+ * @value 107 Motor 7
+ * @value 108 Motor 8
+ * @value 109 Motor 9
+ * @value 110 Motor 10
+ * @value 111 Motor 11
+ * @value 112 Motor 12
+ * @value 201 Servo 1
+ * @value 202 Servo 2
+ * @value 203 Servo 3
+ * @value 204 Servo 4
+ * @value 205 Servo 5
+ * @value 206 Servo 6
+ * @value 207 Servo 7
+ * @value 208 Servo 8
+ * @value 301 Offboard Actuator Set 1
+ * @value 302 Offboard Actuator Set 2
+ * @value 303 Offboard Actuator Set 3
+ * @value 304 Offboard Actuator Set 4
+ * @value 305 Offboard Actuator Set 5
+ * @value 306 Offboard Actuator Set 6
+ * @value 400 Landing Gear
+ * @value 401 Parachute
+ * @value 402 RC Roll
+ * @value 403 RC Pitch
+ * @value 404 RC Throttle
+ * @value 405 RC Yaw
+ * @value 406 RC Flaps
+ * @value 407 RC AUX 1
+ * @value 408 RC AUX 2
+ * @value 409 RC AUX 3
+ * @value 410 RC AUX 4
+ * @value 411 RC AUX 5
+ * @value 412 RC AUX 6
+ * @value 420 Gimbal Roll
+ * @value 421 Gimbal Pitch
+ * @value 422 Gimbal Yaw
+ * @value 430 Gripper
+ * @value 440 Landing Gear Wheel
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FUNC8, 0);
+
+/**
+ * SIM_GZ Servo 1 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_DIS1, 500);
+
+/**
+ * SIM_GZ Servo 2 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_DIS2, 500);
+
+/**
+ * SIM_GZ Servo 3 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_DIS3, 500);
+
+/**
+ * SIM_GZ Servo 4 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_DIS4, 500);
+
+/**
+ * SIM_GZ Servo 5 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_DIS5, 500);
+
+/**
+ * SIM_GZ Servo 6 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_DIS6, 500);
+
+/**
+ * SIM_GZ Servo 7 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_DIS7, 500);
+
+/**
+ * SIM_GZ Servo 8 Disarmed Value
+ *
+ * This is the output value that is set when not armed.
+ * 
+ * Note that non-motor outputs might already be active in prearm state if COM_PREARM_MODE is set.
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_DIS8, 500);
+
+/**
+ * SIM_GZ Servo 1 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MIN1, 0);
+
+/**
+ * SIM_GZ Servo 2 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MIN2, 0);
+
+/**
+ * SIM_GZ Servo 3 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MIN3, 0);
+
+/**
+ * SIM_GZ Servo 4 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MIN4, 0);
+
+/**
+ * SIM_GZ Servo 5 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MIN5, 0);
+
+/**
+ * SIM_GZ Servo 6 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MIN6, 0);
+
+/**
+ * SIM_GZ Servo 7 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MIN7, 0);
+
+/**
+ * SIM_GZ Servo 8 Minimum Value
+ *
+ * Minimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MIN8, 0);
+
+/**
+ * SIM_GZ Servo 1 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MAX1, 1000);
+
+/**
+ * SIM_GZ Servo 2 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MAX2, 1000);
+
+/**
+ * SIM_GZ Servo 3 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MAX3, 1000);
+
+/**
+ * SIM_GZ Servo 4 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MAX4, 1000);
+
+/**
+ * SIM_GZ Servo 5 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MAX5, 1000);
+
+/**
+ * SIM_GZ Servo 6 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MAX6, 1000);
+
+/**
+ * SIM_GZ Servo 7 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MAX7, 1000);
+
+/**
+ * SIM_GZ Servo 8 Maximum Value
+ *
+ * Maxmimum output value (when not disarmed).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min 0
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_MAX8, 1000);
+
+/**
+ * SIM_GZ Servo 1 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC1).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL1, -1);
+
+/**
+ * SIM_GZ Servo 2 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC2).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL2, -1);
+
+/**
+ * SIM_GZ Servo 3 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC3).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL3, -1);
+
+/**
+ * SIM_GZ Servo 4 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC4).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL4, -1);
+
+/**
+ * SIM_GZ Servo 5 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC5).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL5, -1);
+
+/**
+ * SIM_GZ Servo 6 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC6).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL6, -1);
+
+/**
+ * SIM_GZ Servo 7 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC7).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL7, -1);
+
+/**
+ * SIM_GZ Servo 8 Failsafe Value
+ *
+ * This is the output value that is set when in failsafe mode.
+ * 
+ * When set to -1 (default), the value depends on the function (see SIM_GZ_SV_FUNC8).
+ * 
+ *
+ * @group Actuator Outputs
+ * @min -1
+ * @max 1000
+ */
+PARAM_DEFINE_INT32(SIM_GZ_SV_FAIL8, -1);
+
+/**
+ * Reverse Output Range for SIM_GZ
  *
  * Allows to reverse the output range for each channel.
  * Note: this is only useful for servos.
  * 
  *
  * @group Actuator Outputs
- * @bit 0 UAVCAN ESC 1
- * @bit 1 UAVCAN ESC 2
- * @bit 2 UAVCAN ESC 3
- * @bit 3 UAVCAN ESC 4
- * @bit 4 UAVCAN ESC 5
- * @bit 5 UAVCAN ESC 6
- * @bit 6 UAVCAN ESC 7
- * @bit 7 UAVCAN ESC 8
+ * @bit 0 SIM_GZ ESC 1
+ * @bit 1 SIM_GZ ESC 2
+ * @bit 2 SIM_GZ ESC 3
+ * @bit 3 SIM_GZ ESC 4
+ * @bit 4 SIM_GZ ESC 5
+ * @bit 5 SIM_GZ ESC 6
+ * @bit 6 SIM_GZ ESC 7
+ * @bit 7 SIM_GZ ESC 8
  * @min 0
  * @max 255
  */
-PARAM_DEFINE_INT32(UAVCAN_EC_REV, 0);
+PARAM_DEFINE_INT32(SIM_GZ_EC_REV, 0);
 
 /**
- * Reverse Output Range for UAVCAN
+ * Reverse Output Range for SIM_GZ
  *
  * Allows to reverse the output range for each channel.
  * Note: this is only useful for servos.
  * 
  *
  * @group Actuator Outputs
- * @bit 0 UAVCAN Servo 1
- * @bit 1 UAVCAN Servo 2
- * @bit 2 UAVCAN Servo 3
- * @bit 3 UAVCAN Servo 4
- * @bit 4 UAVCAN Servo 5
- * @bit 5 UAVCAN Servo 6
- * @bit 6 UAVCAN Servo 7
- * @bit 7 UAVCAN Servo 8
+ * @bit 0 SIM_GZ Servo 1
+ * @bit 1 SIM_GZ Servo 2
+ * @bit 2 SIM_GZ Servo 3
+ * @bit 3 SIM_GZ Servo 4
+ * @bit 4 SIM_GZ Servo 5
+ * @bit 5 SIM_GZ Servo 6
+ * @bit 6 SIM_GZ Servo 7
+ * @bit 7 SIM_GZ Servo 8
  * @min 0
  * @max 255
  */
-PARAM_DEFINE_INT32(UAVCAN_SV_REV, 0);
+PARAM_DEFINE_INT32(SIM_GZ_SV_REV, 0);

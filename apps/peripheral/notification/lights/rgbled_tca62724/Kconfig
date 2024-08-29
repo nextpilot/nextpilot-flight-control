@@ -1,0 +1,5 @@
+menuconfig DRV_USING_RGBLED_TCA62724
+	bool "rgbled TCA62724FMG"
+	default n
+	---help---
+		Enable support for rgbled

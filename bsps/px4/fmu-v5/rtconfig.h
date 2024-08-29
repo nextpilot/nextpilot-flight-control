@@ -461,6 +461,7 @@
 /* Peripheral Libraries Config */
 
 #define PKG_USING_BATTERY
+#define PKG_USING_LED_CONTROL
 /* end of Peripheral Libraries Config */
 #define PKG_USING_BUTTON_PUBLISHER
 /* end of Nextpilot Libraries Config */
@@ -482,6 +483,10 @@
 
 /* notification */
 
+/* rgbled */
+
+#define DRV_USING_RGBLED_PWM
+/* end of rgbled */
 #define DRV_USING_SAFETY_BUTTON
 
 /* fast get pin number: (x - A) * 16 + n */
@@ -500,6 +505,25 @@
 
 /* sensor */
 
+/* airspeed sensors */
+
+/* end of airspeed sensors */
+
+/* baro sensor */
+
+/* end of baro sensor */
+
+/* gnss sensor */
+
+/* end of gnss sensor */
+
+/* imu sensors */
+
+/* end of imu sensors */
+
+/* mag sensors */
+
+/* end of mag sensors */
 
 /* Optical flow */
 

@@ -8,10 +8,11 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-/**
- * @file led.cpp
- */
 
+#define LOG_TAG "led"
+#define LOG_LVL LOG_LVL_INFO
+
+#define MODULE_NAME LOG_TAG
 
 #include "led.h"
 

@@ -16,13 +16,22 @@
  *
  */
 
+#define LOG_TAG     "rgbled_pwm"
+#define LOG_LVL     LOG_LVL_INFO
+
+#define MODULE_NAME LOG_TAG
+
 #include <string.h>
+#include <rtdbg.h>
+#include <led/led.h>
+#include <getopt/getopt.h>
+#include <module/module_params.hpp>
+#include <uORB/Subscription.hpp>
+#include <workq/WorkItemScheduled.hpp>
 
-#include <lib/led/led.h>
-#include <px4_platform_common/getopt.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+using namespace nextpilot;
 
-class RGBLED_PWM : public px4::ScheduledWorkItem {
+class RGBLED_PWM : public nextpilot::WorkItemScheduled {
 public:
     RGBLED_PWM();
     virtual ~RGBLED_PWM();
@@ -46,11 +55,24 @@ private:
     int get(bool &on, bool &powersave, uint8_t &r, uint8_t &g, uint8_t &b);
 };
 
-extern int      led_pwm_servo_set(unsigned channel, uint8_t value);
-extern int      led_pwm_servo_set_ex(uint8_t r, uint8_t g, uint8_t b, uint8_t led_count);
-extern unsigned led_pwm_servo_get(unsigned channel);
-extern int      led_pwm_servo_init(void);
-extern void     led_pwm_servo_deinit(void);
+static int led_pwm_servo_set(unsigned channel, uint8_t value) {
+    return 0;
+}
+
+static int led_pwm_servo_set_ex(uint8_t r, uint8_t g, uint8_t b, uint8_t led_count) {
+    return 0;
+}
+
+static unsigned led_pwm_servo_get(unsigned channel) {
+    return 0;
+}
+
+static int led_pwm_servo_init(void) {
+    return 0;
+}
+
+static void led_pwm_servo_deinit(void) {
+}
 
 /* for now, we only support one RGBLED */
 namespace {
@@ -58,7 +80,7 @@ RGBLED_PWM *g_rgbled = nullptr;
 }
 
 RGBLED_PWM::RGBLED_PWM() :
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::lp_default) {
+    WorkItemScheduled(MODULE_NAME, nextpilot::wq_configurations::lp_default) {
 }
 
 RGBLED_PWM::~RGBLED_PWM() {
@@ -66,7 +88,8 @@ RGBLED_PWM::~RGBLED_PWM() {
     int counter = 0;
 
     while (_running && ++counter < 10) {
-        px4_usleep(100000);
+        rt_thread_mdelay(100);
+        // px4_usleep(100000);
     }
 }
 
@@ -80,7 +103,7 @@ int RGBLED_PWM::init() {
     // kick off work queue
     ScheduleNow();
 
-    return OK;
+    return RT_EOK;
 }
 
 int RGBLED_PWM::status() {
@@ -89,13 +112,13 @@ int RGBLED_PWM::status() {
 
     int ret = get(on, powersave, r, g, b);
 
-    if (ret == OK) {
+    if (ret == RT_EOK) {
         /* we don't care about power-save mode */
-        PX4_INFO("state: %s", on ? "ON" : "OFF");
-        PX4_INFO("red: %u, green: %u, blue: %u", (unsigned)r, (unsigned)g, (unsigned)b);
+        LOG_I("state: %s", on ? "ON" : "OFF");
+        LOG_I("red: %u, green: %u, blue: %u", (unsigned)r, (unsigned)g, (unsigned)b);
 
     } else {
-        PX4_WARN("failed to read led");
+        LOG_W("failed to read led");
     }
 
     return ret;
@@ -188,31 +211,29 @@ int RGBLED_PWM::send_led_rgb() {
     led_pwm_servo_set(4, _g);
     led_pwm_servo_set(5, _b);
 #endif
-    return (OK);
+    return (RT_EOK);
 }
 
 int RGBLED_PWM::get(bool &on, bool &powersave, uint8_t &r, uint8_t &g, uint8_t &b) {
-    powersave = OK;
+    powersave = RT_EOK;
     on        = _r > 0 || _g > 0 || _b > 0;
     r         = _r;
     g         = _g;
     b         = _b;
-    return OK;
+    return RT_EOK;
 }
 
-static void
-rgbled_usage() {
-    PX4_INFO("missing command: try 'start', 'status', 'stop'");
+static void rgbled_usage() {
+    LOG_I("missing command: try 'start', 'status', 'stop'");
 }
 
-extern "C" __EXPORT int
-rgbled_pwm_main(int argc, char *argv[]) {
+static int rgbled_pwm_main(int argc, char *argv[]) {
     int         myoptind = 1;
     int         ch;
     const char *myoptarg = nullptr;
 
     /* jump over start/off/etc and look at options first */
-    while ((ch = px4_getopt(argc, argv, "a:b:", &myoptind, &myoptarg)) != EOF) {
+    while ((ch = getopt(argc, argv, "a:b:", &myoptind, &myoptarg)) != -1) {
         switch (ch) {
         case 'a':
             break;
@@ -235,7 +256,7 @@ rgbled_pwm_main(int argc, char *argv[]) {
 
     if (!strcmp(verb, "start")) {
         if (g_rgbled != nullptr) {
-            PX4_WARN("already started");
+            LOG_W("already started");
             return 1;
         }
 
@@ -243,14 +264,14 @@ rgbled_pwm_main(int argc, char *argv[]) {
             g_rgbled = new RGBLED_PWM();
 
             if (g_rgbled == nullptr) {
-                PX4_WARN("alloc failed");
+                LOG_W("alloc failed");
                 return 1;
             }
 
-            if (OK != g_rgbled->init()) {
+            if (RT_EOK != g_rgbled->init()) {
                 delete g_rgbled;
                 g_rgbled = nullptr;
-                PX4_ERR("init failed");
+                LOG_E("init failed");
                 return 1;
             }
         }
@@ -260,7 +281,7 @@ rgbled_pwm_main(int argc, char *argv[]) {
 
     /* need the driver past this point */
     if (g_rgbled == nullptr) {
-        PX4_WARN("not started");
+        LOG_W("not started");
         rgbled_usage();
         return 1;
     }
@@ -279,3 +300,5 @@ rgbled_pwm_main(int argc, char *argv[]) {
     rgbled_usage();
     return 1;
 }
+
+MSH_CMD_EXPORT_ALIAS(rgbled_pwm_main, rgbled, rgbled pwm);

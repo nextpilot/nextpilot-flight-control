@@ -1,0 +1,13 @@
+import os
+import sys
+import subprocess
+from building import *
+
+cwd = GetCurrentDir()
+
+inc = []
+src = Glob("*.cpp")
+
+objs = DefineGroup("drv/rgbled_pwm", src, depend=["DRV_USING_RGBLED_PWM"])
+
+Return("objs")
