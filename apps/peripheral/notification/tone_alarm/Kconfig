@@ -1,4 +1,4 @@
-menuconfig DRIVERS_TONE_ALARM
+menuconfig DRV_USING_TONE_ALARM
 	bool "tone_alarm"
 	default n
 	---help---
