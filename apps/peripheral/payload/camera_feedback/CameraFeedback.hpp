@@ -33,18 +33,18 @@
 #include <uORB/topics/vehicle_global_position.h>
 #include <uORB/topics/gimbal_device_attitude_status.h>
 
-class CameraFeedback : public ModuleBase<CameraFeedback>, public ModuleParams, public px4::WorkItem {
+class CameraFeedback : public ModuleCommand<CameraFeedback>, public ModuleParams, public nextpilot::WorkItem {
 public:
     CameraFeedback();
     ~CameraFeedback() override = default;
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int task_spawn(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
     bool init();

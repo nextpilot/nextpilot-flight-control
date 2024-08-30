@@ -45,7 +45,7 @@ void CameraInterfacePWM::setup() {
     int ret = up_pwm_trigger_init(pin_bitmask);
 
     if (ret < 0) {
-        PX4_ERR("up_pwm_trigger_init failed (%i)", ret);
+        LOG_E("up_pwm_trigger_init failed (%i)", ret);
         pin_bitmask = 0;
 
     } else {
@@ -78,17 +78,17 @@ void CameraInterfacePWM::trigger(bool trigger_on_true) {
 }
 
 void CameraInterfacePWM::info() {
-    PX4_INFO_RAW("PWM trigger mode, pins enabled: ");
+    LOG_RAW("PWM trigger mode, pins enabled: ");
 
     for (unsigned i = 0; i < arraySize(_pins); ++i) {
         if (_pins[i] < 0) {
             continue;
         }
 
-        PX4_INFO_RAW("[%d]", _pins[i] + 1);
+        LOG_RAW("[%d]", _pins[i] + 1);
     }
 
-    PX4_INFO_RAW("\n");
+    LOG_RAW("\n");
 }
 
 #endif /* ifdef __PX4_NUTTX */

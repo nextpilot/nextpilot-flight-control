@@ -33,8 +33,8 @@ int ToneAlarm::init() {
     _tune_control_sub.set_interval_us(10_ms);
 
     if (!_tune_control_sub.registerCallback()) {
-        PX4_ERR("callback registration failed");
-        return PX4_ERROR;
+        LOG_E("callback registration failed");
+        return RT_ERROR;
     }
 
     ScheduleNow();
@@ -72,7 +72,7 @@ void ToneAlarm::Run() {
 
                 switch (tune_result) {
                 case Tunes::ControlResult::Success:
-                    PX4_DEBUG("new tune %d", tune_control.tune_id);
+                    LOG_D("new tune %d", tune_control.tune_id);
 
                     if (tune_control.tune_override) {
                         // clear existing
@@ -87,47 +87,47 @@ void ToneAlarm::Run() {
 
                     switch (tune_control.tune_id) {
                     case tune_control_s::TUNE_ID_STARTUP:
-                        PX4_INFO("startup tune");
+                        LOG_I("startup tune");
                         break;
 
                     case tune_control_s::TUNE_ID_ERROR:
-                        PX4_ERR("error tune");
+                        LOG_E("error tune");
                         break;
 
                     case tune_control_s::TUNE_ID_NOTIFY_POSITIVE:
-                        PX4_INFO("notify positive");
+                        LOG_I("notify positive");
                         break;
 
                     case tune_control_s::TUNE_ID_NOTIFY_NEUTRAL:
-                        PX4_INFO("notify neutral");
+                        LOG_I("notify neutral");
                         break;
 
                     case tune_control_s::TUNE_ID_NOTIFY_NEGATIVE:
-                        PX4_INFO("notify negative");
+                        LOG_I("notify negative");
                         break;
 
                     case tune_control_s::TUNE_ID_ARMING_WARNING:
-                        PX4_INFO("arming warning");
+                        LOG_I("arming warning");
                         break;
 
                     case tune_control_s::TUNE_ID_BATTERY_WARNING_SLOW:
-                        PX4_INFO("battery warning (slow)");
+                        LOG_I("battery warning (slow)");
                         break;
 
                     case tune_control_s::TUNE_ID_BATTERY_WARNING_FAST:
-                        PX4_INFO("battery warning (fast)");
+                        LOG_I("battery warning (fast)");
                         break;
 
                     case tune_control_s::TUNE_ID_ARMING_FAILURE:
-                        PX4_ERR("arming failure");
+                        LOG_E("arming failure");
                         break;
 
                     case tune_control_s::TUNE_ID_SINGLE_BEEP:
-                        PX4_INFO("beep");
+                        LOG_I("beep");
                         break;
 
                     case tune_control_s::TUNE_ID_HOME_SET:
-                        PX4_INFO("home set");
+                        LOG_I("home set");
                         break;
                     }
 
@@ -137,7 +137,7 @@ void ToneAlarm::Run() {
 
                 case Tunes::ControlResult::WouldInterrupt:
                     // otherwise re-publish tune to process next
-                    PX4_DEBUG("tune already playing, requeing tune: %d", tune_control.tune_id);
+                    LOG_D("tune already playing, requeing tune: %d", tune_control.tune_id);
                     {
                         uORB::Publication<tune_control_s> tune_control_pub{ORB_ID(tune_control)};
                         tune_control.timestamp = hrt_absolute_time();
@@ -148,7 +148,7 @@ void ToneAlarm::Run() {
 
 
                 case Tunes::ControlResult::InvalidTune:
-                    PX4_WARN("Invalid tune: %d", tune_control.tune_id);
+                    LOG_W("Invalid tune: %d", tune_control.tune_id);
                     break;
 
                 case Tunes::ControlResult::AlreadyPlaying:
@@ -165,11 +165,11 @@ void ToneAlarm::Run() {
 
     // Does an inter-note silence occur?
     if ((_next_note_time != 0) && (hrt_absolute_time() < _next_note_time)) {
-        PX4_DEBUG("inter-note silence");
+        LOG_D("inter-note silence");
         ScheduleAt(_next_note_time);
 
     } else if (_play_tone && (_tunes.get_next_note(frequency, duration, silence_length) == Tunes::Status::Continue)) {
-        PX4_DEBUG("Play frequency: %d, duration: %d us, silence: %d us", frequency, duration, silence_length);
+        LOG_D("Play frequency: %d, duration: %d us, silence: %d us", frequency, duration, silence_length);
 
         if (frequency > 0) {
             // Start playing the note.
@@ -192,7 +192,7 @@ void ToneAlarm::Run() {
         }
 
     } else {
-        PX4_DEBUG("stopping");
+        LOG_D("stopping");
         ToneAlarmInterface::stop_note();
         _play_tone      = false;
         _next_note_time = 0;
@@ -208,24 +208,24 @@ int ToneAlarm::task_spawn(int argc, char *argv[]) {
     ToneAlarm *instance = new ToneAlarm();
 
     if (!instance) {
-        PX4_ERR("alloc failed");
+        LOG_E("alloc failed");
         return -1;
     }
 
     if (!instance->Init()) {
         delete instance;
-        return PX4_ERROR;
+        return RT_ERROR;
     }
 
     _object.store(instance);
     _task_id = task_id_is_work_queue;
 
-    return PX4_OK;
+    return RT_EOK;
 }
 
 int ToneAlarm::print_usage(const char *reason) {
     if (reason) {
-        PX4_WARN("%s\n", reason);
+        LOG_W("%s\n", reason);
     }
 
     PRINT_MODULE_DESCRIPTION(

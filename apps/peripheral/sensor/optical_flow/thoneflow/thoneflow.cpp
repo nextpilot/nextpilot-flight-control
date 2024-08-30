@@ -19,7 +19,7 @@
 #   include <asm/socket.h>
 #endif
 
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <px4_platform_common/getopt.h>
 #include <px4_platform_common/module.h>
 
@@ -34,7 +34,7 @@
 
 #include "thoneflow_parser.h"
 
-class Thoneflow : public px4::ScheduledWorkItem {
+class Thoneflow : public px4::WorkItemScheduled {
 public:
     Thoneflow(const char *port);
     virtual ~Thoneflow();
@@ -81,7 +81,7 @@ private:
 };
 
 Thoneflow::Thoneflow(const char *port) :
-    ScheduledWorkItem(MODULE_NAME, px4::serial_port_to_wq(port)) {
+    WorkItemScheduled(MODULE_NAME, px4::serial_port_to_wq(port)) {
     /* store port name */
     strncpy(_port, port, sizeof(_port) - 1);
 
@@ -97,7 +97,7 @@ Thoneflow::~Thoneflow() {
 }
 
 int Thoneflow::init() {
-    int ret = PX4_OK;
+    int ret = RT_EOK;
 
     do { /* create a scope to handle exit conditions using break */
 
@@ -105,7 +105,7 @@ int Thoneflow::init() {
         _fd = ::open(_port, O_RDONLY | O_NOCTTY);
 
         if (_fd < 0) {
-            PX4_ERR("Error opening fd");
+            LOG_E("Error opening fd");
             return -1;
         }
 
@@ -123,20 +123,20 @@ int Thoneflow::init() {
 
         /* set baud rate */
         if ((termios_state = cfsetispeed(&uart_config, speed)) < 0) {
-            PX4_ERR("CFG: %d ISPD", termios_state);
-            ret = PX4_ERROR;
+            LOG_E("CFG: %d ISPD", termios_state);
+            ret = RT_ERROR;
             break;
         }
 
         if ((termios_state = cfsetospeed(&uart_config, speed)) < 0) {
-            PX4_ERR("CFG: %d OSPD\n", termios_state);
-            ret = PX4_ERROR;
+            LOG_E("CFG: %d OSPD\n", termios_state);
+            ret = RT_ERROR;
             break;
         }
 
         if ((termios_state = tcsetattr(_fd, TCSANOW, &uart_config)) < 0) {
-            PX4_ERR("baud %d ATTR", termios_state);
-            ret = PX4_ERROR;
+            LOG_E("baud %d ATTR", termios_state);
+            ret = RT_ERROR;
             break;
         }
 
@@ -157,8 +157,8 @@ int Thoneflow::init() {
         uart_config.c_cc[VTIME] = 1;
 
         if (_fd < 0) {
-            PX4_ERR("FAIL: flow fd");
-            ret = PX4_ERROR;
+            LOG_E("FAIL: flow fd");
+            ret = RT_ERROR;
             break;
         }
     } while (0);
@@ -200,7 +200,7 @@ int Thoneflow::collect() {
         ret = ::read(_fd, &readbuf[0], readlen);
 
         if (ret < 0) {
-            PX4_ERR("read err: %d", ret);
+            LOG_E("read err: %d", ret);
             perf_count(_comms_errors);
             perf_end(_sample_perf);
 
@@ -286,7 +286,7 @@ void Thoneflow::Run() {
 }
 
 void Thoneflow::print_info() {
-    PX4_INFO("Using port '%s'", _port);
+    LOG_I("Using port '%s'", _port);
     perf_print_counter(_sample_perf);
     perf_print_counter(_comms_errors);
 }
@@ -308,7 +308,7 @@ void usage();
  */
 int start(const char *port) {
     if (g_dev != nullptr) {
-        PX4_ERR("already started");
+        LOG_E("already started");
         return 1;
     }
 
@@ -332,7 +332,7 @@ fail:
         g_dev = nullptr;
     }
 
-    PX4_ERR("driver start failed");
+    LOG_E("driver start failed");
     return 1;
 }
 
@@ -341,13 +341,13 @@ fail:
  */
 int stop() {
     if (g_dev != nullptr) {
-        PX4_INFO("stopping driver");
+        LOG_I("stopping driver");
         delete g_dev;
         g_dev = nullptr;
-        PX4_INFO("driver stopped");
+        LOG_I("driver stopped");
 
     } else {
-        PX4_ERR("driver not running");
+        LOG_E("driver not running");
         return 1;
     }
 
@@ -359,7 +359,7 @@ int stop() {
  */
 int info() {
     if (g_dev == nullptr) {
-        PX4_ERR("driver not running");
+        LOG_E("driver not running");
         return 1;
     }
 
@@ -413,7 +413,7 @@ extern "C" __EXPORT int thoneflow_main(int argc, char *argv[]) {
             break;
 
         default:
-            PX4_WARN("Unknown option!");
+            LOG_W("Unknown option!");
             return -1;
         }
     }
@@ -430,7 +430,7 @@ extern "C" __EXPORT int thoneflow_main(int argc, char *argv[]) {
             return thoneflow::start(device_path);
 
         } else {
-            PX4_WARN("Please specify device path!");
+            LOG_W("Please specify device path!");
             thoneflow::usage();
             return -1;
         }
@@ -444,7 +444,7 @@ extern "C" __EXPORT int thoneflow_main(int argc, char *argv[]) {
     }
 
 out_error:
-    PX4_ERR("unrecognized command");
+    LOG_E("unrecognized command");
     thoneflow::usage();
     return -1;
 }

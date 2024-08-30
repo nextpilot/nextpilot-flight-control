@@ -57,10 +57,10 @@ int InputTest::initialize() {
 }
 
 void InputTest::print_status() const {
-    PX4_INFO("Input: Test");
-    PX4_INFO_RAW("  roll : % 3d deg\n", _roll_deg);
-    PX4_INFO_RAW("  pitch: % 3d deg\n", _pitch_deg);
-    PX4_INFO_RAW("  yaw  : % 3d deg\n", _yaw_deg);
+    LOG_I("Input: Test");
+    LOG_RAW("  roll : % 3d deg\n", _roll_deg);
+    LOG_RAW("  pitch: % 3d deg\n", _pitch_deg);
+    LOG_RAW("  yaw  : % 3d deg\n", _yaw_deg);
 }
 
 void InputTest::set_test_input(int roll_deg, int pitch_deg, int yaw_deg) {

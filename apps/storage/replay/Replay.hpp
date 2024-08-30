@@ -31,25 +31,25 @@ namespace nextpilot {
  * to replay. This is necessary because data messages from different subscriptions don't need to be in
  * monotonic increasing order.
  */
-class Replay : public ModuleBase<Replay> {
+class Replay : public ModuleCommand<Replay> {
 public:
     Replay() = default;
 
     virtual ~Replay();
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int task_spawn(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static Replay *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    /** @see ModuleBase::run() */
+    /** @see ModuleCommand::run() */
     void run() override;
 
     /**

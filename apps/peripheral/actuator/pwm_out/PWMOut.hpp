@@ -41,16 +41,16 @@ public:
     PWMOut();
     ~PWMOut() override;
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     // static int task_spawn(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    /** @see ModuleBase::print_status() */
+    /** @see ModuleCommand::print_status() */
     int print_status() override;
 
     bool updateOutputs(bool stop_motors, uint16_t outputs[MAX_ACTUATORS],

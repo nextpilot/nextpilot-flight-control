@@ -23,7 +23,7 @@
 #include <systemlib/mavlink_log.h>
 
 PPSCapture::PPSCapture() :
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::hp_default) {
+    WorkItemScheduled(MODULE_NAME, nextpilot::wq_configurations::hp_default) {
     _pps_capture_pub.advertise();
 }
 
@@ -59,21 +59,21 @@ bool PPSCapture::init() {
 #endif
 
     if (_channel == -1) {
-        PX4_WARN("No pps channel configured");
+        LOG_W("No pps channel configured");
         return false;
     }
 
     int ret = io_timer_allocate_channel(_channel, IOTimerChanMode_PPS);
 
-    if (ret != PX4_OK) {
-        PX4_ERR("gpio alloc failed (%i) for PPS at channel (%d)", ret, _channel);
+    if (ret != RT_EOK) {
+        LOG_E("gpio alloc failed (%i) for PPS at channel (%d)", ret, _channel);
         return false;
     }
 
     _pps_capture_gpio = PX4_MAKE_GPIO_EXTI(io_timer_channel_get_as_pwm_input(_channel));
     int ret_val       = px4_arch_gpiosetevent(_pps_capture_gpio, true, false, true, &PPSCapture::gpio_interrupt_callback, this);
 
-    if (ret_val == PX4_OK) {
+    if (ret_val == RT_EOK) {
         success = true;
     }
 
@@ -134,7 +134,7 @@ int PPSCapture::gpio_interrupt_callback(int irq, void *context, void *arg) {
     instance->_hrt_timestamp = interrupt_time;
     instance->ScheduleNow(); // schedule work queue to publish PPS captured time
 
-    return PX4_OK;
+    return RT_EOK;
 }
 
 int PPSCapture::task_spawn(int argc, char *argv[]) {
@@ -145,18 +145,18 @@ int PPSCapture::task_spawn(int argc, char *argv[]) {
         _task_id = task_id_is_work_queue;
 
         if (instance->init()) {
-            return PX4_OK;
+            return RT_EOK;
         }
 
     } else {
-        PX4_ERR("alloc failed");
+        LOG_E("alloc failed");
     }
 
     delete instance;
     _object.store(nullptr);
     _task_id = -1;
 
-    return PX4_ERROR;
+    return RT_ERROR;
 }
 
 int PPSCapture::custom_command(int argc, char *argv[]) {
@@ -165,7 +165,7 @@ int PPSCapture::custom_command(int argc, char *argv[]) {
 
 int PPSCapture::print_usage(const char *reason) {
     if (reason) {
-        PX4_WARN("%s\n", reason);
+        LOG_W("%s\n", reason);
     }
 
     PRINT_MODULE_DESCRIPTION(

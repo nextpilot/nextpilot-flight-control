@@ -20,7 +20,7 @@
 #include <lib/cdev/CDev.hpp>
 #include <perf/perf_counter.h>
 #include <px4_platform_common/i2c_spi_buses.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <uORB/PublicationMulti.hpp>
 #include <uORB/topics/sensor_baro.h>
 

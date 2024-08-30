@@ -27,7 +27,7 @@
 #include <drivers/device/device.h>
 #include <drivers/device/spi.h>
 #include <lib/cdev/CDev.hpp>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <systemlib/err.h>
 
 #define ADDR_RESET_CMD  0x1E /* write to this address to reset chip */

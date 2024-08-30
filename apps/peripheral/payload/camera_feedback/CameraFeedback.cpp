@@ -14,7 +14,7 @@ using namespace time_literals;
 
 CameraFeedback::CameraFeedback() :
     ModuleParams(nullptr),
-    WorkItem(MODULE_NAME, px4::wq_configurations::hp_default) {
+    WorkItem(MODULE_NAME, nextpilot::wq_configurations::hp_default) {
     _p_cam_cap_fback = param_find("CAM_CAP_FBACK");
 
     if (_p_cam_cap_fback != PARAM_INVALID) {
@@ -24,7 +24,7 @@ CameraFeedback::CameraFeedback() :
 
 bool CameraFeedback::init() {
     if (!_trigger_sub.registerCallback()) {
-        PX4_ERR("callback registration failed");
+        LOG_E("callback registration failed");
         return false;
     }
 
@@ -50,9 +50,7 @@ void CameraFeedback::Run() {
         vehicle_attitude_s att{};
         _att_sub.copy(&att);
 
-        if (trig.timestamp == 0 ||
-            gpos.timestamp == 0 ||
-            att.timestamp == 0) {
+        if (trig.timestamp == 0 || gpos.timestamp == 0 || att.timestamp == 0) {
             // reject until we have valid data
             continue;
         }
@@ -131,18 +129,18 @@ int CameraFeedback::task_spawn(int argc, char *argv[]) {
         _task_id = task_id_is_work_queue;
 
         if (instance->init()) {
-            return PX4_OK;
+            return RT_EOK;
         }
 
     } else {
-        PX4_ERR("alloc failed");
+        LOG_E("alloc failed");
     }
 
     delete instance;
     _object.store(nullptr);
     _task_id = -1;
 
-    return PX4_ERROR;
+    return RT_ERROR;
 }
 
 int CameraFeedback::custom_command(int argc, char *argv[]) {
@@ -151,7 +149,7 @@ int CameraFeedback::custom_command(int argc, char *argv[]) {
 
 int CameraFeedback::print_usage(const char *reason) {
     if (reason) {
-        PX4_WARN("%s\n", reason);
+        LOG_W("%s\n", reason);
     }
 
     PRINT_MODULE_DESCRIPTION(

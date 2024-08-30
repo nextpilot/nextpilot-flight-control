@@ -23,18 +23,18 @@ MS5525DSO::~MS5525DSO() {
 int MS5525DSO::probe() {
     _retries = 1;
 
-    return init_ms5525dso() ? PX4_OK : PX4_ERROR;
+    return init_ms5525dso() ? RT_EOK : RT_ERROR;
 }
 
 int MS5525DSO::init() {
     int ret = I2C::init();
 
-    if (ret != PX4_OK) {
+    if (ret != RT_EOK) {
         DEVICE_DEBUG("I2C::init failed (%i)", ret);
         return ret;
     }
 
-    if (ret == PX4_OK) {
+    if (ret == RT_EOK) {
         ScheduleNow();
     }
 
@@ -49,14 +49,14 @@ void MS5525DSO::print_status() {
 }
 
 int MS5525DSO::measure() {
-    int ret = PX4_ERROR;
+    int ret = RT_ERROR;
 
     if (_inited) {
         // send the command to begin a conversion.
         uint8_t cmd = _current_cmd;
         ret         = transfer(&cmd, 1, nullptr, 0);
 
-        if (ret != PX4_OK) {
+        if (ret != RT_EOK) {
             perf_count(_comms_errors);
         }
 
@@ -64,7 +64,7 @@ int MS5525DSO::measure() {
         _inited = init_ms5525dso();
 
         if (_inited) {
-            ret = PX4_OK;
+            ret = RT_EOK;
         }
     }
 
@@ -76,7 +76,7 @@ bool MS5525DSO::init_ms5525dso() {
     uint8_t cmd = CMD_RESET;
     int     ret = transfer(&cmd, 1, nullptr, 0);
 
-    if (ret != PX4_OK) {
+    if (ret != RT_EOK) {
         perf_count(_comms_errors);
         return false;
     }
@@ -98,7 +98,7 @@ bool MS5525DSO::init_ms5525dso() {
         // request PROM value
         ret = transfer(&cmd, 1, nullptr, 0);
 
-        if (ret != PX4_OK) {
+        if (ret != RT_EOK) {
             perf_count(_comms_errors);
             return false;
         }
@@ -107,7 +107,7 @@ bool MS5525DSO::init_ms5525dso() {
         uint8_t val[2];
         ret = transfer(nullptr, 0, &val[0], 2);
 
-        if (ret == PX4_OK) {
+        if (ret == RT_EOK) {
             prom[i] = (val[0] << 8) | val[1];
 
             if (prom[i] != 0) {
@@ -142,7 +142,7 @@ bool MS5525DSO::init_ms5525dso() {
         return true;
 
     } else {
-        PX4_ERR("CRC mismatch");
+        LOG_E("CRC mismatch");
     }
 
     return false;
@@ -193,7 +193,7 @@ int MS5525DSO::collect() {
     uint8_t cmd = CMD_ADC_READ;
     int     ret = transfer(&cmd, 1, nullptr, 0);
 
-    if (ret != PX4_OK) {
+    if (ret != RT_EOK) {
         perf_count(_comms_errors);
         perf_end(_sample_perf);
         return ret;
@@ -203,7 +203,7 @@ int MS5525DSO::collect() {
     uint8_t val[3]{};
     ret = transfer(nullptr, 0, &val[0], 3);
 
-    if (ret != PX4_OK) {
+    if (ret != RT_EOK) {
         perf_count(_comms_errors);
         perf_end(_sample_perf);
         return ret;
@@ -235,7 +235,7 @@ int MS5525DSO::collect() {
         _current_cmd = CMD_CONVERT_PRES;
 
         // only calculate and publish after new pressure readings
-        return PX4_OK;
+        return RT_EOK;
     }
 
     // not ready yet
@@ -283,18 +283,18 @@ int MS5525DSO::collect() {
 
     perf_end(_sample_perf);
 
-    return PX4_OK;
+    return RT_EOK;
 }
 
 void MS5525DSO::RunImpl() {
-    int ret = PX4_ERROR;
+    int ret = RT_ERROR;
 
     // collection phase
     if (_collect_phase) {
         // perform collection
         ret = collect();
 
-        if (PX4_OK != ret) {
+        if (RT_EOK != ret) {
             perf_count(_comms_errors);
             /* restart the measurement state machine */
             _collect_phase = false;
@@ -318,7 +318,7 @@ void MS5525DSO::RunImpl() {
     /* measurement phase */
     ret = measure();
 
-    if (PX4_OK != ret) {
+    if (RT_EOK != ret) {
         DEVICE_DEBUG("measure error");
     }
 

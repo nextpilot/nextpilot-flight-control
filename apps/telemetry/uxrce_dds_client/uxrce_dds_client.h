@@ -17,7 +17,7 @@
 
 #include <timesync/Timesync.hpp>
 
-class UxrceddsClient : public ModuleBase<UxrceddsClient>, public ModuleParams {
+class UxrceddsClient : public ModuleCommand<UxrceddsClient>, public ModuleParams {
 public:
     enum class Transport {
         Serial,
@@ -29,22 +29,22 @@ public:
 
     ~UxrceddsClient();
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int task_spawn(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static UxrceddsClient *instantiate(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    /** @see ModuleBase::run() */
+    /** @see ModuleCommand::run() */
     void run() override;
 
-    /** @see ModuleBase::print_status() */
+    /** @see ModuleCommand::print_status() */
     int print_status() override;
 
 private:

@@ -13,7 +13,7 @@
 #include <drivers/drv_hrt.h>
 #include <px4_arch/micro_hal.h>
 #include <px4_platform_common/module.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <uORB/Publication.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/pps_capture.h>
@@ -21,18 +21,18 @@
 
 using namespace time_literals;
 
-class PPSCapture : public ModuleBase<PPSCapture>, public px4::ScheduledWorkItem {
+class PPSCapture : public ModuleCommand<PPSCapture>, public px4::WorkItemScheduled {
 public:
     PPSCapture();
     virtual ~PPSCapture();
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int task_spawn(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
     bool init();

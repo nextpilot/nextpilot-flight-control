@@ -110,7 +110,7 @@ PX4FLOW::~PX4FLOW() {
 }
 
 int PX4FLOW::init() {
-    int ret = PX4_ERROR;
+    int ret = RT_ERROR;
 
     /* do I2C init (and probe) first */
     if (I2C::init() != OK) {
@@ -154,7 +154,7 @@ int PX4FLOW::measure() {
         return ret;
     }
 
-    return PX4_OK;
+    return RT_EOK;
 }
 
 int PX4FLOW::collect() {
@@ -226,7 +226,7 @@ int PX4FLOW::collect() {
 
     perf_end(_sample_perf);
 
-    return PX4_OK;
+    return RT_EOK;
 }
 
 void PX4FLOW::start() {

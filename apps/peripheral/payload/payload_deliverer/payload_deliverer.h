@@ -17,7 +17,7 @@
 #include <hrtimer.h>
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
-#include <workq/ScheduledWorkItem.hpp>
+#include <workq/WorkItemScheduled.hpp>
 
 
 #include <uORB/Publication.hpp>
@@ -47,16 +47,16 @@ static constexpr int8_t GRIPPER_ACTION_NONE = -1;
  *
  * This module communicates with the Navigator which handles publishing such vehicle commands.
  */
-class PayloadDeliverer : public ModuleBase<PayloadDeliverer>, public ModuleParams, public px4::ScheduledWorkItem {
+class PayloadDeliverer : public ModuleCommand<PayloadDeliverer>, public ModuleParams, public px4::WorkItemScheduled {
 public:
     PayloadDeliverer();
 
-    /** @see ModuleBase **/
+    /** @see ModuleCommand **/
     static int task_spawn(int argc, char *argv[]);
     static int custom_command(int argc, char *argv[]);
     static int print_usage(const char *reason = nullptr);
 
-    /** @see ModuleBase. Override "status" output when invoked via Commandline, to give detailed status **/
+    /** @see ModuleCommand. Override "status" output when invoked via Commandline, to give detailed status **/
     int print_status() override;
 
     // Initializes the module

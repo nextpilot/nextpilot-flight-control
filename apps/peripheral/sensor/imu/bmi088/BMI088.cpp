@@ -24,7 +24,7 @@ I2CSPIDriverBase *BMI088::instantiate(const I2CSPIDriverConfig &config, int runt
     }
 
     if (!instance) {
-        PX4_ERR("alloc failed");
+        LOG_E("alloc failed");
         return nullptr;
     }
 
@@ -45,7 +45,7 @@ BMI088::BMI088(const I2CSPIDriverConfig &config) :
 int BMI088::init() {
     int ret = SPI::init();
 
-    if (ret != PX4_OK) {
+    if (ret != RT_EOK) {
         DEVICE_DEBUG("SPI::init failed (%i)", ret);
         return ret;
     }

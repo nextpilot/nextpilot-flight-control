@@ -34,13 +34,13 @@ I2CSPIDriverBase *BMP388::instantiate(const I2CSPIDriverConfig &config, int runt
     }
 
     if (interface == nullptr) {
-        PX4_ERR("failed creating interface for bus %i (devid 0x%" PRIx32 ")", config.bus, config.spi_devid);
+        LOG_E("failed creating interface for bus %i (devid 0x%" PRIx32 ")", config.bus, config.spi_devid);
         return nullptr;
     }
 
     if (interface->init() != OK) {
         delete interface;
-        PX4_DEBUG("no device on bus %i (devid 0x%" PRIx32 ")", config.bus, config.spi_devid);
+        LOG_D("no device on bus %i (devid 0x%" PRIx32 ")", config.bus, config.spi_devid);
         return nullptr;
     }
 

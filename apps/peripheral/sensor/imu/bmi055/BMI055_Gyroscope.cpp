@@ -41,7 +41,7 @@ void BMI055_Gyroscope::exit_and_cleanup() {
 void BMI055_Gyroscope::print_status() {
     I2CSPIDriverBase::print_status();
 
-    PX4_INFO("FIFO empty interval: %d us (%.1f Hz)", _fifo_empty_interval_us, 1e6 / _fifo_empty_interval_us);
+    LOG_I("FIFO empty interval: %d us (%.1f Hz)", _fifo_empty_interval_us, 1e6 / _fifo_empty_interval_us);
 
     perf_print_counter(_bad_register_perf);
     perf_print_counter(_bad_transfer_perf);
@@ -56,10 +56,10 @@ int BMI055_Gyroscope::probe() {
 
     if (CHIP_ID != chip_id) {
         DEVICE_DEBUG("unexpected GYRO_CHIP_ID 0x%02x", CHIP_ID);
-        return PX4_ERROR;
+        return RT_ERROR;
     }
 
-    return PX4_OK;
+    return RT_EOK;
 }
 
 void BMI055_Gyroscope::RunImpl() {
@@ -84,12 +84,12 @@ void BMI055_Gyroscope::RunImpl() {
         } else {
             // RESET not complete
             if (hrt_elapsed_time(&_reset_timestamp) > 1000_ms) {
-                PX4_DEBUG("Reset failed, retrying");
+                LOG_D("Reset failed, retrying");
                 _state = STATE::RESET;
                 ScheduleDelayed(100_ms);
 
             } else {
-                PX4_DEBUG("Reset not complete, check again in 10 ms");
+                LOG_D("Reset not complete, check again in 10 ms");
                 ScheduleDelayed(10_ms);
             }
         }
@@ -117,11 +117,11 @@ void BMI055_Gyroscope::RunImpl() {
         } else {
             // CONFIGURE not complete
             if (hrt_elapsed_time(&_reset_timestamp) > 1000_ms) {
-                PX4_DEBUG("Configure failed, resetting");
+                LOG_D("Configure failed, resetting");
                 _state = STATE::RESET;
 
             } else {
-                PX4_DEBUG("Configure failed, retrying");
+                LOG_D("Configure failed, retrying");
             }
 
             ScheduleDelayed(100_ms);
@@ -324,12 +324,12 @@ bool BMI055_Gyroscope::RegisterCheck(const register_config_t &reg_cfg) {
     const uint8_t reg_value = RegisterRead(reg_cfg.reg);
 
     if (reg_cfg.set_bits && ((reg_value & reg_cfg.set_bits) != reg_cfg.set_bits)) {
-        PX4_DEBUG("0x%02hhX: 0x%02hhX (0x%02hhX not set)", (uint8_t)reg_cfg.reg, reg_value, reg_cfg.set_bits);
+        LOG_D("0x%02hhX: 0x%02hhX (0x%02hhX not set)", (uint8_t)reg_cfg.reg, reg_value, reg_cfg.set_bits);
         success = false;
     }
 
     if (reg_cfg.clear_bits && ((reg_value & reg_cfg.clear_bits) != 0)) {
-        PX4_DEBUG("0x%02hhX: 0x%02hhX (0x%02hhX not cleared)", (uint8_t)reg_cfg.reg, reg_value, reg_cfg.clear_bits);
+        LOG_D("0x%02hhX: 0x%02hhX (0x%02hhX not cleared)", (uint8_t)reg_cfg.reg, reg_value, reg_cfg.clear_bits);
         success = false;
     }
 
@@ -362,7 +362,7 @@ bool BMI055_Gyroscope::FIFORead(const hrt_abstime &timestamp_sample, uint8_t sam
     FIFOTransferBuffer buffer{};
     const size_t       transfer_size = math::min(samples * sizeof(FIFO::DATA) + 1, FIFO::SIZE);
 
-    if (transfer((uint8_t *)&buffer, (uint8_t *)&buffer, transfer_size) != PX4_OK) {
+    if (transfer((uint8_t *)&buffer, (uint8_t *)&buffer, transfer_size) != RT_EOK) {
         perf_count(_bad_transfer_perf);
         return false;
     }

@@ -27,7 +27,7 @@
 #include <px4_platform_common/log.h>
 #include <px4_platform_common/module.h>
 #include <px4_platform_common/module_params.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <uORB/PublicationMulti.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/SubscriptionInterval.hpp>
@@ -44,21 +44,21 @@
 #   include <systemlib/ppm_decode.h>
 #endif
 
-class RCInput : public ModuleBase<RCInput>, public ModuleParams, public px4::ScheduledWorkItem {
+class RCInput : public ModuleCommand<RCInput>, public ModuleParams, public px4::WorkItemScheduled {
 public:
     RCInput(const char *device);
     virtual ~RCInput();
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int task_spawn(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    /** @see ModuleBase::print_status() */
+    /** @see ModuleCommand::print_status() */
     int print_status() override;
 
     int init();

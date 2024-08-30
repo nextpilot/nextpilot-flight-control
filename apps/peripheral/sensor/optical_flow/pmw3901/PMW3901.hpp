@@ -18,7 +18,7 @@
 #include <px4_platform_common/px4_config.h>
 #include <px4_platform_common/defines.h>
 #include <px4_platform_common/getopt.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <drivers/device/spi.h>
 #include <conversion/rotation.h>
 #include <lib/perf/perf_counter.h>

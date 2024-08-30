@@ -85,8 +85,8 @@ int MS5611_SPI::init() {
     int ret = SPI::init();
 
     if (ret != OK) {
-        PX4_DEBUG("SPI init failed");
-        return PX4_ERROR;
+        LOG_D("SPI init failed");
+        return RT_ERROR;
     }
 
     // reset and read PROM (try up to 3 times)
@@ -95,7 +95,7 @@ int MS5611_SPI::init() {
         ret = _reset();
 
         if (ret != OK) {
-            PX4_DEBUG("reset failed");
+            LOG_D("reset failed");
             continue;
         }
 
@@ -103,15 +103,15 @@ int MS5611_SPI::init() {
         ret = _read_prom();
 
         if (ret == OK) {
-            return PX4_OK;
+            return RT_EOK;
 
         } else {
-            PX4_DEBUG("prom readout failed");
+            LOG_D("prom readout failed");
             continue;
         }
     }
 
-    return PX4_ERROR;
+    return RT_ERROR;
 }
 
 int MS5611_SPI::read(unsigned offset, void *data, unsigned count) {
@@ -192,18 +192,18 @@ int MS5611_SPI::_read_prom() {
             all_zero = false;
         }
 
-        //PX4_DEBUG("prom[%u]=0x%x", (unsigned)i, (unsigned)_prom.c[i]);
+        //LOG_D("prom[%u]=0x%x", (unsigned)i, (unsigned)_prom.c[i]);
     }
 
     /* calculate CRC and return success/failure accordingly */
     int ret = ms5611::crc4(&_prom.c[0]) ? OK : -EIO;
 
     if (ret != OK) {
-        PX4_DEBUG("crc failed");
+        LOG_D("crc failed");
     }
 
     if (all_zero) {
-        PX4_DEBUG("prom all zero");
+        LOG_D("prom all zero");
         ret = -EIO;
     }
 

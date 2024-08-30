@@ -54,7 +54,7 @@ void OutputRC::update(const ControlData &control_data, bool new_setpoints, uint8
 }
 
 void OutputRC::print_status() const {
-    PX4_INFO("Output: AUX");
+    LOG_I("Output: AUX");
 }
 
 void OutputRC::_stream_device_attitude_status() {

@@ -120,7 +120,7 @@ public:
 	 * @brief Reads data from flash.
 	 * @param address The address to start the read from.
 	 * @param data The returned data.
-	 * @return Returns PX4_OK on success, PX4_ERROR on failure.
+	 * @return Returns RT_EOK on success, RT_ERROR on failure.
 	 */
     int dataflash_read(const uint16_t address, void *data, const unsigned length);
 
@@ -129,13 +129,13 @@ public:
 	 * @param address The start address of the write.
 	 * @param data The data to be written.
 	 * @param length The number of bytes being written.
-	 * @return Returns PX4_OK on success, PX4_ERROR on failure.
+	 * @return Returns RT_EOK on success, RT_ERROR on failure.
 	 */
     int dataflash_write(const uint16_t address, void *data, const unsigned length);
 
     /**
 	* @brief Read info from battery on startup.
-	* @return Returns PX4_OK on success, PX4_ERROR on failure.
+	* @return Returns RT_EOK on success, RT_ERROR on failure.
 	*/
     int get_startup_info();
 
@@ -144,7 +144,7 @@ public:
 	 * @param cmd_code The command code.
 	 * @param data The returned data.
 	 * @param length The number of bytes being written.
-	 * @return Returns PX4_OK on success, PX4_ERROR on failure.
+	 * @return Returns RT_EOK on success, RT_ERROR on failure.
 	 */
     int manufacturer_read(const uint16_t cmd_code, void *data, const unsigned length);
 
@@ -153,37 +153,37 @@ public:
 	 * @param cmd_code The command code.
 	 * @param data The sent data.
 	 * @param length The number of bytes being written.
-	 * @return Returns PX4_OK on success, PX4_ERROR on failure.
+	 * @return Returns RT_EOK on success, RT_ERROR on failure.
 	 */
     int manufacturer_write(const uint16_t cmd_code, void *data, const unsigned length);
 
     /**
 	 * @brief Unseals the battery to allow writing to restricted flash.
-	 * @return Returns PX4_OK on success, PX4_ERROR on failure.
+	 * @return Returns RT_EOK on success, RT_ERROR on failure.
 	 */
     int unseal();
 
     /**
 	 * @brief Seals the battery to disallow writing to restricted flash.
-	 * @return Returns PX4_OK on success, PX4_ERROR on failure.
+	 * @return Returns RT_EOK on success, RT_ERROR on failure.
 	 */
     int seal();
 
     /**
 	 * @brief This command flushes the RAM Lifetime Data to data flash to help streamline evaluation testing.
-	 * @return Returns PX4_OK on success, PX4_ERROR on failure.
+	 * @return Returns RT_EOK on success, RT_ERROR on failure.
 	 */
     int lifetime_data_flush();
 
     /**
 	 * @brief Reads the lifetime data from block 1.
-	 * @return Returns PX4_OK on success, PX4_ERROR on failure.
+	 * @return Returns RT_EOK on success, RT_ERROR on failure.
 	 */
     int lifetime_read_block_one();
 
     /**
 	 * @brief Reads the cell voltages.
-	 * @return Returns PX4_OK on success or associated read error code on failure.
+	 * @return Returns RT_EOK on success or associated read error code on failure.
 	 */
     int get_cell_voltages();
 

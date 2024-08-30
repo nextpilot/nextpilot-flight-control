@@ -13,32 +13,30 @@
 #include <defines.h>
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
-#include <workq/ScheduledWorkItem.hpp>
+#include <workq/WorkItemScheduled.hpp>
 #include <uORB/Publication.hpp>
-#include <uORB/PublicationMulti.hpp>
-#include <uORB/SubscriptionInterval.hpp>
-#include <uORB/SubscriptionCallback.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/esc_status.h>
 #include <uORB/topics/parameter_update.h>
 #include <battery/battery.h>
 
 using namespace time_literals;
 
-class EscBattery : public ModuleBase<EscBattery>, public ModuleParams, public px4::WorkItem {
+class EscBattery : public ModuleCommand<EscBattery>, public ModuleParams, public nextpilot::WorkItem {
 public:
     EscBattery();
     ~EscBattery() = default;
 
-    /** @see ModuleBase */
-    static int task_spawn(int argc, char *argv[]);
+    /** @see ModuleCommand */
+    // static int task_spawn(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
-    bool init();
+    int init() override;
 
 private:
     void Run() override;

@@ -63,7 +63,7 @@ bool PWMOut::update_pwm_out_state(bool on) {
         int ret = up_pwm_servo_init(_pwm_mask);
 
         if (ret < 0) {
-            PX4_ERR("up_pwm_servo_init failed (%i)", ret);
+            LOG_E("up_pwm_servo_init failed (%i)", ret);
             return false;
         }
 
@@ -80,7 +80,7 @@ bool PWMOut::update_pwm_out_state(bool on) {
             ret = up_pwm_servo_set_rate_group_update(timer, _timer_rates[timer]);
 
             if (ret != 0) {
-                PX4_ERR("up_pwm_servo_set_rate_group_update failed for timer %i, rate %i (%i)", timer, _timer_rates[timer], ret);
+                LOG_E("up_pwm_servo_set_rate_group_update failed for timer %i, rate %i (%i)", timer, _timer_rates[timer], ret);
                 _timer_rates[timer]  = -1;
                 _pwm_mask           &= ~channels;
             }
@@ -170,7 +170,7 @@ void PWMOut::Run() {
 //     PWMOut *instance = new PWMOut();
 
 //     if (!instance) {
-//         PX4_ERR("alloc failed");
+//         LOG_E("alloc failed");
 //         return -1;
 //     }
 
@@ -200,7 +200,7 @@ void PWMOut::update_params() {
                     if (output_function >= (int)OutputFunction::Servo1
                         && output_function <= (int)OutputFunction::ServoMax) { // Function got set to a servo
                         int32_t val = 1500;
-                        PX4_INFO("Setting channel %i disarmed to %i", (int)val, i);
+                        LOG_I("Setting channel %i disarmed to %i", (int)val, i);
                         param_set(_mixing_output.disarmedParamHandle(i), &val);
 
                         // If the whole timer group was not set previously, then set the pwm rate to 50 Hz
@@ -220,7 +220,7 @@ void PWMOut::update_params() {
 
                                 if (param_get(handle, &tim_config) == 0 && tim_config == 400) {
                                     tim_config = 50;
-                                    PX4_INFO("setting timer %i to %i Hz", timer, (int)tim_config);
+                                    LOG_I("setting timer %i to %i Hz", timer, (int)tim_config);
                                     param_set(handle, &tim_config);
                                 }
                             }
@@ -231,10 +231,10 @@ void PWMOut::update_params() {
                     if (output_function >= (int)OutputFunction::Motor1
                         && output_function <= (int)OutputFunction::MotorMax) { // Function got set to a motor
                         int32_t val = 1100;
-                        PX4_INFO("Setting channel %i minimum to %i", (int)val, i);
+                        LOG_I("Setting channel %i minimum to %i", (int)val, i);
                         param_set(_mixing_output.minParamHandle(i), &val);
                         val = 1900;
-                        PX4_INFO("Setting channel %i maximum to %i", (int)val, i);
+                        LOG_I("Setting channel %i maximum to %i", (int)val, i);
                         param_set(_mixing_output.maxParamHandle(i), &val);
                     }
                 }

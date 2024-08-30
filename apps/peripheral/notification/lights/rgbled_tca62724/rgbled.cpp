@@ -110,11 +110,11 @@ void RGBLED::print_status() {
 
     if (ret == OK) {
         /* we don't care about power-save mode */
-        PX4_INFO("state: %s", on ? "ON" : "OFF");
-        PX4_INFO("red: %u, green: %u, blue: %u", (unsigned)r, (unsigned)g, (unsigned)b);
+        LOG_I("state: %s", on ? "ON" : "OFF");
+        LOG_I("red: %u, green: %u, blue: %u", (unsigned)r, (unsigned)g, (unsigned)b);
 
     } else {
-        PX4_WARN("failed to read led");
+        LOG_W("failed to read led");
     }
 }
 

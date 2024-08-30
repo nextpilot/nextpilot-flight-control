@@ -31,20 +31,20 @@
 
 #include <string.h>
 
-class ToneAlarm : public ModuleCommand<ToneAlarm>, public nextpilot::ScheduledWorkItem {
+class ToneAlarm : public ModuleCommand<ToneAlarm>, public nextpilot::WorkItemScheduled {
 public:
     ToneAlarm();
     ~ToneAlarm() override;
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     // static int task_spawn(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]) {
         return 0;
     };
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
 private:

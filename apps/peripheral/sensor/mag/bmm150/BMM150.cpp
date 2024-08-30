@@ -29,7 +29,7 @@ BMM150::~BMM150() {
 int BMM150::init() {
     int ret = I2C::init();
 
-    if (ret != PX4_OK) {
+    if (ret != RT_EOK) {
         DEVICE_DEBUG("I2C::init failed (%i)", ret);
         return ret;
     }
@@ -61,18 +61,18 @@ int BMM150::probe() {
         const uint8_t POWER_CONTROL = RegisterRead(Register::POWER_CONTROL);
         const uint8_t CHIP_ID       = RegisterRead(Register::CHIP_ID);
 
-        PX4_DEBUG("POWER_CONTROL: 0x%02hhX, CHIP_ID: 0x%02hhX", POWER_CONTROL, CHIP_ID);
+        LOG_D("POWER_CONTROL: 0x%02hhX, CHIP_ID: 0x%02hhX", POWER_CONTROL, CHIP_ID);
 
         if (CHIP_ID == chip_identification_number) {
-            return PX4_OK;
+            return RT_EOK;
 
         } else if ((CHIP_ID == 0) && !(POWER_CONTROL & POWER_CONTROL_BIT::PowerControl)) {
             // in suspend Chip ID read (register 0x40) returns “0x00” (I²C) or high-Z (SPI).
-            return PX4_OK;
+            return RT_EOK;
         }
     }
 
-    return PX4_ERROR;
+    return RT_ERROR;
 }
 
 float BMM150::compensate_x(int16_t mag_data_x, uint16_t data_rhall) {
@@ -190,12 +190,12 @@ void BMM150::RunImpl() {
         } else {
             // RESET not complete
             if (hrt_elapsed_time(&_reset_timestamp) > 1000_ms) {
-                PX4_DEBUG("Reset failed, retrying");
+                LOG_D("Reset failed, retrying");
                 _state = STATE::RESET;
                 ScheduleDelayed(100_ms);
 
             } else {
-                PX4_DEBUG("Reset not complete, check again in 10 ms");
+                LOG_D("Reset not complete, check again in 10 ms");
                 ScheduleDelayed(10_ms);
             }
         }
@@ -221,14 +221,14 @@ void BMM150::RunImpl() {
 
             } else {
                 if (perf_event_count(_self_test_failed_perf) >= 5) {
-                    PX4_ERR("self test still failing after 5 attempts");
+                    LOG_E("self test still failing after 5 attempts");
 
                     // reluctantly proceed
                     _state = STATE::READ_TRIM;
                     ScheduleDelayed(10_ms);
 
                 } else {
-                    PX4_ERR("self test failed, resetting");
+                    LOG_E("self test failed, resetting");
                     perf_count(_self_test_failed_perf);
                     _state = STATE::RESET;
                     ScheduleDelayed(1_s);
@@ -256,15 +256,15 @@ void BMM150::RunImpl() {
         uint8_t cmd = static_cast<uint8_t>(Register::DIG_X1);
         uint8_t trim_x1y1[2]{};
 
-        if (transfer(&cmd, 1, trim_x1y1, 2) == PX4_OK) {
+        if (transfer(&cmd, 1, trim_x1y1, 2) == RT_EOK) {
             cmd = static_cast<uint8_t>(Register::DIG_Z4_LSB);
             uint8_t trim_xyz_data[4]{};
 
-            if (transfer(&cmd, 1, trim_xyz_data, 4) == PX4_OK) {
+            if (transfer(&cmd, 1, trim_xyz_data, 4) == RT_EOK) {
                 cmd = static_cast<uint8_t>(Register::DIG_Z2_LSB);
                 uint8_t trim_xy1xy2[10]{};
 
-                if (transfer(&cmd, 1, trim_xy1xy2, 10) == PX4_OK) {
+                if (transfer(&cmd, 1, trim_xy1xy2, 10) == RT_EOK) {
                     _trim_data.dig_x1 = (int8_t)trim_x1y1[0];
                     _trim_data.dig_y1 = (int8_t)trim_x1y1[1];
 
@@ -300,7 +300,7 @@ void BMM150::RunImpl() {
         }
 
         // reset if reading trim failed
-        PX4_DEBUG("reading trim failed, resetting");
+        LOG_D("reading trim failed, resetting");
         perf_count(_bad_register_perf);
         _state = STATE::RESET;
         ScheduleDelayed(100_ms);
@@ -317,11 +317,11 @@ void BMM150::RunImpl() {
         } else {
             // CONFIGURE not complete
             if (hrt_elapsed_time(&_reset_timestamp) > 1000_ms) {
-                PX4_DEBUG("Configure failed, resetting");
+                LOG_D("Configure failed, resetting");
                 _state = STATE::RESET;
 
             } else {
-                PX4_DEBUG("Configure failed, retrying");
+                LOG_D("Configure failed, retrying");
             }
 
             ScheduleDelayed(100_ms);
@@ -346,7 +346,7 @@ void BMM150::RunImpl() {
         // 0x42 to 0x4A with a burst read.
         uint8_t cmd = static_cast<uint8_t>(Register::DATAX_LSB);
 
-        if (transfer(&cmd, 1, (uint8_t *)&buffer, sizeof(buffer)) == PX4_OK) {
+        if (transfer(&cmd, 1, (uint8_t *)&buffer, sizeof(buffer)) == RT_EOK) {
             int16_t  x     = combine_xy_int13(buffer.DATAX_MSB, buffer.DATAX_LSB);
             int16_t  y     = combine_xy_int13(buffer.DATAY_MSB, buffer.DATAY_LSB);
             int16_t  z     = combine_z_int15(buffer.DATAZ_MSB, buffer.DATAZ_LSB);
@@ -431,12 +431,12 @@ bool BMM150::RegisterCheck(const register_config_t &reg_cfg) {
     const uint8_t reg_value = RegisterRead(reg_cfg.reg);
 
     if (reg_cfg.set_bits && ((reg_value & reg_cfg.set_bits) != reg_cfg.set_bits)) {
-        PX4_DEBUG("0x%02hhX: 0x%02hhX (0x%02hhX not set)", (uint8_t)reg_cfg.reg, reg_value, reg_cfg.set_bits);
+        LOG_D("0x%02hhX: 0x%02hhX (0x%02hhX not set)", (uint8_t)reg_cfg.reg, reg_value, reg_cfg.set_bits);
         success = false;
     }
 
     if (reg_cfg.clear_bits && ((reg_value & reg_cfg.clear_bits) != 0)) {
-        PX4_DEBUG("0x%02hhX: 0x%02hhX (0x%02hhX not cleared)", (uint8_t)reg_cfg.reg, reg_value, reg_cfg.clear_bits);
+        LOG_D("0x%02hhX: 0x%02hhX (0x%02hhX not cleared)", (uint8_t)reg_cfg.reg, reg_value, reg_cfg.clear_bits);
         success = false;
     }
 
@@ -448,8 +448,8 @@ uint8_t BMM150::RegisterRead(Register reg) {
     uint8_t       buffer{};
     int           ret = transfer(&cmd, 1, &buffer, 1);
 
-    if (ret != PX4_OK) {
-        PX4_DEBUG("register read 0x%02hhX failed, ret = %d", cmd, ret);
+    if (ret != RT_EOK) {
+        LOG_D("register read 0x%02hhX failed, ret = %d", cmd, ret);
         return -1;
     }
 
@@ -460,8 +460,8 @@ void BMM150::RegisterWrite(Register reg, uint8_t value) {
     uint8_t buffer[2]{(uint8_t)reg, value};
     int     ret = transfer(buffer, sizeof(buffer), nullptr, 0);
 
-    if (ret != PX4_OK) {
-        PX4_DEBUG("register write 0x%02hhX failed, ret = %d", (uint8_t)reg, ret);
+    if (ret != RT_EOK) {
+        LOG_D("register write 0x%02hhX failed, ret = %d", (uint8_t)reg, ret);
     }
 }
 

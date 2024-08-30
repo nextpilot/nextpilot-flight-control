@@ -41,14 +41,14 @@ int RM3100::self_test() {
     uint8_t cmd = (CMM_DEFAULT & ~CONTINUOUS_MODE);
     int     ret = _interface->write(ADDR_CMM, &cmd, 1);
 
-    if (ret != PX4_OK) {
+    if (ret != RT_EOK) {
         return ret;
     }
 
     cmd = HSHAKE_NO_DRDY_CLEAR;
     ret = _interface->write(ADDR_HSHAKE, &cmd, 1);
 
-    if (ret != PX4_OK) {
+    if (ret != RT_EOK) {
         return ret;
     }
 
@@ -56,7 +56,7 @@ int RM3100::self_test() {
     cmd = BIST_SELFTEST;
     ret = _interface->write(ADDR_BIST, &cmd, 1);
 
-    if (ret != PX4_OK) {
+    if (ret != RT_EOK) {
         return ret;
     }
 
@@ -64,7 +64,7 @@ int RM3100::self_test() {
     cmd = POLL_XYZ;
     ret = _interface->write(ADDR_POLL, &cmd, 1);
 
-    if (ret != PX4_OK) {
+    if (ret != RT_EOK) {
         return ret;
     }
 
@@ -76,7 +76,7 @@ int RM3100::self_test() {
         uint8_t status = 0;
         ret            = _interface->read(ADDR_STATUS, &status, 1);
 
-        if (ret != PX4_OK) {
+        if (ret != RT_EOK) {
             return ret;
         }
 
@@ -85,7 +85,7 @@ int RM3100::self_test() {
             // Check BIST register to evaluate the test result
             ret = _interface->read(ADDR_BIST, &cmd, 1);
 
-            if (ret != PX4_OK) {
+            if (ret != RT_EOK) {
                 return ret;
             }
 
@@ -95,32 +95,32 @@ int RM3100::self_test() {
 
                 // If the x, y, or z LR oscillators malfunctioned then the self test failed.
                 if ((cmd & BIST_XYZ_OK) ^ BIST_XYZ_OK) {
-                    PX4_ERR("built-in self test failed: 0x%2X x:%s y:%s z:%s", cmd,
-                            cmd & 0x10 ? "Pass" : "Fail",
-                            cmd & 0x20 ? "Pass" : "Fail",
-                            cmd & 0x40 ? "Pass" : "Fail");
-                    return PX4_ERROR;
+                    LOG_E("built-in self test failed: 0x%2X x:%s y:%s z:%s", cmd,
+                          cmd & 0x10 ? "Pass" : "Fail",
+                          cmd & 0x20 ? "Pass" : "Fail",
+                          cmd & 0x40 ? "Pass" : "Fail");
+                    return RT_ERROR;
 
                 } else {
                     // The test passed, disable self-test mode by clearing the STE bit
                     cmd = 0;
                     ret = _interface->write(ADDR_BIST, &cmd, 1);
 
-                    if (ret != PX4_OK) {
-                        PX4_ERR("Failed to disable built-in self test");
+                    if (ret != RT_EOK) {
+                        LOG_E("Failed to disable built-in self test");
                     }
 
-                    return PX4_OK;
+                    return RT_EOK;
                 }
             }
         }
     }
 
     if (!complete) {
-        PX4_ERR("built-in self test incomplete");
+        LOG_E("built-in self test incomplete");
     }
 
-    return PX4_ERROR;
+    return RT_ERROR;
 }
 
 void RM3100::RunImpl() {
@@ -195,16 +195,16 @@ void RM3100::convert_signed(int32_t *n) {
 int RM3100::init() {
     int ret = self_test();
 
-    if (ret != PX4_OK) {
-        PX4_ERR("self test failed");
+    if (ret != RT_EOK) {
+        LOG_E("self test failed");
     }
 
-    if (set_default_register_values() == PX4_OK) {
+    if (set_default_register_values() == RT_EOK) {
         ScheduleOnInterval(RM3100_INTERVAL);
-        return PX4_OK;
+        return RT_EOK;
     }
 
-    return PX4_ERROR;
+    return RT_ERROR;
 }
 
 void RM3100::print_status() {
@@ -243,5 +243,5 @@ int RM3100::set_default_register_values() {
     cmd[0] = BIST_DEFAULT;
     _interface->write(ADDR_BIST, cmd, 1);
 
-    return PX4_OK;
+    return RT_EOK;
 }

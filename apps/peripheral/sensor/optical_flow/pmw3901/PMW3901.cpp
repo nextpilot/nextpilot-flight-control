@@ -174,7 +174,7 @@ int PMW3901::sensorInit() {
     writeRegister(0x5A, 0x50);
     writeRegister(0x40, 0x80);
 
-    return PX4_OK;
+    return RT_EOK;
 }
 
 int PMW3901::init() {
@@ -183,7 +183,7 @@ int PMW3901::init() {
 
     /* do SPI init (and probe) first */
     if (SPI::init() != OK) {
-        return PX4_ERROR;
+        return RT_ERROR;
     }
 
     sensorInit();
@@ -192,7 +192,7 @@ int PMW3901::init() {
 
     start();
 
-    return PX4_OK;
+    return RT_EOK;
 }
 
 int PMW3901::probe() {

@@ -56,7 +56,7 @@ ICM42688P::~ICM42688P() {
 int ICM42688P::init() {
     int ret = SPI::init();
 
-    if (ret != PX4_OK) {
+    if (ret != RT_EOK) {
         DEVICE_DEBUG("SPI::init failed (%i)", ret);
         return ret;
     }
@@ -80,8 +80,8 @@ void ICM42688P::exit_and_cleanup() {
 void ICM42688P::print_status() {
     I2CSPIDriverBase::print_status();
 
-    PX4_INFO("FIFO empty interval: %d us (%.1f Hz)", _fifo_empty_interval_us, 1e6 / _fifo_empty_interval_us);
-    PX4_INFO("Clock input: %s", _enable_clock_input ? "enabled" : "disabled");
+    LOG_I("FIFO empty interval: %d us (%.1f Hz)", _fifo_empty_interval_us, 1e6 / _fifo_empty_interval_us);
+    LOG_I("Clock input: %s", _enable_clock_input ? "enabled" : "disabled");
 
     perf_print_counter(_bad_register_perf);
     perf_print_counter(_bad_transfer_perf);
@@ -96,7 +96,7 @@ int ICM42688P::probe() {
         uint8_t whoami = RegisterRead(Register::BANK_0::WHO_AM_I);
 
         if (whoami == WHOAMI || (isICM686 && whoami == WHOAMI686)) {
-            return PX4_OK;
+            return RT_EOK;
 
         } else {
             DEVICE_DEBUG("unexpected WHO_AM_I 0x%02x", whoami);
@@ -112,7 +112,7 @@ int ICM42688P::probe() {
         }
     }
 
-    return PX4_ERROR;
+    return RT_ERROR;
 }
 
 void ICM42688P::RunImpl() {
@@ -140,12 +140,12 @@ void ICM42688P::RunImpl() {
         } else {
             // RESET not complete
             if (hrt_elapsed_time(&_reset_timestamp) > 1000_ms) {
-                PX4_DEBUG("Reset failed, retrying");
+                LOG_D("Reset failed, retrying");
                 _state = STATE::RESET;
                 ScheduleDelayed(100_ms);
 
             } else {
-                PX4_DEBUG("Reset not complete, check again in 10 ms");
+                LOG_D("Reset not complete, check again in 10 ms");
                 ScheduleDelayed(10_ms);
             }
         }
@@ -161,11 +161,11 @@ void ICM42688P::RunImpl() {
         } else {
             // CONFIGURE not complete
             if (hrt_elapsed_time(&_reset_timestamp) > 1000_ms) {
-                PX4_DEBUG("Configure failed, resetting");
+                LOG_D("Configure failed, resetting");
                 _state = STATE::RESET;
 
             } else {
-                PX4_DEBUG("Configure failed, retrying");
+                LOG_D("Configure failed, retrying");
             }
 
             ScheduleDelayed(100_ms);
@@ -426,12 +426,12 @@ bool ICM42688P::RegisterCheck(const T &reg_cfg) {
     const uint8_t reg_value = RegisterRead(reg_cfg.reg);
 
     if (reg_cfg.set_bits && ((reg_value & reg_cfg.set_bits) != reg_cfg.set_bits)) {
-        PX4_DEBUG("0x%02hhX: 0x%02hhX (0x%02hhX not set)", (uint8_t)reg_cfg.reg, reg_value, reg_cfg.set_bits);
+        LOG_D("0x%02hhX: 0x%02hhX (0x%02hhX not set)", (uint8_t)reg_cfg.reg, reg_value, reg_cfg.set_bits);
         success = false;
     }
 
     if (reg_cfg.clear_bits && ((reg_value & reg_cfg.clear_bits) != 0)) {
-        PX4_DEBUG("0x%02hhX: 0x%02hhX (0x%02hhX not cleared)", (uint8_t)reg_cfg.reg, reg_value, reg_cfg.clear_bits);
+        LOG_D("0x%02hhX: 0x%02hhX (0x%02hhX not cleared)", (uint8_t)reg_cfg.reg, reg_value, reg_cfg.clear_bits);
         success = false;
     }
 
@@ -471,7 +471,7 @@ uint16_t ICM42688P::FIFOReadCount() {
     fifo_count_buf[0] = static_cast<uint8_t>(Register::BANK_0::FIFO_COUNTH) | DIR_READ;
     SelectRegisterBank(REG_BANK_SEL_BIT::BANK_SEL_0);
 
-    if (transfer(fifo_count_buf, fifo_count_buf, sizeof(fifo_count_buf)) != PX4_OK) {
+    if (transfer(fifo_count_buf, fifo_count_buf, sizeof(fifo_count_buf)) != RT_EOK) {
         perf_count(_bad_transfer_perf);
         return 0;
     }
@@ -484,7 +484,7 @@ bool ICM42688P::FIFORead(const hrt_abstime &timestamp_sample, uint8_t samples) {
     const size_t       transfer_size = math::min(samples * sizeof(FIFO::DATA) + 4, FIFO::SIZE);
     SelectRegisterBank(REG_BANK_SEL_BIT::BANK_SEL_0);
 
-    if (transfer((uint8_t *)&buffer, (uint8_t *)&buffer, transfer_size) != PX4_OK) {
+    if (transfer((uint8_t *)&buffer, (uint8_t *)&buffer, transfer_size) != RT_EOK) {
         perf_count(_bad_transfer_perf);
         return false;
     }

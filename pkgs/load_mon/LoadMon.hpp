@@ -19,7 +19,7 @@
 #include <defines.h>
 #include <module/module_command.hpp>
 #include <module/module_params.hpp>
-#include <workq/ScheduledWorkItem.hpp>
+#include <workq/WorkItemScheduled.hpp>
 
 #include <px4_platform/cpuload.h>
 #include <uORB/Publication.hpp>
@@ -32,19 +32,19 @@
 
 namespace load_mon {
 
-class LoadMon : public ModuleBase<LoadMon>, public ModuleParams, public px4::ScheduledWorkItem {
+class LoadMon : public ModuleCommand<LoadMon>, public ModuleParams, public px4::WorkItemScheduled {
 public:
     LoadMon();
     ~LoadMon() override;
 
     static int task_spawn(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]) {
         return print_usage("unknown command");
     }
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
     void start();

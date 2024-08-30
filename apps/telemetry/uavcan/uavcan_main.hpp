@@ -21,7 +21,7 @@
 
 
 #include <atomic/atomic.hpp>
-#include <workq/ScheduledWorkItem.hpp>
+#include <workq/WorkItemScheduled.hpp>
 
 
 #include "actuators/esc.hpp"
@@ -72,7 +72,7 @@ class UavcanNode;
 class UavcanMixingInterfaceESC : public OutputModuleInterface {
 public:
     UavcanMixingInterfaceESC(pthread_mutex_t &node_mutex, UavcanEscController &esc_controller) :
-        OutputModuleInterface(MODULE_NAME "-actuators-esc", px4::wq_configurations::uavcan),
+        OutputModuleInterface(MODULE_NAME "-actuators-esc", nextpilot::wq_configurations::uavcan),
         _node_mutex(node_mutex),
         _esc_controller(esc_controller) {
     }
@@ -106,7 +106,7 @@ private:
 class UavcanMixingInterfaceServo : public OutputModuleInterface {
 public:
     UavcanMixingInterfaceServo(pthread_mutex_t &node_mutex, UavcanServoController &servo_controller) :
-        OutputModuleInterface(MODULE_NAME "-actuators-servo", px4::wq_configurations::uavcan),
+        OutputModuleInterface(MODULE_NAME "-actuators-servo", nextpilot::wq_configurations::uavcan),
         _node_mutex(node_mutex),
         _servo_controller(servo_controller) {
     }
@@ -131,7 +131,7 @@ private:
 /**
  * A UAVCAN node.
  */
-class UavcanNode : public px4::ScheduledWorkItem, public ModuleParams {
+class UavcanNode : public px4::WorkItemScheduled, public ModuleParams {
     static constexpr unsigned MaxBitRatePerSec = 1000000;
     static constexpr unsigned bitPerFrame      = 148;
     static constexpr unsigned FramePerSecond   = MaxBitRatePerSec / bitPerFrame;

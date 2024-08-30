@@ -31,7 +31,7 @@ IST8310::~IST8310() {
 int IST8310::init() {
     int ret = I2C::init();
 
-    if (ret != PX4_OK) {
+    if (ret != RT_EOK) {
         DEVICE_DEBUG("I2C::init failed (%i)", ret);
         return ret;
     }
@@ -59,10 +59,10 @@ int IST8310::probe() {
 
     if (WAI != Device_ID) {
         DEVICE_DEBUG("unexpected WAI 0x%02x", WAI);
-        return PX4_ERROR;
+        return RT_ERROR;
     }
 
-    return PX4_OK;
+    return RT_EOK;
 }
 
 void IST8310::RunImpl() {
@@ -91,12 +91,12 @@ void IST8310::RunImpl() {
         } else {
             // RESET not complete
             if (hrt_elapsed_time(&_reset_timestamp) > 1000_ms) {
-                PX4_DEBUG("Reset failed, retrying");
+                LOG_D("Reset failed, retrying");
                 _state = STATE::RESET;
                 ScheduleDelayed(100_ms);
 
             } else {
-                PX4_DEBUG("Reset not complete, check again in 10 ms");
+                LOG_D("Reset not complete, check again in 10 ms");
                 ScheduleDelayed(10_ms);
             }
         }
@@ -112,11 +112,11 @@ void IST8310::RunImpl() {
         } else {
             // CONFIGURE not complete
             if (hrt_elapsed_time(&_reset_timestamp) > 1000_ms) {
-                PX4_DEBUG("Configure failed, resetting");
+                LOG_D("Configure failed, resetting");
                 _state = STATE::RESET;
 
             } else {
-                PX4_DEBUG("Configure failed, retrying");
+                LOG_D("Configure failed, retrying");
             }
 
             ScheduleDelayed(100_ms);
@@ -144,7 +144,7 @@ void IST8310::RunImpl() {
         bool    success = false;
         uint8_t cmd     = static_cast<uint8_t>(Register::STAT1);
 
-        if (transfer(&cmd, 1, (uint8_t *)&buffer, sizeof(buffer)) == PX4_OK) {
+        if (transfer(&cmd, 1, (uint8_t *)&buffer, sizeof(buffer)) == RT_EOK) {
             if (buffer.STAT1 & STAT1_BIT::DRDY) {
                 int16_t x = combine(buffer.DATAXH, buffer.DATAXL);
                 int16_t y = combine(buffer.DATAYH, buffer.DATAYL);
@@ -226,12 +226,12 @@ bool IST8310::RegisterCheck(const register_config_t &reg_cfg) {
     const uint8_t reg_value = RegisterRead(reg_cfg.reg);
 
     if (reg_cfg.set_bits && ((reg_value & reg_cfg.set_bits) != reg_cfg.set_bits)) {
-        PX4_DEBUG("0x%02hhX: 0x%02hhX (0x%02hhX not set)", (uint8_t)reg_cfg.reg, reg_value, reg_cfg.set_bits);
+        LOG_D("0x%02hhX: 0x%02hhX (0x%02hhX not set)", (uint8_t)reg_cfg.reg, reg_value, reg_cfg.set_bits);
         success = false;
     }
 
     if (reg_cfg.clear_bits && ((reg_value & reg_cfg.clear_bits) != 0)) {
-        PX4_DEBUG("0x%02hhX: 0x%02hhX (0x%02hhX not cleared)", (uint8_t)reg_cfg.reg, reg_value, reg_cfg.clear_bits);
+        LOG_D("0x%02hhX: 0x%02hhX (0x%02hhX not cleared)", (uint8_t)reg_cfg.reg, reg_value, reg_cfg.clear_bits);
         success = false;
     }
 

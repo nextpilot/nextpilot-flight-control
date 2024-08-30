@@ -47,13 +47,13 @@ public:
     BatteryStatus();
     ~BatteryStatus() override;
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     // static int task_spawn(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
     int init() override;
@@ -194,18 +194,18 @@ void BatteryStatus::Run() {
 //         _task_id = task_id_is_work_queue;
 
 //         if (instance->init()) {
-//             return PX4_OK;
+//             return RT_EOK;
 //         }
 
 //     } else {
-//         PX4_ERR("alloc failed");
+//         LOG_E("alloc failed");
 //     }
 
 //     delete instance;
 //     _object.store(nullptr);
 //     _task_id = -1;
 
-//     return PX4_ERROR;
+//     return RT_ERROR;
 // }
 
 int BatteryStatus::init() {
@@ -245,7 +245,7 @@ int BatteryStatus::custom_command(int argc, char *argv[]) {
 
 int BatteryStatus::print_usage(const char *reason) {
     if (reason) {
-        PX4_WARN("%s\n", reason);
+        LOG_W("%s\n", reason);
     }
 
     PRINT_MODULE_DESCRIPTION(

@@ -24,7 +24,7 @@
 #include <px4_platform_common/module.h>
 #include <px4_platform_common/tasks.h>
 #include <px4_platform_common/workqueue.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <uORB/Publication.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/camera_trigger.h>
@@ -32,7 +32,7 @@
 #include <uORB/topics/vehicle_command.h>
 #include <uORB/topics/vehicle_command_ack.h>
 
-class CameraCapture : public px4::ScheduledWorkItem {
+class CameraCapture : public px4::WorkItemScheduled {
 public:
     /**
 	 * Constructor

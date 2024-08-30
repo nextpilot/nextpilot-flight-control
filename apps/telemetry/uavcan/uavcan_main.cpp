@@ -52,7 +52,7 @@ UavcanNode *UavcanNode::_instance;
 static UavcanNode::CanInitHelper *can = nullptr;
 
 UavcanNode::UavcanNode(uavcan::ICanDriver &can_driver, uavcan::ISystemClock &system_clock) :
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::uavcan),
+    WorkItemScheduled(MODULE_NAME, nextpilot::wq_configurations::uavcan),
     ModuleParams(nullptr),
     _node(can_driver, system_clock, _pool_allocator),
     _arming_status_controller(_node),

@@ -53,7 +53,7 @@ private:
     /**
 	 * Read the MS5611 PROM
 	 *
-	 * @return		PX4_OK if the PROM reads successfully.
+	 * @return		RT_EOK if the PROM reads successfully.
 	 */
     int _read_prom();
 };
@@ -80,7 +80,7 @@ int MS5611_I2C::read(unsigned offset, void *data, unsigned count) {
     uint8_t cmd = 0;
     int     ret = transfer(&cmd, 1, &buf[0], 3);
 
-    if (ret == PX4_OK) {
+    if (ret == RT_EOK) {
         /* fetch the raw value */
         cvt->b[0] = buf[2];
         cvt->b[1] = buf[1];
@@ -111,8 +111,8 @@ int MS5611_I2C::ioctl(unsigned operation, unsigned &arg) {
 }
 
 int MS5611_I2C::probe() {
-    if ((PX4_OK == _probe_address(MS5611_ADDRESS_1)) || (PX4_OK == _probe_address(MS5611_ADDRESS_2))) {
-        return PX4_OK;
+    if ((RT_EOK == _probe_address(MS5611_ADDRESS_1)) || (RT_EOK == _probe_address(MS5611_ADDRESS_2))) {
+        return RT_EOK;
     }
 
     _retries = 1;
@@ -125,16 +125,16 @@ int MS5611_I2C::_probe_address(uint8_t address) {
     set_device_address(address);
 
     /* send reset command */
-    if (PX4_OK != _reset()) {
+    if (RT_EOK != _reset()) {
         return -EIO;
     }
 
     /* read PROM */
-    if (PX4_OK != _read_prom()) {
+    if (RT_EOK != _read_prom()) {
         return -EIO;
     }
 
-    return PX4_OK;
+    return RT_EOK;
 }
 
 int MS5611_I2C::_reset() {
@@ -176,7 +176,7 @@ int MS5611_I2C::_read_prom() {
     for (int i = 0; i < 8; i++) {
         uint8_t cmd = ADDR_PROM_SETUP + (i * 2);
 
-        if (PX4_OK != transfer(&cmd, 1, &prom_buf[0], 2)) {
+        if (RT_EOK != transfer(&cmd, 1, &prom_buf[0], 2)) {
             break;
         }
 
@@ -197,7 +197,7 @@ int MS5611_I2C::_read_prom() {
     }
 
     /* calculate CRC and return success/failure accordingly */
-    return (ms5611::crc4(&_prom.c[0]) && !bits_stuck) ? PX4_OK : -EIO;
+    return (ms5611::crc4(&_prom.c[0]) && !bits_stuck) ? RT_EOK : -EIO;
 }
 
 #endif // CONFIG_I2C

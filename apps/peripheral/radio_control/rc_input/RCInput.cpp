@@ -21,7 +21,7 @@ constexpr char const *RCInput::RC_SCAN_STRING[];
 
 RCInput::RCInput(const char *device) :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, px4::serial_port_to_wq(device)),
+    WorkItemScheduled(MODULE_NAME, px4::serial_port_to_wq(device)),
     _cycle_perf(perf_alloc(PC_ELAPSED, MODULE_NAME ": cycle time")),
     _publish_interval_perf(perf_alloc(PC_INTERVAL, MODULE_NAME ": publish interval")) {
     // initialize raw_rc values and count
@@ -119,7 +119,7 @@ int RCInput::task_spawn(int argc, char *argv[]) {
             break;
 
         default:
-            PX4_WARN("unrecognized flag");
+            LOG_W("unrecognized flag");
             error_flag = true;
             break;
         }
@@ -133,8 +133,8 @@ int RCInput::task_spawn(int argc, char *argv[]) {
         RCInput *instance = new RCInput(device_name);
 
         if (instance == nullptr) {
-            PX4_ERR("alloc failed");
-            return PX4_ERROR;
+            LOG_E("alloc failed");
+            return RT_ERROR;
         }
 
         _object.store(instance);
@@ -142,18 +142,18 @@ int RCInput::task_spawn(int argc, char *argv[]) {
 
         instance->ScheduleOnInterval(_current_update_interval);
 
-        return PX4_OK;
+        return RT_EOK;
 
     } else {
         if (device_name) {
-            PX4_ERR("invalid device (-d) %s", device_name);
+            LOG_E("invalid device (-d) %s", device_name);
 
         } else {
-            PX4_INFO("valid device required");
+            LOG_I("valid device required");
         }
     }
 
-    return PX4_ERROR;
+    return RT_ERROR;
 }
 
 void RCInput::fill_rc_in(uint16_t    raw_rc_count_local,
@@ -234,7 +234,7 @@ void RCInput::set_rc_scan_state(RC_SCAN newState) {
 
     } else if (_param_rc_input_proto.get() < 0) {
         // only auto change if RC_INPUT_PROTO set to auto (-1)
-        PX4_DEBUG("RCscan: %s failed, trying %s", RCInput::RC_SCAN_STRING[_rc_scan_state], RCInput::RC_SCAN_STRING[newState]);
+        LOG_D("RCscan: %s failed, trying %s", RCInput::RC_SCAN_STRING[_rc_scan_state], RCInput::RC_SCAN_STRING[newState]);
         _rc_scan_state = newState;
 
     } else {
@@ -269,11 +269,11 @@ void RCInput::Run() {
     }
 
     if (!_initialized) {
-        if (init() == PX4_OK) {
+        if (init() == RT_EOK) {
             _initialized = true;
 
         } else {
-            PX4_ERR("init failed");
+            LOG_E("init failed");
             exit_and_cleanup();
         }
 
@@ -715,7 +715,7 @@ void RCInput::Run() {
         }
 
         if (!rc_scan_locked && _rc_scan_locked) {
-            PX4_INFO("RC scan: %s RC input locked", RC_SCAN_STRING[_rc_scan_state]);
+            LOG_I("RC scan: %s RC input locked", RC_SCAN_STRING[_rc_scan_state]);
         }
 
         // set RC_INPUT_PROTO if RC successfully locked for > 3 seconds
@@ -731,12 +731,12 @@ void RCInput::Run() {
 
 #if defined(SPEKTRUM_POWER)
 bool RCInput::bind_spektrum(int arg) const {
-    int ret = PX4_ERROR;
+    int ret = RT_ERROR;
 
     /* specify 11ms DSMX. RX will automatically fall back to 22ms or DSM2 if necessary */
 
     /* only allow DSM2, DSM-X and DSM-X with more than 7 channels */
-    PX4_INFO("DSM_BIND_START: DSM%s RX", (arg == 0) ? "2" : ((arg == 1) ? "-X" : "-X8"));
+    LOG_I("DSM_BIND_START: DSM%s RX", (arg == 0) ? "2" : ((arg == 1) ? "-X" : "-X8"));
 
     if (arg == DSM2_BIND_PULSES || arg == DSMX_BIND_PULSES || arg == DSMX8_BIND_PULSES) {
         dsm_bind(DSM_CMD_BIND_POWER_DOWN, 0);
@@ -758,11 +758,11 @@ bool RCInput::bind_spektrum(int arg) const {
         ret = OK;
 
     } else {
-        PX4_ERR("DSM bind failed");
+        LOG_E("DSM bind failed");
         ret = -EINVAL;
     }
 
-    return (ret == PX4_OK);
+    return (ret == RT_EOK);
 }
 #endif /* SPEKTRUM_POWER */
 
@@ -794,14 +794,14 @@ int RCInput::custom_command(int argc, char *argv[]) {
 }
 
 int RCInput::print_status() {
-    PX4_INFO("Max update rate: %u Hz", 1000000 / _current_update_interval);
+    LOG_I("Max update rate: %u Hz", 1000000 / _current_update_interval);
 
     if (_device[0] != '\0') {
-        PX4_INFO("UART device: %s", _device);
-        PX4_INFO("UART RX bytes: %" PRIu32, _bytes_rx);
+        LOG_I("UART device: %s", _device);
+        LOG_I("UART RX bytes: %" PRIu32, _bytes_rx);
     }
 
-    PX4_INFO("RC state: %s: %s", _rc_scan_locked ? "found" : "searching for signal", RC_SCAN_STRING[_rc_scan_state]);
+    LOG_I("RC state: %s: %s", _rc_scan_locked ? "found" : "searching for signal", RC_SCAN_STRING[_rc_scan_state]);
 
     if (_rc_scan_locked) {
         switch (_rc_scan_state) {
@@ -809,15 +809,15 @@ int RCInput::print_status() {
             break;
 
         case RC_SCAN_CRSF:
-            PX4_INFO("CRSF Telemetry: %s", _crsf_telemetry ? "yes" : "no");
+            LOG_I("CRSF Telemetry: %s", _crsf_telemetry ? "yes" : "no");
             break;
 
         case RC_SCAN_GHST:
-            PX4_INFO("GHST Telemetry: %s", _ghst_telemetry ? "yes" : "no");
+            LOG_I("GHST Telemetry: %s", _ghst_telemetry ? "yes" : "no");
             break;
 
         case RC_SCAN_SBUS:
-            PX4_INFO("SBUS frame drops: %u", sbus_dropped_frames());
+            LOG_I("SBUS frame drops: %u", sbus_dropped_frames());
             break;
 
 
@@ -844,7 +844,7 @@ int RCInput::print_status() {
 #if ADC_RC_RSSI_CHANNEL
 
     if (_analog_rc_rssi_stable) {
-        PX4_INFO("vrssi: %dmV", (int)(_analog_rc_rssi_volt * 1000.0f));
+        LOG_I("vrssi: %dmV", (int)(_analog_rc_rssi_volt * 1000.0f));
     }
 
 #endif
@@ -861,7 +861,7 @@ int RCInput::print_status() {
 
 int RCInput::print_usage(const char *reason) {
     if (reason) {
-        PX4_WARN("%s\n", reason);
+        LOG_W("%s\n", reason);
     }
 
     PRINT_MODULE_DESCRIPTION(

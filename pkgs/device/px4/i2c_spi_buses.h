@@ -18,7 +18,7 @@
 #include <lib/conversion/rotation.h>
 #include <px4_platform_common/atomic.h>
 #include <px4_platform_common/log.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <px4_platform_common/sem.h>
 
 #if defined(CONFIG_I2C)
@@ -266,10 +266,10 @@ private:
  * @class I2CSPIDriverBase
  * Base class for I2C/SPI driver modules (non-templated, used by I2CSPIDriver)
  */
-class I2CSPIDriverBase : public px4::ScheduledWorkItem, public I2CSPIInstance {
+class I2CSPIDriverBase : public px4::WorkItemScheduled, public I2CSPIInstance {
 public:
     I2CSPIDriverBase(const I2CSPIDriverConfig &config) :
-        ScheduledWorkItem(config.module_name, config.wq_config),
+        WorkItemScheduled(config.module_name, config.wq_config),
         I2CSPIInstance(config) {
     }
 

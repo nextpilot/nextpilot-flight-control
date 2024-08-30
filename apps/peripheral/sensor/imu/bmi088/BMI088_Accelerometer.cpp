@@ -43,7 +43,7 @@ void BMI088_Accelerometer::exit_and_cleanup() {
 void BMI088_Accelerometer::print_status() {
     I2CSPIDriverBase::print_status();
 
-    PX4_INFO("FIFO empty interval: %d us (%.1f Hz)", _fifo_empty_interval_us, 1e6 / _fifo_empty_interval_us);
+    LOG_I("FIFO empty interval: %d us (%.1f Hz)", _fifo_empty_interval_us, 1e6 / _fifo_empty_interval_us);
 
     perf_print_counter(_bad_register_perf);
     perf_print_counter(_bad_transfer_perf);
@@ -77,10 +77,10 @@ int BMI088_Accelerometer::probe() {
 
     } else {
         DEVICE_DEBUG("unexpected ACC_CHIP_ID 0x%02x", ACC_CHIP_ID);
-        return PX4_ERROR;
+        return RT_ERROR;
     }
 
-    return PX4_OK;
+    return RT_EOK;
 }
 
 void BMI088_Accelerometer::RunImpl() {
@@ -109,12 +109,12 @@ void BMI088_Accelerometer::RunImpl() {
         } else {
             // RESET not complete
             if (hrt_elapsed_time(&_reset_timestamp) > 1000_ms) {
-                PX4_DEBUG("Reset failed, retrying");
+                LOG_D("Reset failed, retrying");
                 _state = STATE::RESET;
                 ScheduleDelayed(100_ms);
 
             } else {
-                PX4_DEBUG("Reset not complete, check again in 10 ms");
+                LOG_D("Reset not complete, check again in 10 ms");
                 ScheduleDelayed(10_ms);
             }
         }
@@ -130,11 +130,11 @@ void BMI088_Accelerometer::RunImpl() {
         } else {
             // CONFIGURE not complete
             if (hrt_elapsed_time(&_reset_timestamp) > 1000_ms) {
-                PX4_DEBUG("Configure failed, resetting");
+                LOG_D("Configure failed, resetting");
                 _state = STATE::RESET;
 
             } else {
-                PX4_DEBUG("Configure failed, retrying");
+                LOG_D("Configure failed, retrying");
             }
 
             ScheduleDelayed(100_ms);
@@ -369,12 +369,12 @@ bool BMI088_Accelerometer::RegisterCheck(const register_config_t &reg_cfg) {
     const uint8_t reg_value = RegisterRead(reg_cfg.reg);
 
     if (reg_cfg.set_bits && ((reg_value & reg_cfg.set_bits) != reg_cfg.set_bits)) {
-        PX4_DEBUG("0x%02hhX: 0x%02hhX (0x%02hhX not set)", (uint8_t)reg_cfg.reg, reg_value, reg_cfg.set_bits);
+        LOG_D("0x%02hhX: 0x%02hhX (0x%02hhX not set)", (uint8_t)reg_cfg.reg, reg_value, reg_cfg.set_bits);
         success = false;
     }
 
     if (reg_cfg.clear_bits && ((reg_value & reg_cfg.clear_bits) != 0)) {
-        PX4_DEBUG("0x%02hhX: 0x%02hhX (0x%02hhX not cleared)", (uint8_t)reg_cfg.reg, reg_value, reg_cfg.clear_bits);
+        LOG_D("0x%02hhX: 0x%02hhX (0x%02hhX not cleared)", (uint8_t)reg_cfg.reg, reg_value, reg_cfg.clear_bits);
         success = false;
     }
 
@@ -415,7 +415,7 @@ uint16_t BMI088_Accelerometer::FIFOReadCount() {
     fifo_len_buf[0] = static_cast<uint8_t>(Register::FIFO_LENGTH_0) | DIR_READ;
     // fifo_len_buf[1] dummy byte
 
-    if (transfer(&fifo_len_buf[0], &fifo_len_buf[0], sizeof(fifo_len_buf)) != PX4_OK) {
+    if (transfer(&fifo_len_buf[0], &fifo_len_buf[0], sizeof(fifo_len_buf)) != RT_EOK) {
         perf_count(_bad_transfer_perf);
         return 0;
     }
@@ -430,7 +430,7 @@ bool BMI088_Accelerometer::FIFORead(const hrt_abstime &timestamp_sample, uint8_t
     FIFOTransferBuffer buffer{};
     const size_t       transfer_size = math::min(samples * sizeof(FIFO::DATA) + 4, FIFO::SIZE);
 
-    if (transfer((uint8_t *)&buffer, (uint8_t *)&buffer, transfer_size) != PX4_OK) {
+    if (transfer((uint8_t *)&buffer, (uint8_t *)&buffer, transfer_size) != RT_EOK) {
         perf_count(_bad_transfer_perf);
         return false;
     }
@@ -481,28 +481,28 @@ bool BMI088_Accelerometer::FIFORead(const hrt_abstime &timestamp_sample, uint8_t
         case FIFO::header::skip_frame:
             // Skip Frame
             // Frame length: 2 bytes (1 byte header + 1 byte payload)
-            PX4_DEBUG("Skip Frame");
+            LOG_D("Skip Frame");
             fifo_buffer_index += 2;
             break;
 
         case FIFO::header::sensor_time_frame:
             // Sensortime Frame
             // Frame length: 4 bytes (1 byte header + 3 bytes payload)
-            PX4_DEBUG("Sensortime Frame");
+            LOG_D("Sensortime Frame");
             fifo_buffer_index += 4;
             break;
 
         case FIFO::header::FIFO_input_config_frame:
             // FIFO input config Frame
             // Frame length: 2 bytes (1 byte header + 1 byte payload)
-            PX4_DEBUG("FIFO input config Frame");
+            LOG_D("FIFO input config Frame");
             fifo_buffer_index += 2;
             break;
 
         case FIFO::header::sample_drop_frame:
             // Sample drop Frame
             // Frame length: 2 bytes (1 byte header + 1 byte payload)
-            PX4_DEBUG("Sample drop Frame");
+            LOG_D("Sample drop Frame");
             fifo_buffer_index += 2;
             break;
 
@@ -538,7 +538,7 @@ void BMI088_Accelerometer::UpdateTemperature() {
     temperature_buf[0] = static_cast<uint8_t>(Register::TEMP_MSB) | DIR_READ;
     // temperature_buf[1] dummy byte
 
-    if (transfer(&temperature_buf[0], &temperature_buf[0], sizeof(temperature_buf)) != PX4_OK) {
+    if (transfer(&temperature_buf[0], &temperature_buf[0], sizeof(temperature_buf)) != RT_EOK) {
         perf_count(_bad_transfer_perf);
         return;
     }

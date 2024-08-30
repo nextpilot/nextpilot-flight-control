@@ -25,8 +25,8 @@ PAW3902::PAW3902(const I2CSPIDriverConfig &config) :
     float yaw_rotation_degrees = (float)config.custom1;
 
     if (yaw_rotation_degrees >= 0.f) {
-        PX4_INFO("using yaw rotation %.3f degrees (%.3f radians)",
-                 (double)yaw_rotation_degrees, (double)math::radians(yaw_rotation_degrees));
+        LOG_I("using yaw rotation %.3f degrees (%.3f radians)",
+              (double)yaw_rotation_degrees, (double)math::radians(yaw_rotation_degrees));
 
         _rotation = matrix::Dcmf{matrix::Eulerf{0.f, 0.f, math::radians(yaw_rotation_degrees)}};
 
@@ -49,7 +49,7 @@ PAW3902::~PAW3902() {
 int PAW3902::init() {
     int ret = SPI::init();
 
-    if (ret != PX4_OK) {
+    if (ret != RT_EOK) {
         DEVICE_DEBUG("SPI::init failed (%i)", ret);
         return ret;
     }
@@ -105,10 +105,10 @@ int PAW3902::probe() {
             break;
         }
 
-        return PX4_OK;
+        return RT_EOK;
     }
 
-    return PX4_ERROR;
+    return RT_ERROR;
 }
 
 void PAW3902::RunImpl() {
@@ -149,12 +149,12 @@ void PAW3902::RunImpl() {
         } else {
             // RESET not complete
             if (hrt_elapsed_time(&_reset_timestamp) > 1000_ms) {
-                PX4_DEBUG("Reset failed, retrying");
+                LOG_D("Reset failed, retrying");
                 _state = STATE::RESET;
                 ScheduleDelayed(100_ms);
 
             } else {
-                PX4_DEBUG("Reset not complete, check again in 100 ms");
+                LOG_D("Reset not complete, check again in 100 ms");
                 ScheduleDelayed(100_ms);
             }
         }
@@ -180,11 +180,11 @@ void PAW3902::RunImpl() {
         } else {
             // CONFIGURE not complete
             if (hrt_elapsed_time(&_reset_timestamp) > 1000_ms) {
-                PX4_DEBUG("Configure failed, resetting");
+                LOG_D("Configure failed, resetting");
                 _state = STATE::RESET;
 
             } else {
-                PX4_DEBUG("Configure failed, retrying");
+                LOG_D("Configure failed, retrying");
             }
 
             ScheduleDelayed(100_ms);
@@ -228,7 +228,7 @@ void PAW3902::RunImpl() {
 
             if (buffer.data.RawData_Sum > 0x98) {
                 perf_count(_bad_register_perf);
-                PX4_ERR("invalid RawData_Sum > 0x98");
+                LOG_E("invalid RawData_Sum > 0x98");
             }
 
             // publish sensor_optical_flow

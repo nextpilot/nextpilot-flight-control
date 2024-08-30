@@ -99,7 +99,7 @@ InputMavlinkROI::update(unsigned int timeout_ms, ControlData &control_data, bool
             return UpdateResult::UpdatedActive;
 
         } else if (vehicle_roi.mode == vehicle_roi_s::ROI_TARGET) {
-            PX4_WARN("ROI_TARGET not supported yet");
+            LOG_W("ROI_TARGET not supported yet");
             return UpdateResult::NoUpdate;
         }
 
@@ -132,7 +132,7 @@ void InputMavlinkROI::_read_control_data_from_position_setpoint_sub(ControlData 
 }
 
 void InputMavlinkROI::print_status() const {
-    PX4_INFO("Input: Mavlink (ROI)");
+    LOG_I("Input: Mavlink (ROI)");
 }
 
 InputMavlinkCmdMount::InputMavlinkCmdMount(Parameters &parameters) :
@@ -323,7 +323,7 @@ void InputMavlinkCmdMount::_ack_vehicle_command(const vehicle_command_s &cmd) {
 }
 
 void InputMavlinkCmdMount::print_status() const {
-    PX4_INFO("Input: Mavlink (CMD_MOUNT)");
+    LOG_I("Input: Mavlink (CMD_MOUNT)");
 }
 
 InputMavlinkGimbalV2::InputMavlinkGimbalV2(Parameters &parameters) :
@@ -353,7 +353,7 @@ InputMavlinkGimbalV2::~InputMavlinkGimbalV2() {
 }
 
 void InputMavlinkGimbalV2::print_status() const {
-    PX4_INFO("Input: Mavlink (Gimbal V2)");
+    LOG_I("Input: Mavlink (Gimbal V2)");
 }
 
 int InputMavlinkGimbalV2::initialize() {
@@ -537,8 +537,8 @@ InputMavlinkGimbalV2::UpdateResult InputMavlinkGimbalV2::_process_set_attitude(C
         return UpdateResult::UpdatedActive;
 
     } else {
-        PX4_DEBUG("Ignoring gimbal_manager_set_attitude from %d/%d",
-                  set_attitude.origin_sysid, set_attitude.origin_compid);
+        LOG_D("Ignoring gimbal_manager_set_attitude from %d/%d",
+              set_attitude.origin_sysid, set_attitude.origin_compid);
         return UpdateResult::UpdatedNotActive;
     }
 }
@@ -720,7 +720,7 @@ InputMavlinkGimbalV2::_process_command(ControlData &control_data, const vehicle_
                 }
 
             } else {
-                PX4_WARN("Unknown param1 value for DO_GIMBAL_MANAGER_CONFIGURE");
+                LOG_W("Unknown param1 value for DO_GIMBAL_MANAGER_CONFIGURE");
                 return control_data.sysid_primary_control;
             }
         }();
@@ -748,7 +748,7 @@ InputMavlinkGimbalV2::_process_command(ControlData &control_data, const vehicle_
                 }
 
             } else {
-                PX4_WARN("Unknown param2 value for DO_GIMBAL_MANAGER_CONFIGURE");
+                LOG_W("Unknown param2 value for DO_GIMBAL_MANAGER_CONFIGURE");
                 return control_data.compid_primary_control;
             }
         }();
@@ -756,9 +756,9 @@ InputMavlinkGimbalV2::_process_command(ControlData &control_data, const vehicle_
         _ack_vehicle_command(vehicle_command, vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED);
 
         if (new_sysid_primary_control != control_data.sysid_primary_control || new_compid_primary_control != control_data.compid_primary_control) {
-            PX4_INFO("Configured primary gimbal control sysid/compid from %d/%d to %d/%d",
-                     control_data.sysid_primary_control, control_data.compid_primary_control,
-                     new_sysid_primary_control, new_compid_primary_control);
+            LOG_I("Configured primary gimbal control sysid/compid from %d/%d to %d/%d",
+                  control_data.sysid_primary_control, control_data.compid_primary_control,
+                  new_sysid_primary_control, new_compid_primary_control);
             control_data.sysid_primary_control  = new_sysid_primary_control;
             control_data.compid_primary_control = new_compid_primary_control;
         }
@@ -786,10 +786,10 @@ InputMavlinkGimbalV2::_process_command(ControlData &control_data, const vehicle_
             return UpdateResult::UpdatedActive;
 
         } else {
-            PX4_INFO("GIMBAL_MANAGER_PITCHYAW from %d/%d denied, in control: %d/%d",
-                     vehicle_command.source_system,
-                     vehicle_command.source_component,
-                     control_data.sysid_primary_control, control_data.compid_primary_control);
+            LOG_I("GIMBAL_MANAGER_PITCHYAW from %d/%d denied, in control: %d/%d",
+                  vehicle_command.source_system,
+                  vehicle_command.source_component,
+                  control_data.sysid_primary_control, control_data.compid_primary_control);
             _ack_vehicle_command(vehicle_command,
                                  vehicle_command_ack_s::VEHICLE_CMD_RESULT_DENIED);
 
@@ -820,8 +820,8 @@ InputMavlinkGimbalV2::UpdateResult InputMavlinkGimbalV2::_process_set_manual_con
         return UpdateResult::UpdatedActive;
 
     } else {
-        PX4_DEBUG("Ignoring gimbal_manager_set_manual_control from %d/%d",
-                  set_manual_control.origin_sysid, set_manual_control.origin_compid);
+        LOG_D("Ignoring gimbal_manager_set_manual_control from %d/%d",
+              set_manual_control.origin_sysid, set_manual_control.origin_compid);
         return UpdateResult::UpdatedNotActive;
     }
 }

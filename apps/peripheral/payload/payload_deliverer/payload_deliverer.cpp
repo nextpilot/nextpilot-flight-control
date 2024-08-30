@@ -11,14 +11,14 @@
 
 PayloadDeliverer::PayloadDeliverer() :
     ModuleParams(nullptr),
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::lp_default) {
+    WorkItemScheduled(MODULE_NAME, nextpilot::wq_configurations::lp_default) {
 }
 
 bool PayloadDeliverer::init() {
     ScheduleOnInterval(100_ms);
 
     if (!_vehicle_command_sub.registerCallback()) {
-        PX4_ERR("callback registration failed");
+        LOG_E("callback registration failed");
         return false;
     }
 
@@ -36,13 +36,13 @@ void PayloadDeliverer::configure_gripper() {
         _gripper.init(config);
 
         if (!_gripper.is_valid()) {
-            PX4_DEBUG("Gripper object initialization failed!");
+            LOG_D("Gripper object initialization failed!");
             return;
 
         } else {
             // Command the gripper to grab position by default
             if (!_gripper.grabbed() && !_gripper.grabbing()) {
-                PX4_DEBUG("Gripper intialize: putting to grab position!");
+                LOG_D("Gripper intialize: putting to grab position!");
                 send_gripper_vehicle_command(vehicle_command_s::GRIPPER_ACTION_GRAB);
             }
 
@@ -97,14 +97,14 @@ void PayloadDeliverer::gripper_update(const hrt_abstime &now) {
     if (_gripper.released_read_once()) {
         send_gripper_vehicle_command_ack(now, vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED, _cur_vcmd_target_system,
                                          _cur_vcmd_target_component);
-        PX4_DEBUG("Payload Release Successful Ack Sent!");
+        LOG_D("Payload Release Successful Ack Sent!");
 
         _cur_vcmd_gripper_action = GRIPPER_ACTION_NONE;
 
     } else if (_gripper.grabbed_read_once()) {
         send_gripper_vehicle_command_ack(now, vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED, _cur_vcmd_target_system,
                                          _cur_vcmd_target_component);
-        PX4_DEBUG("Payload Grab Successful Ack Sent!");
+        LOG_D("Payload Grab Successful Ack Sent!");
 
         _cur_vcmd_gripper_action = GRIPPER_ACTION_NONE;
     }
@@ -119,7 +119,7 @@ void PayloadDeliverer::handle_vehicle_command(const hrt_abstime &now, const vehi
     // Process DO_GRIPPER vehicle command
     if (vehicle_command->command == vehicle_command_s::VEHICLE_CMD_DO_GRIPPER) {
         if (!_gripper.is_valid()) {
-            PX4_WARN("Gripper instance not valid but DO_GRIPPER vehicle command was received. Gripper won't work!");
+            LOG_W("Gripper instance not valid but DO_GRIPPER vehicle command was received. Gripper won't work!");
             send_gripper_vehicle_command_ack(now, vehicle_command_ack_s::VEHICLE_CMD_RESULT_FAILED, vehicle_command->source_system,
                                              vehicle_command->source_component);
             return;
@@ -160,8 +160,7 @@ void PayloadDeliverer::handle_vehicle_command(const hrt_abstime &now, const vehi
         bool current_gripper_command_executed{false};
 
         if (process_current_gripper_cmd) {
-            if ((_gripper.grabbed() && (gripper_action == vehicle_command_s::GRIPPER_ACTION_GRAB)) ||
-                (_gripper.released() && (gripper_action == vehicle_command_s::GRIPPER_ACTION_RELEASE))) {
+            if ((_gripper.grabbed() && (gripper_action == vehicle_command_s::GRIPPER_ACTION_GRAB)) || (_gripper.released() && (gripper_action == vehicle_command_s::GRIPPER_ACTION_RELEASE))) {
                 // First check if we already satisfied the requested command. If so, acknowledge as accepted and don't execute the command
                 send_gripper_vehicle_command_ack(now, vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED,
                                                  vehicle_command->source_system, vehicle_command->source_component);
@@ -230,22 +229,22 @@ bool PayloadDeliverer::send_gripper_vehicle_command_ack(const hrt_abstime now, c
 
 void PayloadDeliverer::gripper_test() {
     if (!_gripper.is_valid()) {
-        PX4_INFO("Gripper is not initialized correctly!");
+        LOG_I("Gripper is not initialized correctly!");
         return;
     }
 
-    PX4_INFO("Test: Opening the Gripper!");
+    LOG_I("Test: Opening the Gripper!");
     send_gripper_vehicle_command(vehicle_command_s::GRIPPER_ACTION_RELEASE);
 
     px4_usleep(5_s);
 
-    PX4_INFO("Test: Closing the Gripper!");
+    LOG_I("Test: Closing the Gripper!");
     send_gripper_vehicle_command(vehicle_command_s::GRIPPER_ACTION_GRAB);
 }
 
 void PayloadDeliverer::gripper_open() {
     if (!_gripper.is_valid()) {
-        PX4_INFO("Gripper is not initialized correctly!");
+        LOG_I("Gripper is not initialized correctly!");
         return;
     }
 
@@ -254,7 +253,7 @@ void PayloadDeliverer::gripper_open() {
 
 void PayloadDeliverer::gripper_close() {
     if (!_gripper.is_valid()) {
-        PX4_INFO("Gripper is not initialized correctly!");
+        LOG_I("Gripper is not initialized correctly!");
         return;
     }
 
@@ -263,10 +262,10 @@ void PayloadDeliverer::gripper_close() {
 
 int PayloadDeliverer::print_status() {
     // Gripper status
-    PX4_INFO("Gripper valid: %s", _gripper.is_valid() ? "True" : "False");
+    LOG_I("Gripper valid: %s", _gripper.is_valid() ? "True" : "False");
 
     if (_gripper.is_valid()) {
-        PX4_INFO("Gripper state: %s", _gripper.get_state_str());
+        LOG_I("Gripper state: %s", _gripper.get_state_str());
     }
 
     return 0;
@@ -294,7 +293,7 @@ int PayloadDeliverer::custom_command(int argc, char *argv[]) {
 
 int PayloadDeliverer::print_usage(const char *reason) {
     if (reason) {
-        PX4_WARN("%s\n", reason);
+        LOG_W("%s\n", reason);
     }
 
     PRINT_MODULE_DESCRIPTION(
@@ -323,11 +322,11 @@ int PayloadDeliverer::task_spawn(int argc, char *argv[]) {
         _task_id = task_id_is_work_queue;
 
         if (instance->init()) {
-            return PX4_OK;
+            return RT_EOK;
         }
 
     } else {
-        PX4_ERR("Alloc failed");
+        LOG_E("Alloc failed");
     }
 
     // Cleanup instance in memory and mark this module as invalid to run
@@ -335,7 +334,7 @@ int PayloadDeliverer::task_spawn(int argc, char *argv[]) {
     _object.store(nullptr);
     _task_id = -1;
 
-    return PX4_ERROR;
+    return RT_ERROR;
 }
 
 int payload_deliverer_main(int argc, char *argv[]) {

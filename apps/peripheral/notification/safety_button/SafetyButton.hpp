@@ -24,13 +24,13 @@ public:
     SafetyButton();
     ~SafetyButton() override;
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     // static int task_spawn(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int custom_command(int argc, char *argv[]);
 
-    /** @see ModuleBase */
+    /** @see ModuleCommand */
     static int print_usage(const char *reason = nullptr);
 
     int init() override;

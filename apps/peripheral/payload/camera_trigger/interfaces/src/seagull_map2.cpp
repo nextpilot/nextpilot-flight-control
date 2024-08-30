@@ -45,23 +45,23 @@ void CameraInterfaceSeagull::setup() {
             int      ret         = up_pwm_trigger_init(pin_bitmask);
 
             if (ret != (int)pin_bitmask) {
-                PX4_WARN("up_pwm_trigger_init failed (%i)", ret);
+                LOG_W("up_pwm_trigger_init failed (%i)", ret);
                 continue;
             }
 
             // Set both interface pins to disarmed
             int ret1 = up_pwm_trigger_set(_pins[i + 1], PWM_CAMERA_DISARMED);
-            PX4_DEBUG("pwm trigger set %d %d=%d, ret=%d", i + 1, _pins[i + 1], PWM_CAMERA_DISARMED, ret1);
+            LOG_D("pwm trigger set %d %d=%d, ret=%d", i + 1, _pins[i + 1], PWM_CAMERA_DISARMED, ret1);
 
             int ret2 = up_pwm_trigger_set(_pins[i], PWM_CAMERA_DISARMED);
-            PX4_DEBUG("pwm trigger set %d %d=%d, ret=%d", i, _pins[i], PWM_CAMERA_DISARMED, ret2);
+            LOG_D("pwm trigger set %d %d=%d, ret=%d", i, _pins[i], PWM_CAMERA_DISARMED, ret2);
 
             // We only support 2 consecutive pins while using the Seagull MAP2
             return;
         }
     }
 
-    PX4_ERR("Bad pin configuration - Seagull MAP2 requires 2 consecutive pins for control.");
+    LOG_E("Bad pin configuration - Seagull MAP2 requires 2 consecutive pins for control.");
 }
 
 void CameraInterfaceSeagull::trigger(bool trigger_on_true) {
@@ -108,8 +108,8 @@ void CameraInterfaceSeagull::send_toggle_power(bool enable) {
 }
 
 void CameraInterfaceSeagull::info() {
-    PX4_INFO("PWM trigger mode (Seagull MAP2) , pins enabled : [%d][%d][%d][%d][%d][%d]",
-             _pins[5], _pins[4], _pins[3], _pins[2], _pins[1], _pins[0]);
+    LOG_I("PWM trigger mode (Seagull MAP2) , pins enabled : [%d][%d][%d][%d][%d][%d]",
+          _pins[5], _pins[4], _pins[3], _pins[2], _pins[1], _pins[0]);
 }
 
 #endif /* ifdef __PX4_NUTTX */

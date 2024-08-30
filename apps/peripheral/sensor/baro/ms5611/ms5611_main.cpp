@@ -33,13 +33,13 @@ I2CSPIDriverBase *MS5611::instantiate(const I2CSPIDriverConfig &config, int runt
         }
 
     if (interface == nullptr) {
-        PX4_ERR("alloc failed");
+        LOG_E("alloc failed");
         return nullptr;
     }
 
     if (interface->init() != OK) {
         delete interface;
-        PX4_DEBUG("no device on bus %i (devid 0x%x)", config.bus, config.spi_devid);
+        LOG_D("no device on bus %i (devid 0x%x)", config.bus, config.spi_devid);
         return nullptr;
     }
 

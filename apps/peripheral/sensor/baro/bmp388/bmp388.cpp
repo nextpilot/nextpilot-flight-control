@@ -37,14 +37,14 @@ BMP388::~BMP388() {
 
 int BMP388::init() {
     if (!soft_reset()) {
-        PX4_DEBUG("failed to reset baro during init");
+        LOG_D("failed to reset baro during init");
         return -EIO;
     }
 
     _chip_id = _interface->get_reg(BMP3_CHIP_ID_ADDR);
 
     if (_chip_id != BMP388_CHIP_ID && _chip_id != BMP390_CHIP_ID) {
-        PX4_WARN("id of your baro is not: 0x%02x or 0x%02x", BMP388_CHIP_ID, BMP390_CHIP_ID);
+        LOG_W("id of your baro is not: 0x%02x or 0x%02x", BMP388_CHIP_ID, BMP390_CHIP_ID);
         return -EIO;
     }
 
@@ -57,17 +57,17 @@ int BMP388::init() {
     _cal = _interface->get_calibration(BMP3_CALIB_DATA_ADDR);
 
     if (!_cal) {
-        PX4_WARN("failed to get baro cal init");
+        LOG_W("failed to get baro cal init");
         return -EIO;
     }
 
     if (!validate_trimming_param()) {
-        PX4_WARN("failed to validate trim param");
+        LOG_W("failed to validate trim param");
         return -EIO;
     }
 
     if (!set_sensor_settings()) {
-        PX4_WARN("failed to set sensor settings");
+        LOG_W("failed to set sensor settings");
         return -EIO;
     }
 
@@ -107,7 +107,7 @@ int BMP388::measure() {
 
     /* start measurement */
     if (!set_op_mode(BMP3_FORCED_MODE)) {
-        PX4_DEBUG("failed to set operating mode");
+        LOG_D("failed to set operating mode");
         perf_count(_comms_errors);
         perf_cancel(_measure_perf);
         return -EIO;
@@ -293,7 +293,7 @@ bool BMP388::set_sensor_settings() {
     _measure_interval = get_measurement_time();
 
     if (_measure_interval == 0) {
-        PX4_WARN("unsupported oversampling selected");
+        LOG_W("unsupported oversampling selected");
         return false;
     }
 
@@ -305,7 +305,7 @@ bool BMP388::set_sensor_settings() {
     int ret = _interface->set_reg(pwc_ctl_reg, BMP3_PWR_CTRL_ADDR);
 
     if (ret != OK) {
-        PX4_WARN("failed to set settings BMP3_PWR_CTRL_ADDR");
+        LOG_W("failed to set settings BMP3_PWR_CTRL_ADDR");
         return false;
     }
 
@@ -317,7 +317,7 @@ bool BMP388::set_sensor_settings() {
     ret = _interface->set_reg(osr_ctl_reg, BMP3_OSR_ADDR);
 
     if (ret != OK) {
-        PX4_WARN("failed to set settings BMP3_OSR_ADDR");
+        LOG_W("failed to set settings BMP3_OSR_ADDR");
         return false;
     }
 
@@ -328,7 +328,7 @@ bool BMP388::set_sensor_settings() {
     ret = _interface->set_reg(odr_ctl_reg, BMP3_ODR_ADDR);
 
     if (ret != OK) {
-        PX4_WARN("failed to set output data rate register");
+        LOG_W("failed to set output data rate register");
         return false;
     }
 
@@ -337,7 +337,7 @@ bool BMP388::set_sensor_settings() {
     ret                 = _interface->set_reg(iir_ctl_reg, BMP3_IIR_ADDR);
 
     if (ret != OK) {
-        PX4_WARN("failed to set IIR settings");
+        LOG_W("failed to set IIR settings");
         return false;
     }
 

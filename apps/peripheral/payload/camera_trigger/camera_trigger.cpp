@@ -29,7 +29,7 @@
 #include <poll.h>
 #include <mathlib/mathlib.h>
 #include <matrix/math.hpp>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
+#include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <systemlib/err.h>
 #include <parameters/param.h>
 
@@ -66,7 +66,7 @@ typedef enum : int32_t {
 
 #define commandParamToInt(n) static_cast<int>(n >= 0 ? n + 0.5f : n - 0.5f)
 
-class CameraTrigger : public px4::ScheduledWorkItem {
+class CameraTrigger : public px4::WorkItemScheduled {
 public:
     /**
 	 * Constructor
@@ -227,7 +227,7 @@ CameraTrigger *g_camera_trigger;
 }
 
 CameraTrigger::CameraTrigger() :
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::lp_default) {
+    WorkItemScheduled(MODULE_NAME, nextpilot::wq_configurations::lp_default) {
     // Initiate camera interface based on camera_interface_mode
     if (_camera_interface != nullptr) {
         delete (_camera_interface);
@@ -273,7 +273,7 @@ CameraTrigger::CameraTrigger() :
         break;
 
     default:
-        PX4_ERR("unknown camera interface mode: %d", static_cast<int>(_camera_interface_mode));
+        LOG_E("unknown camera interface mode: %d", static_cast<int>(_camera_interface_mode));
         break;
     }
 
@@ -281,7 +281,7 @@ CameraTrigger::CameraTrigger() :
     // engage calls in-between 50Hz PWM pulses. (see PX4 PR #6973)
     if ((_activation_time < 40.0f) && (_camera_interface_mode == CAMERA_INTERFACE_MODE_GENERIC_PWM || _camera_interface_mode == CAMERA_INTERFACE_MODE_SEAGULL_MAP2_PWM)) {
         _activation_time = 40.0f;
-        PX4_WARN("Trigger interval too low for PWM interface, setting to 40 ms");
+        LOG_W("Trigger interval too low for PWM interface, setting to 40 ms");
         param_set_no_notification(_p_activation_time, &(_activation_time));
     }
 
@@ -304,7 +304,7 @@ void CameraTrigger::update_intervalometer() {
     // control_intervalometer once on enabling/disabling trigger to schedule the calls.
 
     if (_trigger_enabled && !_trigger_paused) {
-        PX4_DEBUG("update intervalometer, trigger enabled: %d, trigger paused: %d", _trigger_enabled, _trigger_paused);
+        LOG_D("update intervalometer, trigger enabled: %d, trigger paused: %d", _trigger_enabled, _trigger_paused);
 
         // schedule trigger on and off calls
         hrt_call_every(&_engagecall, 0, (_interval * 1000), &CameraTrigger::engage, this);
@@ -354,7 +354,7 @@ void CameraTrigger::update_distance() {
 
 void CameraTrigger::enable_keep_alive(bool on) {
     if (on) {
-        PX4_DEBUG("keep alive enable");
+        LOG_D("keep alive enable");
 
         // schedule keep-alive up and down calls
         hrt_call_every(&_keepalivecall_up, 0, (60000 * 1000), &CameraTrigger::keep_alive_up, this);
@@ -362,7 +362,7 @@ void CameraTrigger::enable_keep_alive(bool on) {
         hrt_call_every(&_keepalivecall_down, 0 + (30000 * 1000), (60000 * 1000), &CameraTrigger::keep_alive_down, this);
 
     } else {
-        PX4_DEBUG("keep alive disable");
+        LOG_D("keep alive disable");
         // cancel all calls
         hrt_cancel(&_keepalivecall_up);
         hrt_cancel(&_keepalivecall_down);
@@ -370,7 +370,7 @@ void CameraTrigger::enable_keep_alive(bool on) {
 }
 
 void CameraTrigger::toggle_power() {
-    PX4_DEBUG("toggle power");
+    LOG_D("toggle power");
 
     // schedule power toggle calls
     hrt_call_after(&_engage_turn_on_off_call, 0, &CameraTrigger::engange_turn_on_off, this);
@@ -379,7 +379,7 @@ void CameraTrigger::toggle_power() {
 }
 
 void CameraTrigger::shoot_once() {
-    PX4_DEBUG("shoot once");
+    LOG_D("shoot once");
 
     // schedule trigger on and off calls
     hrt_call_after(&_engagecall, 0,
@@ -472,7 +472,7 @@ void CameraTrigger::Run() {
     // Command handling
     if (updated) {
         if (cmd.command == vehicle_command_s::VEHICLE_CMD_DO_DIGICAM_CONTROL) {
-            PX4_DEBUG("received DO_DIGICAM_CONTROL");
+            LOG_D("received DO_DIGICAM_CONTROL");
 
             need_ack        = true;
             hrt_abstime now = hrt_absolute_time();
@@ -496,7 +496,7 @@ void CameraTrigger::Run() {
             }
 
         } else if (cmd.command == vehicle_command_s::VEHICLE_CMD_DO_TRIGGER_CONTROL) {
-            PX4_DEBUG("received DO_TRIGGER_CONTROL");
+            LOG_D("received DO_TRIGGER_CONTROL");
             need_ack = true;
 
             if (commandParamToInt(cmd.param3) == 1) {
@@ -522,7 +522,7 @@ void CameraTrigger::Run() {
             cmd_result = vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED;
 
         } else if (cmd.command == vehicle_command_s::VEHICLE_CMD_DO_SET_CAM_TRIGG_DIST) {
-            PX4_DEBUG("received DO_SET_CAM_TRIGG_DIST");
+            LOG_D("received DO_SET_CAM_TRIGG_DIST");
             need_ack = true;
 
             /*
@@ -560,7 +560,7 @@ void CameraTrigger::Run() {
             cmd_result = vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED;
 
         } else if (cmd.command == vehicle_command_s::VEHICLE_CMD_DO_SET_CAM_TRIGG_INTERVAL) {
-            PX4_DEBUG("received DO_SET_CAM_TRIGG_INTERVAL");
+            LOG_D("received DO_SET_CAM_TRIGG_INTERVAL");
             need_ack = true;
 
             if (cmd.param1 > 0.0f) {
@@ -579,7 +579,7 @@ void CameraTrigger::Run() {
             cmd_result = vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED;
 
         } else if (cmd.command == vehicle_command_s::VEHICLE_CMD_OBLIQUE_SURVEY) {
-            PX4_INFO("received OBLIQUE_SURVEY");
+            LOG_I("received OBLIQUE_SURVEY");
             // Camera Auto Mount Pivoting Oblique Survey (CAMPOS)
 
             need_ack = true;
@@ -703,7 +703,7 @@ unknown_cmd:
 
     // Command ACK handling
     if (updated && need_ack) {
-        PX4_DEBUG("acknowledging command %" PRId32 ", result=%u", cmd.command, cmd_result);
+        LOG_D("acknowledging command %" PRId32 ", result=%u", cmd.command, cmd_result);
         vehicle_command_ack_s command_ack{};
         command_ack.command          = cmd.command;
         command_ack.result           = (uint8_t)cmd_result;
@@ -822,27 +822,27 @@ void CameraTrigger::keep_alive_down(void *arg) {
 }
 
 void CameraTrigger::status() {
-    PX4_INFO("trigger enabled : %s", _trigger_enabled ? "enabled" : "disabled");
-    PX4_INFO("trigger paused : %s", _trigger_paused ? "paused" : "active");
-    PX4_INFO("mode : %d", static_cast<int>(_trigger_mode));
+    LOG_I("trigger enabled : %s", _trigger_enabled ? "enabled" : "disabled");
+    LOG_I("trigger paused : %s", _trigger_paused ? "paused" : "active");
+    LOG_I("mode : %d", static_cast<int>(_trigger_mode));
 
     if (_trigger_mode == TRIGGER_MODE_INTERVAL_ALWAYS_ON || _trigger_mode == TRIGGER_MODE_INTERVAL_ON_CMD) {
-        PX4_INFO("interval : %.2f [ms]", (double)_interval);
+        LOG_I("interval : %.2f [ms]", (double)_interval);
 
     } else if (_trigger_mode == TRIGGER_MODE_DISTANCE_ALWAYS_ON || _trigger_mode == TRIGGER_MODE_DISTANCE_ON_CMD) {
-        PX4_INFO("distance : %.2f [m]", (double)_distance);
+        LOG_I("distance : %.2f [m]", (double)_distance);
     }
 
     if (_camera_interface->has_power_control()) {
-        PX4_INFO("camera power : %s", _camera_interface->is_powered_on() ? "ON" : "OFF");
+        LOG_I("camera power : %s", _camera_interface->is_powered_on() ? "ON" : "OFF");
     }
 
-    PX4_INFO("activation time : %.2f [ms]", (double)_activation_time);
+    LOG_I("activation time : %.2f [ms]", (double)_activation_time);
     _camera_interface->info();
 }
 
 static int usage() {
-    PX4_INFO("usage: camera_trigger {start|stop|status|test|test_power}\n");
+    LOG_I("usage: camera_trigger {start|stop|status|test|test_power}\n");
     return 1;
 }
 
@@ -853,19 +853,19 @@ extern "C" __EXPORT int camera_trigger_main(int argc, char *argv[]) {
 
     if (!strcmp(argv[1], "start")) {
         if (camera_trigger::g_camera_trigger != nullptr) {
-            PX4_WARN("already running");
+            LOG_W("already running");
             return 0;
         }
 
         camera_trigger::g_camera_trigger = new CameraTrigger();
 
         if (camera_trigger::g_camera_trigger == nullptr) {
-            PX4_WARN("alloc failed");
+            LOG_W("alloc failed");
             return 1;
         }
 
         if (!camera_trigger::g_camera_trigger->start()) {
-            PX4_WARN("failed to start camera trigger");
+            LOG_W("failed to start camera trigger");
             return 1;
         }
 
@@ -873,7 +873,7 @@ extern "C" __EXPORT int camera_trigger_main(int argc, char *argv[]) {
     }
 
     if (camera_trigger::g_camera_trigger == nullptr) {
-        PX4_WARN("not running");
+        LOG_W("not running");
         return 1;
 
     } else if (!strcmp(argv[1], "stop")) {

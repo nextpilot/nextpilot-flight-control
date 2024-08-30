@@ -36,7 +36,7 @@ int MS4525DO::probe() {
         uint8_t data_2[3]{};
         int     ret2 = transfer(nullptr, 0, &data_2[0], sizeof(data_2));
 
-        if (ret1 == PX4_OK && ret2 == PX4_OK) {
+        if (ret1 == RT_EOK && ret2 == RT_EOK) {
             // Status bits
             const uint8_t status_1 = (data_1[0] & 0b1100'0000) >> 6;
             const uint8_t status_2 = (data_2[0] & 0b1100'0000) >> 6;
@@ -45,10 +45,10 @@ int MS4525DO::probe() {
                 && (status_2 == (uint8_t)STATUS::Stale_Data)
                 && (data_1[2] == data_1[2])) {
                 _retries = 1; // enable retries during operation
-                return PX4_OK;
+                return RT_EOK;
 
             } else {
-                PX4_ERR("status: %X status: %X", status_1, status_2);
+                LOG_E("status: %X status: %X", status_1, status_2);
             }
 
         } else {
@@ -56,18 +56,18 @@ int MS4525DO::probe() {
         }
     }
 
-    return PX4_ERROR;
+    return RT_ERROR;
 }
 
 int MS4525DO::init() {
     int ret = I2C::init();
 
-    if (ret != PX4_OK) {
+    if (ret != RT_EOK) {
         DEVICE_DEBUG("I2C::init failed (%i)", ret);
         return ret;
     }
 
-    if (ret == PX4_OK) {
+    if (ret == RT_EOK) {
         ScheduleNow();
     }
 
@@ -114,7 +114,7 @@ void MS4525DO::RunImpl() {
         int     ret2 = transfer(nullptr, 0, &data_2[0], sizeof(data_2));
         perf_end(_sample_perf);
 
-        if (ret1 != PX4_OK || ret2 != PX4_OK) {
+        if (ret1 != RT_EOK || ret2 != RT_EOK) {
             perf_count(_comms_errors);
 
         } else {
@@ -178,8 +178,8 @@ void MS4525DO::RunImpl() {
                 }
 
             } else {
-                PX4_DEBUG("status:%X|%X, B:%X|%X, T:%X|%X", status_1, status_2, bridge_data_1, bridge_data_2, temperature_1,
-                          temperature_2);
+                LOG_D("status:%X|%X, B:%X|%X, T:%X|%X", status_1, status_2, bridge_data_1, bridge_data_2, temperature_1,
+                      temperature_2);
             }
         }
 

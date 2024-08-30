@@ -69,17 +69,17 @@ void CameraInterfaceGPIO::trigger(bool trigger_on_true) {
 }
 
 void CameraInterfaceGPIO::info() {
-    PX4_INFO_RAW("GPIO trigger mode, pins enabled: ");
+    LOG_RAW("GPIO trigger mode, pins enabled: ");
 
     for (unsigned i = 0; i < arraySize(_pins); ++i) {
         if (_pins[i] < 0) {
             continue;
         }
 
-        PX4_INFO_RAW("[%d]", _pins[i] + 1);
+        LOG_RAW("[%d]", _pins[i] + 1);
     }
 
-    PX4_INFO_RAW(", polarity : %s\n", _trigger_invert ? "ACTIVE_LOW" : "ACTIVE_HIGH");
+    LOG_RAW(", polarity : %s\n", _trigger_invert ? "ACTIVE_LOW" : "ACTIVE_HIGH");
 }
 
 #endif /* ifdef __PX4_NUTTX */

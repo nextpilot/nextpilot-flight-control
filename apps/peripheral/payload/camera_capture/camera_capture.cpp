@@ -33,7 +33,7 @@ CameraCapture *g_camera_capture{nullptr};
 struct work_s CameraCapture::_work_publisher;
 
 CameraCapture::CameraCapture() :
-    ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::lp_default) {
+    WorkItemScheduled(MODULE_NAME, nextpilot::wq_configurations::lp_default) {
     memset(&_work_publisher, 0, sizeof(_work_publisher));
 
     // Capture Parameters
@@ -102,7 +102,7 @@ int CameraCapture::gpio_interrupt_routine(int irq, void *context, void *arg) {
 
     work_queue(HPWORK, &_work_publisher, (worker_t)&CameraCapture::publish_trigger_trampoline, dev, 0);
 
-    return PX4_OK;
+    return RT_EOK;
 }
 
 void CameraCapture::publish_trigger_trampoline(void *arg) {
@@ -240,7 +240,7 @@ void CameraCapture::set_capture_control(bool enabled) {
 
     if (!_gpio_capture) {
         if (_capture_channel == -1) {
-            PX4_WARN("No capture channel configured");
+            LOG_W("No capture channel configured");
             _capture_enabled = false;
 
         } else {
@@ -259,7 +259,7 @@ void CameraCapture::set_capture_control(bool enabled) {
                 _gpio_capture    = false;
 
             } else {
-                PX4_ERR("Unable to set capture callback for chan %" PRIu8 " (%i)", _capture_channel, ret);
+                LOG_E("Unable to set capture callback for chan %" PRIu8 " (%i)", _capture_channel, ret);
                 _capture_enabled = false;
             }
 
@@ -290,7 +290,7 @@ int CameraCapture::start() {
         int ret = up_input_capture_set(_capture_channel, edge, 0, nullptr, nullptr);
 
         if (ret != 0) {
-            PX4_ERR("up_input_capture_set failed (%i)", ret);
+            LOG_E("up_input_capture_set failed (%i)", ret);
             return ret;
         }
     }
@@ -298,7 +298,7 @@ int CameraCapture::start() {
     // run every 100 ms (10 Hz)
     ScheduleOnInterval(100000, 10000);
 
-    return PX4_OK;
+    return RT_EOK;
 }
 
 void CameraCapture::stop() {
@@ -312,51 +312,51 @@ void CameraCapture::stop() {
 }
 
 void CameraCapture::status() {
-    PX4_INFO("Capture enabled : %s", _capture_enabled ? "YES" : "NO");
-    PX4_INFO("Frame sequence : %" PRIu32, _capture_seq);
+    LOG_I("Capture enabled : %s", _capture_enabled ? "YES" : "NO");
+    LOG_I("Frame sequence : %" PRIu32, _capture_seq);
 
     if (_last_trig_time != 0) {
-        PX4_INFO("Last trigger timestamp : %" PRIu64 " (%i ms ago)", _last_trig_time,
-                 (int)(hrt_elapsed_time(&_last_trig_time) / 1000));
+        LOG_I("Last trigger timestamp : %" PRIu64 " (%i ms ago)", _last_trig_time,
+              (int)(hrt_elapsed_time(&_last_trig_time) / 1000));
 
     } else {
-        PX4_INFO("No trigger yet");
+        LOG_I("No trigger yet");
     }
 
     if (_camera_capture_mode != 0) {
-        PX4_INFO("Last exposure time : %0.2f ms", double(_last_exposure_time) / 1000.0);
+        LOG_I("Last exposure time : %0.2f ms", double(_last_exposure_time) / 1000.0);
     }
 
-    PX4_INFO("Number of overflows : %" PRIu32, _capture_overflows);
+    LOG_I("Number of overflows : %" PRIu32, _capture_overflows);
 
     if (_gpio_capture) {
-        PX4_INFO("Using board GPIO pin");
+        LOG_I("Using board GPIO pin");
 
     } else if (_capture_channel == -1) {
-        PX4_INFO("No Capture channel configured");
+        LOG_I("No Capture channel configured");
 
     } else {
         input_capture_stats_t stats;
         int                   ret = up_input_capture_get_stats(_capture_channel, &stats, false);
 
         if (ret != 0) {
-            PX4_ERR("Unable to get stats for chan %" PRIu8 " (%i)", _capture_channel, ret);
+            LOG_E("Unable to get stats for chan %" PRIu8 " (%i)", _capture_channel, ret);
 
         } else {
-            PX4_INFO("Status chan: %" PRIu8 " edges: %" PRIu32 " last time: %" PRIu64 " last state: %" PRIu32
-                     " overflows: %" PRIu32 " latency: %" PRIu16,
-                     _capture_channel,
-                     stats.edges,
-                     stats.last_time,
-                     stats.last_edge,
-                     stats.overflows,
-                     stats.latency);
+            LOG_I("Status chan: %" PRIu8 " edges: %" PRIu32 " last time: %" PRIu64 " last state: %" PRIu32
+                  " overflows: %" PRIu32 " latency: %" PRIu16,
+                  _capture_channel,
+                  stats.edges,
+                  stats.last_time,
+                  stats.last_edge,
+                  stats.overflows,
+                  stats.latency);
         }
     }
 }
 
 static int usage() {
-    PX4_INFO("usage: camera_capture {start|stop|on|off|reset|status}\n");
+    LOG_I("usage: camera_capture {start|stop|on|off|reset|status}\n");
     return 1;
 }
 
@@ -369,14 +369,14 @@ int camera_capture_main(int argc, char *argv[]) {
 
     if (!strcmp(argv[1], "start")) {
         if (camera_capture::g_camera_capture != nullptr) {
-            PX4_WARN("already running");
+            LOG_W("already running");
             return 0;
         }
 
         camera_capture::g_camera_capture = new CameraCapture();
 
         if (camera_capture::g_camera_capture == nullptr) {
-            PX4_WARN("alloc failed");
+            LOG_W("alloc failed");
             return 1;
         }
 
@@ -389,7 +389,7 @@ int camera_capture_main(int argc, char *argv[]) {
     }
 
     if (camera_capture::g_camera_capture == nullptr) {
-        PX4_WARN("not running");
+        LOG_W("not running");
         return 1;
 
     } else if (!strcmp(argv[1], "stop")) {

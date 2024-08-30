@@ -16,13 +16,13 @@ using namespace time_literals;
 
 EscBattery::EscBattery() :
     ModuleParams(nullptr),
-    WorkItem(MODULE_NAME, px4::wq_configurations::lp_default),
+    WorkItem(MODULE_NAME, nextpilot::wq_configurations::lp_default),
     _battery(1, this, ESC_BATTERY_INTERVAL_US, battery_status_s::BATTERY_SOURCE_ESCS) {
 }
 
 bool EscBattery::init() {
     if (!_esc_status_sub.registerCallback()) {
-        PX4_ERR("callback registration failed");
+        LOG_E("callback registration failed");
         return false;
     }
 
@@ -64,7 +64,7 @@ void EscBattery::Run() {
         for (unsigned i = 0; i < esc_status.esc_count; ++i) {
             if ((1 << i) & esc_status.esc_online_flags) {
                 average_voltage_v += esc_status.esc[i].esc_voltage;
-                total_current_a += esc_status.esc[i].esc_current;
+                total_current_a   += esc_status.esc[i].esc_current;
             }
         }
 
@@ -85,18 +85,18 @@ int EscBattery::task_spawn(int argc, char *argv[]) {
         _task_id = task_id_is_work_queue;
 
         if (instance->init()) {
-            return PX4_OK;
+            return RT_EOK;
         }
 
     } else {
-        PX4_ERR("alloc failed");
+        LOG_E("alloc failed");
     }
 
     delete instance;
     _object.store(nullptr);
     _task_id = -1;
 
-    return PX4_ERROR;
+    return RT_ERROR;
 }
 
 int EscBattery::custom_command(int argc, char *argv[]) {
@@ -105,7 +105,7 @@ int EscBattery::custom_command(int argc, char *argv[]) {
 
 int EscBattery::print_usage(const char *reason) {
     if (reason) {
-        PX4_WARN("%s\n", reason);
+        LOG_W("%s\n", reason);
     }
 
     PRINT_MODULE_DESCRIPTION(

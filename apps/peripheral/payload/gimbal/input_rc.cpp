@@ -181,8 +181,8 @@ float InputRC::_get_aux_value(const manual_control_setpoint_s &manual_control_se
 }
 
 void InputRC::print_status() const {
-    PX4_INFO("Input: RC (channels: roll=%" PRIi32 ", pitch=%" PRIi32 ", yaw=%" PRIi32 ")", _parameters.mnt_man_roll,
-             _parameters.mnt_man_pitch, _parameters.mnt_man_yaw);
+    LOG_I("Input: RC (channels: roll=%" PRIi32 ", pitch=%" PRIi32 ", yaw=%" PRIi32 ")", _parameters.mnt_man_roll,
+          _parameters.mnt_man_pitch, _parameters.mnt_man_yaw);
 }
 
 } /* namespace gimbal */

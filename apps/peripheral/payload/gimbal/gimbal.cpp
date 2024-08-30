@@ -73,7 +73,7 @@ static int gimbal_thread_main(int argc, char *argv[]) {
     ThreadData       thread_data;
 
     if (!initialize_params(param_handles, params)) {
-        PX4_ERR("could not get mount parameters!");
+        LOG_E("could not get mount parameters!");
         delete g_thread_data->test_input;
         return -1;
     }
@@ -116,7 +116,7 @@ static int gimbal_thread_main(int argc, char *argv[]) {
         break;
 
     default:
-        PX4_ERR("invalid input mode %" PRId32, params.mnt_mode_in);
+        LOG_E("invalid input mode %" PRId32, params.mnt_mode_in);
         break;
     }
 
@@ -127,14 +127,14 @@ static int gimbal_thread_main(int argc, char *argv[]) {
     }
 
     if (alloc_failed) {
-        PX4_ERR("input objs memory allocation failed");
+        LOG_E("input objs memory allocation failed");
         thread_should_exit.store(true);
     }
 
     if (!alloc_failed) {
         for (int i = 0; i < thread_data.input_objs_len; ++i) {
             if (thread_data.input_objs[i]->initialize() != 0) {
-                PX4_ERR("Input %d failed", i);
+                LOG_E("Input %d failed", i);
                 thread_should_exit.store(true);
             }
         }
@@ -169,13 +169,13 @@ static int gimbal_thread_main(int argc, char *argv[]) {
         break;
 
     default:
-        PX4_ERR("invalid output mode %" PRId32, params.mnt_mode_out);
+        LOG_E("invalid output mode %" PRId32, params.mnt_mode_out);
         thread_should_exit.store(true);
         break;
     }
 
     if (alloc_failed) {
-        PX4_ERR("output memory allocation failed");
+        LOG_E("output memory allocation failed");
         thread_should_exit.store(true);
     }
 
@@ -289,14 +289,14 @@ static int gimbal_thread_main(int argc, char *argv[]) {
 
 int gimbal_main(int argc, char *argv[]) {
     if (argc < 2) {
-        PX4_ERR("missing command");
+        LOG_E("missing command");
         usage();
         return -1;
     }
 
     if (!strcmp(argv[1], "start")) {
         if (thread_running.load()) {
-            PX4_WARN("mount driver already running");
+            LOG_W("mount driver already running");
             return 1;
         }
 
@@ -320,7 +320,7 @@ int gimbal_main(int argc, char *argv[]) {
         }
 
         if (gimbal_task < 0) {
-            PX4_ERR("failed to start");
+            LOG_E("failed to start");
             return -1;
         }
 
@@ -329,7 +329,7 @@ int gimbal_main(int argc, char *argv[]) {
 
     else if (!strcmp(argv[1], "stop")) {
         if (!thread_running.load()) {
-            PX4_WARN("mount driver not running");
+            LOG_W("mount driver not running");
             return 0;
         }
 
@@ -369,7 +369,7 @@ int gimbal_main(int argc, char *argv[]) {
             }
 
         } else {
-            PX4_WARN("not running");
+            LOG_W("not running");
             usage();
             return 1;
         }
@@ -381,20 +381,20 @@ int gimbal_main(int argc, char *argv[]) {
                 g_thread_data->control_data.sysid_primary_control  = (uint8_t)strtol(argv[2], nullptr, 0);
                 g_thread_data->control_data.compid_primary_control = (uint8_t)strtol(argv[3], nullptr, 0);
 
-                PX4_INFO("Control set to: %d/%d",
-                         g_thread_data->control_data.sysid_primary_control,
-                         g_thread_data->control_data.compid_primary_control);
+                LOG_I("Control set to: %d/%d",
+                      g_thread_data->control_data.sysid_primary_control,
+                      g_thread_data->control_data.compid_primary_control);
 
                 return 0;
 
             } else {
-                PX4_ERR("not enough arguments");
+                LOG_E("not enough arguments");
                 usage();
                 return 1;
             }
 
         } else {
-            PX4_WARN("not running");
+            LOG_W("not running");
             usage();
             return 1;
         }
@@ -403,10 +403,10 @@ int gimbal_main(int argc, char *argv[]) {
     else if (!strcmp(argv[1], "status")) {
         if (thread_running.load() && g_thread_data && g_thread_data->test_input) {
             if (g_thread_data->input_objs_len == 0) {
-                PX4_INFO("Input: None");
+                LOG_I("Input: None");
 
             } else {
-                PX4_INFO("Input Selected");
+                LOG_I("Input Selected");
 
                 for (int i = 0; i < g_thread_data->input_objs_len; ++i) {
                     if (i == g_thread_data->last_input_active) {
@@ -414,7 +414,7 @@ int gimbal_main(int argc, char *argv[]) {
                     }
                 }
 
-                PX4_INFO("Input not selected");
+                LOG_I("Input not selected");
 
                 for (int i = 0; i < g_thread_data->input_objs_len; ++i) {
                     if (i != g_thread_data->last_input_active) {
@@ -422,25 +422,25 @@ int gimbal_main(int argc, char *argv[]) {
                     }
                 }
 
-                PX4_INFO("Primary control:   %d/%d",
-                         g_thread_data->control_data.sysid_primary_control, g_thread_data->control_data.compid_primary_control);
+                LOG_I("Primary control:   %d/%d",
+                      g_thread_data->control_data.sysid_primary_control, g_thread_data->control_data.compid_primary_control);
             }
 
             if (g_thread_data->output_obj) {
                 g_thread_data->output_obj->print_status();
 
             } else {
-                PX4_INFO("Output: None");
+                LOG_I("Output: None");
             }
 
         } else {
-            PX4_INFO("not running");
+            LOG_I("not running");
         }
 
         return 0;
     }
 
-    PX4_ERR("unrecognized command");
+    LOG_E("unrecognized command");
     usage();
     return -1;
 }

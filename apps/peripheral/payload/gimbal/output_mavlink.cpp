@@ -100,7 +100,7 @@ void OutputMavlinkV1::_stream_device_attitude_status() {
 }
 
 void OutputMavlinkV1::print_status() const {
-    PX4_INFO("Output: MAVLink gimbal protocol v1");
+    LOG_I("Output: MAVLink gimbal protocol v1");
 }
 
 OutputMavlinkV2::OutputMavlinkV2(const Parameters &parameters) :
@@ -157,23 +157,23 @@ void OutputMavlinkV2::_check_for_gimbal_device_information() {
 }
 
 void OutputMavlinkV2::print_status() const {
-    PX4_INFO("Output: MAVLink gimbal protocol v2");
+    LOG_I("Output: MAVLink gimbal protocol v2");
 
-    PX4_INFO_RAW("  quaternion: [%.1f %.1f %.1f %.1f]\n",
-                 (double)_q_setpoint[0],
-                 (double)_q_setpoint[1],
-                 (double)_q_setpoint[2],
-                 (double)_q_setpoint[3]);
-    PX4_INFO_RAW("  angular velocity: [%.1f %.1f %.1f]\n",
-                 (double)_angle_velocity[0],
-                 (double)_angle_velocity[1],
-                 (double)_angle_velocity[2]);
+    LOG_RAW("  quaternion: [%.1f %.1f %.1f %.1f]\n",
+            (double)_q_setpoint[0],
+            (double)_q_setpoint[1],
+            (double)_q_setpoint[2],
+            (double)_q_setpoint[3]);
+    LOG_RAW("  angular velocity: [%.1f %.1f %.1f]\n",
+            (double)_angle_velocity[0],
+            (double)_angle_velocity[1],
+            (double)_angle_velocity[2]);
 
     if (_gimbal_device_found) {
-        PX4_INFO_RAW("  gimbal device compid found: %d\n", _gimbal_device_compid);
+        LOG_RAW("  gimbal device compid found: %d\n", _gimbal_device_compid);
 
     } else {
-        PX4_INFO_RAW("  gimbal device compid not found\n");
+        LOG_RAW("  gimbal device compid not found\n");
     }
 }
 
