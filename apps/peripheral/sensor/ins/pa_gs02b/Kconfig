@@ -1,0 +1,15 @@
+menuconfig DRV_USING_PA_GS02B
+   bool "pa_gs02b: High Precision INS data from JingZhunCeKong.,LTD"
+   default n
+
+if DRV_USING_PA_GS02B
+
+   config PA_GS02B_UART_DEVICE
+      string "uart device name for pa-gs02b"
+      default "uart4"
+
+   config PA_GS02B_UART_BAUDRATE
+      int "uart baudrate for pa-gs02b"
+      default 115200
+
+endif

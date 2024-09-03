@@ -1,0 +1,12 @@
+import os
+import rtconfig
+from building import *
+
+cwd = GetCurrentDir()
+
+src = Glob("*.c") + Glob("*.cpp")
+inc = [cwd]
+
+objs = DefineGroup("drv/pa_gs02b", src, depend=["DRV_USING_PA_GS02B"], CPPPATH=inc, LOCAL_CXXFLAGS="")
+
+Return("objs")

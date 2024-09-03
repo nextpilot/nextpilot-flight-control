@@ -1,12 +1,20 @@
-menuconfig DRIVERS_GPS
-	bool "gps"
+menuconfig DRV_USING_GPS
+	bool "gps driver for novatel, unicore, ublox etc"
 	default n
 	---help---
 		Enable support for gps
 
-menuconfig USER_GPS
-	bool "gps running as userspace module"
-	default y
-	depends on BOARD_PROTECTED && DRIVERS_GPS
-	---help---
-		Put gps in userspace memory
+if DRV_USING_GPS
+
+	config DRV_USING_UNICORE
+		bool "use unicore board"
+		default n
+
+	config DRV_USING_NOVATEL
+		bool "use novatel board"
+		default n
+
+	config DRV_USING_UBX
+		bool "use ubx board"
+		default n
+endif
