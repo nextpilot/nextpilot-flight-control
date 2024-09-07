@@ -88,8 +88,10 @@ typedef const struct orb_metadata *orb_id_t;
         sizeof(_struct),                                                    \
         _size_no_padding,                                                   \
         _fields,                                                            \
-        _orb_id_enum};                                                      \
+        _orb_id_enum,                                                       \
+    };                                                                      \
     struct hack
+
 
 #ifdef __cplusplus
 extern "C" {
