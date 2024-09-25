@@ -1,4 +1,4 @@
-menuconfig DRIVERS_IMU_BOSCH_BMI088
+menuconfig DRV_USING_BMI088
 	bool "bosch bmi088"
 	default n
 	---help---

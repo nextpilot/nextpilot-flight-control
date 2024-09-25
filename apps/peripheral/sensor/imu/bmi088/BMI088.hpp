@@ -10,9 +10,9 @@
 
 #pragma once
 
-#include <drivers/drv_hrt.h>
-#include <lib/drivers/device/spi.h>
-#include <lib/perf/perf_counter.h>
+#include <hrtimer.h>
+#include <drivers/device/spi.h>
+#include <perf/perf_counter.h>
 #include <px4_platform_common/i2c_spi_buses.h>
 
 static constexpr int16_t combine(uint8_t msb, uint8_t lsb) {
