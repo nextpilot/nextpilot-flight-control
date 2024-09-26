@@ -55,13 +55,14 @@
 		"C_Cpp.clang_format_fallbackStyle": "LLVM",
 		"C_Cpp.formatting": "clangFormat",
 		"C_Cpp.autocompleteAddParentheses": true,
-		"C_Cpp.default.cppStandard": "c++14",
+		"C_Cpp.default.cppStandard": "c++17",
 		"C_Cpp.default.cStandard": "c11",
 		// git
 		"git.rebaseWhenSync": true,
 		"git.autofetch": "all",
 		"git.pruneOnFetch": true,
 		"git.pullBeforeCheckout": true,
+		"git.alwaysSignOff": true,
 		// toml
 		"evenBetterToml.formatter.trailingNewline": true,
 		"evenBetterToml.formatter.alignComments": true,
@@ -119,9 +120,10 @@
 		"RTT_Studio.Debuger.stlinkGdbServerExecutable": "C:/RT-ThreadStudio/repo/Extract/Debugger_Support_Packages/STMicroelectronics/ST-LINK_Debugger/1.6.0",
 		"RTT_Studio.Debuger.QEMU.Location": "C:/RT-ThreadStudio/repo/Extract/Debugger_Support_Packages/RealThread/QEMU/4.2.0.4",
 		"files.associations": {
-			"Kconfig": "kconfig",
 			".clang-format-ignore": "ignore",
 			"*.jinja": "jinja",
+			"*.m": "matlab",
+			"Kconfig": "kconfig",
 			"*.hpp.jinja": "jinja-cpp",
 			"random": "c",
 			"charconv": "cpp",
@@ -155,7 +157,12 @@
 			"xmemory": "cpp",
 			"ranges": "cpp",
 			"span": "cpp",
-			"vector": "cpp"
+			"vector": "cpp",
+			"any": "cpp",
+			"compare": "cpp",
+			"format": "cpp",
+			"regex": "cpp",
+			"variant": "cpp"
 		},
 		"RTT_Studio.Debuger.Gdb_Path": ""
 	},
