@@ -5,4 +5,4 @@
 * [用户手册](manual/)
 * [开发指南](develop/)
 * [社区支持](community/)
-* [淘宝店铺](https://nextpilot.taobao.com)
+<!-- * [淘宝店铺](https://nextpilot.taobao.com) -->
