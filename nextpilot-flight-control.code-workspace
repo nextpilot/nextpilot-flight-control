@@ -162,7 +162,9 @@
 			"compare": "cpp",
 			"format": "cpp",
 			"regex": "cpp",
-			"variant": "cpp"
+			"variant": "cpp",
+			"xlocale": "cpp",
+			"typeinfo": "cpp"
 		},
 		"RTT_Studio.Debuger.Gdb_Path": ""
 	},

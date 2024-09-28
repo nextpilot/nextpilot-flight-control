@@ -145,7 +145,7 @@ public:
     }
 
     virtual bool external() const {
-        return false;
+        return _external;
     }
 
     // 操作device_id
@@ -220,6 +220,9 @@ protected:
     // 驱动的名称，比如i2c1
     const char *_bus_name{nullptr};
     rt_device_t _bus_device{nullptr};
+
+    // 是否外部设备
+    bool _external{false};
 };
 
 } // namespace nextpilot::device

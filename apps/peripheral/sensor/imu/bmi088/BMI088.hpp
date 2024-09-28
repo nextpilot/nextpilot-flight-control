@@ -19,7 +19,7 @@ static constexpr int16_t combine(uint8_t msb, uint8_t lsb) {
     return (msb << 8u) | lsb;
 }
 
-class BMI088 : public device::SPI, public I2CSPIDriver<BMI088> {
+class BMI088 : public device::SPI, public ModuleCommand<BMI088> {
 public:
     BMI088(const I2CSPIDriverConfig &config);
 
