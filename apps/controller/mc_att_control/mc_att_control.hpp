@@ -34,9 +34,10 @@
 
 using namespace time_literals;
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::workq;
+using namespace nextpilot::param;
 
-class MulticopterAttitudeControl : public ModuleCommand<MulticopterAttitudeControl>, public ModuleParams, public nextpilot::WorkItem {
+class MulticopterAttitudeControl : public ModuleCommand<MulticopterAttitudeControl>, public ModuleParams, public WorkItem {
 public:
     MulticopterAttitudeControl(bool vtol = false);
     ~MulticopterAttitudeControl() override;
@@ -86,12 +87,12 @@ private:
     manual_control_setpoint_s _manual_control_setpoint{}; /**< manual control setpoint */
     vehicle_control_mode_s    _vehicle_control_mode{};    /**< vehicle control mode */
 
-    perf_counter_t _loop_perf; /**< loop duration performance counter */
+    perf_counter_t _loop_perf;                            /**< loop duration performance counter */
 
-    matrix::Vector3f _thrust_setpoint_body; /**< body frame 3D thrust vector */
+    matrix::Vector3f _thrust_setpoint_body;               /**< body frame 3D thrust vector */
 
-    float _man_yaw_sp{0.f}; /**< current yaw setpoint in manual mode */
-    float _man_tilt_max;    /**< maximum tilt allowed for manual flight [rad] */
+    float _man_yaw_sp{0.f};                               /**< current yaw setpoint in manual mode */
+    float _man_tilt_max;                                  /**< maximum tilt allowed for manual flight [rad] */
 
     AlphaFilter<float> _man_roll_input_filter;
     AlphaFilter<float> _man_pitch_input_filter;

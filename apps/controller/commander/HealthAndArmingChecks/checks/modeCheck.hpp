@@ -14,7 +14,7 @@
 #include <uORB/Subscription.hpp>
 
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 class ModeChecks : public HealthAndArmingCheckBase {
 public:

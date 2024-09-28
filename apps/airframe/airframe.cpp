@@ -63,7 +63,7 @@ static airframe_info_t  __airframe_table__[100];
 static uint16_t         __airframe_count__ = UINT16_MAX;
 #endif
 
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 bool airframe_section_init() {
 #if defined(_MSC_VER)

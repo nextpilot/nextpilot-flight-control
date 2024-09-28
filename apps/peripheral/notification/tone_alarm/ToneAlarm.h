@@ -31,7 +31,9 @@
 
 #include <string.h>
 
-class ToneAlarm : public ModuleCommand<ToneAlarm>, public nextpilot::WorkItemScheduled {
+using namespace nextpilot::workq;
+
+class ToneAlarm : public ModuleCommand<ToneAlarm>, public WorkItemScheduled {
 public:
     ToneAlarm();
     ~ToneAlarm() override;

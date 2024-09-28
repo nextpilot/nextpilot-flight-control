@@ -51,8 +51,8 @@
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/failure_detector_status.h>
 
-using namespace nextpilot::global_params;
-using namespace nextpilot;
+using namespace nextpilot::param;
+using namespace nextpilot::workq;
 
 class ControlAllocator : public ModuleCommand<ControlAllocator>, public ModuleParams, public WorkItemScheduled {
 public:

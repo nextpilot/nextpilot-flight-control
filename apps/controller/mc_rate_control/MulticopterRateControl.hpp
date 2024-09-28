@@ -36,9 +36,10 @@
 
 using namespace time_literals;
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::workq;
+using namespace nextpilot::param;
 
-class MulticopterRateControl : public ModuleCommand<MulticopterRateControl>, public ModuleParams, public nextpilot::WorkItem {
+class MulticopterRateControl : public ModuleCommand<MulticopterRateControl>, public ModuleParams, public WorkItem {
 public:
     MulticopterRateControl(bool vtol = false);
     ~MulticopterRateControl() override;

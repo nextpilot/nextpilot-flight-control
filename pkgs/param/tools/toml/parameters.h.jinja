@@ -10,7 +10,7 @@
 #include <stdint.h>
 #include "param_common.h"
 
-namespace nextpilot::global_params {
+namespace nextpilot::param {
 
 typedef struct param_data_s {
     param_value_t  value;
@@ -64,6 +64,6 @@ static constexpr param_info_s infos[] = {
 {%- endfor %}
 };
 
-} // namespace nextpilot::global_params
+} // namespace nextpilot::param
 
 #endif // __PARAM_GLOBAL_AUTOGEN_H__

@@ -13,10 +13,11 @@
 #include <math.h>
 
 using namespace time_literals;
+using namespace nextpilot::workq;
 
 EscBattery::EscBattery() :
     ModuleParams(nullptr),
-    WorkItem(MODULE_NAME, nextpilot::wq_configurations::lp_default),
+    WorkItem(MODULE_NAME, wq_configurations::lp_default),
     _battery(1, this, ESC_BATTERY_INTERVAL_US, battery_status_s::BATTERY_SOURCE_ESCS) {
 }
 

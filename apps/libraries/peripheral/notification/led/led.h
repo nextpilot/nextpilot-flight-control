@@ -30,7 +30,7 @@
 
 using namespace time_literals;
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 struct LedControlDataSingle {
 	uint8_t color{led_control_s::COLOR_OFF}; ///< one of led_control_s::COLOR_*

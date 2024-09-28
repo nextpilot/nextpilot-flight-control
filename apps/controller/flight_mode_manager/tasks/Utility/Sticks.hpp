@@ -26,7 +26,7 @@
 #include <uORB/topics/failsafe_flags.h>
 
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 class Sticks : public ModuleParams {
 public:

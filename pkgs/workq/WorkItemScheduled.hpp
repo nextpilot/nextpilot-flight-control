@@ -13,7 +13,7 @@
 #include "WorkItem.hpp"
 #include <hrtimer.h>
 
-namespace nextpilot {
+namespace nextpilot::workq {
 
 class WorkItemScheduled : public WorkItem {
 public:
@@ -52,6 +52,7 @@ protected:
     WorkItemScheduled(const char *name, const wq_config_t &config) :
         WorkItem(name, config) {
     }
+
     virtual ~WorkItemScheduled() override;
 
     virtual void print_run_status() override;
@@ -64,4 +65,4 @@ private:
     hrt_call _call{};
 };
 
-} // namespace nextpilot
+} // namespace nextpilot::workq

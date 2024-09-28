@@ -16,7 +16,7 @@
 #include <uORB/topics/rtl_time_estimate.h>
 
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 class BatteryChecks : public HealthAndArmingCheckBase {
 public:

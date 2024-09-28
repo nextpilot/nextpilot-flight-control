@@ -44,7 +44,7 @@
 
 using namespace time_literals;
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 static constexpr uint32_t SCHEDULE_INTERVAL{100_ms}; /**< The schedule interval in usec (10 Hz) */
 

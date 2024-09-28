@@ -40,7 +40,8 @@ static constexpr float MINIMUM_SPEED_FOR_TARGET_MOVING     = 0.1f;  // speed thr
 
 using namespace time_literals;
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::workq;
+using namespace nextpilot::param;
 
 struct filter_gains_s {
     // Position fusion gains

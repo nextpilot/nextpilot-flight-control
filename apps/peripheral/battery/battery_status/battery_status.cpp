@@ -28,6 +28,7 @@
 #include "analog_battery.h"
 
 using namespace time_literals;
+using namespace nextpilot::workq;
 
 /**
  * The channel definitions (e.g., ADC_BATTERY_VOLTAGE_CHANNEL, ADC_BATTERY_CURRENT_CHANNEL, and ADC_AIRSPEED_VOLTAGE_CHANNEL) are defined in board_config.h
@@ -42,7 +43,7 @@ using namespace time_literals;
 #   error "battery_status module requires power bricks"
 #endif
 
-class BatteryStatus : public ModuleCommand<BatteryStatus>, public ModuleParams, public nextpilot::WorkItemScheduled {
+class BatteryStatus : public ModuleCommand<BatteryStatus>, public ModuleParams, public WorkItemScheduled {
 public:
     BatteryStatus();
     ~BatteryStatus() override;
@@ -102,7 +103,7 @@ private:
 
 BatteryStatus::BatteryStatus() :
     ModuleParams(nullptr),
-    WorkItemScheduled(MODULE_NAME, nextpilot::wq_configurations::hp_default),
+    WorkItemScheduled(MODULE_NAME, wq_configurations::hp_default),
     _battery1(1, this, SAMPLE_INTERVAL_US, battery_status_s::BATTERY_SOURCE_POWER_MODULE, 0),
 #if BOARD_NUMBER_BRICKS > 1
     _battery2(2, this, SAMPLE_INTERVAL_US, battery_status_s::BATTERY_SOURCE_POWER_MODULE, 1),
@@ -275,7 +276,7 @@ static int battery_status_main(int argc, char *argv[]) {
 MSH_CMD_EXPORT_ALIAS(battery_status_main, battery_low_remaining_time, battery status);
 
 static int battery_status_start() {
-    int32_t sys_hitl = param_get_int32((param_t)nextpilot::global_params::params_id::SYS_HITL);
+    int32_t sys_hitl = param_get_int32((param_t)nextpilot::param::params_id::SYS_HITL);
     if (sys_hitl > 0) {
         return 0;
     }

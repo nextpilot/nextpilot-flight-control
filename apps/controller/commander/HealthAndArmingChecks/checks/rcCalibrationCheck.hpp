@@ -15,7 +15,7 @@
 #include <uORB/topics/input_rc.h>
 
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 class RcCalibrationChecks : public HealthAndArmingCheckBase {
 public:

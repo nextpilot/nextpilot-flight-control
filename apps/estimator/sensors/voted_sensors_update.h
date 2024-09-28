@@ -35,7 +35,7 @@
 #include <uORB/topics/vehicle_imu_status.h>
 
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 namespace sensors {
 

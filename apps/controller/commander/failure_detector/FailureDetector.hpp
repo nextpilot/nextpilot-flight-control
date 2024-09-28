@@ -42,7 +42,7 @@
 #include <uORB/topics/pwm_input.h>
 
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 union failure_detector_status_u {
     struct {

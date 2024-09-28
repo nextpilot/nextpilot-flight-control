@@ -15,7 +15,7 @@
 #include <uORB/topics/manual_control_setpoint.h>
 
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 class RcAndDataLinkChecks : public HealthAndArmingCheckBase {
 public:

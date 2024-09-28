@@ -16,7 +16,7 @@
 #include <hrtimer.h>
 #include <float.h>
 
-namespace nextpilot {
+namespace nextpilot::workq {
 
 WorkItem::WorkItem(const char *name, const wq_config_t &config) :
     _item_name(name) {
@@ -27,7 +27,7 @@ WorkItem::WorkItem(const char *name, const wq_config_t &config) :
 
 WorkItem::WorkItem(const char *name, const WorkItem &work_item) :
     _item_name(name) {
-    nextpilot::WorkQueue *wq = work_item._wq;
+    WorkQueue *wq = work_item._wq;
 
     if ((wq != nullptr) && wq->Attach(this)) {
         _wq = wq;
@@ -42,7 +42,7 @@ bool WorkItem::Init(const wq_config_t &config) {
     // clear any existing first
     Deinit();
 
-    nextpilot::WorkQueue *wq = WorkQueueFindOrCreate(config);
+    WorkQueue *wq = WorkQueueFindOrCreate(config);
 
     if ((wq != nullptr) && wq->Attach(this)) {
         _wq             = wq;
@@ -58,8 +58,8 @@ void WorkItem::Deinit() {
     // remove any currently queued work
     if (_wq != nullptr) {
         // prevent additional insertions
-        nextpilot::WorkQueue *wq_temp = _wq;
-        _wq                           = nullptr;
+        WorkQueue *wq_temp = _wq;
+        _wq                = nullptr;
 
         // remove any queued work
         // 从调度中移除（不再进行调度了）
@@ -107,4 +107,4 @@ void WorkItem::print_run_status() {
     _run_count = 0;
 }
 
-} // namespace nextpilot
+} // namespace nextpilot::workq

@@ -25,7 +25,7 @@
 #include <uORB/Publication.hpp>
 #include <uORB/topics/tiltrotor_extra_controls.h>
 
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 using namespace nextpilot;
 
 class Tiltrotor : public VtolType {

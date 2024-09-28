@@ -21,7 +21,7 @@
 #include <module/module_params.hpp>
 
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 class StickTiltXY : public ModuleParams {
 public:

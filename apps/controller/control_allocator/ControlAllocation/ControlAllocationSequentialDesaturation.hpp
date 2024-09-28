@@ -23,13 +23,14 @@
 #include "ControlAllocationPseudoInverse.hpp"
 #include <module/module_params.hpp>
 
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 class ControlAllocationSequentialDesaturation : public ControlAllocationPseudoInverse, public ModuleParams {
 public:
     ControlAllocationSequentialDesaturation() :
         ModuleParams(nullptr) {
     }
+
     virtual ~ControlAllocationSequentialDesaturation() = default;
 
     void allocate() override;

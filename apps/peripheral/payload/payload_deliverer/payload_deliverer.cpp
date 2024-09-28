@@ -11,7 +11,7 @@
 
 PayloadDeliverer::PayloadDeliverer() :
     ModuleParams(nullptr),
-    WorkItemScheduled(MODULE_NAME, nextpilot::wq_configurations::lp_default) {
+    WorkItemScheduled(MODULE_NAME, wq_configurations
 }
 
 bool PayloadDeliverer::init() {

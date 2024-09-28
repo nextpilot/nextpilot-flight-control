@@ -47,8 +47,8 @@ using matrix::Quatf;
 
 using namespace time_literals;
 using namespace nextpilot;
-using namespace nextpilot::global_params;
-using uORB::SubscriptionData;
+using namespace nextpilot::workq;
+using namespace nextpilot::param;
 
 class FixedwingRateControl final : public ModuleCommand<FixedwingRateControl>, public ModuleParams, public WorkItemScheduled {
 public:

@@ -23,7 +23,7 @@
 #include <systemlib/mavlink_log.h>
 
 PPSCapture::PPSCapture() :
-    WorkItemScheduled(MODULE_NAME, nextpilot::wq_configurations::hp_default) {
+    WorkItemScheduled(MODULE_NAME, wq_configurations::hp_default) {
     _pps_capture_pub.advertise();
 }
 

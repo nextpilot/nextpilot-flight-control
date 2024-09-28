@@ -34,7 +34,8 @@
 #include <uORB/topics/vehicle_optical_flow_vel.h>
 
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::workq;
+using namespace nextpilot::param;
 
 namespace sensors {
 

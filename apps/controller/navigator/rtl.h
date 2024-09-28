@@ -29,7 +29,7 @@
 #include <matrix/math.hpp>
 #include <geo/geo.h>
 
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 using namespace nextpilot;
 
 class Navigator;

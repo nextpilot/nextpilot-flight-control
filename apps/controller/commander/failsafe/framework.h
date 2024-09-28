@@ -16,7 +16,7 @@
 #include <cstddef>
 
 using namespace time_literals;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 #define CHECK_FAILSAFE(status_flags, flag_name, options) \
     checkFailsafe((int)offsetof(failsafe_flags_s, flag_name), lastStatusFlags().flag_name, status_flags.flag_name, options)
@@ -65,30 +65,42 @@ public:
 
     static const char *actionStr(Action action) {
         switch (action) {
-        case Action::None: return "None";
+        case Action::None:
+            return "None";
 
-        case Action::Warn: return "Warn";
+        case Action::Warn:
+            return "Warn";
 
-        case Action::FallbackPosCtrl: return "Fallback to PosCtrl";
+        case Action::FallbackPosCtrl:
+            return "Fallback to PosCtrl";
 
-        case Action::FallbackAltCtrl: return "Fallback to AltCtrl";
+        case Action::FallbackAltCtrl:
+            return "Fallback to AltCtrl";
 
-        case Action::FallbackStab: return "Fallback to Stabilized";
+        case Action::FallbackStab:
+            return "Fallback to Stabilized";
 
-        case Action::Hold: return "Hold";
+        case Action::Hold:
+            return "Hold";
 
-        case Action::RTL: return "RTL";
+        case Action::RTL:
+            return "RTL";
 
-        case Action::Land: return "Land";
+        case Action::Land:
+            return "Land";
 
-        case Action::Descend: return "Descend";
+        case Action::Descend:
+            return "Descend";
 
-        case Action::Disarm: return "Disarm";
+        case Action::Disarm:
+            return "Disarm";
 
-        case Action::Terminate: return "Terminate";
+        case Action::Terminate:
+            return "Terminate";
 
         case Action::Count:
-        default: return "(invalid)";
+        default:
+            return "(invalid)";
         }
     }
 
@@ -142,9 +154,11 @@ public:
      * @return true on success, false if failsafe already active
      */
     bool deferFailsafes(bool enabled, int timeout_s);
+
     bool getDeferFailsafes() const {
         return _defer_failsafes;
     }
+
     bool failsafeDeferred() const {
         return _failsafe_defer_started != 0;
     }
@@ -161,18 +175,22 @@ protected:
         ActionOptions(Action action_ = Action::None) :
             action(action_) {
         }
+
         ActionOptions &allowUserTakeover(UserTakeoverAllowed allow = UserTakeoverAllowed::Auto) {
             allow_user_takeover = allow;
             return *this;
         }
+
         ActionOptions &clearOn(ClearCondition clear_condition_) {
             clear_condition = clear_condition_;
             return *this;
         }
+
         ActionOptions &causedBy(Cause cause_) {
             cause = cause_;
             return *this;
         }
+
         ActionOptions &cannotBeDeferred() {
             can_be_deferred = false;
             return *this;
@@ -181,6 +199,7 @@ protected:
         bool valid() const {
             return id != -1;
         }
+
         void setInvalid() {
             id = -1;
         }

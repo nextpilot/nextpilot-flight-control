@@ -75,7 +75,8 @@ using namespace launchdetection;
 using namespace runwaytakeoff;
 using namespace time_literals;
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::workq;
+using namespace nextpilot::param;
 
 using matrix::Vector2d;
 using matrix::Vector2f;

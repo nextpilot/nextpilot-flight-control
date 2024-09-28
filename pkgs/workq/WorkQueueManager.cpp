@@ -23,7 +23,7 @@
 
 using namespace time_literals;
 
-namespace nextpilot {
+namespace nextpilot::workq {
 
 // list of current work queues
 static BlockingList<WorkQueue *> *_wq_manager_wqs_list{nullptr};
@@ -248,7 +248,7 @@ static void WorkQueueManagerEntry(void *param) {
             }
         }
     }
-}
+} // namespace nextpilot::workq
 
 int WorkQueueManagerStart() {
     if (_wq_manager_should_exit.load() && (_wq_manager_create_queue == nullptr)) {
@@ -360,7 +360,7 @@ int WorkQueueManagerStatus() {
     return RT_EOK;
 }
 
-} // namespace nextpilot
+} // namespace nextpilot::workq
 
 #include <module_usage.h>
 
@@ -385,15 +385,15 @@ static int work_queue_main(int argc, char *argv[]) {
     }
 
     if (!strcmp(argv[1], "start")) {
-        nextpilot::WorkQueueManagerStart();
+        nextpilot::workq::WorkQueueManagerStart();
         return 0;
 
     } else if (!strcmp(argv[1], "stop")) {
-        nextpilot::WorkQueueManagerStop();
+        nextpilot::workq::WorkQueueManagerStop();
         return 0;
 
     } else if (!strcmp(argv[1], "status")) {
-        nextpilot::WorkQueueManagerStatus();
+        nextpilot::workq::WorkQueueManagerStatus();
         return 0;
     }
 
@@ -405,14 +405,14 @@ static int work_queue_main(int argc, char *argv[]) {
 MSH_CMD_EXPORT_ALIAS(work_queue_main, workq, work queue manager);
 
 static int work_queue_status() {
-    nextpilot::WorkQueueManagerStatus();
+    nextpilot::workq::WorkQueueManagerStatus();
     return 0;
 }
 
 MSH_CMD_EXPORT_ALIAS(work_queue_status, list_wq, list work manager);
 
 static int work_queue_start() {
-    nextpilot::WorkQueueManagerStart();
+    nextpilot::workq::WorkQueueManagerStart();
     return 0;
 }
 

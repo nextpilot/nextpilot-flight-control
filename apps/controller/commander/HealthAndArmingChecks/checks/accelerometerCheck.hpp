@@ -17,7 +17,7 @@
 #include <sensor_calibration/Accelerometer.hpp>
 
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 class AccelerometerChecks : public HealthAndArmingCheckBase {
 public:

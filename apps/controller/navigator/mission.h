@@ -43,7 +43,7 @@
 #include <uORB/topics/vehicle_roi.h>
 #include <uORB/uORB.h>
 
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 using namespace nextpilot;
 
 class Navigator;

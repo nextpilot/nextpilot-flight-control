@@ -25,7 +25,7 @@
 
 using namespace time_literals;
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 class EstimatorChecks : public HealthAndArmingCheckBase {
 public:

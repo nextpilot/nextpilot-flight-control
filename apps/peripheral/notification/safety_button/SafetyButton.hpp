@@ -19,7 +19,9 @@
 #include <workq/WorkItemScheduled.hpp>
 #include <button/ButtonPublisher.hpp>
 
-class SafetyButton : public ModuleCommand<SafetyButton>, public nextpilot::WorkItemScheduled {
+using namespace nextpilot::workq;
+
+class SafetyButton : public ModuleCommand<SafetyButton>, public WorkItemScheduled {
 public:
     SafetyButton();
     ~SafetyButton() override;

@@ -25,7 +25,7 @@
 #include <hrtimer.h>
 #include <matrix/matrix/math.hpp>
 
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 // [rad] Pitch threshold required for completing transition to fixed-wing in automatic transitions
 static constexpr float PITCH_THRESHOLD_AUTO_TRANSITION_TO_FW = -1.05f; // -60°
@@ -54,7 +54,7 @@ private:
 
     vtol_mode _vtol_mode{vtol_mode::MC_MODE}; /**< vtol flight mode, defined by enum vtol_mode */
 
-    bool _flag_was_in_trans_mode = false; // true if mode has just switched to transition
+    bool _flag_was_in_trans_mode = false;     // true if mode has just switched to transition
 
     matrix::Quatf    _q_trans_start;
     matrix::Quatf    _q_trans_sp;

@@ -15,14 +15,14 @@
 #include <workq/WorkItemScheduled.hpp>
 
 using namespace time_literals;
-using namespace nextpilot;
+using namespace nextpilot::workq;
 
 /**
  * @brief
  *
  * ModuleCommand<UTestWorkqScheduled, 6>: 最多创建6个实例
  */
-class UTestWorkqScheduled : public ModuleCommand<UTestWorkqScheduled, 6>, public nextpilot::WorkItemScheduled {
+class UTestWorkqScheduled : public ModuleCommand<UTestWorkqScheduled, 6>, public WorkItemScheduled {
 public:
     UTestWorkqScheduled(int idx) :
         WorkItemScheduled(MODULE_NAME, wq_configurations::rate_ctrl) {

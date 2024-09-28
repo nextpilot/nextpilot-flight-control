@@ -14,7 +14,7 @@
 
 using namespace nextpilot;
 using namespace time_literals;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 #define USING_COMMANDER_FAKE
 

@@ -24,7 +24,8 @@
 
 using namespace time_literals;
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::workq;
+using namespace nextpilot::param;
 
 class SensorMagSim : public ModuleCommand<SensorMagSim>, public ModuleParams, public WorkItemScheduled {
 public:

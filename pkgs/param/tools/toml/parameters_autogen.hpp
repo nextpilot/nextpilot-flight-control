@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include "param_common.h"
 
-namespace nextpilot::global_params {
+namespace nextpilot::param {
 
 typedef struct param_data_s {
     param_value_t  value;
@@ -16,12 +16,14 @@ typedef struct param_data_s {
 } param_data_t;
 
 #pragma pack(push, 4)
+
 typedef struct param_info_s {
     const char         *name;
     const param_type_t  type;
     const param_value_t value;
     const param_flag_t  flag;
 } param_info_t;
+
 #pragma pack(pop)
 
 // find param by name
@@ -41,34 +43,34 @@ int            param_set_status(param_t idx, param_status_t status);
 
 /// Enum with all parameters
 enum class params : uint16_t {
-	AA = 0,
-	BB = 1,
-	MAV_0_MODE = 2,
-	MAV_0_RATE = 3,
-	MAV_1_MODE = 4,
-	MAV_1_RATE = 5,
-	MAV_2_MODE = 6,
-	MAV_2_RATE = 7,
-	MAV_3_MODE = 8,
-	MAV_4_MODE = 9,
-	ZZ = 10,
-	MAX_COUNT
+    AA         = 0,
+    BB         = 1,
+    MAV_0_MODE = 2,
+    MAV_0_RATE = 3,
+    MAV_1_MODE = 4,
+    MAV_1_RATE = 5,
+    MAV_2_MODE = 6,
+    MAV_2_RATE = 7,
+    MAV_3_MODE = 8,
+    MAV_4_MODE = 9,
+    ZZ         = 10,
+    MAX_COUNT
 };
 
 static constexpr param_info_s infos[] = {
-	{.name = "AA",.type = PARAM_TYPE_FLOAT,.value = {.f32 = 0},.flag = {.value = 0}},
-	{.name = "BB",.type = PARAM_TYPE_FLOAT,.value = {.f32 = 0},.flag = {.value = 0}},
-	{.name = "MAV_0_MODE",.type = PARAM_TYPE_INT32,.value = {.i32 = 0},.flag = {.value = 0}},
-	{.name = "MAV_0_RATE",.type = PARAM_TYPE_INT32,.value = {.i32 = 0},.flag = {.value = 0}},
-	{.name = "MAV_1_MODE",.type = PARAM_TYPE_INT32,.value = {.i32 = 2},.flag = {.value = 0}},
-	{.name = "MAV_1_RATE",.type = PARAM_TYPE_INT32,.value = {.i32 = 2},.flag = {.value = 0}},
-	{.name = "MAV_2_MODE",.type = PARAM_TYPE_INT32,.value = {.i32 = 0},.flag = {.value = 0}},
-	{.name = "MAV_2_RATE",.type = PARAM_TYPE_INT32,.value = {.i32 = 0},.flag = {.value = 0}},
-	{.name = "MAV_3_MODE",.type = PARAM_TYPE_INT32,.value = {.i32 = 0},.flag = {.value = 0}},
-	{.name = "MAV_4_MODE",.type = PARAM_TYPE_INT32,.value = {.i32 = 0},.flag = {.value = 0}},
-	{.name = "ZZ",.type = PARAM_TYPE_FLOAT,.value = {.f32 = 0},.flag = {.value = 0}},
+    {.name = "AA", .type = PARAM_TYPE_FLOAT, .value = {.f32 = 0}, .flag = {.value = 0}},
+    {.name = "BB", .type = PARAM_TYPE_FLOAT, .value = {.f32 = 0}, .flag = {.value = 0}},
+    {.name = "MAV_0_MODE", .type = PARAM_TYPE_INT32, .value = {.i32 = 0}, .flag = {.value = 0}},
+    {.name = "MAV_0_RATE", .type = PARAM_TYPE_INT32, .value = {.i32 = 0}, .flag = {.value = 0}},
+    {.name = "MAV_1_MODE", .type = PARAM_TYPE_INT32, .value = {.i32 = 2}, .flag = {.value = 0}},
+    {.name = "MAV_1_RATE", .type = PARAM_TYPE_INT32, .value = {.i32 = 2}, .flag = {.value = 0}},
+    {.name = "MAV_2_MODE", .type = PARAM_TYPE_INT32, .value = {.i32 = 0}, .flag = {.value = 0}},
+    {.name = "MAV_2_RATE", .type = PARAM_TYPE_INT32, .value = {.i32 = 0}, .flag = {.value = 0}},
+    {.name = "MAV_3_MODE", .type = PARAM_TYPE_INT32, .value = {.i32 = 0}, .flag = {.value = 0}},
+    {.name = "MAV_4_MODE", .type = PARAM_TYPE_INT32, .value = {.i32 = 0}, .flag = {.value = 0}},
+    {.name = "ZZ", .type = PARAM_TYPE_FLOAT, .value = {.f32 = 0}, .flag = {.value = 0}},
 };
 
-} // namespace nextpilot::global_params
+} // namespace nextpilot::param
 
 #endif // __PARAM_GLOBAL_AUTOGEN_H__

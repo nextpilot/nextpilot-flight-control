@@ -40,8 +40,8 @@
 #include <uORB/topics/vehicle_local_position_setpoint.h>
 
 using namespace time_literals;
-using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::workq;
+using namespace nextpilot::param;
 
 class MulticopterPositionControl : public ModuleCommand<MulticopterPositionControl>, public control::SuperBlock, public ModuleParams, public WorkItemScheduled {
 public:

@@ -27,11 +27,11 @@
 // #define CONSOLE_PRINT_ARMING_CHECK_EVENT // for debugging, print updated events whenever they change
 
 #ifndef FRIEND_TEST // for gtest
-#define FRIEND_TEST(a, b)
+#   define FRIEND_TEST(a, b)
 #endif
 
 using namespace time_literals;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 using namespace nextpilot;
 
 class HealthAndArmingChecks;
@@ -85,6 +85,7 @@ public:
     __attribute__((always_inline)) constexpr HealthComponentIndex(health_component_t component) :
         index(log2((uint64_t)component)) {
     }
+
     const uint8_t index;
 };
 
@@ -132,9 +133,9 @@ public:
             error      = {};
             warning    = {};
         }
+
         bool operator!=(const HealthResults &other) {
-            return is_present != other.is_present || error != other.error ||
-                   warning != other.warning;
+            return is_present != other.is_present || error != other.error || warning != other.warning;
         }
     };
 
@@ -149,7 +150,7 @@ public:
         NavModes can_arm; ///< whether arming is possible for each mode group (bitset)
         NavModes can_run; ///< whether switching into a certain mode is possible (while armed)
 
-        bool valid; ///< whether can_arm is valid, i.e. can be used
+        bool valid;       ///< whether can_arm is valid, i.e. can be used
 
         void reset() {
             error   = {};
@@ -158,15 +159,16 @@ public:
             can_run = (NavModes)-1;
             valid   = false;
         }
+
         bool operator!=(const ArmingCheckResults &other) {
-            return error != other.error || warning != other.warning ||
-                   can_arm != other.can_arm || can_run != other.can_run || valid != other.valid;
+            return error != other.error || warning != other.warning || can_arm != other.can_arm || can_run != other.can_run || valid != other.valid;
         }
     };
 
     Report(failsafe_flags_s &failsafe_flags, hrt_abstime min_reporting_interval = 2_s) :
         _min_reporting_interval(min_reporting_interval), _failsafe_flags(failsafe_flags) {
     }
+
     ~Report() = default;
 
     failsafe_flags_s &failsafeFlags() {
@@ -181,16 +183,14 @@ public:
      * Whether arming is possible for a given navigation mode
      */
     bool canArm(uint8_t nav_state) const {
-        return _results[_current_result].arming_checks.valid &&
-               (uint32_t)(_results[_current_result].arming_checks.can_arm & getModeGroup(nav_state)) != 0;
+        return _results[_current_result].arming_checks.valid && (uint32_t)(_results[_current_result].arming_checks.can_arm & getModeGroup(nav_state)) != 0;
     }
 
     /**
      * Whether a navigation mode can be run (while already armed)
      */
     bool canRun(uint8_t nav_state) const {
-        return _results[_current_result].arming_checks.valid &&
-               (uint32_t)(_results[_current_result].arming_checks.can_run & getModeGroup(nav_state)) != 0;
+        return _results[_current_result].arming_checks.valid && (uint32_t)(_results[_current_result].arming_checks.can_run & getModeGroup(nav_state)) != 0;
     }
 
     void getHealthReport(health_report_s &report) const;
@@ -235,6 +235,7 @@ public:
     const HealthResults &healthResults() const {
         return _results[_current_result].health;
     }
+
     const ArmingCheckResults &armingCheckResults() const {
         return _results[_current_result].arming_checks;
     }
@@ -268,8 +269,7 @@ private:
         }
 
         bool operator!=(const Results &other) {
-            return health != other.health || arming_checks != other.arming_checks ||
-                   num_events != other.num_events || event_id_hash != other.event_id_hash;
+            return health != other.health || arming_checks != other.arming_checks || num_events != other.num_events || event_id_hash != other.event_id_hash;
         }
     };
 
@@ -385,7 +385,7 @@ bool Report::addEvent(uint32_t event_id, const events::LogLevels &log_levels, co
 class HealthAndArmingCheckBase : public ModuleParams {
 public:
     HealthAndArmingCheckBase() :
-        ModuleParams(nullptr){};
+        ModuleParams(nullptr) {};
     ~HealthAndArmingCheckBase() = default;
 
     virtual void checkAndReport(const Context &context, Report &reporter) = 0;

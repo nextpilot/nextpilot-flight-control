@@ -34,7 +34,8 @@
 #include <geo/geo.h>
 
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::workq;
+using namespace nextpilot::param;
 
 struct ekf_reset_counters_s {
     uint8_t xy;

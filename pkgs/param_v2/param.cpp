@@ -27,7 +27,7 @@
 
 #include "param_autogen.hpp"
 
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 RT_WEAK uint32_t crc32part(const void *buff, int size, uint32_t crc) {
     for (int i = 0; i < size; i++) {

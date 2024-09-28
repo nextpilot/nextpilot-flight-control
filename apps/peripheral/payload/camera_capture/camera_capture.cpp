@@ -33,7 +33,7 @@ CameraCapture *g_camera_capture{nullptr};
 struct work_s CameraCapture::_work_publisher;
 
 CameraCapture::CameraCapture() :
-    WorkItemScheduled(MODULE_NAME, nextpilot::wq_configurations::lp_default) {
+    WorkItemScheduled(MODULE_NAME, wq_configurations::lp_default) {
     memset(&_work_publisher, 0, sizeof(_work_publisher));
 
     // Capture Parameters

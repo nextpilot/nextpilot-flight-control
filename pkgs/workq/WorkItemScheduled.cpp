@@ -13,7 +13,7 @@
 #include <WorkItemScheduled.hpp>
 #include <inttypes.h>
 
-namespace nextpilot {
+namespace nextpilot::workq {
 
 WorkItemScheduled::~WorkItemScheduled() {
     if (_call.arg != nullptr) {
@@ -54,4 +54,4 @@ void WorkItemScheduled::print_run_status() {
     }
 }
 
-} // namespace nextpilot
+} // namespace nextpilot::workq

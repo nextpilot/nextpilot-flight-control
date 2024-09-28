@@ -50,7 +50,8 @@ using namespace matrix;
 using namespace control;
 using namespace time_literals;
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::workq;
+using namespace nextpilot::param;
 
 static const float  DELAY_MAX   = 0.5f;  // seconds
 static const float  HIST_STEP   = 0.05f; // 20 hz

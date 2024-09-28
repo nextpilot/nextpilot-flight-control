@@ -15,7 +15,7 @@
 #include <uORB/topics/system_power.h>
 
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 class PowerChecks : public HealthAndArmingCheckBase {
 public:

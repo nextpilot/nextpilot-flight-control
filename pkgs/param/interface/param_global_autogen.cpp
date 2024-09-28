@@ -14,7 +14,7 @@
 #include "param_interface.h"
 #include "param_autogen.hpp"
 
-namespace nextpilot::global_params {
+namespace nextpilot::param {
 
 static constexpr uint16_t  __param_count__ = sizeof(params_meta) / sizeof(param_info_s);
 static const param_info_s *__param_info__  = params_meta;
@@ -153,18 +153,18 @@ int param_reset(param_t idx, bool mark_saved) {
     return 0;
 }
 
-} // namespace nextpilot::global_params
+} // namespace nextpilot::param
 
 static param_interface_ops_t _ops = {
     .init       = NULL,
-    .find       = nextpilot::global_params::param_find,
-    .get_count  = nextpilot::global_params::param_get_count,
-    .get_info   = nextpilot::global_params::param_get_info,
-    .get_value  = nextpilot::global_params::param_get_value,
-    .set_value  = nextpilot::global_params::param_set_value,
-    .get_status = nextpilot::global_params::param_get_status,
-    .set_status = nextpilot::global_params::param_set_status,
-    .reset      = nextpilot::global_params::param_reset,
+    .find       = nextpilot::param::param_find,
+    .get_count  = nextpilot::param::param_get_count,
+    .get_info   = nextpilot::param::param_get_info,
+    .get_value  = nextpilot::param::param_get_value,
+    .set_value  = nextpilot::param::param_set_value,
+    .get_status = nextpilot::param::param_get_status,
+    .set_status = nextpilot::param::param_set_status,
+    .reset      = nextpilot::param::param_reset,
 };
 
 static param_interface_t _itf = {

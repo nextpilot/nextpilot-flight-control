@@ -14,8 +14,10 @@
 #include "PWMOut.hpp"
 #include <rtdevice.h>
 
+using namespace nextpilot::workq;
+
 PWMOut::PWMOut() :
-    OutputModuleInterface(MODULE_NAME, nextpilot::wq_configurations::hp_default) {
+    OutputModuleInterface(MODULE_NAME, wq_configurations::hp_default) {
     _pwm_mask = ((1u << DIRECT_PWM_OUTPUT_CHANNELS) - 1);
     _mixing_output.setMaxNumOutputs(DIRECT_PWM_OUTPUT_CHANNELS);
 

@@ -12,7 +12,7 @@
 
 #include <stdint.h>
 
-namespace nextpilot {
+namespace nextpilot::workq {
 
 class WorkQueue; // forward declaration
 
@@ -113,4 +113,4 @@ const wq_config_t &serial_port_to_wq(const char *serial);
 
 const wq_config_t &ins_instance_to_wq(uint8_t instance);
 
-} // namespace nextpilot
+} // namespace nextpilot::workq

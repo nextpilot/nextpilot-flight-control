@@ -12,7 +12,7 @@
 
 #include "WorkItem.hpp"
 
-namespace nextpilot {
+namespace nextpilot::workq {
 
 /**
  * @class WorkItemSingleShot
@@ -50,4 +50,4 @@ private:
     struct rt_semaphore _sem;
 };
 
-} // namespace nextpilot
+} // namespace nextpilot::workq

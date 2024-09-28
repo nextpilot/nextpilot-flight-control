@@ -15,7 +15,7 @@
 #include <uORB/topics/esc_status.h>
 
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 class EscChecks : public HealthAndArmingCheckBase {
 public:

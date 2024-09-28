@@ -24,7 +24,7 @@
 #include <mathlib/mathlib.h>
 #include <module/module_params.hpp>
 
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 static constexpr float kFlapSlewRateVtol    = 1.f; // minimum time from none to full flap deflection [s]
 static constexpr float kSpoilerSlewRateVtol = 1.f; // minimum time from none to full spoiler deflection [s]
@@ -194,7 +194,7 @@ public:
      */
     float pusher_assist();
 
-    virtual void blendThrottleAfterFrontTransition(float scale){};
+    virtual void blendThrottleAfterFrontTransition(float scale) {};
 
     mode get_mode() {
         return _common_vtol_mode;
@@ -288,7 +288,7 @@ protected:
     bool         isFrontTransitionCompleted();
     virtual bool isFrontTransitionCompletedBase();
 
-    float _dt{0.0025f}; // time step [s]
+    float _dt{0.0025f};                               // time step [s]
 
     float _local_position_z_start_of_transition{0.f}; // altitude at start of transition
 
@@ -332,6 +332,7 @@ private:
     void resetAccelToPitchPitchIntegrator() {
         _accel_to_pitch_integ = 0.f;
     }
+
     bool shouldBlendThrottleAfterFrontTransition() {
         return _throttle_blend_start_ts != 0;
     };

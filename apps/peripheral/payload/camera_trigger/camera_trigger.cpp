@@ -227,7 +227,7 @@ CameraTrigger *g_camera_trigger;
 }
 
 CameraTrigger::CameraTrigger() :
-    WorkItemScheduled(MODULE_NAME, nextpilot::wq_configurations::lp_default) {
+    WorkItemScheduled(MODULE_NAME, wq_configurations::lp_default) {
     // Initiate camera interface based on camera_interface_mode
     if (_camera_interface != nullptr) {
         delete (_camera_interface);

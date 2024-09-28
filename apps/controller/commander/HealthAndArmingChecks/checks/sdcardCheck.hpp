@@ -13,7 +13,7 @@
 #include "../Common.hpp"
 
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 class SdCardChecks : public HealthAndArmingCheckBase {
 public:
@@ -26,10 +26,10 @@ private:
 #ifdef PX4_STORAGEDIR
     bool _sdcard_detected{false};
 
-#ifdef __PX4_NUTTX
+#   ifdef __PX4_NUTTX
     bool _hardfault_checked_once{false};
     bool _hardfault_file_present{false};
-#endif
+#   endif
 #endif
 
     DEFINE_PARAMETERS_CUSTOM_PARENT(HealthAndArmingCheckBase,

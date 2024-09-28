@@ -29,9 +29,9 @@
 #include <uORB/Subscription.hpp>
 #include <workq/WorkItemScheduled.hpp>
 
-using namespace nextpilot;
+using namespace nextpilot::workq;
 
-class RGBLED_PWM : public nextpilot::WorkItemScheduled {
+class RGBLED_PWM : public WorkItemScheduled {
 public:
     RGBLED_PWM();
     virtual ~RGBLED_PWM();
@@ -80,7 +80,7 @@ RGBLED_PWM *g_rgbled = nullptr;
 }
 
 RGBLED_PWM::RGBLED_PWM() :
-    WorkItemScheduled(MODULE_NAME, nextpilot::wq_configurations::lp_default) {
+    WorkItemScheduled(MODULE_NAME, wq_configurations::lp_default) {
 }
 
 RGBLED_PWM::~RGBLED_PWM() {

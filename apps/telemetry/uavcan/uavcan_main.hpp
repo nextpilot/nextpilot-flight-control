@@ -72,7 +72,7 @@ class UavcanNode;
 class UavcanMixingInterfaceESC : public OutputModuleInterface {
 public:
     UavcanMixingInterfaceESC(pthread_mutex_t &node_mutex, UavcanEscController &esc_controller) :
-        OutputModuleInterface(MODULE_NAME "-actuators-esc", nextpilot::wq_configurations::uavcan),
+        OutputModuleInterface(MODULE_NAME "-actuators-esc", wq_configurations::uavcan),
         _node_mutex(node_mutex),
         _esc_controller(esc_controller) {
     }
@@ -106,7 +106,7 @@ private:
 class UavcanMixingInterfaceServo : public OutputModuleInterface {
 public:
     UavcanMixingInterfaceServo(pthread_mutex_t &node_mutex, UavcanServoController &servo_controller) :
-        OutputModuleInterface(MODULE_NAME "-actuators-servo", nextpilot::wq_configurations::uavcan),
+        OutputModuleInterface(MODULE_NAME "-actuators-servo", wq_configurations::uavcan),
         _node_mutex(node_mutex),
         _servo_controller(servo_controller) {
     }

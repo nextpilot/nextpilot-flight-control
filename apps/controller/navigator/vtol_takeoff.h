@@ -21,7 +21,7 @@
 #include <mathlib/mathlib.h>
 #include <module/module_params.hpp>
 
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 class VtolTakeoff : public MissionBlock, public ModuleParams {
 public:

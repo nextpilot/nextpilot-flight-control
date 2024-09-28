@@ -32,7 +32,8 @@
 
 using namespace time_literals;
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::workq;
+using namespace nextpilot::param;
 
 class ManualControl : public ModuleCommand<ManualControl>, public ModuleParams, public WorkItemScheduled {
 public:

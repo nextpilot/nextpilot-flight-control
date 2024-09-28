@@ -768,6 +768,8 @@ private:
 
 #   ifdef PKG_USING_WORKQUEUE
 
+using namespace nextpilot::workq;
+
 // Subscription with callback that schedules a WorkItem
 class SubscriptionCallbackWorkItem : public SubscriptionCallback {
 public:
@@ -778,7 +780,7 @@ public:
      * @param meta The uORB metadata (usually from the ORB_ID() macro) for the topic.
      * @param instance The instance for multi sub.
      */
-    SubscriptionCallbackWorkItem(nextpilot::WorkItem *work_item, const orb_metadata *meta, uint8_t instance = 0) :
+    SubscriptionCallbackWorkItem(WorkItem *work_item, const orb_metadata *meta, uint8_t instance = 0) :
         SubscriptionCallback(meta, 0, instance), // interval 0
         _work_item(work_item) {
     }
@@ -805,7 +807,7 @@ public:
     }
 
 private:
-    nextpilot::WorkItem *_work_item;
+    WorkItem *_work_item;
 
     uint8_t _required_updates{0};
 };

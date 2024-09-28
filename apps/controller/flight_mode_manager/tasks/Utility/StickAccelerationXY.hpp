@@ -24,7 +24,7 @@
 #include "SlewRate.hpp"
 
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 class StickAccelerationXY : public ModuleParams {
 public:

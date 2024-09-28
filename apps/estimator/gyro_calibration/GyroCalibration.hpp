@@ -27,7 +27,7 @@
 
 using namespace time_literals;
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 class GyroCalibration : public ModuleCommand<GyroCalibration>, public ModuleParams, public WorkItemScheduled {
 public:

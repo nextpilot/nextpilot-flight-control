@@ -111,7 +111,7 @@
 #   include "module/module_command.hpp"
 #   include "module/module_params.hpp"
 #   include "module/module_thread.hpp"
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 #endif //__cplusplus
 
 // mathlib
@@ -152,7 +152,7 @@ using namespace nextpilot::global_params;
 
 #ifdef __cplusplus
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 #endif //__cplusplus
 
 #endif // __NEXTPILOT_H__

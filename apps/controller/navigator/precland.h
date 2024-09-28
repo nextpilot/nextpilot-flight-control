@@ -25,7 +25,7 @@
 #include "navigator_mode.h"
 #include "mission_block.h"
 
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 using namespace nextpilot;
 
 enum class PrecLandState {

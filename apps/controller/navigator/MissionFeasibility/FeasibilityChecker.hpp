@@ -19,7 +19,7 @@
 #include <uORB/Subscription.hpp>
 #include <module/module_params.hpp>
 
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 using namespace nextpilot;
 
 class FeasibilityChecker : public ModuleParams {

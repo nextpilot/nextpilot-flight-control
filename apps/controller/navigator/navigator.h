@@ -58,7 +58,7 @@
 
 using namespace time_literals;
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 /**
  * Number of navigation modes that need on_active/on_inactive calls

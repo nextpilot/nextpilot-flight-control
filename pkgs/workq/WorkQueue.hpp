@@ -20,7 +20,7 @@
 #include <math.h>
 #include <atomic.hpp>
 
-namespace nextpilot {
+namespace nextpilot::workq {
 
 class WorkItem;
 
@@ -34,6 +34,7 @@ public:
     const wq_config_t &get_config() const {
         return _config;
     }
+
     const char *get_name() const {
         return _config.name;
     }
@@ -74,6 +75,7 @@ private:
     void work_lock() {
         rt_enter_critical();
     }
+
     void work_unlock() {
         rt_exit_critical();
     }
@@ -82,6 +84,7 @@ private:
     void work_lock() {
         rt_sem_take(&_qlock, RT_WAITING_FOREVER);
     }
+
     void work_unlock() {
         rt_sem_release(&_qlock);
     }
@@ -104,4 +107,4 @@ private:
 #endif // ENABLE_LOCKSTEP_SCHEDULER
 };
 
-} // namespace nextpilot
+} // namespace nextpilot::workq

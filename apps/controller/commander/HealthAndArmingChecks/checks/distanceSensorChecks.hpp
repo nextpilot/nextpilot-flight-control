@@ -15,7 +15,7 @@
 #include <uORB/topics/distance_sensor.h>
 
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 class DistanceSensorChecks : public HealthAndArmingCheckBase {
 public:

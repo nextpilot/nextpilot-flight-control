@@ -13,7 +13,7 @@
 #include "../Common.hpp"
 
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 class FlightTimeChecks : public HealthAndArmingCheckBase {
 public:

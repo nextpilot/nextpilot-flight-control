@@ -38,7 +38,7 @@ extern "C" __EXPORT int logger_main(int argc, char *argv[]);
 
 using namespace time_literals;
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 static constexpr hrt_abstime TRY_SUBSCRIBE_INTERVAL{20_ms}; // interval in microseconds at which we try to subscribe to a topic
 

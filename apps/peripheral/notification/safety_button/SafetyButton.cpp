@@ -32,7 +32,7 @@ enum class LED_PATTERN : uint16_t {
 };
 
 SafetyButton::SafetyButton() :
-    WorkItemScheduled(MODULE_NAME, nextpilot::wq_configurations::hp_default) {
+    WorkItemScheduled(MODULE_NAME, wq_configurations::hp_default) {
     _has_px4io = false;
     //PX4_MFT_HW_SUPPORTED(PX4_MFT_PX4IO);
 }

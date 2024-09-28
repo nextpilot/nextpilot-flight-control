@@ -21,8 +21,9 @@
 #include <battery/battery.h>
 
 using namespace time_literals;
+using namespace nextpilot::workq;
 
-class EscBattery : public ModuleCommand<EscBattery>, public ModuleParams, public nextpilot::WorkItem {
+class EscBattery : public ModuleCommand<EscBattery>, public ModuleParams, public WorkItem {
 public:
     EscBattery();
     ~EscBattery() = default;

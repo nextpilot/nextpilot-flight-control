@@ -17,6 +17,7 @@
 #include <workq/WorkItemScheduled.hpp>
 
 using namespace nextpilot;
+using namespace nextpilot::workq;
 
 class FunctionProviderBase
 {

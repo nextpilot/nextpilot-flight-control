@@ -27,7 +27,7 @@
 #include <mathlib/mathlib.h>
 #include <matrix/math.hpp>
 
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 namespace runwaytakeoff {
 
@@ -43,6 +43,7 @@ public:
     RunwayTakeoff(ModuleParams *parent) :
         ModuleParams(parent) {
     }
+
     ~RunwayTakeoff() = default;
 
     /**

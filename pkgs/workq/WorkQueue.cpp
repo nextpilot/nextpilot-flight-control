@@ -16,7 +16,7 @@
 #include <string.h>
 #include <hrtimer.h>
 
-namespace nextpilot {
+namespace nextpilot::workq {
 
 WorkQueue::WorkQueue(const wq_config_t &config) :
     _config(config) {
@@ -194,4 +194,4 @@ void WorkQueue::print_status(bool last) {
     }
 }
 
-} // namespace nextpilot
+} // namespace nextpilot::workq

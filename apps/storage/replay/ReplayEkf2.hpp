@@ -12,7 +12,7 @@
 
 #include "Replay.hpp"
 
-namespace nextpilot {
+namespace nextpilot::replay {
 
 /**
  * @class ReplayEkf2
@@ -20,6 +20,7 @@ namespace nextpilot {
  */
 class ReplayEkf2 : public Replay {
 public:
+
 protected:
     void onEnterMainLoop() override;
     void onExitMainLoop() override;
@@ -63,4 +64,4 @@ private:
     uint16_t _vehicle_visual_odometry_msg_id = msg_id_invalid;
 };
 
-} // namespace nextpilot
+} // namespace nextpilot::replay

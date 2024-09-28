@@ -25,7 +25,8 @@
 
 using namespace time_literals;
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::workq;
+using namespace nextpilot::param;
 
 class SensorGpsSim : public ModuleCommand<SensorGpsSim>, public ModuleParams, public WorkItemScheduled {
 public:

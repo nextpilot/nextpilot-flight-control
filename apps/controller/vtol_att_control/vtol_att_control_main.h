@@ -63,8 +63,9 @@
 #include "tiltrotor.h"
 
 using namespace time_literals;
-using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::uORB;
+using namespace nextpilot::workq;
+using namespace nextpilot::param;
 
 extern "C" __EXPORT int vtol_att_control_main(int argc, char *argv[]);
 

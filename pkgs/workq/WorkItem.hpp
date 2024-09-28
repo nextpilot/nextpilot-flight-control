@@ -17,7 +17,7 @@
 #include <hrtimer.h>
 #include <string.h>
 
-namespace nextpilot {
+namespace nextpilot::workq {
 
 class WorkItem : public IntrusiveSortedListNode<WorkItem *>, public IntrusiveQueueNode<WorkItem *> {
 public:
@@ -106,4 +106,4 @@ private:
     WorkQueue *_wq{nullptr};
 };
 
-} // namespace nextpilot
+} // namespace nextpilot::workq

@@ -14,7 +14,7 @@
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/offboard_control_mode.h>
 
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 using namespace nextpilot;
 
 class OffboardChecks : public HealthAndArmingCheckBase {

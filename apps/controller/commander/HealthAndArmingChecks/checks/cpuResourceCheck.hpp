@@ -15,7 +15,7 @@
 #include <uORB/topics/cpuload.h>
 
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 class CpuResourceChecks : public HealthAndArmingCheckBase {
 public:

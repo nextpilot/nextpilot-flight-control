@@ -40,7 +40,8 @@
 
 using namespace time_literals;
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::workq;
+using namespace nextpilot::param;
 
 class FwAutotuneAttitudeControl : public ModuleCommand<FwAutotuneAttitudeControl>, public ModuleParams, public WorkItem {
 public:

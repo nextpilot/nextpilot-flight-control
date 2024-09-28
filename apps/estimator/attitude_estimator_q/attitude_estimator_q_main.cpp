@@ -48,7 +48,7 @@ using matrix::wrap_pi;
 
 using namespace time_literals;
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 class AttitudeEstimatorQ : public ModuleCommand<AttitudeEstimatorQ>, public ModuleParams, public WorkItem {
 public:

@@ -27,7 +27,7 @@ namespace load_mon {
 
 LoadMon::LoadMon() :
     ModuleParams(nullptr),
-    WorkItemScheduled(MODULE_NAME, nextpilot::wq_configurations::lp_default) {
+    WorkItemScheduled(MODULE_NAME, wq_configurations::lp_default) {
 }
 
 LoadMon::~LoadMon() {

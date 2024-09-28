@@ -17,7 +17,7 @@
 #include <uORB/topics/estimator_status.h>
 #include <sensor_calibration/Magnetometer.hpp>
 
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 class MagnetometerChecks : public HealthAndArmingCheckBase {
 public:

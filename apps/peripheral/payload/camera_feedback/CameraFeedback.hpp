@@ -33,7 +33,11 @@
 #include <uORB/topics/vehicle_global_position.h>
 #include <uORB/topics/gimbal_device_attitude_status.h>
 
-class CameraFeedback : public ModuleCommand<CameraFeedback>, public ModuleParams, public nextpilot::WorkItem {
+using namespace nextpilot::workq
+
+    class CameraFeedback : public ModuleCommand<CameraFeedback>,
+                           public ModuleParams,
+                           public WorkItem {
 public:
     CameraFeedback();
     ~CameraFeedback() override = default;

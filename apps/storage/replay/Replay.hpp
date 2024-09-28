@@ -22,7 +22,7 @@
 #include <uORB/topics/uORBTopics.hpp>
 #include <uORB/topics/ekf2_timestamps.h>
 
-namespace nextpilot {
+namespace nextpilot::replay {
 
 /**
  * @class Replay
@@ -258,4 +258,4 @@ private:
     static char *_replay_file;
 };
 
-} // namespace nextpilot
+} // namespace nextpilot::replay

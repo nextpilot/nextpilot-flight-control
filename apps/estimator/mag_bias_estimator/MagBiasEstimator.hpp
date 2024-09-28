@@ -28,7 +28,8 @@
 #include <uORB/topics/vehicle_status.h>
 
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::workq;
+using namespace nextpilot::param;
 
 namespace mag_bias_estimator {
 

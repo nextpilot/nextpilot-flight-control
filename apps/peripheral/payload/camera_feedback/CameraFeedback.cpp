@@ -14,7 +14,7 @@ using namespace time_literals;
 
 CameraFeedback::CameraFeedback() :
     ModuleParams(nullptr),
-    WorkItem(MODULE_NAME, nextpilot::wq_configurations::hp_default) {
+    WorkItem(MODULE_NAME, wq_configurationst) {
     _p_cam_cap_fback = param_find("CAM_CAP_FBACK");
 
     if (_p_cam_cap_fback != PARAM_INVALID) {

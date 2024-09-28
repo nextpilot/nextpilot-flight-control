@@ -15,7 +15,7 @@
 #include <uORB/topics/actuator_armed.h>
 
 using namespace nextpilot;
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 class SystemChecks : public HealthAndArmingCheckBase {
 public:

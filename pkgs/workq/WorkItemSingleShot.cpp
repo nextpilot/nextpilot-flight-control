@@ -12,15 +12,15 @@
 
 #include <WorkItemSingleShot.hpp>
 
-namespace nextpilot {
+namespace nextpilot::workq {
 
-WorkItemSingleShot::WorkItemSingleShot(const nextpilot::wq_config_t &config, worker_method method, void *argument) :
-    nextpilot::WorkItem("<single_shot>", config), _argument(argument), _method(method) {
+WorkItemSingleShot::WorkItemSingleShot(const wq_config_t &config, worker_method method, void *argument) :
+    WorkItem("<single_shot>", config), _argument(argument), _method(method) {
     rt_sem_init(&_sem, "wiss_lock", 0, RT_IPC_FLAG_PRIO);
 }
 
-WorkItemSingleShot::WorkItemSingleShot(const nextpilot::WorkItem &work_item, worker_method method, void *argument) :
-    nextpilot::WorkItem("<single_shot>", work_item), _argument(argument), _method(method) {
+WorkItemSingleShot::WorkItemSingleShot(const WorkItem &work_item, worker_method method, void *argument) :
+    WorkItem("<single_shot>", work_item), _argument(argument), _method(method) {
     rt_sem_init(&_sem, "lock", 0, RT_IPC_FLAG_PRIO);
 }
 
@@ -29,7 +29,8 @@ WorkItemSingleShot::~WorkItemSingleShot() {
 }
 
 void WorkItemSingleShot::wait() {
-    while (rt_sem_take(&_sem, RT_WAITING_FOREVER) != 0) {}
+    while (rt_sem_take(&_sem, RT_WAITING_FOREVER) != 0) {
+    }
 }
 
 void WorkItemSingleShot::Run() {
@@ -37,4 +38,4 @@ void WorkItemSingleShot::Run() {
     rt_sem_release(&_sem);
 }
 
-} // namespace nextpilot
+} // namespace nextpilot::workq

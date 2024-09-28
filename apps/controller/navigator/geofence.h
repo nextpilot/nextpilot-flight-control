@@ -31,7 +31,7 @@
 
 #define GEOFENCE_FILENAME PX4_STORAGEDIR "/etc/geofence.txt"
 
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 using namespace nextpilot;
 
 class Navigator;

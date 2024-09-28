@@ -21,7 +21,7 @@
 #include <module/module_params.hpp>
 #include <uORB/topics/launch_detection_status.h>
 
-using namespace nextpilot::global_params;
+using namespace nextpilot::param;
 
 namespace launchdetection {
 
@@ -33,6 +33,7 @@ public:
     LaunchDetector(ModuleParams *parent) :
         ModuleParams(parent) {
     }
+
     ~LaunchDetector() = default;
 
     LaunchDetector(const LaunchDetector &)           = delete;
