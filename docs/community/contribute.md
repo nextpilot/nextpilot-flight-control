@@ -20,32 +20,57 @@ NextPilot 依托 Github Flow 进行项目迭代，它只有一个长期分支，
 
 `nextpilot-flight-control.code-workspace` 是 Vscode 工作空间文件，已经配置好以下格式化工具，在 **保存** 文件时会自动触发自动格式化：
 
-- 使用 `clang-format` 对 C/C++ 代码格式化
+- 使用 `clang-format` 使用 [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html) 对 C/C++ 代码进行格式化，仓库根目录的 [.clang-format](../.clang-format) 文件定义了格式化配置选项，相关意义[请参考这里](https://clang.llvm.org/docs/ClangFormatStyleOptions.html)。
 - 使用 `black` 对 python 代码格式化
 - 使用 `DavidAnson.vscode-markdownlint` 对 markdown 格式化
 - 使用 `tamasfe.even-better-toml` 对 toml 格式化
-- 使用 `redhat.vscode-yaml` 对 yaml 格式化
-
-### C/C++
-
-NextPilot 使用 [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html) 对 C/C++ 代码进行格式化，仓库根目录的 [.clang-format](../.clang-format) 文件定义了格式化的全局配置，相关意义[请参考这里](https://clang.llvm.org/docs/ClangFormatStyleOptions.html)。
+- 使用 `redhat.vscode-yaml` 对 yaml 格式
 
 如果您 **不希望** 对某个文件下的代码进行格式化，请在该文件夹下添加一个`.clang-format`文件，内容如下：
 
 ```yml
-# Available style options are described in https://clang.llvm.org/docs/ClangFormatStyleOptions.html
-#
-# An easy way to create the .clang-format file is:
-#
-# clang-format -style=llvm -dump-config > .clang-format
-#
 ---
 Language: Cpp
 DisableFormat: true
 ---
 ```
 
-核心语句就是 `DisableFormat: true`，表示禁用 clang-format 格式化。
+### C/C++
+
+NextPilot 基于 [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html) （[中文翻译](https://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/contents.html)）代码样式，但是对以下部分部分微调:
+
+**文件扩展名**
+
+- *.hpp，C++头文件
+- *.h，C头文件
+- *.cpp，C++文件
+- *.c，C代码
+
+**文件命名**
+
+文件名要全部小写, 可以包含下划线 (`_`) 或连字符 (`-`), 依照项目的约定. 如果没有约定, 那么 “`_`” 更好.
+
+**类型命名**
+
+类型名称的每个单词首字母均大写, 不包含下划线: `MyExcitingClass`, `MyExcitingEnum`.
+
+所有类型命名，包括类, 结构体, 类型定义 (`typedef`), 枚举, 类型模板参数等均使用相同约定, 即以大写字母开始, 每个单词首字母均大写, 不包含下划线. 例如:
+
+```c++
+// 类和结构体
+class UrlTable { ...
+class UrlTableTester { ...
+struct UrlTableProperties { ...
+
+// 类型定义
+typedef hash_map<UrlTableProperties *, string> PropertiesMap;
+
+// using 别名
+using PropertiesMap = hash_map<UrlTableProperties *, string>;
+
+// 枚举
+enum UrlTableErrors { ...
+```
 
 ### Python
 
@@ -110,15 +135,11 @@ VS Code 使用快捷键 `ctr + ,`打开设置页面，搜索`sign off`，然后�
 
 ![image-20221021163100119](./image/image-20221021163100119.png)
 
-安装完插件后，在vscode侧边栏`源代码管理`页面，点击下图所示图标，启动插件
+安装完插件后，在vscode侧边栏`源代码管理`页面，点击下图所示图标
 
 ![image-20221021163428794](./image/image-20221021163428794.png)
 
-选择这次更改的类型 如：🐞fix是修复 bug 然后选择 **Complete** 即完成本次修改（按下键盘上的 **Esc** 键则离开输入）
-
-#### type(必须)
-
-提交类别，允许使用下面的标识：
+激活插件后，选择提交类型，如：🐞fix 修复bug。可选的提交类型有：
 
 - 🎉init：项目初始化
 - ✨feat：增加新功能
@@ -132,23 +153,14 @@ VS Code 使用快捷键 `ctr + ,`打开设置页面，搜索`sign off`，然后�
 
 ![image-20221021163614865](./image/image-20221021163614865.png)
 
-#### scope(可选)
-
-scope 用于说明本次提交的影响范围，比如数据层、控制层、视图层等等，视项目不同而不同。
-
-#### subject(必须)
-
-subject是commit的简短描述，不超过50个字符。完成输入后选择**Complete**，再推送到远端：
+然后可以根据需要依次填写Scope、Subject、Body、Footer，或者选择Complete完成提交，**ESC** 按键可以取消本次提交
 
 ![image-20221021164334189](./image/image-20221021164334189.png)
 
-#### Body(可选)
-
-Body 部分是对本次 commit 的详细描述，可以分成多行。
-
-#### Footer(可选)
-
-如果当前的 commit 针对某个 issue，那么可以在 Footer 关闭这个 issue。
+- Scope(可选)，说明本次提交的影响范围，比如数据层、控制层、视图层等等，视项目不同而不同。
+- Subject(必须)，commit的简短描述，一般不超过50个字符。
+- Body(可选)，对本次 commit 的详细描述，可以分成多行。
+- Footer(可选)，如果当前的 commit 针对某个 issue，那么可以在 Footer 关闭这个 issue。
 
 ## 贡献代码
 
