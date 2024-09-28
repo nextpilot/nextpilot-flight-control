@@ -104,7 +104,7 @@ VS Code 使用快捷键 `ctr + ,`打开设置页面，搜索`sign off`，然后�
 
 ![](./image/vscode-git-sign-off.png)
 
-### 辅助插件
+### Vscode辅助插件
 
 在vscode商店中搜索插件 `git-commit-plugin`，点击安装：
 
