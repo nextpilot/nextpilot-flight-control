@@ -2,6 +2,12 @@
 
 核心开发团队和社区成员活跃于以下渠道，您可以从以下方式获得帮助。
 
+交流论坛：<https://github.com/nextpilot/nextpilot-flight-control/discussions>
+
+问题反馈：<https://github.com/nextpilot/nextpilot-flight-control/issues>
+
+提交代码：<https://github.com/nextpilot/nextpilot-flight-control/pulls>
+
 ## 故障诊断
 
 如果您不确定问题是什么，需要帮助诊断，建议按照如下步骤：
@@ -15,4 +21,4 @@
 
 扫码加入 NextPilot 社区支持群，我们会提供相关技术支持，全力为大家答疑解惑。
 
-![](https://www.nextpilot.org/community/add-to-group.jpeg)
+![](./add-to-group.jpeg)

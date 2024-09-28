@@ -13,6 +13,8 @@
 
 #include "device.hpp"
 
+namespace nextpilot::device {
+
 class I2C : pulbic Device {
 public:
     // no copy, assignment, move, move assignment
@@ -48,7 +50,7 @@ protected:
      * Check for the presence of the device on the bus.
      */
     virtual int probe() {
-        return PX4_OK;
+        return 0;
     }
 
     /**
@@ -75,5 +77,7 @@ private:
     const uint32_t _frequency;
     rt_device_t   *_dev{nullptr};
 };
+
+} // namespace nextpilot::device
 
 #endif // __I2C_H__

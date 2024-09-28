@@ -10,6 +10,8 @@
 
 #include "i2c.hpp"
 
+namespace nextpilot::device {
+
 I2C::I2C(uint8_t device_type, const char *name, const int bus, const uint16_t address, const uint32_t frequency) :
     Device(name, nullptr),
     _frequency(frequency) {
@@ -18,8 +20,6 @@ I2C::I2C(uint8_t device_type, const char *name, const int bus, const uint16_t ad
     _device_id.devid_s.bus_type  = DeviceBusType_I2C;
     _device_id.devid_s.bus_index = bus;
     _device_id.devid_s.address   = address;
-
-    _device = rt_device_find(name);
 }
 
 // I2C::I2C(const I2CSPIDriverConfig &config) :
@@ -33,8 +33,24 @@ I2C::~I2C() {
     }
 }
 
-int init() {
+int I2C::init() {
+    _dev = rt_device_find("");
+    if (!_dev) {
+        return -RT_ERROR;
+    }
+
+    if (probe() != RT_EOK) {
+        return -RT_ERROR;
+    }
+
+    if (Device::init() != RT_EOK) {
+        return -RT_ERROR;
+    }
+
+    return RT_EOK;
 }
 
-int I2C::tansfer() {
+int I2C::tansfer(const uint8_t *send, const unsigned send_len, uint8_t *recv, const unsigned recv_len) {
 }
+
+} // namespace nextpilot::device

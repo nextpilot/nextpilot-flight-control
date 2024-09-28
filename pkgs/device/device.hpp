@@ -18,14 +18,21 @@
 
 namespace nextpilot::device {
 
-class Device : public rt_device {
+class Device {
 public:
-    Device();
+    // no copy, assignment, move, move assignment
+    Device(const Device &)            = delete;
+    Device &operator=(const Device &) = delete;
+    Device(Device &&)                 = delete;
+    Device &operator=(Device &&)      = delete;
+
+    Device() = default;
 
     Device(const char *devname) :
         _dev_name(devname) {
     }
 
+    // /dev/ist8310, DRV_DEVTYPE_IST8310, DeviceBusType_SPI, 1, PH0
     Device(const char *devname, uint8_t devtype, DeviceBusType bustype, uint8_t busindex, uint8_t address) :
         _dev_name(devname) {
         // 设置device_id
@@ -35,7 +42,7 @@ public:
         set_device_address(address);
     }
 
-    // /dev/ist8310, 01,  spi10, spi,
+    // /dev/ist8310, DRV_DEVTYPE_IST8310,  spi10, PH0,
     Device(const char *devname, uint8_t devtype, const char *busname, uint8_t address) :
         _dev_name(devname),
         _bus_name(busname) {
@@ -58,30 +65,14 @@ public:
         set_device_address(address);
     }
 
-    // no copy, assignment, move, move assignment
-    Device(const Device &)            = delete;
-    Device &operator=(const Device &) = delete;
-    Device(Device &&)                 = delete;
-    Device &operator=(Device &&)      = delete;
-
-    virtual ~Device();
+    virtual ~Device() = default;
 
     /**
 	 * Initialise the driver and make it ready for use.
 	 *
 	 * @return	OK if the driver initialized OK, negative errno otherwise;
 	 */
-    virtual rt_err_t init();
-
-    virtual rt_err_t open(rt_uint16_t oflag) {
-        return 0;
-    }
-
-    virtual rt_err_t control(int cmd, void *args) {
-        return 0;
-    }
-
-    virtual rt_err_t close() {
+    virtual rt_err_t init() {
         return 0;
     }
 
@@ -134,42 +125,15 @@ public:
         return 0;
     }
 
-    virtual off_t seek(off_t offset, int whence) {
-        return 0;
-    }
-
+    /**
+	 * Perform a device-specific operation.
+	 *
+	 * @param operation	The operation to perform.
+	 * @param arg		An argument to the operation.
+	 * @return		Negative errno on error, OK or positive value on success.
+	 */
     virtual int ioctl(int cmd, unsigned long arg) {
         return 0;
-    }
-
-    rt_err_t register_driver(const char *devname, rt_uint16_t flags) {
-        rt_err_t ret = -1;
-        if (devname && !_registered) {
-            ret = rt_device_register(this, devname, flags);
-
-            if (ret == RT_EOK) {
-                _registered = true;
-            }
-        }
-
-        return ret;
-    }
-
-    rt_err_t unregister_driver() {
-        rt_err_t ret = -1;
-        if (_registered) {
-            ret = rt_device_unregister(this);
-            if (ret == RT_EOK) {
-                _registered = false;
-            }
-        }
-        return ret;
-    }
-
-    void lock() {
-    }
-
-    void unlock() {
     }
 
     const char *get_devname() const {
@@ -202,8 +166,13 @@ public:
         _dev_id.devid_s.devtype = devtype;
     }
 
-    // 总线类型，比如i2c
+    /**
+	 * Return the bus type the device is connected to.
+	 *
+	 * @return The bus type
+	 */
     DeviceBusType get_device_bus_type() const {
+        // 总线类型，比如i2c
         return _dev_id.devid_s.bus_type;
     }
 
@@ -247,8 +216,6 @@ protected:
 
     // 设备id
     union DeviceId _dev_id {};
-
-    bool _registered{false};
 
     // 驱动的名称，比如i2c1
     const char *_bus_name{nullptr};
