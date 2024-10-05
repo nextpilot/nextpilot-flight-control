@@ -5,6 +5,8 @@
 
 本节介绍 如何搭建开发环境、底层框架是什么样的、如何支持新的机型和设备、如何修改飞行控制算法、如何添加新模式、如何集成新硬件以及飞控与外部通信是怎么实现的等。
 
+## 如何开始
+
 - 如何快速入门，比如：[搭建开发环境](./01.快速入门/01.setup-develop-environment.md)、[编译项目代码](01.快速入门/02.build-code.md)、[断点单步调试](./01.快速入门/03.ide-debug.md)等
 
 - 系统框架介绍，比如：[系统启动流程](./03.系统框架/03.system-startup.md)、[FINSH终端](./03.系统框架/05.finsh-console.md)、[ULOG日志](./03.系统框架/07.micro-log.md)等
@@ -21,7 +23,9 @@
 
 - 如何调试分析
 
-## 社区支持
+## 获取帮助
+
+核心开发团队和社区成员活跃于以下渠道，您可以从以下方式获得帮助。
 
 问题反馈：<https://github.com/nextpilot/nextpilot-flight-control/issues>
 
@@ -29,6 +33,18 @@
 
 论坛讨论：<https://github.com/nextpilot/nextpilot-flight-control/discussions>
 
+## 反馈问题
+
+如果您在使用 NextPilot 时遇到任何问题，请先在 [Github Discussions](https://github.com/nextpilot/nextpilot-flight-control/discussions) 上发布帖子（因为它们可能是由飞控配置引起的）。
+
+根据开发团队指导，如果确定是代码问题则需要在 [Github Issue](https://github.com/nextpilot/nextpilot-flight-control/issues) 上反馈问题。如果可能，请提供[飞行日志](https://logs.px4.io)和其他信息。
+
+## 开源许可
+
+在 [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause) 许可证的条款，您可以免费使用和修改 [nextpilot-flight-control](https://github.com/nextpilot/nextpilot-flight-control) 代码，没有任何商业风险。
+
+本文档采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) 协议。
+
 ## 致谢
 
-开发文档中，借用了 [PX4 用户指南](https://gitee.com/rtthread/docs-online) 和 [RT-Thread 在线文档](https://gitee.com/rtthread/docs-online) 等部分资料，在此表示感谢。
+开发文档中，借用了 [PX4 用户指南](https://docs.px4.io) 和 [RT-Thread 在线文档](https://gitee.com/rtthread/docs-online) 等部分资料，在此表示感谢。

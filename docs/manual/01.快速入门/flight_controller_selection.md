@@ -1,4 +1,4 @@
-# 支持的硬件
+# 硬件支持
 
 Flight controllers are the "brains" of an unmanned vehicle.
 Nextpilot can run on [many flight controller boards](../flight_controller/README.md).
