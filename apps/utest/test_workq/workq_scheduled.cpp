@@ -101,3 +101,4 @@ int workq_scheduled_start() {
 }
 
 // INIT_APP_EXPORT(workq_scheduled_start);
+MSH_CMD_EXPORT_ALIAS(workq_scheduled_start, utest_wq_1, test workq scheduled);

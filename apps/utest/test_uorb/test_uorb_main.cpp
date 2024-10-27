@@ -46,4 +46,5 @@ int uorb_test_start() {
     return ret;
 }
 
-INIT_APP_EXPORT(uorb_test_start);
+// INIT_APP_EXPORT(uorb_test_start);
+MSH_CMD_EXPORT_ALIAS(uorb_test_start, utest_uorb_1, test uorb main);

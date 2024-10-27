@@ -104,4 +104,4 @@ int sim_imu_start() {
     return ret;
 }
 
-INIT_APP_EXPORT(sim_imu_start);
+// INIT_APP_EXPORT(sim_imu_start);

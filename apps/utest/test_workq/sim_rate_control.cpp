@@ -97,4 +97,5 @@ int sim_rate_ctrl_start() {
     return ret;
 }
 
-INIT_APP_EXPORT(sim_rate_ctrl_start);
+// INIT_APP_EXPORT(sim_rate_ctrl_start);
+MSH_CMD_EXPORT_ALIAS(sim_rate_ctrl_start, utest_wq_rate, sim rate control);
