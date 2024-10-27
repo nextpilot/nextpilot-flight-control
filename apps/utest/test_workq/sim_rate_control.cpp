@@ -18,6 +18,7 @@
 #include <uORB/topics/vehicle_angular_velocity.h>
 
 using namespace time_literals;
+using namespace nextpilot::workq;
 using namespace nextpilot;
 
 /**
