@@ -11,9 +11,10 @@
 #define LOG_TAG "test_hrtimer"
 #define LOG_LVL LOG_LVL_INFO
 
+#include <rtthread.h>
 #include "hrtimer.h"
 #include "rtdbg.h"
-
+#include "stdlib.h"
 
 hrt_call hrt_call_every_call{};
 
@@ -36,6 +37,8 @@ static int test_hrt_call_every_func(void *param) {
         total_count                = 0;
         hrt_call_every_call.period = 0;
     }
+
+    return 0;
 }
 
 static int test_hrt_call_every_main(int argc, char *argv) {
@@ -49,7 +52,7 @@ static int test_hrt_call_every_main(int argc, char *argv) {
     hrt_call_every_count  = strtol(&argv[3], nullptr, 10);
 
     rt_kprintf("period=%d,delay=%d,count=%d\n", hrt_call_every_period, hrt_call_every_delay, 10);
-    hrt_call_every(&hrt_call_every_call, hrt_call_every_delay, hrt_call_every_period, test_hrt_call_every_func, nullptr);
+    hrt_call_every(&hrt_call_every_call, hrt_call_every_delay, hrt_call_every_period, (hrt_callout)(test_hrt_call_every_func), nullptr);
     return 0;
 }
 

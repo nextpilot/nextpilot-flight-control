@@ -1,0 +1,15 @@
+import os
+import rtconfig
+from building import *
+
+cwd = GetCurrentDir()
+group = []
+
+
+# 添加当前文件夹下的代码
+src = Glob("*.c") + Glob("*.cpp")
+inc = []
+
+group += DefineGroup("utest", src, depend=["TEST_PKG_HRTIMER"], CPPPATH=inc)
+
+Return("group")
