@@ -356,114 +356,7 @@ def reload_rtconfig_module():
     Export("rtconfig")
 
 
-def deploy_bsp_project():
-    import fnmatch
-    import shutil
-    import rtconfig
-
-    def ignore_patterns(*patterns):
-        """Function that can be used as copytree() ignore parameter.
-
-        Patterns is a sequence of glob-style patterns
-        that are used to exclude files"""
-
-        def _ignore_patterns(path, names):
-            ignored_names = []
-            for pattern in patterns:
-                ignored_names.extend(fnmatch.filter(names, pattern))
-            return set(ignored_names)
-
-        return _ignore_patterns
-
-    def do_copy_file(src, dst):
-        # check source file
-        if not os.path.exists(src):
-            return
-
-        path = os.path.dirname(dst)
-        # mkdir if path not exist
-        if not os.path.exists(path):
-            os.makedirs(path)
-
-        shutil.copy2(src, dst)
-
-    def do_copy_folder(src_dir, dst_dir, ignore=None):
-        # check source directory
-        if not os.path.exists(src_dir):
-            return
-        try:
-            if os.path.exists(dst_dir):
-                shutil.rmtree(dst_dir)
-        except:
-            print("Deletes folder: %s failed." % dst_dir)
-            return
-        shutil.copytree(src_dir, dst_dir, ignore=ignore)
-
-    #
-    dist_root = "dist/fcs"
-
-    # common
-    copy_list = [
-        "apps",
-        "tools",
-        ".gitignore",
-        "SConscript",
-        "SConstruct",
-    ]
-    # rtos
-    copy_list += [
-        "rtos/rt-thread/components",
-        "rtos/rt-thread/include",
-        "rtos/rt-thread/libcpu",
-        "rtos/rt-thread/src",
-        "rtos/rt-thread/tools",
-        "rtos/rt-thread/Kconfig",
-        "rtos/rt-thread/README.md",
-    ]
-    # stm32 lib
-    if hasattr(rtconfig, "CHIP_SERIES"):
-        copy_list += [
-            "rtos/SConscript",
-            "rtos/platform/SConscript",
-            "rtos/platform/stm32/HAL_Drivers",
-            "rtos/platform/stm32/" + rtconfig.CHIP_SERIES + "xx_HAL",
-            "rtos/platform/stm32/Kconfig",
-            "rtos/platform/stm32/SConscript",
-        ]
-
-    for item in copy_list:
-        src = os.path.join(__options__["PRJ_ROOT"], item)
-        dst = os.path.join(dist_root, item)
-        if os.path.isdir(src):
-            do_copy_folder(src, dst)
-        else:
-            do_copy_file(src, dst)
-
-    # target
-    do_copy_folder(
-        __options__["BSP_ROOT"],
-        os.path.join(dist_root, "bsp"),
-        ignore_patterns(
-            "build",
-            "dist",
-            "DebugConfig",
-            ".config" "*.scvd" "*.pyc",
-            "*.old",
-            "*.map",
-            "*.bin",
-            "*.elf",
-            "*.axf",
-            "*.o",
-            ".sconsign.dblite",
-            "cconfig.h",
-            "rtconfig.h",
-        ),
-    )
-    # rtconfig
-    do_copy_file(os.path.join(__options__["BSP_ROOT"], "rtconfig.h"), dist_root)
-
-
-def gen_setting_file():
+def gen_vscode_setting():
     import vscode_helper as vscode
 
     if "qemu" in __options__["BSP_ROOT"]:
@@ -585,7 +478,7 @@ def build(target=None):
     print("=======================================================================")
 
     # 生成调试文件
-    gen_setting_file()
+    gen_vscode_setting()
 
     # 获取编译环境
     env = rtconfig.get_build_env()
@@ -615,5 +508,3 @@ def build(target=None):
         Alias(target, __options__["TARGET_FILE"])
     else:
         pass
-
-    # deploy_bsp_project()
