@@ -34,7 +34,8 @@ CROSS_TOOL = "gcc"
 PLATFORM = "gcc"
 EXEC_PATH = os.getenv("RTT_EXEC_PATH") or r"/usr/bin"
 BUILD = "debug"
-
+RTT_ROOT = os.getenv("RTT_ROOT", "../../../rtos/rt-thread")
+BOARD_NAME = "sitl-qemu-default"
 LINK_SCRIPT = "link.lds"
 
 if PLATFORM == "gcc":
@@ -58,7 +59,7 @@ if PLATFORM == "gcc":
     AFLAGS = DEVICE + " -c" + AFPFLAGS + " -x assembler-with-cpp"
     LFLAGS = (
         DEVICE
-        + " -Wl,--gc-sections,-Map=build/sitl-qemu.map,-cref,-u,system_vectors -T "
+        + f" -Wl,--gc-sections,-Map=build/{BOARD_NAME}.map,-cref,-u,system_vectors -T "
         + LINK_SCRIPT
         + " -lsupc++ -lgcc -static"
     )
@@ -82,12 +83,12 @@ if PLATFORM == "gcc":
     M_POST_ACTION = STRIP + " -R .hash $TARGET\n" + SIZE + " $TARGET \n"
 
     DUMP_ACTION = OBJDUMP + " -D -S $TARGET > rtt.asm\n"
-    POST_ACTION = OBJCPY + " -O binary $TARGET build/sitl-qemu-default.bin\n" + SIZE + " $TARGET \n"
+    POST_ACTION = OBJCPY + f" -O binary $TARGET build/{BOARD_NAME}.bin\n" + SIZE + " $TARGET \n"
 else:
     print("ERROR: only support gcc toolchain!!!")
     exit(-1)
 
-    # TARGET = "rtthread." + TARGET_EXT
+TARGET_FILE = f"build/{BOARD_NAME}." + TARGET_EXT
 
 
 def get_build_env():

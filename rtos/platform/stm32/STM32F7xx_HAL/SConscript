@@ -112,7 +112,7 @@ elif rtconfig.PLATFORM in ["armcc", "armclang"]:
 elif rtconfig.PLATFORM in ["iccarm"]:
     cross_tool = "iar"
 
-src += ["CMSIS/Device/ST/STM32F7xx/Source/Templates/" + cross_tool + "/" + rtconfig.OPTIONS["STARTUP_FILE"]]
+src += ["CMSIS/Device/ST/STM32F7xx/Source/Templates/" + cross_tool + "/" + rtconfig.STARTUP_FILE]
 
 
 path = [cwd + "/STM32F7xx_HAL_Driver/Inc", cwd + "/CMSIS/Device/ST/STM32F7xx/Include"]

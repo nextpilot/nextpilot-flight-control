@@ -2,26 +2,43 @@
 
 import os
 import sys
-from scons_helper import *
-
-# rtconfig.py保存了编译所需的变量，其中
-# 一部分变量是固定的，比如硬件相关
-# 一部分变量会随着命令行或者编译目标不同而变化
 
 # 芯片相关
 ARCH = "arm"
 # CPU架构
 CPU = "cortex-m7"
 
-OPTIONS, CROSS_TOOL, EXEC_PATH, PLATFORM = get_build_option()
-
-# 以下变量添加到了options字典里面，方便自动化模板生成时候使用
-OPTIONS["CHIP_NAME"] = "STM32F765IIk"
+# 板子的名称
+BOARD_NAME = os.getenv("RTT_BOARD_NAME", "px4-fmuv5-default")
+# 芯片名称
+CHIP_NAME = "STM32F765IIk"
 # SVD文件名
-OPTIONS["SVD_FILE"] = ""
+SVD_FILE = ""
 # 启动文件名，必须
-OPTIONS["STARTUP_FILE"] = "startup_stm32f765xx.s"
+STARTUP_FILE = "startup_stm32f765xx.s"
 
+RTT_ROOT = os.getenv("RTT_ROOT", "../../../rtos/rt-thread")
+
+CROSS_TOOL = os.getenv("RTT_CC", "gcc")
+
+LINK_SCRIPT = "board/linker_scripts/link.lds"
+
+# cross_tool provides the cross compiler
+# EXEC_PATH is the compiler execute path, for example, CodeSourcery, Keil MDK, IAR
+if CROSS_TOOL == "gcc":
+    PLATFORM = "gcc"
+    EXEC_PATH = r"C:\Users\XXYYZZ"
+elif CROSS_TOOL == "keil":
+    PLATFORM = "armcc"
+    EXEC_PATH = r"C:/Keil_v5"
+elif CROSS_TOOL == "iar":
+    PLATFORM = "iccarm"
+    EXEC_PATH = r"C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.3"
+
+if os.getenv("RTT_EXEC_PATH"):
+    EXEC_PATH = os.getenv("RTT_EXEC_PATH")
+
+BUILD = os.getenv("RTT_BUILD_TYPE", "release")
 
 if PLATFORM == "gcc":
     # toolchains
@@ -42,12 +59,12 @@ if PLATFORM == "gcc":
         + " -Dgcc -Wall -Wno-missing-braces -Wno-address-of-packed-member -Wno-unused-variable -Wno-unused-function -Wno-unused-const-variable"
     )
     AFLAGS = " -c" + DEVICE + " -x assembler-with-cpp -Wa,-mimplicit-it=thumb "
-    LFLAGS = DEVICE + " -Wl,--gc-sections,-Map={MAP_FILE},-cref,-u,Reset_Handler -T {LINKER_FILE}".format(**OPTIONS)
+    LFLAGS = DEVICE + f" -Wl,--gc-sections,-Map=build/{BOARD_NAME}.map,-cref,-u,Reset_Handler -T {LINK_SCRIPT}"
 
     CPATH = ""
     LPATH = ""
 
-    if OPTIONS["BUILD_TYPE"] == "debug":
+    if BUILD == "debug":
         CFLAGS += " -O0 -gdwarf-2 -g"
         AFLAGS += " -gdwarf-2"
     else:
@@ -55,9 +72,9 @@ if PLATFORM == "gcc":
 
     CXXFLAGS = CFLAGS
 
-    POST_ACTION = OBJCPY + " -O binary $TARGET {BIN_FILE} \n".format(**OPTIONS)
-    POST_ACTION += OBJCPY + " -O ihex $TARGET {HEX_FILE} \n".format(**OPTIONS)
-    POST_ACTION += SIZE + " $TARGET \n" + SIZE + " {HEX_FILE} \n".format(**OPTIONS)
+    POST_ACTION = OBJCPY + f" -O binary $TARGET build/{BOARD_NAME}.bin \n"
+    POST_ACTION += OBJCPY + f" -O ihex $TARGET build/{BOARD_NAME}.hex \n"
+    POST_ACTION += SIZE + " $TARGET \n" + SIZE + f" build/{BOARD_NAME}.hex \n"
 
     CFLAGS += " -Werror-implicit-function-declaration"
 
@@ -75,9 +92,7 @@ elif PLATFORM == "armcc":
     AFLAGS = DEVICE + " --apcs=interwork "
     LFLAGS = (
         DEVICE
-        + ' --scatter "{LINKER_FILE}" --info sizes --info totals --info unused --info veneers --list {MAP_FILE} --strict'.format(
-            **OPTIONS
-        )
+        + f' --scatter "{LINK_SCRIPT}" --info sizes --info totals --info unused --info veneers --list build/{BOARD_NAME}.map --strict'
     )
     CFLAGS += " -I" + EXEC_PATH + "/ARM/ARMCC/include"
     LFLAGS += " --libpath=" + EXEC_PATH + "/ARM/ARMCC/lib"
@@ -87,7 +102,7 @@ elif PLATFORM == "armcc":
     LFLAGS += " --library_type=microlib "
     EXEC_PATH += "/ARM/ARMCC/bin/"
 
-    if OPTIONS["BUILD_TYPE"] == "debug":
+    if BUILD == "debug":
         CFLAGS += " -g -O0"
         AFLAGS += " -g"
     else:
@@ -95,7 +110,7 @@ elif PLATFORM == "armcc":
 
     CXXFLAGS = CFLAGS
 
-    POST_ACTION = "fromelf --bin $TARGET --output {BIN_FILE} \nfromelf -z $TARGET".format(**OPTIONS)
+    POST_ACTION = f"fromelf --bin $TARGET --output build/{BOARD_NAME}.bin \nfromelf -z $TARGET"
 
 elif PLATFORM == "armclang":
     # toolchains
@@ -113,14 +128,14 @@ elif PLATFORM == "armclang":
     CFLAGS += " -gdwarf-3 -ffunction-sections "
     AFLAGS = DEVICE + " --apcs=interwork "
     LFLAGS = DEVICE + " --info sizes --info totals --info unused --info veneers "
-    LFLAGS += " --list build/{MAP_FILE} ".format(**OPTIONS)
-    LFLAGS += r' --strict --scatter "{LINKER_FILE}" '.format(**OPTIONS)
+    LFLAGS += f" --list build/{BOARD_NAME}.map "
+    LFLAGS += f' --strict --scatter "{LINK_SCRIPT}" '
     CFLAGS += " -I" + EXEC_PATH + "/ARM/ARMCLANG/include"
     LFLAGS += " --libpath=" + EXEC_PATH + "/ARM/ARMCLANG/lib"
 
     EXEC_PATH += "/ARM/ARMCLANG/bin/"
 
-    if OPTIONS["BUILD_TYPE"] == "debug":
+    if BUILD == "debug":
         CFLAGS += " -g -O1"  # armclang recommend
         AFLAGS += " -g"
     else:
@@ -129,7 +144,7 @@ elif PLATFORM == "armclang":
     CXXFLAGS = CFLAGS
     CFLAGS += " -std=c99"
 
-    POST_ACTION = "fromelf --bin $TARGET --output {BIN_FILE} \nfromelf -z $TARGET".format(**OPTIONS)
+    POST_ACTION = f"fromelf --bin $TARGET --output build/{BOARD_NAME}.bin \nfromelf -z $TARGET"
 
 elif PLATFORM == "iar":
     # toolchains
@@ -166,20 +181,22 @@ elif PLATFORM == "iar":
     AFLAGS += " --fpu VFPv5_sp"
     AFLAGS += " -S"
 
-    if OPTIONS["BUILD_TYPE"] == "debug":
+    if BUILD == "debug":
         CFLAGS += " --debug"
         CFLAGS += " -On"
     else:
         CFLAGS += " -Oh"
 
-    LFLAGS = ' --config "{LINKER_FILE}"'.format(**OPTIONS)
+    LFLAGS = f' --config "{LINK_SCRIPT}"'
     LFLAGS += " --entry __iar_program_start"
 
     CXXFLAGS = CFLAGS
 
     EXEC_PATH = EXEC_PATH + "/arm/bin/"
-    POST_ACTION = "ielftool --bin $TARGET {BIN_FILE}".format(**OPTIONS)
+    POST_ACTION = f"ielftool --bin $TARGET build/{BOARD_NAME}.bin"
 
+
+TARGET_FILE = f"build/{BOARD_NAME}.{TARGET_EXT}"
 
 # make fw
 # cmd = ['python', os.path.join(APP_ROOT, r'tools\scons\fw_mkpx4.py'),
@@ -198,6 +215,8 @@ elif PLATFORM == "iar":
 
 
 def get_build_env():
+    from building import GetDepend, DefaultEnvironment, Environment
+
     # 设置编译环境
     DefaultEnvironment(tools=[])
     env = Environment(
@@ -219,7 +238,7 @@ def get_build_env():
     if PLATFORM == "iar":
         env.Replace(CCCOM=["$CC $CFLAGS $CPPFLAGS $_CPPDEFFLAGS $_CPPINCFLAGS -o $TARGET $SOURCES"])
         env.Replace(ARFLAGS=[""])
-        env.Replace(LINKCOM=env["LINKCOM"] + " --map {MAP_FILE}".format(**OPTIONS))
+        env.Replace(LINKCOM=env["LINKCOM"] + " --map build/{BOARD_NAME}.map")
     return env
 
 
