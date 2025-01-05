@@ -17,10 +17,14 @@ __options__ = {}
 
 
 def add_scons_option():
+    import multiprocessing
+
     global __scons_inited__
 
     if __scons_inited__:
         return
+
+    SetOption("num_jobs", multiprocessing.cpu_count())
 
     # AddOpiton(
     #     "--upgrade",
