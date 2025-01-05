@@ -12,7 +12,7 @@
 
 #include "BMI088.hpp"
 
-#include <lib/drivers/accelerometer/PX4Accelerometer.hpp>
+#include <accelerometer/PX4Accelerometer.hpp>
 
 #include "Bosch_BMI088_Accelerometer_Registers.hpp"
 

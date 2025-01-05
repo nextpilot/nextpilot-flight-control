@@ -48,9 +48,23 @@ public:
         _bus_name(busname) {
         // 设置device_id
         set_device_type(devtype);
-        rt_device_t dev = rt_device_find(busname);
-        if (dev) {
-            switch (dev->type) {
+        set_device_address(address);
+    }
+
+    virtual ~Device() = default;
+
+    bool valid() {
+        if (_bus_device) {
+            return true;
+        }
+
+        if (!_bus_name) {
+            return false;
+        }
+
+        _bus_device = rt_device_find(_bus_name);
+        if (_bus_device) {
+            switch (_bus_device->type) {
             case RT_Device_Class_I2CBUS:
                 set_device_bus_type(DeviceBusType_I2C);
                 set_device_bus_index(0);
@@ -62,10 +76,9 @@ public:
                 break;
             }
         }
-        set_device_address(address);
-    }
 
-    virtual ~Device() = default;
+        return _bus_device != nullptr ? true : false;
+    }
 
     /**
 	 * Initialise the driver and make it ready for use.
@@ -211,17 +224,18 @@ public:
     }
 
 protected:
-    // 注册设备的名称比如/dev/ist8310_1
+    // 注册设备名称，比如/dev/ist8310_1
     const char *_dev_name{nullptr};
 
-    // 设备id
+    // 注册设备id
     union DeviceId _dev_id {};
 
-    // 驱动的名称，比如i2c1
+    // 通信接口名称，比如i2c1，spi10
     const char *_bus_name{nullptr};
+    // 通信接口地址
     rt_device_t _bus_device{nullptr};
 
-    // 是否外部设备
+    // 是否外部设备（安装在飞控外部）
     bool _external{false};
 };
 

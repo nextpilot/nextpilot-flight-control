@@ -13,13 +13,13 @@
 #include "BMI088_Accelerometer.hpp"
 #include "BMI088_Gyroscope.hpp"
 
-I2CSPIDriverBase *BMI088::instantiate(const I2CSPIDriverConfig &config, int runtime_instance) {
+BMI088 *BMI088::instantiate(int argc, char *argv[]) {
     BMI088 *instance = nullptr;
 
-    if (config.devid_driver_index == DRV_ACC_DEVTYPE_BMI088) {
+    if (devtype == DRV_ACC_DEVTYPE_BMI088) {
         instance = new Bosch::BMI088::Accelerometer::BMI088_Accelerometer(config);
 
-    } else if (config.devid_driver_index == DRV_GYR_DEVTYPE_BMI088) {
+    } else if (devtype == DRV_GYR_DEVTYPE_BMI088) {
         instance = new Bosch::BMI088::Gyroscope::BMI088_Gyroscope(config);
     }
 

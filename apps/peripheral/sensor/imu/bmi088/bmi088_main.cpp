@@ -8,12 +8,12 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include <px4_platform_common/getopt.h>
-#include <px4_platform_common/module.h>
+#include <getopt/getopt.h>
+#include <module/module_usage.h>
 
 #include "BMI088.hpp"
 
-void BMI088::print_usage() {
+int BMI088::print_usage(const char *reason) {
     PRINT_MODULE_USAGE_NAME("bmi088", "driver");
     PRINT_MODULE_USAGE_SUBCATEGORY("imu");
     PRINT_MODULE_USAGE_COMMAND("start");
@@ -22,55 +22,35 @@ void BMI088::print_usage() {
     PRINT_MODULE_USAGE_PARAMS_I2C_SPI_DRIVER(false, true);
     PRINT_MODULE_USAGE_PARAM_INT('R', 0, 0, 35, "Rotation", true);
     PRINT_MODULE_USAGE_DEFAULT_COMMANDS();
+
+    return 0;
 }
 
-extern "C" int bmi088_main(int argc, char *argv[]) {
-    int ch;
-    using ThisDriver = BMI088;
-    BusCLIArguments cli{false, true};
-    uint16_t        type      = 0;
-    cli.default_spi_frequency = 10000000;
-    const char *name          = MODULE_NAME;
+static int bmi088_main(int argc, char *argv[]) {
+    return BMI088::main(argc, argv);
+}
 
-    while ((ch = cli.getOpt(argc, argv, "AGR:")) != EOF) {
-        switch (ch) {
-        case 'A':
-            type = DRV_ACC_DEVTYPE_BMI088;
-            name = MODULE_NAME "_accel";
-            break;
+int bmi088_start() {
+    uint32_t sys_hitl = param_get_int32((param_t)params_id::SYS_HITL);
 
-        case 'G':
-            type = DRV_GYR_DEVTYPE_BMI088;
-            name = MODULE_NAME "_gyro";
-            break;
-
-        case 'R':
-            cli.rotation = (enum Rotation)atoi(cli.optArg());
-            break;
-        }
+    if (sys_hitl != 0) {
+        return 0;
     }
 
-    const char *verb = cli.optArg();
+    int ret = 0;
 
-    if (!verb || type == 0) {
-        ThisDriver::print_usage();
-        return -1;
+    // start accel
+    {
+        const char *argv[]  = {"bmi088", "start", "-A", "-R", STRINGIFY(2), "-d", "bmi088_accel"};
+        int         argc    = sizeof(argv) / sizeof(argv[0]);
+        ret                += BMI088::main(argc, (char **)argv);
+    }
+    // start gyro
+    {
+        const char *argv[]  = {"bmi088", "start", "-G", "-R", STRINGIFY(BMI088_ROTATION), "-d", "bmi088_gyro"};
+        int         argc    = sizeof(argv) / sizeof(argv[0]);
+        ret                += BMI088::main(argc, (char **)argv);
     }
 
-    BusInstanceIterator iterator(name, cli, type);
-
-    if (!strcmp(verb, "start")) {
-        return ThisDriver::module_start(cli, iterator);
-    }
-
-    if (!strcmp(verb, "stop")) {
-        return ThisDriver::module_stop(iterator);
-    }
-
-    if (!strcmp(verb, "status")) {
-        return ThisDriver::module_status(iterator);
-    }
-
-    ThisDriver::print_usage();
-    return -1;
+    return ret;
 }
