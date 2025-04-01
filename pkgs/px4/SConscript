@@ -1,0 +1,15 @@
+import os
+import rtconfig
+from building import *
+
+
+cwd = GetCurrentDir()
+
+inc = [cwd, cwd + "/include"]
+src = Glob("*.c") + Glob("*.cpp")
+
+
+objs = DefineGroup("pkg/px4", src, depend=[""], CPPPATH=inc)
+
+
+Return("objs")
