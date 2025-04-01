@@ -12,7 +12,6 @@
 #define __NEXTPILOT_DEFINES_H__
 
 #include "rtt.h"
-#include "px4.h"
 #include "macros.h"
 #include "constants.h"
 #include "visibility.h"

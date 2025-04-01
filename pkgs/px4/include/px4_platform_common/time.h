@@ -1,3 +1,4 @@
+
 /*****************************************************************
  *     _   __             __   ____   _  __        __
  *    / | / /___   _  __ / /_ / __ \ (_)/ /____   / /_
@@ -5,14 +6,15 @@
  *  / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
  * /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
  *
- * Copyright All Reserved © 2015-2024 NextPilot Development Team
+ * Copyright All Reserved © 2015-2025 NextPilot Development Team
  ******************************************************************/
 
-#ifndef __LOG_H__
-#define __LOG_H__
+#pragma once
 
-#include <defines.h>
-#include <rtdbg.h>
-#include <inttypes.h>
+#include <sys/time.h>
 
-#endif // __LOG_H__
+#define px4_clock_gettime          clock_getime
+#define px4_clock_settime          clock_settime
+#define px4_usleep                 usleep
+#define px4_sleep                  sleep
+#define px4_pthread_cond_timedwait pthread_cond_timedwait
