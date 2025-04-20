@@ -26,7 +26,7 @@
 #include <conversion/rotation.h>
 #include <drivers/device/device.h>
 #include <drivers/drv_hrt.h>
-#include <lib/parameters/param.h>
+#include <lib/param/param.h>
 #include <lib/perf/perf_counter.h>
 
 #include <uORB/PublicationMulti.hpp>

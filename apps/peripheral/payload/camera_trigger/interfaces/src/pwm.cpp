@@ -12,7 +12,7 @@
 
 #   include <sys/ioctl.h>
 #   include <lib/mathlib/mathlib.h>
-#   include <parameters/param.h>
+#   include <param/param.h>
 
 
 #   include "drivers/drv_pwm_trigger.h"

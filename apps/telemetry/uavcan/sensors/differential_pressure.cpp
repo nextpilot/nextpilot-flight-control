@@ -16,7 +16,7 @@
 
 #include <hrtimer.h>
 #include <geo/geo.h>
-#include <parameters/param.h>
+#include <param/param.h>
 #include <systemlib/err.h>
 
 const char *const UavcanDifferentialPressureBridge::NAME = "differential_pressure";

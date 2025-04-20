@@ -12,7 +12,7 @@
 #include <defines.h>
 
 
-#include <parameters/param.h>
+#include <param/param.h>
 
 // for ekf2 replay
 #include <uORB/topics/airspeed.h>

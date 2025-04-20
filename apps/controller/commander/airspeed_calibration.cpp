@@ -29,7 +29,7 @@
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/differential_pressure.h>
 #include <systemlib/mavlink_log.h>
-#include <parameters/param.h>
+#include <param/param.h>
 #include <systemlib/err.h>
 
 using namespace nextpilot;

@@ -114,7 +114,7 @@
 #include <geo/geo.h>
 #include <matrix/math.hpp>
 #include <conversion/rotation.h>
-#include <lib/parameters/param.h>
+#include <lib/param/param.h>
 #include <lib/systemlib/err.h>
 #include <lib/systemlib/mavlink_log.h>
 #include <uORB/Subscription.hpp>

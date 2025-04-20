@@ -21,7 +21,7 @@
 
 #include <drivers/device/i2c.h>
 #include <lib/led/led.h>
-#include <lib/parameters/param.h>
+#include <lib/param/param.h>
 #include <px4_platform_common/getopt.h>
 #include <px4_platform_common/i2c_spi_buses.h>
 #include <px4_platform_common/module.h>

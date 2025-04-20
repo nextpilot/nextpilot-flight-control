@@ -25,7 +25,7 @@
 #include <cstring>
 #include <fcntl.h>
 #include <systemlib/err.h>
-#include <parameters/param.h>
+#include <param/param.h>
 #include <version/version.h>
 
 #include <arch/chip/chip.h>

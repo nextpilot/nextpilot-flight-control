@@ -27,7 +27,7 @@
 
 #include <drivers/drv_sensor.h>
 #include <lib/drivers/device/Device.hpp>
-#include <lib/parameters/param.h>
+#include <lib/param/param.h>
 #include <mathlib/mathlib.h>
 #include <matrix/math.hpp>
 #include <px4_platform_common/atomic.h>

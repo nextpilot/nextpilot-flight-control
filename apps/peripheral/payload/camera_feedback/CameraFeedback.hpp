@@ -18,7 +18,7 @@
 #pragma once
 
 #include <mathlib/mathlib.h>
-#include <parameters/param.h>
+#include <param/param.h>
 
 #include <defines.h>
 #include <module/module_command.hpp>

@@ -9,7 +9,7 @@
  ******************************************************************/
 
 #include <hrtimer.h>
-#include <parameters/param.h>
+#include <param/param.h>
 #include "safety_button.hpp"
 #include <math.h>
 

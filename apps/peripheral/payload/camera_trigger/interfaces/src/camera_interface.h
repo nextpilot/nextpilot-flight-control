@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <parameters/param.h>
+#include <param/param.h>
 #include <px4_platform_common/log.h>
 
 #define arraySize(a) (sizeof((a)) / sizeof(((a)[0])))

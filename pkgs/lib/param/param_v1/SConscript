@@ -1,0 +1,140 @@
+import os
+import sys
+import rtconfig
+import subprocess
+from building import *
+
+objs = []
+cwd = GetCurrentDir()
+
+
+# 工程根目录
+prj_root = os.path.abspath(os.path.join(cwd, "../../../../"))
+
+# 搜索包含*_params.c文件的目录
+params_source_dir = set()
+params_source_dir.add(cwd)
+
+# 搜索名称module.yaml的文件
+modules_config_file = set()
+
+for root, dirs, files in os.walk(prj_root):
+    for file in files:
+        if file == "module_params.c":
+            continue
+
+        if "rtos" in root:
+            continue
+
+        if file == "module.yaml":  # file.endswith(".yaml") and "module" in file:
+            modules_config_file.add(os.path.join(root, file))
+
+        if file.endswith(".c") and "param" in file:
+            params_source_dir.add(root)
+
+# Generating serial_params.c from modules.yaml
+# cmd = [
+#     sys.executable,
+#     os.path.join(prj_root, "tools/module_config/generate_serial_config.py"),
+#     # --verbose,
+#     "--params-file",
+#     File("#/build/serial_params.c").abspath
+#     "--serial-ports",
+#     "-config-files",
+# ] + modules_config_file
+
+# subprocess.call(cmd, cwd=cwd)
+
+if GetDepend(["RT_LWIP_UDP"]):
+    ethernet = ["--ethernet"]
+else:
+    ethernet = []
+
+# Generating module_params.c from modules.yaml
+cmd = (
+    [
+        sys.executable,
+        os.path.join(prj_root, "tools/module_config/generate_module_params.py"),
+        # "--verbose,
+        # "--board-with-io",
+        "--params-file",
+        os.path.join(cwd, "module_params.c"),
+        "--board",
+        "nextpilot",
+        # "--timer-config", "src/timer_config.cpp",
+        "--config-files",
+    ]
+    + list(modules_config_file)
+    + ethernet
+)
+
+if sys.version_info > (3, 0):
+    subprocess.call(cmd, cwd=cwd)
+
+# 由于xxx_params.c生成parameters.xml文件
+# params_source_dir.add(Dir("#/build").abspath)
+cmd = [
+    sys.executable,
+    os.path.join(cwd, "tools/process_params.py"),
+    "--xml",
+    File("#/build/parameters.xml").abspath,
+    "--json",
+    File("#/build/paramters.json").abspath,
+    "--compress",
+    "--inject-xml",
+    os.path.join(cwd, "tools/parameters_injected.xml"),
+    "--board",
+    "nextpilot",
+    # --verbose
+    "--src-path",
+] + list(params_source_dir)
+
+subprocess.call(cmd, cwd=cwd)
+
+# 由parameters.xml生成parameters.hpp文件
+cmd = [
+    sys.executable,
+    os.path.join(cwd, "tools/generate_params.py"),
+    "--xml",
+    File("#/build/parameters.xml").abspath,
+    "--dest",
+    os.path.join(cwd, "interface"),
+]
+
+subprocess.call(cmd, cwd=cwd)
+
+
+inc = [
+    cwd,
+    os.path.join(cwd, "interface"),
+    os.path.join(cwd, "storage"),
+    os.path.join(cwd, "wrapper"),
+]
+
+src = [
+    "param_interface.c",
+    "param_storage.c",
+    "param.c",
+    "interface/param_global_autogen.cpp",
+]
+
+if GetDepend(["PARAM_USING_STORAGE_FILE"]) or GetDepend(["PARAM_USING_DEVICE_FILE"]):
+    src += ["storage/param_storage_file.c"]
+
+if GetDepend(["PARAM_USING_STORAGE_FM25V02"]) or GetDepend(["PARAM_USING_DEVICE_FM25V02"]):
+    src += ["storage/param_storage_fm25v02.c"]
+
+# if GetDepend(["PARAM_USING_GLOBAL_AUTOGEN"]):
+#     src += ["interface/param_global_autogen.cpp"]
+
+if GetDepend(["PARAM_USING_LINKER_SECTION"]):
+    src += ["interface/param_linker_section.cpp"]
+
+if GetDepend(["PARAM_USING_SIMULINK_CAPI"]):
+    src += ["interface/param_simulink_capi.cpp"]
+
+
+objs = DefineGroup("pkg/param", src, depend=["PKG_USING_PARAM_V1"], CPPPATH=inc)
+
+
+Return("objs")

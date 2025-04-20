@@ -13,7 +13,7 @@
  */
 
 #include <hrtimer.h>
-#include <parameters/param.h>
+#include <param/param.h>
 #include "rangefinder.hpp"
 #include <math.h>
 

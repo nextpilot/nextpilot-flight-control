@@ -33,7 +33,7 @@
 #include <uORB/topics/led_control.h>
 #include <uORB/topics/tune_control.h>
 #include <systemlib/err.h>
-#include <parameters/param.h>
+#include <param/param.h>
 #include <drivers/drv_hrt.h>
 #include <drivers/drv_tone_alarm.h>
 #include "commander_helper.h"

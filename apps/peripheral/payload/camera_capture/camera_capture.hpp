@@ -18,7 +18,7 @@
 #include <drivers/drv_hrt.h>
 #include <drivers/drv_input_capture.h>
 #include <drivers/drv_pwm_output.h>
-#include <lib/parameters/param.h>
+#include <lib/param/param.h>
 #include <px4_platform_common/px4_config.h>
 #include <px4_platform_common/defines.h>
 #include <px4_platform_common/module.h>

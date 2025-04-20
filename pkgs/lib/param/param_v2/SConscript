@@ -12,7 +12,7 @@ cwd = GetCurrentDir()
 
 
 # 工程根目录
-prj_root = os.path.abspath(os.path.join(cwd, "../../../"))
+prj_root = os.path.abspath(os.path.join(cwd, "../../../../"))
 
 # 搜索包含*_params.c文件的目录
 params_source_dir = set()

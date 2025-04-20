@@ -31,7 +31,7 @@
 #include <matrix/math.hpp>
 #include <px4_platform_common/px4_work_queue/WorkItemScheduled.hpp>
 #include <systemlib/err.h>
-#include <parameters/param.h>
+#include <param/param.h>
 
 #include <uORB/Publication.hpp>
 #include <uORB/Subscription.hpp>
@@ -129,17 +129,17 @@ public:
     void adjust_roll();
 
 private:
-    struct hrt_call _engagecall {};
+    struct hrt_call _engagecall{};
 
-    struct hrt_call _disengagecall {};
+    struct hrt_call _disengagecall{};
 
-    struct hrt_call _engage_turn_on_off_call {};
+    struct hrt_call _engage_turn_on_off_call{};
 
-    struct hrt_call _disengage_turn_on_off_call {};
+    struct hrt_call _disengage_turn_on_off_call{};
 
-    struct hrt_call _keepalivecall_up {};
+    struct hrt_call _keepalivecall_up{};
 
-    struct hrt_call _keepalivecall_down {};
+    struct hrt_call _keepalivecall_down{};
 
     float            _activation_time{0.5f};
     float            _interval{100.f};
