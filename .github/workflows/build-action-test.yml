@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      - name: Checkout Current Repo
+      - name: Checkout Repo Code
         uses: actions/checkout@v4
         with:
           submodules: "recursive"
@@ -50,7 +50,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Setup Compile System
+      - name: Setup Build Tools
         shell: bash
         run: |
           sudo apt-get update -y
@@ -61,7 +61,7 @@ jobs:
           # sudo apt-get install libncurses5 libncurses5-dev libncursesw5-dev -y
           python3 -m pip install -r tools/install/requirements_v3.txt
 
-      - name: Display Toolchain Info
+      - name: Display Tools Version
         shell: bash
         run: |
           echo "python: $(python3 -V), $(which python3)"
