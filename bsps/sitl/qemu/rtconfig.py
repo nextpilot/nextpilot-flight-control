@@ -54,7 +54,7 @@ if PLATFORM == "gcc":
     AFPFLAGS = " -mfloat-abi=softfp -mfpu=neon"
     DEVICE = " -march=armv7-a -mtune=cortex-a7 -ftree-vectorize -ffast-math -funwind-tables -fno-strict-aliasing"
 
-    CXXFLAGS = DEVICE + CFPFLAGS + " -Wall -fdiagnostics-color=always"
+    CXXFLAGS = DEVICE + CFPFLAGS + " -Wall -fdiagnostics-color=always -D__STDC_FORMAT_MACROS"
     CFLAGS = DEVICE + CFPFLAGS + " -Wall -Wno-cpp -std=gnu99 -D_POSIX_SOURCE -fdiagnostics-color=always"
     AFLAGS = DEVICE + " -c" + AFPFLAGS + " -x assembler-with-cpp"
     LFLAGS = (
