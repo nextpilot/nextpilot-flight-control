@@ -11,15 +11,21 @@
 #ifndef __NEXTPILOT_VISIBILITY_H__
 #define __NEXTPILOT_VISIBILITY_H__
 
-#ifdef __EXPORT
-#   undef __EXPORT
-#endif
-#define __EXPORT __attribute__((visibility("default")))
+#ifndef __EXPORT
+#   if __GNUC__ >= 4
+#      define __EXPORT __attribute__((visibility("default")))
+#   else
+#      define __EXPORT
+#   endif
+#endif // __EXPORT
 
-#ifdef __PRIVATE
-#   undef __PRIVATE
-#endif
-#define __PRIVATE __attribute__((visibility("hidden")))
+#ifndef __PRIVATE
+#   if __GNUC__ >= 4
+#      define __PRIVATE __attribute__((visibility("hidden")))
+#   else
+#      define __PRIVATE
+#   endif
+#endif //__PRIVATE
 
 #ifdef __cplusplus
 #   define __BEGIN_DECLS extern "C" {

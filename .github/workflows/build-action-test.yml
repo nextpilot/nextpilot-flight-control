@@ -1,0 +1,56 @@
+# /******************************************************************
+#  *      _   __             __   ____   _  __        __
+#  *     / | / /___   _  __ / /_ / __ \ (_)/ /____   / /_
+#  *    /  |/ // _ \ | |/_// __// /_/ // // // __ \ / __/
+#  *   / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
+#  *  /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
+#  *
+#  * Copyright All Reserved © 2015-2024 NextPilot Development Team
+#  ******************************************************************/
+
+name: build-action-test
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches:
+      - master
+      - main
+    paths-ignore:
+      - docs/**
+      - "**/README.md"
+      - "**/README_zh.md"
+  pull_request:
+    branches:
+      - master
+      - main
+    paths-ignore:
+      - docs/**
+      - "**/README.md"
+      - "**/README_zh.md"
+
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
+jobs:
+  build:
+    name: build-sitl-qemu
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Current Repo
+        uses: actions/checkout@v4
+        with:
+          submodules: "recursive"
+
+      - name: Setup Python Tools
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run CI Shell
+        shell: bash
+        run: |
+          source tools/install/ubuntu_ci.sh

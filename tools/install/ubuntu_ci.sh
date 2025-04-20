@@ -12,19 +12,49 @@ echo '*'
 echo '* Copyright All Reserved 2015-2024 NextPilot Development Team'
 echo '******************************************************************'
 
+# 在ci环境下已经安装了以下工具：
+# - python 3.11
+# - git
+#
+# 还需要安装以下工具：
+# - gcc-arm
+# - qemu
+
+#################################################################
+# install system tools
+#################################################################
 sudo apt update -y
 sudo apt upgrade -y
 sudo apt install -y \
-    gcc gcc-arm-none-eabi binutils-arm-none-eabi gdb-multiarch \
+    gcc gdb-multiarch \
+    gcc-arm-none-eabi binutils-arm-none-eabi \
     libncurses5 libncurses5-dev libncursesw5-dev \
     qemu qemu-system-arm
 
+#################################################################
+# install pip package
+#################################################################
 python3 -m pip install -r tools/install/requirements_v3.txt
 
+#################################################################
+# display toolchain information
+#################################################################
+echo
+echo "python: $(python3 -V), $(which python3)"
+echo "----------------------------------------------------------------"
+echo "pip: $(pip3 -V)"
+echo "----------------------------------------------------------------"
+echo "scons: $(which scons)"
+echo "$(scons --version)"
+echo "----------------------------------------------------------------"
+echo "gcc: $(which arm-none-eabi-gcc)"
+echo "$(arm-none-eabi-gcc --version)"
+
+#################################################################
+# buld sitl/qemu board
+#################################################################
 # echo "RTT_EXEC_PATH=/opt/gcc-arm-none-eabi-10-2020-q4-major/bin" >>$GITHUB_ENV
 # echo "RTT_CC=gcc" >>$GITHUB_ENV
-
 export RTT_EXEC_PATH=/usr/bin/
 export RTT_CC=gcc
-
 scons -C bsps/sitl/qemu default -j$(nproc)
