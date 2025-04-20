@@ -53,10 +53,10 @@ jobs:
       - name: Install Build Toolchain
         shell: bash
         run: |
-          sudo apt install gcc gdb-multiarch -y
-          sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi -y
-          sudo apt install qemu-system-arm -y
-          sudo apt install libncurses5 libncurses5-dev libncursesw5-dev -y
+          sudo apt-get install gcc gdb-multiarch -y
+          sudo apt-get install gcc-arm-none-eabi binutils-arm-none-eabi -y
+          sudo apt-get install qemu-system-arm -y
+          # sudo apt-get install libncurses5 libncurses5-dev libncursesw5-dev -y
           python3 -m pip install -r tools/install/requirements_v3.txt
 
       - name: Build bsps/silt/qemu
