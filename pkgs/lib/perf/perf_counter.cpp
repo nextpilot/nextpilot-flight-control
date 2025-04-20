@@ -27,6 +27,10 @@
 
 #include "perf_counter.h"
 
+#ifndef PRIu64
+#   define PRIu64 "llu"
+#endif // PRIu64
+
 /**
  * Header common to all counters.
  */
