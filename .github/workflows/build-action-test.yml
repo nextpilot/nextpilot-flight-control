@@ -37,7 +37,7 @@ jobs:
   build:
     name: build-sitl-qemu
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout Current Repo
@@ -50,7 +50,18 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Run CI Shell
+      - name: Install Build Toolchain
         shell: bash
         run: |
-          source tools/install/ubuntu_ci.sh
+          sudo apt install gcc gdb-multiarch -y
+          sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi -y
+          sudo apt install qemu-system-arm -y
+          sudo apt install libncurses5 libncurses5-dev libncursesw5-dev -y
+          python3 -m pip install -r tools/install/requirements_v3.txt
+
+      - name: Build bsps/silt/qemu
+        shell: bash
+        run: |
+          export RTT_EXEC_PATH=/usr/bin/
+          export RTT_CC=gcc
+          scons -C bsps/sitl/qemu default -j$(nproc)
