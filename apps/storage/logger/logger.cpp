@@ -634,7 +634,7 @@ void Logger::run() {
     }
 
     /* init the update timer */
-    struct hrt_call timer_call {};
+    struct hrt_call timer_call{};
 
     rt_sem_init(&_timer_callback_data.semaphore, "callback_lock", 0, RT_IPC_FLAG_PRIO);
     /* timer_semaphore use case is a signal */
@@ -645,7 +645,7 @@ void Logger::run() {
     if (_polling_topic_meta) {
         polling_topic_sub = orb_subscribe(_polling_topic_meta);
 
-        if (polling_topic_sub < 0) {
+        if (!polling_topic_sub) {
             PX4_ERR("Failed to subscribe (%i)", errno);
         }
 
@@ -913,7 +913,7 @@ void Logger::run() {
     // stop the writer thread
     _writer.thread_stop();
 
-    if (polling_topic_sub >= 0) {
+    if (polling_topic_sub) {
         orb_unsubscribe(polling_topic_sub);
     }
 
