@@ -1,0 +1,11 @@
+menuconfig PKG_USING_UORB
+    bool "uORB: API for the uORB lightweight object broker"
+    select PKG_USING_HRTIMER
+    select PKG_USING_CONTAINER
+    default n
+
+if PKG_USING_UORB
+    config UORB_USING_CALLBACK
+        bool "enable uorb publish callback"
+        default n
+endif
