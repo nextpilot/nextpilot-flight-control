@@ -48,7 +48,7 @@ void FailureInjector::update() {
                     for (int i = 0; i < esc_status_s::CONNECTED_ESC_MAX; i++) {
                         PX4_INFO("CMD_INJECT_FAILURE, motor %d ok", i);
                         _esc_blocked &= ~(1 << i);
-                        _esc_wrong &= ~(1 << i);
+                        _esc_wrong   &= ~(1 << i);
                     }
 
                 } else if (instance >= 1 && instance <= esc_status_s::CONNECTED_ESC_MAX) {
@@ -56,7 +56,7 @@ void FailureInjector::update() {
 
                     PX4_INFO("CMD_INJECT_FAILURE, motor %d ok", instance - 1);
                     _esc_blocked &= ~(1 << (instance - 1));
-                    _esc_wrong &= ~(1 << (instance - 1));
+                    _esc_wrong   &= ~(1 << (instance - 1));
                 }
             }
 
@@ -99,9 +99,7 @@ void FailureInjector::update() {
             vehicle_command_ack_s ack{};
             ack.command       = vehicle_command.command;
             ack.from_external = false;
-            ack.result        = supported ?
-                                    vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED :
-                                    vehicle_command_ack_s::VEHICLE_CMD_RESULT_UNSUPPORTED;
+            ack.result        = supported ? vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED : vehicle_command_ack_s::VEHICLE_CMD_RESULT_UNSUPPORTED;
             ack.timestamp     = hrt_absolute_time();
             _command_ack_pub.publish(ack);
         }
@@ -118,14 +116,14 @@ void FailureInjector::manipulateEscStatus(esc_status_s &status) {
             if (_esc_blocked & (1 << i_esc)) {
                 unsigned function = status.esc[i].actuator_function;
                 memset(&status.esc[i], 0, sizeof(status.esc[i]));
-                status.esc[i].actuator_function = function;
-                offline |= 1 << i;
+                status.esc[i].actuator_function  = function;
+                offline                         |= 1 << i;
 
             } else if (_esc_wrong & (1 << i_esc)) {
                 // Create wrong rerport for this motor by scaling key values up and down
                 status.esc[i].esc_voltage *= 0.1f;
                 status.esc[i].esc_current *= 0.1f;
-                status.esc[i].esc_rpm *= 10.0f;
+                status.esc[i].esc_rpm     *= 10.0f;
             }
         }
 
@@ -195,8 +193,7 @@ void FailureDetector::updateAttitudeStatus(const vehicle_status_s &vehicle_statu
 
             } else if (vehicle_status.vehicle_type == vehicle_status_s::VEHICLE_TYPE_FIXED_WING) {
                 // in FW flight rotate the attitude by 90° around pitch (level FW flight = 0° pitch)
-                const matrix::Eulerf euler_rotated = matrix::Eulerf(matrix::Quatf(attitude.q) * matrix::Quatf(matrix::Eulerf(0.f,
-                                                                                                                             M_PI_2_F, 0.f)));
+                const matrix::Eulerf euler_rotated = matrix::Eulerf(matrix::Quatf(attitude.q) * matrix::Quatf(matrix::Eulerf(0.f, M_PI_2_F, 0.f)));
                 roll                               = euler_rotated.phi();
                 pitch                              = euler_rotated.theta();
             }
@@ -385,8 +382,7 @@ void FailureDetector::updateMotorStatus(const vehicle_status_s &vehicle_status, 
                 }
 
                 const bool throttle_above_threshold = esc_throttle > _param_fd_motor_throttle_thres.get();
-                const bool current_too_low          = cur_esc_report.esc_current < esc_throttle *
-                                                                              _param_fd_motor_current2throttle_thres.get();
+                const bool current_too_low          = cur_esc_report.esc_current < esc_throttle * _param_fd_motor_current2throttle_thres.get();
 
                 if (throttle_above_threshold && current_too_low && !esc_timed_out) {
                     if (_motor_failure_undercurrent_start_time[i_esc] == 0) {

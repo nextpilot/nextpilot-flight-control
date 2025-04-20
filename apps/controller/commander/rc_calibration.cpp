@@ -13,13 +13,17 @@
  * Remote Control calibration routine
  */
 
-#include <events/events.h>
-#include <defines.h>
+#include <px4_platform_common/events.h>
+#include <px4_platform_common/posix.h>
+#include <px4_platform_common/time.h>
+#include <px4_platform_common/defines.h>
+
 #include "rc_calibration.h"
 #include "commander_helper.h"
+
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/manual_control_setpoint.h>
-#include <ulog/mavlink_log.h>
+#include <systemlib/mavlink_log.h>
 #include <param/param.h>
 
 using namespace nextpilot;

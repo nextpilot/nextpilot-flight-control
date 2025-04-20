@@ -8,7 +8,8 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include <ulog/log.h>
+#include <px4_platform_common/px4_config.h>
+#include <px4_platform_common/log.h>
 #include <conversion/rotation.h>
 #include <device/device_id.h>
 #include <mathlib/mathlib.h>

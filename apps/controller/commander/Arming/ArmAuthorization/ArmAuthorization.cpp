@@ -12,13 +12,13 @@
 #include <string.h>
 #include <unistd.h>
 
-#include <defines.h>
-#include <param/param.h>
-#include <ulog/mavlink_log.h>
+#include <px4_platform_common/defines.h>
+#include <px4_platform_common/px4_config.h>
+#include <lib/parameters/param.h>
+#include <systemlib/mavlink_log.h>
 #include <uORB/Publication.hpp>
 #include <uORB/topics/vehicle_command.h>
 #include <uORB/topics/vehicle_command_ack.h>
-#include <inttypes.h>
 
 using namespace time_literals;
 using namespace nextpilot;

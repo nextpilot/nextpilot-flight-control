@@ -12,15 +12,18 @@
 #include "calibration_messages.h"
 #include "calibration_routines.h"
 #include "commander_helper.h"
-#include <defines.h>
+#include <px4_platform_common/defines.h>
+#include <px4_platform_common/posix.h>
+#include <px4_platform_common/time.h>
 
-#include <hrtimer.h>
-#include <mathlib/mathlib.h>
+#include <drivers/drv_hrt.h>
+#include <lib/mathlib/mathlib.h>
 #include <geo/geo.h>
 #include <matrix/math.hpp>
 #include <conversion/rotation.h>
 #include <param/param.h>
-#include <ulog/mavlink_log.h>
+#include <systemlib/err.h>
+#include <systemlib/mavlink_log.h>
 #include <uORB/topics/vehicle_attitude.h>
 #include <uORB/Subscription.hpp>
 

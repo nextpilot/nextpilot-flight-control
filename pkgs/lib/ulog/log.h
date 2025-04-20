@@ -8,17 +8,11 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#ifndef __NEXTPILOT_DEFINES_H__
-#define __NEXTPILOT_DEFINES_H__
+#ifndef __LOG_H__
+#define __LOG_H__
 
-#include "rtt.h"
-#include "macros.h"
-#include "constants.h"
-#include "visibility.h"
+#include <defines.h>
+#include <inttypes.h>
+#include <rtdbg.h>
 
-// 以下是为了兼容px4
-#include "px4_defines.h"
-#include "px4_log.h"
-#include "px4_time.h"
-
-#endif // __NEXTPILOT_DEFINES_H__
+#endif // __LOG_H__

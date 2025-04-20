@@ -9,7 +9,8 @@
  ******************************************************************/
 
 #define PARAM_IMPLEMENTATION
-#include <param/param.h>
+#include <parameters/param.h>
+
 #include "failsafe.h"
 #include "../ModeUtil/mode_requirements.hpp"
 #include <uORB/topics/vehicle_status.h>
@@ -43,6 +44,7 @@ public:
     FailsafeBase &current() {
         return _failsafe;
     }
+
     std::map<param_t, Param> &params() {
         return _used_params;
     }
@@ -89,6 +91,7 @@ std::vector<std::string> get_used_params() {
 
     return ret;
 }
+
 param_value_u get_param_value(const std::string &name) {
     std::map<param_t, Param> &used_params = failsafe_instance.params();
 

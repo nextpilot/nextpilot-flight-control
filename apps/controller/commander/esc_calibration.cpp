@@ -19,10 +19,12 @@
 #include "esc_calibration.h"
 #include "calibration_messages.h"
 #include "calibration_routines.h"
-#include <hrtimer.h>
+#include <drivers/drv_hrt.h>
 #include <drivers/drv_pwm_output.h>
-#include <defines.h>
-#include <ulog/mavlink_log.h>
+#include <px4_platform_common/defines.h>
+#include <px4_platform_common/posix.h>
+#include <px4_platform_common/time.h>
+#include <systemlib/mavlink_log.h>
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/battery_status.h>
 #include <uORB/topics/actuator_test.h>

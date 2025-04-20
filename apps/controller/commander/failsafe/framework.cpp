@@ -15,10 +15,9 @@
 #define DEFINE_GET_CUSTOM_MODE
 #include "../custom_flight_mode.h"
 #include <uORB/topics/vehicle_status.h>
-#include <events/events.h>
-#include <ulog/log.h>
-#include <ulog/mavlink_log.h>
-#include <defines.h>
+#include <px4_platform_common/events.h>
+#include <px4_platform_common/log.h>
+#include <systemlib/mavlink_log.h>
 
 using failsafe_action_t = events::px4::enums::failsafe_action_t;
 using failsafe_cause_t  = events::px4::enums::failsafe_cause_t;

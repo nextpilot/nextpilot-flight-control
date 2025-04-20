@@ -15,14 +15,17 @@
  * @author Lorenz Meier <lm@inf.ethz.ch>
  */
 
-#include <defines.h>
-#include <events/events.h>
+#include <px4_platform_common/defines.h>
+#include <px4_platform_common/events.h>
+#include <px4_platform_common/posix.h>
+#include <px4_platform_common/time.h>
 
-#include <hrtimer.h>
+#include <drivers/drv_hrt.h>
 #include <drivers/drv_tone_alarm.h>
+
 #include <geo/geo.h>
 #include <mathlib/mathlib.h>
-#include <ulog/mavlink_log.h>
+#include <lib/systemlib/mavlink_log.h>
 #include <matrix/math.hpp>
 #include <uORB/Publication.hpp>
 #include <uORB/Subscription.hpp>

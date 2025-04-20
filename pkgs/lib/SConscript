@@ -4,17 +4,11 @@ from building import *
 
 cwd = GetCurrentDir()
 
-
 objs = []
-
-inc = [cwd, cwd + "/include", cwd + "/lib"]
-src = []
-
-objs += DefineGroup(name="pkg/include", src=[], depend=[], CPPPATH=inc)
 
 for d in os.listdir(cwd):
     path = os.path.join(cwd, d)
     if os.path.isfile(os.path.join(path, "SConscript")):
-        objs += SConscript(os.path.join(d, "SConscript"))
+        objs += SConscript(os.path.join(path, "SConscript"))
 
 Return("objs")

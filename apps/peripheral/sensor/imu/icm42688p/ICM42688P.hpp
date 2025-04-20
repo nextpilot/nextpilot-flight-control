@@ -23,7 +23,7 @@
 #include <lib/drivers/accelerometer/PX4Accelerometer.hpp>
 #include <lib/drivers/device/spi.h>
 #include <lib/drivers/gyroscope/PX4Gyroscope.hpp>
-#include <lib/geo/geo.h>
+#include <geo/geo.h>
 #include <lib/perf/perf_counter.h>
 #include <px4_platform_common/atomic.h>
 #include <px4_platform_common/i2c_spi_buses.h>

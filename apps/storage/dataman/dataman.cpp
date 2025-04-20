@@ -18,10 +18,9 @@
  * @author David Sidrane
  */
 
-#define LOG_TAG        "dataman"
-#define LOG_LVL        LOG_LVL_INFO
+#define LOG_TAG "dataman"
+#define LOG_LVL LOG_LVL_INFO
 
-#define PX4_STORAGEDIR ""
 
 #include <defines.h>
 #include <module/module_command.hpp>

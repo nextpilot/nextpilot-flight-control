@@ -17,16 +17,20 @@
 #include "calibration_messages.h"
 #include "calibration_routines.h"
 #include "commander_helper.h"
-#include <defines.h>
+
+#include <px4_platform_common/defines.h>
+#include <px4_platform_common/posix.h>
+#include <px4_platform_common/time.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <math.h>
-#include <hrtimer.h>
+#include <drivers/drv_hrt.h>
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/differential_pressure.h>
-#include <ulog/mavlink_log.h>
-#include <param/param.h>
+#include <systemlib/mavlink_log.h>
+#include <parameters/param.h>
+#include <systemlib/err.h>
 
 using namespace nextpilot;
 using namespace time_literals;

@@ -8,7 +8,6 @@ cwd = GetCurrentDir()
 inc = [cwd]
 src = []
 
-objs = DefineGroup("pkg/include", src, depend=[""], CPPPATH=inc)
-
+objs = DefineGroup("pkg/atomic", src, depend=[""], CPPPATH=inc)
 
 Return("objs")

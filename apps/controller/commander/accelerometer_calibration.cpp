@@ -102,16 +102,21 @@
 #include "calibration_routines.h"
 #include "commander_helper.h"
 #include "factory_calibration_storage.h"
-#include <defines.h>
-#include <hrtimer.h>
+
+#include <px4_platform_common/defines.h>
+#include <px4_platform_common/posix.h>
+#include <px4_platform_common/time.h>
+
+#include <drivers/drv_hrt.h>
 #include <sensor_calibration/Accelerometer.hpp>
 #include <sensor_calibration/Utilities.hpp>
-#include <mathlib/mathlib.h>
+#include <lib/mathlib/mathlib.h>
 #include <geo/geo.h>
 #include <matrix/math.hpp>
 #include <conversion/rotation.h>
-#include <param/param.h>
-#include <ulog/mavlink_log.h>
+#include <lib/parameters/param.h>
+#include <lib/systemlib/err.h>
+#include <lib/systemlib/mavlink_log.h>
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/sensor_accel.h>
 #include <uORB/topics/vehicle_attitude.h>

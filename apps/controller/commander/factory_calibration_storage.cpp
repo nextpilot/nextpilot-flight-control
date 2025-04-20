@@ -8,14 +8,15 @@
  * Copyright All Reserved © 2015-2024 NextPilot Development Team
  ******************************************************************/
 
-#include <defines.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <string.h>
-#include <sys/unistd.h>
-#include <param/param.h>
-#include <ulog/log.h>
+
+#include <lib/parameters/param.h>
+#include <px4_platform_common/log.h>
+
 #include "factory_calibration_storage.h"
+
 
 static const char *CALIBRATION_STORAGE = "/fs/mtd_caldata";
 

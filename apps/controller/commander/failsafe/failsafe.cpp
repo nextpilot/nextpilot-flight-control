@@ -12,8 +12,8 @@
 #define LOG_LVL LOG_LVL_INFO
 
 #include "failsafe.h"
-#include <defines.h>
-#include <ulog/log.h>
+
+#include <px4_platform_common/log.h>
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/battery_status.h>
 #include <circuit_breaker/circuit_breaker.h>

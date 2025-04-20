@@ -17,7 +17,7 @@
 
 #include <gtest/gtest.h>
 #include <matrix/matrix/math.hpp>
-#include <defines.h>
+#include <px4_platform_common/defines.h>
 
 #include "lm_fit.hpp"
 #include "mag_calibration_test_data.h"
@@ -42,16 +42,16 @@ void MagCalTest::generate2SidesMagData(float *x, float *y, float *z, unsigned in
     const float d_angle = 2.f * M_PI_F / float(n_samples / 2);
 
     for (int i = 0; i < int(n_samples / 2); i++) {
-        x[i] = mag_str * sinf(psi);
-        y[i] = mag_str * cosf(psi);
-        z[i] = 0.f;
-        psi += d_angle;
+        x[i]  = mag_str * sinf(psi);
+        y[i]  = mag_str * cosf(psi);
+        z[i]  = 0.f;
+        psi  += d_angle;
     }
 
     for (int i = int(n_samples / 2); i < int(n_samples); i++) {
-        x[i] = mag_str * sinf(theta);
-        y[i] = 0.f;
-        z[i] = mag_str * cosf(theta);
+        x[i]   = mag_str * sinf(theta);
+        y[i]   = 0.f;
+        z[i]   = mag_str * cosf(theta);
         theta += d_angle;
     }
 }

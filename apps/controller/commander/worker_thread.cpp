@@ -18,10 +18,9 @@
 #include "level_calibration.h"
 #include "mag_calibration.h"
 #include "rc_calibration.h"
-#include <events/events.h>
-#include <ulog/log.h>
-#include <defines.h>
-#include <shutdown/shutdown.h>
+#include <px4_platform_common/events.h>
+#include <px4_platform_common/log.h>
+#include <px4_platform_common/shutdown.h>
 #include <param/param.h>
 
 using namespace time_literals;

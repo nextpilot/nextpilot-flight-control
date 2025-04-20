@@ -5,20 +5,7 @@
  *  / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
  * /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
  *
- * Copyright All Reserved © 2015-2024 NextPilot Development Team
+ * Copyright All Reserved © 2015-2025 NextPilot Development Team
  ******************************************************************/
 
-#ifndef __NEXTPILOT_DEFINES_H__
-#define __NEXTPILOT_DEFINES_H__
-
-#include "rtt.h"
-#include "macros.h"
-#include "constants.h"
-#include "visibility.h"
-
-// 以下是为了兼容px4
-#include "px4_defines.h"
-#include "px4_log.h"
-#include "px4_time.h"
-
-#endif // __NEXTPILOT_DEFINES_H__
+#include "px4_platform_common/time.h"

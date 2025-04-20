@@ -20,6 +20,7 @@
 
 #include "Commander.hpp"
 
+#include "px4_log.h"
 /* commander module headers */
 #include "Arming/ArmAuthorization/ArmAuthorization.h"
 #include "commander_helper.h"
@@ -30,18 +31,25 @@
 #include "ModeUtil/conversions.hpp"
 
 /*  headers */
-#include <hrtimer.h>
-#include <defines.h>
+#include <drivers/drv_hrt.h>
 #include <drivers/drv_tone_alarm.h>
 #include <geo/geo.h>
 #include <mathlib/mathlib.h>
-#include <matrix/math.hpp>
-#include <events/events.h>
-// #include <shutdown/external_reset_lockout.h>
-#include <shutdown/shutdown.h>
-#include <ulog/mavlink_log.h>
+#include <px4_platform_common/events.h>
+#include <px4_platform_common/px4_config.h>
+#include <px4_platform_common/defines.h>
+#include <px4_platform_common/external_reset_lockout.h>
+#include <px4_platform_common/posix.h>
+#include <px4_platform_common/shutdown.h>
+#include <px4_platform_common/tasks.h>
+#include <px4_platform_common/time.h>
+#include <systemlib/mavlink_log.h>
+
+#include <math.h>
 #include <float.h>
 #include <cstring>
+#include <matrix/math.hpp>
+
 #include <uORB/topics/mavlink_log.h>
 #include <uORB/topics/tune_control.h>
 

@@ -5,11 +5,14 @@ import subprocess
 from building import *
 
 objs = []
+
+Return("objs")
+
 cwd = GetCurrentDir()
 
 
 # 工程根目录
-prj_root = os.path.abspath(os.path.join(cwd, "../../"))
+prj_root = os.path.abspath(os.path.join(cwd, "../../../"))
 
 # 搜索包含*_params.c文件的目录
 params_source_dir = set()
@@ -22,7 +25,6 @@ for root, dirs, files in os.walk(prj_root):
     for file in files:
         if file == "module_params.c":
             continue
-
         if "rtos" in root:
             continue
 
@@ -61,7 +63,7 @@ cmd = (
         os.path.join(cwd, "module_params.c"),
         "--board",
         "nextpilot",
-        # "--timer-config", "src/timer_config.cpp",
+        # "--timer-config", "xxxx",
         "--config-files",
     ]
     + list(modules_config_file)
@@ -98,43 +100,33 @@ cmd = [
     "--xml",
     File("#/build/parameters.xml").abspath,
     "--dest",
-    os.path.join(cwd, "interface"),
+    cwd,
 ]
 
 subprocess.call(cmd, cwd=cwd)
 
 
-inc = [
-    cwd,
-    os.path.join(cwd, "interface"),
-    os.path.join(cwd, "storage"),
-    os.path.join(cwd, "wrapper"),
-]
+inc = [cwd]
 
-src = [
-    "param_interface.c",
-    "param_storage.c",
-    "param.c",
-    "interface/param_global_autogen.cpp",
-]
+src = ["param.cpp", "param_cmd.cpp"]
 
-if GetDepend(["PARAM_USING_STORAGE_FILE"]) or GetDepend(["PARAM_USING_DEVICE_FILE"]):
-    src += ["storage/param_storage_file.c"]
+if GetDepend(["PARAM_USING_DEVICE_FILE"]):
+    src += ["param_device_file.cpp"]
 
-if GetDepend(["PARAM_USING_STORAGE_FM25V02"]) or GetDepend(["PARAM_USING_DEVICE_FM25V02"]):
-    src += ["storage/param_storage_fm25v02.c"]
+if GetDepend(["PARAM_USING_DEVICE_FM25V02"]):
+    src += ["param_device_fm25v02.cpp"]
 
 # if GetDepend(["PARAM_USING_GLOBAL_AUTOGEN"]):
 #     src += ["interface/param_global_autogen.cpp"]
 
-if GetDepend(["PARAM_USING_LINKER_SECTION"]):
-    src += ["interface/param_linker_section.cpp"]
+# if GetDepend(["PARAM_USING_LINKER_SECTION"]):
+#     src += ["interface/param_linker_section.cpp"]
 
-if GetDepend(["PARAM_USING_SIMULINK_CAPI"]):
-    src += ["interface/param_simulink_capi.cpp"]
+# if GetDepend(["PARAM_USING_SIMULINK_CAPI"]):
+#     src += ["interface/param_simulink_capi.cpp"]
 
 
-objs = DefineGroup("pkg/param", src, depend=["PKG_USING_PARAM"], CPPPATH=inc)
+objs = DefineGroup("pkg/param", src, depend=["PKG_USING_PARAM_V2"], CPPPATH=inc)
 
 
 Return("objs")

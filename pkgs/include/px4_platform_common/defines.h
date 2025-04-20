@@ -9,11 +9,19 @@
  ******************************************************************/
 
 
-#ifndef __DEFINES_H__
-#define __DEFINES_H__
+#ifndef __PX4_PLATFORM_DEFINES_H__
+#define __PX4_PLATFORM_DEFINES_H__
 
 #define PX4_ERROR (-1)
 #define PX4_OK    (0)
+
+#ifndef ERROR
+// #define ERROR (-1)
+#endif // ERROR
+
+#ifndef OK
+#   define OK 0
+#endif // OK
 
 
 /* Define PX4_ISFINITE */
@@ -39,4 +47,4 @@ static inline constexpr bool PX4_ISFINITE(double x) {
 #define PX4_O_MODE_666 0666
 #define PX4_O_MODE_600 0600
 
-#endif // __DEFINES_H__
+#endif // __PX4_PLATFORM_DEFINES_H__
