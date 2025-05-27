@@ -38,8 +38,13 @@ static inline constexpr bool PX4_ISFINITE(double x) {
 #endif /* __cplusplus */
 
 
-#define PX4_ROOTFSDIR  ""
-#define PX4_STORAGEDIR PX4_ROOTFSDIR "/fs/microsd"
+#ifndef SYS_USING_ROMFS
+#   define PX4_ROOTFSDIR  ""
+#   define PX4_STORAGEDIR ""
+#else
+#   define PX4_ROOTFSDIR  ""
+#   define PX4_STORAGEDIR PX4_ROOTFSDIR "/fs/microsd"
+#endif
 
 
 // mode for open with O_CREAT
