@@ -1,6 +1,6 @@
-menuconfig PKG_USING_PARAM_V2
-    bool "param: global parameter store manage v2"
-    default n
+# menuconfig PKG_USING_PARAM_V2
+#     bool "param: global parameter store manage v2"
+#     default n
 
 if PKG_USING_PARAM_V2
     # config PARAM_USING_GLOBAL_AUTOGEN
