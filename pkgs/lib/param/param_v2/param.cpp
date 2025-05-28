@@ -127,7 +127,7 @@ static struct param_wbuf_s *param_find_changed(param_t idx) {
     param_assert_locked();
 
     if (_params_changed[idx] && _utarray_param_values) {
-        struct param_wbuf_s key {};
+        struct param_wbuf_s key{};
 
         key.index = idx;
         return (struct param_wbuf_s *)utarray_find(_utarray_param_values, &key, utarray_param_compare);
@@ -551,7 +551,7 @@ int param_set_internal(param_t idx, const param_value_t *val, bool mark_saved, b
     // 如果没有找到则压入
     if (!s) {
         /* construct a new parameter */
-        struct param_wbuf_s buf {};
+        struct param_wbuf_s buf{};
 
         buf.index = idx;
 
@@ -783,17 +783,9 @@ uint32_t param_hash_check(void) {
 #   include "param_device_file.h"
 #endif
 #ifdef PARAM_USING_DEVICE_FM25V02
+#   include "param_device_fm25v02.h"
 #endif
 
-static param_device_t *__param_device__[] = {
-#ifdef PARAM_USING_DEVICE_FILE
-    &_param_file_device,
-#endif
-#ifdef PARAM_USING_DEVICE_FM25V02
-    &_param_fm25v02_device,
-#endif
-    nullptr,
-};
 
 int param_export_internal(param_device_t *dev, param_filter_func filter) {
     if (!dev) {
@@ -949,70 +941,78 @@ int param_load_default() {
     param_reset_all_no_notification();
 
     // 然后从设备中加载参数，并发送param_update
-    for (unsigned i = 0; i < sizeof(__param_device__) / sizeof(__param_device__[0]); i++) {
-        param_device_t *dev = __param_device__[i];
-        if (!dev) {
-            continue;
+#ifdef PARAM_USING_DEVICE_FILE
+    param_device_t *dev = &_param_file_device;
+#else
+    param_device_t *dev = &_param_fm25v02_device;
+#endif
+
+    if (!dev) {
+        return -RT_ERROR;
+    }
+
+    bool success = false;
+
+    // 最多尝试3次
+    for (int attempt = 1; attempt < 3; attempt++) {
+        // 先打开设备
+        bool opened = (dev->ops->open(dev, nullptr, 'r') == RT_EOK);
+
+        if (opened) {
+            success = (param_import_internal(dev, nullptr) == RT_EOK);
         }
 
-        // 最多尝试3次
-        for (int attempt = 1; attempt < 3; attempt++) {
-            bool success = false;
+        // 关闭设备
+        dev->ops->close(dev);
 
-            // 先打开设备
-            bool opened = (dev->ops->open(dev, nullptr, 'r') == RT_EOK);
-
-            if (opened) {
-                success = (param_import_internal(dev, nullptr) == RT_EOK);
-            }
-
-            // 关闭设备
-            dev->ops->close(dev);
-
-            // 导入成功就跳出循环
-            if (success) {
-                break;
-            }
+        // 导入成功就跳出循环
+        if (success) {
+            break;
         }
     }
 
-    return RT_EOK;
+    return success ? RT_EOK : -RT_ERROR;
 }
 
 int param_save_default() {
     // rt_sem_take(&_param_sem_save, RT_WAITING_FOREVER);
 
-    for (unsigned i = 0; i < sizeof(__param_device__) / sizeof(__param_device__[0]); i++) {
-        param_device_t *dev = __param_device__[i];
-        if (!dev) {
-            continue;
+#ifdef PARAM_USING_DEVICE_FILE
+    param_device_t *dev = &_param_file_device;
+#else
+    param_device_t *dev = &_param_fm25v02_device;
+#endif
+
+
+    if (!dev) {
+        return -RT_ERROR;
+    }
+
+    bool success = false;
+
+    // 最多尝试3次
+    for (int attempt = 1; attempt < 3; attempt++) {
+        // 先打开设备
+        bool opened = (dev->ops->open(dev, nullptr, 'w') == RT_EOK);
+
+        // 导出param
+        if (opened) {
+            success = param_export_internal(dev, nullptr) == RT_EOK;
         }
 
-        // 最多尝试3次
-        for (int attempt = 1; attempt < 3; attempt++) {
-            bool success = false;
+        // 关闭设备
+        dev->ops->close(dev);
 
-            // 先打开设备
-            bool opened = (dev->ops->open(dev, nullptr, 'w') == RT_EOK);
-
-            // 导出param
-            if (opened) {
-                success = param_export_internal(dev, nullptr) == RT_EOK;
-            }
-
-            // 关闭设备
-            dev->ops->close(dev);
-
-            // 保存成功就跳出循环
-            if (success) {
-                break;
-            }
+        // 保存成功就跳出循环
+        if (success) {
+            break;
         }
     }
 
+
     // rt_sem_release(&_param_sem_save);
 
-    return 0;
+    return success ? RT_EOK : -RT_ERROR;
 }
 
 void param_print_status() {

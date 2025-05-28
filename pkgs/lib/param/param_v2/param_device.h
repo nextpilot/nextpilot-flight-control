@@ -15,6 +15,7 @@
 #include <param_type.h>
 #include <stdint.h>
 #include <rtdevice.h>
+#include <stdbool.h>
 
 // param 访问接口
 
@@ -60,7 +61,14 @@ typedef struct param_device_s {
         int         fid;
         rt_device_t dev;
     };
+
+    bool inited;
+    bool opened;
+
 } param_device_t;
+
+#define PARAM_DEVICE_TYPE_FILE    1
+#define PARAM_DEVICE_TYPE_FM25V02 2
 
 int param_device_register(param_device_t *dev);
 

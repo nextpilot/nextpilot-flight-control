@@ -15,6 +15,7 @@ if PKG_USING_PARAM_V2
     #     bool "Enable simulink interface"
     #     default n
 
+
     choice
         prompt "Select storage device"
         default PARAM_USING_DEVICE_FILE
@@ -26,6 +27,12 @@ if PKG_USING_PARAM_V2
             bool "fm25v02"
     endchoice
 
+    if PARAM_USING_DEVICE_FM25V02
+        config PARAM_FM25V02_DEVICE_NAME
+            string "fm25v02 device name"
+            default "fm25v02"
+    endif
+
     if PARAM_USING_DEVICE_FILE
         config PARAM_DEFAULT_FILE_PATH
             string "default file path for param"
@@ -33,9 +40,13 @@ if PKG_USING_PARAM_V2
             default "/param.bin"
     endif
 
-    if PARAM_USING_DEVICE_FM25V02
-        config PARAM_FM25V02_DEVICE_NAME
-            string "fm25v02 device name for param"
-            default "fm25v02"
+    config PARAM_USING_USER_CONIFG_FILE
+        bool "if user param.txt exist then import"
+
+    if PARAM_USING_USER_CONIFG_FILE
+        config PARAM_USER_CONIFG_FILE_PATH
+            string "user param file path"
+            default "/mnt/microsd/etc/param.txt" if SYS_USING_ROMFS
+            default "/param.txt"
     endif
 endif
