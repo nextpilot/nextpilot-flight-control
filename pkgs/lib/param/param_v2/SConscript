@@ -6,7 +6,7 @@ from building import *
 
 objs = []
 
-Return("objs")
+# Return("objs")
 
 cwd = GetCurrentDir()
 
