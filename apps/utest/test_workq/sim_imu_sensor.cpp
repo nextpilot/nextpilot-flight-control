@@ -91,7 +91,7 @@ private:
     int       _tick_index{0};
 
     //
-    struct vehicle_angular_velocity_s _vangvel {};
+    struct vehicle_angular_velocity_s _vangvel{};
 
     uORB::Publication<vehicle_angular_velocity_s> _vangvel_pub{ORB_ID(vehicle_angular_velocity)};
 };
@@ -106,3 +106,4 @@ int sim_imu_start() {
 }
 
 // INIT_APP_EXPORT(sim_imu_start);
+MSH_CMD_EXPORT_ALIAS(sim_imu_start, utest_imu_sensor, sim imu rate sensor);
