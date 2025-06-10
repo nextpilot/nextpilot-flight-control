@@ -23,7 +23,8 @@ using namespace nextpilot::workq;
 using namespace nextpilot;
 
 /**
- * @brief 模拟IMU，用ScheduleOnInterval()定周期发布角速率数据vehicle_angular_velocity
+ * @brief 模拟IMU
+ * 用ScheduleOnInterval()定周期发布角速率数据vehicle_angular_velocity
  *
  */
 class SimIMU : public ModuleCommand<SimIMU>, public WorkItemScheduled {
@@ -54,6 +55,7 @@ public:
     }
 
     int init() override {
+        LOG_I("sim imu sensor initilized");
         ScheduleOnInterval(5_ms); // 200 Hz
         return 0;
     }
@@ -76,7 +78,7 @@ public:
         if ((_instance == 0) && (cnt % 20 == 0)) {
             rt_tick_t current_tick = rt_tick_get();
             uint64_t  _start       = hrt_absolute_time();
-            LOG_I("[SimIMU]>>>instance=%d, t=%ld, dt=%ld, cnt=%d\n", _instance, current_tick, current_tick - _last_tick, cnt);
+            // LOG_I("[SimIMU]>>>instance=%d, t=%ld, dt=%ld, cnt=%d\n", _instance, current_tick, current_tick - _last_tick, cnt);
 
             uint64_t _delta = hrt_absolute_time() - _start;
             _last_tick      = current_tick;
@@ -106,4 +108,24 @@ int sim_imu_start() {
 }
 
 // INIT_APP_EXPORT(sim_imu_start);
-MSH_CMD_EXPORT_ALIAS(sim_imu_start, utest_imu_sensor, sim imu rate sensor);
+// MSH_CMD_EXPORT_ALIAS(sim_imu_start, utest_imu_sensor, sim imu rate sensor);
+
+/**
+ * @brief 命令入口函数
+ * 启动: utest_imu_sensor start 0
+ * 退出: utest_imu_sensor stop
+ * 使用说明: utest_imu_sensor usage
+ * 查看状态: utest_imu_sensor status
+ *
+ * @param argc
+ * @param argv
+ * @return int
+ */
+extern "C" int sim_imu_sensor_main(int argc, char *argv[]) {
+    int ret;
+    ret = SimIMU::main(argc, (char **)argv);
+
+    return ret;
+}
+
+MSH_CMD_EXPORT_ALIAS(sim_imu_sensor_main, utest_imu_sensor, sim imu rate sensor);

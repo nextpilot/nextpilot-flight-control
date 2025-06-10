@@ -22,7 +22,8 @@ using namespace nextpilot::workq;
 using namespace nextpilot;
 
 /**
- * @brief 模拟角速率控制，基于vehicle_angular_velocity主题的callback驱动run
+ * @brief 模拟角速率控制
+ * 基于vehicle_angular_velocity主题的callback驱动run
  *
  */
 
@@ -54,6 +55,7 @@ public:
     }
 
     int init() override {
+        LOG_I("sim rate control initilized");
         if (!_vehicle_angular_velocity_sub.register_callback()) {
             LOG_E("callback registration failed");
             return -1;
@@ -99,4 +101,24 @@ int sim_rate_ctrl_start() {
 }
 
 // INIT_APP_EXPORT(sim_rate_ctrl_start);
-MSH_CMD_EXPORT_ALIAS(sim_rate_ctrl_start, utest_rate_ctrl, sim rate control);
+// MSH_CMD_EXPORT_ALIAS(sim_rate_ctrl_start, utest_rate_ctrl, sim rate control);
+
+/**
+ * @brief 命令入口函数
+ * 启动: utest_rate_ctrl start 0
+ * 退出: utest_rate_ctrl stop
+ * 使用说明: utest_rate_ctrl usage
+ * 查看状态: utest_rate_ctrl status
+ *
+ * @param argc
+ * @param argv
+ * @return int
+ */
+extern "C" int sim_rate_ctrl_main(int argc, char *argv[]) {
+    int ret;
+    ret = SimRateControl::main(argc, (char **)argv);
+
+    return ret;
+}
+
+MSH_CMD_EXPORT_ALIAS(sim_rate_ctrl_main, utest_rate_ctrl, sim rate control);

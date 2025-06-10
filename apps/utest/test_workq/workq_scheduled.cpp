@@ -50,7 +50,8 @@ public:
     }
 
     int init() override {
-        ScheduleOnInterval(100_ms); // 8 Hz
+        LOG_I("initialized {%d}", instance);
+        ScheduleOnInterval(100_ms); // 10 Hz
         return 0;
     }
 
@@ -58,8 +59,6 @@ public:
 
 private:
     void Run() override {
-        static uint32_t cnt   = 0;
-        static double   total = 0.0f;
         if (should_exit()) {
         }
         // rt_thread_mdelay(1000);
@@ -75,7 +74,7 @@ private:
         //     total += 1.0 / sleep;
         // }
 
-        if (cnt % 10 == 0) {
+        if (cnt % 20 == 0) {
             rt_tick_t current_tick = rt_tick_get();
             rt_kprintf("[wq_scheduled]>>>instance=%d, t=%ld, dt=%ld, cnt=%d\n", instance, current_tick, current_tick - _last_tick, cnt);
             _last_tick = current_tick;
@@ -83,7 +82,9 @@ private:
         cnt++;
     }
 
-    int instance;
+    uint32_t cnt   = 0;
+    double   total = 0.0f;
+    int      instance;
 };
 
 int workq_scheduled_start() {
@@ -101,4 +102,24 @@ int workq_scheduled_start() {
 }
 
 // INIT_APP_EXPORT(workq_scheduled_start);
-MSH_CMD_EXPORT_ALIAS(workq_scheduled_start, utest_wq_1, test workq scheduled);
+// MSH_CMD_EXPORT_ALIAS(workq_scheduled_start, utest_create_instances, test workq scheduled);
+
+/**
+ * @brief 命令入口函数
+ * 创建实例: utest_create_instances start <id>, id取值[0,5]，例如utest_create_instances start 0
+ * 退出: utest_create_instances stop
+ * 使用说明: utest_create_instances usage
+ * 查看状态: utest_create_instances status
+ *
+ * @param argc
+ * @param argv
+ * @return int
+ */
+extern "C" int wq_create_instances_main(int argc, char *argv[]) {
+    int ret;
+    ret = UTestWorkqScheduled::main(argc, (char **)argv);
+
+    return ret;
+}
+
+MSH_CMD_EXPORT_ALIAS(wq_create_instances_main, utest_create_instances, create multi instances);
