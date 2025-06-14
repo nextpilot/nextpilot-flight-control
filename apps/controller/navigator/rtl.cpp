@@ -17,6 +17,8 @@
  * @author Julian Kent <julian@auterion.com>
  */
 
+#define LOG_TAG "nav.rtl"
+
 #include "rtl.h"
 #include "navigator.h"
 #include <dataman/dataman.h>

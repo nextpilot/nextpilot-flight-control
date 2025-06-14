@@ -1139,6 +1139,8 @@ static int param_init() {
         return -RT_ERROR;
     }
 
+    LOG_I("start ok");
+
     return RT_EOK;
 }
 

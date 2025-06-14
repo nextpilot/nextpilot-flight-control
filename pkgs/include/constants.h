@@ -14,16 +14,12 @@
 /* Define rt_isfinite */
 #if defined(__cplusplus) && defined(__ARMCC_VERSION)
 // KEIL在C++ 代码中isfinite / isnan有问题，因此重新定义
-#define rt_isfinite(x) \
-    ((sizeof(x) == sizeof(float)) ? __ARM_isfinitef(x) : __ARM_isfinite(x))
-#define rt_isnan(x) \
-    ((sizeof(x) == sizeof(float)) ? __ARM_isnanf(x) : __ARM_isnan(x))
-#define rt_isinf(x) \
-    ((sizeof(x) == sizeof(float)) ? __ARM_isinff(x) : __ARM_isinf(x))
-#define rt_isnormal(x) \
-    ((sizeof(x) == sizeof(float)) ? __ARM_isnormalf(x) : __ARM_isnormal(x))
+#   define rt_isfinite(x) ((sizeof(x) == sizeof(float)) ? __ARM_isfinitef(x) : __ARM_isfinite(x))
+#   define rt_isnan(x)    ((sizeof(x) == sizeof(float)) ? __ARM_isnanf(x) : __ARM_isnan(x))
+#   define rt_isinf(x)    ((sizeof(x) == sizeof(float)) ? __ARM_isinff(x) : __ARM_isinf(x))
+#   define rt_isnormal(x) ((sizeof(x) == sizeof(float)) ? __ARM_isnormalf(x) : __ARM_isnormal(x))
 #else
-#include <math.h>
+#   include <math.h>
 // static inline constexpr bool rt_isfinite(float x) {
 //     return __builtin_isfinite(x);
 // }
@@ -31,10 +27,10 @@
 //     return __builtin_isfinite(x);
 // }
 // 采用系统自带的函数
-#define rt_isfinite(x) (isfinite(x))
-#define rt_isnan(x)    (isnan(x))
-#define rt_isinf(x)    (isinf(x))
-#define rt_isnormal(x) (isnormal(x))
+#   define rt_isfinite(x) (isfinite(x))
+#   define rt_isnan(x)    (isnan(x))
+#   define rt_isinf(x)    (isinf(x))
+#   define rt_isnormal(x) (isnormal(x))
 #endif /* __cplusplus && __ARMCC_VERSION */
 
 /* Math macro's for float literals. Do not use M_PI et al as they aren't
