@@ -18,7 +18,7 @@
 #include <unistd.h>
 
 #ifndef SDIO_DEVICE_NAME
-#   define SDIO_DEVICE_NAME "sd0"
+#   define SDIO_DEVICE_NAME "sd"
 #endif // SDIO_DEVICE_NAME
 
 #ifndef SDIO_MOUNT_POINT
