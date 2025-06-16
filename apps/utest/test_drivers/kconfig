@@ -1,0 +1,3 @@
+menuconfig TEST_DRIVERS
+    bool "test drivers"
+    default n
