@@ -7,7 +7,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -348,6 +348,78 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 
   /* USER CODE END UART7_MspInit 1 */
   }
+  else if(huart->Instance==USART2)
+  {
+  /* USER CODE BEGIN USART2_MspInit 0 */
+
+  /* USER CODE END USART2_MspInit 0 */
+
+  /** Initializes the peripherals clock
+  */
+    PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_USART2;
+    PeriphClkInitStruct.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
+    if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
+    {
+      Error_Handler();
+    }
+
+    /* Peripheral clock enable */
+    __HAL_RCC_USART2_CLK_ENABLE();
+
+    __HAL_RCC_GPIOD_CLK_ENABLE();
+    /**USART2 GPIO Configuration
+    PD6     ------> USART2_RX
+    PD5     ------> USART2_TX
+    PD4     ------> USART2_RTS
+    PD3     ------> USART2_CTS
+    */
+    GPIO_InitStruct.Pin = USART2_RX_TELEM1_Pin|USART2_TX_TELEM1_Pin|USART2_RTS_TELEM1_Pin|USART2_CTS_TELEM1_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF7_USART2;
+    HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  /* USER CODE BEGIN USART2_MspInit 1 */
+
+  /* USER CODE END USART2_MspInit 1 */
+  }
+  else if(huart->Instance==USART3)
+  {
+  /* USER CODE BEGIN USART3_MspInit 0 */
+
+  /* USER CODE END USART3_MspInit 0 */
+
+  /** Initializes the peripherals clock
+  */
+    PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_USART3;
+    PeriphClkInitStruct.Usart3ClockSelection = RCC_USART3CLKSOURCE_PCLK1;
+    if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
+    {
+      Error_Handler();
+    }
+
+    /* Peripheral clock enable */
+    __HAL_RCC_USART3_CLK_ENABLE();
+
+    __HAL_RCC_GPIOD_CLK_ENABLE();
+    /**USART3 GPIO Configuration
+    PD12     ------> USART3_RTS
+    PD11     ------> USART3_CTS
+    PD9     ------> USART3_RX
+    PD8     ------> USART3_TX
+    */
+    GPIO_InitStruct.Pin = USART3_RTS_TELEM2_Pin|USART3_CTS_TELEM2_Pin|USART3_RX_TELEM2_Pin|USART3_TX_TELEM2_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF7_USART3;
+    HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  /* USER CODE BEGIN USART3_MspInit 1 */
+
+  /* USER CODE END USART3_MspInit 1 */
+  }
 
 }
 
@@ -378,6 +450,46 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
   /* USER CODE BEGIN UART7_MspDeInit 1 */
 
   /* USER CODE END UART7_MspDeInit 1 */
+  }
+  else if(huart->Instance==USART2)
+  {
+  /* USER CODE BEGIN USART2_MspDeInit 0 */
+
+  /* USER CODE END USART2_MspDeInit 0 */
+    /* Peripheral clock disable */
+    __HAL_RCC_USART2_CLK_DISABLE();
+
+    /**USART2 GPIO Configuration
+    PD6     ------> USART2_RX
+    PD5     ------> USART2_TX
+    PD4     ------> USART2_RTS
+    PD3     ------> USART2_CTS
+    */
+    HAL_GPIO_DeInit(GPIOD, USART2_RX_TELEM1_Pin|USART2_TX_TELEM1_Pin|USART2_RTS_TELEM1_Pin|USART2_CTS_TELEM1_Pin);
+
+  /* USER CODE BEGIN USART2_MspDeInit 1 */
+
+  /* USER CODE END USART2_MspDeInit 1 */
+  }
+  else if(huart->Instance==USART3)
+  {
+  /* USER CODE BEGIN USART3_MspDeInit 0 */
+
+  /* USER CODE END USART3_MspDeInit 0 */
+    /* Peripheral clock disable */
+    __HAL_RCC_USART3_CLK_DISABLE();
+
+    /**USART3 GPIO Configuration
+    PD12     ------> USART3_RTS
+    PD11     ------> USART3_CTS
+    PD9     ------> USART3_RX
+    PD8     ------> USART3_TX
+    */
+    HAL_GPIO_DeInit(GPIOD, USART3_RTS_TELEM2_Pin|USART3_CTS_TELEM2_Pin|USART3_RX_TELEM2_Pin|USART3_TX_TELEM2_Pin);
+
+  /* USER CODE BEGIN USART3_MspDeInit 1 */
+
+  /* USER CODE END USART3_MspDeInit 1 */
   }
 
 }
