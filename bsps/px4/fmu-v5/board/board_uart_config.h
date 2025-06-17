@@ -76,6 +76,18 @@ extern "C" {
 #endif /* UART2_DMA_RX_CONFIG */
 #endif /* BSP_UART2_RX_USING_DMA */
 
+#if defined(BSP_UART2_TX_USING_DMA)
+#ifndef UART2_DMA_TX_CONFIG
+#define UART2_DMA_TX_CONFIG                \
+    {                                      \
+        .Instance = UART2_TX_DMA_INSTANCE, \
+        .channel  = UART2_TX_DMA_CHANNEL,  \
+        .dma_rcc  = UART2_TX_DMA_RCC,      \
+        .dma_irq  = UART2_TX_DMA_IRQ,      \
+    }
+#endif /* UART2_DMA_TX_CONFIG */
+#endif /* BSP_UART2_TX_USING_DMA */
+
 #if defined(BSP_USING_UART3)
 #ifndef UART3_CONFIG
 #define UART3_CONFIG             \
