@@ -25,19 +25,24 @@ static rt_err_t uart_input(rt_device_t dev, rt_size_t size) {
 static void serial_thread_entry(void *parameter) {
     char ch;
 
+    // while (1) {
+    //     /* 从串口读取一个字节的数据，没有读取到则等待接收信号量 */
+    //     while (rt_device_read(serial, -1, &ch, 1) != 1) {
+    //         /* 阻塞等待接收信号量，等到信号量后再次读取数据 */
+    //         rt_sem_take(&rx_sem, RT_WAITING_FOREVER);
+    //     }
+    //     /* 读取到的数据通过串口错位输出 */
+    //     ch = ch + 1;
+    //     rt_device_write(serial, 0, &ch, 1);
+    // }
+
     while (1) {
-        /* 从串口读取一个字节的数据，没有读取到则等待接收信号量 */
-        while (rt_device_read(serial, -1, &ch, 1) != 1) {
-            /* 阻塞等待接收信号量，等到信号量后再次读取数据 */
-            rt_sem_take(&rx_sem, RT_WAITING_FOREVER);
-        }
-        /* 读取到的数据通过串口错位输出 */
-        ch = ch + 1;
-        rt_device_write(serial, 0, &ch, 1);
+        rt_device_write(serial, 0, "Hello Serial!\n", 12);
+        rt_thread_mdelay(1000);
     }
 }
 
-static int uart_sample(int argc, char *argv[]) {
+static int uart_int_main(int argc, char *argv[]) {
     rt_err_t ret = RT_EOK;
     char     uart_name[RT_NAME_MAX];
     char     str[] = "hello RT-Thread!\r\n";
@@ -77,4 +82,4 @@ static int uart_sample(int argc, char *argv[]) {
 }
 
 /* 导出到 msh 命令列表中 */
-MSH_CMD_EXPORT(uart_sample, uart device sample);
+MSH_CMD_EXPORT_ALIAS(uart_int_main, utest_uart_int, test uart int);

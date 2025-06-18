@@ -177,4 +177,4 @@ static int test_uart_device_main(int argc, char **argv) {
     return RT_EOK;
 }
 
-MSH_CMD_EXPORT_ALIAS(test_uart_device_main, utest_uart, test uart device);
+MSH_CMD_EXPORT_ALIAS(test_uart_device_main, utest_uart_dma, test uart dma);
