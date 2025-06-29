@@ -794,6 +794,7 @@ void Mavlink::send_finish() {
     _buf_fill = 0;
 
     // pthread_mutex_unlock(&_send_mutex);
+    // 处理发送信号量的释放
     if (get_protocol() == Protocol::SERIAL) {
         if (_uart_fd->flag & RT_DEVICE_FLAG_DMA_TX) {
             // UART DMA模式，立即返回，不会阻塞
@@ -804,6 +805,11 @@ void Mavlink::send_finish() {
             rt_sem_release(sem_send);
         }
     }
+#if defined(RT_LWIP_UDP)
+    else if (get_protocol() == Protocol::UDP) {
+        rt_sem_release(sem_send);
+    }
+#endif // RT_LWIP_UDP
 }
 
 void Mavlink::send_bytes(const uint8_t *buf, unsigned packet_len) {
