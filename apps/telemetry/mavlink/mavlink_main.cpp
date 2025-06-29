@@ -480,9 +480,9 @@ static rt_err_t mavlink_uart_tx_complete(rt_device_t dev, void *buffer) {
     if (inst) {
         // ret = rt_sem_release(&(inst->get_uart_tx_cmp_sem()));
 
-        // if (rt_sem_release(inst->sem_send) != RT_EOK) {
-        //     return RT_ERROR;
-        // }
+        if (rt_sem_release(inst->sem_send) != RT_EOK) {
+            return RT_ERROR;
+        }
         return RT_EOK;
     }
 
@@ -711,7 +711,7 @@ unsigned Mavlink::get_free_tx_buf() {
 
 void Mavlink::send_start(int length) {
     // pthread_mutex_lock(&_send_mutex);
-    // rt_sem_take(sem_send, RT_WAITING_FOREVER);
+    rt_sem_take(sem_send, RT_WAITING_FOREVER);
 
     _last_write_try_time = hrt_absolute_time();
 
@@ -733,7 +733,7 @@ void Mavlink::send_start(int length) {
 void Mavlink::send_finish() {
     if (_tx_buffer_low || (_buf_fill == 0)) {
         // pthread_mutex_unlock(&_send_mutex);
-        // rt_sem_release(sem_send);
+        rt_sem_release(sem_send);
         return;
     }
 
@@ -801,7 +801,7 @@ void Mavlink::send_finish() {
 
         } else {
             // UART INT模式，会等数据返送完才返回，因此立即释放
-            // rt_sem_release(sem_send);
+            rt_sem_release(sem_send);
         }
     }
 }
