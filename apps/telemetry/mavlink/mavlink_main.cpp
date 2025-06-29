@@ -278,7 +278,7 @@ int Mavlink::instance_count() {
 }
 
 Mavlink *Mavlink::get_instance_for_device(const char *device_name) {
-    LockGuard lg{mavlink_module_mutex};
+    // LockGuard lg{mavlink_module_mutex};
 
     for (Mavlink *inst : mavlink_module_instances) {
         if (inst && (inst->_protocol == Protocol::SERIAL) && (rt_strcmp(inst->_device_name, device_name) == 0)) {
@@ -290,7 +290,7 @@ Mavlink *Mavlink::get_instance_for_device(const char *device_name) {
 }
 
 Mavlink *Mavlink::get_instance_for_device(const rt_device_t dev) {
-    LockGuard lg{mavlink_module_mutex};
+    // LockGuard lg{mavlink_module_mutex};
 
     for (Mavlink *inst : mavlink_module_instances) {
         if (inst && (inst->_protocol == Protocol::SERIAL) && (inst->get_uart_fd() == dev)) {
@@ -571,7 +571,7 @@ int Mavlink::mavlink_open_uart(const int baud, const char *uart_name, const FLOW
         // V2版本，非阻塞模式，则启用发送完成回调
         if (flags & RT_DEVICE_FLAG_TX_NON_BLOCKING) {
 #endif // RT_USING_SERIAL_V1
-            // rt_device_set_tx_complete(_uart_fd, mavlink_uart_tx_complete);
+            rt_device_set_tx_complete(_uart_fd, mavlink_uart_tx_complete);
         }
     }
 
@@ -2307,22 +2307,22 @@ int Mavlink::task_main(int argc, char *argv[]) {
     while (!should_exit()) {
         /* main loop */
         // px4_usleep(_main_loop_delay);
-        rt_thread_mdelay(500);
+        rt_thread_mdelay(5);
 
-        rt_device_write(_uart_fd, 0, "Mavlink loop running\r\n", 22); //TODO:一发送，进入发送完成回调后就报错！！
-        continue;
+        // rt_device_write(_uart_fd, 0, "Mavlink loop running\r\n", 22); //TODO:一发送，进入发送完成回调后就报错！！
+        // continue;
 
-        if (!should_transmit()) {
-            check_requested_subscriptions();
-            continue;
-        }
+        // if (!should_transmit()) {
+        //     check_requested_subscriptions();
+        //     continue;
+        // }
 
         perf_count(_loop_interval_perf);
         perf_begin(_loop_perf);
 
         const hrt_abstime t = hrt_absolute_time();
 
-        update_rate_mult();
+        update_rate_mult(); // TODO: 临时调试注释，后续放开
 
         // check for parameter updates
         if (_parameter_update_sub.updated()) {
