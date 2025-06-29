@@ -795,7 +795,7 @@ void Mavlink::send_finish() {
 
     // pthread_mutex_unlock(&_send_mutex);
     if (get_protocol() == Protocol::SERIAL) {
-        if (_uart_fd->flag & RT_DEVICE_FLAG_DMA_TX) { // TODO:待实现
+        if (_uart_fd->flag & RT_DEVICE_FLAG_DMA_TX) {
             // UART DMA模式，立即返回，不会阻塞
             // 将在callback_uart_tx_complete中释放_send_mutex
 
@@ -2309,9 +2309,6 @@ int Mavlink::task_main(int argc, char *argv[]) {
         // px4_usleep(_main_loop_delay);
         rt_thread_mdelay(5);
 
-        // rt_device_write(_uart_fd, 0, "Mavlink loop running\r\n", 22); //TODO:一发送，进入发送完成回调后就报错！！
-        // continue;
-
         // if (!should_transmit()) {
         //     check_requested_subscriptions();
         //     continue;
@@ -2322,7 +2319,7 @@ int Mavlink::task_main(int argc, char *argv[]) {
 
         const hrt_abstime t = hrt_absolute_time();
 
-        update_rate_mult(); // TODO: 临时调试注释，后续放开
+        update_rate_mult();
 
         // check for parameter updates
         if (_parameter_update_sub.updated()) {
@@ -3434,7 +3431,7 @@ int mavlink_start() {
     param_set_int32((param_t)params_id::MAV_0_FORWARD, 0);
     unsigned max_instance = 1;
 #else
-    unsigned max_instance = 1;
+    unsigned max_instance = 1; // TODO: 先只启用一个mavlink实例，后续再增加
 #endif
 
     for (unsigned i = 0; (i < max_instance) && (i < sizeof(inst) / sizeof(inst[0])); i++) {
