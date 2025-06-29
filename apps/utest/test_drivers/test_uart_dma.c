@@ -1,5 +1,9 @@
+#define LOG_TAG "ut.uart_dma"
+#define LOG_LVL LOG_LVL_INFO
+
 #include <rtthread.h>
 #include <rtdevice.h>
+#include <ulog.h>
 
 #define UART_NAME "uart3"
 
@@ -11,6 +15,8 @@ static struct rt_messagequeue uart_rx_mq;
 static char                   rx_msg_pool[256];
 
 static uint8_t should_exit = 0;
+
+static uint16_t cnt_tx = 0;
 
 /**
  * @brief 串口接收消息结构
@@ -48,17 +54,16 @@ static rt_err_t callback_uart_rx_done(rt_device_t dev, rt_size_t size) {
  * @return rt_err_t
  */
 static rt_err_t callback_uart_tx_done(rt_device_t dev, void *buffer) {
+    cnt_tx++;
     return RT_EOK;
 }
 
 static void uart_thread_tx_entry(void *parameter) {
     rt_err_t result;
-    uint16_t cnt = 0;
     while (!should_exit) {
         rt_device_write(uart_dev, 0, "Hello UART!\n", 12);
-        rt_kprintf("UART write count: %d\n", cnt);
-        cnt++;
         rt_thread_mdelay(1000);
+        rt_kprintf("UART write count: %d\n", cnt_tx);
     }
 }
 
@@ -160,7 +165,7 @@ static int test_uart_device_start(int argc, char **argv) {
 static int test_uart_device_main(int argc, char **argv) {
     if (strcmp(argv[1], "help") == 0) {
         rt_kprintf("test uart help\r\n");
-        rt_kprintf("utest_uart start uart2 - start uart test\r\n");
+        rt_kprintf("utest_uart start uart3 - start uart test\r\n");
         rt_kprintf("utest_uart stop - stop uart test\r\n");
     } else if (strcmp(argv[1], "start") == 0) {
         return test_uart_device_start(argc, argv);
