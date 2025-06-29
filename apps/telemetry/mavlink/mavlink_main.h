@@ -640,6 +640,9 @@ public:
         return _uart_tx_cmp_sem;
     }
 
+    char     sem_tx_cmp_name[16]; // 发送控制信号量名称
+    rt_sem_t sem_send{RT_NULL};   // 发送控制信号量
+
 private:
     MavlinkReceiver _receiver;
 
@@ -777,9 +780,9 @@ private:
     pthread_mutex_t _send_mutex{};
     pthread_mutex_t _radio_status_mutex{};
 
-    struct rt_semaphore _uart_rx_ind_sem {};
+    struct rt_semaphore _uart_rx_ind_sem{};
 
-    struct rt_semaphore _uart_tx_cmp_sem {};
+    struct rt_semaphore _uart_tx_cmp_sem{};
 
     DEFINE_PARAMETERS(
         (ParamInt<params_id::MAV_SYS_ID>)_param_mav_sys_id,

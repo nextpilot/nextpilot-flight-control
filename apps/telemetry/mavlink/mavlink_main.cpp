@@ -478,7 +478,12 @@ static rt_err_t mavlink_uart_tx_complete(rt_device_t dev, void *buffer) {
     Mavlink *inst = Mavlink::get_instance_for_device(dev);
 
     if (inst) {
-        ret = rt_sem_release(&(inst->get_uart_tx_cmp_sem()));
+        // ret = rt_sem_release(&(inst->get_uart_tx_cmp_sem()));
+
+        // if (rt_sem_release(inst->sem_send) != RT_EOK) {
+        //     return RT_ERROR;
+        // }
+        return RT_EOK;
     }
 
     return ret;
@@ -546,6 +551,7 @@ int Mavlink::mavlink_open_uart(const int baud, const char *uart_name, const FLOW
         flags |= (RT_DEVICE_FLAG_RX_NON_BLOCKING | RT_DEVICE_FLAG_TX_BLOCKING);
 #endif // RT_USING_SERIAL_V1
 
+        flags = RT_DEVICE_FLAG_RDWR | RT_DEVICE_FLAG_DMA_RX | RT_DEVICE_FLAG_DMA_TX;
         if (rt_device_open(_uart_fd, flags) != RT_EOK) {
             LOG_E("open %s fail", uart_name);
             return -RT_ERROR;
@@ -565,7 +571,7 @@ int Mavlink::mavlink_open_uart(const int baud, const char *uart_name, const FLOW
         // V2版本，非阻塞模式，则启用发送完成回调
         if (flags & RT_DEVICE_FLAG_TX_NON_BLOCKING) {
 #endif // RT_USING_SERIAL_V1
-            rt_device_set_tx_complete(_uart_fd, mavlink_uart_tx_complete);
+            // rt_device_set_tx_complete(_uart_fd, mavlink_uart_tx_complete);
         }
     }
 
@@ -704,7 +710,9 @@ unsigned Mavlink::get_free_tx_buf() {
 }
 
 void Mavlink::send_start(int length) {
-    pthread_mutex_lock(&_send_mutex);
+    // pthread_mutex_lock(&_send_mutex);
+    // rt_sem_take(sem_send, RT_WAITING_FOREVER);
+
     _last_write_try_time = hrt_absolute_time();
 
     // check if there is space in the buffer
@@ -724,7 +732,8 @@ void Mavlink::send_start(int length) {
 
 void Mavlink::send_finish() {
     if (_tx_buffer_low || (_buf_fill == 0)) {
-        pthread_mutex_unlock(&_send_mutex);
+        // pthread_mutex_unlock(&_send_mutex);
+        // rt_sem_release(sem_send);
         return;
     }
 
@@ -737,7 +746,6 @@ void Mavlink::send_finish() {
 #if defined(RT_LWIP_UDP)
 
     else if (get_protocol() == Protocol::UDP) {
-
 #   if defined(SAL_USING_POSIX)
 
         if (_src_addr_initialized) {
@@ -785,7 +793,17 @@ void Mavlink::send_finish() {
 
     _buf_fill = 0;
 
-    pthread_mutex_unlock(&_send_mutex);
+    // pthread_mutex_unlock(&_send_mutex);
+    if (get_protocol() == Protocol::SERIAL) {
+        if (_uart_fd->flag & RT_DEVICE_FLAG_DMA_TX) { // TODO:待实现
+            // UART DMA模式，立即返回，不会阻塞
+            // 将在callback_uart_tx_complete中释放_send_mutex
+
+        } else {
+            // UART INT模式，会等数据返送完才返回，因此立即释放
+            // rt_sem_release(sem_send);
+        }
+    }
 }
 
 void Mavlink::send_bytes(const uint8_t *buf, unsigned packet_len) {
@@ -934,7 +952,7 @@ void Mavlink::find_broadcast_address() {
 }
 
 const in_addr Mavlink::query_netmask_addr(const int socket_fd, const ifreq &ifreq) {
-    struct ifreq netmask_ifreq {};
+    struct ifreq netmask_ifreq{};
 
     rt_strncpy(netmask_ifreq.ifr_name, ifreq.ifr_name, IF_NAMESIZE);
     ioctl(socket_fd, SIOCGIFNETMASK, &netmask_ifreq);
@@ -1727,7 +1745,7 @@ bool Mavlink::init_by_instance(int instance) {
     rt_snprintf(buff, sizeof(buff), "MAV_%d_CONFIG", instance);
     if (param_get(param_find(buff), &config) == 0) {
         if (config == 0) {
-            LOG_I("mav%d disable, as MAV_%d_CONFIG=0", instance);
+            LOG_I("mav%d disable, as MAV_%d_CONFIG=0", instance, instance);
             return false;
         }
     } else {
@@ -2194,6 +2212,9 @@ int Mavlink::task_main(int argc, char *argv[]) {
     pthread_mutex_init(&_send_mutex, nullptr);
     pthread_mutex_init(&_radio_status_mutex, nullptr);
 
+    rt_snprintf(sem_tx_cmp_name, sizeof(sem_tx_cmp_name), "mavlink_%d_send", _instance_id);
+    sem_send = rt_sem_create(sem_tx_cmp_name, 1, RT_IPC_FLAG_FIFO);
+
     /* if we are passing on mavlink messages, we need to prepare a buffer for this instance */
     if (get_forwarding_on()) {
         /* initialize message buffer if multiplexing is on.
@@ -2286,7 +2307,10 @@ int Mavlink::task_main(int argc, char *argv[]) {
     while (!should_exit()) {
         /* main loop */
         // px4_usleep(_main_loop_delay);
-        rt_thread_mdelay(5);
+        rt_thread_mdelay(500);
+
+        rt_device_write(_uart_fd, 0, "Mavlink loop running\r\n", 22); //TODO:一发送，进入发送完成回调后就报错！！
+        continue;
 
         if (!should_transmit()) {
             check_requested_subscriptions();
@@ -2627,6 +2651,10 @@ int Mavlink::task_main(int argc, char *argv[]) {
     pthread_mutex_destroy(&_send_mutex);
     pthread_mutex_destroy(&_radio_status_mutex);
     pthread_mutex_destroy(&_message_buffer_mutex);
+
+    if (sem_send) {
+        rt_sem_delete(sem_send);
+    }
 
     PX4_INFO("exiting channel %i", (int)_channel);
 
@@ -3406,7 +3434,7 @@ int mavlink_start() {
     param_set_int32((param_t)params_id::MAV_0_FORWARD, 0);
     unsigned max_instance = 1;
 #else
-    unsigned max_instance = MAVLINK_COMM_NUM_BUFFERS;
+    unsigned max_instance = 1;
 #endif
 
     for (unsigned i = 0; (i < max_instance) && (i < sizeof(inst) / sizeof(inst[0])); i++) {
