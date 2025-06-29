@@ -19,6 +19,7 @@
 #ifndef AIRSPEED_H_
 #define AIRSPEED_H_
 
+#include <defines.h>
 #include "math.h"
 
 __BEGIN_DECLS
