@@ -50,11 +50,14 @@ if not GetDepend(["MAVLINK_USING_LOG_STREAM"]):
 if not GetDepend(["MAVLINK_USING_TIMESYNC"]):
     SrcRemove(src, "mavlink_timesync.cpp")
 
+if not GetDepend(["MAVLINK_USING_PLAY_TUNE"]):
+    SrcRemove(src, "tune_publisher.cpp")
+
 objs = DefineGroup(
     "tel/mavlink",
     src,
     depend=["TEL_USING_MAVLINK"],
-    LOCAL_CPPPATH=inc,
+    CPPPATH=inc,
     CFLAGS=" -Wno-address-of-packed-member",
     CXXFLAGS=" -Wno-address-of-packed-member",
 )
