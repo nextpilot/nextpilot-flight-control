@@ -269,6 +269,18 @@
 
 /* enhanced kernel services */
 
+#define PKG_USING_RT_VSNPRINTF_FULL
+#define PKG_VSNPRINTF_SUPPORT_DECIMAL_SPECIFIERS
+#define PKG_VSNPRINTF_SUPPORT_EXPONENTIAL_SPECIFIERS
+#define PKG_VSNPRINTF_SUPPORT_WRITEBACK_SPECIFIER
+#define PKG_VSNPRINTF_SUPPORT_LONG_LONG
+#define PKG_VSNPRINTF_CHECK_FOR_NUL_IN_FORMAT_SPECIFIER
+#define PKG_VSNPRINTF_INTEGER_BUFFER_SIZE 32
+#define PKG_VSNPRINTF_DECIMAL_BUFFER_SIZE 32
+#define PKG_VSNPRINTF_DEFAULT_FLOAT_PRECISION 6
+#define PKG_VSNPRINTF_MAX_INTEGRAL_DIGITS_FOR_DECIMAL 9
+#define PKG_VSNPRINTF_LOG10_TAYLOR_TERMS 4
+#define PKG_USING_RT_VSNPRINTF_FULL_LATEST_VERSION
 /* end of enhanced kernel services */
 
 /* acceleration: Assembly language or algorithmic acceleration packages */
@@ -403,6 +415,7 @@
 #define BSP_UART1_RX_USING_DMA
 #define BSP_USING_UART2
 #define BSP_UART2_RX_USING_DMA
+#define BSP_UART2_TX_USING_DMA
 #define BSP_USING_UART3
 #define BSP_UART3_RX_USING_DMA
 #define BSP_UART3_TX_USING_DMA
@@ -419,7 +432,7 @@
 #define BSP_USING_UART8
 #define BSP_USING_SDIO
 #define BSP_USING_SDIO1
-#define SDIO_DEVICE_NAME "sd0"
+#define SDIO_DEVICE_NAME "sd"
 #define SDIO_MOUNT_POINT "/"
 /* end of On-chip Peripheral Drivers */
 
@@ -452,18 +465,21 @@
 
 /* Controller Libraries Config */
 
+#define PKG_USING_ROTATION
+#define PKG_USING_GEO
 /* end of Controller Libraries Config */
 
 /* Estimator Libraries Config */
 
+#define PKG_USING_SENSOR_CALIBRATION
 /* end of Estimator Libraries Config */
 
 /* Peripheral Libraries Config */
 
-#define PKG_USING_BATTERY
-#define PKG_USING_LED_CONTROL
+#define PKG_USING_ACCELEROMETER
+#define PKG_USING_GYROSCOPE
+#define PKG_USING_MAGNETOMETER
 /* end of Peripheral Libraries Config */
-#define PKG_USING_BUTTON_PUBLISHER
 /* end of Nextpilot Libraries Config */
 
 /* Nextpilot Peripheral Config */
@@ -474,25 +490,13 @@
 
 /* battery */
 
-#define DRV_USING_BATTERY_STATUS
-#define BOARD_NUMBER_BRICKS 1
-#define ADC_BATTERY_DEVICE_NAME "adc1"
-#define ADC_BATTERY1_VOLTAGE_CHANNEL 0
-#define ADC_BATTERY1_CURRENT_CHANNEL 1
 /* end of battery */
 
 /* notification */
 
 /* rgbled */
 
-#define DRV_USING_RGBLED_PWM
 /* end of rgbled */
-#define DRV_USING_SAFETY_BUTTON
-
-/* fast get pin number: (x - A) * 16 + n */
-
-#define GPIO_SAFETY_SWITCH_IN 74
-#define GPIO_SAFETY_SWITCH_LED 76
 /* end of notification */
 
 /* payload */
@@ -509,17 +513,21 @@
 
 /* end of airspeed sensors */
 
-/* baro sensor */
+/* baro sensors */
 
-/* end of baro sensor */
+/* end of baro sensors */
 
-/* gnss sensor */
+/* gnss sensors */
 
-/* end of gnss sensor */
+/* end of gnss sensors */
 
 /* imu sensors */
 
 /* end of imu sensors */
+
+/* ins sensors */
+
+/* end of ins sensors */
 
 /* mag sensors */
 
@@ -541,10 +549,15 @@
 
 /* Nextpilot Telemetry Config */
 
+#define TEL_USING_MAVLINK
+#define MAVLINK_DIALECT "common"
 /* end of Nextpilot Telemetry Config */
 
 /* NextPilot UnitTest Config */
 
+#define TEST_DRIVERS
+#define TEST_CREATE_THREAD
+#define TEST_WORK_QUEUE
 /* end of NextPilot UnitTest Config */
 /* end of Nextpilot Firmware Config */
 
@@ -562,19 +575,18 @@
 #define PKG_USING_MATHLIB
 #define PKG_USING_MATRIX
 #define PKG_USING_PARAM
-#define PARAM_USING_GLOBAL_AUTOGEN
-#define PARAM_USING_STORAGE_FILE
+#define PKG_USING_PARAM_V2
 #define PARAM_DEFAULT_FILE_PATH "/param.bin"
 #define PARAM_USING_DEVICE_FILE
 #define PKG_USING_PERF
 #define PKG_USING_QUEUE
 #define PKG_USING_RING_BUFFER
 #define PKG_USING_SHUTDOWN
+#define PKG_USING_UORB
 
 /* ULog backend */
 
 /* end of ULog backend */
-#define PKG_USING_UORB
 #define PKG_USING_VAR_LEN_RINGBUFFER
 #define PKG_USING_VCONSOLE_V2
 #define PKG_USING_BOARD_VERSION

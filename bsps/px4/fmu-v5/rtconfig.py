@@ -31,6 +31,7 @@ if CROSS_TOOL == "gcc":
 elif CROSS_TOOL == "keil":
     PLATFORM = "armcc"
     EXEC_PATH = r"C:/Keil_v5"
+    LINK_SCRIPT = "board/linker_scripts/link.sct"
 elif CROSS_TOOL == "iar":
     PLATFORM = "iccarm"
     EXEC_PATH = r"C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.3"
