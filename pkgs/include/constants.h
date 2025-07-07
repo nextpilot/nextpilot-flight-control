@@ -12,7 +12,7 @@
 #define __NEXTPILOT_CONSTANTS_H__
 
 /* Define rt_isfinite */
-#if defined(__cplusplus) && defined(__ARMCC_VERSION)
+#if defined(__cplusplus) && defined(__ARMCC_VERSION_) // TODO:待解决因为KEIL编译器的C++代码中isfinite / isnan有问题，这些先进行宏屏蔽
 // KEIL在C++ 代码中isfinite / isnan有问题，因此重新定义
 #   define rt_isfinite(x) ((sizeof(x) == sizeof(float)) ? __ARM_isfinitef(x) : __ARM_isfinite(x))
 #   define rt_isnan(x)    ((sizeof(x) == sizeof(float)) ? __ARM_isnanf(x) : __ARM_isnan(x))
