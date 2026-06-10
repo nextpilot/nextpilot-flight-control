@@ -1,0 +1,13 @@
+import os
+import rtconfig
+from building import *
+
+cwd = GetCurrentDir()
+
+inc = [cwd]
+src = ["circuit_breaker.cpp"]
+
+objs = DefineGroup("pkg/circuit_breaker", src, depend=["PKG_USING_CIRCUIT_BREAKER"], CPPPATH=inc)
+
+
+Return("objs")

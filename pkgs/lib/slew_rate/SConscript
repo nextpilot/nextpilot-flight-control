@@ -1,0 +1,13 @@
+import os
+import rtconfig
+from building import *
+
+
+cwd = GetCurrentDir()
+
+inc = [cwd]
+src = []
+
+objs = DefineGroup("pkg/slew_rate", src, depend=["PKG_USING_SLEW_RATE"], CPPPATH=inc)
+
+Return("objs")

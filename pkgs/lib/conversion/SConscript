@@ -1,0 +1,14 @@
+import os
+import rtconfig
+from building import *
+
+
+cwd = GetCurrentDir()
+
+inc = [cwd]
+src = ["rotation.cpp"]
+
+objs = DefineGroup("pkg/rotation", src, depend=["PKG_USING_ROTATION"], CPPPATH=inc)
+
+
+Return("objs")

@@ -1,3 +1,0 @@
-menu "Peripheral Libraries Config"
-orsource "*/Kconfig"
-endmenu

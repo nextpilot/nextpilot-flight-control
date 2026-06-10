@@ -1,0 +1,14 @@
+import os
+import rtconfig
+from building import *
+
+
+cwd = GetCurrentDir()
+
+inc = [cwd]
+src = ["BezierN.cpp", "BezierQuad.cpp"]
+
+objs = DefineGroup("pkg/bezier", src, depend=["PKG_USING_BEZIER"], CPPPATH=inc)
+
+
+Return("objs")

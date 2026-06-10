@@ -1,0 +1,17 @@
+import os
+import rtconfig
+from building import *
+
+cwd = GetCurrentDir()
+inc = [cwd]
+
+src = [
+    "ManualVelocitySmoothingXY.cpp",
+    "ManualVelocitySmoothingZ.cpp",
+    "PositionSmoothing.cpp",
+    "VelocitySmoothing.cpp",
+]
+
+objs = DefineGroup("pkg/motion_planning", src, depend=["PKG_USING_MOTION_PLANNING"], CPPPATH=inc)
+
+Return("objs")

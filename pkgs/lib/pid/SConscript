@@ -1,0 +1,15 @@
+import os
+import rtconfig
+from building import *
+
+
+cwd = GetCurrentDir()
+
+inc = [cwd]
+src = ["pid.cpp"]
+
+
+objs = DefineGroup("pkg/pid", src, depend=["PKG_USING_PID"], CPPPATH=inc)
+
+
+Return("objs")

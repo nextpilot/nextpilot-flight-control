@@ -1,0 +1,14 @@
+import os
+import rtconfig
+from building import *
+
+
+cwd = GetCurrentDir()
+
+inc = [cwd]
+src = ["CollisionPrevention.cpp"]
+
+objs = DefineGroup("pkg/collision", src, depend=["PKG_USING_COLLISION_PREVENTION"], CPPPATH=inc)
+
+
+Return("objs")

@@ -1,0 +1,15 @@
+import os
+import rtconfig
+from building import *
+
+
+cwd = GetCurrentDir()
+
+
+inc = [cwd]
+src = ["geo.cpp"]
+
+objs = DefineGroup("pkg/geo", src, depend=["PKG_USING_GEO"], CPPPATH=inc)
+
+
+Return("objs")

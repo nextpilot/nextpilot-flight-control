@@ -1,0 +1,13 @@
+import os
+import rtconfig
+from building import *
+
+cwd = GetCurrentDir()
+
+inc = []
+src = Glob("*.cpp")
+
+objs = DefineGroup("pkg/drivers", src, depend=["PKG_USING_LED_CONTROL"], CPPPATH=inc)
+
+
+Return("objs")

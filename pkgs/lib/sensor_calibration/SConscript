@@ -1,0 +1,13 @@
+import os
+import rtconfig
+from building import *
+
+
+cwd = GetCurrentDir()
+
+inc = [cwd]
+src = Glob("*.cpp")
+
+objs = DefineGroup("pkg/sensor_calibration", src, depend=["PKG_USING_SENSOR_CALIBRATION"], CPPPATH=inc)
+
+Return("objs")

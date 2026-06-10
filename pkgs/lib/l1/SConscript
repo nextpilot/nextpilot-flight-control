@@ -1,0 +1,14 @@
+import os
+import rtconfig
+from building import *
+
+
+cwd = GetCurrentDir()
+
+inc = [cwd]
+src = ["ECL_L1_Pos_Controller.cpp"]
+
+objs = DefineGroup("pkg/ecl_l1", src, depend=["PKG_USING_ECL"], CPPPATH=inc)
+
+
+Return("objs")

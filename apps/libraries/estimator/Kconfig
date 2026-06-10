@@ -1,3 +1,0 @@
-menu "Estimator Libraries Config"
-orsource "*/Kconfig"
-endmenu

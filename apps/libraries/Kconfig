@@ -1,3 +1,0 @@
-menu "Nextpilot Libraries Config"
-orsource "*/Kconfig"
-endmenu

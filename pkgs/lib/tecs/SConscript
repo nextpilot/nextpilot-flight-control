@@ -1,0 +1,14 @@
+import os
+import rtconfig
+from building import *
+
+
+cwd = GetCurrentDir()
+
+inc = [cwd]
+src = ["TECS.cpp"]
+
+objs = DefineGroup("pkg/tecs", src, depend=["PKG_USING_TECS"], CPPPATH=inc)
+
+
+Return("objs")

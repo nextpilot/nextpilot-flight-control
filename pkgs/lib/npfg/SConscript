@@ -1,0 +1,16 @@
+import os
+import rtconfig
+from building import *
+
+objs = []
+
+
+cwd = GetCurrentDir()
+
+inc = [cwd]
+src = ["npfg.cpp"]
+
+objs = DefineGroup("pkg/npfg", src, depend=["PKG_USING_NPFG"], CPPPATH=inc)
+
+
+Return("objs")

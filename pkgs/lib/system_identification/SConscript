@@ -1,0 +1,14 @@
+import os
+import rtconfig
+from building import *
+
+
+cwd = GetCurrentDir()
+
+src = Glob("*.cpp", exclude="*_test.cpp")
+inc = [cwd]
+
+objs = DefineGroup("pkg/system_ident", src, depend=["PKG_USING_SYSTEM_IDENTIFICATION"], CPPPATH=inc)
+
+
+Return("objs")

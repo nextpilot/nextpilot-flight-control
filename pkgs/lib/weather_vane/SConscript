@@ -1,0 +1,15 @@
+import os
+import rtconfig
+from building import *
+
+
+cwd = GetCurrentDir()
+
+inc = [cwd]
+src = ["WeatherVane.cpp"]
+
+
+objs = DefineGroup("pkg/weather_vane", src, depend=["PKG_USING_WEATHER_VANE"], CPPPATH=inc)
+
+
+Return("objs")
