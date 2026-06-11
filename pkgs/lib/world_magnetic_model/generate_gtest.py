@@ -6,7 +6,7 @@
 #  *  / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
 #  * /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
 #  *
-#  * Copyright All Reserved © 2015-2024 NextPilot Development Team
+#  * Copyright All Reserved © 2015-2026 NextPilot Development Team
 #  ******************************************************************/
 
 import json
@@ -26,7 +26,7 @@ header = """/*****************************************************************
  *  / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
  * /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
  *
- * Copyright All Reserved © 2015-2024 NextPilot Development Team
+ * Copyright All Reserved © 2015-2026 NextPilot Development Team
  ******************************************************************/
 
 #include <gtest/gtest.h>

@@ -5,7 +5,7 @@
  *   / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
  *  /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
  *
- * Copyright All Reserved © 2015-2024 NextPilot Development Team
+ * Copyright All Reserved © 2015-2026 NextPilot Development Team
  ******************************************************************/
 
 // 将rt-thread的ulog组件LOG_XXX宏输出的日志转为uorb消息

@@ -5,7 +5,7 @@
  *  / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
  * /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
  *
- * Copyright All Reserved © 2015-2024 NextPilot Development Team
+ * Copyright All Reserved © 2015-2026 NextPilot Development Team
  ******************************************************************/
 
 // 在Cortex-M里面DWT(Data Watchpoint and Trace)，是用于系统调试及跟踪，它有一个32位的寄存器叫CYCCNT，

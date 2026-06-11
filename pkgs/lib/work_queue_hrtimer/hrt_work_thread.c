@@ -5,7 +5,7 @@
  *  / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
  * /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
  *
- * Copyright All Reserved © 2015-2024 NextPilot Development Team
+ * Copyright All Reserved © 2015-2026 NextPilot Development Team
  ******************************************************************/
 
 /****************************************************************************
@@ -14,20 +14,19 @@
 
 #include <px4_platform_common/px4_config.h>
 #include <px4_platform_common/defines.h>
-#include <px4_platform_common/log.h>
 #include <px4_platform_common/posix.h>
-#include <px4_platform_common/time.h>
 #include <px4_platform_common/tasks.h>
-#include <px4_platform_common/workqueue.h>
+#include <px4_platform_common/time.h>
 #include <stdint.h>
+#include <signal.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <queue.h>
-#include <pthread.h>
+#include <px4_platform_common/workqueue.h>
 #include <drivers/drv_hrt.h>
-#include "work_lock.h"
+#include "hrt_work.h"
 
-#ifdef CONFIG_SCHED_WORKQUEUE
+#include <string.h>
 
 /****************************************************************************
  * Pre-processor Definitions
@@ -42,16 +41,36 @@
  ****************************************************************************/
 
 /* The state of each work queue. */
-struct wqueue_s g_work[NWORKERS];
+struct wqueue_s g_hrt_work;
 
 /****************************************************************************
  * Private Variables
  ****************************************************************************/
-px4_sem_t _work_lock[NWORKERS];
+px4_sem_t _hrt_work_lock;
 
 /****************************************************************************
  * Private Functions
  ****************************************************************************/
+static void hrt_work_process(void);
+
+static void _sighandler(int sig_num);
+
+/****************************************************************************
+ * Name: _sighandler
+ *
+ * Description:
+ *   This is the handler for the signal to wake the queue processing thread
+ *
+ * Input parameters:
+ *   sig_num - the received signal
+ *
+ * Returned Value:
+ *   None
+ *
+ ****************************************************************************/
+static void _sighandler(int sig_num) {
+    PX4_DEBUG("RECEIVED SIGNAL %d", sig_num);
+}
 
 /****************************************************************************
  * Name: work_process
@@ -67,7 +86,8 @@ px4_sem_t _work_lock[NWORKERS];
  *
  ****************************************************************************/
 
-static void work_process(struct wqueue_s *wqueue, int lock_id) {
+static void hrt_work_process() {
+    struct wqueue_s        *wqueue = &g_hrt_work;
     volatile struct work_s *work;
     worker_t                worker;
     void                   *arg;
@@ -75,21 +95,32 @@ static void work_process(struct wqueue_s *wqueue, int lock_id) {
     uint32_t                remaining;
     uint32_t                next;
 
+    // set the threads name
+#ifdef __PX4_DARWIN
+    pthread_setname_np("HRT");
+#else
+    // The Linux headers do not actually contain this
+    //rv = pthread_setname_np(pthread_self(), "HRT");
+#endif
+
     /* Then process queued work.  We need to keep interrupts disabled while
 	 * we process items in the work list.
 	 */
 
-    next = CONFIG_SCHED_WORKPERIOD;
+    /* Default to sleeping for 1 sec */
+    next = 1000000;
 
-#   ifdef __PX4_QURT
+#ifdef __PX4_QURT
     // In Posix certain signals wake up a sleeping thread but it isn't the case
     // with the Qurt POSIX implementation. So rather than assume we can come out
-    // of the sleep early by a signal we just wake up more often.
+    // of the sleep early by a signal we just wake up more often. The best way to
+    // fix this would be to move to a px4_sem_timedwait. But the current implementation
+    // of that function on Qurt uses this hrt_thread! So, it would all have to be
+    // re-written to use Qurt semaphores which do have timed waits.
     next = 1000;
-#   endif
+#endif
 
-
-    work_lock(lock_id);
+    hrt_work_lock();
 
     work = (struct work_s *)wqueue->q.head;
 
@@ -100,13 +131,14 @@ static void work_process(struct wqueue_s *wqueue, int lock_id) {
 		 * zero.  Therefore a delay of zero will always execute immediately.
 		 */
 
-        elapsed = USEC2TICK(clock_systimer() - work->qtime);
+        elapsed = hrt_absolute_time() - work->qtime;
 
-        //printf("work_process: in ticks elapsed=%lu delay=%u\n", elapsed, work->delay);
+        //PX4_INFO("hrt work_process: in usec elapsed=%lu delay=%u work=%p", elapsed, work->delay, work);
         if (elapsed >= work->delay) {
             /* Remove the ready-to-execute work from the list */
 
-            (void)dq_rem((struct dq_entry_s *)work, &wqueue->q);
+            (void)dq_rem((dq_entry_t *)&work->dq, &wqueue->q);
+            //PX4_INFO("Dequeued work=%p", work);
 
             /* Extract the work description from the entry (in case the work
 			 * instance by the re-used after it has been de-queued).
@@ -123,10 +155,10 @@ static void work_process(struct wqueue_s *wqueue, int lock_id) {
 			 * performed... we don't have any idea how long that will take!
 			 */
 
-            work_unlock(lock_id);
+            hrt_work_unlock();
 
             if (!worker) {
-                PX4_WARN("MESSED UP: worker = 0\n");
+                PX4_ERR("MESSED UP: worker = 0");
 
             } else {
                 worker(arg);
@@ -137,7 +169,7 @@ static void work_process(struct wqueue_s *wqueue, int lock_id) {
 			 * back at the head of the list.
 			 */
 
-            work_lock(lock_id);
+            hrt_work_lock();
             work = (struct work_s *)wqueue->q.head;
 
         } else {
@@ -146,8 +178,9 @@ static void work_process(struct wqueue_s *wqueue, int lock_id) {
 			 */
 
             /* Here: elapsed < work->delay */
-            remaining = USEC_PER_TICK * (work->delay - elapsed);
+            remaining = work->delay - elapsed;
 
+            //PX4_INFO("remaining=%u delay=%u elapsed=%lu", remaining, work->delay, elapsed);
             if (remaining < next) {
                 /* Yes.. Then schedule to wake up when the work is ready */
 
@@ -157,50 +190,26 @@ static void work_process(struct wqueue_s *wqueue, int lock_id) {
             /* Then try the next in the list. */
 
             work = (struct work_s *)work->dq.flink;
+            //PX4_INFO("next %u work %p", next, work);
         }
     }
 
     /* Wait awhile to check the work list.  We will wait here until either
 	 * the time elapses or until we are awakened by a signal.
 	 */
-    work_unlock(lock_id);
+    hrt_work_unlock();
 
+    /* might sleep less if a signal received and new item was queued */
+    //PX4_INFO("Sleeping for %u usec", next);
     px4_usleep(next);
 }
 
 /****************************************************************************
- * Public Functions
- ****************************************************************************/
-void work_queues_init(void) {
-    px4_sem_init(&_work_lock[HPWORK], 0, 1);
-    px4_sem_init(&_work_lock[LPWORK], 0, 1);
-#   ifdef CONFIG_SCHED_USRWORK
-    px4_sem_init(&_work_lock[USRWORK], 0, 1);
-#   endif
-
-    // Create high priority worker thread
-    g_work[HPWORK].pid = px4_task_spawn_cmd("hpwork",
-                                            SCHED_DEFAULT,
-                                            SCHED_PRIORITY_MAX - 1,
-                                            2000,
-                                            work_hpthread,
-                                            (char *const *)NULL);
-
-    // Create low priority worker thread
-    g_work[LPWORK].pid = px4_task_spawn_cmd("lpwork",
-                                            SCHED_DEFAULT,
-                                            SCHED_PRIORITY_MIN,
-                                            2000,
-                                            work_lpthread,
-                                            (char *const *)NULL);
-}
-
-/****************************************************************************
- * Name: work_hpthread, work_lpthread, and work_usrthread
+ * Name: work_hrtthread
  *
  * Description:
- *   These are the worker threads that performs actions placed on the work
- *   lists.
+ *   This is the worker threads that performs actions placed on the ISR work
+ *   list.
  *
  *   work_hpthread and work_lpthread:  These are the kernel mode work queues
  *     (also build in the flat build).  One of these threads also performs
@@ -208,12 +217,6 @@ void work_queues_init(void) {
  *     thread if CONFIG_SCHED_WORKQUEUE is not defined).
  *
  *     These worker threads are started by the OS during normal bringup.
- *
- *   work_usrthread:  This is a user mode work queue.  It must be built into
- *     the applicatino blob during the user phase of a kernel build.  The
- *     user work thread will then automatically be started when the system
- *     boots by calling through the pointer found in the header on the user
- *     space blob.
  *
  *   All of these entrypoints are referenced by OS internally and should not
  *   not be accessed by application logic.
@@ -226,9 +229,7 @@ void work_queues_init(void) {
  *
  ****************************************************************************/
 
-#   ifdef CONFIG_SCHED_HPWORK
-
-int work_hpthread(int argc, char *argv[]) {
+static int work_hrtthread(int argc, char *argv[]) {
     /* Loop forever */
 
     for (;;) {
@@ -239,76 +240,32 @@ int work_hpthread(int argc, char *argv[]) {
 		 * the IDLE thread (at a very, very low priority).
 		 */
 
-#      ifndef CONFIG_SCHED_LPWORK
-        sched_garbagecollection();
-#      endif
-
         /* Then process queued work.  We need to keep interrupts disabled while
 		 * we process items in the work list.
 		 */
 
-        work_process(&g_work[HPWORK], HPWORK);
+        hrt_work_process();
     }
 
     return PX4_OK; /* To keep some compilers happy */
 }
 
-#      ifdef CONFIG_SCHED_LPWORK
+/****************************************************************************
+ * Public Functions
+ ****************************************************************************/
 
-int work_lpthread(int argc, char *argv[]) {
-    /* Loop forever */
+void hrt_work_queue_init(void) {
+    px4_sem_init(&_hrt_work_lock, 0, 1);
+    memset(&g_hrt_work, 0, sizeof(g_hrt_work));
 
-    for (;;) {
-        /* First, perform garbage collection.  This cleans-up memory de-allocations
-		 * that were queued because they could not be freed in that execution
-		 * context (for example, if the memory was freed from an interrupt handler).
-		 * NOTE: If the work thread is disabled, this clean-up is performed by
-		 * the IDLE thread (at a very, very low priority).
-		 */
+    // Create high priority worker thread
+    g_hrt_work.pid = px4_task_spawn_cmd("wkr_hrt",
+                                        SCHED_DEFAULT,
+                                        SCHED_PRIORITY_MAX,
+                                        2000,
+                                        work_hrtthread,
+                                        (char *const *)NULL);
 
-        //sched_garbagecollection();
 
-        /* Then process queued work.  We need to keep interrupts disabled while
-		 * we process items in the work list.
-		 */
-
-        work_process(&g_work[LPWORK], LPWORK);
-    }
-
-    return PX4_OK; /* To keep some compilers happy */
+    signal(SIGCONT, _sighandler);
 }
-
-#      endif /* CONFIG_SCHED_LPWORK */
-#   endif    /* CONFIG_SCHED_HPWORK */
-
-#   ifdef CONFIG_SCHED_USRWORK
-
-int work_usrthread(int argc, char *argv[]) {
-    /* Loop forever */
-
-    int rv;
-    // set the threads name
-#      ifdef __PX4_DARWIN
-    rv = pthread_setname_np("USR");
-#      else
-    rv = pthread_setname_np(pthread_self(), "USR");
-#      endif
-
-    for (;;) {
-        /* Then process queued work.  We need to keep interrupts disabled while
-		 * we process items in the work list.
-		 */
-
-        work_process(&g_work[USRWORK], USRWORK);
-    }
-
-    return PX4_OK; /* To keep some compilers happy */
-}
-
-#   endif /* CONFIG_SCHED_USRWORK */
-
-uint32_t clock_systimer() {
-    //printf("clock_systimer: %0lx\n", hrt_absolute_time());
-    return (0x00000000ffffffff & hrt_absolute_time());
-}
-#endif /* CONFIG_SCHED_WORKQUEUE */

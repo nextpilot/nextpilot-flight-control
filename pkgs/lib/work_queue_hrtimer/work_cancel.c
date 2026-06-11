@@ -5,7 +5,7 @@
  *  / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
  * /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
  *
- * Copyright All Reserved © 2015-2024 NextPilot Development Team
+ * Copyright All Reserved © 2015-2026 NextPilot Development Team
  ******************************************************************/
 
 /****************************************************************************
@@ -14,9 +14,11 @@
 
 #include <px4_platform_common/px4_config.h>
 #include <px4_platform_common/defines.h>
+#include <queue.h>
 #include <px4_platform_common/workqueue.h>
+#include "work_lock.h"
 
-#include "hrt_work.h"
+#ifdef CONFIG_SCHED_WORKQUEUE
 
 /****************************************************************************
  * Pre-processor Definitions
@@ -43,20 +45,24 @@
  ****************************************************************************/
 
 /****************************************************************************
- * Name: hrt_work_cancel
+ * Name: work_cancel
  *
  * Description:
  *   Cancel previously queued work.  This removes work from the work queue.
- *   After work has been canceled, it may be re-queue by calling
- *   hrt_work_queue() again.
+ *   After work has been canceled, it may be re-queue by calling work_queue()
+ *   again.
  *
  * Input parameters:
+ *   qid    - The work queue ID
  *   work   - The previously queue work structure to cancel
+ *
+ * Returned Value:
+ *   Zero on success, a negated errno on failure
  *
  ****************************************************************************/
 
-void hrt_work_cancel(struct work_s *work) {
-    struct wqueue_s *wqueue = &g_hrt_work;
+int work_cancel(int qid, struct work_s *work) {
+    struct wqueue_s *wqueue = &g_work[qid];
 
     //DEBUGASSERT(work != NULL && (unsigned)qid < NWORKERS);
 
@@ -65,7 +71,7 @@ void hrt_work_cancel(struct work_s *work) {
 	 * new work is typically added to the work queue from interrupt handlers.
 	 */
 
-    hrt_work_lock();
+    work_lock(qid);
 
     if (work->worker != NULL) {
         /* A little test of the integrity of the work queue */
@@ -77,9 +83,12 @@ void hrt_work_cancel(struct work_s *work) {
 		 * mark as availalbe (i.e., the worker field is nullified).
 		 */
 
-        dq_rem(&work->dq, &wqueue->q);
+        dq_rem((dq_entry_t *)work, &wqueue->q);
         work->worker = NULL;
     }
 
-    hrt_work_unlock();
+    work_unlock(qid);
+    return PX4_OK;
 }
+
+#endif /* CONFIG_SCHED_WORKQUEUE */

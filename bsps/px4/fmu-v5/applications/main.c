@@ -5,7 +5,7 @@
  *   / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
  *  /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
  *
- * Copyright All Reserved © 2015-2024 NextPilot Development Team
+ * Copyright All Reserved © 2015-2026 NextPilot Development Team
  ******************************************************************/
 
 #include <rtthread.h>
@@ -19,9 +19,9 @@
 #define LED0_PIN GET_PIN(B, 1)
 
 int main(void) {
-	
+
 	rt_pin_mode(LED0_PIN, PIN_MODE_OUTPUT);
-    
+
 	while(1)
 	{
 		rt_pin_write(LED0_PIN, PIN_HIGH);
@@ -29,6 +29,6 @@ int main(void) {
 		rt_pin_write(LED0_PIN, PIN_LOW);
 		rt_thread_mdelay(500);
 	}
-	
+
     return RT_EOK;
 }

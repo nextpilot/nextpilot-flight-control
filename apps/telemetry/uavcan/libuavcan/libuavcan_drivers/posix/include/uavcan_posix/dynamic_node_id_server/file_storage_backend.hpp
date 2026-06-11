@@ -5,7 +5,7 @@
  *  / /|  //  __/_>  < / /_ / ____// // // /_/ // /_
  * /_/ |_/ \___//_/|_| \__//_/    /_//_/ \____/ \__/
  *
- * Copyright All Reserved © 2015-2024 NextPilot Development Team
+ * Copyright All Reserved © 2015-2026 NextPilot Development Team
  ******************************************************************/
 
 #ifndef UAVCAN_POSIX_DYNAMIC_NODE_ID_SERVER_FILE_STORAGE_BACKEND_HPP_INCLUDED
