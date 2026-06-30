@@ -19,6 +19,9 @@ dev_addr: "127.0.0.1:8063"
 
 copyright: Copyright &copy; 2015-2026 <a href="https://www.nextpilot.org">NextPilot Development Team</a>, Maintained by <a href="https://github.com/comerlater">LaterComer</a>.
 
+exclude_docs: |
+  aboutus/roadmap.md
+  
 # nav:
 #     - 主页: index.md
 #     - 用户手册:
@@ -35,6 +38,7 @@ copyright: Copyright &copy; 2015-2026 <a href="https://www.nextpilot.org">NextPi
 
 theme:
   name: material
+  custom_dir: docs/overrides
   favicon: favicon.png
   logo: favicon.png
   features:
@@ -152,6 +156,9 @@ plugins:
 not_in_nav: |
   /**/SUMMARY.md
   /**/README.md
+
+extra_css:
+  - stylesheets/home.css
 
 extra:
   version:
