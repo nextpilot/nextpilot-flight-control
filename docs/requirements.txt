@@ -1,7 +1,8 @@
-mkdocs
-mkdocs-material
+mkdocs>=1.6,<2.0
+mkdocs-material>=9.5,<10
 mkdocs-autorefs
 mkdocs-static-i18n
 mkdocstrings
 mkdocs-git-revision-date-localized-plugin
-mkdocs-literate-nav
+mkdocs-awesome-nav
+mike

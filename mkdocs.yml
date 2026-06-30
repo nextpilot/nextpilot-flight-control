@@ -17,7 +17,7 @@ site_dir: build/gh-pages
 use_directory_urls: false
 dev_addr: "127.0.0.1:8063"
 
-copyright: Copyright &copy; 2015-2024 <a href="https://www.nextpilot.org">NextPilot Development Team</a>, Maintained by <a href="https://github.com/comerlater">LaterComer</a>.
+copyright: Copyright &copy; 2015-2026 <a href="https://www.nextpilot.org">NextPilot Development Team</a>, Maintained by <a href="https://github.com/comerlater">LaterComer</a>.
 
 # nav:
 #     - 主页: index.md
@@ -38,13 +38,14 @@ theme:
   favicon: favicon.png
   logo: favicon.png
   features:
-    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.indexes
     - navigation.top
     - navigation.path
-    - seach.highlight
+    - search.highlightsearch
     - search.suggest
     - search.share
     - toc.follow
@@ -114,13 +115,15 @@ markdown_extensions:
     # - callouts
 
 plugins:
-  - search
+  - search:
+     lang: [zh, en]
   - tags
   - autorefs
-  - literate-nav:
-      nav_file: SUMMARY.md
-      implicit_index: false
-      tab_length: 2
+  - awesome-nav
+  # - literate-nav:
+  #     nav_file: SUMMARY.md
+  #     implicit_index: false
+  #     tab_length: 2
   # - mkdocstrings:
   #     handlers:
   #       python:
@@ -132,19 +135,23 @@ plugins:
   #           show_signature_annotations: true
   - i18n:
       docs_structure: suffix
+      # default_language: zh
       languages:
-        - locale: en
-          name: English
-          build: true
         - locale: zh
           name: 简体中文
           default: true
+          build: true        
+        - locale: en
+          name: English
           build: true
+      reconfigure_material: true
+  - mike
   # - git-revision-date-localized:
   #     enable_creation_date: true
 
 not_in_nav: |
   /**/SUMMARY.md
+  /**/README.md
 
 extra:
   version:
@@ -163,5 +170,4 @@ extra:
 
 extra_javascript:
   - javascripts/mathjax.js
-  - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js

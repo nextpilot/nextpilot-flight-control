@@ -1,18 +1,20 @@
-# Nextpilot User Guide
+# NextPilot User Guide
+
+本仓库包含了 《NextPilot用户指南》 的源代码，文档基于 [mkdocs](https://www.mkdocs.org/) 和 [mkdocs-material](https://squidfunk.github.io/mkdocs-material/) 进行发布的，编译需要 **python3.8** 以上版本。
 
 ## 如何使用
 
-编译好的 **用户手册** 托管在 [nextpilot-flight-control仓库](https://github.com/nextpilot/nextpilot-flight-control/) 的 [gh-pages分支](https://github.com/nextpilot/nextpilot-flight-control/tree/gh-pages)。可以通过以下网址进行访问：
+编译好的 **NextPilot 用户指南** 托管在 [nextpilot-flight-control仓库](https://github.com/nextpilot/nextpilot-flight-control/) 的 [gh-pages](https://github.com/nextpilot/nextpilot-flight-control/tree/gh-pages) 分支。可以通过以下网址进行访问：
 
-用户手册：<https://docs.nexpilot.cn/manual>
+- 官方网站：<https://www.nextpilot.org>
 
-开发指南：<https://docs.nexpilot.cn/develop>
+- 用户手册：<https://www.nexpilot.cn/manual>
 
-> Nextpilot User Guide 帮助文档使用 [.github/workflows/build-help-docs.yml](https://github.com/nextpilot/nextpilot-flight-control/blob/main/.github/workflows/build-help-docs.yml) 自动更新，当 docs 文件夹有更新的时候会自动触发 github action 进行编译。
+- 开发指南：<https://www.nexpilot.cn/develop>
+
+> 当仓库更新时，根据 [.github/workflows/mkdocs-gh-deploy.yml](.github/workflows/mkdocs-gh-deploy.yml) 自动触发 Github Action 进行编译，并将编译结果推送到 [gh-pages](https://github.com/nextpilot/nextpilotgithub.io/tree/gh-pages)分支。
 
 ## 如何编译
-
-NextPilot 帮助文档是基于 [mkdocs](https://www.mkdocs.org/) 和 [mkdocs-material](https://squidfunk.github.io/mkdocs-material/) 进行发布的，需要 **python3.8** 以上版本。
 
 安装mkdocs依赖项
 
@@ -39,3 +41,10 @@ mkdocs build
 # 或者使用，在浏览器http://127.0.0.1:8063/可以预览效果
 mkdocs serve
 ```
+
+## 参考资料
+
+- [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/getting-started/)
+- [MkDocs static i18n plugin documentation，多国语言支持](https://ultrabug.github.io/mkdocs-static-i18n)
+- [mkdocs-literate-nav，使用 SUMMARY.md 创建导航栏](https://oprypin.github.io/mkdocs-literate-nav/index.html)
+- [mkdocs-awesome-nav，使用.nav.yml 自定义导航栏](https://lukasgeiter.github.io/mkdocs-awesome-nav/)

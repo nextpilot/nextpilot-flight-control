@@ -1,0 +1,12 @@
+preserve_directory_names: false
+ignore: "*.hidden.md"
+use_index_title: true
+
+nav:
+  - 首页: index.md
+  - 关于我们: aboutus
+  - 解决方案: solution
+  - 产品中心: product
+  - 用户手册: manual
+  - 开发指南: develop
+  - 社区支持: community
