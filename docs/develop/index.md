@@ -23,28 +23,6 @@
 
 - 如何调试分析
 
-## 获取帮助
-
-核心开发团队和社区成员活跃于以下渠道，您可以从以下方式获得帮助。
-
-问题反馈：<https://github.com/nextpilot/nextpilot-flight-control/issues>
-
-代码提交：<https://github.com/nextpilot/nextpilot-flight-control/pulls>
-
-论坛讨论：<https://github.com/nextpilot/nextpilot-flight-control/discussions>
-
-## 反馈问题
-
-如果您在使用 NextPilot 时遇到任何问题，请先在 [Github Discussions](https://github.com/nextpilot/nextpilot-flight-control/discussions) 上发布帖子（因为它们可能是由飞控配置引起的）。
-
-根据开发团队指导，如果确定是代码问题则需要在 [Github Issue](https://github.com/nextpilot/nextpilot-flight-control/issues) 上反馈问题。如果可能，请提供[飞行日志](https://logs.px4.io)和其他信息。
-
-## 开源许可
-
-在 [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause) 许可证的条款，您可以免费使用和修改 [nextpilot-flight-control](https://github.com/nextpilot/nextpilot-flight-control) 代码，没有任何商业风险。
-
-本文档采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) 协议。
-
 ## 致谢
 
 开发文档中，借用了 [PX4 用户指南](https://docs.px4.io) 和 [RT-Thread 在线文档](https://gitee.com/rtthread/docs-online) 等部分资料，在此表示感谢。
