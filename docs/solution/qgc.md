@@ -1,6 +1,6 @@
 # QGC地面站定制开发
 
-![](./qgroundcontrol.png)
+![](./imgs/qgroundcontrol.png)
 
 - 精通 C++、QT Quick/QML、javaScript，拥有复杂界面的开发经验；
 - 丰富的 GIS 开发经验，熟练 Openlayers 和 QtLocation等；
@@ -9,7 +9,7 @@
 
 ## 设备连接
 
-![](./image/qgc-data-link.jpg)
+![](./imgs/qgc-data-link.jpg)
 
 地面站支持数据链、遥控器（手柄）、RTK基准站等设备的接入，并可以设置：
 
@@ -26,15 +26,15 @@
 
 ## 飞前检查
 
-![](./image/qgc-pre-check.jpg)
+![](./imgs/qgc-pre-check.jpg)
 
-## 飞行显控
+## 飞控设置
 
-![](./image/qgc-fcs-setting.jpg)
+![](./imgs/qgc-fcs-setting.jpg)
 
 ## 航线规划
 
-![](./image/qgc-mission-plan.jpg)
+![](./imgs/qgc-mission-plan.jpg)
 
 独立的任务规划界面，方便用户在多显示屏上进行任务规划，并且我们重新设计了任务规划界面，简化了任务规划逻辑，特别是在复杂航线下的任务规划，增加了一些贴心的小功能，并且在航线规划中并增加了距离测量和面积测量。
 
@@ -46,7 +46,7 @@
 
 ### 数据转发
 
-![](./image/qgc-data-forward.png)
+![](./imgs/qgc-data-forward.png)
 
 数据转发功能，可以将地面站收到`遥测数据`，按照 `指定协议` 转发给 **某个IP**，同时能够接收来自 **该IP** 的遥控指令，该功能有如下作用：
 
@@ -56,7 +56,7 @@
 
 ### 日志回放
 
-![](./image/qgc-data-replay.jpg)
+![](./imgs/qgc-data-replay.jpg)
 
 日志回放是故障分析的重要手段，日志记录要求全面并能够驱动地面站进行回放：
 
@@ -71,7 +71,7 @@
 
 ### 调试工具
 
-![](./image/qgc-debug-tools.png)
+![](./imgs/qgc-debug-tools.png)
 
 调试工具是一些开发使用的高级功能，包括：
 
@@ -85,10 +85,10 @@
 
 多地面站可同时监控无人机，站间可进行数据通讯；根据地面站角色（飞行控制、任务规划、载荷控制和指挥控制）获得不同操作权限，多地面站同时工作减轻地面站操作人员操控压力。
 
-![](./image/qgc-multi-station.png)
+![](./imgs/qgc-multi-station.png)
 
 ### 编队控制
 
 无人机协调编队飞行，可展示当前飞行编队队形，并可通过飞行编队界面对飞行队形进行设置与编辑等操作。
 
-![](./image//qgc-follow-target.png)
+![](./imgs/qgc-follow-target.png)
