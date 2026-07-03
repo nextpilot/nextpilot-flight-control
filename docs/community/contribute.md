@@ -8,7 +8,7 @@
 
 `nextpilot-flight-control.code-workspace` 是 Vscode 工作空间文件，已经配置好以下格式化工具，在 **保存** 文件时会自动触发自动格式化：
 
-- 使用 `clang-format` 使用 [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html) 对 C/C++ 代码进行格式化，仓库根目录的 [.clang-format](../.clang-format) 文件定义了格式化配置选项，相关意义[请参考这里](https://clang.llvm.org/docs/ClangFormatStyleOptions.html)。
+- 使用 `clang-format` 使用 [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html) 对 C/C++ 代码进行格式化，仓库根目录的 [.clang-format](https://github.com/nextpilot/nextpilot-flight-control/blob/main/.clang-format) 文件定义了格式化配置选项，相关意义[请参考这里](https://clang.llvm.org/docs/ClangFormatStyleOptions.html)。
 - 使用 `black` 对 python 代码格式化
 - 使用 `DavidAnson.vscode-markdownlint` 对 markdown 格式化
 - 使用 `tamasfe.even-better-toml` 对 toml 格式化
