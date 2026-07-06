@@ -3,5 +3,5 @@
 欢迎来到 NextPilot 开发社区！为了营造一个开放和受欢迎的开发环境，我们承诺严格遵守[NextPilot 行为准测](./code-of-conduct.md)。
 
 - [技术支持](./support.md)，获取帮助，故障排查，扫码加群等
-- [贡献代码](./contribute.md)，包括 [代码风格](../../.clang-format)、[提交规范]() 等
+- [贡献代码](./contribute.md)，包括 [代码风格](https://github.com/nextpilot/nextpilot-flight-control/blob/main/.clang-format)、[提交规范]() 等
 - [完善文档]()，完善帮助文档，比如用户手册、开发指南等
