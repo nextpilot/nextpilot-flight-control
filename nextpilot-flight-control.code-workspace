@@ -44,6 +44,8 @@
 		]
 	},
 	"settings": {
+		"editor.indentSize": "tabSize",
+		"editor.detectIndentation": true,
 		"editor.formatOnPaste": true,
 		"editor.formatOnSave": true,
 		"editor.formatOnType": true,
@@ -82,7 +84,14 @@
 		],
 		// markdown
 		"[markdown]": {
+			"editor.tabSize": 4,
+        	"editor.insertSpaces": true,
 			"editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+		},
+		"markdown.extension.tableFormatter.normalizeIndentation": true,
+		"markdown.extension.list.indentationSize": "inherit",
+		"markdownlint.config": {
+			"MD007": { "indent": 4 }
 		},
 		// terminal
 		"terminal.integrated.profiles.windows": {
@@ -166,7 +175,6 @@
 			"xlocale": "cpp",
 			"typeinfo": "cpp",
 			"codecvt": "cpp"
-		},
-		"RTT_Studio.Debuger.Gdb_Path": ""
+		}
 	},
 }

@@ -27,13 +27,11 @@
 ### 存储设备
 
 - FLEXSPI1：MX25UM51345GXDI00（MXIC，旺宏电子），Octal Flash，存储代码
-  - Memory size: 512Mb (64MB, 0x04000000)
-  - Block size: 64KB
-  - Sector size: 4KB (uniform, 0x1000)
-  - Page size: 256bytes (0x100)
-
+    - Memory size: 512Mb (64MB, 0x04000000)
+    - Block size: 64KB
+    - Sector size: 4KB (uniform, 0x1000)
+    - Page size: 256bytes (0x100)
 - FLEXSPI2：FM25V02A-GTR，FRAM 256Kb (32KB)，存储参数
-
 - USDHC1：MicroSD，存储日志
 
 ### 传 感 器
@@ -73,7 +71,5 @@ make px4_fmu-v6xrt_default
 ## 参考资料
 
 - NXP MR-VMU-RT1176帮助文档：<https://nxp.gitbook.io/vmu-rt1176>
-
 - PX4 MR-VMU-RT1176帮助文档：<https://docs.px4.io/main/en/flight_controller/nxp_mr_vmu_rt1176>
-
 - Pixhawk FMUv6X-RT 设计标准：<https://github.com/pixhawk/Pixhawk-Standards/blob/master/DS-020%20Pixhawk%20Autopilot%20v6X-RT%20Standard.pdf>

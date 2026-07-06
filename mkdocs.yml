@@ -1,4 +1,4 @@
-site_name: NextPilot Flight Control System
+site_name: NextPilot User Guide
 site_url: http://www.nextpilot.org
 site_author: NextPilot Development Team
 site_description: NextPilot, a powerfull, scalable and advanced autopilot.
@@ -82,7 +82,6 @@ markdown_extensions:
   - toc:
       permalink: True
       separator: "_"
-
   # Python Markdown Extensions
   - pymdownx.arithmatex:
       generic: true
