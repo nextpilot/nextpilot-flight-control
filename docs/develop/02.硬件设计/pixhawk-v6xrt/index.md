@@ -1,6 +1,6 @@
 # Pixhawk V6X-RT
 
-根据 [Pixhawk V6X-RT 开发标准](https://github.com/pixhawk/Pixhawk-Standards/blob/master/DS-020%20Pixhawk%20Autopilot%20v6X-RT%20Standard.pdf) ，Pixhawk V6X-RT 采用 NXP 的 [MIMXRT1176DVMAA](https://www.nxp.com/part/MIMXRT1176DVMAA) 高性能跨界处理器， 并外挂 MXIC（旺宏电子）[MX25UM51345GXDI00](https://www.macronix.com/Lists/Datasheet/Attachments/8724/MX25UM51345G,%201.8V,%20512Mb,%20v1.3.pdf) Octal Flash。目前市场只有发布了两款基于 Pixhawk V6X-RT 的 飞控：
+根据 [Pixhawk V6X-RT 开发标准](https://github.com/pixhawk/Pixhawk-Standards/blob/master/DS-020%20Pixhawk%20Autopilot%20v6X-RT%20Standard.pdf) ，Pixhawk V6X-RT 采用 NXP 的 [MIMXRT1176CVM8B](https://www.nxp.com/part/MIMXRT1176CVM8B) 高性能跨界处理器， 并外挂 MXIC（旺宏电子）[MX25UM51345GXDI00](https://www.macronix.com/Lists/Datasheet/Attachments/8724/MX25UM51345G,%201.8V,%20512Mb,%20v1.3.pdf) Octal Flash。目前市场只有发布了两款基于 Pixhawk V6X-RT 的 飞控：
 
 - [NXP MR-VMU-RT1176 Flight Controller](https://docs.px4.io/main/en/flight_controller/nxp_mr_vmu_rt1176)
 - [Holybro Pixhawk 6X-RT](https://docs.px4.io/main/en/flight_controller/pixhawk6x-rt)
