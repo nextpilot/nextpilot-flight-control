@@ -113,7 +113,7 @@ NextPilot is very grateful for the support from all community users and develope
 
 Scan the QR code to join the `NextPilot Community Support` group, we will do our best to answer your questions.
 
-<img src="./aboutus/imgs/add-to-group.jpeg" height="250" width="450" />
+<img src="./docs/aboutus/imgs/add-to-group.jpeg" height="250" width="450" />
 
 # License
 
