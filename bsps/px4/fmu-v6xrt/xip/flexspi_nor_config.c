@@ -48,7 +48,7 @@ const flexspi_nor_config_t g_MX25UM51345G_config = {
             .sflashA1Size  = 64ul * 1024u * 1024u,
             .dataValidTime =
                 {
-                    [0] = {.time_100ps = 0},
+                    [0] = 0,
                 },
             .busyOffset      = 0u,
             .busyBitPolarity = 0u,
