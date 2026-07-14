@@ -1,0 +1,70 @@
+*.pyc
+*.map
+*.dblite
+*.elf
+*.bin
+*.hex
+*.axf
+*.exe
+*.pdb
+*.idb
+*.ilk
+*.old
+*.crf
+*.dtb*
+build
+Debug
+.vs
+rtthread
+settings
+documentation/html
+*~
+*.o
+*.obj
+*.bak
+*.dep
+*.lib
+*.a
+*.i
+*.d
+*.dfinish
+*.su
+#source insight 4 project files
+*.si4project
+packages
+dist
+rt-studio-project
+cconfig.h
+GPUCache
+
+#cscope files
+cscope.*
+ncscope.*
+
+#ctag files
+tags
+
+.idea
+**/.cache/
+.vscode
+*.code-workspace
+*.eide.*
+.history
+CMakeLists.txt
+cmake-build-debug
+*.mk
+
+# vDSO
+vdso_sys.os
+vdso.lds
+
+# cherryusb libraries
+!components/drivers/usb/cherryusb/port/pusb2/*.a
+!components/drivers/usb/cherryusb/port/xhci/phytium/*.a
+
+# stm32cubemx
+**/CubeMX_Config/Drivers/
+**/CubeMX_Config/MDK-ARM/
+
+# mac
+.DS_Store

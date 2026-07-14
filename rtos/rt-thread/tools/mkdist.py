@@ -1,0 +1,339 @@
+#
+# File      : mkdir.py
+# This file is part of RT-Thread RTOS
+# COPYRIGHT (C) 2006 - 2018, RT-Thread Development Team
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License along
+#  with this program; if not, write to the Free Software Foundation, Inc.,
+#  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# Change Logs:
+# Date           Author       Notes
+# 2017-10-04     Bernard      The first version
+# 2025-01-07     ZhaoCake     components copy and gen doc
+# 2025-03-02     ZhaoCake     Add MkDist_Strip
+
+
+import os
+import subprocess
+import shutil
+from shutil import ignore_patterns
+from SCons.Script import *
+
+def do_copy_file(src, dst):
+    # check source file
+    if not os.path.exists(src):
+        return
+
+    path = os.path.dirname(dst)
+    # mkdir if path not exist
+    if not os.path.exists(path):
+        os.makedirs(path)
+
+    shutil.copy2(src, dst)
+
+def do_copy_folder(src_dir, dst_dir, ignore=None):
+    import shutil
+    # check source directory
+    if not os.path.exists(src_dir):
+        return
+
+    try:
+        if os.path.exists(dst_dir):
+            shutil.rmtree(dst_dir)
+    except:
+        print('Deletes folder: %s failed.' % dst_dir)
+        return
+
+    shutil.copytree(src_dir, dst_dir, ignore = ignore)
+
+source_ext = ['c', 'h', 's', 'S', 'cpp', 'cxx', 'cc', 'xpm']
+source_list = []
+
+def walk_children(child):
+    global source_list
+    global source_ext
+
+    # print child
+    full_path = child.rfile().abspath
+    file_type  = full_path.rsplit('.',1)[1]
+    #print file_type
+    if file_type in source_ext:
+        if full_path not in source_list:
+            source_list.append(full_path)
+
+    children = child.all_children()
+    if children != []:
+        for item in children:
+            walk_children(item)
+
+def walk_kconfig(RTT_ROOT, source_list):
+    for parent, dirnames, filenames in os.walk(RTT_ROOT):
+        if 'bsp' in parent:
+            continue
+        if '.git' in parent:
+            continue
+        if 'tools' in parent:
+            continue
+
+        if 'Kconfig' in filenames:
+            pathfile = os.path.join(parent, 'Kconfig')
+            source_list.append(pathfile)
+        if 'KConfig' in filenames:
+            pathfile = os.path.join(parent, 'KConfig')
+            source_list.append(pathfile)
+
+def bsp_copy_files(bsp_root, dist_dir):
+    # copy BSP files
+    do_copy_folder(os.path.join(bsp_root), dist_dir,
+        ignore_patterns('build', '__pycache__', 'dist', '*.pyc', '*.old', '*.map', 'rtthread.bin', '.sconsign.dblite', '*.elf', '*.axf', 'cconfig.h'))
+
+def bsp_update_sconstruct(dist_dir):
+    with open(os.path.join(dist_dir, 'SConstruct'), 'r') as f:
+        data = f.readlines()
+    with open(os.path.join(dist_dir, 'SConstruct'), 'w') as f:
+        for line in data:
+            if line.find('RTT_ROOT') != -1:
+                if line.find('sys.path') != -1:
+                    f.write('# set RTT_ROOT\n')
+                    f.write('if not os.getenv("RTT_ROOT"): \n    RTT_ROOT="rt-thread"\n\n')
+            f.write(line)
+
+def bsp_update_kconfig_testcases(dist_dir):
+    # delete testcases in rt-thread/Kconfig
+    if not os.path.isfile(os.path.join(dist_dir, 'rt-thread/Kconfig')):
+        return
+
+    with open(os.path.join(dist_dir, 'rt-thread/Kconfig'), 'r') as f:
+        data = f.readlines()
+    with open(os.path.join(dist_dir, 'rt-thread/Kconfig'), 'w') as f:
+        for line in data:
+            if line.find('Kconfig.utestcases') == -1:
+                f.write(line)
+
+def bsp_update_kconfig(dist_dir):
+    # change RTT_ROOT in Kconfig
+    if not os.path.isfile(os.path.join(dist_dir, 'Kconfig')):
+        return
+
+    with open(os.path.join(dist_dir, 'Kconfig'), 'r') as f:
+        data = f.readlines()
+    with open(os.path.join(dist_dir, 'Kconfig'), 'w') as f:
+        for line in data:
+            if line.find('RTT_DIR') != -1 and line.find(':=') != -1:
+                line = 'RTT_DIR := rt-thread\n'
+            f.write(line)
+
+def bsp_update_kconfig_library(dist_dir):
+    # change RTT_ROOT in Kconfig
+    if not os.path.isfile(os.path.join(dist_dir, 'Kconfig')):
+        return
+
+    with open(os.path.join(dist_dir, 'Kconfig'), 'r') as f:
+        data = f.readlines()
+    with open(os.path.join(dist_dir, 'Kconfig'), 'w') as f:
+        for line in data:
+            if line.find('source') != -1 and line.find('../libraries') != -1:
+                line = line.replace('../libraries', 'libraries')
+            f.write(line)
+
+    # change board/kconfig path
+    if not os.path.isfile(os.path.join(dist_dir, 'board/Kconfig')):
+        return
+
+    with open(os.path.join(dist_dir, 'board/Kconfig'), 'r') as f:
+        data = f.readlines()
+    with open(os.path.join(dist_dir, 'board/Kconfig'), 'w') as f:
+        for line in data:
+            if line.find('source') != -1 and line.find('../libraries') != -1:
+                line = line.replace('../libraries', 'libraries')
+            f.write(line)
+
+def zip_dist(dist_dir, dist_name):
+    import zipfile
+
+    zip_filename = os.path.join(dist_dir)
+    zip = zipfile.ZipFile(zip_filename + '.zip', 'w')
+    pre_len = len(os.path.dirname(dist_dir))
+
+    for parent, dirnames, filenames in os.walk(dist_dir):
+        for filename in filenames:
+            pathfile = os.path.join(parent, filename)
+            arcname = pathfile[pre_len:].strip(os.path.sep)
+            zip.write(pathfile, arcname)
+
+    zip.close()
+
+def MkDist(program, BSP_ROOT, RTT_ROOT, Env, project_name, project_path):
+    print('make distribution....')
+
+    if project_path == None:
+        dist_dir = os.path.join(BSP_ROOT, 'dist', project_name)
+    else:
+        dist_dir = project_path
+
+    rtt_dir_path = os.path.join(dist_dir, 'rt-thread')
+
+    # copy BSP files
+    print('=> %s' % os.path.basename(BSP_ROOT))
+    bsp_copy_files(BSP_ROOT, dist_dir)
+
+    # do bsp special dist handle
+    if 'dist_handle' in Env:
+        print("=> start dist handle")
+        dist_handle = Env['dist_handle']
+        dist_handle(BSP_ROOT, dist_dir)
+
+    # copy tools directory
+    print('=> components')
+    do_copy_folder(os.path.join(RTT_ROOT, 'components'), os.path.join(rtt_dir_path, 'components'))
+
+    # skip documentation directory
+    # skip examples
+
+    # copy include directory
+    print('=> include')
+    do_copy_folder(os.path.join(RTT_ROOT, 'include'), os.path.join(rtt_dir_path, 'include'))
+
+    # copy all libcpu/ARCH directory
+    print('=> libcpu')
+    import rtconfig
+    do_copy_folder(os.path.join(RTT_ROOT, 'libcpu', rtconfig.ARCH), os.path.join(rtt_dir_path, 'libcpu', rtconfig.ARCH))
+    do_copy_file(os.path.join(RTT_ROOT, 'libcpu', 'Kconfig'), os.path.join(rtt_dir_path, 'libcpu', 'Kconfig'))
+    do_copy_file(os.path.join(RTT_ROOT, 'libcpu', 'SConscript'), os.path.join(rtt_dir_path, 'libcpu', 'SConscript'))
+
+    # copy src directory
+    print('=> src')
+    do_copy_folder(os.path.join(RTT_ROOT, 'src'), os.path.join(rtt_dir_path, 'src'))
+
+    # copy tools directory
+    print('=> tools')
+    do_copy_folder(os.path.join(RTT_ROOT, 'tools'), os.path.join(rtt_dir_path, 'tools'), ignore_patterns('*.pyc'))
+
+    do_copy_file(os.path.join(RTT_ROOT, 'Kconfig'), os.path.join(rtt_dir_path, 'Kconfig'))
+    do_copy_file(os.path.join(RTT_ROOT, 'AUTHORS'), os.path.join(rtt_dir_path, 'AUTHORS'))
+    do_copy_file(os.path.join(RTT_ROOT, 'COPYING'), os.path.join(rtt_dir_path, 'COPYING'))
+    do_copy_file(os.path.join(RTT_ROOT, 'README.md'), os.path.join(rtt_dir_path, 'README.md'))
+    do_copy_file(os.path.join(RTT_ROOT, 'README_zh.md'), os.path.join(rtt_dir_path, 'README_zh.md'))
+
+    print('Update configuration files...')
+    # change RTT_ROOT in SConstruct
+    bsp_update_sconstruct(dist_dir)
+    # change RTT_ROOT in Kconfig
+    bsp_update_kconfig(dist_dir)
+    bsp_update_kconfig_library(dist_dir)
+    # delete testcases in Kconfig
+    bsp_update_kconfig_testcases(dist_dir)
+
+    target_project_type = GetOption('target')
+    if target_project_type:
+        child = subprocess.Popen('scons --target={} --project-name="{}"'.format(target_project_type, project_name), cwd=dist_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        stdout, stderr = child.communicate()
+        if child.returncode == 0:
+            print(stdout)
+        else:
+            print(stderr)
+    else:
+        print('suggest to use command scons --dist [--target=xxx] [--project-name="xxx"] [--project-path="xxx"]')
+
+    # make zip package
+    if project_path == None:
+        zip_dist(dist_dir, project_name)
+
+    print('dist project successfully!')
+
+def MkDist_Strip(program, BSP_ROOT, RTT_ROOT, env, project_name, project_path=None):
+    """Create a minimal distribution based on compile_commands.json but keeping all build system files.
+    First copies everything like MkDist, then only removes unused source files while keeping all headers.
+    """
+    print('Making minimal distribution for project...')
+
+    if project_path == None:
+        dist_dir = os.path.join(BSP_ROOT, 'dist', project_name)
+    else:
+        dist_dir = project_path
+
+    # First do a full distribution copy
+    MkDist(program, BSP_ROOT, RTT_ROOT, env, project_name, project_path)
+    print('\n=> Starting source files cleanup...')
+
+    # Get the minimal required source paths
+    import compile_commands
+    used_paths = compile_commands.get_minimal_dist_paths(
+        os.path.join(BSP_ROOT, 'compile_commands.json'), 
+        RTT_ROOT
+    )
+
+    # Clean up RT-Thread directory except tools and build files
+    rt_thread_dir = os.path.join(dist_dir, 'rt-thread')
+    source_extensions = ('.c', '.cpp', '.cxx', '.cc', '.s', '.S')
+    
+    removed_files = []
+    removed_dirs = []
+    
+    for root, dirs, files in os.walk(rt_thread_dir, topdown=False):
+        rel_path = os.path.relpath(root, rt_thread_dir)
+        
+        if rel_path.startswith('tools') or rel_path.startswith('include'):
+            continue
+            
+        keep_files = {
+            'SConscript',
+            'Kconfig',
+            'Sconscript', 
+            '.config',
+            'rtconfig.h'
+        }
+        
+        for f in files:
+            if f in keep_files:
+                continue
+            
+            if not f.endswith(source_extensions):
+                continue
+                
+            file_path = os.path.join(root, f)
+            rel_file_path = os.path.relpath(file_path, rt_thread_dir)
+            dir_name = os.path.dirname(rel_file_path)
+            
+            if dir_name not in used_paths and rel_file_path not in used_paths:
+                os.remove(file_path)
+                removed_files.append(rel_file_path)
+                
+        # Remove empty directories
+        try:
+            if not os.listdir(root):
+                os.rmdir(root)
+                removed_dirs.append(rel_path)
+        except:
+            pass
+
+    # Output summary
+    if removed_files:
+        print("Removed {} unused source files".format(len(removed_files)))
+        log_file = os.path.join(dist_dir, 'cleanup.log')
+        with open(log_file, 'w') as f:
+            f.write("Removed source files:\n")
+            f.write('\n'.join(removed_files))
+            if removed_dirs:
+                f.write("\n\nRemoved empty directories:\n")
+                f.write('\n'.join(removed_dirs))
+        print("Details have been written to {}".format(log_file))
+    else:
+        print("No unused source files found")
+
+    # Make zip package like MkDist
+    if project_path is None:
+        zip_dist(dist_dir, project_name)
+        print("Distribution package created: {}.zip".format(dist_dir))
+    print('=> Distribution stripped successfully')

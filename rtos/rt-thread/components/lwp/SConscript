@@ -1,0 +1,58 @@
+Import('rtconfig')
+from building import *
+import os
+
+cwd     = GetCurrentDir()
+src     = []
+CPPPATH = [cwd]
+
+support_arch  = {"arm": ["cortex-m3", "cortex-m4", "cortex-m7", "arm926", "cortex-a"],
+                 "aarch64":["cortex-a"],
+                 "risc-v": ["rv64"],
+                 "x86": ["i386"]}
+platform_file = {'armcc': 'rvds.S', 'gcc': 'gcc.S', 'iar': 'iar.S'}
+
+platform = rtconfig.PLATFORM
+arch     = rtconfig.ARCH
+cpu      = rtconfig.CPU
+
+# fix the cpu for risc-v
+if arch == 'risc-v':
+    if GetDepend('ARCH_CPU_64BIT'):
+        cpu = 'rv64'
+
+if platform in platform_file.keys(): # support platforms
+    if arch in support_arch.keys() and cpu in support_arch[arch]:
+        asm_path = 'arch/' + arch + '/' + cpu + '/*_' + platform_file[platform]
+        arch_common = 'arch/' + arch + '/' + 'common/*.c'
+        common = 'arch/common/*.c'
+        if not GetDepend('RT_USING_VDSO'):
+            vdso_files = ['vdso_data.c', 'vdso.c']
+            src += [f for f in Glob(arch_common) if os.path.basename(str(f)) not in vdso_files]
+            src += [f for f in Glob(common) if os.path.basename(str(f)) not in vdso_files]
+        else:
+            src += Glob(arch_common)
+            src += Glob(common)
+        if not GetDepend('ARCH_MM_MMU'):
+            excluded_files = ['ioremap.c', 'lwp_futex.c', 'lwp_mm_area.c', 'lwp_pmutex.c', 'lwp_shm.c', 'lwp_user_mm.c']
+            src += [f for f in Glob('*.c') if os.path.basename(str(f)) not in excluded_files] + Glob(asm_path)
+        else:
+            src += Glob('*.c') + Glob(asm_path)
+        src += Glob('arch/' + arch + '/' + cpu + '/*.c')
+        CPPPATH = [cwd]
+        CPPPATH += [cwd + '/arch/' + arch + '/' + cpu]
+
+# Terminal I/O Subsystem
+termios_path = ['./terminal/', './terminal/freebsd/']
+for item in termios_path:
+    src += Glob(item + '*.c')
+CPPPATH += ['./terminal/']
+
+# Remove optional sources
+if not GetDepend(['LWP_USING_RUNTIME']):
+    SrcRemove(src, 'lwp_runtime.c')
+
+group = DefineGroup('lwProcess', src, depend = ['RT_USING_SMART'], CPPPATH = CPPPATH)
+
+group = group + SConscript(os.path.join('vdso', 'SConscript'))
+Return('group')

@@ -1,0 +1,22 @@
+Import('RTT_ROOT')
+from building import *
+
+cwd = GetCurrentDir()
+src = Split("""
+dev_i2c_core.c
+dev_i2c_dev.c
+""")
+
+if GetDepend('RT_USING_I2C_BITOPS'):
+    src = src + ['dev_i2c_bit_ops.c']
+if GetDepend('RT_USING_SOFT_I2C'):
+    src = src + ['dev_soft_i2c.c']
+if GetDepend(['RT_USING_DM']):
+    src += ['dev_i2c_bus.c', 'dev_i2c_dm.c']
+
+# The set of source files associated with this SConscript file.
+path = [cwd + '/../include']
+
+group = DefineGroup('DeviceDrivers', src, depend = ['RT_USING_I2C'], CPPPATH = path)
+
+Return('group')

@@ -1,0 +1,32 @@
+name: Check File Format and License
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths-ignore:
+      - documentation/**
+      - '**/README.md'
+      - '**/README_zh.md'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  scancode_job:
+    runs-on: ubuntu-22.04
+    name: Scan code format and license
+    if: github.repository_owner == 'RT-Thread'
+    steps:
+      - uses: actions/checkout@main
+      - name: Set up Python
+        uses: actions/setup-python@main
+        with:
+          python-version: 3.8
+      
+      - name: Check Format and License
+        shell: bash
+        run: |
+          pip install click chardet PyYaml
+          python tools/ci/file_check.py check 'https://github.com/RT-Thread/rt-thread' 'master'

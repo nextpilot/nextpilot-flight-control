@@ -1,0 +1,61 @@
+#
+# Copyright (c) 2006-2023, RT-Thread Development Team
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Change Logs:
+# Date           Author       Notes
+# 2023-06-27     dejavudwh    the first version
+#
+
+name: BSP compilation with more drivers
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  workflow_dispatch: #disable
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    name: BSP Compilation with More Drivers
+
+    steps:
+      - uses: actions/checkout@main
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.8
+
+      - name: Install Tools
+        shell: bash
+        run: |
+          wget https://raw.githubusercontent.com/RT-Thread/env/master/install_ubuntu.sh
+          chmod 777 install_ubuntu.sh
+          ./install_ubuntu.sh
+          git config --global http.postBuffer 524288000
+          git remote -v
+          git fetch origin
+
+      - name: Install Arm ToolChains
+        if: ${{ success() }}
+        shell: bash
+        run: |
+          wget -q https://github.com/RT-Thread/toolchains-ci/releases/download/v1.3/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
+          sudo tar xjf gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2 -C /opt
+          /opt/gcc-arm-none-eabi-10-2020-q4-major/bin/arm-none-eabi-gcc --version
+          echo "RTT_EXEC_PATH=/opt/gcc-arm-none-eabi-10-2020-q4-major/bin" >> $GITHUB_ENV
+
+      - name: Bsp Scons Compile
+        if: ${{ success() }}
+        shell: bash
+        run: |
+          # source ~/.env/env.sh
+          # python tools/ci/compile_bsp_with_drivers.py
