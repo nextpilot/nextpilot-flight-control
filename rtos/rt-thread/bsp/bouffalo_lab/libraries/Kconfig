@@ -1,2 +1,0 @@
-source "$BSP_DIR/$LIBRARIES_DIR/rt_drivers/Kconfig"
-
