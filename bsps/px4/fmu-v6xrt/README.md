@@ -31,7 +31,7 @@
     - Block size: 64KB
     - Sector size: 4KB (uniform, 0x1000)
     - Page size: 256bytes (0x100)
-- FLEXSPI2：FM25V02A-GTR，FRAM 256Kb (32KB)，存储参数
+- FLEXSPI2：FM25V02A-GTR，FRAM 32KB (256kb)，存储参数
 - USDHC1：MicroSD，存储日志
 
 ### 传 感 器

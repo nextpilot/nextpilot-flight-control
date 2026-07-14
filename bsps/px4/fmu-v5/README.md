@@ -2,7 +2,7 @@
 
 ![](docs/cuav_v5_plus.png)
 
-[CUAV V5+](https://docs.px4.io/main/en/flight_controller/cuav_v5_plus.html) 是由 [雷迅CUAV](https://www.cuav.net/) 参照 [PX4 FMUv5](https://docs.google.com/spreadsheets/d/1-n0__BYDedQrc_2NHqBenG1DNepAgnHpSGglke-QQwY/edit#gid=912976165) 标准设计的开源飞控硬件，所有外部接口采用了 [Pixhawk Connector Standard](https://pixhawk.org/pixhawk-connector-standard/)。
+[CUAV V5+](https://docs.px4.io/main/en/flight_controller/cuav_v5_plus.html) 是由 [雷迅CUAV](https://www.cuav.net/) 参照 [PX4 FMUv5](https://docs.google.com/spreadsheets/d/1-n0__BYDedQrc_2NHqBenG1DNepAgnHpSGglke-QQwY/edit) 标准设计的开源飞控硬件，所有外部接口采用了 [Pixhawk Connector Standard](https://pixhawk.org/pixhawk-connector-standard/)。
 
 ## 硬件设计
 
@@ -11,21 +11,21 @@
 - 主处理器：STM32F765，32 Bit Arm® Cortex®-M7, 216MHz, 2MB memory, 512KB RAM
 - 辅处理器：STM32F100，32 Bit Arm® Cortex®-M3, 24MHz, 8KB SRAM
 - 板载传感器：
-  - IMU： ICM-20689、BMI055
-  - MAG：IST8310
-  - BARO：MS5611
+    - IMU： ICM-20689、BMI055
+    - MAG：IST8310
+    - BARO：MS5611
 - 对外接口：
-  - 8-14 PWM outputs (6 from IO, 8 from FMU)
-  - 3 dedicated PWM/Capture inputs on FMU
-  - Dedicated R/C input for CPPM
-  - Dedicated R/C input for Spektrum / DSM and S.Bus with analog / PWM RSSI input
-  - analog / PWM RSSI input
-  - S.Bus servo output
-  - 5 general purpose serial ports
-  - 4 I2C ports
-  - 4 SPI buses
-  - 2 CANBuses with serial ESC
-  - Analog inputs for voltage / current of 2 batteries
+    - 8-14 PWM outputs (6 from IO, 8 from FMU)
+    - 3 dedicated PWM/Capture inputs on FMU
+    - Dedicated R/C input for CPPM
+    - Dedicated R/C input for Spektrum / DSM and S.Bus with analog / PWM RSSI input
+    - analog / PWM RSSI input
+    - S.Bus servo output
+    - 5 general purpose serial ports
+    - 4 I2C ports
+    - 4 SPI buses
+    - 2 CANBuses with serial ESC
+    - Analog inputs for voltage / current of 2 batteries
 
 ### 串口映射
 
@@ -56,4 +56,4 @@ scons -j10  # 10个线程编译
 
 - [CUAV V5+ 开源硬件原理图](https://github.com/cuav/hardware/tree/master/V5_Autopilot/V5%2B)
 - [CUAV V5+ 用户使用说明书](http://manual.cuav.net/V5-Plus.pdf)
-- [FMUv5 参考设计管脚定义](https://docs.google.com/spreadsheets/d/1-n0__BYDedQrc_2NHqBenG1DNepAgnHpSGglke-QQwY/edit#gid=912976165)
+- [FMUv5 参考设计管脚定义](https://docs.google.com/spreadsheets/d/1-n0__BYDedQrc_2NHqBenG1DNepAgnHpSGglke-QQwY/edit)
