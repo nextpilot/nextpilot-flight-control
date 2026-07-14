@@ -1,0 +1,19 @@
+# SConscript for sensor framework
+
+from building import *
+import os
+
+src = []
+
+if GetDepend('RT_USING_SENSOR_V2'):
+    src += [os.path.join('v2', 'sensor.c')]
+    if GetDepend('RT_USING_SENSOR_CMD'):
+        src += [os.path.join('v2', 'sensor_cmd.c')]
+else:
+    src += [os.path.join('v1', 'sensor.c')]
+    if GetDepend('RT_USING_SENSOR_CMD'):
+        src += [os.path.join('v1', 'sensor_cmd.c')]
+
+group = DefineGroup('DeviceDrivers', src, depend = ['RT_USING_SENSOR'])
+
+Return('group')

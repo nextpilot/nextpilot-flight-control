@@ -1,0 +1,8 @@
+menu "Network"
+
+rsource "sal/Kconfig"
+rsource "netdev/Kconfig"
+rsource "lwip/Kconfig"
+rsource "at/Kconfig"
+
+endmenu

@@ -1,0 +1,19 @@
+mainmenu "RT-Thread Configuration"
+
+BSP_DIR := .
+
+RTT_DIR := ../../../../..
+
+PKGS_DIR := packages
+
+config SOC_LPC55S06
+    bool
+    select ARCH_ARM_CORTEX_M33
+    select ARCH_ARM_CORTEX_SECURE
+    select PKG_USING_NXP_LPC55S_DRIVER
+    default y
+
+source "$(RTT_DIR)/Kconfig"
+osource "$PKGS_DIR/Kconfig"
+rsource "../Libraries/Kconfig"
+rsource "board/Kconfig"

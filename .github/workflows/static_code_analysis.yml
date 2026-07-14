@@ -1,0 +1,57 @@
+#
+# Copyright (c) 2006-2024, RT-Thread Development Team
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Change Logs:
+# Date           Author       Notes
+# 2024-09-04     Supperthomas add cppcheck use the latest release version
+#
+name: Static code analysis
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - master
+    paths-ignore:
+      - documentation/**
+      - '**/README.md'
+      - '**/README_zh.md'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  scancode_job:
+    runs-on: ubuntu-22.04
+    name: Static code analysis
+    if: github.repository_owner == 'RT-Thread'
+    steps:
+      - uses: actions/checkout@main
+      - name: Set up Python
+        uses: actions/setup-python@main
+        with:
+          python-version: 3.8
+      
+      - name: cppcheck
+        shell: bash
+        run: |
+          sudo apt-get update
+          pip install click PyYaml
+          git remote -v
+          git fetch origin
+          ls
+          git branch -a
+          git clone https://github.com/danmar/cppcheck.git
+          cd cppcheck
+          git fetch --tags
+          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+          echo "Latest release tag: $latest_tag"
+          git checkout $latest_tag
+          make FILESDIR=/usr/local/share/Cppcheck -j2
+          sudo make install FILESDIR=/usr/local/share/Cppcheck 
+          cppcheck --version
+          cd ..
+          python tools/ci/cpp_check.py check

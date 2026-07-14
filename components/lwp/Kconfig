@@ -1,0 +1,89 @@
+menuconfig RT_USING_LWP
+    bool "lwP(light weight Process)"
+    depends on RT_USING_SMART
+    default y
+    help
+        The lwP is a light weight process running in user mode.
+
+if RT_USING_LWP
+    menuconfig LWP_DEBUG
+        bool "Enable debugging features of LwP"
+        default n
+
+    if LWP_DEBUG
+        config LWP_DEBUG_INIT
+            select RT_USING_HOOKLIST
+            bool "Enable debug mode of init process"
+            depends on LWP_USING_RUNTIME
+            default y
+    endif
+
+    config LWP_USING_RUNTIME
+        bool "Using processes runtime environment (INIT process)"
+        default y
+        help
+            Runtime environment provide by init process including boot scripts,
+            poweroff, shutdown, reboot, etc.
+
+    config RT_LWP_MAX_NR
+        int "The max number of light-weight process"
+        default 30
+
+    config LWP_TASK_STACK_SIZE
+        int "The lwp thread kernel stack size"
+        default 16384
+
+    config RT_CH_MSG_MAX_NR
+        int "The maximum number of channel messages"
+        default 1024
+
+    config LWP_TID_MAX_NR
+        int "The maximum number of lwp thread id"
+        default 64
+
+    config LWP_ENABLE_ASID
+        bool "The switch of ASID feature"
+        depends on ARCH_ARM_CORTEX_A
+        default y
+
+    if ARCH_MM_MMU
+        config RT_LWP_SHM_MAX_NR
+            int "The maximum number of shared memory"
+            default 64
+
+        config LWP_USING_MPROTECT
+            bool
+            default n
+            help
+                ARCH has the support of mprotect
+    endif
+
+    if ARCH_MM_MPU
+        config RT_LWP_MPU_MAX_NR
+            int "The maximum number of mpu region"
+            default 2
+
+        config RT_LWP_USING_SHM
+            bool "Enable shared memory"
+            default y
+    endif
+
+    menuconfig RT_USING_LDSO
+        bool "LDSO: dynamic load shared objects"
+        depends on RT_USING_DFS_V2
+        select RT_USING_PAGECACHE
+        default y
+
+    if RT_USING_LDSO
+        config ELF_DEBUG_ENABLE
+            bool "Enable ldso debug"
+            default n
+
+        config ELF_LOAD_RANDOMIZE
+            bool "Enable random load address"
+            default n
+    endif
+
+rsource "terminal/Kconfig"
+rsource "vdso/Kconfig"
+endif

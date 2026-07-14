@@ -1,0 +1,162 @@
+#
+# Copyright (c) 2006-2023, RT-Thread Development Team
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Change Logs:
+# Date           Author       Notes
+# 2023-07-01     Supperthomas the first version
+# 2024-09-06     Supperthomas add debug for action and add cppcheck for project
+# 2024-09-06     Supperthomas 优化toolchain安装方式，解决手动触发出现的异常，优化流程结构
+#
+name:  manual_scons_dist_trigger_only_one
+
+# Controls when the action will run. Triggers 'scons --dist' to build the dist
+on:
+  workflow_dispatch:
+    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_dispatchinputs
+    inputs:
+      bsp_options:
+        description: 'Which bsp path Would you want dist in bsp?like stm32/stm32l496-st-nucleo '
+        required: false
+        type: string
+        default: 'qemu-vexpress-a9'
+      bsp_tool_chain:
+        description: 'Choice tool_chain'
+        required: false
+        default: 'sourcery-arm'
+        type: choice
+        options:
+          - "sourcery-arm"
+          - "llvm-arm"
+          - "sourcery-aarch64"
+          - "sourcery-mips"
+          - "sourcery-riscv-none-embed"
+          - "sourcery-riscv64-unknown-elf"
+          - "gcc"
+          - "sourcery-riscv32-esp32"
+      bsp_config:
+        description: 'Type a config you want mannual test in .config, like: CONFIG_RT_USING_DEBUG=y,CONFIG_RT_DEBUGING_COLOR=y,CONFIG_RT_DEBUGING_CONTEXT=y'
+        required: false
+        type: string
+        default: 'CONFIG_RT_USING_DEBUG=y,CONFIG_RT_DEBUGING_COLOR=y,CONFIG_RT_DEBUGING_CONTEXT=y'
+      dist_flag:
+        description: 'True to dist all bsp, False not dist'
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    name: ${{ github.event.inputs.bsp_options }}
+    steps:
+      - uses: actions/checkout@main
+      - name: Set up Python
+        uses: actions/setup-python@main
+        with:
+          python-version: 3.8
+
+      - name: Install Tools
+        shell: bash
+        run: |
+          wget https://raw.githubusercontent.com/RT-Thread/env/master/install_ubuntu.sh
+          chmod 777 install_ubuntu.sh
+          ./install_ubuntu.sh
+          pip install -r tools/requirements.txt
+          git config --global http.postBuffer 524288000
+          echo "RTT_ROOT=${{ github.workspace }}" >> $GITHUB_ENV
+          echo "RTT_CC=gcc" >> $GITHUB_ENV
+          echo "export PATH=~/.env/tools/scripts:$PATH" > ~/.env/env.sh
+          sudo apt-get -qq install cppcheck
+
+      - name: Install ToolChains
+        if: ${{ github.event.inputs.bsp_tool_chain == 'sourcery-arm' && success() }}
+        shell: bash
+        run: |
+          source tools/ci/toolchain.sh arm-none-eabi-gcc
+          echo "RTT_EXEC_PATH=/opt/arm-none-eabi-gcc/bin" >> $GITHUB_ENV
+
+      - name: Install LLVM-Arm ToolChains
+        if: ${{ github.event.inputs.bsp_tool_chain == 'llvm-arm' && success() }}
+        shell: bash
+        run: |
+          source tools/ci/toolchain.sh clang
+          echo "RTT_EXEC_PATH=/opt/clang/bin" >> $GITHUB_ENV
+          echo "RTT_CC=llvm-arm" >> $GITHUB_ENV
+          
+      - name: Install AArch64 ToolChains
+        if: ${{ github.event.inputs.bsp_tool_chain == 'sourcery-aarch64' && success() }}
+        shell: bash
+        run: |
+          source tools/ci/toolchain.sh aarch64-none-elf-gcc
+          echo "RTT_EXEC_PATH=/opt/aarch64-none-elf-gcc/bin" >> $GITHUB_ENV
+
+      - name: Install Mips ToolChains
+        if: ${{ github.event.inputs.bsp_tool_chain == 'sourcery-mips' && success() }}
+        shell: bash
+        run: |
+          source tools/ci/toolchain.sh mips-sde-elf-gcc
+          echo "RTT_EXEC_PATH=/opt/mips-sde-elf-gcc/bin" >> $GITHUB_ENV
+
+      - name: Install Riscv64-unknown-elf ToolChains
+        if: ${{ github.event.inputs.bsp_tool_chain == 'sourcery-riscv64-unknown-elf' && success() }}
+        run: |
+          source tools/ci/toolchain.sh riscv64-unknown-elf-gcc
+          echo "RTT_EXEC_PATH=/opt/riscv64-unknown-elf-gcc/bin" >> $GITHUB_ENV
+
+      - name: Install Riscv-none-embed ToolChains
+        if: ${{ github.event.inputs.bsp_tool_chain == 'sourcery-riscv-none-embed' && success() }}
+        run: |
+          source tools/ci/toolchain.sh riscv-none-embed-gcc
+          echo "RTT_EXEC_PATH=/opt/riscv-none-embed-gcc/bin" >> $GITHUB_ENV
+
+
+      - name: Install riscv32-esp-elf ToolChains
+        if: ${{ github.event.inputs.bsp_tool_chain == 'sourcery-riscv32-esp32' && success() }}
+        run: |
+          source tools/ci/toolchain.sh riscv32-esp-elf-gcc
+          echo "RTT_EXEC_PATH=/opt/riscv32-esp-elf-gcc/bin" >> $GITHUB_ENV
+          pip3 install esptool
+
+      - name: Install GCC Tools
+        if: ${{ github.event.inputs.bsp_tool_chain == 'gcc' && success() }}
+        run: |
+          sudo apt-get -qq install libsdl2-dev
+
+      - name: Bsp Scons Compile
+        if: ${{ success() }}
+        shell: bash
+        env:
+          RTT_BSP: ${{ github.event.inputs.bsp_options }}
+          RTT_TOOL_CHAIN: ${{ github.event.inputs.bsp_tool_chain}}
+        run: |
+          source ~/.env/env.sh
+          echo $RTT_BSP
+          ls bsp/$RTT_BSP/Kconfig && scons -C bsp/$RTT_BSP --pyconfig-silent
+          config=${{ github.event.inputs.bsp_config}}
+          echo "$config"
+          echo "$config" >> bsp/$RTT_BSP/.config
+          scons -C bsp/$RTT_BSP --pyconfig-silent
+          pushd bsp/$RTT_BSP && pkgs --update && popd
+          cat bsp/$RTT_BSP/.config
+          scons -C bsp/$RTT_BSP -j$(nproc) --cdb
+          ls bsp/$RTT_BSP
+          scons --dist -C bsp/$RTT_BSP
+          mv bsp/$RTT_BSP/dist .
+          cppcheck --project=bsp/$RTT_BSP/build/compile_commands.json 
+
+      - uses: actions/upload-artifact@main
+        if:  ${{ github.event.inputs.dist_flag  && success()}} 
+        with:
+          name: rtt_dist_bsp
+          path: ${{ github.workspace }}/dist/*.zip
+          
+      - uses: actions/upload-artifact@main
+        if:  ${{ github.event.inputs.dist_flag  && success()}} 
+        with:
+          name: rtt_bsp_fold
+          path: ${{ github.workspace }}/bsp/${{ github.event.inputs.bsp_options }}/*
