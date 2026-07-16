@@ -88,17 +88,17 @@ NextPilot 主要支持以下 IDE/编译器:
 
 ## 用户手册
 
-[NextPilot 用户手册](https://www.nextpilot.org/manual)，可以带您 [快速入门](https://www.nextpilot.org/manual)，并了解 NextPilot的 [飞行模式](https://www.nextpilot.org/manual/05.%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/01.%E9%A3%9E%E8%A1%8C%E6%A8%A1%E5%BC%8F/index.html)、[高级调参]()、[飞行仿真]()、[日志分析]()等。
+[NextPilot 用户手册](https://docs.nextpilot.org/manual)，可以带您 [快速入门](https://docs.nextpilot.org/manual)，并了解 NextPilot的 [飞行模式](https://docs.nextpilot.org/manual/05.%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/01.%E9%A3%9E%E8%A1%8C%E6%A8%A1%E5%BC%8F/index.html)、[高级调参]()、[飞行仿真]()、[日志分析]()等。
 
 ## 开发指南
 
-您可以通过 [NextPilot 开发指南](https://www.nextpilot.org/develop) 了解如何进行 NextPilot 开发，比如：[搭建开发环境](https://www.nextpilot.org/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/01.setup-develop-environment.html)， [如何添加代码](https://www.nextpilot.org/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/99.add-new-code.html)， [系统底层框架]()等。
+您可以通过 [NextPilot 开发指南](https://docs.nextpilot.org/develop) 了解如何进行 NextPilot 开发，比如：[搭建开发环境](https://docs.nextpilot.org/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/01.setup-develop-environment.html)， [如何添加代码](https://docs.nextpilot.org/develop/01.%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/99.add-new-code.html)， [系统底层框架]()等。
 
 # 社区支持
 
 NextPilot 非常感谢所有社区小伙伴的支持，在使用 NextPilot 的过程中若您有任何的想法，建议或疑问都可通过以下方式联系到 NextPilot，我们也实时在这些频道更新 NextPilot 的最新讯息。
 
-- 官方网站：<https://www.nextpilot.org>
+- 官方网站：<https://docs.nextpilot.org>
 - 交流论坛：<https://github.com/nextpilot/nextpilot-flight-control/discussions>
 - 问题反馈：<https://github.com/nextpilot/nextpilot-flight-control/issues>
 - 联系方式：<nextpilot@qq.com>

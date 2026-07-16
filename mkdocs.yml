@@ -1,5 +1,5 @@
-site_name: NextPilot User Guide
-site_url: http://www.nextpilot.org
+site_name: NextPilot User Guide (Preview)
+site_url: http://docs.nextpilot.org
 site_author: NextPilot Development Team
 site_description: NextPilot, a powerfull, scalable and advanced autopilot.
 
@@ -18,7 +18,7 @@ use_directory_urls: false
 dev_addr: "127.0.0.1:8063"
 
 copyright: >-
-  Copyright &copy; 2015-2026 <a href="https://www.nextpilot.org">NextPilot Development Team</a>,
+  Copyright &copy; 2015-2026 <a href="https://docs.nextpilot.org">NextPilot Development Team</a>,
   Maintained by <a href="https://github.com/comerlater">LaterComer</a> <br />本文档采用
   <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> 国际协议, 开放共享、转载、修改、商用,
   但请保留署名来源
