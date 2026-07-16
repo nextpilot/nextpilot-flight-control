@@ -27,10 +27,10 @@
 ### 存储设备
 
 - FLEXSPI1：MX25UM51345GXDI00（MXIC，旺宏电子），Octal Flash，存储代码
-    - Memory size: 64MB (0x04000000)
-    - Block size: 64KB
-    - Sector size: 4KB (uniform, 0x1000)
-    - Page size: 256bytes (0x100)
+  - Memory size: 64MB (0x04000000)
+  - Block size: 64KB
+  - Sector size: 4KB (uniform, 0x1000)
+  - Page size: 256bytes (0x100)
 - FLEXSPI2：FM25V02A-GTR，FRAM 32KB (256kb)，存储参数
 - USDHC1：MicroSD，存储日志
 
@@ -42,24 +42,56 @@
 - Mag: BMM150
 - Barometer: 2x BMP388
 
+## 总线划分
+
+### 串口
+
+总线 | 设备 | 用途 | 说明
+--- | --- | --- | ---
+UART1 | /dev/ttyS0 | Debug | 外接调试串口 |
+UART2 | x | x | 与I2C3冲突，未使用 |
+UART3 | /dev/ttyS1 | GPS1 |
+UART4 | /dev/ttyS2 | TELEM1 |
+UART5 | /dev/ttyS3 | GPS2 |
+UART6 | /dev/ttyS4 | RC |
+UART7 | x | x | 与TRACE冲突，V6XRT标准未使用，但NEXTPILOT硬件放弃了TRACE把UART7引出
+UART8 | /dev/ttyS5 | TELEM2 |
+UART9 | x | x | 与FLEXSPI1冲突，未使用
+UART10 | /dev/ttyS6 | TELEM3 |
+UART11 | /dev/ttyS7 | External |
+UART12 | x | x | 与SPI6冲突，V6XRT标准未使用，但NEXTPILOT硬件放弃了SPI6把UART12引出
+
+### SPI
+
+总线 | 设备 | 用途
+--- | --- | ---
+FlexSPI1 | MX25UM51345G | NorFlash， 存储代码/code
+FlesSPI2 | FM25V02A | Fram， 保存参数/param
+SPI1 | ICM-42688P | 1176核心板，用于IMU传感器，比如ICM
+SPI2 | ICM-42688P | 独立IMU板，用于IMU传感器，比如ICM
+SPI3 | BMI088 | 独立IMU板，用于IMU传感器，比如bmi088
+SPI4 |  | 1176核心板，用于IMU传感器，比如bmi088
+SPI5 | x | 没使用
+SPI6 | | 外部传感器
+
+> BMI088 作为高频 IMU，建议独占 SPI 总线；多设备共享会引入 MISO 电平竞争、时序抖动、上电初始化不稳定，高性能飞控 / 机器人不建议复用总线。
+
+## I2C
+
+总线 | 设备 | 用途
+--- | --- | ---
+I2C1 | | 引出到gps1，一般是LED，或者SMBUS
+I2C2 | BMP388 | 1176核心板，用于气压计
+I2C3 | BMP388、SEM051 | 独立IMU板，用于气压计，以及板载的安全芯片
+I2C4 | BM315，Memeory | 独立IMU板，磁罗盘，还有校准用的Memory
+I2C5 | x | 没用到
+I2C6 |  | 引出去到gps2，一般是LED，或者SMBUS，另外还有板载校准用的Memory以及安全芯片
+
 ## 编译固件
 
 ```shell
 scons
 ```
-
-## 串口映射
-
-|串口|设备|用途|
-|---|---|---|
-| UART | Device | Port |
-| UART1 | /dev/ttyS0 | Debug |
-| UART3 | /dev/ttyS1 | GPS |
-| UART4 | /dev/ttyS2 | TELEM1 |
-| UART5 | /dev/ttyS3 | GPS2 |
-| UART6 | /dev/ttyS4 | PX4IO |
-| UART10 | /dev/ttyS6 | TELEM3 |
-| UART11 | /dev/ttyS7 | External |
 
 ## 参考资料
 
