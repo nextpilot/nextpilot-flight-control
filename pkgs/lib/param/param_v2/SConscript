@@ -6,10 +6,10 @@ from building import *
 
 objs = []
 
-# Return("objs")
+if not GetDepend(["PKG_USING_PARAM_V2"]):
+    Return("objs")
 
 cwd = GetCurrentDir()
-
 
 # 工程根目录
 prj_root = os.path.abspath(os.path.join(cwd, "../../../../"))

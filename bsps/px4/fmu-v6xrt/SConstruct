@@ -7,6 +7,8 @@ if os.getenv("RTT_ROOT"):
 else:
     RTT_ROOT = os.path.normpath(os.getcwd() + "../../../../rtos/rt-thread")
 
+PRJ_ROOT = os.path.normpath(os.getcwd() + "../../../../")
+
 sys.path = sys.path + [os.path.join(RTT_ROOT, "tools")]
 try:
     from building import *
@@ -90,10 +92,10 @@ objs = PrepareBuilding(env, RTT_ROOT, has_libcpu=False)
 rtconfig.BSP_LIBRARY_TYPE = "MIMXRT1170"
 
 # include libraries
-objs.extend(SConscript(os.path.join(SDK_LIB, "MIMXRT1170", "SConscript")))
+objs.extend(SConscript(os.path.join(PRJ_ROOT, "SConscript"), duplicate=0))
 
 # include drivers
-objs.extend(SConscript(os.path.join(SDK_LIB, "drivers", "SConscript")))
+# objs.extend(SConscript(os.path.join(SDK_LIB, "drivers", "SConscript")))
 
 # make a building
 DoBuilding(TARGET, objs)

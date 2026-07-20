@@ -4,6 +4,11 @@ import sys
 import rtconfig
 from building import *
 
+objs = []
+
+if not GetDepend(["PKG_USING_PARAM_V2"]):
+    Return("objs")
+
 os.environ["PYTHONUTF8"] = "1"
 
 cwd = GetCurrentDir()

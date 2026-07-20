@@ -5,6 +5,10 @@ import subprocess
 from building import *
 
 objs = []
+
+if not GetDepend(["PKG_USING_PARAM_V1"]):
+    Return("objs")
+
 cwd = GetCurrentDir()
 
 

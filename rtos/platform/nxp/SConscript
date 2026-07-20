@@ -1,15 +1,17 @@
-# 当前脚本会递归加入项目涉及的所有代码文件，除了bsps和rtos/rt-thread目录下的文件
-
 import os
 import rtconfig
 from building import *
 
 objs = []
+
+if not GetDepend(["SOC_IMXRT1170_SERIES"]):
+    Return("objs")
+
 cwd = GetCurrentDir()
 
 for d in os.listdir(cwd):
     path = os.path.join(cwd, d)
     if os.path.isfile(os.path.join(path, "SConscript")):
-        objs += SConscript(os.path.join(d, "SConscript"), variant_dir="#/build/" + d, duplicate=0)
+        objs += SConscript(os.path.join(d, "SConscript"))
 
 Return("objs")
