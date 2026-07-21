@@ -2,11 +2,10 @@ import os
 import rtconfig
 from building import *
 
-objs = []
-
 if not GetDepend(["SOC_IMXRT1170_SERIES"]):
-    Return("objs")
+    Return([])
 
+objs = []
 cwd = GetCurrentDir()
 
 for d in os.listdir(cwd):

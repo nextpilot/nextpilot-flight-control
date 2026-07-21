@@ -4,6 +4,9 @@ import rtconfig
 import subprocess
 from building import *
 
+if not GetDepend(["PKG_USING_BOARD_VERSION"]):
+    Return([])
+
 
 cwd = GetCurrentDir()
 
