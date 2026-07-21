@@ -14,6 +14,8 @@
 # To match all files in a directory, use e.g. foo/bar/*. To match all files in the directory of the .clang-format-ignore file, use *. Multiple .clang-format-ignore files are supported similar to the .clang-format files, with a lower directory level file voiding the higher level ones.
 #
 
+#
+rtconfig.h
 
 #
 .github/*
