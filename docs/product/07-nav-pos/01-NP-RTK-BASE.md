@@ -1,8 +1,12 @@
-# NP-BASE-H05
+---
+title: NP-RTK-BASE
+---
+
+# NP-RTK-BASE 地面差分基准站
 
 ## 简介
 
-​  NP-BASE-H05是NextPilot团队研发一款地面差分基准站，支持市面上大部分卫星板卡，可之间安装GNSS蘑菇头天线。通信接口采用航空连接件，稳定可靠。
+​  NP-RTK-BASE是NextPilot团队研发一款地面差分基准站，支持市面上大部分卫星板卡，可之间安装GNSS蘑菇头天线。通信接口采用航空连接件，稳定可靠。
 
 <img src="imgs/产品图-基准站.png" alt="产品图-基准站" style="zoom:35%;" />
 

@@ -1,4 +1,8 @@
-# NP-ADS-H05
+---
+title: NP-ADS-H05
+---
+
+# NP-ADS-H05 大气数据计算机
 
 ## 简介
 

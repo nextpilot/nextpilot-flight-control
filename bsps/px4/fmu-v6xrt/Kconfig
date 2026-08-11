@@ -27,9 +27,18 @@ mainmenu "RT-Thread Configuration"
 # $(lineno)           当前行号
 
 
-RTT_DIR := ../../../rtos/rt-thread
+BSP_DIR  := .
+PRJ_DIR  := ../../..
+SDK_DIR  := ../../../rtos/platform/nxp
+RTT_DIR  := ../../../rtos/rt-thread
 PKGS_DIR := ../../../rtos/packages
 
+# 操作系统配置
 rsource "$(RTT_DIR)/Kconfig"
-#osource "$(PKGS_DIR)/Kconfig"
+# SDK库配置
+rsource "$(SDK_DIR)/Kconfig"
+# 硬件板子配置
 rsource "board/Kconfig"
+# 应用软件配置
+#rsource "$(PRJ_DIR)/Kconfig"
+#osource "$(PKGS_DIR)/Kconfig"
