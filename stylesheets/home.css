@@ -1,0 +1,215 @@
+/* =========================================
+   VitePress-style Home Page
+   Compatible with Material for MkDocs 9.x
+   ========================================= */
+
+/* =========================================
+   Hero Section
+   ========================================= */
+.vp-hero {
+  text-align: center;
+  padding: 64px 24px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.vp-hero-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Logo replacing text title */
+.vp-hero-logo {
+  display: block;
+  max-width: min(320px, 60vw);
+  height: auto;
+  margin: 0 auto 24px;
+}
+
+/* Subtitle */
+.vp-hero-text {
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--md-default-fg-color);
+  margin: 0 0 12px;
+}
+
+/* Tagline */
+.vp-hero-tagline {
+  font-size: 18px;
+  color: var(--md-default-fg-color--light);
+  margin: 0 auto 32px;
+  line-height: 1.6;
+}
+
+/* Actions */
+.vp-hero-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.vp-hero-action {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 28px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  border: 2px solid transparent;
+}
+
+.vp-hero-action.primary {
+  background-color: var(--md-primary-fg-color);
+  color: var(--md-primary-bg-color);
+}
+.vp-hero-action.primary:hover {
+  background-color: var(--md-primary-fg-color--dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px var(--md-primary-fg-color--light);
+}
+
+.vp-hero-action.secondary {
+  background-color: transparent;
+  color: var(--md-primary-fg-color);
+  border-color: var(--md-primary-fg-color);
+}
+.vp-hero-action.secondary:hover {
+  background-color: var(--md-primary-fg-color);
+  color: var(--md-primary-bg-color);
+  transform: translateY(-1px);
+}
+
+/* =========================================
+   Features Section
+   ========================================= */
+.vp-features {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 24px 64px;
+}
+
+.vp-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.vp-feature {
+  background-color: var(--md-default-bg-color);
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.3s ease;
+}
+
+.vp-feature:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-color: var(--md-primary-fg-color--light);
+}
+
+.vp-feature-icon {
+  font-size: 36px;
+  margin-bottom: 16px;
+  line-height: 1;
+}
+
+.vp-feature-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: var(--md-default-fg-color);
+}
+
+.vp-feature-details {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--md-default-fg-color--light);
+  margin: 0;
+}
+
+.vp-feature-details a {
+  color: var(--md-primary-fg-color);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.vp-feature-details a:hover {
+  color: var(--md-accent-fg-color);
+}
+
+/* =========================================
+   Dark mode
+   ========================================= */
+[data-md-color-scheme='slate'] .vp-feature:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* =========================================
+   Responsive: tablet
+   ========================================= */
+@media screen and (max-width: 960px) {
+  .vp-features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .vp-hero .vp-hero-text {
+    font-size: 24px;
+  }
+}
+
+/* =========================================
+   Responsive: mobile
+   ========================================= */
+@media screen and (max-width: 768px) {
+  .vp-hero {
+    padding: 40px 16px 32px;
+  }
+
+  .vp-hero-logo {
+    max-width: min(240px, 50vw);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .vp-features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vp-hero .vp-hero-text {
+    font-size: 20px;
+  }
+
+  .vp-hero .vp-hero-tagline {
+    font-size: 16px;
+  }
+
+  .vp-features {
+    padding: 32px 16px 48px;
+  }
+}
+
+/* =========================================
+   Product Catalog (product/index.md)
+   ========================================= */
+.md-typeset .grid.cards .product-status-future {
+  opacity: 0.6;
+  position: relative;
+}
+.md-typeset .grid.cards .product-status-future::after {
+  content: "即将推出";
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--md-default-fg-color--lightest);
+  color: var(--md-default-fg-color--light);
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
