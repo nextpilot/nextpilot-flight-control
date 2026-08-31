@@ -25,7 +25,7 @@ RT-Thread tiene una versión estándar y una versión Nano. Para los sistemas de
 RT-Thread no sólo dispone de un núcleo en tiempo real, sino también de ricos componentes. Su arquitectura es la siguiente:
 
 
-![architecture](./documentation/figures/architecture.png)
+![architecture](./documentation/figures/architecture.svg)
 
 
 Incluye:

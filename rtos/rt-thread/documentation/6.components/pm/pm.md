@@ -413,18 +413,3 @@ According to the product's own situation, turn off the peripherals and clocks th
 Check whether the higher-level power consumption mode is not released. RT-Thread's PM component uses `rt_pm_request` to request dormancy mode. If it is not released after requesting high-power consumption mode, the system will not be able to switch to lower-level power consumption.
 
 For example, after requesting Light Sleep mode, then requesting Deep Sleep mode, the system is still in Light Sleep mode. By calling the interface `rt_pm_request` to release the Light Sleep mode, the system will automatically switch to the Deep Sleep mode.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

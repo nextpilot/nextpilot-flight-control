@@ -28,7 +28,7 @@
 
 ## System Architecture
 
-![](./docs/develop/03.系统框架/architecture.png)
+![](./docs/develop/03.系统框架/architecture.svg)
 
 ## Supported Vehicle
 

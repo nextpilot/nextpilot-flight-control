@@ -26,7 +26,7 @@ RT-Thread has Standard version and Nano version. For resource-constrained microc
 RT-Thread has not only a real-time kernel, but also rich components. Its architecture is as follows:
 
 
-![architecture](./documentation/figures/architecture.png)
+![architecture](./documentation/figures/architecture.svg)
 
 
 It includes:

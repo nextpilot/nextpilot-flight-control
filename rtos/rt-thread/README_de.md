@@ -25,7 +25,7 @@ RT-Thread-Architektur
 RT-Thread verfügt nicht nur über einen Echtzeit-Kernel, sondern auch über umfangreiche Komponenten. Seine Architektur ist wie folgt:
 
 
-![architecture](./documentation/figures/architecture.png)
+![architecture](./documentation/figures/architecture.svg)
 
 
 Sie umfasst:
